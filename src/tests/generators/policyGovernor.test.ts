@@ -19,10 +19,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   POLICY_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import {
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_SCORING,
-} from '../../constants/policyConstants';
+import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 
 it('can set and remove policies from tournamentRecords and events', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicies');
@@ -104,13 +101,10 @@ it('can set and remove policies from tournamentRecords and events', () => {
   expect(updatedRecord.events.length).toEqual(1);
   expect(updatedRecord.events[0].extensions.length).toEqual(1);
 
-  const { appliedPolicies: updatedAppliedPolicies } =
-    tournamentEngine.getAppliedPolicies({
-      eventId,
-    });
-  expect(updatedAppliedPolicies.avoidance.policyName).toEqual(
-    'Nationality Code'
-  );
+  const { appliedPolicies: updatedAppliedPolicies } = tournamentEngine.getAppliedPolicies({
+    eventId,
+  });
+  expect(updatedAppliedPolicies.avoidance.policyName).toEqual('Nationality Code');
 
   result = tournamentEngine.attachPolicies({
     policyDefinitions: AVOIDANCE_COUNTRY,
@@ -235,7 +229,7 @@ it('can find policies whether on event or tournamentRecord', () => {
   ({ policy } = tournamentEngine.findPolicy({
     policyType: POLICY_TYPE_AVOIDANCE,
   }));
-  expect(result.policy).toBeUndefined();
+  expect(policy).toBeUndefined();
 
   ({ policy } = tournamentEngine.findPolicy({
     policyType: POLICY_TYPE_AVOIDANCE,

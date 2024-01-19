@@ -1,5 +1,5 @@
 ---
-title: Avoidance
+title: Avoidance Policies
 ---
 
 Avoidance is an attempt to ensure that grouped players do not encounter each other in early rounds (or just the first round) of an elimination draw structure, or that round robin brackets are generated such that players from the same group are evenly distributed across brackets and do not encounter each other unless there are more group members than there are brackets.

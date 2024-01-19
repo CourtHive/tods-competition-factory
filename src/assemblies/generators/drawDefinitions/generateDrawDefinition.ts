@@ -5,115 +5,36 @@ import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addD
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
-import { getAllowedDrawTypes } from '../../../query/tournaments/allowedTypes';
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
+import { validateAndDeriveDrawValues } from './validateAndDeriveDrawValues';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
-import { checkValidEntries } from '../../../validators/checkValidEntries';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { tieFormatDefaults } from '../templates/tieFormatDefaults';
-import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
-import { getDrawTypeCoercion } from './getDrawTypeCoercion';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { getCoercedDrawType } from './getCoercedDrawType';
 import { constantToString } from '../../../tools/strings';
 import { generateRange } from '../../../tools/arrays';
 import { newDrawDefinition } from './newDrawDefinition';
 import { ensureInt } from '../../../tools/ensureInt';
-import { nextPowerOf2 } from '../../../tools/math';
+import { drawMatic } from './drawMatic/drawMatic';
 import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
-import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
+import { AD_HOC, LUCKY_DRAW, MAIN, POSITION, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
+import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { DrawDefinition, DrawTypeUnion, Entry } from '../../../types/tournamentTypes';
+import { GenerateDrawDefinitionArgs } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  ErrorType,
-  INVALID_DRAW_TYPE,
-  INVALID_VALUES,
-  MISSING_DRAW_SIZE,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
-import {
-  AD_HOC,
-  DOUBLE_ELIMINATION,
-  FEED_IN,
-  LUCKY_DRAW,
-  MAIN,
-  POSITION,
-  QUALIFYING,
-  ROUND_ROBIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
-import {
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_MATCHUP_ACTIONS,
-  POLICY_TYPE_SEEDING,
-} from '../../../constants/policyConstants';
-import {
-  DrawDefinition,
-  DrawTypeUnion,
-  Entry,
-  Event,
-  TieFormat,
-  Tournament,
-  EventTypeUnion,
-} from '../../../types/tournamentTypes';
-
-type GenerateDrawDefinitionArgs = {
-  automated?: boolean | { seedsOnly: boolean };
-  playoffAttributes?: PlayoffAttributes;
-  policyDefinitions?: PolicyDefinitions;
-  voluntaryConsolation?: {
-    structureAbbreviation?: string;
-    structureName?: string;
-    structureId?: string;
-  };
-  enforceMinimumDrawSize?: boolean;
-  ignoreAllowedDrawTypes?: boolean;
-  qualifyingPlaceholder?: boolean;
-  considerEventEntries?: boolean;
-  seedingProfile?: SeedingProfile;
-  hydrateCollections?: boolean;
-  tournamentRecord: Tournament;
-  drawTypeCoercion?: boolean;
-  ignoreStageSpace?: boolean;
-  qualifyingProfiles?: any[];
-  drawMatic?: DrawMaticArgs;
-  qualifyingOnly?: boolean;
-  drawType?: DrawTypeUnion;
-  enforceGender?: boolean;
-  processCodes?: string[];
-  matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
-  structureName?: string;
-  tieFormatName?: string;
-  tieFormat?: TieFormat;
-  drawEntries?: Entry[];
-  roundsCount?: number;
-  seedsCount?: number;
-  placeByes?: boolean;
-  drawName?: string;
-  drawSize?: number;
-  idPrefix?: string;
-  isMock?: boolean;
-  uuids?: string[];
-  drawId?: string;
-  event: Event;
-};
+import { getDrawFormat } from './getDrawFormat';
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
   existingDrawDefinition?: boolean;
@@ -126,31 +47,11 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
   conflicts?: any[];
 } {
   const stack = 'generateDrawDefinition';
-  const {
-    enforceMinimumDrawSize = true,
-    considerEventEntries = true, // in the absence of drawSize and drawEntries, look to event.entries
-    ignoreAllowedDrawTypes,
-    voluntaryConsolation,
-    hydrateCollections,
-    ignoreStageSpace,
-    tournamentRecord,
-    qualifyingOnly,
-    tieFormatName,
-    drawEntries,
-    placeByes,
-    event,
-  } = params;
+  const { voluntaryConsolation, ignoreStageSpace, tournamentRecord, qualifyingOnly, drawEntries, placeByes, event } =
+    params;
 
   const isMock = params.isMock ?? true;
   const idPrefix = params.idPrefix;
-
-  const appliedPolicies =
-    getAppliedPolicies({
-      tournamentRecord,
-      event,
-    }).appliedPolicies ?? {};
-
-  const policyDefinitions = makeDeepCopy(params.policyDefinitions ?? {}, false, true);
 
   // get participants both for entry validation and for automated placement
   // automated placement requires them to be "inContext" for avoidance policies to work
@@ -166,97 +67,14 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       (entry: Entry) => entry.entryStatus && [...STRUCTURE_SELECTED_STATUSES, QUALIFIER].includes(entry.entryStatus),
     ) ?? [];
 
-  // -------------------- BEGIN PARAMETER DERIVATION AND VALIDATION -------------------------
-  const consideredEntries = (
-    (qualifyingOnly && []) ||
-    drawEntries ||
-    (considerEventEntries ? eventEntries : [])
-  ).filter(({ entryStage }) => !entryStage || entryStage === MAIN);
-
-  const enforceGender =
-    params.enforceGender ??
-    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender ??
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS]?.participants?.enforceGender;
-
-  // entries participantTypes must correspond with eventType
-  // this is only possible if the event is provided
-  const validEntriesResult =
-    event &&
-    participants &&
-    checkValidEntries({
-      consideredEntries,
-      appliedPolicies,
-      participantMap,
-      enforceGender,
-      participants,
-      event,
-    });
-
-  if (validEntriesResult?.error) return decorateResult({ result: validEntriesResult, stack });
-
-  const derivedDrawSize =
-    !params.drawSize &&
-    consideredEntries.length &&
-    ![AD_HOC, DOUBLE_ELIMINATION, FEED_IN, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF].includes(params.drawType ?? '') &&
-    nextPowerOf2(consideredEntries.length);
-
-  // coersion of drawSize and seedsCount to integers
-  const drawSize = derivedDrawSize || (params.drawSize && ensureInt(params.drawSize)) || false; // required for isNaN check
-
-  const drawTypeCoercion =
-    params.drawTypeCoercion ??
-    getDrawTypeCoercion({
-      drawType: params.drawType,
-      policyDefinitions,
-      appliedPolicies,
-    });
-
-  const coercedDrawType = getCoercedDrawType({
-    drawType: params.drawType,
-    enforceMinimumDrawSize,
-    drawTypeCoercion,
-    drawSize,
+  const validDerivedResult = validateAndDeriveDrawValues({
+    ...params, // order is important here
+    participantMap,
+    participants,
+    eventEntries,
   });
-  if (coercedDrawType.error) return coercedDrawType;
-  const drawType = coercedDrawType.drawType;
-
-  const seedingPolicy = policyDefinitions?.[POLICY_TYPE_SEEDING] ?? appliedPolicies?.[POLICY_TYPE_SEEDING];
-
-  const seedingProfile =
-    params.seedingProfile ?? seedingPolicy?.seedingProfile?.drawTypes?.[drawType] ?? seedingPolicy?.seedingProfile;
-
-  // extend policyDefinitions only if a seedingProfile was specified in params
-  if (params.seedingProfile) {
-    if (!policyDefinitions[POLICY_TYPE_SEEDING]) {
-      policyDefinitions[POLICY_TYPE_SEEDING] = {
-        ...POLICY_SEEDING_DEFAULT[POLICY_TYPE_SEEDING],
-      };
-    }
-    policyDefinitions[POLICY_TYPE_SEEDING].seedingProfile = seedingProfile;
-  }
-
-  // if tournamentRecord is provided, and unless instructed to ignore valid types,
-  // check for restrictions on allowed drawTypes
-  const allowedDrawTypes =
-    !ignoreAllowedDrawTypes &&
-    tournamentRecord &&
-    getAllowedDrawTypes({
-      tournamentRecord,
-      categoryType: event?.category?.categoryType,
-      categoryName: event?.category?.categoryName,
-    });
-  if (allowedDrawTypes?.length && !allowedDrawTypes.includes(drawType)) {
-    return decorateResult({ result: { error: INVALID_DRAW_TYPE }, stack });
-  }
-
-  if (isNaN(drawSize) && drawType !== AD_HOC) {
-    return decorateResult({
-      result: { error: MISSING_DRAW_SIZE },
-      stack,
-    });
-  }
-
-  // -------------------- END OF PARAMETER DERIVATION AND VALIDATION -------------------------
+  if (validDerivedResult.error) return decorateResult({ result: validDerivedResult, stack });
+  const { appliedPolicies, policyDefinitions, drawSize, drawType, enforceGender, seedingProfile } = validDerivedResult;
 
   const eventType = event?.eventType;
   const matchUpType = params.matchUpType ?? eventType;
@@ -265,48 +83,9 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
     ? (event?.drawDefinitions?.find((d) => d.drawId === params.drawId) as DrawDefinition)
     : undefined;
 
-  // drawDefinition cannot have both tieFormat and matchUpFormat
-  let { tieFormat, matchUpFormat } = params;
-
-  // TODO: implement use of tieFormatId and tieFormats array
-  if (matchUpType === TEAM && eventType === TEAM) {
-    // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
-    // use this tieFormat ONLY when no tieFormat is specified in params
-    const existingMainTieFormat = existingDrawDefinition?.structures?.find(({ stage }) => stage === MAIN)?.tieFormat;
-
-    tieFormat =
-      tieFormat ||
-      existingMainTieFormat ||
-      // if tieFormatName is provided and it matches the name of the tieFormat attached to parent event...
-      (tieFormatName && event?.tieFormat?.tieFormatName === tieFormatName && event.tieFormat) ||
-      // if the tieFormatName is not found in the factory then will use default
-      (tieFormatName &&
-        tieFormatDefaults({
-          namedFormat: tieFormatName,
-          hydrateCollections,
-          isMock,
-          event,
-        })) ||
-      // if no tieFormat is found on event then will use default
-      event?.tieFormat ||
-      tieFormatDefaults({ event, isMock, hydrateCollections });
-
-    matchUpFormat = undefined;
-  } else if (!matchUpFormat) {
-    tieFormat = undefined;
-    if (!event?.matchUpFormat) {
-      matchUpFormat = FORMAT_STANDARD;
-    }
-  }
-
-  if (tieFormat) {
-    const result = validateTieFormat({
-      gender: event?.gender,
-      enforceGender,
-      tieFormat,
-    });
-    if (result.error) return decorateResult({ result, stack });
-  }
+  const drawFormatResult = getDrawFormat({ ...params, enforceGender, eventType, matchUpType });
+  if (drawFormatResult.error) return decorateResult({ result: drawFormatResult, stack });
+  const { matchUpFormat, tieFormat } = drawFormatResult;
 
   const invalidDrawId = params.drawId && typeof params.drawId !== 'string';
   if (invalidDrawId) return decorateResult({ result: { error: INVALID_VALUES }, stack });
@@ -365,7 +144,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
   // avoidance policies on the event can be changed (if location used for UI)
 
   const policiesToAttach = {
-    [POLICY_TYPE_AVOIDANCE]: appliedPolicies[POLICY_TYPE_AVOIDANCE],
+    [POLICY_TYPE_AVOIDANCE]: appliedPolicies?.[POLICY_TYPE_AVOIDANCE],
   };
 
   if (policyDefinitions) {
@@ -388,19 +167,19 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
           policyDefinitions: policiesToAttach,
           drawDefinition,
         });
-        Object.assign(appliedPolicies, policiesToAttach);
+        if (appliedPolicies) Object.assign(appliedPolicies, policiesToAttach);
       }
     }
   } else if (policiesToAttach.avoidance) {
     attachPolicies({ drawDefinition, policyDefinitions: policiesToAttach });
   }
 
-  if (!appliedPolicies[POLICY_TYPE_SEEDING] && !policyDefinitions[POLICY_TYPE_SEEDING]) {
+  if (!appliedPolicies?.[POLICY_TYPE_SEEDING] && !policyDefinitions?.[POLICY_TYPE_SEEDING]) {
     attachPolicies({
       policyDefinitions: POLICY_SEEDING_DEFAULT,
       drawDefinition,
     });
-    Object.assign(appliedPolicies, POLICY_SEEDING_DEFAULT);
+    if (appliedPolicies) Object.assign(appliedPolicies, POLICY_SEEDING_DEFAULT);
   }
   // ---------------------------------------------------------------------------
 
@@ -748,7 +527,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
 
   drawDefinition.drawName = params.drawName ?? (drawType && constantToString(drawType));
 
-  if (typeof voluntaryConsolation === 'object' && drawSize >= 4) {
+  if (drawSize && typeof voluntaryConsolation === 'object' && drawSize >= 4) {
     addVoluntaryConsolationStructure({
       ...voluntaryConsolation,
       drawDefinition,
