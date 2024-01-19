@@ -1,3 +1,4 @@
+import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../../tools/math';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { generateHashCode } from '../../tools/objects';
 import { safeUUID, UUIDS } from '../../tools/UUID';
@@ -33,7 +34,6 @@ import {
   noNulls,
   randomPop,
 } from '../../tools/arrays';
-import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../../tools/math';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];
@@ -229,7 +229,7 @@ test('miscellaneous math tests', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   result = isOdd();
-  expect(result).toEqual(undefined);
+  expect(result).toEqual(false);
 });
 
 test('skewedDistribution supports step values', () => {

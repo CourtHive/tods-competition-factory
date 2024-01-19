@@ -5,28 +5,27 @@ import { structureSort } from '../../../functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { definedAttributes } from '../../../tools/definedAttributes';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
+import { getCoercedDrawType } from './getCoercedDrawType';
 import { ensureInt } from '../../../tools/ensureInt';
 import { isPowerOf2 } from '../../../tools/math';
 import { getGenerators } from './getGenerators';
 
+import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { PlayoffAttributes, PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
 import {
   MAIN,
   AD_HOC,
   FEED_IN,
   ROUND_ROBIN,
-  SINGLE_ELIMINATION,
   ROUND_ROBIN_WITH_PLAYOFF,
-  MULTI_STRUCTURE_DRAWS,
   LUCKY_DRAW,
   QUALIFYING,
   WINNER,
   POSITION,
 } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition, Structure, TieFormat } from '../../../types/tournamentTypes';
-import { PlayoffAttributes, PolicyDefinitions } from '../../../types/factoryTypes';
 
 type GenerateDrawStructuresAndLinksArgs = {
   playoffAttributes?: PlayoffAttributes;
@@ -54,17 +53,25 @@ export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAnd
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     drawDefinition,
     tieFormat,
-    drawSize,
     isMock,
     uuids,
   } = params || {};
+
+  const drawSize = ensureInt(params.drawSize);
 
   const drawTypeCoercion =
     params.drawTypeCoercion ?? getDrawTypeCoercion({ appliedPolicies, drawType: params.drawType });
 
   const stack = 'generateDrawStructuresAndLinks';
-  let drawType =
-    (drawTypeCoercion && params.drawSize === 2 && SINGLE_ELIMINATION) || params.drawType || SINGLE_ELIMINATION;
+
+  const coercedDrawType = getCoercedDrawType({
+    drawType: params.drawType,
+    enforceMinimumDrawSize,
+    drawTypeCoercion,
+    drawSize,
+  });
+  if (coercedDrawType.error) return coercedDrawType;
+  const drawType = coercedDrawType.drawType;
 
   const structures: Structure[] = [],
     links: any[] = [];
@@ -163,7 +170,6 @@ export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAnd
   const invalidDrawSize =
     drawType !== AD_HOC &&
     (!drawSize ||
-      isNaN(drawSize) ||
       drawSize < 2 ||
       (!staggeredEntry &&
         ![FEED_IN, LUCKY_DRAW].includes(drawType) &&
@@ -176,24 +182,6 @@ export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAnd
       result: { error: INVALID_DRAW_SIZE },
       stack,
     });
-  }
-
-  const multiStructure = MULTI_STRUCTURE_DRAWS.includes(drawType);
-  if (drawSize && ensureInt(drawSize) < 4 && multiStructure) {
-    if (drawTypeCoercion) {
-      drawType = SINGLE_ELIMINATION;
-    } else if (enforceMinimumDrawSize) {
-      return decorateResult({
-        context: {
-          enforceMinimumDrawSize,
-          invalidDrawSize,
-          drawSize,
-          drawType,
-        },
-        result: { error: INVALID_DRAW_SIZE },
-        stack,
-      });
-    }
   }
 
   const { generators, error } = getGenerators(params);

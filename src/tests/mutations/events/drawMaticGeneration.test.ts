@@ -3,12 +3,17 @@ import { generateRange, unique } from '../../../tools/arrays';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import { expect, it } from 'vitest';
+import { expect, it, test } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import { EXISTING_MATCHUP_ID, MISSING_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
+import {
+  EXISTING_MATCHUP_ID,
+  INVALID_VALUES,
+  MISSING_PARTICIPANT_IDS,
+} from '../../../constants/errorConditionConstants';
+import exp from 'constants';
 
 const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
@@ -27,6 +32,7 @@ it.each(scenarios)('can generate AD_HOC with arbitrary drawSizes', (scenario) =>
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { idPrefix: 'P' },
     drawProfiles: [
       {
         drawType: AD_HOC,
@@ -36,7 +42,6 @@ it.each(scenarios)('can generate AD_HOC with arbitrary drawSizes', (scenario) =>
         drawSize,
       },
     ],
-    participantsProfile: { idPrefix: 'P' },
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -225,4 +230,31 @@ it('cannot use drawMatic when there are no entries present', () => {
 
   result = tournamentEngine.drawMatic({ drawId });
   expect(result.error).toEqual(MISSING_PARTICIPANT_IDS);
+});
+
+const drawMaticScenarios = [
+  { drawSize: 4, roundsCount: 1, expectation: { success: true } },
+  { drawSize: 4, roundsCount: 2, expectation: { success: true } },
+  { drawSize: 4, roundsCount: 3, expectation: { success: true } },
+  { drawSize: 4, roundsCount: 4, expectation: { error: INVALID_VALUES } },
+  { drawSize: 4, roundsCount: 4, enableDoubleRobin: true, expectation: { success: true } },
+  { drawSize: 4, roundsCount: 6, enableDoubleRobin: true, expectation: { success: true } },
+  { drawSize: 4, roundsCount: 7, enableDoubleRobin: true, expectation: { error: INVALID_VALUES } },
+];
+
+test.each(drawMaticScenarios)('drawMatic can generate multiple rounds', (scenario) => {
+  const { drawSize, roundsCount, enableDoubleRobin } = scenario;
+  const drawId = 'drawId';
+
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId, drawType: AD_HOC, drawSize }],
+    setState: true,
+  });
+
+  const result = tournamentEngine.drawMatic({ drawId, roundsCount, enableDoubleRobin });
+  if (scenario.expectation.success) {
+    expect(result.success).toEqual(true);
+  } else if (scenario.expectation.error) {
+    expect(result.error).toEqual(scenario.expectation.error);
+  }
 });

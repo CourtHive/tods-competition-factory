@@ -33,6 +33,7 @@ export type DrawMaticArgs = {
   restrictEntryStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
+  enableDoubleRobin?: boolean;
   generateMatchUps?: boolean;
   eventType?: EventTypeUnion;
   salted?: number | boolean;
@@ -57,6 +58,7 @@ export function drawMatic(
 ): ResultType & { matchUps?: MatchUp[]; roundResults?: DrawMaticRoundResult[] } {
   const {
     restrictEntryStatus,
+    enableDoubleRobin,
     adHocRatings = {},
     generateMatchUps,
     tournamentRecord,
@@ -113,7 +115,11 @@ export function drawMatic(
     participantIds = enteredParticipantIds;
   }
 
-  if (roundsCount && roundsCount > participantIds.length - 1) {
+  if (
+    roundsCount &&
+    roundsCount > participantIds.length - 1 &&
+    (!enableDoubleRobin || roundsCount > (participantIds.length - 1) * 2)
+  ) {
     return { error: INVALID_VALUES, info: 'Not enough participants for roundsCount' };
   }
 
@@ -169,7 +175,7 @@ export function drawMatic(
   const roundResults: any = [];
   let roundNumber;
 
-  for (const iteration of generateRange(0, roundsCount ?? 1)) {
+  for (const iteration of generateRange(1, (roundsCount ?? 1) + 1)) {
     const result = generateDrawMaticRound({
       ignoreLastRoundNumber: true,
       tournamentParticipants,
@@ -193,7 +199,7 @@ export function drawMatic(
 
     const { matchUps: roundMatchUps, ...roundResult } = result;
     roundResults.push({ ...roundResult, iteration, matchUpsCount: roundMatchUps?.length });
-    roundNumber = (roundResult?.roundNumber || 1) + 1;
+    roundNumber = (roundResult?.roundNumber ?? 1) + 1;
     if (roundMatchUps?.length) {
       matchUps.push(...roundMatchUps);
     }
