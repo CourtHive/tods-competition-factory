@@ -8,11 +8,9 @@ import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersC
 import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { validateAndDeriveDrawValues } from './validateAndDeriveDrawValues';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { getParticipantId } from '../../../global/functions/extractors';
-import { tieFormatDefaults } from '../templates/tieFormatDefaults';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
@@ -34,10 +32,9 @@ import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../constants/p
 import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { DrawDefinition, DrawTypeUnion, Entry } from '../../../types/tournamentTypes';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { GenerateDrawDefinitionArgs } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { getDrawFormat } from './getDrawFormat';
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
   existingDrawDefinition?: boolean;
@@ -50,17 +47,8 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
   conflicts?: any[];
 } {
   const stack = 'generateDrawDefinition';
-  const {
-    voluntaryConsolation,
-    hydrateCollections,
-    ignoreStageSpace,
-    tournamentRecord,
-    qualifyingOnly,
-    tieFormatName,
-    drawEntries,
-    placeByes,
-    event,
-  } = params;
+  const { voluntaryConsolation, ignoreStageSpace, tournamentRecord, qualifyingOnly, drawEntries, placeByes, event } =
+    params;
 
   const isMock = params.isMock ?? true;
   const idPrefix = params.idPrefix;
@@ -79,14 +67,14 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       (entry: Entry) => entry.entryStatus && [...STRUCTURE_SELECTED_STATUSES, QUALIFIER].includes(entry.entryStatus),
     ) ?? [];
 
-  const validParamResult = validateAndDeriveDrawValues({
+  const validDerivedResult = validateAndDeriveDrawValues({
     ...params, // order is important here
     participantMap,
     participants,
     eventEntries,
   });
-  if (validParamResult.error) return decorateResult({ result: validParamResult, stack });
-  const { appliedPolicies, policyDefinitions, drawSize, drawType, enforceGender, seedingProfile } = validParamResult;
+  if (validDerivedResult.error) return decorateResult({ result: validDerivedResult, stack });
+  const { appliedPolicies, policyDefinitions, drawSize, drawType, enforceGender, seedingProfile } = validDerivedResult;
 
   const eventType = event?.eventType;
   const matchUpType = params.matchUpType ?? eventType;
@@ -95,48 +83,9 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
     ? (event?.drawDefinitions?.find((d) => d.drawId === params.drawId) as DrawDefinition)
     : undefined;
 
-  // drawDefinition cannot have both tieFormat and matchUpFormat
-  let { tieFormat, matchUpFormat } = params;
-
-  // TODO: implement use of tieFormatId and tieFormats array
-  if (matchUpType === TEAM && eventType === TEAM) {
-    // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
-    // use this tieFormat ONLY when no tieFormat is specified in params
-    const existingMainTieFormat = existingDrawDefinition?.structures?.find(({ stage }) => stage === MAIN)?.tieFormat;
-
-    tieFormat =
-      tieFormat ||
-      existingMainTieFormat ||
-      // if tieFormatName is provided and it matches the name of the tieFormat attached to parent event...
-      (tieFormatName && event?.tieFormat?.tieFormatName === tieFormatName && event.tieFormat) ||
-      // if the tieFormatName is not found in the factory then will use default
-      (tieFormatName &&
-        tieFormatDefaults({
-          namedFormat: tieFormatName,
-          hydrateCollections,
-          isMock,
-          event,
-        })) ||
-      // if no tieFormat is found on event then will use default
-      event?.tieFormat ||
-      tieFormatDefaults({ event, isMock, hydrateCollections });
-
-    matchUpFormat = undefined;
-  } else if (!matchUpFormat) {
-    tieFormat = undefined;
-    if (!event?.matchUpFormat) {
-      matchUpFormat = FORMAT_STANDARD;
-    }
-  }
-
-  if (tieFormat) {
-    const result = validateTieFormat({
-      gender: event?.gender,
-      enforceGender,
-      tieFormat,
-    });
-    if (result.error) return decorateResult({ result, stack });
-  }
+  const drawFormatResult = getDrawFormat({ ...params, enforceGender, eventType, matchUpType });
+  if (drawFormatResult.error) return decorateResult({ result: drawFormatResult, stack });
+  const { matchUpFormat, tieFormat } = drawFormatResult;
 
   const invalidDrawId = params.drawId && typeof params.drawId !== 'string';
   if (invalidDrawId) return decorateResult({ result: { error: INVALID_VALUES }, stack });
