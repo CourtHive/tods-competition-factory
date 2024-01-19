@@ -1,9 +1,12 @@
+import { deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
+import { getMatchUpId } from 'global/functions/extractors';
 import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../tools/sorting';
-import { deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_STRUCTURE,
@@ -11,8 +14,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type RemoveRoundMatchUpsArgs = {
   removeCompletedMatchUps?: boolean;
@@ -66,7 +67,6 @@ export function removeRoundMatchUps({
   return { ...SUCCESS };
 }
 
-// TODO: move to drawEngine and passthrough
 function removeAdHocRound({
   removeCompletedMatchUps,
   drawDefinition,
@@ -76,6 +76,7 @@ function removeAdHocRound({
   eventId,
 }): ResultType & { deletedMatchUpsCount?: number; roundRemoved?: boolean } {
   const matchUps = structure?.matchUps ?? [];
+  const deletedTieMatchUpIds: string[] = [];
   const deletedMatchUpIds: string[] = [];
   let roundRemoved = false;
 
@@ -91,14 +92,19 @@ function removeAdHocRound({
       const target =
         matchUp.roundNumber === roundNumber &&
         (!completedMatchUpStatuses.includes(matchUp.matchUpStatus) || removeCompletedMatchUps);
-      if (target) deletedMatchUpIds.push(matchUp.matchUpId);
+      if (target) {
+        deletedMatchUpIds.push(matchUp.matchUpId);
+        if (matchUp.tieMatchUps) {
+          deletedTieMatchUpIds.push(...matchUp.tieMatchUps.map(getMatchUpId));
+        }
+      }
 
       return !target;
     });
 
     if (deletedMatchUpIds.length) {
       deleteMatchUpsNotice({
-        matchUpIds: deletedMatchUpIds,
+        matchUpIds: [...deletedTieMatchUpIds, ...deletedMatchUpIds],
         drawDefinition,
         tournamentId,
         eventId,

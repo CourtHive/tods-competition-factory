@@ -1,9 +1,9 @@
+import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpId } from '../../global/functions/extractors';
 import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { validMatchUps } from '../../validators/validMatchUp';
 import { overlap } from '../../tools/arrays';
-import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
 import { ResultType } from '../../global/functions/decorateResult';
@@ -54,10 +54,15 @@ export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId
 
   structure.matchUps.push(...matchUps);
 
+  const tieMatchUps = matchUps
+    .map(({ tieMatchUps }) => tieMatchUps)
+    .filter(Boolean)
+    .flat();
+
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
+    matchUps: [...tieMatchUps, ...matchUps],
     drawDefinition,
-    matchUps,
   });
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 

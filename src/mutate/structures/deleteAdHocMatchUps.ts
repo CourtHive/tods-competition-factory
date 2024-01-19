@@ -2,6 +2,7 @@ import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGo
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '../../tools/arrays';
+import { getMatchUpId } from 'global/functions/extractors';
 import { xa } from '../../tools/objects';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
@@ -50,14 +51,18 @@ export function deleteAdHocMatchUps({
       if (checkScoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
       return matchUpIds.includes(matchUpId);
     }) ?? [];
-  const matchUpIdsToDelete = matchUpsToDelete.map(xa('matchUpId'));
+  const matchUpIdsToDelete = matchUpsToDelete.map(getMatchUpId);
+  const tieMatchUpIdsToDelete: string[] = matchUpsToDelete
+    .map(({ tieMatchUps }) => tieMatchUps?.map(getMatchUpId))
+    .filter(Boolean)
+    .flat();
 
   if (matchUpIdsToDelete.length) {
     structure.matchUps = (structure.matchUps ?? []).filter(({ matchUpId }) => !matchUpIdsToDelete.includes(matchUpId));
 
     deleteMatchUpsNotice({
       tournamentId: tournamentRecord?.tournamentId,
-      matchUpIds: matchUpIdsToDelete,
+      matchUpIds: [...tieMatchUpIdsToDelete, ...matchUpIdsToDelete],
       action: 'deleteAdHocMatchUps',
       eventId: event?.eventId,
       drawDefinition,
