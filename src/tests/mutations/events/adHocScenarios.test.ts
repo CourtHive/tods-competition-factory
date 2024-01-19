@@ -6,9 +6,9 @@ import tournamentEngine from '../../engines/syncEngine';
 import { xa } from '../../../tools/objects';
 import { expect, it, test } from 'vitest';
 
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import { REMOVE_PARTICIPANT } from '../../../constants/matchUpActionConstants';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,

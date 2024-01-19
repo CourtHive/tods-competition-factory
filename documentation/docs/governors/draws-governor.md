@@ -235,9 +235,9 @@ engine.setParticipantScaleItems({
 
 ```js
 const result = engine.deleteAdHocMatchUps({
-  drawId, // required - drawId of drawDefinition in which target structure is found
-  structureId, // required - structureId of structure for which matchUps are being generated
+  structureId, // optional - structureId of structure from which matchUps are being deleted
   matchUpIds, // array of matchUpIds identifying matchUps to be deleted
+  drawId, // required - drawId of drawDefinition in which target structure is found
 });
 ```
 

@@ -1,5 +1,5 @@
-import { addNotice, deleteNotice } from '../../global/state/globalState';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
+import { addNotice, deleteNotice } from '../../global/state/globalState';
 
 import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -21,28 +21,18 @@ import {
   MISSING_STRUCTURE,
 } from '../../constants/errorConditionConstants';
 
-function drawUpdatedAt(
-  drawDefinition: DrawDefinition,
-  structureIds?: string[]
-) {
+function drawUpdatedAt(drawDefinition: DrawDefinition, structureIds?: string[]) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   let timeStamp = Date.now();
-  if (
-    drawDefinition.updatedAt &&
-    timeStamp === new Date(drawDefinition.updatedAt).getTime()
-  )
-    timeStamp += 1;
+  if (drawDefinition.updatedAt && timeStamp === new Date(drawDefinition.updatedAt).getTime()) timeStamp += 1;
   const updatedAt = new Date(timeStamp).toISOString();
 
   const relevantStructureIds = structureIds?.filter(Boolean);
 
   drawDefinition.updatedAt = updatedAt;
   drawDefinition.structures?.filter(Boolean).forEach((structure) => {
-    if (
-      !relevantStructureIds?.length ||
-      relevantStructureIds?.includes(structure.structureId)
-    ) {
+    if (!relevantStructureIds?.length || relevantStructureIds?.includes(structure.structureId)) {
       structure.updatedAt = updatedAt;
     }
   });
@@ -56,12 +46,7 @@ type AddMatchUpsNoticeArgs = {
   matchUps: MatchUp[];
   eventId?: string;
 };
-export function addMatchUpsNotice({
-  drawDefinition,
-  tournamentId,
-  matchUps,
-  eventId,
-}: AddMatchUpsNoticeArgs) {
+export function addMatchUpsNotice({ drawDefinition, tournamentId, matchUps, eventId }: AddMatchUpsNoticeArgs) {
   if (drawDefinition) drawUpdatedAt(drawDefinition);
   addNotice({
     payload: { matchUps, tournamentId, eventId },
@@ -159,11 +144,10 @@ type AddDrawNoticeArgs = {
   tournamentId?: string;
   eventId?: string;
 };
-export function addDrawNotice({
-  tournamentId,
-  eventId,
-  drawDefinition,
-}: AddDrawNoticeArgs): { success?: boolean; error?: ErrorType } {
+export function addDrawNotice({ tournamentId, eventId, drawDefinition }: AddDrawNoticeArgs): {
+  success?: boolean;
+  error?: ErrorType;
+} {
   if (!drawDefinition) {
     console.log(MISSING_DRAW_DEFINITION);
     return { error: MISSING_DRAW_DEFINITION };
@@ -183,11 +167,7 @@ type DeleteDrawNoticeArgs = {
   eventId?: string;
   drawId: string;
 };
-export function deleteDrawNotice({
-  tournamentId,
-  eventId,
-  drawId,
-}: DeleteDrawNoticeArgs) {
+export function deleteDrawNotice({ tournamentId, eventId, drawId }: DeleteDrawNoticeArgs) {
   addNotice({
     payload: { drawId, tournamentId, eventId },
     topic: DELETED_DRAW_IDS,
@@ -204,12 +184,7 @@ type ModifyDrawNoticeArgs = {
   tournamentId?: string;
   eventId?: string;
 };
-export function modifyDrawNotice({
-  drawDefinition,
-  tournamentId,
-  structureIds,
-  eventId,
-}: ModifyDrawNoticeArgs) {
+export function modifyDrawNotice({ drawDefinition, tournamentId, structureIds, eventId }: ModifyDrawNoticeArgs) {
   if (!drawDefinition) {
     return { error: MISSING_DRAW_DEFINITION };
   }
@@ -223,12 +198,7 @@ export function modifyDrawNotice({
   return { ...SUCCESS };
 }
 
-export function modifySeedAssignmentsNotice({
-  drawDefinition,
-  tournamentId,
-  structure,
-  eventId,
-}) {
+export function modifySeedAssignmentsNotice({ drawDefinition, tournamentId, structure, eventId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
 
@@ -251,12 +221,7 @@ export function modifySeedAssignmentsNotice({
   return { ...SUCCESS };
 }
 
-export function modifyPositionAssignmentsNotice({
-  drawDefinition,
-  tournamentId,
-  structure,
-  event,
-}) {
+export function modifyPositionAssignmentsNotice({ drawDefinition, tournamentId, structure, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
 

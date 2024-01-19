@@ -1,13 +1,13 @@
+import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { xa } from '../../tools/objects';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { addTimeItem } from '../timeItems/addTimeItem';
-import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { xa } from '../../tools/objects';
 
-import { SUCCESS } from '../../constants/resultConstants';
 import { EXISTING_STRUCTURE, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../types/tournamentTypes';
+import { SUCCESS } from '../../constants/resultConstants';
 
 export function attachConsolationStructures(params) {
   return attachStructures({

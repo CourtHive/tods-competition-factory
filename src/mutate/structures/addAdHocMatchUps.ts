@@ -17,7 +17,7 @@ import {
   EXISTING_MATCHUP_ID,
 } from '../../constants/errorConditionConstants';
 
-export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId, matchUps }): ResultType {
+export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId, matchUps, event }): ResultType {
   if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
 
   if (!structureId && drawDefinition.structures?.length === 1)
@@ -62,6 +62,7 @@ export function addAdHocMatchUps({ tournamentRecord, drawDefinition, structureId
   addMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUps: [...tieMatchUps, ...matchUps],
+    eventId: event?.eventId,
     drawDefinition,
   });
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });

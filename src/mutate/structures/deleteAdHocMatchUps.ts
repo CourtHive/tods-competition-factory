@@ -12,7 +12,6 @@ import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
@@ -20,20 +19,21 @@ type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpIds?: string[];
-  structureId: string;
+  structureId?: string;
   event?: Event;
 };
-export function deleteAdHocMatchUps({
-  tournamentRecord,
-  matchUpIds = [],
-  drawDefinition,
-  structureId,
-  event,
-}: DeleteAdHocMatchUpsArgs) {
+export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
+  const { tournamentRecord, matchUpIds = [], drawDefinition, event } = params;
   if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
-  if (typeof structureId !== 'string') return { error: MISSING_STRUCTURE_ID };
-
   if (!Array.isArray(matchUpIds)) return { error: INVALID_VALUES };
+
+  const structureId =
+    params.structureId ??
+    drawDefinition?.structures?.find((structure) =>
+      structure.matchUps?.some(({ matchUpId }) => matchUpIds.includes(matchUpId)),
+    )?.structureId;
+
+  if (!structureId) return { error: STRUCTURE_NOT_FOUND };
 
   const structure: any = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };

@@ -1,17 +1,11 @@
-import { getDrawStructures } from '../../acquire/findStructure';
+import { deleteMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 import { analyzeDraws } from '../../query/tournaments/analyzeDraws';
 import { getMatchUpId } from '../../global/functions/extractors';
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-} from '../notifications/drawNotifications';
+import { getDrawStructures } from '../../acquire/findStructure';
 
+import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_DRAW_DEFINITION,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
 import { MatchUp } from '../../types/tournamentTypes';
 
 export function pruneDrawDefinition({
@@ -38,53 +32,38 @@ export function pruneDrawDefinition({
     });
 
     const structureData = drawAnalysis.structuresData.find(
-      ({ structureId }) => mainStructure.structureId === structureId
+      ({ structureId }) => mainStructure.structureId === structureId,
     );
 
-    const matchUps = mainStructure.matchUps ?? [];
-    relevantMatchUps = matchUps
-      .sort((a: any, b: any) => a.roundPosition - b.roundPosition)
-      .filter(
-        ({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber)
-      );
+    const matchUps = (mainStructure.matchUps ?? []).sort((a: any, b: any) => a.roundPosition - b.roundPosition);
+    relevantMatchUps = matchUps.filter(({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber));
     const relevantMatchUpIds = relevantMatchUps.map(getMatchUpId);
-    const deletedMatchUpIds = matchUps
-      .map(getMatchUpId)
-      .filter((matchUpId) => !relevantMatchUpIds.includes(matchUpId));
+    const deletedMatchUpIds = matchUps.map(getMatchUpId).filter((matchUpId) => !relevantMatchUpIds.includes(matchUpId));
 
     // only ifMatchPlay can the positionAssignments be reallocated
     if (isMatchPlay) {
       const matchPlayMatchUps = relevantMatchUps
-        .sort((a: any, b: any) => a.roundPosition - b.roundPosition)
-        .filter(
-          ({ roundNumber }) =>
-            !structureData.inactiveRounds.includes(roundNumber)
-        )
+        .filter(({ roundNumber }) => !structureData.inactiveRounds.includes(roundNumber))
         .filter(({ winningSide }) => winningSide);
 
       const matchPlayMatchUpIds = matchPlayMatchUps.map(getMatchUpId);
-      const matchUpIdsToDelete = relevantMatchUpIds.filter(
-        (matchUpId) => !matchPlayMatchUpIds.includes(matchUpId)
-      );
+      const matchUpIdsToDelete = relevantMatchUpIds.filter((matchUpId) => !matchPlayMatchUpIds.includes(matchUpId));
       deletedMatchUpIds.push(...matchUpIdsToDelete);
 
       const existingDrawPositionPairings = matchPlayMatchUps
         .flatMap((matchUp) => matchUp.drawPositions ?? [])
         .filter(Boolean);
-      const existingDrawPositions: number[] =
-        existingDrawPositionPairings.flat();
+      const existingDrawPositions: number[] = existingDrawPositionPairings.flat();
       const drawPositionsMap = Object.assign(
         {},
         ...existingDrawPositions.map((drawPosition, i) => ({
           [drawPosition]: i + 1,
-        }))
+        })),
       );
 
       matchPlayMatchUps.forEach((matchUp: any) => {
         if (matchPlayDrawPositions) {
-          matchUp.drawPositions = matchUp.drawPositions.map(
-            (drawPosition) => drawPositionsMap[drawPosition]
-          );
+          matchUp.drawPositions = matchUp.drawPositions.map((drawPosition) => drawPositionsMap[drawPosition]);
         } else {
           delete matchUp.drawPositions;
         }
@@ -92,9 +71,7 @@ export function pruneDrawDefinition({
 
       if (matchPlayDrawPositions) {
         const updatedPositionAssignments = mainStructure?.positionAssignments
-          ?.filter((assignment) =>
-            existingDrawPositions.includes(assignment.drawPosition)
-          )
+          ?.filter((assignment) => existingDrawPositions.includes(assignment.drawPosition))
           .map((assignment) => {
             assignment.drawPosition = drawPositionsMap[assignment.drawPosition];
             return assignment;

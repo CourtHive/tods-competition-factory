@@ -620,6 +620,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
           tournamentRecord,
           drawDefinition,
           structureId,
+          event,
         });
       } else {
         generateRange(1, params.roundsCount + 1).forEach(() => {
@@ -636,6 +637,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
             drawDefinition,
             structureId,
             matchUps,
+            event,
           });
         });
       }
