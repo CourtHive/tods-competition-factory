@@ -13,7 +13,6 @@ import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { tieFormatDefaults } from '../templates/tieFormatDefaults';
-import { DrawMaticArgs, drawMatic } from './drawMatic/drawMatic';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import structureTemplate from '../templates/structureTemplate';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
@@ -21,6 +20,7 @@ import { constantToString } from '../../../tools/strings';
 import { generateRange } from '../../../tools/arrays';
 import { newDrawDefinition } from './newDrawDefinition';
 import { ensureInt } from '../../../tools/ensureInt';
+import { drawMatic } from './drawMatic/drawMatic';
 import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
@@ -29,65 +29,15 @@ import {
 
 import { AD_HOC, LUCKY_DRAW, MAIN, POSITION, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
 import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
 import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { DrawDefinition, DrawTypeUnion, Entry } from '../../../types/tournamentTypes';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { GenerateDrawDefinitionArgs } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  DrawDefinition,
-  DrawTypeUnion,
-  Entry,
-  Event,
-  TieFormat,
-  Tournament,
-  EventTypeUnion,
-} from '../../../types/tournamentTypes';
-
-type GenerateDrawDefinitionArgs = {
-  automated?: boolean | { seedsOnly: boolean };
-  playoffAttributes?: PlayoffAttributes;
-  policyDefinitions?: PolicyDefinitions;
-  voluntaryConsolation?: {
-    structureAbbreviation?: string;
-    structureName?: string;
-    structureId?: string;
-  };
-  enforceMinimumDrawSize?: boolean;
-  ignoreAllowedDrawTypes?: boolean;
-  qualifyingPlaceholder?: boolean;
-  considerEventEntries?: boolean;
-  seedingProfile?: SeedingProfile;
-  hydrateCollections?: boolean;
-  tournamentRecord: Tournament;
-  drawTypeCoercion?: boolean;
-  ignoreStageSpace?: boolean;
-  qualifyingProfiles?: any[];
-  drawMatic?: DrawMaticArgs;
-  qualifyingOnly?: boolean;
-  drawType?: DrawTypeUnion;
-  enforceGender?: boolean;
-  processCodes?: string[];
-  matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
-  structureName?: string;
-  tieFormatName?: string;
-  tieFormat?: TieFormat;
-  drawEntries?: Entry[];
-  roundsCount?: number;
-  seedsCount?: number;
-  placeByes?: boolean;
-  drawName?: string;
-  drawSize?: number;
-  idPrefix?: string;
-  isMock?: boolean;
-  uuids?: string[];
-  drawId?: string;
-  event: Event;
-};
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
   existingDrawDefinition?: boolean;

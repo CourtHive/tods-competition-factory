@@ -21,7 +21,10 @@ import {
   SexUnion,
   ParticipantRoleUnion,
   MatchUpStatusUnion,
+  DrawTypeUnion,
+  TieFormat,
 } from './tournamentTypes';
+import { DrawMaticArgs } from '../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -442,4 +445,46 @@ export type MatchUpFilters = {
 
   filterMatchUpTypes?: boolean;
   filterMatchUpIds?: boolean;
+};
+
+export type GenerateDrawDefinitionArgs = {
+  automated?: boolean | { seedsOnly: boolean };
+  playoffAttributes?: PlayoffAttributes;
+  policyDefinitions?: PolicyDefinitions;
+  voluntaryConsolation?: {
+    structureAbbreviation?: string;
+    structureName?: string;
+    structureId?: string;
+  };
+  enforceMinimumDrawSize?: boolean;
+  ignoreAllowedDrawTypes?: boolean;
+  qualifyingPlaceholder?: boolean;
+  considerEventEntries?: boolean;
+  seedingProfile?: SeedingProfile;
+  hydrateCollections?: boolean;
+  tournamentRecord: Tournament;
+  drawTypeCoercion?: boolean;
+  ignoreStageSpace?: boolean;
+  qualifyingProfiles?: any[];
+  drawMatic?: DrawMaticArgs;
+  qualifyingOnly?: boolean;
+  drawType?: DrawTypeUnion;
+  enforceGender?: boolean;
+  processCodes?: string[];
+  matchUpFormat?: string;
+  matchUpType?: EventTypeUnion;
+  structureName?: string;
+  tieFormatName?: string;
+  tieFormat?: TieFormat;
+  drawEntries?: Entry[];
+  roundsCount?: number;
+  seedsCount?: number;
+  placeByes?: boolean;
+  drawName?: string;
+  drawSize?: number;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+  drawId?: string;
+  event: Event;
 };
