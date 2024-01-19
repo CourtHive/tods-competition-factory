@@ -251,7 +251,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     : [];
 
   const bothSideParticipants =
-    matchUp.sides?.map((side) => side.participantId).filter(Boolean).length === 2 ||
+    inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length === 2 ||
     (assignedDrawPositions?.length === 2 &&
       positionAssignments
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
