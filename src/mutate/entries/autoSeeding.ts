@@ -3,7 +3,7 @@ import { getEntriesAndSeedsCount } from '../../query/entries/getEntriesAndSeedsC
 import { getScaledEntries } from '../../query/event/getScaledEntries';
 
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { StageTypeUnion } from 'types/tournamentTypes';
+import { StageTypeUnion } from '../../types/tournamentTypes';
 
 type AutoSeedingParams = {
   sortDescending: boolean;
