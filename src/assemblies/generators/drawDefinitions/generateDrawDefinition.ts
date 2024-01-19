@@ -615,30 +615,35 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
           event,
         });
 
-        addAdHocMatchUps({
-          matchUps: result.matchUps,
-          tournamentRecord,
-          drawDefinition,
-          structureId,
-          event,
-        });
+        result?.matchUps?.length &&
+          addAdHocMatchUps({
+            suppressNotifications: true,
+            matchUps: result.matchUps,
+            tournamentRecord,
+            drawDefinition,
+            structureId,
+            event,
+          });
       } else {
         generateRange(1, params.roundsCount + 1).forEach(() => {
-          const { matchUps } = generateAdHocMatchUps({
+          const matchUps = generateAdHocMatchUps({
             newRound: true,
             drawDefinition,
             matchUpsCount,
             idPrefix,
             isMock,
             event,
-          });
-          addAdHocMatchUps({
-            tournamentRecord,
-            drawDefinition,
-            structureId,
-            matchUps,
-            event,
-          });
+          }).matchUps;
+
+          matchUps?.length &&
+            addAdHocMatchUps({
+              suppressNotifications: true,
+              tournamentRecord,
+              drawDefinition,
+              structureId,
+              matchUps,
+              event,
+            });
         });
       }
     }
