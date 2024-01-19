@@ -29,9 +29,9 @@ The structure of a **_policyDefinitions_** object is as follows:
 - [Scheduling Policy](../policies/scheduling): Defines average and rest/recovery times for matchUpFormats, categoryNames, and categoryTypes
 - [Round Robin Tally Policy](../policies/tallyPolicy): Configures calculations which determine participant finishing positions
 - [Feed Policy](../policies/feedPolicy): Determining the the patterns which direct participants into consolation feed rounds
-- Progression Policy: Configuration related to participant progression, e.g. automatic qualifier placement, double-exit effects
+- [Progression Policy](../policies/progressionPolicy): Configuration related to participant progression, e.g. automatic qualifier placement, double-exit effects
 - [Round Naming Policy](../policies/roundNaming): Specifies how rounds of draw structures should be named
-- Scoring Policy: Restricts available matchUpFormats, defines a default and conditions for "ready to score"
-- Voluntary Consolation Policy: Specifies `{ winsLimit, finishingRoundLimit }` for voluntary consolation eligibility
-- Competitive Bands: Determines thresholds for ROUTINE and COMPETITIVE matches in `getCompetitiveProfile`
-- Draws Policy: Configures either global or draw-type-specific `drawTypeCoercion`
+- [Scoring Policy](../policies/scoringPolicy): Restricts available matchUpFormats, defines a default and conditions for "ready to score"
+- [Voluntary Consolation Policy](../policies/consolationPolicy.md): Specifies `{ winsLimit, finishingRoundLimit }` for voluntary consolation eligibility
+- [Competitive Bands](../policies/competitiveBands): Determines thresholds for ROUTINE and COMPETITIVE matches in `getCompetitiveProfile`
+- [Draws Policy](/docs/policies/draws): Configures either global or draw-type-specific `drawTypeCoercion`
