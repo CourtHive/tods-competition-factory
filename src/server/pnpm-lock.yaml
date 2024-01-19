@@ -42,8 +42,8 @@ dependencies:
     specifier: ^7.8.1
     version: 7.8.1
   tods-competition-factory:
-    specifier: 2.0.2
-    version: 2.0.2
+    specifier: 2.0.3
+    version: 2.0.3
 
 devDependencies:
   '@nestjs/cli':
@@ -5732,8 +5732,8 @@ packages:
       is-number: 7.0.0
     dev: true
 
-  /tods-competition-factory@2.0.2:
-    resolution: {integrity: sha512-SPTi9nTnVxXEzDjypBcyjFFwuppXkR1KwwIY+9KpE5jmE2uusHw4GnWdNmgFmv2Bk899gI9lH07d+mZy9+EnKQ==}
+  /tods-competition-factory@2.0.3:
+    resolution: {integrity: sha512-7QMMsq77qQzidXFoSHej9bx0ajCR+G0/jobRfwyhF7cLO6DiSdH0C/FrAVNcxCMbALKi36hNINMxsBExuNY4lQ==}
     engines: {node: '>=18.17.1 < 21'}
     dev: false
 
