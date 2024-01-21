@@ -280,7 +280,6 @@ export function generateOrGetExisting(params: GenerateOrGetExisting): ResultType
     const seedsCount = drawType === LUCKY_DRAW ? 0 : ensureInt(params.seedsCount ?? 0);
 
     const structureResult = prepareStage({
-      ...drawTypeResult,
       ...params,
       qualifyingOnly: !drawSize || qualifyingOnly, // ooo!! If there is no drawSize then MAIN is not being generated
       appliedPolicies,
