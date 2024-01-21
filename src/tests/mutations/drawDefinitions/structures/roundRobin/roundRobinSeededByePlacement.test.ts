@@ -1,6 +1,6 @@
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
-import { unique } from '../../../../../tools/arrays';
+import { generateRange, unique } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_BYES from '../../../../../fixtures/policies/POLICY_SEEDING_BYES';
@@ -24,23 +24,15 @@ const scenario = [
     seedsCount: 4,
     drawSize: 64,
   },
-  {
-    policyDefinitions: POLICY_SEEDING_BYES,
-    participantsCount: 62,
-    expectedByesCount: 2,
-    seedsCount: 4,
-    drawSize: 64,
-  },
 ];
 
 it.each(scenario)('will place BYEs in RR Groups with seeds in seed order', (scenario) => {
-  const { expectedByesCount, policyDefinitions, participantsCount, seedsCount, drawSize } = scenario;
+  const { expectedByesCount, participantsCount, seedsCount, drawSize } = scenario;
   const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     tournamentName: 'Seed Order BYEs',
-    policyDefinitions,
     drawProfiles: [
       {
         participantsCount,
@@ -63,11 +55,7 @@ it.each(scenario)('will place BYEs in RR Groups with seeds in seed order', (scen
     structureId,
   });
   const assignedPositionsCount = positionAssignments.filter(({ participantId, bye }) => participantId || bye).length;
-  if (assignedPositionsCount !== drawSize) {
-    console.log({ drawSize, assignedPositionsCount });
-  } else {
-    expect(assignedPositionsCount).toEqual(drawSize);
-  }
+  expect(assignedPositionsCount).toEqual(drawSize);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
@@ -97,11 +85,17 @@ it.each(scenario)('will place BYEs in RR Groups with seeds in seed order', (scen
       .flat(),
   );
 
-  if (structureIdsWithByes.length !== expectedByesCount) {
-    console.log(seedNumbersWithByes);
-  } else {
-    expect(structureIdsWithByes.length).toEqual(expectedByesCount);
-  }
+  expect(structureIdsWithByes.length).toEqual(expectedByesCount);
+  expect(seedNumbersWithByes).toEqual(generateRange(1, drawSize - participantsCount + 1));
+
+  const byePositionAssignments = positionAssignments.filter(({ bye }) => bye).map(({ drawPosition }) => drawPosition);
+  const seededPositions = structure.seedAssignments
+    .map(({ participantId }) => participantId)
+    .map((participantId) => positionAssignments.find(({ participantId: pId }) => pId === participantId)?.drawPosition);
+
+  byePositionAssignments.forEach((byePosition, i) => {
+    expect(seededPositions[i] + 1).toEqual(byePosition);
+  });
 
   const allByeStructuresHaveSeeds = structureIdsWithByes.every((structureId) =>
     structureIdsWithSeeds.includes(structureId),
@@ -111,8 +105,6 @@ it.each(scenario)('will place BYEs in RR Groups with seeds in seed order', (scen
     expect(allByeStructuresHaveSeeds).toEqual(true);
     expect(seedNumbersWithByes).toEqual(scenario.seedNumbersWithByes);
     expect(seedNumbersWithByes.length).toEqual(expectedByesCount);
-  } else if (seedNumbersWithByes.length === expectedByesCount) {
-    console.log('seeds were randomly placed with BYEs');
   } else {
     expect(seedNumbersWithByes.length).not.toEqual(expectedByesCount);
   }
