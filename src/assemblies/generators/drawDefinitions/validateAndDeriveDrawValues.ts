@@ -10,6 +10,7 @@ import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '../../../const
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { DrawTypeUnion } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   AD_HOC,
@@ -23,10 +24,10 @@ import {
 export function validateAndDeriveDrawValues(params): ResultType & {
   policyDefinitions?: PolicyDefinitions;
   appliedPolicies?: PolicyDefinitions;
+  drawType?: DrawTypeUnion;
   enforceGender?: boolean;
   seedingProfile?: string;
   drawSize?: number;
-  drawType?: string;
 } {
   const stack = 'validateAndDeriveDrawValues';
   const { appliedPolicies, policyDefinitions } = getPolicies(params);
@@ -39,7 +40,7 @@ export function validateAndDeriveDrawValues(params): ResultType & {
   const drawSize = getDerivedDrawSize({ ...params, consideredEntries });
   const drawTypeResult = getDrawType({ ...params, appliedPolicies, policyDefinitions, drawSize });
   if (drawTypeResult.error) return decorateResult({ result: drawTypeResult, stack });
-  const drawType = drawTypeResult.drawType;
+  const drawType: DrawTypeUnion | undefined = drawTypeResult.drawType;
 
   if (isNaN(drawSize) && drawType !== AD_HOC) {
     return decorateResult({
@@ -50,7 +51,9 @@ export function validateAndDeriveDrawValues(params): ResultType & {
 
   const seedingPolicy = policyDefinitions?.[POLICY_TYPE_SEEDING] ?? appliedPolicies?.[POLICY_TYPE_SEEDING];
   const seedingProfile =
-    params.seedingProfile ?? seedingPolicy?.seedingProfile?.drawTypes?.[drawType] ?? seedingPolicy?.seedingProfile;
+    params.seedingProfile ??
+    seedingPolicy?.seedingProfile?.drawTypes?.[drawType ?? ''] ??
+    seedingPolicy?.seedingProfile;
 
   // extend policyDefinitions only if a seedingProfile was specified in params
   if (params.seedingProfile) {
@@ -68,7 +71,7 @@ export function validateAndDeriveDrawValues(params): ResultType & {
   return { drawSize, drawType, enforceGender, seedingProfile, appliedPolicies, policyDefinitions };
 }
 
-function getDrawType(params) {
+function getDrawType(params): ResultType & { drawType?: DrawTypeUnion } {
   const { policyDefinitions, appliedPolicies, enforceMinimumDrawSize = true, drawSize } = params;
   const drawTypeCoercion =
     params.drawTypeCoercion ??

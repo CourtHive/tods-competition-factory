@@ -463,6 +463,7 @@ export type GenerateDrawDefinitionArgs = {
   seedingProfile?: SeedingProfile;
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;
+  matchUpType?: EventTypeUnion;
   drawTypeCoercion?: boolean;
   ignoreStageSpace?: boolean;
   qualifyingProfiles?: any[];
@@ -472,7 +473,6 @@ export type GenerateDrawDefinitionArgs = {
   enforceGender?: boolean;
   processCodes?: string[];
   matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
   structureName?: string;
   tieFormatName?: string;
   tieFormat?: TieFormat;
