@@ -23,8 +23,6 @@ import {
 export function drawMatic(
   params: DrawMaticArgs,
 ): ResultType & { matchUps?: MatchUp[]; roundResults?: DrawMaticRoundResult[] } {
-  const { tournamentRecord, idPrefix, salted, event } = params;
-
   const paramsCheck = checkParams(params);
   if (paramsCheck?.error) return paramsCheck;
 
@@ -34,13 +32,13 @@ export function drawMatic(
   const structureResult = getStructure(params);
   if (structureResult.error) return structureResult;
 
-  const { adHocRatings } = getAdHocRatings(params);
+  const adHocRatings = getAdHocRatings(params);
 
   // TODO: update dynamic ratings based on matchUps present from last played round
   // use scaleEngine.generateDynamicRatings(); see dynamicCalculations.test.ts
 
-  const isMock = tournamentRecord?.isMock ?? params.isMock;
-  const eventType = params.eventType ?? event?.eventType;
+  const isMock = params.tournamentRecord?.isMock ?? params.isMock;
+  const eventType = params.eventType ?? params.event?.eventType;
   const matchUps: MatchUp[] = [];
   const roundResults: any = [];
   let roundNumber;
@@ -55,10 +53,7 @@ export function drawMatic(
       adHocRatings,
       roundNumber,
       eventType,
-      idPrefix,
-      salted,
       isMock,
-      event,
     });
     if (result.error) return result;
 
@@ -124,7 +119,7 @@ function getAdHocRatings(params) {
     if (scaleValue && !adHocRatings[participantId]) adHocRatings[participantId] = scaleValue;
   }
 
-  return { adHocRatings };
+  return adHocRatings;
 }
 
 function getStructure(params): ResultType & { structure?: Structure } {
@@ -208,4 +203,6 @@ function checkParams(params) {
   ) {
     return { error: INVALID_VALUES, info: 'Missing Entries' };
   }
+
+  return { error: undefined };
 }
