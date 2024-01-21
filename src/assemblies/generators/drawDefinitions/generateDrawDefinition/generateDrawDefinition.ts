@@ -1,40 +1,39 @@
-import { addVoluntaryConsolationStructure } from '../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { setMatchUpMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
-import { generateDrawTypeAndModifyDrawDefinition } from './generateDrawTypeAndModifyDrawDefinition';
-import { addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
-import { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { validateAndDeriveDrawValues } from './validateAndDeriveDrawValues';
-import { checkTieFormat } from '../../../mutate/tieFormat/checkTieFormat';
-import { generateQualifyingLink } from './links/generateQualifyingLink';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { generateAdHocMatchUps } from './generateAdHocMatchUps';
-import structureTemplate from '../templates/structureTemplate';
-import { mustBeAnArray } from '../../../tools/mustBeAnArray';
-import { constantToString } from '../../../tools/strings';
-import { generateRange } from '../../../tools/arrays';
-import { newDrawDefinition } from './newDrawDefinition';
-import { ensureInt } from '../../../tools/ensureInt';
-import { drawMatic } from './drawMatic/drawMatic';
+import { addVoluntaryConsolationStructure } from '../../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from '../generateDrawTypeAndModifyDrawDefinition';
+import { addDrawEntry } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { generateQualifyingStructures } from '../drawTypes/generateQualifyingStructures';
+import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
+import { getQualifiersCount } from '../../../../query/drawDefinition/getQualifiersCount';
+import { addAdHocMatchUps } from '../../../../mutate/structures/addAdHocMatchUps';
+import { getParticipants } from '../../../../query/participants/getParticipants';
+import { validateAndDeriveDrawValues } from '../validateAndDeriveDrawValues';
+import { getParticipantId } from '../../../../global/functions/extractors';
+import { generateQualifyingLink } from '../links/generateQualifyingLink';
+import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
+import structureTemplate from '../../templates/structureTemplate';
+import { mustBeAnArray } from '../../../../tools/mustBeAnArray';
+import { constantToString } from '../../../../tools/strings';
+import { generateRange } from '../../../../tools/arrays';
+import { newDrawDefinition } from '../newDrawDefinition';
+import { ensureInt } from '../../../../tools/ensureInt';
+import { drawMatic } from '../drawMatic/drawMatic';
 import { prepareStage } from './prepareStage';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
-} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+} from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
-import { AD_HOC, LUCKY_DRAW, MAIN, POSITION, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
-import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { DrawDefinition, DrawTypeUnion, Entry } from '../../../types/tournamentTypes';
-import { GenerateDrawDefinitionArgs } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { getDrawFormat } from './getDrawFormat';
+import { AD_HOC, LUCKY_DRAW, MAIN, POSITION, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
+import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';
+import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import POLICY_SEEDING_DEFAULT from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { DrawDefinition, DrawTypeUnion, Entry } from '../../../../types/tournamentTypes';
+import { checkFormatScopeEquivalence } from './checkFormatScopeEquivalence';
+import { GenerateDrawDefinitionArgs } from '../../../../types/factoryTypes';
+import { SUCCESS } from '../../../../constants/resultConstants';
+import { getDrawFormat } from '../getDrawFormat';
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
   existingDrawDefinition?: boolean;
@@ -103,39 +102,15 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       processCodes: params.processCodes,
     });
 
-  // if there is a defined matchUpFormat/tieFormat only attach to drawDefinition...
-  // ...when there is not an equivalent definition on the parent event
-  if (matchUpFormat || tieFormat) {
-    const equivalentInScope =
-      (matchUpFormat && event?.matchUpFormat === matchUpFormat) ||
-      (event?.tieFormat && tieFormat && JSON.stringify(event.tieFormat) === JSON.stringify(tieFormat));
-
-    // if an equivalent matchUpFormat or tieFormat is attached to the event
-    // there is no need to attach to the drawDefinition
-    if (!equivalentInScope) {
-      if (tieFormat) {
-        const result = checkTieFormat({ tieFormat });
-        if (result.error) return decorateResult({ result, stack });
-
-        drawDefinition.tieFormat = result.tieFormat ?? tieFormat;
-      } else if (matchUpFormat) {
-        const result = setMatchUpMatchUpFormat({
-          tournamentRecord,
-          drawDefinition,
-          matchUpFormat,
-          event,
-        });
-        if (result.error) {
-          return {
-            error: result.error,
-            info: 'matchUpFormat or tieFormat error',
-          };
-        }
-      }
-
-      if (matchUpType) drawDefinition.matchUpType = matchUpType;
-    }
-  }
+  const equivalenceResult = checkFormatScopeEquivalence({
+    tournamentRecord,
+    drawDefinition,
+    matchUpFormat,
+    matchUpType,
+    tieFormat,
+    event,
+  });
+  if (equivalenceResult.error) return decorateResult({ result: equivalenceResult, stack });
 
   // ---------------------------------------------------------------------------
   // Attach policies to the drawDefinition

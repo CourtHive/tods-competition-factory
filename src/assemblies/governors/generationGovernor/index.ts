@@ -5,7 +5,7 @@ export { generateQualifyingStructure } from '../../../assemblies/generators/draw
 export { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 export { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 export { generateSeedingScaleItems } from '../../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
-export { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
+export { generateDrawDefinition } from '../../generators/drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 export { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 export { generateFlightProfile } from '../../../assemblies/generators/drawDefinitions/generateFlightProfile';
 export { roundRobinGroups } from '../../generators/drawDefinitions/drawTypes/roundRobin/roundRobinGroups';

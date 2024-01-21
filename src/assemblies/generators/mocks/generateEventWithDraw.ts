@@ -4,7 +4,7 @@ import { checkRequiredParameters } from '../../../parameters/checkRequiredParame
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
-import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
+import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
 import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';

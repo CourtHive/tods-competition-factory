@@ -2,7 +2,7 @@ import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/aut
 import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
-import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition';
+import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { addExtension } from '../../../mutate/extensions/addExtension';
