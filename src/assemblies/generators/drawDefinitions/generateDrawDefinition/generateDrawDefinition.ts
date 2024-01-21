@@ -79,13 +79,10 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
   const { existingDrawDefinition, positioningReports, drawDefinition, structureId, conflicts, entries } = genResult;
   if (!drawDefinition) return decorateResult({ result: { error: INVALID_VALUES }, stack });
 
-  const qualifyingConflicts: any[] = [];
-
   // generate qualifying structures
   const qGenResult = qualifyingGeneration({
-    qualifyingOnly: params.qualifyingOnly,
+    ...params,
     existingDrawDefinition,
-    qualifyingConflicts,
     positioningReports,
     appliedPolicies,
     drawDefinition,
@@ -97,6 +94,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
     stack,
   });
   if (qGenResult.error) return qGenResult;
+  const { qualifyingConflicts } = qGenResult;
 
   drawDefinition.drawName = params.drawName ?? (drawType && constantToString(drawType));
 

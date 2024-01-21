@@ -8,24 +8,25 @@ import { prepareStage } from './prepareStage';
 import { POSITION, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 
-export function qualifyingGeneration({
-  existingDrawDefinition,
-  qualifyingConflicts,
-  positioningReports,
-  appliedPolicies,
-  qualifyingOnly,
-  drawDefinition,
-  seedingProfile,
-  participants,
-  structureId,
-  entries,
-  params, // do away with this
-  stack,
-}): ResultType {
-  const { qualifyingPlaceholder, qualifyingProfiles } = params;
+export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
+  const {
+    qualifyingPlaceholder,
+    qualifyingProfiles,
+    existingDrawDefinition,
+    positioningReports,
+    appliedPolicies,
+    qualifyingOnly,
+    drawDefinition,
+    seedingProfile,
+    participants,
+    structureId,
+    entries,
+    stack,
+  } = params;
 
   // generate qualifying structures
   const generateQualifyingPlaceholder = qualifyingPlaceholder && !qualifyingProfiles?.length && !existingDrawDefinition;
+  const qualifyingConflicts: any[] = [];
 
   if (qualifyingProfiles) {
     const sequenceSort = (a, b) => a.stageSequence - b.stageSequence;
@@ -122,5 +123,5 @@ export function qualifyingGeneration({
   }
 
   // complete qualifying generation
-  return { error: undefined };
+  return { qualifyingConflicts, error: undefined };
 }
