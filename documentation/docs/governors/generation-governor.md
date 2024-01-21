@@ -26,14 +26,15 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.
   generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
   participantIds, // optional array of [participantId] to restrict enteredParticipantIds which appear in generated round
   maxIterations, // optional - defaults to 5000; can be used to set a limit on processing overhead
-  roundsCount, // optional - number of rounds to generate; limited to 1 - drawSize unless { enableDoubleRobin: true }
   structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
   matchUpIds, // optional array of uuids to be used when generating matchUps
   eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
-  drawId, // required
 
   scaleAccessor, // optional - string to access value within scaleValue, e.g. 'wtnRating'
   scaleName, // optional - custom rating name to seed dynamic ratings
+
+  roundsCount, // REQUIRED - number of rounds to generate; limited to (1 - drawSize) unless { enableDoubleRobin: true }
+  drawId, // REQUIRED - drawId for which matchUps will be generated
 });
 ```
 
