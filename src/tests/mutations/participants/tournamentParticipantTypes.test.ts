@@ -1,11 +1,11 @@
 import { getParticipantId } from '../../../global/functions/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
+import { generateRange } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { DOUBLES } from '../../../constants/eventConstants';
 import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
+import { DOUBLES } from '../../../constants/eventConstants';
 
 it('can generate TEAMs from attributes', () => {
   let result = mocksEngine.generateTournamentRecord({
