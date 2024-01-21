@@ -19,7 +19,7 @@ export function qualifyingGeneration({
   participants,
   structureId,
   entries,
-  params,
+  params, // do away with this
   stack,
 }): ResultType {
   const { qualifyingPlaceholder, qualifyingProfiles } = params;
