@@ -1,22 +1,19 @@
-import { initializeStructureSeedAssignments } from '../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
-import { assignSeed } from '../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { getValidSeedBlocks } from '../../../query/drawDefinition/seedGetter';
-import { getScaledEntries } from '../../../query/event/getScaledEntries';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { getDrawStructures } from '../../../acquire/findStructure';
-import { findExtension } from '../../../acquire/findExtension';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
+import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
+import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
+import { getScaledEntries } from '../../../../query/event/getScaledEntries';
+import { getParticipantId } from '../../../../global/functions/extractors';
+import { getDrawStructures } from '../../../../acquire/findStructure';
+import { findExtension } from '../../../../acquire/findExtension';
+import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
 
-import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { Entry, PositionAssignment } from '../../../types/tournamentTypes';
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { AD_HOC, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { RANKING, SEEDING } from '../../../constants/scaleConstants';
-import { ROUND_TARGET } from '../../../constants/extensionConstants';
+import { STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { Entry, PositionAssignment } from '../../../../types/tournamentTypes';
+import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
+import { AD_HOC, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { RANKING, SEEDING } from '../../../../constants/scaleConstants';
+import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 
 export function prepareStage(params): ResultType & {
   positionAssignments?: PositionAssignment[];
@@ -66,9 +63,7 @@ export function prepareStage(params): ResultType & {
 
     return (
       (!entry.entryStage || entry.entryStage === stage) &&
-      (!stageSequence ||
-        !entry.entryStageSequence ||
-        entry.entryStageSequence === stageSequence) &&
+      (!stageSequence || !entry.entryStageSequence || entry.entryStageSequence === stageSequence) &&
       (!roundTarget || !entryRoundTarget || entryRoundTarget === roundTarget) &&
       DIRECT_ENTRY_STATUSES.includes(entry.entryStatus)
     );
@@ -86,11 +81,8 @@ export function prepareStage(params): ResultType & {
   });
   const multipleStructures = (structures?.length || 0) > 1;
 
-  const structure = structures?.find(
-    ({ structureId }) => !preparedStructureIds.includes(structureId)
-  );
-  if (!structure)
-    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
+  const structure = structures?.find(({ structureId }) => !preparedStructureIds.includes(structureId));
+  if (!structure) return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
   const structureId = structure?.structureId;
 
   const seedBlockInfo = structure
@@ -119,13 +111,10 @@ export function prepareStage(params): ResultType & {
 
   if (seededParticipants) {
     seededParticipants
-      .filter(({ participantId }) =>
-        enteredParticipantIds.includes(participantId)
-      )
+      .filter(({ participantId }) => enteredParticipantIds.includes(participantId))
       .filter(
         (seededParticipant) =>
-          !seededParticipant.seedNumber ||
-          seededParticipant.seedNumber <= seededParticipants.length
+          !seededParticipant.seedNumber || seededParticipant.seedNumber <= seededParticipants.length,
       )
       .sort((a, b) => {
         if (a.seedNumber < b.seedNumber) return -1;
@@ -154,8 +143,7 @@ export function prepareStage(params): ResultType & {
 
     const seedingScaleAttributes = {
       scaleType: SEEDING,
-      scaleName:
-        seedingScaleName || categoryName || ageCategoryCode || event.eventId,
+      scaleName: seedingScaleName || categoryName || ageCategoryCode || event.eventId,
       eventType,
     };
 
@@ -187,15 +175,12 @@ export function prepareStage(params): ResultType & {
     if (scaledEntriesCount < seedsCount) seedsCount = scaledEntriesCount;
 
     scaledEntries
-      ?.filter(({ participantId }) =>
-        enteredParticipantIds.includes(participantId)
-      )
+      ?.filter(({ participantId }) => enteredParticipantIds.includes(participantId))
       .slice(0, assignSeedsCount || seedsCount)
       .forEach((scaledEntry, index) => {
         const seedNumber = index + 1;
         const { participantId, scaleValue } = scaledEntry;
-        const seedValue =
-          seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
+        const seedValue = seedAssignmentProfile?.[seedNumber] || scaleValue || seedNumber;
         assignSeed({
           provisionalPositioning,
           tournamentRecord,
@@ -214,11 +199,7 @@ export function prepareStage(params): ResultType & {
   let positionAssignments;
   let positioningReport;
 
-  if (
-    automated !== false &&
-    drawType !== AD_HOC &&
-    !(qualifyingOnly && stage !== QUALIFYING)
-  ) {
+  if (automated !== false && drawType !== AD_HOC && !(qualifyingOnly && stage !== QUALIFYING)) {
     const seedsOnly = typeof automated === 'object' && automated.seedsOnly;
     // if { seedsOnly: true } then only seeds and an Byes releated to seeded positions are placed
     const result = automatedPositioning({

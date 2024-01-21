@@ -4,6 +4,6 @@ export { generateVoluntaryConsolation } from '../../../assemblies/generators/dra
 export { generateQualifyingStructure } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 export { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 export { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
-export { generateDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawDefinition';
+export { generateDrawDefinition } from '../../generators/drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 export { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
 export { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';

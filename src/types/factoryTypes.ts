@@ -23,8 +23,8 @@ import {
   MatchUpStatusUnion,
   DrawTypeUnion,
   TieFormat,
+  Structure,
 } from './tournamentTypes';
-import { DrawMaticArgs } from '../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
 
 export type FactoryEngine = {
   [key: string]: any;
@@ -463,6 +463,7 @@ export type GenerateDrawDefinitionArgs = {
   seedingProfile?: SeedingProfile;
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;
+  matchUpType?: EventTypeUnion;
   drawTypeCoercion?: boolean;
   ignoreStageSpace?: boolean;
   qualifyingProfiles?: any[];
@@ -472,7 +473,6 @@ export type GenerateDrawDefinitionArgs = {
   enforceGender?: boolean;
   processCodes?: string[];
   matchUpFormat?: string;
-  matchUpType?: EventTypeUnion;
   structureName?: string;
   tieFormatName?: string;
   tieFormat?: TieFormat;
@@ -487,4 +487,29 @@ export type GenerateDrawDefinitionArgs = {
   uuids?: string[];
   drawId?: string;
   event: Event;
+};
+
+export type DrawMaticArgs = {
+  adHocRatings?: { [key: string]: number };
+  restrictEntryStatus?: boolean;
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  enableDoubleRobin?: boolean;
+  generateMatchUps?: boolean;
+  eventType?: EventTypeUnion;
+  salted?: number | boolean;
+  participantIds?: string[];
+  encounterValue?: number;
+  sameTeamValue?: number;
+  maxIterations?: number;
+  matchUpIds?: string[];
+  structure?: Structure;
+  roundsCount?: number;
+  structureId?: string;
+  idPrefix?: string;
+  isMock?: boolean;
+  event: Event;
+
+  scaleAccessor?: string;
+  scaleName?: string; // custom rating name to seed dynamic ratings
 };

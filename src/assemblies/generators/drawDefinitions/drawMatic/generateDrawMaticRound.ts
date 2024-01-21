@@ -5,10 +5,8 @@ import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
 
-import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event } from '../../../../types/tournamentTypes';
 import { ResultType } from '../../../../global/functions/decorateResult';
 import { TEAM } from '../../../../constants/participantConstants';
-import { HydratedParticipant } from '../../../../types/hydrated';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -17,6 +15,14 @@ import {
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
 } from '../../../../constants/errorConditionConstants';
+import {
+  DrawDefinition,
+  MatchUp,
+  Structure,
+  EventTypeUnion,
+  Event,
+  Tournament,
+} from '../../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;
@@ -25,11 +31,12 @@ const SAME_TEAM_VALUE = 100;
 const MAX_ITERATIONS = 4000;
 
 type GenerateDrawMaticRoundArgs = {
-  tournamentParticipants?: HydratedParticipant[];
   adHocRatings?: { [key: string]: number };
   ignoreLastRoundNumber?: boolean;
   restrictEntryStatus?: boolean;
+  iterationMatchUps?: MatchUp[];
   drawDefinition: DrawDefinition;
+  tournamentRecord: Tournament;
   generateMatchUps?: boolean;
   eventType?: EventTypeUnion;
   salted?: number | boolean;
@@ -64,8 +71,9 @@ export function generateDrawMaticRound({
   sameTeamValue = SAME_TEAM_VALUE,
   maxIterations = MAX_ITERATIONS,
   generateMatchUps = true,
-  tournamentParticipants,
   ignoreLastRoundNumber,
+  iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
+  tournamentRecord,
   participantIds,
   drawDefinition,
   adHocRatings,
@@ -92,32 +100,17 @@ export function generateDrawMaticRound({
   }
 
   // create valueObject for each previous encounter within the structure
-  const { encounters } = getEncounters({ matchUps: structure?.matchUps ?? [] });
-  // valueObjects provide "weighting" to each possible pairing of participants
-  // {
-  //  'P-I-0|P-I-1': 1,
-  //  'P-I-0|P-I-2': 1,
-  //  'P-I-0|P-I-3': 1
-  // }
+  const consideredMatchUps = [...(iterationMatchUps ?? []), ...(structure?.matchUps ?? [])];
+  const { encounters } = getEncounters({ matchUps: consideredMatchUps });
 
-  const valueObjects: any = {};
-  for (const pairing of encounters) {
-    if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-    valueObjects[pairing] += encounterValue;
-  }
+  const tournamentParticipants = tournamentRecord?.participants ?? [];
 
-  const teamParticipants = tournamentParticipants?.filter(({ participantType }) => participantType === TEAM);
-  if (teamParticipants) {
-    // add SAME_TEAM_VALUE for participants who appear on the same team
-    for (const teamParticipant of teamParticipants) {
-      const participantIds = teamParticipant.individualParticipantIds ?? [];
-      const { uniquePairings } = getPairingsData({ participantIds });
-      for (const pairing of uniquePairings) {
-        if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-        valueObjects[pairing] += sameTeamValue;
-      }
-    }
-  }
+  const { valueObjects } = getValueObjects({
+    tournamentParticipants,
+    encounterValue,
+    sameTeamValue,
+    encounters,
+  });
 
   // deltaObjects contain the difference in ratings between two participants
   // {
@@ -182,4 +175,34 @@ export function generateDrawMaticRound({
     maxDelta,
     maxDiff,
   };
+}
+
+function getValueObjects({ encounters, tournamentParticipants, encounterValue, sameTeamValue }) {
+  // valueObjects provide "weighting" to each possible pairing of participants
+  // {
+  //  'P-I-0|P-I-1': 1,
+  //  'P-I-0|P-I-2': 1,
+  //  'P-I-0|P-I-3': 1
+  // }
+
+  const valueObjects: any = {};
+  for (const pairing of encounters) {
+    if (!valueObjects[pairing]) valueObjects[pairing] = 0;
+    valueObjects[pairing] += encounterValue;
+  }
+
+  const teamParticipants = tournamentParticipants?.filter(({ participantType }) => participantType === TEAM);
+  if (teamParticipants) {
+    // add SAME_TEAM_VALUE for participants who appear on the same team
+    for (const teamParticipant of teamParticipants) {
+      const participantIds = teamParticipant.individualParticipantIds ?? [];
+      const { uniquePairings } = getPairingsData({ participantIds });
+      for (const pairing of uniquePairings) {
+        if (!valueObjects[pairing]) valueObjects[pairing] = 0;
+        valueObjects[pairing] += sameTeamValue;
+      }
+    }
+  }
+
+  return { valueObjects };
 }
