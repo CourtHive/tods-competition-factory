@@ -5,5 +5,6 @@ export { generateQualifyingStructure } from '../../../assemblies/generators/draw
 export { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
 export { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 export { generateDrawDefinition } from '../../generators/drawDefinitions/generateDrawDefinition/generateDrawDefinition';
-export { generateAdHocMatchUps } from '../../../assemblies/generators/drawDefinitions/generateAdHocMatchUps';
+export { generateAdHocMatchUps } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocMatchUps';
+export { generateAdHocRounds } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocRounds';
 export { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';

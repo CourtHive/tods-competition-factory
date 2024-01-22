@@ -1,11 +1,11 @@
 import { addAdHocMatchUps } from '../../../../mutate/structures/addAdHocMatchUps';
+import { generateAdHocRounds } from '../drawTypes/adHoc/generateAdHocRounds';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
-import { generateRange } from '../../../../tools/arrays';
 import { drawMatic } from '../drawMatic/drawMatic';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 export function generateAdHoc(params) {
   const { tournamentRecord, drawDefinition, structureId, idPrefix, isMock, event } = params;
@@ -18,29 +18,30 @@ export function generateAdHoc(params) {
   const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
 
   if (params.automated) {
-    automateAdHoc({ ...params, participantIds });
+    return automateAdHoc({ ...params, participantIds });
   } else {
-    generateRange(1, params.roundsCount + 1).forEach(() => {
-      const matchUps = generateAdHocMatchUps({
-        newRound: true,
-        drawDefinition,
-        matchUpsCount,
-        idPrefix,
-        isMock,
-        event,
-      }).matchUps;
-
-      matchUps?.length &&
-        addAdHocMatchUps({
-          suppressNotifications: true,
-          tournamentRecord,
-          drawDefinition,
-          structureId,
-          matchUps,
-          event,
-        });
+    const genResult = generateAdHocRounds({
+      roundsCount: params.roundsCount,
+      drawDefinition,
+      matchUpsCount,
+      idPrefix,
+      isMock,
+      event,
     });
+    if (genResult.error) return genResult;
+    if (genResult.matchUps?.length) {
+      addAdHocMatchUps({
+        matchUps: genResult.matchUps,
+        suppressNotifications: true,
+        tournamentRecord,
+        drawDefinition,
+        structureId,
+        event,
+      });
+    }
   }
+
+  return { ...SUCCESS };
 }
 
 function automateAdHoc(params) {
@@ -57,6 +58,7 @@ function automateAdHoc(params) {
     matchUpIds,
     scaleName, // custom rating name to seed dynamic ratings
   });
+  if (result.error) return result;
 
   result?.matchUps?.length &&
     addAdHocMatchUps({
@@ -67,4 +69,6 @@ function automateAdHoc(params) {
       event: params.event,
       structureId,
     });
+
+  return { ...SUCCESS };
 }

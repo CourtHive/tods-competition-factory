@@ -1,11 +1,8 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../../engines/syncEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
 
 it('can complete FMLC consolation with BYE before main', () => {
   const winningSide = 1;
@@ -45,14 +42,11 @@ it('can complete FMLC consolation with BYE before main', () => {
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.links.length).toEqual(2);
 
-  const { completedMatchUps, upcomingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { completedMatchUps, upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(15);
   expect(upcomingMatchUps.length).toEqual(4);
 
-  const matchUpIds = upcomingMatchUps
-    .filter((matchUp) => matchUp.stage === MAIN)
-    .map(({ matchUpId }) => matchUpId);
+  const matchUpIds = upcomingMatchUps.filter((matchUp) => matchUp.stage === MAIN).map(({ matchUpId }) => matchUpId);
 
   const result = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 2 },

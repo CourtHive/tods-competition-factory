@@ -1,18 +1,18 @@
-import { getParticipantId } from '../../../global/functions/extractors';
-import { generateRange, unique } from '../../../tools/arrays';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { getParticipantId } from '../../../../global/functions/extractors';
+import { generateRange, unique } from '../../../../tools/arrays';
+import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
+import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
+import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
 import {
   EXISTING_MATCHUP_ID,
   INVALID_VALUES,
   MISSING_PARTICIPANT_IDS,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../constants/errorConditionConstants';
 
 const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 
@@ -28,7 +28,6 @@ it.each(scenarios)('can generate AD_HOC with arbitrary drawSizes', (scenario) =>
   const { drawSize, eventType } = scenario;
 
   const {
-    tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     participantsProfile: { idPrefix: 'P' },
@@ -41,9 +40,8 @@ it.each(scenarios)('can generate AD_HOC with arbitrary drawSizes', (scenario) =>
         drawSize,
       },
     ],
+    setState: true,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   expect(matchUps.length).toEqual(Math.floor(drawSize / 2));
@@ -256,4 +254,23 @@ test.each(drawMaticScenarios)('drawMatic can generate multiple rounds', (scenari
   } else if (scenario.expectation.error) {
     expect(result.error).toEqual(scenario.expectation.error);
   }
+});
+
+it('can generate { automated: false } AD_HOC with arbitrary roundsCount', () => {
+  const roundsCount = 3;
+  const drawSize = 16;
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: AD_HOC,
+        automated: false,
+        roundsCount,
+        drawSize,
+      },
+    ],
+    setState: true,
+  });
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(roundsCount * (drawSize / 2));
 });

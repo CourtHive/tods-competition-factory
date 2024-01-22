@@ -1,22 +1,15 @@
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import { verifyStructure } from '../primitives/verifyStructure';
-import { verifyMatchUps } from '../primitives/verifyMatchUps';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { verifyStructure } from '../../primitives/verifyStructure';
+import { verifyMatchUps } from '../../primitives/verifyMatchUps';
+import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
+import tournamentEngine from '../../../../engines/syncEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
-import {
-  getOrderedDrawPositionPairs,
-  replaceWithBye,
-} from '../testingUtilities';
+import { getOrderedDrawPositionPairs, replaceWithBye } from '../../testingUtilities';
 
-import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '../../../../../constants/policyConstants';
+import { SINGLES } from '../../../../../constants/eventConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -27,13 +20,12 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 17;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      policyDefinitions,
-      participantsCount,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    policyDefinitions,
+    participantsCount,
+    seedsCount,
+    drawSize,
+  });
 
   verifyStructure({
     expectedSeedValuesWithBye: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -87,13 +79,12 @@ it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 1
   const seedsCount = 8;
   const participantsCount = 18;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      participantsCount,
-      policyDefinitions,
-      seedsCount,
-      drawSize,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    participantsCount,
+    policyDefinitions,
+    seedsCount,
+    drawSize,
+  });
 
   verifyStructure({
     expectedSeedValuesWithBye: [1, 2, 3, 4, 5, 6, 7, 8],
@@ -261,10 +252,7 @@ it('can remove 2nd round MAIN draw result when no participant went to consolatio
   // target specific matchUp
   let targetMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 2 &&
-      roundPosition === 2 &&
-      stage === MAIN &&
-      stageSequence === 1
+      roundNumber === 2 && roundPosition === 2 && stage === MAIN && stageSequence === 1,
   );
   const { matchUpId, score, winningSide } = targetMatchUp;
   expect(score.scoreStringSide1).toEqual('6-2 6-2');
@@ -348,25 +336,15 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     drawId,
   });
   expect(orderedPairs).toEqual([[2, 3], [1]]);
-  expect(
-    positionAssignments.map(({ participantId }) => !!participantId)
-  ).toEqual([false, false, true]);
+  expect(positionAssignments.map(({ participantId }) => !!participantId)).toEqual([false, false, true]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
-  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
-    false,
-    true,
-    false,
-  ]);
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([false, true, false]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
-  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
-    true,
-    true,
-    false,
-  ]);
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([true, true, false]);
   // printGlobalLog(true);
 });
 
@@ -402,11 +380,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
-  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
-    false,
-    true,
-    false,
-  ]);
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([false, true, false]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
@@ -427,11 +401,7 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   expect(result.success).toEqual(true);
 
   ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
-  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([
-    true,
-    true,
-    false,
-  ]);
+  expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([true, true, false]);
 
   // printGlobalLog(true);
 });
