@@ -6,6 +6,7 @@ import { generateAddress } from '../mocks/generateAddress';
 import { nameMocks } from '../mocks/nameMocks';
 import { UUID } from '../../../tools/UUID';
 
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -15,7 +16,6 @@ import {
   PERSON_REQUESTS,
   SCHEDULING_PROFILE,
 } from '../../../constants/extensionConstants';
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 
 export function anonymizeTournamentRecord({
   keepExtensions = [], // e.g. ['level']
@@ -53,6 +53,7 @@ export function anonymizeTournamentRecord({
 
   tournamentRecord.createdAt = new Date().toISOString();
   tournamentRecord.tournamentName = tournamentName || `Anonymized: ${formatDate(new Date())}`;
+  tournamentRecord.isMock = true;
 
   delete tournamentRecord.parentOrganisation;
 
@@ -78,6 +79,7 @@ export function anonymizeTournamentRecord({
     venue.venueAbbreviation = `V${venueIndex}`;
     const newVenueId = UUID();
     idMap[venue.venueId] = newVenueId;
+    venue.isMock = true;
     venueIndex += 1;
     // venue.eventId = UUID(); eventIds can't be anonymized without updating schedulingProfiles
   }
@@ -85,6 +87,7 @@ export function anonymizeTournamentRecord({
   let eventCount = 1;
   for (const event of tournamentRecord.events || []) {
     event.extensions = filterExtensions(event);
+    event.isMock = true;
 
     const newEventId = UUID();
     idMap[event.eventId] = newEventId;
@@ -105,6 +108,7 @@ export function anonymizeTournamentRecord({
       const newDrawId = UUID();
       idMap[drawDefinition.drawId] = newDrawId;
       drawDefinition.drawId = newDrawId;
+      drawDefinition.isMock = true;
 
       // update all drawDefinition entries
       if (Array.isArray(drawDefinition.entries)) {
@@ -131,6 +135,8 @@ export function anonymizeTournamentRecord({
 
         // update lineUps in each matchUp
         for (const matchUp of structure.matchUps || []) {
+          matchUp.isMock = true;
+
           for (const side of matchUp.sides || []) {
             if (!side.lineUp) continue;
             side.lineUp = side.lineUp.map(({ participantId, collectionAssignments }) => ({
