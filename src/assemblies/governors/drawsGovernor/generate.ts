@@ -6,4 +6,5 @@ export { generateDrawStructuresAndLinks } from '../../../assemblies/generators/d
 export { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
 export { generateDrawDefinition } from '../../generators/drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 export { generateAdHocMatchUps } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocMatchUps';
+export { generateAdHocRounds } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocRounds';
 export { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
