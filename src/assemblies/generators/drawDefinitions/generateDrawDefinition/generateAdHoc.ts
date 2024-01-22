@@ -8,7 +8,7 @@ import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusCo
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 
 export function generateAdHoc(params) {
-  const { tournamentRecord, drawDefinition, matchUpType, structureId, idPrefix, isMock, event } = params;
+  const { tournamentRecord, drawDefinition, structureId, idPrefix, isMock, event } = params;
 
   const entries = event?.entries?.filter(
     ({ entryStage, entryStatus }) =>
@@ -18,33 +18,7 @@ export function generateAdHoc(params) {
   const matchUpsCount = entries ? Math.floor(entries.length / 2) : 0;
 
   if (params.automated) {
-    const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
-
-    const result = drawMatic({
-      eventType: params.drawMatic?.eventType ?? matchUpType,
-      generateMatchUps: generateMatchUps ?? true,
-      roundsCount: params.roundsCount,
-      restrictEntryStatus,
-      tournamentRecord,
-      participantIds,
-      drawDefinition,
-      structureId,
-      matchUpIds,
-      scaleName, // custom rating name to seed dynamic ratings
-      idPrefix,
-      isMock,
-      event,
-    });
-
-    result?.matchUps?.length &&
-      addAdHocMatchUps({
-        suppressNotifications: true,
-        matchUps: result.matchUps,
-        tournamentRecord,
-        drawDefinition,
-        structureId,
-        event,
-      });
+    automateAdHoc({ ...params, participantIds });
   } else {
     generateRange(1, params.roundsCount + 1).forEach(() => {
       const matchUps = generateAdHocMatchUps({
@@ -67,4 +41,30 @@ export function generateAdHoc(params) {
         });
     });
   }
+}
+
+function automateAdHoc(params) {
+  const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
+
+  const result = drawMatic({
+    ...params,
+    eventType: params.drawMatic?.eventType ?? params.matchUpType,
+    generateMatchUps: generateMatchUps ?? true,
+    participantIds: params.participantIds,
+    roundsCount: params.roundsCount,
+    restrictEntryStatus,
+    structureId,
+    matchUpIds,
+    scaleName, // custom rating name to seed dynamic ratings
+  });
+
+  result?.matchUps?.length &&
+    addAdHocMatchUps({
+      tournamentRecord: params.tournamentRecord,
+      drawDefinition: params.drawDefinition,
+      suppressNotifications: true,
+      matchUps: result.matchUps,
+      event: params.event,
+      structureId,
+    });
 }

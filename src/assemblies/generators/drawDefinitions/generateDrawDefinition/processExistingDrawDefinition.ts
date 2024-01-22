@@ -8,8 +8,12 @@ import {
 } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { ResultType } from '../../../../global/functions/decorateResult';
 
-export function processExistingDrawDefinition(params) {
+export function processExistingDrawDefinition(params): ResultType & {
+  structureId?: string;
+  drawDefinition?: any;
+} {
   const drawDefinition = params.drawDefinition;
   const { existingQualifyingPlaceholderStructureId, drawEntries, appliedPolicies, structureId, idPrefix, isMock } =
     params;
@@ -73,6 +77,14 @@ export function processExistingDrawDefinition(params) {
   });
   if (result.error) return result;
 
+  addEntries({ drawDefinition, drawEntries });
+  const qResult = processQualifyingDetails({ mainStructure, qualifyingDetails, drawDefinition });
+  if (qResult.error) return qResult;
+
+  return { drawDefinition, structureId };
+}
+
+function addEntries({ drawDefinition, drawEntries }) {
   for (const entry of (drawEntries ?? []).filter(({ entryStage }) => entryStage === QUALIFYING)) {
     const entryData = {
       ...entry,
@@ -82,7 +94,9 @@ export function processExistingDrawDefinition(params) {
     // ignore errors (EXITING_PARTICIPANT)
     addDrawEntry(entryData);
   }
+}
 
+function processQualifyingDetails({ mainStructure, qualifyingDetails, drawDefinition }): ResultType {
   for (const qualifyingDetail of qualifyingDetails || []) {
     const {
       finalQualifyingRoundNumber: qualifyingRoundNumber,
@@ -110,5 +124,5 @@ export function processExistingDrawDefinition(params) {
     }
   }
 
-  return { drawDefinition, structureId };
+  return { error: undefined };
 }

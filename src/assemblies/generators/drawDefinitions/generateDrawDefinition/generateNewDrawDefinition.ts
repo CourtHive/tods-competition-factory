@@ -11,8 +11,8 @@ import { DrawDefinition } from '../../../../types/tournamentTypes';
 export function generateNewDrawDefinition(params): ResultType & {
   drawDefinition?: DrawDefinition;
   positioningReports?: any[];
-  conflicts?: any[];
   structureId?: string;
+  conflicts?: any[];
 } {
   const drawTypeResult = generateDrawTypeAndModifyDrawDefinition({
     ...params,
@@ -37,25 +37,8 @@ export function generateNewDrawDefinition(params): ResultType & {
   const positioningReports: any[] = [];
   let conflicts: any[] = [];
 
-  // add all entries to the draw
-  for (const entry of entries) {
-    // if drawEntries and entryStage !== stage ignore
-    if (params.drawEntries && entry.entryStage && entry.entryStage !== MAIN) continue;
-
-    const entryData = {
-      ...entry,
-      ignoreStageSpace: ignoreStageSpace ?? drawType === AD_HOC,
-      entryStage: entry.entryStage ?? MAIN,
-      drawDefinition,
-      drawType,
-    };
-    const result = addDrawEntry(entryData);
-    if (drawEntries && result.error) {
-      // only report errors with drawEntries
-      // if entries are taken from event.entries assume stageSpace is not available
-      return result;
-    }
-  }
+  const addResult = addEntries({ ignoreStageSpace, drawDefinition, drawEntries, drawType, entries });
+  if (addResult.error) return addResult;
 
   // temporary until seeding is supported in LUCKY_DRAW
   const seedsCount = drawType === LUCKY_DRAW ? 0 : ensureInt(params.seedsCount ?? 0);
@@ -74,10 +57,7 @@ export function generateNewDrawDefinition(params): ResultType & {
     entries,
   });
 
-  if (structureResult.error && !structureResult.conflicts) {
-    return structureResult;
-  }
-
+  if (structureResult.error && !structureResult.conflicts) return structureResult;
   if (structureResult.positioningReport?.length) positioningReports.push({ [MAIN]: structureResult.positioningReport });
 
   const structureId = structureResult.structureId;
@@ -88,4 +68,29 @@ export function generateNewDrawDefinition(params): ResultType & {
   }
 
   return { drawDefinition, positioningReports, conflicts, structureId };
+}
+
+function addEntries(params) {
+  const { ignoreStageSpace, drawDefinition, drawEntries, drawType, entries } = params;
+  // add all entries to the draw
+  for (const entry of entries) {
+    // if drawEntries and entryStage !== stage ignore
+    if (drawEntries && entry.entryStage && entry.entryStage !== MAIN) continue;
+
+    const entryData = {
+      ...entry,
+      ignoreStageSpace: ignoreStageSpace ?? drawType === AD_HOC,
+      entryStage: entry.entryStage ?? MAIN,
+      drawDefinition,
+      drawType,
+    };
+    const result = addDrawEntry(entryData);
+    if (drawEntries && result.error) {
+      // only report errors with drawEntries
+      // if entries are taken from event.entries assume stageSpace is not available
+      return result;
+    }
+  }
+
+  return { error: undefined };
 }

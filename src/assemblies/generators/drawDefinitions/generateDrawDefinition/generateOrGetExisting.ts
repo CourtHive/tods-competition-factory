@@ -66,7 +66,12 @@ export function generateOrGetExisting(params: GenerateOrGetExisting): ResultType
 
   const entries = params.drawEntries ?? params.eventEntries ?? [];
 
-  const genResult =
+  const genResult: ResultType & {
+    drawDefinition?: DrawDefinition;
+    positioningReports?: any[];
+    structureId?: string;
+    conflicts?: any[];
+  } =
     (setUpResult.existingQualifyingPlaceholderStructureId &&
       processExistingDrawDefinition({ ...params, ...setUpResult })) ||
     generateNewDrawDefinition({ ...params, ...setUpResult, entries });
