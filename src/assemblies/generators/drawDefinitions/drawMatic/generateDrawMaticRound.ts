@@ -1,4 +1,4 @@
-import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
+import { generateAdHocMatchUps } from '../drawTypes/adHoc/generateAdHocMatchUps';
 import { findStructure } from '../../../../acquire/findStructure';
 import { isObject } from '../../../../tools/objects';
 import { getPairingsData } from './getPairingsData';

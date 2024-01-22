@@ -1,16 +1,16 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { isConvertableInteger } from '../../../tools/math';
-import { generateRange } from '../../../tools/arrays';
-import { generateTieMatchUps } from './tieMatchUps';
-import { UUID } from '../../../tools/UUID';
+import { resolveTieFormat } from '../../../../../query/hierarchical/tieFormats/resolveTieFormat';
+import { definedAttributes } from '../../../../../tools/definedAttributes';
+import { isConvertableInteger } from '../../../../../tools/math';
+import { generateRange } from '../../../../../tools/arrays';
+import { generateTieMatchUps } from '../../tieMatchUps';
+import { UUID } from '../../../../../tools/UUID';
 
-import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
-import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
-import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../../../types/tournamentTypes';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../../constants/entryStatusConstants';
+import { ROUND_OUTCOME } from '../../../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../../../constants/resultConstants';
+import { TEAM } from '../../../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,
   INVALID_STRUCTURE,
@@ -18,7 +18,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
+} from '../../../../../constants/errorConditionConstants';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
