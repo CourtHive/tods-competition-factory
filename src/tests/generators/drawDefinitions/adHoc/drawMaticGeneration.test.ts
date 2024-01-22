@@ -255,3 +255,22 @@ test.each(drawMaticScenarios)('drawMatic can generate multiple rounds', (scenari
     expect(result.error).toEqual(scenario.expectation.error);
   }
 });
+
+it('can generate { automated: false } AD_HOC with arbitrary roundsCount', () => {
+  const roundsCount = 3;
+  const drawSize = 16;
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: AD_HOC,
+        automated: false,
+        roundsCount,
+        drawSize,
+      },
+    ],
+    setState: true,
+  });
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  expect(matchUps.length).toEqual(roundsCount * (drawSize / 2));
+});
