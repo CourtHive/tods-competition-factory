@@ -1,12 +1,12 @@
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
-import { chunkArray } from '../../../../tools/arrays';
+import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
+import { getDrawStructures } from '../../../../../acquire/findStructure';
+import { completeMatchUp } from '../../primitives/verifyMatchUps';
+import { chunkArray } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
+import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_ITF from '../../../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can support ITF Consolation BYE placement', () => {
   const participantsCount = 17;

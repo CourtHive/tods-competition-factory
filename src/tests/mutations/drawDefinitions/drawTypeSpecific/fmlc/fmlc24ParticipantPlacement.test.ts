@@ -1,11 +1,11 @@
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { completeMatchUp } from '../primitives/verifyMatchUps';
+import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
+import { completeMatchUp } from '../../primitives/verifyMatchUps';
 import { expect, it } from 'vitest';
 
-import { CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
+import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_ITF from '../../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { getDrawStructures } from '../../../../../acquire/findStructure';
 
 it('can support ITF Consolation participant placement', () => {
   const drawSize = 32;
@@ -46,14 +46,12 @@ it('can support ITF Consolation participant placement', () => {
     stageSequence: 1,
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });
@@ -97,14 +95,12 @@ it('can support USTA Consolation participant placement', () => {
     stageSequence: 1,
   });
 
-  const positionAssignmentByesCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.bye
-    ).length;
-  const positionAssignmentParticipantidsCount =
-    consolationStructure.positionAssignments?.filter(
-      (assignment) => !!assignment.participantId
-    ).length;
+  const positionAssignmentByesCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.bye,
+  ).length;
+  const positionAssignmentParticipantidsCount = consolationStructure.positionAssignments?.filter(
+    (assignment) => !!assignment.participantId,
+  ).length;
   expect(positionAssignmentByesCount).toEqual(8);
   expect(positionAssignmentParticipantidsCount).toEqual(4);
 });

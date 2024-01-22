@@ -1,21 +1,17 @@
-import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
-import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { setMatchUpState } from '../../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
+import { getAllDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
+import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
+import { getDrawStructures } from '../../../../../acquire/findStructure';
+import tournamentEngine from '../../../../engines/syncEngine';
+import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../../../constants/matchUpTypes';
-import { MALE } from '../../../../constants/genderConstants';
-import {
-  MAIN,
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { SINGLES } from '../../../../../constants/matchUpTypes';
+import { MALE } from '../../../../../constants/genderConstants';
+import { MAIN, CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -26,12 +22,11 @@ it('can direct winners and losers', () => {
 
   let result;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      drawSize,
-      seedsCount,
-      participantsCount,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    drawSize,
+    seedsCount,
+    participantsCount,
+  });
 
   verifyMatchUps({
     expectedRoundUpcoming: [16, 0],
@@ -50,10 +45,7 @@ it('can direct winners and losers', () => {
   });
   const { matchUps } = getAllDrawMatchUps({ drawDefinition, inContext: true });
   const matchUp = matchUps?.find(
-    (matchUp) =>
-      matchUp.structureId === mainStructureId &&
-      matchUp.roundNumber === 1 &&
-      matchUp.roundPosition === 2
+    (matchUp) => matchUp.structureId === mainStructureId && matchUp.roundNumber === 1 && matchUp.roundPosition === 2,
   );
   const { matchUpId } = matchUp ?? {};
   expect(result.success).toEqual(true);
@@ -115,9 +107,7 @@ it('can direct winners and losers', () => {
   }));
   const { structureId: verifyConsolationStructureId } = consolationStructure;
 
-  expect(
-    consolationStructure.positionAssignments?.[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments?.[1].participantId).toBeUndefined();
 
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
@@ -130,12 +120,11 @@ it('can direct winners and losers', () => {
 
   let result;
 
-  const { drawDefinition, mainStructureId, consolationStructureId } =
-    generateFMLC({
-      drawSize,
-      seedsCount,
-      participantsCount,
-    });
+  const { drawDefinition, mainStructureId, consolationStructureId } = generateFMLC({
+    drawSize,
+    seedsCount,
+    participantsCount,
+  });
 
   verifyMatchUps({
     expectedRoundCompleted: [0, 0],
@@ -154,10 +143,7 @@ it('can direct winners and losers', () => {
   });
   const { matchUps } = getAllDrawMatchUps({ drawDefinition, inContext: true });
   const matchUp = matchUps?.find(
-    (matchUp) =>
-      matchUp.structureId === mainStructureId &&
-      matchUp.roundNumber === 1 &&
-      matchUp.roundPosition === 2
+    (matchUp) => matchUp.structureId === mainStructureId && matchUp.roundNumber === 1 && matchUp.roundPosition === 2,
   );
   const { matchUpId } = matchUp ?? {};
   expect(result.success).toEqual(true);
@@ -177,9 +163,7 @@ it('can direct winners and losers', () => {
     stage: CONSOLATION,
     stageSequence: 1,
   });
-  expect(
-    consolationStructure.positionAssignments?.[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments?.[1].participantId).toBeUndefined();
 
   verifyMatchUps({
     expectedRoundPending: [6, 8, 4, 2, 1],
@@ -219,9 +203,7 @@ it('can direct winners and losers', () => {
     stageSequence: 1,
   }));
   const { structureId: verifyConsolationStructureId } = consolationStructure;
-  expect(
-    consolationStructure.positionAssignments?.[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments?.[1].participantId).toBeUndefined();
 
   expect(mainStructureId).toEqual(verifyMainStructureId);
   expect(consolationStructureId).toEqual(verifyConsolationStructureId);
@@ -274,9 +256,7 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
   });
   const { structureId: consolationStructureId } = consolationStructure;
 
-  expect(
-    consolationStructure.positionAssignments?.[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments?.[1].participantId).toBeUndefined();
 
   const result = tournamentEngine.setMatchUpStatus({
     outcome: toBePlayed,
@@ -291,10 +271,8 @@ it('can remove matchUps properly in FIRST_MATCH_LOSER_CONSOLATION', () => {
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
 
   consolationStructure = drawDefinition.structures.find(
-    (structure) => structure.structureId === consolationStructureId
+    (structure) => structure.structureId === consolationStructureId,
   );
 
-  expect(
-    consolationStructure.positionAssignments?.[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments?.[1].participantId).toBeUndefined();
 });

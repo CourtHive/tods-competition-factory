@@ -1,15 +1,15 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { isCompletedStructure } from '../../../query/drawDefinition/structureActions';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
-import { intersection, overlap, unique } from '../../../tools/arrays';
-import { structureSort } from '../../../functions/sorters/structureSort';
-import { xa } from '../../../tools/objects';
-import tournamentEngine from '../../engines/syncEngine';
-import { mocksEngine } from '../../..';
+import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
+import { isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
+import { allDrawMatchUps } from '../../../../../query/matchUps/getAllDrawMatchUps';
+import { intersection, overlap, unique } from '../../../../../tools/arrays';
+import { structureSort } from '../../../../../functions/sorters/structureSort';
+import { xa } from '../../../../../tools/objects';
+import tournamentEngine from '../../../../engines/syncEngine';
+import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
+import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
 
 it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   const completionGoal = 48;

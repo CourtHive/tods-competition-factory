@@ -1,13 +1,9 @@
-import { mocksEngine, globalState } from '../../..';
-import tournamentEngine from '../../engines/syncEngine';
+import { mocksEngine, globalState } from '../../../../..';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import {
-  PLAY_OFF,
-  ROUND_ROBIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { PLAY_OFF, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
 
 // in a round robin finishingPositions are determined by WIN_RATIO
 // the finishingPositionRange for { winner, loser } should be equivalent
@@ -78,15 +74,12 @@ test('ROUND_ROBIN_WITH_PLAYOFF will have accurate playoff finishingPositionRange
   expect(links[0].source.structureId).toEqual(structures[0].structureId);
   expect(links[0].target.structureId).toEqual(structures[1].structureId);
 
-  const structureId = structures.find(
-    ({ stage }) => stage === PLAY_OFF
-  ).structureId;
+  const structureId = structures.find(({ stage }) => stage === PLAY_OFF).structureId;
 
-  const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } =
-    tournamentEngine.getAvailablePlayoffProfiles({
-      structureId,
-      drawId,
-    });
+  const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } = tournamentEngine.getAvailablePlayoffProfiles({
+    structureId,
+    drawId,
+  });
   expect(playoffRounds).toEqual([1, 2]);
   expect(positionsPlayedOff).toEqual([1, 2]);
   expect(playoffRoundsRanges.length).toEqual(2);

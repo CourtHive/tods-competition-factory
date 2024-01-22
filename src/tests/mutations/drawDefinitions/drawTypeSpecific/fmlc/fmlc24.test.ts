@@ -1,16 +1,16 @@
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { completeMatchUp, verifyMatchUps } from '../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
-import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { instanceCount } from '../../../../tools/arrays';
+import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
+import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
+import { getAllDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
+import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
+import { getDrawStructures } from '../../../../../acquire/findStructure';
+import { instanceCount } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { BYE } from '../../../../../constants/matchUpStatusConstants';
+import { MAIN, CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
 
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_ITF from '../../../../../fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const participantsCount = 24;

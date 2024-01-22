@@ -1,13 +1,13 @@
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import { intersection } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
+import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
+import mocksEngine from '../../../../../assemblies/engines/mock';
+import { intersection } from '../../../../../tools/arrays';
+import tournamentEngine from '../../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import { MAIN, ROUND_ROBIN, WATERFALL } from '../../../../constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
+import { MAIN, ROUND_ROBIN, WATERFALL } from '../../../../../constants/drawDefinitionConstants';
 
 const scenarios = [
   {
