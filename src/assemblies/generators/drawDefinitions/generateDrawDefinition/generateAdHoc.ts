@@ -1,7 +1,6 @@
 import { addAdHocMatchUps } from '../../../../mutate/structures/addAdHocMatchUps';
+import { generateAdHocRounds } from '../drawTypes/adHoc/generateAdHocRounds';
 import { getParticipantId } from '../../../../global/functions/extractors';
-import { generateAdHocMatchUps } from '../drawTypes/adHoc/generateAdHocMatchUps';
-import { generateRange } from '../../../../tools/arrays';
 import { drawMatic } from '../drawMatic/drawMatic';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
@@ -21,26 +20,25 @@ export function generateAdHoc(params) {
   if (params.automated) {
     return automateAdHoc({ ...params, participantIds });
   } else {
-    generateRange(1, params.roundsCount + 1).forEach(() => {
-      const matchUps = generateAdHocMatchUps({
-        newRound: true,
-        drawDefinition,
-        matchUpsCount,
-        idPrefix,
-        isMock,
-        event,
-      }).matchUps;
-
-      matchUps?.length &&
-        addAdHocMatchUps({
-          suppressNotifications: true,
-          tournamentRecord,
-          drawDefinition,
-          structureId,
-          matchUps,
-          event,
-        });
+    const genResult = generateAdHocRounds({
+      roundsCount: params.roundsCount,
+      drawDefinition,
+      matchUpsCount,
+      idPrefix,
+      isMock,
+      event,
     });
+    if (genResult.error) return genResult;
+    if (genResult.matchUps?.length) {
+      addAdHocMatchUps({
+        matchUps: genResult.matchUps,
+        suppressNotifications: true,
+        tournamentRecord,
+        drawDefinition,
+        structureId,
+        event,
+      });
+    }
   }
 
   return { ...SUCCESS };
