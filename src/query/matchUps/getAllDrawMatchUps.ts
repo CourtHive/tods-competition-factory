@@ -1,15 +1,11 @@
 import { hydrateParticipants } from '../participants/hydrateParticipants';
-import { getAllDrawMatchUps } from './drawMatchUps';
 import { getContextContent } from '../hierarchical/getContextContent';
+import { getAllDrawMatchUps } from './drawMatchUps';
 
 import { GetMatchUpsArgs } from '../../types/factoryTypes';
 
 export function allDrawMatchUps(params: GetMatchUpsArgs) {
-  let {
-    participants: tournamentParticipants,
-    participantMap,
-    contextContent,
-  } = params;
+  let { participants: tournamentParticipants, participantMap, contextContent } = params;
 
   const {
     scheduleVisibilityFilters,
@@ -19,18 +15,17 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     policyDefinitions,
     useParticipantMap,
     tournamentRecord,
+    matchUpFilters,
     contextFilters,
     contextProfile,
     drawDefinition,
-    matchUpFilters,
     nextMatchUps,
     inContext,
     context,
     event,
   } = params;
 
-  const { eventId, eventName, eventType, category, gender, matchUpFormat } =
-    event ?? {};
+  const { eventId, eventName, eventType, category, gender, matchUpFormat } = event ?? {};
   const additionalContext = {
     ...context,
     eventId,
@@ -40,8 +35,7 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     gender,
     matchUpFormat,
     indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-    surfaceCategory:
-      event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+    surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
     endDate: event?.endDate,
   };
 
