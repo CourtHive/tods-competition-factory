@@ -33,6 +33,7 @@ Verion 2.0 of the Competition Factory was focused on code restructuring with sup
 - utilities.getValidGroupSizes() => tournamentEngine.getValidGroupSizes()
 - mocksEngine.parseScoreString() => tournamentEngine.parseScoreString();
 - utilities.getSetComplement() => tournamentEngine.getSetComplement()
+- utilities.scoreHasValue() => tournamentEngine.checkScoreHasValue()
 - utilities.findExtension() => tournamentEngine.findExtension()
 - scoreGovernor.function() => tournamentEngine.function()
 
