@@ -139,6 +139,36 @@ engine.deleteFlightProfileAndFlightDraws({
 
 ---
 
+## getCategoryAgeDetails
+
+Parses `ageCategoryCode` to determine min/max eligible birthdates and min/max age. Category age/birthdate boundaries can be specified using other attributes.
+If attributes are combined will sanity check correspondence and return an array of any encountered errors.
+
+```js
+const {
+} = engine.getCategoryAgeDetails({
+  consideredDate, // returns either supplied value or date when invoked
+  combinedAge, // boolean indicating that ageMax and ageMin are combined values
+  ageMaxDate,
+  ageMinDate,
+  ageMax,
+  ageMin,
+  errors,
+} = engine.getCategoryAgeDetails({
+  consideredDate, // optional - date string 'YYYY-MM-DD'; defaults to current date
+  category: {
+    ageCategoryCode, // TODS code, e.g. 'U18', '18U', '18O', 'O18', '8O-U18', 'C50-70'
+    categoryName, // when no ageCategoryCode is provided, an attempt is made to find in categoryName
+    ageMaxDate, // latest/most recent date acceptable for eligibilty
+    ageMinDate, // earliest date acceptable for eligibility
+    ageMax, // maximum age acceptable for eligibility
+    ageMin, // minimum age acceptable for eligibility
+  },
+});
+```
+
+---
+
 ## modifyEvent
 
 ```js

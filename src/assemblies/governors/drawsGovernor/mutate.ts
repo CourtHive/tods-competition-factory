@@ -22,11 +22,13 @@ export { addQualifyingStructure } from '../../../mutate/drawDefinitions/addQuali
 export { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
 export { automatedPositioning } from '../../../mutate/drawDefinitions/automatedPositioning';
 export { modifyDrawDefinition } from '../../../mutate/drawDefinitions/modifyDrawDefinition';
+export { addFinishingRounds } from '../../generators/drawDefinitions/addFinishingRounds';
 export { resetDrawDefinition } from '../../../mutate/drawDefinitions/resetDrawDefinition';
 export { pruneDrawDefinition } from '../../../mutate/drawDefinitions/pruneDrawDefinition';
 export { assignDrawPosition } from '../../../mutate/drawDefinitions/assignDrawPosition';
 export { deleteAdHocMatchUps } from '../../../mutate/structures/deleteAdHocMatchUps';
 export { removeRoundMatchUps } from '../../../mutate/structures/removeRoundMatchUps';
+export { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 export { updateTeamLineUp } from '../../../mutate/drawDefinitions/updateTeamLineUp';
 export { addAdHocMatchUps } from '../../../mutate/structures/addAdHocMatchUps';
 export { modifyDrawName } from '../../../mutate/drawDefinitions/modifyDrawName';
