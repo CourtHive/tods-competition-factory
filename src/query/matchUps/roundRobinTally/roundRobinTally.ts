@@ -6,12 +6,12 @@ import { unique } from '../../../tools/arrays';
 import { getTallyReport } from './getTallyReport';
 import { getGroupOrder } from './getGroupOrder';
 
+import { INVALID_VALUES, MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
-import { INVALID_VALUES, MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 
 type TallyParticipantResultsArgs = {
   policyDefinitions?: PolicyDefinitions;

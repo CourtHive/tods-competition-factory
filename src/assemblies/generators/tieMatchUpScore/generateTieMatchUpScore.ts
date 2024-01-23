@@ -6,21 +6,12 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
 import { getGroupValueGroups } from '../drawDefinitions/getGroupValueGroups';
 
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUP,
-  MISSING_TIE_FORMAT,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  TieFormat,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, TieFormat } from '../../../types/tournamentTypes';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`
@@ -45,9 +36,7 @@ type GenerateTieMatchUpScoreArgs = {
   event?: Event;
 };
 
-export function generateTieMatchUpScore(
-  params: GenerateTieMatchUpScoreArgs
-): TieMatchUpScore & ResultType {
+export function generateTieMatchUpScore(params: GenerateTieMatchUpScoreArgs): TieMatchUpScore & ResultType {
   const {
     sideAdjustments = [0, 0], // currently unused?
     separator = '-',
@@ -67,9 +56,7 @@ export function generateTieMatchUpScore(
   }
 
   if (!matchUp) return { error: MISSING_MATCHUP };
-  const tieFormat =
-    resolveTieFormat({ matchUp, drawDefinition, structure, event })
-      ?.tieFormat || params?.tieFormat;
+  const tieFormat = resolveTieFormat({ matchUp, drawDefinition, structure, event })?.tieFormat || params?.tieFormat;
 
   if (!tieFormat) return { error: MISSING_TIE_FORMAT };
 
@@ -80,8 +67,7 @@ export function generateTieMatchUpScore(
   const tieMatchUps = matchUp?.tieMatchUps ?? [];
   const sideTieValues = [0, 0];
 
-  const { groupValueGroups, groupValueNumbers } =
-    getGroupValueGroups(tieFormat);
+  const { groupValueGroups, groupValueNumbers } = getGroupValueGroups(tieFormat);
 
   for (const collectionDefinition of collectionDefinitions) {
     evaluateCollectionResult({
@@ -96,14 +82,7 @@ export function generateTieMatchUpScore(
   // process each relevant group for groupValue
   for (const groupNumber of groupValueNumbers) {
     const group = groupValueGroups[groupNumber];
-    const {
-      allGroupMatchUpsCompleted,
-      matchUpCount,
-      winCriteria,
-      groupValue,
-      sideWins,
-      values,
-    } = group;
+    const { allGroupMatchUpsCompleted, matchUpCount, winCriteria, groupValue, sideWins, values } = group;
 
     let groupWinningSide;
 
@@ -127,9 +106,7 @@ export function generateTieMatchUpScore(
     }
   }
 
-  const sideScores = sideTieValues.map(
-    (sideTieValue, i) => (sideTieValue || 0) + sideAdjustments[i]
-  );
+  const sideScores = sideTieValues.map((sideTieValue, i) => (sideTieValue || 0) + sideAdjustments[i]);
 
   const set = {
     side1Score: sideScores[0],
@@ -142,8 +119,7 @@ export function generateTieMatchUpScore(
   // now calculate if there is a winningSide
   let winningSide;
   if (tieFormat?.winCriteria) {
-    const { valueGoal, aggregateValue, tallyDirectives } =
-      tieFormat.winCriteria;
+    const { valueGoal, aggregateValue, tallyDirectives } = tieFormat.winCriteria;
     if (valueGoal) {
       const sideThatWon = sideScores
         .map((points, sideIndex) => ({ sideNumber: sideIndex + 1, points }))
@@ -152,9 +128,7 @@ export function generateTieMatchUpScore(
     } else if (aggregateValue) {
       const allTieMatchUpsCompleted = tieMatchUps.every(
         (matchUp) =>
-          (matchUp.matchUpStatus &&
-            completedMatchUpStatuses.includes(matchUp.matchUpStatus)) ||
-          matchUp.winningSide
+          (matchUp.matchUpStatus && completedMatchUpStatuses.includes(matchUp.matchUpStatus)) || matchUp.winningSide,
       );
       if (allTieMatchUpsCompleted && sideScores[0] !== sideScores[1]) {
         winningSide = sideScores[0] > sideScores[1] ? 1 : 2;
@@ -180,7 +154,7 @@ export function generateTieMatchUpScore(
         if (completedTieMatchUps && order?.length) {
           const winningParticipantId = order[0].participantId;
           winningSide = inContextMatchUp.sides.find(
-            ({ participantId }) => participantId === winningParticipantId
+            ({ participantId }) => participantId === winningParticipantId,
           )?.sideNumber;
         }
       }

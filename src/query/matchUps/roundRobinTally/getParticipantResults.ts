@@ -3,15 +3,9 @@ import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '../../../tools/arrays';
 import { ensureInt } from '../../../tools/ensureInt';
 
+import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-
-// DONE: ?? this TODO seems old
-/*
-TODO: for TEAM matchUps, what are now games won/lost should be tieMatchUps won/lost
-and the games/sets of all tieMatchUps should be aggregated
-*/
 
 type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
