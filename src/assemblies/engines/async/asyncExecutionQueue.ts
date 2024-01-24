@@ -21,7 +21,8 @@ export async function asyncExecutionQueue(engine: FactoryEngine, directives: Dir
   for (const directive of directives) {
     if (typeof directive !== 'object') return { error: INVALID_VALUES, message: 'directive must be an object' };
 
-    const { method: methodName, params = {}, pipe } = directive;
+    const { method: methodName, pipe } = directive;
+    const params = directive.params ? { ...directive.params } : {};
     if (!methods[methodName]) return logMethodNotFound({ methodName, start, params });
 
     if (pipe) {

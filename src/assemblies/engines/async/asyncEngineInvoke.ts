@@ -1,3 +1,4 @@
+import { deleteNotices, getTournamentRecords } from '../../../global/state/globalState';
 import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
 import { isFunction, isObject, isString } from '../../../tools/objects';
 import { getMethods } from '../../../global/state/syncGlobalState';
@@ -6,7 +7,6 @@ import { logMethodNotFound } from '../parts/logMethodNotFound';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
-import { deleteNotices, getTournamentRecords } from '../../../global/state/globalState';
 
 import { INVALID_VALUES, METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
@@ -25,7 +25,7 @@ export async function asyncEngineInvoke(engine: { [key: string]: any }, args: an
   if (!methodName) return { error: METHOD_NOT_FOUND };
 
   const { [methodName]: passedMethod, ...remainingArgs } = args;
-  const params = args?.params || { ...remainingArgs };
+  const params = args?.params ? { ...args.params } : { ...remainingArgs };
 
   const snapshot = params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 
