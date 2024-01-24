@@ -20,8 +20,11 @@ export function executionQueue(engine: FactoryEngine, directives: Directives, ro
   const results: any[] = [];
   for (const directive of directives) {
     if (typeof directive !== 'object') return { error: INVALID_VALUES, message: 'directive must be an object' };
+    if (directive.params && typeof directive.params !== 'object')
+      return { error: INVALID_VALUES, message: 'params must be an object' };
 
-    const { method: methodName, params = {}, pipe } = directive;
+    const { method: methodName, pipe } = directive;
+    const params = directive.params ? { ...directive.params } : {};
     if (!methods[methodName]) return logMethodNotFound({ methodName, start, params });
 
     if (pipe) {

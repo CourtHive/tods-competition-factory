@@ -25,7 +25,7 @@ export function engineInvoke(engine: { [key: string]: any }, args: any) {
   if (!methodName) return { error: METHOD_NOT_FOUND };
 
   const { [methodName]: passedMethod, ...remainingArgs } = args;
-  const params = args?.params || { ...remainingArgs };
+  const params = args?.params ? { ...args.params } : { ...remainingArgs };
 
   const snapshot = params.rollbackOnError && makeDeepCopy(getTournamentRecords(), false, true);
 

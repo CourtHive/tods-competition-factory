@@ -20,7 +20,7 @@ export function askInvoke(engine: { [key: string]: any }, args: any) {
   if (!methodName) return { error: METHOD_NOT_FOUND };
 
   const { [methodName]: passedMethod, ...remainingArgs } = args;
-  const params = args?.params || { ...remainingArgs };
+  const params = args?.params ? { ...args.params } : { ...remainingArgs };
 
   const method = passedMethod || engine[methodName] || getMethods()[methodName];
   if (!method) return logMethodNotFound({ methodName, params });
