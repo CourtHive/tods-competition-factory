@@ -55,9 +55,9 @@ type GlobalStateTypes = {
 
 export type ImplemtationGlobalStateTypes = {
   tournamentRecords: TournamentRecords;
-  tournamentId?: string | undefined;
   methods: { [key: string]: any };
   disableNotifications: boolean;
+  tournamentId?: string;
   subscriptions: any;
   notices: Notice[];
   modified: boolean;
