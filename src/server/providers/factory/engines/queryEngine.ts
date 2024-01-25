@@ -1,5 +1,5 @@
-import * as governors from '../../../../../assemblies/governors';
-import { askEngine } from '../../../../..';
+import * as governors from '../../../../assemblies/governors';
+import { askEngine } from '../../../..';
 
 const methods = {
   ...governors.reportGovernor,

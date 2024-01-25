@@ -4,11 +4,7 @@ import { ErrorType, MISSING_VALUE } from '../constants/errorConditionConstants';
 import { HydratedParticipant } from '../types/hydrated';
 import { SUCCESS } from '../constants/resultConstants';
 import { Tournament } from '../types/tournamentTypes';
-import {
-  ContextProfile,
-  PolicyDefinitions,
-  TournamentRecords,
-} from '../types/factoryTypes';
+import { ContextProfile, PolicyDefinitions, TournamentRecords } from '../types/factoryTypes';
 
 type PublicFindParticipantArgs = {
   tournamentRecords?: TournamentRecords;
@@ -24,13 +20,7 @@ export function publicFindParticipant(params: PublicFindParticipantArgs): {
   error?: ErrorType;
   stack?: any;
 } {
-  const {
-    tournamentRecord,
-    policyDefinitions,
-    contextProfile,
-    participantId,
-    personId,
-  } = params;
+  const { tournamentRecord, policyDefinitions, contextProfile, participantId, personId } = params;
 
   const tournamentRecords =
     params.tournamentRecords ||

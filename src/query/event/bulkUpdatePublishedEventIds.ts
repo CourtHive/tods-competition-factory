@@ -1,10 +1,7 @@
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { getDrawPublishStatus } from './getDrawPublishStatus';
 
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -13,8 +10,7 @@ import {
  */
 export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!outcomes?.length)
-    return { error: MISSING_VALUE, info: 'Missing outcomes' };
+  if (!outcomes?.length) return { error: MISSING_VALUE, info: 'Missing outcomes' };
 
   const eventIdsMap = outcomes.reduce((eventIdsMap, outcome) => {
     const { drawId, eventId } = outcome;
@@ -29,9 +25,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
   }, {});
 
   const relevantEventsIds = Object.keys(eventIdsMap);
-  const relevantEvents = tournamentRecord.events?.filter((event) =>
-    relevantEventsIds.includes(event.eventId)
-  );
+  const relevantEvents = tournamentRecord.events?.filter((event) => relevantEventsIds.includes(event.eventId));
   const publishedEventIds = relevantEvents
     .filter((event) => {
       const pubStatus = getEventPublishStatus({ event });
@@ -40,9 +34,7 @@ export function bulkUpdatePublishedEventIds({ tournamentRecord, outcomes }) {
       const { eventId } = event;
       const publishedDrawIds = eventIdsMap[eventId].filter((drawId) => {
         const keyedDrawIds = drawDetails
-          ? Object.keys(pubStatus.drawDetails).filter((drawId) =>
-              getDrawPublishStatus({ drawId, drawDetails })
-            )
+          ? Object.keys(pubStatus.drawDetails).filter((drawId) => getDrawPublishStatus({ drawId, drawDetails }))
           : [];
         return drawIds?.includes(drawId) || keyedDrawIds.includes(drawId);
       });

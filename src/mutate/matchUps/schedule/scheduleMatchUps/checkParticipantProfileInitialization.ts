@@ -1,7 +1,4 @@
-export function checkParticipantProfileInitialization({
-  individualParticipantProfiles,
-  participantId,
-}) {
+export function checkParticipantProfileInitialization({ individualParticipantProfiles, participantId }) {
   if (!individualParticipantProfiles[participantId]) {
     individualParticipantProfiles[participantId] = {
       typeChangeTimeAfterRecovery: undefined,
@@ -26,9 +23,7 @@ export function addParticipantPotentialRecovery({
   if (!individualParticipantProfiles[participantId].potentialRecovery[drawId]) {
     individualParticipantProfiles[participantId].potentialRecovery[drawId] = [];
   }
-  individualParticipantProfiles[participantId].potentialRecovery[drawId].push(
-    recoveryValue
-  );
+  individualParticipantProfiles[participantId].potentialRecovery[drawId].push(recoveryValue);
 
   if (!individualParticipantProfiles[participantId].potentialBookings[drawId]) {
     individualParticipantProfiles[participantId].potentialBookings[drawId] = [];

@@ -1,11 +1,7 @@
 import { it, expect } from 'vitest';
 
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
-import {
-  MAIN,
-  QUALIFYING,
-  CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING, CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import {
   setStageAlternatesCount,

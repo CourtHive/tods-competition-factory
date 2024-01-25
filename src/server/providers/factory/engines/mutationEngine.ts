@@ -1,5 +1,5 @@
-import * as governors from '../../../../../assemblies/governors';
-import { asyncEngine, globalState } from '../../../../..';
+import * as governors from '../../../../assemblies/governors';
+import { asyncEngine, globalState } from '../../../..';
 import asyncGlobalState from './asyncGlobalState';
 
 globalState.setStateProvider(asyncGlobalState);

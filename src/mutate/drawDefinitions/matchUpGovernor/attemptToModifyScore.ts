@@ -5,12 +5,7 @@ import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
 
 import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-import {
-  ABANDONED,
-  CANCELLED,
-  COMPLETED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { ABANDONED, CANCELLED, COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToModifyScore(params) {
   const {
@@ -37,9 +32,7 @@ export function attemptToModifyScore(params) {
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
   const validToScore =
-    isCollectionMatchUp ||
-    isAdHocMatchUp ||
-    drawPositionsAssignedParticipantIds({ structure, matchUp });
+    isCollectionMatchUp || isAdHocMatchUp || drawPositionsAssignedParticipantIds({ structure, matchUp });
 
   if (!validToScore) {
     return { error: MISSING_ASSIGNMENTS };
@@ -67,10 +60,7 @@ function drawPositionsAssignedParticipantIds({ structure, matchUp }) {
   const { drawPositions } = matchUp;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const assignedParticipantIds = positionAssignments?.filter((assignment) => {
-    return (
-      drawPositions?.includes(assignment.drawPosition) &&
-      assignment.participantId
-    );
+    return drawPositions?.includes(assignment.drawPosition) && assignment.participantId;
   });
   return assignedParticipantIds?.length === 2;
 }

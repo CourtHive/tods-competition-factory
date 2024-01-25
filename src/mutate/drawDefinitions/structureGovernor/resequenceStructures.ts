@@ -10,8 +10,7 @@ export function resequenceStructures({ drawDefinition }) {
   for (const structure of drawDefinition.structures) {
     const profile = structureProfiles[structure.structureId];
     if (profile.distanceFromMain) {
-      structure.stageSequence =
-        maxQualifyingDepth + 1 - profile.distanceFromMain;
+      structure.stageSequence = maxQualifyingDepth + 1 - profile.distanceFromMain;
     }
   }
 

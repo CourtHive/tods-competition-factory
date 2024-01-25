@@ -6,10 +6,7 @@ import { ADD_PENALTY } from '../../../../../constants/positionActionConstants';
 import { SCORE } from '../../../../../constants/matchUpActionConstants';
 import { PAIR } from '../../../../../constants/participantConstants';
 import { DOUBLES } from '../../../../../constants/eventConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-} from '../../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '../../../../../constants/drawDefinitionConstants';
 
 it('can modify score for main draw match after loser directed to consolation', () => {
   const participantsProfile = {
@@ -187,22 +184,17 @@ it('can modify score for main draw match after loser directed to consolation', (
   });
 
   const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition, stage }) =>
-      roundNumber === 3 && roundPosition === 1 && stage === CONSOLATION
+    ({ roundNumber, roundPosition, stage }) => roundNumber === 3 && roundPosition === 1 && stage === CONSOLATION,
   );
   const { drawPositions, matchUpId, structureId } = targetMatchUp;
 
   result = tournamentEngine.matchUpActions({ drawId, matchUpId });
-  expect(result.validActions.map(({ type }) => type).includes(SCORE)).toEqual(
-    true
-  );
+  expect(result.validActions.map(({ type }) => type).includes(SCORE)).toEqual(true);
 
   result = tournamentEngine.positionActions({
     drawPosition: drawPositions[0],
     structureId,
     drawId,
   });
-  expect(
-    result.validActions.map(({ type }) => type).includes(ADD_PENALTY)
-  ).toEqual(true);
+  expect(result.validActions.map(({ type }) => type).includes(ADD_PENALTY)).toEqual(true);
 });

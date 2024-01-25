@@ -19,8 +19,7 @@ export function setEntryPosition({
   const stack = 'setEntryPositions';
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!participantId)
-    return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
+  if (!participantId) return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });
 
   if (entryPosition !== undefined && !Number.isSafeInteger(entryPosition))
     return { error: INVALID_VALUES, entryPosition };
@@ -41,10 +40,7 @@ export function setEntryPosition({
   // decimal values will be replaced with whole numbers by refreshEntryPositions()
   const differentiateDuplicates = (obj) => {
     obj.entries.forEach((entry) => {
-      if (
-        entry.entryPosition === entryPosition &&
-        entry.participantId !== participantId
-      ) {
+      if (entry.entryPosition === entryPosition && entry.participantId !== participantId) {
         entry.entryPosition += 0.1;
       }
     });
@@ -66,12 +62,7 @@ export function setEntryPosition({
   return { ...SUCCESS };
 }
 
-export function setEntryPositions({
-  tournamentRecord,
-  entryPositions,
-  drawDefinition,
-  event,
-}) {
+export function setEntryPositions({ tournamentRecord, entryPositions, drawDefinition, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(entryPositions)) return { error: INVALID_VALUES };
 

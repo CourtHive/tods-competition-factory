@@ -3,10 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import {
-  MODIFY_MATCHUP,
-  UPDATE_INCONTEXT_MATCHUP,
-} from '../../../constants/topicConstants';
+import { MODIFY_MATCHUP, UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
 
 it('supports subscriptions to fully hydrated matchUps', () => {
   const inContextMatchUpNotifications: any[] = [];
@@ -34,10 +31,6 @@ it('supports subscriptions to fully hydrated matchUps', () => {
 
   expect(notificationsCounter).toEqual(2);
 
-  expect(inContextMatchUpNotifications.length).toEqual(
-    matchUpNotifications.length
-  );
-  expect(
-    inContextMatchUpNotifications[0].inContextMatchUp.sides[0].participant
-  ).toBeDefined();
+  expect(inContextMatchUpNotifications.length).toEqual(matchUpNotifications.length);
+  expect(inContextMatchUpNotifications[0].inContextMatchUp.sides[0].participant).toBeDefined();
 });

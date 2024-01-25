@@ -24,17 +24,10 @@ const eloConfig = {
   kDefault,
 };
 
-export function getRatingDelta({
-  ratings = ratingsParameters,
-  ratingType,
-  rating,
-  delta,
-}) {
+export function getRatingDelta({ ratings = ratingsParameters, ratingType, rating, delta }) {
   const ratingParameters = ratings?.[ratingType];
   const decimalPlaces = ratingParameters.decimalsCount || 0;
-  let newRating = (parseFloat(rating) + parseFloat(delta)).toFixed(
-    decimalPlaces
-  );
+  let newRating = (parseFloat(rating) + parseFloat(delta)).toFixed(decimalPlaces);
   if (parseFloat(newRating) < 0) newRating = rating;
   return newRating;
 }
@@ -59,28 +52,17 @@ export function calculateNewRatings(params?) {
   const invertedScale = ratingRange[0] > ratingRange[1];
 
   const decimalPlaces = ratingParameters.decimalsCount || 0;
-  const consideredRange = invertedScale
-    ? ratingRange.slice().reverse()
-    : ratingRange;
+  const consideredRange = invertedScale ? ratingRange.slice().reverse() : ratingRange;
 
-  const inRange = (range, value) =>
-    parseFloat(value) >= Math.min(...range) &&
-    parseFloat(value) <= Math.max(...range);
-  if (
-    !inRange(ratingRange, winnerRating) ||
-    !inRange(ratingRange, loserRating)
-  ) {
-    if (!inRange(ratingRange, winnerRating))
-      winnerRating = ratingParameters.defaultInitialization;
-    if (!inRange(ratingRange, loserRating))
-      loserRating = ratingParameters.defaultInitialization;
+  const inRange = (range, value) => parseFloat(value) >= Math.min(...range) && parseFloat(value) <= Math.max(...range);
+  if (!inRange(ratingRange, winnerRating) || !inRange(ratingRange, loserRating)) {
+    if (!inRange(ratingRange, winnerRating)) winnerRating = ratingParameters.defaultInitialization;
+    if (!inRange(ratingRange, loserRating)) loserRating = ratingParameters.defaultInitialization;
   }
 
   // convert one rating range to another rating range
   const convertRange = ({ value, sourceRange, targetRange }) =>
-    ((value - sourceRange[0]) * (targetRange[1] - targetRange[0])) /
-      (sourceRange[1] - sourceRange[0]) +
-    targetRange[0];
+    ((value - sourceRange[0]) * (targetRange[1] - targetRange[0])) / (sourceRange[1] - sourceRange[0]) + targetRange[0];
 
   // convert inbound ratings from ratingType into ELO
   const convertedWinnerRating = convertRange({
@@ -97,23 +79,15 @@ export function calculateNewRatings(params?) {
   const getExpectation = (playerRating, opponentRating) =>
     1 / (1 + Math.pow(10, (opponentRating - playerRating) / eloConfig.nSpread));
 
-  const winnerExpectation = getExpectation(
-    convertedWinnerRating,
-    convertedLoserRating
-  );
-  const loserExpectation = getExpectation(
-    convertedLoserRating,
-    convertedWinnerRating
-  );
+  const winnerExpectation = getExpectation(convertedWinnerRating, convertedLoserRating);
+  const loserExpectation = getExpectation(convertedLoserRating, convertedWinnerRating);
 
   const winnerKValue = eloConfig.kCalc(winnerCountables);
   const loserKValue = eloConfig.kCalc(loserCountables);
   const k = eloConfig.kMultiplier(maxCountables, countables);
 
-  const winnerUpdatedConvertedRating =
-    convertedWinnerRating + k * winnerKValue * (1 - winnerExpectation);
-  const loserUpdatedConvertedRating =
-    convertedLoserRating + k * loserKValue * (0 - loserExpectation);
+  const winnerUpdatedConvertedRating = convertedWinnerRating + k * winnerKValue * (1 - winnerExpectation);
+  const loserUpdatedConvertedRating = convertedLoserRating + k * loserKValue * (0 - loserExpectation);
 
   // convert calculated new ratings from ELO into ratingType
   const convertedUpdatedWinnerRating = convertRange({
@@ -130,15 +104,9 @@ export function calculateNewRatings(params?) {
   const updatedWinnerRating = invertedScale
     ? ratingRange[0] - convertedUpdatedWinnerRating
     : convertedUpdatedWinnerRating;
-  let newWinnerRating = parseFloat(
-    parseFloat(updatedWinnerRating).toFixed(decimalPlaces)
-  );
-  const updatedLoserRating = invertedScale
-    ? ratingRange[0] - convertedUpdatedLoserRating
-    : convertedUpdatedLoserRating;
-  let newLoserRating = parseFloat(
-    parseFloat(updatedLoserRating).toFixed(decimalPlaces)
-  );
+  let newWinnerRating = parseFloat(parseFloat(updatedWinnerRating).toFixed(decimalPlaces));
+  const updatedLoserRating = invertedScale ? ratingRange[0] - convertedUpdatedLoserRating : convertedUpdatedLoserRating;
+  let newLoserRating = parseFloat(parseFloat(updatedLoserRating).toFixed(decimalPlaces));
 
   //  if expected winner && percentageDifference > threshold don't change ratings
   const percentageDifference = Math.max(...ratingRange)
@@ -146,8 +114,7 @@ export function calculateNewRatings(params?) {
     : 0;
 
   if (
-    (convertedUpdatedWinnerRating > convertedUpdatedLoserRating &&
-      percentageDifference > eloConfig.diffThreshold) ||
+    (convertedUpdatedWinnerRating > convertedUpdatedLoserRating && percentageDifference > eloConfig.diffThreshold) ||
     newWinnerRating < 0 ||
     newLoserRating < 0
   ) {

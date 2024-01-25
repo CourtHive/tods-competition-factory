@@ -4,11 +4,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
-import {
-  awardProfileExpandedLevels,
-  awardProfileLevels,
-  awardProfileThresholds,
-} from './awardProfileExamples';
+import { awardProfileExpandedLevels, awardProfileLevels, awardProfileThresholds } from './awardProfileExamples';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { COMPASS } from '../../../constants/drawDefinitionConstants';
@@ -107,9 +103,7 @@ it('supports finishingPositionRanges definitions with or without level', () => {
   expect(fpMap).toEqual(fpMapExpectation);
 
   // use awardProfiles with levels
-  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [
-    awardProfileExpandedLevels,
-  ];
+  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [awardProfileExpandedLevels];
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions, level: 1 });
   expect(result.success).toEqual(true);
@@ -119,9 +113,7 @@ it('supports finishingPositionRanges definitions with or without level', () => {
   expect(fpMap).toEqual(fpMapExpectation);
 
   // use awardProfiles with levels
-  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [
-    awardProfileLevels,
-  ];
+  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [awardProfileLevels];
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions, level: 1 });
   expect(result.success).toEqual(true);
@@ -192,9 +184,7 @@ it.each(scenarios)('supports drawSize thresholds', (scenario) => {
     .participants.sort(finishingPositionSort);
 
   // use awardProfiles with thresholds
-  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [
-    awardProfileThresholds,
-  ];
+  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [awardProfileThresholds];
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions });
   expect(result.success).toEqual(true);
@@ -203,9 +193,7 @@ it.each(scenarios)('supports drawSize thresholds', (scenario) => {
   const fpMap = getFpMap(participants, personPoints);
 
   for (const expectation of scenario.expectations) {
-    const target = fpMap.find(
-      (e) => e[positionKey] === expectation.positionKey
-    );
+    const target = fpMap.find((e) => e[positionKey] === expectation.positionKey);
     if (target) {
       if (expectation.pointTotal) {
         expect(target[pointTotal]).toEqual(expectation.pointTotal);
@@ -255,30 +243,21 @@ it.each(requireWinScenarios)(
           2: { value: 2400 },
           3: { value: 1950 },
           4: { value: 1800 },
-          8: [
-            { drawSize: 8, requireWin: scenario.requireWin, value: 1110 },
-            { value: 1110 },
-          ],
-          16: [
-            { drawSize: 16, requireWin: scenario.requireWin, value: 750 },
-            { value: 750 },
-          ],
+          8: [{ drawSize: 8, requireWin: scenario.requireWin, value: 1110 }, { value: 1110 }],
+          16: [{ drawSize: 16, requireWin: scenario.requireWin, value: 750 }, { value: 750 }],
         },
       },
     ];
 
     // use awardProfiles with requiredWins
-    policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles =
-      awardProfileRequiredWins;
+    policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = awardProfileRequiredWins;
 
     result = scaleEngine.getTournamentPoints({ policyDefinitions });
     expect(result.success).toEqual(true);
     const personPoints = result.personPoints;
 
     const fpMap = getFpMap(participants, personPoints);
-    const totalPointsAwarded = fpMap
-      .map((entry) => entry[pointTotal])
-      .reduce((a, b) => (a || 0) + (b || 0), 0);
+    const totalPointsAwarded = fpMap.map((entry) => entry[pointTotal]).reduce((a, b) => (a || 0) + (b || 0), 0);
     expect(totalPointsAwarded).toEqual(scenario.totalPointsAwarded);
-  }
+  },
 );

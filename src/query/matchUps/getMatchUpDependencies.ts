@@ -21,11 +21,7 @@ import {
   MISSING_MATCHUPS,
   MISSING_MATCHUP_IDS,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, Tournament } from '../../types/tournamentTypes';
 
 type GetMatchUpDependenciesArgs = {
   includeParticipantDependencies?: boolean;
@@ -49,15 +45,12 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
   const targetMatchUps = params.matchUps ?? []; // requires matchUps { inContext: true }
   let drawIds = params.drawIds ?? [];
 
-  const { includeParticipantDependencies, tournamentRecord, drawDefinition } =
-    params;
+  const { includeParticipantDependencies, tournamentRecord, drawDefinition } = params;
 
   if (!Array.isArray(targetMatchUps)) return { error: MISSING_MATCHUPS };
   if (!Array.isArray(drawIds)) return { error: MISSING_DRAW_ID };
 
-  const matchUpIds = params.matchUpIds?.length
-    ? params.matchUpIds
-    : targetMatchUps.map((matchUp) => matchUp.matchUpId);
+  const matchUpIds = params.matchUpIds?.length ? params.matchUpIds : targetMatchUps.map((matchUp) => matchUp.matchUpId);
   if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUP_IDS };
 
   const positionDependencies = {};
@@ -70,23 +63,14 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
 
   const allTournamentRecords: Tournament[] = Object.values(tournamentRecords);
 
-  const allLinks: DrawLink[] = allTournamentRecords.reduce(
-    (allLinks: any[], tournamentRecord) => {
-      return allLinks
-        .concat(tournamentRecord.events ?? [])
-        .map((event) =>
-          (event.drawDefinitions || []).map(
-            (drawDefinition) => drawDefinition.links || []
-          )
-        )
-        .flat(Infinity);
-    },
-    []
-  );
+  const allLinks: DrawLink[] = allTournamentRecords.reduce((allLinks: any[], tournamentRecord) => {
+    return allLinks
+      .concat(tournamentRecord.events ?? [])
+      .map((event) => (event.drawDefinitions || []).map((drawDefinition) => drawDefinition.links || []))
+      .flat(Infinity);
+  }, []);
 
-  const positionLinks = allLinks.filter(
-    ({ linkType }) => linkType === POSITION
-  );
+  const positionLinks = allLinks.filter(({ linkType }) => linkType === POSITION);
 
   let matchUps: HydratedMatchUp[] | undefined = targetMatchUps;
 
@@ -97,18 +81,13 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
     }).matchUps;
 
     // sourceStructureIdMap returns the sourceStructureId for a given targetStructureId
-    const sourceStructureIds = positionLinks.reduce(
-      (structureIds: string[], link) => {
-        const sourceStructureId = link.source?.structureId;
-        const targetStructureId = link.target?.structureId;
-        if (sourceStructureId && targetStructureId)
-          sourceStructureIdMap[targetStructureId] = sourceStructureId;
-        if (sourceStructureId && !structureIds.includes(sourceStructureId))
-          structureIds.push(sourceStructureId);
-        return structureIds;
-      },
-      []
-    );
+    const sourceStructureIds = positionLinks.reduce((structureIds: string[], link) => {
+      const sourceStructureId = link.source?.structureId;
+      const targetStructureId = link.target?.structureId;
+      if (sourceStructureId && targetStructureId) sourceStructureIdMap[targetStructureId] = sourceStructureId;
+      if (sourceStructureId && !structureIds.includes(sourceStructureId)) structureIds.push(sourceStructureId);
+      return structureIds;
+    }, []);
 
     // positionDependencies map a sourceStructureId to the matchUpIds which it contains
     for (const sourceStructureId of sourceStructureIds) {
@@ -116,8 +95,7 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
     }
     for (const matchUp of matchUps ?? []) {
       // pertains to Round Robins and e.g. Swiss rounds; Round Robins require hoisting to containing structure
-      const sourceStructureId =
-        matchUp.containerStructureId || matchUp.structureId;
+      const sourceStructureId = matchUp.containerStructureId || matchUp.structureId;
       if (sourceStructureIds.includes(sourceStructureId)) {
         positionDependencies[sourceStructureId].push(matchUp.matchUpId);
       }
@@ -148,11 +126,8 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
     matchUpDependencies[matchUpId].dependentMatchUpIds.push(targetMatchUpId);
 
     if (includeParticipantDependencies) {
-      matchUpDependencies[matchUpId].participantIds.forEach(
-        (participantIdDependency) =>
-          matchUpDependencies[targetMatchUpId].participantIds.push(
-            participantIdDependency
-          )
+      matchUpDependencies[matchUpId].participantIds.forEach((participantIdDependency) =>
+        matchUpDependencies[targetMatchUpId].participantIds.push(participantIdDependency),
       );
     }
   };
@@ -168,10 +143,8 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
         initializeMatchUpId(matchUpId);
 
         if (includeParticipantDependencies) {
-          const { individualParticipantIds } =
-            getIndividualParticipantIds(matchUp);
-          matchUpDependencies[matchUpId].participantIds =
-            individualParticipantIds;
+          const { individualParticipantIds } = getIndividualParticipantIds(matchUp);
+          matchUpDependencies[matchUpId].participantIds = individualParticipantIds;
         }
 
         if (winnerMatchUpId) {
@@ -185,25 +158,16 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
           sourceMatchUpIds[loserMatchUpId].push(matchUpId);
         }
 
-        matchUpDependencies[matchUpId].sources.push(
-          sourceMatchUpIds[matchUpId]
-        );
-        const s1 = sourceMatchUpIds[matchUpId]
-          .map((id) => matchUpDependencies[id].sources[0])
-          .flat();
-        const s2 = sourceMatchUpIds[matchUpId]
-          .map((id) => matchUpDependencies[id].sources[1])
-          .flat();
+        matchUpDependencies[matchUpId].sources.push(sourceMatchUpIds[matchUpId]);
+        const s1 = sourceMatchUpIds[matchUpId].map((id) => matchUpDependencies[id].sources[0]).flat();
+        const s2 = sourceMatchUpIds[matchUpId].map((id) => matchUpDependencies[id].sources[1]).flat();
         matchUpDependencies[matchUpId].sources.push(...[s1, s2]);
 
         if (processSourceStructures) {
-          const relevantStructureId =
-            matchUp.containerStructureId || matchUp.structureId;
+          const relevantStructureId = matchUp.containerStructureId || matchUp.structureId;
           const sourceStructureId = sourceStructureIdMap[relevantStructureId];
           if (positionDependencies[sourceStructureId]) {
-            for (const matchUpDependency of positionDependencies[
-              sourceStructureId
-            ]) {
+            for (const matchUpDependency of positionDependencies[sourceStructureId]) {
               initializeMatchUpId(matchUpDependency);
               propagateDependencies(matchUpDependency, matchUpId);
               sourceMatchUpIds[matchUpDependency].push(matchUpId);
@@ -232,9 +196,7 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
       const allDrawIds = allTournamentRecords?.length
         ? allTournamentRecords
             .map(({ events = [] }) =>
-              events.map(({ drawDefinitions = [] }) =>
-                drawDefinitions.map(({ drawId }) => drawId)
-              )
+              events.map(({ drawDefinitions = [] }) => drawDefinitions.map(({ drawId }) => drawId)),
             )
             .flat(Infinity)
         : [];
@@ -248,14 +210,10 @@ export function getMatchUpDependencies(params: GetMatchUpDependenciesArgs): {
         // sort by stage/stageSequence/roundNumber/roundPosition
         .sort(matchUpSort);
 
-      const isRoundRobin = drawMatchUps?.find(
-        ({ roundPosition }) => !roundPosition
-      );
+      const isRoundRobin = drawMatchUps?.find(({ roundPosition }) => !roundPosition);
       // skip this if Round Robin because there is no "Goes To"
       if (!isRoundRobin) {
-        const hasTournamentId = drawMatchUps?.find(
-          ({ tournamentId }) => tournamentId
-        );
+        const hasTournamentId = drawMatchUps?.find(({ tournamentId }) => tournamentId);
         const { drawDefinition } = findEvent({
           tournamentRecord: tournamentRecords[hasTournamentId?.tournamentId],
           drawId,

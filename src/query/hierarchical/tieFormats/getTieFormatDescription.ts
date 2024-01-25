@@ -8,21 +8,13 @@ export function getTieFormatDesc(tieFormat) {
   const tieFormatName = tieFormat.tieFormatName;
   const tieFormatDesc = tieFormat.collectionDefinitions
     ?.map((def) => {
-      const { matchUpType, matchUpFormat, matchUpCount, category, gender } =
-        def;
+      const { matchUpType, matchUpFormat, matchUpCount, category, gender } = def;
 
-      if (!matchUpFormats.includes(matchUpFormat))
-        matchUpFormats.push(matchUpFormat);
+      if (!matchUpFormats.includes(matchUpFormat)) matchUpFormats.push(matchUpFormat);
 
       const ageCategoryCode = category?.ageCategoryCode;
       const matchUpTypeCode = matchUpType === DOUBLES_MATCHUP ? 'D' : 'S';
-      return [
-        matchUpCount,
-        matchUpTypeCode,
-        ageCategoryCode,
-        matchUpFormat,
-        gender,
-      ].join(';');
+      return [matchUpCount, matchUpTypeCode, ageCategoryCode, matchUpFormat, gender].join(';');
     })
     .join('|');
   return {

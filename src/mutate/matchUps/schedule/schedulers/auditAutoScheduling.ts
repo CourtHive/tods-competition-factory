@@ -4,10 +4,7 @@ import { addNotice } from '../../../../global/state/globalState';
 import { AUTO_SCHEDULING_AUDIT } from '../../../../constants/auditConstants';
 import { AUDIT } from '../../../../constants/topicConstants';
 
-export function auditAutoScheduling({
-  autoSchedulingAudit,
-  tournamentRecords,
-}) {
+export function auditAutoScheduling({ autoSchedulingAudit, tournamentRecords }) {
   addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
 
   const getCount = (obj) => {
@@ -16,24 +13,16 @@ export function auditAutoScheduling({
     return values.reduce((count, value) => count + value.length || 0, 0);
   };
 
-  const profileRoundsCount = (
-    autoSchedulingAudit?.schedulingProfile || []
-  ).reduce(
-    (count, dateProfile) =>
-      count +
-      dateProfile.venues.reduce((vc, venue) => vc + venue.rounds.length, 0),
-    0
+  const profileRoundsCount = (autoSchedulingAudit?.schedulingProfile || []).reduce(
+    (count, dateProfile) => count + dateProfile.venues.reduce((vc, venue) => vc + venue.rounds.length, 0),
+    0,
   );
 
   const itemValue = {
     scheduledDatesCount: autoSchedulingAudit.scheduledDates?.length,
     noTimeMatchUpIdsCount: getCount(autoSchedulingAudit?.noTimeMatchUpIds),
-    scheduledMatchUpIdsCount: getCount(
-      autoSchedulingAudit?.scheduledMatchUpIds
-    ),
-    overLimitMatchUpIdsCount: getCount(
-      autoSchedulingAudit?.overLimitMatchUpIds
-    ),
+    scheduledMatchUpIdsCount: getCount(autoSchedulingAudit?.scheduledMatchUpIds),
+    overLimitMatchUpIdsCount: getCount(autoSchedulingAudit?.overLimitMatchUpIds),
     requestConflictsCount: getCount(autoSchedulingAudit?.requestConflicts),
     profileRoundsCount,
   };

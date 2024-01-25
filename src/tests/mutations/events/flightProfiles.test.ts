@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import {
-  DRAW_ID_EXISTS,
-  EXISTING_PROFILE,
-} from '../../../constants/errorConditionConstants';
+import { DRAW_ID_EXISTS, EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -33,14 +30,8 @@ it('can create and return flighProfiles', () => {
     eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
-  ).toEqual([11, 11, 10]);
-  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
-    'Flight 1',
-    'Flight 2',
-    'Flight 3',
-  ]);
+  expect(flightProfile.flights.map(({ drawEntries }) => drawEntries.length)).toEqual([11, 11, 10]);
+  expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual(['Flight 1', 'Flight 2', 'Flight 3']);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
 
   result = tournamentEngine.generateFlightProfile({
@@ -62,9 +53,7 @@ it('can create and return flighProfiles', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
 
   expect(flightProfile.flights.length).toEqual(4);
-  expect(
-    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
-  ).toEqual([8, 8, 8, 8]);
+  expect(flightProfile.flights.map(({ drawEntries }) => drawEntries.length)).toEqual([8, 8, 8, 8]);
   expect(flightProfile.flights.map(({ drawName }) => drawName)).toEqual([
     'Flight 1',
     'Flight 2',
@@ -148,7 +137,5 @@ it('can create and return flighProfiles with drawDefinitions', () => {
   });
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  expect(
-    flightProfile.flights.every(({ drawDefinition }) => drawDefinition)
-  ).toEqual(true);
+  expect(flightProfile.flights.every(({ drawDefinition }) => drawDefinition)).toEqual(true);
 });

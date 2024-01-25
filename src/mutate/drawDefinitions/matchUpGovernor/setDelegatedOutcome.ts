@@ -9,12 +9,7 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function setDelegatedOutcome({
-  drawDefinition,
-  matchUpId,
-  outcome,
-  matchUp,
-}) {
+export function setDelegatedOutcome({ drawDefinition, matchUpId, outcome, matchUp }) {
   if (!matchUp && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!outcome) return { error: MISSING_VALUE, info: 'missing outcome' };
   if (!matchUp && !matchUpId) return { error: MISSING_MATCHUP };
@@ -28,11 +23,7 @@ export function setDelegatedOutcome({
     matchUp = result.matchUp;
   }
 
-  if (
-    typeof outcome !== 'object' ||
-    !outcome.score?.scoreStringSide1 ||
-    !outcome.score?.scoreStringSide2
-  ) {
+  if (typeof outcome !== 'object' || !outcome.score?.scoreStringSide1 || !outcome.score?.scoreStringSide2) {
     return { error: INVALID_VALUES };
   }
 

@@ -1,9 +1,9 @@
 import { findTournamentRecord } from './findTournamentRecord';
 
-import { errorConditionConstants } from '../../../../constants';
+import { errorConditionConstants } from '../../../constants';
 import { SUCCESS } from '../../common/constants/app';
 
-errorConditionConstants
+errorConditionConstants;
 export async function fetchTournamentRecords(params?: { tournamentIds?: string[]; tournamentId?: string }) {
   if (!params) return { error: { message: 'No params provided' } };
 

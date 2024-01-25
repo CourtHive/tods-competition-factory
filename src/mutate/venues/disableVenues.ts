@@ -3,10 +3,7 @@ import { addExtension } from '../extensions/addExtension';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  TOURNAMENT_RECORDS,
-  VENUE_IDS,
-} from '../../constants/attributeConstants';
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '../../constants/attributeConstants';
 
 type DisableVenuesArgs = {
   tournamentRecords: any;
@@ -16,15 +13,11 @@ type DisableVenuesArgs = {
 
 export function disableVenues(params: DisableVenuesArgs) {
   const { tournamentRecords, tournamentId, venueIds } = params;
-  const paramsToCheck: any[] = [
-    { [TOURNAMENT_RECORDS]: true, [VENUE_IDS]: true },
-  ];
+  const paramsToCheck: any[] = [{ [TOURNAMENT_RECORDS]: true, [VENUE_IDS]: true }];
   const paramCheck = checkRequiredParameters(params, paramsToCheck);
   if (paramCheck.error) return paramCheck;
 
-  const tournamentIds = Object.keys(tournamentRecords).filter(
-    (id) => !tournamentId || id === tournamentId
-  );
+  const tournamentIds = Object.keys(tournamentRecords).filter((id) => !tournamentId || id === tournamentId);
 
   for (const tournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[tournamentId];

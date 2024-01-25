@@ -23,32 +23,23 @@ type FoundStructureResult = {
   structure?: Structure;
 };
 
-export function findStructure({
-  drawDefinition,
-  structureId,
-}: FindStructureArgs): ResultType & FoundStructureResult {
+export function findStructure({ drawDefinition, structureId }: FindStructureArgs): ResultType & FoundStructureResult {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
   const { structures } = getDrawStructures({ drawDefinition });
   const allStructures = structures
     ?.map((structure) => {
-      return structure.structures
-        ? [...structure.structures].concat(structure)
-        : structure;
+      return structure.structures ? [...structure.structures].concat(structure) : structure;
     })
     .flat();
 
-  const structure = allStructures?.find(
-    (structure) => structure.structureId === structureId
-  );
+  const structure = allStructures?.find((structure) => structure.structureId === structureId);
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   const containingStructure =
     structure.structureType === ITEM
-      ? allStructures?.find(
-          (s) => s.structures?.some((s) => s.structureId === structureId)
-        )
+      ? allStructures?.find((s) => s.structures?.some((s) => s.structureId === structureId))
       : undefined;
 
   return { structure, containingStructure };
@@ -81,9 +72,7 @@ export function getDrawStructures({
   stage,
 }: GetDrawStructuresArgs): ResultType & FoundDrawStructure {
   const error =
-    (!drawDefinition && MISSING_DRAW_DEFINITION) ||
-    (!drawDefinition?.structures && MISSING_STRUCTURES) ||
-    undefined;
+    (!drawDefinition && MISSING_DRAW_DEFINITION) || (!drawDefinition?.structures && MISSING_STRUCTURES) || undefined;
 
   if (error) return { error, structures: [], stageStructures: {} };
 
@@ -107,14 +96,10 @@ export function getDrawStructures({
         {},
         ...validStages
           .map((stage) => {
-            const relevantStructures = structures?.filter(
-              (structure) => structure.stage === stage
-            );
-            return (
-              relevantStructures?.length && { [stage]: relevantStructures }
-            );
+            const relevantStructures = structures?.filter((structure) => structure.stage === stage);
+            return relevantStructures?.length && { [stage]: relevantStructures };
           })
-          .filter(Boolean)
+          .filter(Boolean),
       )
     : {};
 
@@ -131,8 +116,7 @@ export function getDrawStructures({
     return (
       (!stageSequence && !Array.isArray(stageSequences)) ||
       (stageSequence && structure.stageSequence === stageSequence) ||
-      (Array.isArray(stageSequences) &&
-        stageSequences.includes(structure.stageSequence))
+      (Array.isArray(stageSequences) && stageSequences.includes(structure.stageSequence))
     );
   }
 }

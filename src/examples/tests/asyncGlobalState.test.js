@@ -112,9 +112,7 @@ it.skip('can setStateProvier', async () => {
   result = await competitionEngineAsync.setTournamentRecord(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  result = await tournamentEngineAsync.setTournamentId(
-    tournamentRecord.tournamentId
-  );
+  result = await tournamentEngineAsync.setTournamentId(tournamentRecord.tournamentId);
   expect(result.success).toEqual(true);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -140,12 +138,10 @@ it.skip('can setStateProvier', async () => {
   // expect 7 matchUps to have been deleted
   expect(allDeletedMatchUpIds.length).toEqual(drawSize - 1);
 
-  const { drawDefinition } = await tournamentEngineAsync.generateDrawDefinition(
-    {
-      drawSize,
-      eventId,
-    }
-  );
+  const { drawDefinition } = await tournamentEngineAsync.generateDrawDefinition({
+    drawSize,
+    eventId,
+  });
   result = await tournamentEngineAsync.addDrawDefinition({
     eventId,
     drawDefinition,
@@ -156,9 +152,7 @@ it.skip('can setStateProvier', async () => {
   const tournamentIds = Object.keys(tournamentRecords);
   expect(tournamentIds.length).toEqual(2);
 
-  result = await competitionEngineAsync.removeTournamentRecord(
-    tournamentIds[0]
-  );
+  result = await competitionEngineAsync.removeTournamentRecord(tournamentIds[0]);
   expect(result.success).toEqual(true);
 
   // removing the tournamentRecord matching globalState.tournamentId
@@ -170,9 +164,7 @@ it.skip('can setStateProvier', async () => {
   ({ tournamentRecords } = await competitionEngineAsync.getState());
   expect(Object.keys(tournamentRecords).length).toEqual(1);
 
-  result = await competitionEngineAsync.removeTournamentRecord(
-    tournamentIds[1]
-  );
+  result = await competitionEngineAsync.removeTournamentRecord(tournamentIds[1]);
   expect(result.success).toEqual(true);
 
   result = setSubscriptions('not an object');

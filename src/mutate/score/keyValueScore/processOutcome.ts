@@ -21,14 +21,7 @@ import {
   OUTCOME_SUSPENDED,
 } from './constants';
 
-export function processOutcome({
-  lowSide,
-  value,
-  sets,
-  scoreString,
-  winningSide,
-  matchUpStatus,
-}) {
+export function processOutcome({ lowSide, value, sets, scoreString, winningSide, matchUpStatus }) {
   let updated;
 
   if (value === RETIRE) {

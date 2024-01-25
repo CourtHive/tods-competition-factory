@@ -1,19 +1,13 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { Flight, FlightProfile } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 
 type ModifyDrawNameArgs = {
   tournamentRecord: Tournament;
@@ -41,9 +35,7 @@ export function modifyDrawName({
     flightProfile = getFlightProfile({ event }).flightProfile;
   }
 
-  const flight = flightProfile?.flights?.find(
-    (flight) => flight.drawId === drawId
-  );
+  const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawId);
 
   if (flight) {
     flight.drawName = drawName;

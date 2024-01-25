@@ -5,11 +5,7 @@ import { expect, test } from 'vitest';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
 
 test('hydrated consolation matchUps include seeding when participants advance', () => {
   const {
@@ -38,19 +34,12 @@ test('hydrated consolation matchUps include seeding when participants advance', 
 
   tournamentEngine.setState(tournamentRecord);
 
-  let structures = tournamentEngine.getEvent({ drawId }).drawDefinition
-    .structures;
+  let structures = tournamentEngine.getEvent({ drawId }).drawDefinition.structures;
 
   // get seeded participants from MAIN structure
-  const seedAssignments = structures.find(
-    ({ stage }) => stage === MAIN
-  ).seedAssignments;
-  const seededParticipantIds = seedAssignments.map(
-    ({ participantId }) => participantId
-  );
-  const consolationStructureId = structures.find(
-    ({ stage }) => stage === CONSOLATION
-  ).structureId;
+  const seedAssignments = structures.find(({ stage }) => stage === MAIN).seedAssignments;
+  const seededParticipantIds = seedAssignments.map(({ participantId }) => participantId);
+  const consolationStructureId = structures.find(({ stage }) => stage === CONSOLATION).structureId;
 
   // get positionActions for empty drawPosition in CONSOLATION
   let result = tournamentEngine.positionActions({
@@ -60,13 +49,10 @@ test('hydrated consolation matchUps include seeding when participants advance', 
     drawId,
   });
 
-  const alternateOption = result.validActions.find(
-    ({ type }) => type === ALTERNATE
-  );
-  const { method, payload, availableAlternatesParticipantIds } =
-    alternateOption;
-  const alternateParticipantId = availableAlternatesParticipantIds.find(
-    (participantId) => seededParticipantIds.includes(participantId)
+  const alternateOption = result.validActions.find(({ type }) => type === ALTERNATE);
+  const { method, payload, availableAlternatesParticipantIds } = alternateOption;
+  const alternateParticipantId = availableAlternatesParticipantIds.find((participantId) =>
+    seededParticipantIds.includes(participantId),
   );
   Object.assign(payload, { alternateParticipantId });
 
@@ -77,37 +63,27 @@ test('hydrated consolation matchUps include seeding when participants advance', 
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const firstRoundFirstPositionMain = matchUps.find(
-    ({ roundNumber, roundPosition, stage }) =>
-      stage === MAIN && roundNumber === 1 && roundPosition === 1
+    ({ roundNumber, roundPosition, stage }) => stage === MAIN && roundNumber === 1 && roundPosition === 1,
   );
 
   expect(firstRoundFirstPositionMain.sides[0].seedValue).toEqual(1);
 
-  const firstSeedParticipantId =
-    firstRoundFirstPositionMain.sides[0].participantId;
+  const firstSeedParticipantId = firstRoundFirstPositionMain.sides[0].participantId;
 
   const firstRoundFirstPositionConsolation = matchUps.find(
-    ({ roundNumber, roundPosition, stage }) =>
-      stage === CONSOLATION && roundNumber === 1 && roundPosition === 1
+    ({ roundNumber, roundPosition, stage }) => stage === CONSOLATION && roundNumber === 1 && roundPosition === 1,
   );
 
-  expect(firstRoundFirstPositionConsolation.sides[0].participantId).toEqual(
-    firstSeedParticipantId
-  );
+  expect(firstRoundFirstPositionConsolation.sides[0].participantId).toEqual(firstSeedParticipantId);
 
   structures = tournamentEngine.getEvent({ drawId }).drawDefinition.structures;
 
-  const consolationStructure = structures.find(
-    (structure) => structure.stage === CONSOLATION
-  );
+  const consolationStructure = structures.find((structure) => structure.stage === CONSOLATION);
 
   expect(consolationStructure.seedAssignments[0].seedValue).toEqual(1);
 
   result = tournamentEngine.getEventData({ eventId });
-  expect(
-    result.eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0]
-      .seedValue
-  ).toEqual(1);
+  expect(result.eventData.drawsData[0].structures[1].roundMatchUps[1][0].sides[0].seedValue).toEqual(1);
 
   expect(consolationStructure.seedAssignments.length).toEqual(2);
 

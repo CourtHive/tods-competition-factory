@@ -5,10 +5,7 @@ import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinit
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { ResultType } from '../../../../global/functions/decorateResult';
 import { DrawDefinition } from '../../../../types/tournamentTypes';
-import {
-  MAIN,
-  CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 export function feedInChampionship(params): ResultType & {
   consolationStructure?: any;

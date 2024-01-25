@@ -18,9 +18,7 @@ it('will reject WO/WO for an updated result on matchUp with downstream dependenc
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.every(({ winningSide }) => winningSide)).toEqual(true);
-  const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
-  );
+  const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1);
 
   let params: any = {
     matchUpId: targetMatchUp.matchUpId,

@@ -20,11 +20,7 @@ import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
  * @param {string[]} individualParticipantIds - new value for individualParticipantIds array
  *
  */
-export function modifyIndividualParticipantIds({
-  individualParticipantIds,
-  groupingParticipantId,
-  tournamentRecord,
-}) {
+export function modifyIndividualParticipantIds({ individualParticipantIds, groupingParticipantId, tournamentRecord }) {
   const stack = 'modifyIndividualParticipantIds';
   if (!tournamentRecord)
     return decorateResult({
@@ -39,8 +35,7 @@ export function modifyIndividualParticipantIds({
   const groupingParticipant = tournamentParticipants.find((participant) => {
     return participant.participantId === groupingParticipantId;
   });
-  if (!groupingParticipant)
-    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  if (!groupingParticipant) return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
   if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
     return decorateResult({
@@ -53,34 +48,27 @@ export function modifyIndividualParticipantIds({
   }
 
   // integrity chck to ensure only individuals can be added to groupings
-  const invalidParticipantIds = individualParticipantIds.filter(
-    (participantId) => {
-      const participant = tournamentParticipants.find(
-        (tournamentParticipant) =>
-          tournamentParticipant.participantId === participantId
-      );
-      return participant?.participantType !== INDIVIDUAL;
-    }
-  );
+  const invalidParticipantIds = individualParticipantIds.filter((participantId) => {
+    const participant = tournamentParticipants.find(
+      (tournamentParticipant) => tournamentParticipant.participantId === participantId,
+    );
+    return participant?.participantType !== INDIVIDUAL;
+  });
   if (invalidParticipantIds.length)
     return decorateResult({
       result: { error: INVALID_PARTICIPANT_IDS, invalidParticipantIds },
       stack,
     });
 
-  const existingIndividualParticipantIds =
-    groupingParticipant.individualParticipantIds || [];
+  const existingIndividualParticipantIds = groupingParticipant.individualParticipantIds || [];
 
-  const individualParticipantIdsToAdd = individualParticipantIds.filter(
-    (participantId) => {
-      return !existingIndividualParticipantIds.includes(participantId);
-    }
-  );
+  const individualParticipantIdsToAdd = individualParticipantIds.filter((participantId) => {
+    return !existingIndividualParticipantIds.includes(participantId);
+  });
 
-  const individualParticipantIdsToRemove =
-    existingIndividualParticipantIds.filter((participantId) => {
-      return !individualParticipantIds.includes(participantId);
-    });
+  const individualParticipantIdsToRemove = existingIndividualParticipantIds.filter((participantId) => {
+    return !individualParticipantIds.includes(participantId);
+  });
 
   const addResult = addIndividualParticipantIds({
     individualParticipantIds: individualParticipantIdsToAdd,
@@ -94,13 +82,12 @@ export function modifyIndividualParticipantIds({
     groupingParticipantId,
     tournamentRecord,
   });
-  if (removeResult.error)
-    return decorateResult({ result: removeResult, stack });
+  if (removeResult.error) return decorateResult({ result: removeResult, stack });
 
   const { topics } = getTopics();
   if (topics.includes(MODIFY_PARTICIPANTS)) {
     const updatedParticipant = tournamentParticipants.find(
-      ({ participantId }) => participantId === groupingParticipantId
+      ({ participantId }) => participantId === groupingParticipantId,
     );
 
     addNotice({

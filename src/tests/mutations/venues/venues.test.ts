@@ -1,10 +1,7 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  MISSING_COURTS_INFO,
-  MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_COURTS_INFO, MISSING_VENUE_ID } from '../../../constants/errorConditionConstants';
 
 it('can define a new venue', () => {
   let result = tournamentEngine.newTournamentRecord();
@@ -69,9 +66,7 @@ it('can define a new venue', () => {
   expect(venue.courts.length).toEqual(4);
   expect(venue.courts[0].courtName).toEqual(courtName);
   expect(venue.courts[0].dateAvailability).toEqual([]);
-  expect(venue.courts[1].dateAvailability[0].date).toEqual(
-    dateAvailability[0].date.split('T')[0]
-  );
+  expect(venue.courts[1].dateAvailability[0].date).toEqual(dateAvailability[0].date.split('T')[0]);
 
   const { tournamentRecord } = tournamentEngine.getTournament();
   expect(tournamentRecord.venues.length).toEqual(1);

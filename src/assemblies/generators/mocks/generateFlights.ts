@@ -15,23 +15,14 @@ export function generateFlights({
 }) {
   let uniqueParticipantsIndex = 0;
   for (const drawProfile of drawProfiles) {
-    const {
-      qualifyingPositions = 0,
-      uniqueParticipants,
-      stage = MAIN,
-      drawSize = 0,
-    } = drawProfile;
+    const { qualifyingPositions = 0, uniqueParticipants, stage = MAIN, drawSize = 0 } = drawProfile;
 
     const entriesCount = drawSize - qualifyingPositions;
-    const requiresUniqueParticipants =
-      uniqueParticipants || gender || category || stage === QUALIFYING;
+    const requiresUniqueParticipants = uniqueParticipants || gender || category || stage === QUALIFYING;
 
     // if a drawProfile has specified uniqueParticipants...
     const drawParticipants = requiresUniqueParticipants
-      ? uniqueDrawParticipants.slice(
-          uniqueParticipantsIndex,
-          uniqueParticipantsIndex + entriesCount
-        )
+      ? uniqueDrawParticipants.slice(uniqueParticipantsIndex, uniqueParticipantsIndex + entriesCount)
       : stageParticipants[stage || MAIN] || [];
 
     if (requiresUniqueParticipants) uniqueParticipantsIndex += entriesCount;

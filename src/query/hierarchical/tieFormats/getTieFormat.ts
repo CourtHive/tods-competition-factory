@@ -2,10 +2,7 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../../acquire/findStructure';
 import { getObjectTieFormat } from './getObjectTieFormat';
 import { getItemTieFormat } from './getItemTieFormat';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -16,13 +13,7 @@ import {
   MISSING_TIE_FORMAT,
 } from '../../../constants/errorConditionConstants';
 
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Structure,
-  TieFormat,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
 
 type GetTieFormatArgs = {
   drawDefinition?: DrawDefinition;
@@ -54,8 +45,7 @@ export function getTieFormat({
   structureId = structure?.structureId ?? structureId;
   matchUpId = matchUp?.matchUpId ?? matchUpId;
 
-  if ((matchUpId || structureId) && !drawDefinition)
-    return { error: MISSING_DRAW_DEFINITION };
+  if ((matchUpId || structureId) && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   if (eventId && event) {
     tieFormat = getObjectTieFormat(event);
@@ -113,8 +103,7 @@ export function getTieFormat({
     tieFormat = getObjectTieFormat(drawDefinition) || getObjectTieFormat(event);
   }
 
-  if (!tieFormat)
-    return decorateResult({ result: { error: MISSING_TIE_FORMAT }, stack });
+  if (!tieFormat) return decorateResult({ result: { error: MISSING_TIE_FORMAT }, stack });
 
   return {
     ...SUCCESS,

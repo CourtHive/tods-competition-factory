@@ -11,12 +11,7 @@ import {
   ErrorType,
   INCOMPLETE_SOURCE_STRUCTURE,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  PositionAssignment,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
 
 type StructurePositionAssignmentType = {
   positionAssignments: PositionAssignment[];
@@ -34,9 +29,7 @@ type AutomatedPlayoffPositioningArgs = {
   seedsOnly?: boolean;
   event: Event;
 };
-export function automatedPlayoffPositioning(
-  params: AutomatedPlayoffPositioningArgs
-): {
+export function automatedPlayoffPositioning(params: AutomatedPlayoffPositioningArgs): {
   structurePositionAssignments?: StructurePositionAssignmentType[];
   positioningReports?: { [key: string]: any }[];
   success?: boolean;
@@ -68,9 +61,7 @@ export function automatedPlayoffPositioning(
   const playoffStructures = getPlayoffStructures({
     drawDefinition,
     structureId,
-  }).playoffStructures?.sort(
-    (a, b) => getMinFinishingPositionRange(a) - getMinFinishingPositionRange(b)
-  );
+  }).playoffStructures?.sort((a, b) => getMinFinishingPositionRange(a) - getMinFinishingPositionRange(b));
   const structurePositionAssignments: StructurePositionAssignmentType[] = [];
 
   const positioningReports: { [key: string]: any }[] = [];
@@ -97,8 +88,7 @@ export function automatedPlayoffPositioning(
           structureId: playoffStructureId,
         });
       }
-      if (result.positioningReport)
-        positioningReports.push(result.positioningReport);
+      if (result.positioningReport) positioningReports.push(result.positioningReport);
     }
   }
 

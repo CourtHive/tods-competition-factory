@@ -26,16 +26,13 @@ export function getPairings({
     });
 
     const salting = (typeof salted === 'number' && salted) || 0.5;
-    const salt =
-      (salted && (Math.round(Math.random()) ? salting : salting * -1)) || 0;
+    const salt = (salted && (Math.round(Math.random()) ? salting : salting * -1)) || 0;
     const ratingsDifference = Math.abs(ratings[0] - ratings[1]) + salt;
     const pairingDelta = Math.abs(ratings[0] - ratings[1]);
     deltaObjects[pairing] = pairingDelta;
 
     if (!valueObjects[pairing]) valueObjects[pairing] = 0;
-    valueObjects[pairing] += ratingsDifference
-      ? Math.pow(ratingsDifference, 2)
-      : 0;
+    valueObjects[pairing] += ratingsDifference ? Math.pow(ratingsDifference, 2) : 0;
   });
 
   /**
@@ -56,14 +53,13 @@ export function getPairings({
     valueObjects,
   });
 
-  const { candidate, candidatesCount, deltaCandidate, iterations } =
-    generateCandidate({
-      valueSortedPairings,
-      maxIterations,
-      pairingValues,
-      deltaObjects,
-      valueObjects,
-    });
+  const { candidate, candidatesCount, deltaCandidate, iterations } = generateCandidate({
+    valueSortedPairings,
+    maxIterations,
+    pairingValues,
+    deltaObjects,
+    valueObjects,
+  });
 
   const { participantIdPairings } = candidate;
 

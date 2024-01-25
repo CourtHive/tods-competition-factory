@@ -4,10 +4,7 @@ import { globalState } from '../../../../..';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import {
-  MODIFY_DRAW_DEFINITION,
-  MODIFY_POSITION_ASSIGNMENTS,
-} from '../../../../../constants/topicConstants';
+import { MODIFY_DRAW_DEFINITION, MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
 import {
   ALTERNATE_PARTICIPANT,
   REMOVE_ASSIGNMENT,
@@ -47,9 +44,7 @@ it('can recognize valid SWAP positions', () => {
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect(option.availableAssignments[0].drawPosition).toEqual(2);
   expect(option.availableAssignments.length).toEqual(31);
 
@@ -63,20 +58,16 @@ it('can recognize valid SWAP positions', () => {
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
 
-  const relevantOriginalAssignments = originalPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
+  const relevantOriginalAssignments = originalPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
-  const relevantModifiedAssignments = modifiedPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
-  );
-
-  expect(relevantOriginalAssignments[0].participantId).toEqual(
-    relevantModifiedAssignments[1].participantId
+  const relevantModifiedAssignments = modifiedPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
 
-  expect(relevantOriginalAssignments[1].participantId).toEqual(
-    relevantModifiedAssignments[0].participantId
-  );
+  expect(relevantOriginalAssignments[0].participantId).toEqual(relevantModifiedAssignments[1].participantId);
+
+  expect(relevantOriginalAssignments[1].participantId).toEqual(relevantModifiedAssignments[0].participantId);
 
   result = tournamentEngine.positionActions({
     drawPosition: 3,
@@ -97,9 +88,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
     subscriptions: {
       [MODIFY_DRAW_DEFINITION]: ([{ drawDefinition }]) => {
         drawModifications += 1;
-        expect(new Date(drawDefinition.updatedAt).getTime()).toBeGreaterThan(
-          new Date(updatedAt).getTime()
-        );
+        expect(new Date(drawDefinition.updatedAt).getTime()).toBeGreaterThan(new Date(updatedAt).getTime());
         updatedAt = drawDefinition.updatedAt;
       },
       [MODIFY_POSITION_ASSIGNMENTS]: (positions) => {
@@ -139,9 +128,7 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect(option.availableAssignments[0].drawPosition).toEqual(2); // this is a bye position
   expect(option.availableAssignments.length).toEqual(31); // because byes are not currently valid
 
@@ -155,20 +142,16 @@ it('can SWAP assignment.bye with assignment.participantId with 32 drawSize', () 
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
 
-  const relevantOriginalAssignments = originalPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
+  const relevantOriginalAssignments = originalPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
-  const relevantModifiedAssignments = modifiedPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
-  );
-
-  expect(relevantOriginalAssignments[0].participantId).toEqual(
-    relevantModifiedAssignments[1].participantId
+  const relevantModifiedAssignments = modifiedPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
 
-  expect(relevantOriginalAssignments[1].participantId).toEqual(
-    relevantModifiedAssignments[0].participantId
-  );
+  expect(relevantOriginalAssignments[0].participantId).toEqual(relevantModifiedAssignments[1].participantId);
+
+  expect(relevantOriginalAssignments[1].participantId).toEqual(relevantModifiedAssignments[0].participantId);
 
   result = tournamentEngine.positionActions({
     drawPosition,
@@ -209,9 +192,7 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   const originalPositionAssignments = structures[0].positionAssignments;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  let finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
 
   const drawPosition = 4;
@@ -224,9 +205,7 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect(option.availableAssignments[1].drawPosition).toEqual(2); // this is a bye position
   expect(option.availableAssignments.length).toEqual(3);
 
@@ -240,20 +219,16 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
 
-  const relevantOriginalAssignments = originalPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
+  const relevantOriginalAssignments = originalPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
-  const relevantModifiedAssignments = modifiedPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
-  );
-
-  expect(relevantOriginalAssignments[0].participantId).toEqual(
-    relevantModifiedAssignments[1].participantId
+  const relevantModifiedAssignments = modifiedPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
 
-  expect(relevantOriginalAssignments[1].participantId).toEqual(
-    relevantModifiedAssignments[0].participantId
-  );
+  expect(relevantOriginalAssignments[0].participantId).toEqual(relevantModifiedAssignments[1].participantId);
+
+  expect(relevantOriginalAssignments[1].participantId).toEqual(relevantModifiedAssignments[0].participantId);
 
   result = tournamentEngine.positionActions({
     drawPosition,
@@ -269,9 +244,7 @@ it('can SWAP assignment.bye with assignment.participantId', () => {
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   expect(finalMatchUp.drawPositions).toEqual([3, undefined]);
 });
 
@@ -297,9 +270,7 @@ it('can SWAP assigned participantIds', () => {
   const originalPositionAssignments = structures[0].positionAssignments;
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  let finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   if (finalMatchUp.drawPositions) {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   }
@@ -314,9 +285,7 @@ it('can SWAP assigned participantIds', () => {
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect(option.availableAssignments[1].drawPosition).toEqual(2);
   expect(option.availableAssignments.length).toEqual(3);
 
@@ -330,20 +299,16 @@ it('can SWAP assigned participantIds', () => {
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
 
-  const relevantOriginalAssignments = originalPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
+  const relevantOriginalAssignments = originalPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
-  const relevantModifiedAssignments = modifiedPositionAssignments.filter(
-    (assignment) => payload.drawPositions.includes(assignment.drawPosition)
-  );
-
-  expect(relevantOriginalAssignments[0].participantId).toEqual(
-    relevantModifiedAssignments[1].participantId
+  const relevantModifiedAssignments = modifiedPositionAssignments.filter((assignment) =>
+    payload.drawPositions.includes(assignment.drawPosition),
   );
 
-  expect(relevantOriginalAssignments[1].participantId).toEqual(
-    relevantModifiedAssignments[0].participantId
-  );
+  expect(relevantOriginalAssignments[0].participantId).toEqual(relevantModifiedAssignments[1].participantId);
+
+  expect(relevantOriginalAssignments[1].participantId).toEqual(relevantModifiedAssignments[0].participantId);
 
   result = tournamentEngine.positionActions({
     drawPosition,
@@ -359,9 +324,7 @@ it('can SWAP assigned participantIds', () => {
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  finalMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  finalMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   if (finalMatchUp.drawPositions) {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   }
@@ -388,15 +351,14 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   } = tournamentEngine.getEvent({ drawId });
   const structureId = structures[0].structureId;
 
-  const { positionAssignments: originalPositionAssignments } =
-    tournamentEngine.getPositionAssignments({
-      drawId: drawIds[0],
-      structureId,
-    });
+  const { positionAssignments: originalPositionAssignments } = tournamentEngine.getPositionAssignments({
+    drawId: drawIds[0],
+    structureId,
+  });
 
   const drawPosition = 4;
   const originalDrawPositionParticipantId = originalPositionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
+    (assignment) => assignment.drawPosition === drawPosition,
   ).participantId;
 
   let result = tournamentEngine.positionActions({
@@ -408,9 +370,7 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === SWAP_PARTICIPANTS
-  );
+  const option = result.validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect(option.availableAssignments[1].drawPosition).toEqual(2);
   expect(option.availableAssignments.length).toEqual(3);
 
@@ -423,19 +383,16 @@ it('can SWAP assigned participantIds in a ROUND_ROBIN', () => {
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId }));
 
-  const { positionAssignments: modifiedPositionAssignments } =
-    tournamentEngine.getPositionAssignments({
-      drawId: drawIds[0],
-      structureId,
-    });
+  const { positionAssignments: modifiedPositionAssignments } = tournamentEngine.getPositionAssignments({
+    drawId: drawIds[0],
+    structureId,
+  });
 
   const modifiedDrawPositionParticipantId = modifiedPositionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
+    (assignment) => assignment.drawPosition === drawPosition,
   ).participantId;
 
-  expect(originalDrawPositionParticipantId).not.toEqual(
-    modifiedDrawPositionParticipantId
-  );
+  expect(originalDrawPositionParticipantId).not.toEqual(modifiedDrawPositionParticipantId);
 
   result = tournamentEngine.positionActions({
     drawPosition,
@@ -462,9 +419,7 @@ it('can swap Qualifier assignments with BYE assignments', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingPositions: 4 }],
           },
         ],
         drawSize: 16,
@@ -475,20 +430,15 @@ it('can swap Qualifier assignments with BYE assignments', () => {
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { positionAssignments, structureId } =
-    tournamentEngine.getPositionAssignments({
-      drawId,
-    });
+  const { positionAssignments, structureId } = tournamentEngine.getPositionAssignments({
+    drawId,
+  });
 
   // get the first BYE position, of 2
-  const byeDrawPosition = positionAssignments.find(
-    ({ bye }) => bye
-  ).drawPosition;
+  const byeDrawPosition = positionAssignments.find(({ bye }) => bye).drawPosition;
 
   // get the last qualifier position, of 4
-  const qualifierDrawPosition = positionAssignments
-    .filter(({ qualifier }) => qualifier)
-    .pop().drawPosition;
+  const qualifierDrawPosition = positionAssignments.filter(({ qualifier }) => qualifier).pop().drawPosition;
 
   const { validActions } = tournamentEngine.positionActions({
     drawPosition: byeDrawPosition,
@@ -496,13 +446,11 @@ it('can swap Qualifier assignments with BYE assignments', () => {
     drawId,
   });
 
-  const swapAction = validActions.find(
-    ({ type }) => type === SWAP_PARTICIPANTS
-  );
+  const swapAction = validActions.find(({ type }) => type === SWAP_PARTICIPANTS);
   expect(swapAction).toBeDefined();
 
   const targetAssignment = swapAction.availableAssignments.find(
-    ({ drawPosition }) => drawPosition === qualifierDrawPosition
+    ({ drawPosition }) => drawPosition === qualifierDrawPosition,
   );
   expect(targetAssignment.qualifier).toEqual(true);
 

@@ -6,13 +6,8 @@ type getDrawTypeCoercionArgs = {
   appliedPolicies?: PolicyDefinitions;
   drawType?: string;
 };
-export function getDrawTypeCoercion({
-  policyDefinitions,
-  appliedPolicies,
-  drawType,
-}: getDrawTypeCoercionArgs) {
-  const policyDefined =
-    policyDefinitions?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion;
+export function getDrawTypeCoercion({ policyDefinitions, appliedPolicies, drawType }: getDrawTypeCoercionArgs) {
+  const policyDefined = policyDefinitions?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion;
   const policyApplied = appliedPolicies?.[POLICY_TYPE_DRAWS]?.drawTypeCoercion;
 
   return (

@@ -7,11 +7,7 @@ import { expect, it } from 'vitest';
 import { MISSING_POLICY_DEFINITION } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  CURTIS_CONSOLATION,
-  MAIN,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+import { CURTIS_CONSOLATION, MAIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
 const awardProfiles = [
   // TODO: requireWinDefault - to get points for a default there must be at least one win
@@ -122,10 +118,9 @@ it.skip('can generate points from tournamentRecords', () => {
   const { tournamentRecord } = result;
   tournamentEngine.setState(tournamentRecord);
 
-  const { policyDefinitions: attachedPolicies } =
-    tournamentEngine.getPolicyDefinitions({
-      policyTypes: [POLICY_TYPE_RANKING_POINTS],
-    });
+  const { policyDefinitions: attachedPolicies } = tournamentEngine.getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_RANKING_POINTS],
+  });
   expect(attachedPolicies[POLICY_TYPE_RANKING_POINTS]).not.toBeUndefined();
 
   result = scaleEngine.getTournamentPoints();
@@ -135,9 +130,9 @@ it.skip('can generate points from tournamentRecords', () => {
   expect(
     Object.values(result.personPoints)
       .map((p: any) => p[0].points)
-      .sort((a, b) => a - b)
+      .sort((a, b) => a - b),
   ).toEqual(
     // prettier-ignore
-    [ 750, 750, 750, 750, 750, 750, 750, 750, 840, 840, 840, 840, 840, 840, 840, 840 ]
+    [ 750, 750, 750, 750, 750, 750, 750, 750, 840, 840, 840, 840, 840, 840, 840, 840 ],
   );
 });

@@ -10,9 +10,7 @@ it('will hydrate matchUps with tournament level processCodes', () => {
     drawProfiles: [{ drawSize: 4 }],
   });
 
-  const matchUps = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps().matchUps;
+  const matchUps = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps().matchUps;
 
   for (const matchUp of matchUps) {
     expect(matchUp.processCodes).toEqual(processCodes);
@@ -24,9 +22,7 @@ it('will hydrate matchUps with event level processCodes', () => {
     eventProfiles: [{ processCodes, drawProfiles: [{ drawSize: 4 }] }],
   });
 
-  const matchUps = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps().matchUps;
+  const matchUps = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps().matchUps;
 
   for (const matchUp of matchUps) {
     expect(matchUp.processCodes).toEqual(processCodes);
@@ -38,9 +34,7 @@ it('will hydrate matchUps with drawDefinition level processCodes', () => {
     drawProfiles: [{ drawSize: 4, processCodes }],
   });
 
-  const matchUps = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps().matchUps;
+  const matchUps = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps().matchUps;
 
   for (const matchUp of matchUps) {
     expect(matchUp.processCodes).toEqual(processCodes);

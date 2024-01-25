@@ -1,10 +1,7 @@
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
-import {
-  getOrderedDrawPositionPairs,
-  removeAssignment,
-} from '../../../drawDefinitions/testingUtilities';
+import { getOrderedDrawPositionPairs, removeAssignment } from '../../../drawDefinitions/testingUtilities';
 
 it('can advance participants when double BYEs are created', () => {
   const drawProfiles = [
@@ -81,12 +78,5 @@ it('can advance participants when double BYEs are created', () => {
   });
   expect(result.success).toEqual(true);
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [3],
-    [8],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [3], [8]]);
 });

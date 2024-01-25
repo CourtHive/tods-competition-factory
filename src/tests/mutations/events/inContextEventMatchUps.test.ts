@@ -29,14 +29,11 @@ it('can return event matchUps with context and upcoming matchUps', () => {
   checkExpectation({ matchUps, expectation: [1, 1, [2, 1]] });
   checkExpectation({ matchUps, expectation: [1, 3, [2, 2]] });
 
-  const { matchUps: tournamentMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      nextMatchUps: true,
-    });
+  const { matchUps: tournamentMatchUps } = tournamentEngine.allTournamentMatchUps({
+    nextMatchUps: true,
+  });
 
-  const relevantMatchUps = tournamentMatchUps.filter(
-    (matchUp) => matchUp.drawId === drawId
-  );
+  const relevantMatchUps = tournamentMatchUps.filter((matchUp) => matchUp.drawId === drawId);
   // convenience function for testing, expectation:
   // [roundNumber, roundPosition, [winnerToRoundNumber, winnerToRoundPosition], [loserToRoundNumber, loserToRoundPosition]]
   checkExpectation({
@@ -75,14 +72,11 @@ it('can return event matchUps with context and upcoming matchUps for FEED_IN_CHA
   checkExpectation({ matchUps, expectation: [1, 1, [2, 1]] });
   checkExpectation({ matchUps, expectation: [1, 3, [2, 2]] });
 
-  const { matchUps: tournamentMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      nextMatchUps: true,
-    });
+  const { matchUps: tournamentMatchUps } = tournamentEngine.allTournamentMatchUps({
+    nextMatchUps: true,
+  });
 
-  const relevantMatchUps = tournamentMatchUps.filter(
-    (matchUp) => matchUp.drawId === drawId
-  );
+  const relevantMatchUps = tournamentMatchUps.filter((matchUp) => matchUp.drawId === drawId);
   // convenience function for testing, expectation:
   // [roundNumber, roundPosition, [winnerToRoundNumber, winnerToRoundPosition], [loserToRoundNumber, loserToRoundPosition]]
   checkExpectation({
@@ -131,32 +125,23 @@ it('can return enerate upcoming matchUps for FEED_IN_CHAMPIONSHIP with BYEs in C
 });
 
 function checkExpectation({ matchUps, expectation }) {
-  const [roundNumber, roundPosition, expectedWinnerTo, expectedLoserTo] =
-    expectation;
+  const [roundNumber, roundPosition, expectedWinnerTo, expectedLoserTo] = expectation;
   const matchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
+    (matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition,
   );
   const winnerTo: any = matchUp.winnerTo;
   const loserTo: any = matchUp.loserTo;
 
   if (expectedWinnerTo) {
     const [expectedRoundNumber, expectedRoundPosition] = expectedWinnerTo;
-    const {
-      roundNumber: targetRoundNumber,
-      roundPosition: targetRoundPosition,
-    } = winnerTo;
+    const { roundNumber: targetRoundNumber, roundPosition: targetRoundPosition } = winnerTo;
     expect(targetRoundNumber).toEqual(expectedRoundNumber);
     expect(targetRoundPosition).toEqual(expectedRoundPosition);
   }
 
   if (expectedLoserTo) {
     const [expectedRoundNumber, expectedRoundPosition] = expectedLoserTo;
-    const {
-      roundNumber: targetRoundNumber,
-      roundPosition: targetRoundPosition,
-    } = loserTo;
+    const { roundNumber: targetRoundNumber, roundPosition: targetRoundPosition } = loserTo;
     expect(targetRoundNumber).toEqual(expectedRoundNumber);
     expect(targetRoundPosition).toEqual(expectedRoundPosition);
   }

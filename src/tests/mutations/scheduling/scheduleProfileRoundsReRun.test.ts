@@ -65,9 +65,8 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(scheduledMatchUps.length).toEqual(8);
 
   let roundNumbers = scheduledMatchUps.reduce(
-    (rn, matchUp) =>
-      rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber),
-    []
+    (rn, matchUp) => (rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber)),
+    [],
   );
   expect(roundNumbers).toEqual([1]);
 
@@ -92,15 +91,12 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(scheduledMatchUps.length).toEqual(12);
 
   roundNumbers = scheduledMatchUps.reduce(
-    (rn, matchUp) =>
-      rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber),
-    []
+    (rn, matchUp) => (rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber)),
+    [],
   );
   expect(roundNumbers).toEqual([1, 2]);
 
   const { tournamentRecord: tournament } = tournamentEngine.getTournament();
-  const schedulingTimeItem = tournament.timeItems.filter(
-    ({ itemType }) => itemType === AUTO_SCHEDULING_AUDIT
-  );
+  const schedulingTimeItem = tournament.timeItems.filter(({ itemType }) => itemType === AUTO_SCHEDULING_AUDIT);
   expect(schedulingTimeItem.length).toEqual(2);
 });

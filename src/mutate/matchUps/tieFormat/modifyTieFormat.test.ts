@@ -25,16 +25,12 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     ],
   });
 
-  const setStateResult = tournamentEngine
-    .devContext(true)
-    .setState(tournamentRecord);
+  const setStateResult = tournamentEngine.devContext(true).setState(tournamentRecord);
   expect(setStateResult.success).toEqual(true);
 
   const originalMatchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(originalMatchUps.length).toEqual(30);
-  const teamMatchUps = originalMatchUps.filter(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
+  const teamMatchUps = originalMatchUps.filter(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
   expect(teamMatchUps.length).toEqual(drawSize - 1);
   const originalTieMatchUpsCount = teamMatchUps[0].tieMatchUps.length;
   expect(originalTieMatchUpsCount).toEqual(9);
@@ -110,22 +106,17 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   for (const notice of matchUpModifyNotices) {
     // each tie has had matchUpCount tieMatchUps added
-    expect(notice.tieMatchUps.length).toEqual(
-      originalTieMatchUpsCount + matchUpCount
-    );
+    expect(notice.tieMatchUps.length).toEqual(originalTieMatchUpsCount + matchUpCount);
   }
 
   tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
-  let target = tieFormatResult.tieFormat.collectionDefinitions.find(
-    (def) => def.collectionId === collectionId
-  );
+  let target = tieFormatResult.tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId);
   expect(target.collectionValue).toEqual(2);
   expect(target.matchUpValue).toBeUndefined();
 
-  let targetCollectionDefinition =
-    result.processedTieFormat.collectionDefinitions.find(
-      (def) => def.collectionId === collectionId
-    );
+  let targetCollectionDefinition = result.processedTieFormat.collectionDefinitions.find(
+    (def) => def.collectionId === collectionId,
+  );
   targetCollectionDefinition.matchUpValue = 1;
   result = tournamentEngine.modifyTieFormat({
     modifiedTieFormat: result.processedTieFormat,
@@ -135,16 +126,13 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
 
   tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
-  target = tieFormatResult.tieFormat.collectionDefinitions.find(
-    (def) => def.collectionId === collectionId
-  );
+  target = tieFormatResult.tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId);
   expect(target.collectionValue).toEqual(2);
   expect(target.matchUpValue).toBeUndefined();
 
-  targetCollectionDefinition =
-    tieFormatResult.tieFormat.collectionDefinitions.find(
-      (def) => def.collectionId === collectionId
-    );
+  targetCollectionDefinition = tieFormatResult.tieFormat.collectionDefinitions.find(
+    (def) => def.collectionId === collectionId,
+  );
   targetCollectionDefinition.collectionValue = undefined;
   targetCollectionDefinition.matchUpValue = 1;
 
@@ -156,9 +144,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
   expect(result.success).toEqual(true);
 
   tieFormatResult = tournamentEngine.getTieFormat({ eventId, drawId });
-  target = tieFormatResult.tieFormat.collectionDefinitions.find(
-    (def) => def.collectionId === collectionId
-  );
+  target = tieFormatResult.tieFormat.collectionDefinitions.find((def) => def.collectionId === collectionId);
   expect(target.collectionValue).toBeUndefined();
   expect(target.matchUpValue).toEqual(1);
 });

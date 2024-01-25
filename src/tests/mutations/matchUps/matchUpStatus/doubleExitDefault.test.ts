@@ -11,18 +11,10 @@ import { expect, it, test } from 'vitest';
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { POLICY_TYPE_PROGRESSION } from '../../../../constants/policyConstants';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  BYE,
-  DEFAULTED,
-  DOUBLE_DEFAULT,
-} from '../../../../constants/matchUpStatusConstants';
+import { BYE, DEFAULTED, DOUBLE_DEFAULT } from '../../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 test('A DOUBLE_DEFAULT will create a DEFAULT and winningSide changes will propagate past WD/WD', () => {
   const drawProfiles = [{ drawSize: 16 }];
@@ -122,9 +114,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAU
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -216,9 +206,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -322,9 +310,7 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
   // get the first upcoming matchUp, which will be { roundPosition: 2 }
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const [matchUp] = upcomingMatchUps;
   const { matchUpId, roundPosition } = matchUp;
   expect(roundPosition).toEqual(2);
@@ -341,16 +327,12 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    mainStructureOrderedPairs
-  );
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(mainStructureOrderedPairs);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    consolationStructureOrderedPairs
-  );
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(consolationStructureOrderedPairs);
 
   let result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
@@ -374,22 +356,13 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
   const { positionAssignments } = getPositionAssignments({
     structure: consolationStructure,
   });
-  const consolationByeDrawPositions = positionAssignments
-    ?.filter(({ bye }) => bye)
-    .map(getDrawPosition);
+  const consolationByeDrawPositions = positionAssignments?.filter(({ bye }) => bye).map(getDrawPosition);
   expect(consolationByeDrawPositions).toEqual([1, 4]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1],
-    [1],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [1]]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
@@ -413,9 +386,7 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
     structureId: mainStructure.structureId,
   }));
 
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    mainStructureOrderedPairs
-  );
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(mainStructureOrderedPairs);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
@@ -551,14 +522,10 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
   ];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    preWalkover
-  );
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4
-  );
+  const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4);
   const result = tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
@@ -567,9 +534,7 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    preWalkover
-  );
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
 
@@ -647,9 +612,7 @@ it('handles DOUBLE DOUBLE_DEFAULT advancement', () => {
   ]);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
-  );
+  const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1);
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
     winningSide: 1,
@@ -732,9 +695,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   ]);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
-  const targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4
-  );
+  const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4);
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
     winningSide: 1,

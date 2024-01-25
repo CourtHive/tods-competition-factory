@@ -708,63 +708,59 @@ const scores = [
 let iteration = 0;
 const log = false;
 
-it.each(scores.slice(start, end || undefined))(
-  'can tidy scores',
-  ({ score, expectation, complete }) => {
-    if (complete) {
+it.each(scores.slice(start, end || undefined))('can tidy scores', ({ score, expectation, complete }) => {
+  if (complete) {
+    const transformations = getTransformations();
+    log && console.log({ transformations });
+  } else {
+    iteration += 1;
+
+    const singleScore = end - start === 1;
+    if (singleScore && log) console.log({ score });
+
+    const {
+      matchUpStatus,
+      modifications,
+      score: tidy,
+      attributes,
+      isValid,
+    } = tidyScore({
+      profile: { matchUpStatuses: { retired: ['rtd', 'coceed'] } }, // misspelling
+      stepLog: singleScore,
+      iteration,
+      fullLog,
+      score,
+    });
+
+    let metExpectation;
+    if (expectation?.matchUpStatus) {
+      if (expectations) expect(matchUpStatus).toEqual(expectation.matchUpStatus);
+      metExpectation = true;
+    }
+
+    if (expectation?.score !== undefined) {
+      if (expectations) {
+        expect(tidy).toEqual(expectation.score);
+      } else if (tidy !== expectation.score) {
+        console.log('\r\nINCORRECT\r\n', {
+          iteration,
+          score,
+          matchUpStatus,
+          tidy,
+          expectation,
+        });
+      }
+      metExpectation = true;
+    }
+
+    if ((validPatterns && !isValid) || singleScore) {
       const transformations = getTransformations();
-      log && console.log({ transformations });
-    } else {
-      iteration += 1;
+      console.log({ transformations });
+      console.log({ isValid, score, tidy, modifications, attributes });
+    }
 
-      const singleScore = end - start === 1;
-      if (singleScore && log) console.log({ score });
-
-      const {
-        matchUpStatus,
-        modifications,
-        score: tidy,
-        attributes,
-        isValid,
-      } = tidyScore({
-        profile: { matchUpStatuses: { retired: ['rtd', 'coceed'] } }, // misspelling
-        stepLog: singleScore,
-        iteration,
-        fullLog,
-        score,
-      });
-
-      let metExpectation;
-      if (expectation?.matchUpStatus) {
-        if (expectations)
-          expect(matchUpStatus).toEqual(expectation.matchUpStatus);
-        metExpectation = true;
-      }
-
-      if (expectation?.score !== undefined) {
-        if (expectations) {
-          expect(tidy).toEqual(expectation.score);
-        } else if (tidy !== expectation.score) {
-          console.log('\r\nINCORRECT\r\n', {
-            iteration,
-            score,
-            matchUpStatus,
-            tidy,
-            expectation,
-          });
-        }
-        metExpectation = true;
-      }
-
-      if ((validPatterns && !isValid) || singleScore) {
-        const transformations = getTransformations();
-        console.log({ transformations });
-        console.log({ isValid, score, tidy, modifications, attributes });
-      }
-
-      if (expectations && !metExpectation) {
-        console.log({ score, tidy, matchUpStatus });
-      }
+    if (expectations && !metExpectation) {
+      console.log({ score, tidy, matchUpStatus });
     }
   }
-);
+});

@@ -20,7 +20,7 @@ it('can rename structures', () => {
     {},
     ...drawDefinition.structures.map(({ structureId, structureName }) => ({
       [structureId]: structureName,
-    }))
+    })),
   );
   expect(Object.values(structureMap)).toEqual([
     'East',
@@ -47,7 +47,7 @@ it('can rename structures', () => {
     {},
     ...drawDefinition.structures.map(({ structureId, structureName }) => ({
       [structureId]: structureName,
-    }))
+    })),
   );
 
   expect(Object.values(structureMap)).toEqual(newNames);

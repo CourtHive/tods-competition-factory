@@ -6,11 +6,7 @@ import { expect, it } from 'vitest';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { SCORE } from '../../../../constants/matchUpActionConstants';
-import {
-  BYE,
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('can create double bye and remove advanced participant when outcome is reset', () => {
   const participantsProfile = {
@@ -52,11 +48,10 @@ it('can create double bye and remove advanced participant when outcome is reset'
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
-    tournamentEngine.drawMatchUps({
-      drawId,
-      inContext: true,
-    });
+  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  });
   expect(byeMatchUps.length).toEqual(1);
   expect(completedMatchUps.length).toEqual(3);
   expect(pendingMatchUps.length).toEqual(1);
@@ -81,9 +76,7 @@ it('can create double bye and remove advanced participant when outcome is reset'
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([3]);
 
   // now remove the result for matchUp: { roundNumber: 1, roundPosition: 2 }
-  matchUp = matchUps.find(
-    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2
-  );
+  matchUp = matchUps.find((matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2);
   const { validActions } = tournamentEngine.matchUpActions(matchUp);
   const scoreAction = validActions.find(({ type }) => type === SCORE);
   const { method, payload } = scoreAction;
@@ -141,11 +134,10 @@ it('can create double bye and replace bye with alternate', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
-    tournamentEngine.drawMatchUps({
-      drawId,
-      inContext: true,
-    });
+  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  });
   expect(byeMatchUps.length).toEqual(1);
   expect(completedMatchUps.length).toEqual(3);
   expect(pendingMatchUps.length).toEqual(1);
@@ -196,9 +188,7 @@ it('can create double bye and replace bye with alternate', () => {
 
   // now remove the result for matchUp: { roundNumber: 1, roundPosition: 2 }
   let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-  matchUp = matchUps.find(
-    (matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2
-  );
+  matchUp = matchUps.find((matchUp) => matchUp.roundNumber === 1 && matchUp.roundPosition === 2);
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let scoreAction = validActions.find(({ type }) => type === SCORE);
   let { method, payload } = scoreAction;
@@ -228,9 +218,7 @@ it('can create double bye and replace bye with alternate', () => {
     expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
   });
   ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
-  const finalMatchUp = matchUps.find(
-    (matchUp) => matchUp.roundNumber === 3 && matchUp.roundPosition === 1
-  );
+  const finalMatchUp = matchUps.find((matchUp) => matchUp.roundNumber === 3 && matchUp.roundPosition === 1);
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([4]);
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
   scoreAction = validActions.find(({ type }) => type === SCORE);
@@ -276,12 +264,7 @@ function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
   checkExpectations({ drawId, expectations });
 }
 
-function replaceWithAlternate({
-  drawId,
-  structureId,
-  drawPosition,
-  expectations,
-}) {
+function replaceWithAlternate({ drawId, structureId, drawPosition, expectations }) {
   const { validActions } = tournamentEngine.positionActions({
     drawId,
     structureId,
@@ -297,16 +280,12 @@ function replaceWithAlternate({
 }
 
 function checkExpectations({ drawId, expectations }) {
-  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } =
-    tournamentEngine.drawMatchUps({
-      drawId,
-      inContext: true,
-    });
+  const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } = tournamentEngine.drawMatchUps({
+    drawId,
+    inContext: true,
+  });
   const expectedMatchUpsCount =
-    completedMatchUps.length +
-    upcomingMatchUps.length +
-    byeMatchUps.length +
-    pendingMatchUps.length;
+    completedMatchUps.length + upcomingMatchUps.length + byeMatchUps.length + pendingMatchUps.length;
   const expectationValues: number[] = Object.values(expectations);
   const expectationsTotal = expectationValues.reduce((a, b) => a + b);
   if (expectationsTotal !== expectedMatchUpsCount) {
@@ -316,16 +295,8 @@ function checkExpectations({ drawId, expectations }) {
   expect(completedMatchUps.length).toEqual(expectations.complete);
   expect(pendingMatchUps.length).toEqual(expectations.pending);
   expect(upcomingMatchUps.length).toEqual(expectations.upcoming);
-  byeMatchUps.forEach(({ matchUpStatus }) =>
-    expect(matchUpStatus).toEqual(BYE)
-  );
-  completedMatchUps.forEach(({ matchUpStatus }) =>
-    expect(matchUpStatus).toEqual(COMPLETED)
-  );
-  pendingMatchUps.forEach(({ matchUpStatus }) =>
-    expect(matchUpStatus).toEqual(TO_BE_PLAYED)
-  );
-  upcomingMatchUps.forEach(({ matchUpStatus }) =>
-    expect(matchUpStatus).toEqual(TO_BE_PLAYED)
-  );
+  byeMatchUps.forEach(({ matchUpStatus }) => expect(matchUpStatus).toEqual(BYE));
+  completedMatchUps.forEach(({ matchUpStatus }) => expect(matchUpStatus).toEqual(COMPLETED));
+  pendingMatchUps.forEach(({ matchUpStatus }) => expect(matchUpStatus).toEqual(TO_BE_PLAYED));
+  upcomingMatchUps.forEach(({ matchUpStatus }) => expect(matchUpStatus).toEqual(TO_BE_PLAYED));
 }

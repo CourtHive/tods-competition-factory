@@ -17,9 +17,7 @@ type RemovePersonRequests = {
 };
 export function removePersonRequests(params: RemovePersonRequests) {
   const { tournamentRecords, requestType, requestId, personId, date } = params;
-  const paramsCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true },
-  ]);
+  const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true }]);
   if (paramsCheck.error) return paramsCheck;
 
   const { personRequests } = getPersonRequests({ tournamentRecords });

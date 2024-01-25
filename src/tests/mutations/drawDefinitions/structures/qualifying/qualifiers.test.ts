@@ -2,14 +2,8 @@ import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  MAIN,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
+import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 
 const scenarios = [
   {
@@ -75,57 +69,82 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can qualify specified number of participants',
-  (scenario) => {
-    const ignoreDefaults = scenario.ignoreDefaults !== false;
-    let result = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        {
-          qualifyingProfiles: [{ structureProfiles: [scenario] }],
-          ignoreDefaults,
-        },
-      ],
-    });
+it.each(scenarios)('can qualify specified number of participants', (scenario) => {
+  const ignoreDefaults = scenario.ignoreDefaults !== false;
+  let result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        qualifyingProfiles: [{ structureProfiles: [scenario] }],
+        ignoreDefaults,
+      },
+    ],
+  });
 
-    const {
-      tournamentRecord,
-      drawIds: [drawId],
-    } = result;
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = result;
 
-    tournamentEngine.setState(tournamentRecord);
-    const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-    if (ignoreDefaults) {
-      expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
-      expect(event.entries.length).toEqual(scenario.drawSize);
+  tournamentEngine.setState(tournamentRecord);
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+  if (ignoreDefaults) {
+    expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
+    expect(event.entries.length).toEqual(scenario.drawSize);
+  }
+  expect(drawDefinition.links[0].source.roundNumber).not.toBeUndefined;
+
+  const qualifyingBYEsCount = drawDefinition.structures
+    .find(({ stage }) => stage === QUALIFYING)
+    .positionAssignments.filter((p) => p.bye).length;
+  if (scenario.qualifyingBYEPositions) {
+    expect(qualifyingBYEsCount).toEqual(scenario.qualifyingBYEPositions);
+  }
+
+  const qualifyingPositions = drawDefinition.structures
+    .find(({ stage }) => stage === MAIN)
+    .positionAssignments.filter((p) => p.qualifier).length;
+
+  if (ignoreDefaults === false) {
+    expect(qualifyingPositions).toEqual(scenario.qualifyingPositions);
+  }
+
+  let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+  expect(matchUps.length).toEqual(scenario.matchUpsCount);
+
+  const matchUpId = matchUps[0].matchUpId;
+  let outcome = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: COMPLETED,
+    scoreString: '6-1 6-1',
+    winningSide: 2,
+  }).outcome;
+
+  result = tournamentEngine.setMatchUpStatus({
+    matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+
+  const completedMatchUps = matchUps.filter(({ matchUpStatus }) => matchUpStatus === COMPLETED);
+
+  expect(completedMatchUps.length).toEqual(1);
+
+  let secondRoundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber === 2);
+  expect(secondRoundMatchUps.length).toEqual(scenario.secondRoundMatchUpsCount);
+
+  if (scenario.secondRoundMatchUpsCount) {
+    let secondRoundDrawPositions = secondRoundMatchUps.map(({ drawPositions }) => drawPositions).flat();
+
+    if (scenario.secondRoundDrawPositions) {
+      expect(secondRoundDrawPositions).toEqual(scenario.secondRoundDrawPositions);
     }
-    expect(drawDefinition.links[0].source.roundNumber).not.toBeUndefined;
 
-    const qualifyingBYEsCount = drawDefinition.structures
-      .find(({ stage }) => stage === QUALIFYING)
-      .positionAssignments.filter((p) => p.bye).length;
-    if (scenario.qualifyingBYEPositions) {
-      expect(qualifyingBYEsCount).toEqual(scenario.qualifyingBYEPositions);
-    }
-
-    const qualifyingPositions = drawDefinition.structures
-      .find(({ stage }) => stage === MAIN)
-      .positionAssignments.filter((p) => p.qualifier).length;
-
-    if (ignoreDefaults === false) {
-      expect(qualifyingPositions).toEqual(scenario.qualifyingPositions);
-    }
-
-    let { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-    expect(matchUps.length).toEqual(scenario.matchUpsCount);
-
-    const matchUpId = matchUps[0].matchUpId;
-    let outcome = mocksEngine.generateOutcomeFromScoreString({
-      matchUpStatus: COMPLETED,
-      scoreString: '6-1 6-1',
-      winningSide: 2,
-    }).outcome;
-
+    ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
+      matchUpStatus: TO_BE_PLAYED,
+      winningSide: undefined,
+    }));
     result = tournamentEngine.setMatchUpStatus({
       matchUpId,
       outcome,
@@ -133,54 +152,14 @@ it.each(scenarios)(
     });
     expect(result.success).toEqual(true);
 
-    matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+    secondRoundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber === 2);
 
-    const completedMatchUps = matchUps.filter(
-      ({ matchUpStatus }) => matchUpStatus === COMPLETED
-    );
-
-    expect(completedMatchUps.length).toEqual(1);
-
-    let secondRoundMatchUps = matchUps.filter(
-      ({ roundNumber }) => roundNumber === 2
-    );
-    expect(secondRoundMatchUps.length).toEqual(
-      scenario.secondRoundMatchUpsCount
-    );
-
-    if (scenario.secondRoundMatchUpsCount) {
-      let secondRoundDrawPositions = secondRoundMatchUps
+    if (scenario.secondRoundDrawPositions) {
+      secondRoundDrawPositions = secondRoundMatchUps
         .map(({ drawPositions }) => drawPositions)
-        .flat();
-
-      if (scenario.secondRoundDrawPositions) {
-        expect(secondRoundDrawPositions).toEqual(
-          scenario.secondRoundDrawPositions
-        );
-      }
-
-      ({ outcome } = mocksEngine.generateOutcomeFromScoreString({
-        matchUpStatus: TO_BE_PLAYED,
-        winningSide: undefined,
-      }));
-      result = tournamentEngine.setMatchUpStatus({
-        matchUpId,
-        outcome,
-        drawId,
-      });
-      expect(result.success).toEqual(true);
-
-      secondRoundMatchUps = matchUps.filter(
-        ({ roundNumber }) => roundNumber === 2
-      );
-
-      if (scenario.secondRoundDrawPositions) {
-        secondRoundDrawPositions = secondRoundMatchUps
-          .map(({ drawPositions }) => drawPositions)
-          .flat()
-          .filter(Boolean);
-        expect(secondRoundDrawPositions).toEqual([]);
-      }
+        .flat()
+        .filter(Boolean);
+      expect(secondRoundDrawPositions).toEqual([]);
     }
   }
-);
+});

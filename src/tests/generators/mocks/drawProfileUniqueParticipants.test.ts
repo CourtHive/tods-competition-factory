@@ -10,21 +10,17 @@ test('with uniqueParticipants: false draw entries will overlap', () => {
     { drawSize: 16, uniqueParticipants: false },
     { drawSize: 16, uniqueParticipants: false },
   ];
-  const { tournamentRecord, eventIds, error } =
-    mocksEngine.generateTournamentRecord({
-      drawProfiles,
-    });
+  const { tournamentRecord, eventIds, error } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
   expect(error).toBeUndefined();
   expect(eventIds.length).toEqual(2);
 
-  const eventEnteredParticipantIds = tournamentRecord.events.map(
-    ({ entries }) =>
-      entries
-        .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(getParticipantId)
+  const eventEnteredParticipantIds = tournamentRecord.events.map(({ entries }) =>
+    entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE).map(getParticipantId),
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
-    eventEnteredParticipantIds[1].includes(participantId)
+    eventEnteredParticipantIds[1].includes(participantId),
   );
   expect(overlap).not.toBeUndefined();
 });
@@ -34,21 +30,17 @@ test('drawProfiles can specify unique participants', () => {
     { drawSize: 16, uniqueParticipants: false },
     { drawSize: 16, uniqueParticipants: true },
   ];
-  const { tournamentRecord, eventIds, error } =
-    mocksEngine.generateTournamentRecord({
-      drawProfiles,
-    });
+  const { tournamentRecord, eventIds, error } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
   expect(error).toBeUndefined();
   expect(eventIds.length).toEqual(2);
 
-  const eventEnteredParticipantIds = tournamentRecord.events.map(
-    ({ entries }) =>
-      entries
-        .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(getParticipantId)
+  const eventEnteredParticipantIds = tournamentRecord.events.map(({ entries }) =>
+    entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE).map(getParticipantId),
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
-    eventEnteredParticipantIds[1].includes(participantId)
+    eventEnteredParticipantIds[1].includes(participantId),
   );
   expect(overlap).toBeUndefined();
 });
@@ -74,21 +66,17 @@ test('event entries will overlap if uniqueParticipants is not true', () => {
       ],
     },
   ];
-  const { tournamentRecord, eventIds, error } =
-    mocksEngine.generateTournamentRecord({
-      eventProfiles,
-    });
+  const { tournamentRecord, eventIds, error } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
   expect(error).toBeUndefined();
   expect(eventIds.length).toEqual(2);
 
-  const eventEnteredParticipantIds = tournamentRecord.events.map(
-    ({ entries }) =>
-      entries
-        .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(getParticipantId)
+  const eventEnteredParticipantIds = tournamentRecord.events.map(({ entries }) =>
+    entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE).map(getParticipantId),
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
-    eventEnteredParticipantIds[1].includes(participantId)
+    eventEnteredParticipantIds[1].includes(participantId),
   );
   expect(overlap).not.toBeUndefined();
 });
@@ -115,21 +103,17 @@ test('drawProfiles within eventProfiles can specify unique participants', () => 
       ],
     },
   ];
-  const { tournamentRecord, eventIds, error } =
-    mocksEngine.generateTournamentRecord({
-      eventProfiles,
-    });
+  const { tournamentRecord, eventIds, error } = mocksEngine.generateTournamentRecord({
+    eventProfiles,
+  });
   expect(error).toBeUndefined();
   expect(eventIds.length).toEqual(2);
 
-  const eventEnteredParticipantIds = tournamentRecord.events.map(
-    ({ entries }) =>
-      entries
-        .filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE)
-        .map(getParticipantId)
+  const eventEnteredParticipantIds = tournamentRecord.events.map(({ entries }) =>
+    entries.filter(({ entryStatus }) => entryStatus === DIRECT_ACCEPTANCE).map(getParticipantId),
   );
   const overlap = eventEnteredParticipantIds[0].find((participantId) =>
-    eventEnteredParticipantIds[1].includes(participantId)
+    eventEnteredParticipantIds[1].includes(participantId),
   );
   expect(overlap).toBeUndefined();
 });

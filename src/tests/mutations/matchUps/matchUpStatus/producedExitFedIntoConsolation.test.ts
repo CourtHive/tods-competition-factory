@@ -2,15 +2,8 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '../../../../constants/drawDefinitionConstants';
 
 it('properly handles produced Exit fed into consolation structure', () => {
   const {
@@ -32,8 +25,7 @@ it('properly handles produced Exit fed into consolation structure', () => {
   // Entering a DOUBLE_WALKOVER will produce a WALKOVER in both MAIN and CONSOLATION
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   let targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, readyToScore }) =>
-      stage === MAIN && roundNumber === 2 && readyToScore
+    ({ stage, roundNumber, readyToScore }) => stage === MAIN && roundNumber === 2 && readyToScore,
   );
   const topHalf = Math.max(...targetMatchUp.drawPositions) < 5;
 
@@ -47,8 +39,7 @@ it('properly handles produced Exit fed into consolation structure', () => {
   // SECOND: find the CONSOLATION matchUp and confirm the presence of the produced WALKOVER
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, matchUpStatus }) =>
-      stage === CONSOLATION && roundNumber === 2 && matchUpStatus === WALKOVER
+    ({ stage, roundNumber, matchUpStatus }) => stage === CONSOLATION && roundNumber === 2 && matchUpStatus === WALKOVER,
   );
 
   // NOTE: whether the MAIN matchUp was in the Top Half or Bottom Half effects location in CONSOLATION
@@ -61,8 +52,7 @@ it('properly handles produced Exit fed into consolation structure', () => {
   // the loser of which would be advanced to the CONSOLATION 3rd round by the produced WALKOVER
 
   targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, readyToScore }) =>
-      stage === MAIN && roundNumber === 1 && readyToScore
+    ({ stage, roundNumber, readyToScore }) => stage === MAIN && roundNumber === 1 && readyToScore,
   );
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({

@@ -6,10 +6,7 @@ import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
-import {
-  ASSIGN_PARTICIPANT,
-  REMOVE_ASSIGNMENT,
-} from '../../../constants/positionActionConstants';
+import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '../../../constants/positionActionConstants';
 
 export function getOrderedDrawPositionPairs(params?) {
   const matchUpFilters = { structureIds: [params?.structureId] };
@@ -25,25 +22,17 @@ export function getOrderedDrawPositionPairs(params?) {
     .sort(matchUpSort)
     .map(({ drawPositions }) => drawPositions?.sort((a, b) => a - b));
 
-  const filteredOrderedPairs = orderedPairs?.map(
-    (pair) => pair?.filter(Boolean)
-  );
+  const filteredOrderedPairs = orderedPairs?.map((pair) => pair?.filter(Boolean));
   return { filteredOrderedPairs, orderedPairs, matchUps };
 }
 
-export function getContextMatchUp({
-  matchUps,
-  roundNumber,
-  roundPosition,
-  stage = MAIN,
-  stageSequence = 1,
-}) {
+export function getContextMatchUp({ matchUps, roundNumber, roundPosition, stage = MAIN, stageSequence = 1 }) {
   const matchUp = matchUps.find(
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
       matchUp.stage === stage &&
-      matchUp.stageSequence === stageSequence
+      matchUp.stageSequence === stageSequence,
   );
   return { matchUp };
 }
@@ -57,9 +46,7 @@ export function assignDrawPosition({ drawId, structureId, drawPosition }) {
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(ASSIGN_PARTICIPANT)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === ASSIGN_PARTICIPANT
-  );
+  const option = result.validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
   const { availableParticipantIds } = option;
   const payload = option.payload;
   const participantId = availableParticipantIds[0];
@@ -93,9 +80,7 @@ export function removeAssignment({
   expect(result.isDrawPosition).toEqual(true);
   const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === REMOVE_ASSIGNMENT
-  );
+  const option = result.validActions.find((action) => action.type === REMOVE_ASSIGNMENT);
   const payload = option.payload;
   Object.assign(payload, { replaceWithBye });
   result = tournamentEngine[option.method](payload);

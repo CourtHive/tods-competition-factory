@@ -4,8 +4,7 @@ import { unique } from './arrays';
 export function deepMerge(existing, incoming, arrayMerge?) {
   if (!existing && incoming) return incoming;
   if (existing && !incoming) return existing;
-  if (typeof existing !== 'object' || typeof incoming !== 'object')
-    return existing;
+  if (typeof existing !== 'object' || typeof incoming !== 'object') return existing;
 
   const keys = unique(Object.keys(existing).concat(Object.keys(incoming)));
 
@@ -17,14 +16,9 @@ export function deepMerge(existing, incoming, arrayMerge?) {
     } else if (typeof existing[key] !== typeof incoming[key]) {
       merged[key] = incoming[key];
     } else if (Array.isArray(existing[key])) {
-      if (
-        arrayMerge === true ||
-        (Array.isArray(arrayMerge) && arrayMerge.includes(key))
-      ) {
+      if (arrayMerge === true || (Array.isArray(arrayMerge) && arrayMerge.includes(key))) {
         const mergedArrays = unique(
-          existing[key]
-            .map((e) => JSON.stringify(e))
-            .concat(incoming[key].map((i) => JSON.stringify(i)))
+          existing[key].map((e) => JSON.stringify(e)).concat(incoming[key].map((i) => JSON.stringify(i))),
         ).map((u) => JSON.parse(u));
         merged[key] = mergedArrays;
       } else {

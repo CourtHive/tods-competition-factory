@@ -10,26 +10,19 @@ import { SUCCESS } from '../../../constants/resultConstants';
 
 export function replaceQualifier(params) {
   let qualifierReplaced;
-  const {
-    inContextDrawMatchUps,
-    inContextMatchUp,
-    drawDefinition,
-    winningSide,
-  } = params;
+  const { inContextDrawMatchUps, inContextMatchUp, drawDefinition, winningSide } = params;
 
   const winnerTargetLink = params.targetData.targetLinks?.winnerTargetLink;
 
   if (winnerTargetLink.target.feedProfile === DRAW) {
     const previousWinningParticipantId = inContextMatchUp.sides.find(
-      ({ sideNumber }) => sideNumber !== winningSide
+      ({ sideNumber }) => sideNumber !== winningSide,
     ).participantId;
     const mainDrawTargetMatchUp = inContextDrawMatchUps.find(
       (m) =>
         m.structureId === winnerTargetLink.target.structureId &&
         m.roundNumber === winnerTargetLink.target.roundNumber &&
-        m.sides.some(
-          ({ participantId }) => participantId === previousWinningParticipantId
-        )
+        m.sides.some(({ participantId }) => participantId === previousWinningParticipantId),
     );
     if (mainDrawTargetMatchUp?.matchUpStatus === TO_BE_PLAYED) {
       // prevoius winningSide participant was placed in MAIN
@@ -52,11 +45,9 @@ export function replaceQualifier(params) {
           structure,
         }).positionAssignments;
         for (const positionAssignment of positionAssignments || []) {
-          if (
-            positionAssignment.participantId === previousWinningParticipantId
-          ) {
+          if (positionAssignment.participantId === previousWinningParticipantId) {
             const newWinningParticipantId = inContextMatchUp.sides.find(
-              ({ sideNumber }) => sideNumber === winningSide
+              ({ sideNumber }) => sideNumber === winningSide,
             ).participantId;
             positionAssignment.participantId = newWinningParticipantId;
 
@@ -68,13 +59,11 @@ export function replaceQualifier(params) {
                 {},
                 ...(positionAssignments || []).map((assignment) => ({
                   [assignment.drawPosition]: assignment.participantId,
-                }))
+                })),
               );
               for (const subStructure of structure.structures) {
                 subStructure.positionAssignments?.forEach(
-                  (assignment) =>
-                    (assignment.participantId =
-                      assignmentMap[assignment.drawPosition])
+                  (assignment) => (assignment.participantId = assignmentMap[assignment.drawPosition]),
                 );
               }
             }

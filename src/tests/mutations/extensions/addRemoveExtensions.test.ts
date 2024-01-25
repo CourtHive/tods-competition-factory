@@ -3,10 +3,7 @@ import { removeExtension } from '../../../mutate/extensions/removeExtension';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import {
-  addParticipantExtension,
-  removeParticipantExtension,
-} from '../../../mutate/extensions/addRemoveExtensions';
+import { addParticipantExtension, removeParticipantExtension } from '../../../mutate/extensions/addRemoveExtensions';
 import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
 
 import {
@@ -65,8 +62,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(result.success).toEqual(true);
 
   // Check length of extensions for each element
-  let { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getTournament();
+  let { tournamentRecord: updatedTournamentRecord } = tournamentEngine.getTournament();
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
 
   let { event, drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -76,11 +72,10 @@ it('can add and remove extensions from tournamentRecords', () => {
   expect(drawDefinition.extensions.length).toEqual(3);
 
   // Retrieve extensions from elements
-  const { extension: tournamentRecordExtension } =
-    tournamentEngine.findExtension({
-      name: extensionName,
-      discover: true,
-    });
+  const { extension: tournamentRecordExtension } = tournamentEngine.findExtension({
+    name: extensionName,
+    discover: true,
+  });
   expect(tournamentRecordExtension.value).toEqual(extensionValue);
 
   let { extension: eventExtension } = tournamentEngine.findExtension({
@@ -104,8 +99,7 @@ it('can add and remove extensions from tournamentRecords', () => {
   result = tournamentEngine.addTournamentExtension({ extension: newExtension });
   expect(result.success).toEqual(true);
 
-  ({ tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getTournament());
+  ({ tournamentRecord: updatedTournamentRecord } = tournamentEngine.getTournament());
   expect(updatedTournamentRecord.extensions.length).toEqual(1);
 
   result = tournamentEngine.addEventExtension({

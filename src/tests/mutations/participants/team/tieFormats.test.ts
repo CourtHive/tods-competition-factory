@@ -103,7 +103,7 @@ test('timed sets can be COMPLETED with tied score', () => {
 
   const { tieFormat } = tournamentEngine.getTieFormat({ eventId });
   const collectionId = tieFormat.collectionDefinitions.find(
-    ({ collectionName }) => collectionName === 'Overtime'
+    ({ collectionName }) => collectionName === 'Overtime',
   ).collectionId;
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     contextFilters: { collectionIds: [collectionId] },

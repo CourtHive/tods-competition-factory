@@ -4,21 +4,13 @@ import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 
 import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../constants/policyConstants';
-import {
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-  VOLUNTARY_CONSOLATION,
-} from '../../constants/drawDefinitionConstants';
+import { MAIN, PLAY_OFF, QUALIFYING, VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '../../constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '../../constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedSide } from '../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -70,12 +62,8 @@ export function getEligibleVoluntaryConsolationParticipants({
   const stages: StageTypeUnion[] = [MAIN, PLAY_OFF];
   if (includeQualifyingStage) stages.push(QUALIFYING);
 
-  const eventMatchUpFilters = event?.eventType
-    ? { matchUpTypes: [event.eventType] }
-    : undefined;
-  const drawMatchUpFilters = drawDefinition?.matchUpType
-    ? { matchUpTypes: [drawDefinition.matchUpType] }
-    : undefined;
+  const eventMatchUpFilters = event?.eventType ? { matchUpTypes: [event.eventType] } : undefined;
+  const drawMatchUpFilters = drawDefinition?.matchUpType ? { matchUpTypes: [drawDefinition.matchUpType] } : undefined;
 
   const matchUps =
     includeEventParticipants && event
@@ -98,9 +86,7 @@ export function getEligibleVoluntaryConsolationParticipants({
     stage: VOLUNTARY_CONSOLATION,
     drawDefinition,
   });
-  const voluntaryConsolationEntryIds = voluntaryConsolationEntries.map(
-    ({ participantId }) => participantId
-  );
+  const voluntaryConsolationEntryIds = voluntaryConsolationEntries.map(({ participantId }) => participantId);
 
   const participantMatchUps = {};
   const losingParticipants = {};
@@ -119,12 +105,9 @@ export function getEligibleVoluntaryConsolationParticipants({
   // support POLICY_TYPE_VOLUNTARY_CONSOLATION
   const policy = policyDefinitions?.[POLICY_TYPE_VOLUNTARY_CONSOLATION];
   excludedMatchUpStatuses =
-    (excludedMatchUpStatuses.length && excludedMatchUpStatuses) ||
-    policy?.excludedMatchUpStatuses ||
-    [];
+    (excludedMatchUpStatuses.length && excludedMatchUpStatuses) || policy?.excludedMatchUpStatuses || [];
 
-  includeEventParticipants =
-    includeEventParticipants ?? policy?.includeEventParticipants;
+  includeEventParticipants = includeEventParticipants ?? policy?.includeEventParticipants;
   allEntries = allEntries ?? policy?.allEntries;
   finishingRoundLimit = finishingRoundLimit ?? policy?.finishingRoundLimit;
   roundNumberLimit = roundNumberLimit ?? policy?.roundNumberLimit;
@@ -149,26 +132,14 @@ export function getEligibleVoluntaryConsolationParticipants({
       matchUp.matchUpStatus !== DOUBLE_WALKOVER
     )
       continue;
-    if (
-      matchUp.finishingRound &&
-      finishingRoundLimit &&
-      matchUp.finishingRound >= finishingRoundLimit
-    )
-      continue;
-    if (
-      matchUp.finishingRound &&
-      roundNumberLimit &&
-      matchUp.finishingRound <= roundNumberLimit
-    )
-      continue;
+    if (matchUp.finishingRound && finishingRoundLimit && matchUp.finishingRound >= finishingRoundLimit) continue;
+    if (matchUp.finishingRound && roundNumberLimit && matchUp.finishingRound <= roundNumberLimit) continue;
 
     const losingSide = matchUp.sides?.find(
-      ({ sideNumber }) =>
-        matchUp.winningSide && sideNumber === 3 - matchUp.winningSide
+      ({ sideNumber }) => matchUp.winningSide && sideNumber === 3 - matchUp.winningSide,
     ) as HydratedSide;
     const winningSide = matchUp.sides?.find(
-      ({ sideNumber }) =>
-        matchUp.winningSide && sideNumber === matchUp.winningSide
+      ({ sideNumber }) => matchUp.winningSide && sideNumber === matchUp.winningSide,
     ) as HydratedSide;
 
     matchUp.sides?.forEach((side: HydratedSide) => {
@@ -177,12 +148,8 @@ export function getEligibleVoluntaryConsolationParticipants({
         matchUpParticipants[participantId] = side.participant;
         if (matchUp.matchUpStatus === DOUBLE_WALKOVER && !requirePlay) {
           losingParticipants[participantId] = side.participant;
-          if (!participantMatchUps[participantId])
-            participantMatchUps[participantId] = 0;
-          if (
-            !matchUp.matchUpStatus ||
-            !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
-          )
+          if (!participantMatchUps[participantId]) participantMatchUps[participantId] = 0;
+          if (!matchUp.matchUpStatus || !excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
             participantMatchUps[participantId] += 1;
         }
       }
@@ -192,13 +159,9 @@ export function getEligibleVoluntaryConsolationParticipants({
       const participantId = losingSide.participant.participantId;
       losingParticipants[participantId] = losingSide.participant;
 
-      if (!participantMatchUps[participantId])
-        participantMatchUps[participantId] = 0;
+      if (!participantMatchUps[participantId]) participantMatchUps[participantId] = 0;
 
-      if (
-        matchUp.matchUpStatus &&
-        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
-      )
+      if (matchUp.matchUpStatus && !excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
         participantMatchUps[participantId] += 1;
     }
 
@@ -208,53 +171,34 @@ export function getEligibleVoluntaryConsolationParticipants({
       if (!participantWins[participantId]) participantWins[participantId] = 0;
       participantWins[participantId] += 1;
 
-      if (!participantMatchUps[participantId])
-        participantMatchUps[participantId] = 0;
+      if (!participantMatchUps[participantId]) participantMatchUps[participantId] = 0;
 
-      if (
-        matchUp.matchUpStatus &&
-        !excludedMatchUpStatuses.includes(matchUp.matchUpStatus)
-      )
+      if (matchUp.matchUpStatus && !excludedMatchUpStatuses.includes(matchUp.matchUpStatus))
         participantMatchUps[participantId] += 1;
     }
   }
 
-  const considerEntered =
-    tournamentRecord?.participants &&
-    !requirePlay &&
-    !requireLoss &&
-    allEntries;
+  const considerEntered = tournamentRecord?.participants && !requirePlay && !requireLoss && allEntries;
 
   const enteredParticipantIds = considerEntered
-    ? (
-        (includeEventParticipants && event
-          ? event.entries
-          : drawDefinition.entries) ?? []
-      )
-        .filter(
-          (entry: any) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus)
-        )
+    ? ((includeEventParticipants && event ? event.entries : drawDefinition.entries) ?? [])
+        .filter((entry: any) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus))
         .map(({ participantId }) => participantId)
     : [];
 
   const losingParticipantIds = Object.keys(losingParticipants);
   const consideredParticipants = considerEntered
     ? (tournamentRecord?.participants ?? []).filter(({ participantId }) =>
-        enteredParticipantIds.includes(participantId)
+        enteredParticipantIds.includes(participantId),
       )
-    : (requireLoss && Object.values(losingParticipants)) ||
-      Object.values(matchUpParticipants);
+    : (requireLoss && Object.values(losingParticipants)) || Object.values(matchUpParticipants);
 
-  const satisfiesLoss = (participantId) =>
-    !requireLoss || losingParticipantIds.includes(participantId);
-  const satisfiesPlay = (participantId) =>
-    !requirePlay || (participantMatchUps[participantId] || 0) >= 0;
-  const satisfiesWinsLimit = (participantId) =>
-    !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
+  const satisfiesLoss = (participantId) => !requireLoss || losingParticipantIds.includes(participantId);
+  const satisfiesPlay = (participantId) => !requirePlay || (participantMatchUps[participantId] || 0) >= 0;
+  const satisfiesWinsLimit = (participantId) => !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
   const satisfiesMatchUpsLimit = (participantId) =>
     !matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit;
-  const notPreviouslySelected = (participantId) =>
-    !voluntaryConsolationEntryIds.includes(participantId);
+  const notPreviouslySelected = (participantId) => !voluntaryConsolationEntryIds.includes(participantId);
 
   const eligibleParticipants = consideredParticipants
     .filter(
@@ -263,16 +207,13 @@ export function getEligibleVoluntaryConsolationParticipants({
         satisfiesPlay(participant.participantId) &&
         satisfiesWinsLimit(participant.participantId) &&
         satisfiesMatchUpsLimit(participant.participantId) &&
-        notPreviouslySelected(participant.participantId)
+        notPreviouslySelected(participant.participantId),
     )
     .map((participant: any) => {
       return {
         ...participant,
-        individualParticipants: participant.individualParticipantIds?.map(
-          (participantId) =>
-            tournamentRecord?.participants?.find(
-              (individual) => individual.participantId === participantId
-            )
+        individualParticipants: participant.individualParticipantIds?.map((participantId) =>
+          tournamentRecord?.participants?.find((individual) => individual.participantId === participantId),
         ),
       };
     });

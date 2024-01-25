@@ -3,10 +3,7 @@ import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compar
 import { it, expect } from 'vitest';
 
 import { TieFormat } from '../../../types/tournamentTypes';
-import {
-  COLLEGE_D3,
-  COLLEGE_DEFAULT,
-} from '../../../constants/tieFormatConstants';
+import { COLLEGE_D3, COLLEGE_DEFAULT } from '../../../constants/tieFormatConstants';
 
 it('can find differences in tieFormats', () => {
   const descendant = tieFormatDefaults({ namedFormat: COLLEGE_DEFAULT });

@@ -39,8 +39,7 @@ export function deleteVenue(params: DeleteVenueArgs): {
     }) ||
     {};
 
-  if (!Object.keys(tournamentRecords).length)
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORD };
 
   const contextFilters = { venueIds: [venueId] };
   const matchUpsToUnschedule =
@@ -54,9 +53,7 @@ export function deleteVenue(params: DeleteVenueArgs): {
   })?.appliedPolicies;
 
   const allowModificationWhenMatchUpsScheduled =
-    force ??
-    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
-      ?.venues;
+    force ?? appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent?.venues;
 
   if (!matchUpsToUnschedule.length || allowModificationWhenMatchUpsScheduled) {
     for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -70,13 +67,11 @@ export function deleteVenue(params: DeleteVenueArgs): {
         if (result.error) return result;
       }
       let deleted;
-      tournamentRecord.venues = (tournamentRecord.venues ?? []).filter(
-        (venue: Venue | undefined) => {
-          if (venue?.venueId !== venueId) return true;
-          deleted = true;
-          return false;
-        }
-      );
+      tournamentRecord.venues = (tournamentRecord.venues ?? []).filter((venue: Venue | undefined) => {
+        if (venue?.venueId !== venueId) return true;
+        deleted = true;
+        return false;
+      });
       if (deleted) {
         addNotice({
           payload: { venueId, tournamentId: tournamentRecord.tournamentId },

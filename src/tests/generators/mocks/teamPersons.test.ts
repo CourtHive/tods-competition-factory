@@ -57,9 +57,7 @@ it('can generate team events using participantsProfile.teamKey and personData', 
 
   expect(event.entries.length).toEqual(4);
   expect(drawDefinition.entries.length).toEqual(2);
-  expect(
-    event.entries.filter((entry) => entry.entryStatus === ALTERNATE).length
-  ).toEqual(2);
+  expect(event.entries.filter((entry) => entry.entryStatus === ALTERNATE).length).toEqual(2);
 
   const { participants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM] },
@@ -70,7 +68,5 @@ it('can generate team events using participantsProfile.teamKey and personData', 
   expect(names.sort()).toEqual([`Queen's Club`, 'Team 1', 'Team 2', 'United']);
 
   const { tournamentPersons } = tournamentEngine.getTournamentPersons();
-  tournamentPersons.forEach((person) =>
-    expect([oneElevenOhOne, two2222].includes(person.birthDate)).toEqual(true)
-  );
+  tournamentPersons.forEach((person) => expect([oneElevenOhOne, two2222].includes(person.birthDate)).toEqual(true));
 });

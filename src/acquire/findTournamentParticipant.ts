@@ -1,9 +1,6 @@
 import { Participant, Tournament } from '../types/tournamentTypes';
 import { TournamentRecords } from '../types/factoryTypes';
-import {
-  ErrorType,
-  PARTICIPANT_NOT_FOUND,
-} from '../constants/errorConditionConstants';
+import { ErrorType, PARTICIPANT_NOT_FOUND } from '../constants/errorConditionConstants';
 
 type FindTournamentParticipantArgs = {
   tournamentRecords?: TournamentRecords;
@@ -11,9 +8,7 @@ type FindTournamentParticipantArgs = {
   participantId: string;
 };
 
-export function findTournamentParticipant(
-  params: FindTournamentParticipantArgs
-): {
+export function findTournamentParticipant(params: FindTournamentParticipantArgs): {
   participant?: Participant;
   tournamentId?: string;
   error?: ErrorType;
@@ -29,10 +24,9 @@ export function findTournamentParticipant(
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const participant = tournamentRecord.participants?.find(
-      (participant) => participant.participantId === participantId
+      (participant) => participant.participantId === participantId,
     );
-    if (participant)
-      return { participant, tournamentId: tournamentRecord.tournamentId };
+    if (participant) return { participant, tournamentId: tournamentRecord.tournamentId };
   }
 
   return { error: PARTICIPANT_NOT_FOUND };

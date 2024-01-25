@@ -20,10 +20,7 @@ export function getRelevantParticipantIdsMap({
   tournamentRecords,
   tournamentRecord,
 }: GetRelevantParticipantIdsArgs) {
-  if (
-    typeof tournamentRecord !== 'object' &&
-    typeof tournamentRecords !== 'object'
-  )
+  if (typeof tournamentRecord !== 'object' && typeof tournamentRecords !== 'object')
     return { error: MISSING_TOURNAMENT_RECORD };
 
   // build up a mapping of all participantIds to all of the individualParticipantIds that they reference
@@ -36,26 +33,21 @@ export function getRelevantParticipantIdsMap({
 
   const relevantParticipantIdsMap = Object.assign(
     {},
-    ...allParticipants.map(
-      ({ participantId, participantType, individualParticipantIds }) => {
-        typeof processParticipantId === 'function' &&
-          processParticipantId(participantId);
+    ...allParticipants.map(({ participantId, participantType, individualParticipantIds }) => {
+      typeof processParticipantId === 'function' && processParticipantId(participantId);
 
-        const individualParticipantIdObjects = (
-          individualParticipantIds || []
-        ).map((relevantParticipantId) => ({
-          participantType: INDIVIDUAL,
-          relevantParticipantId,
-        }));
+      const individualParticipantIdObjects = (individualParticipantIds || []).map((relevantParticipantId) => ({
+        participantType: INDIVIDUAL,
+        relevantParticipantId,
+      }));
 
-        return {
-          [participantId]: individualParticipantIdObjects.concat({
-            relevantParticipantId: participantId,
-            participantType,
-          }),
-        };
-      }
-    )
+      return {
+        [participantId]: individualParticipantIdObjects.concat({
+          relevantParticipantId: participantId,
+          participantType,
+        }),
+      };
+    }),
   );
 
   return { relevantParticipantIdsMap };

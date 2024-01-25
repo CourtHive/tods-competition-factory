@@ -17,25 +17,18 @@ export function findMatchupFormatAverageTimes(params) {
   // select the exact match or the shortest code which matches
   const targetCode = exactCodeMatch ? matchUpFormat : codeMatches[0];
   const targetDefinition = matchUpAverageTimes?.find(
-    ({ matchUpFormatCodes, averageTimes }) =>
-      matchUpFormatCodes?.find((code) => targetCode === code) && averageTimes
+    ({ matchUpFormatCodes, averageTimes }) => matchUpFormatCodes?.find((code) => targetCode === code) && averageTimes,
   );
   return targetDefinition?.averageTimes;
 }
 
 export function findMatchupFormatRecoveryTimes(params) {
   const { matchUpRecoveryTimes, averageMinutes, matchUpFormat } = params || {};
-  return matchUpRecoveryTimes?.find(
-    ({ matchUpFormatCodes, averageTimes, recoveryTimes }) => {
-      if (averageTimes && averageMinutes) {
-        const { greaterThan = 0, lessThan = 360 } = averageTimes;
-        if (averageMinutes > greaterThan && averageMinutes < lessThan)
-          return true;
-      }
-      return (
-        matchUpFormatCodes?.find((code) => code === matchUpFormat) &&
-        recoveryTimes
-      );
+  return matchUpRecoveryTimes?.find(({ matchUpFormatCodes, averageTimes, recoveryTimes }) => {
+    if (averageTimes && averageMinutes) {
+      const { greaterThan = 0, lessThan = 360 } = averageTimes;
+      if (averageMinutes > greaterThan && averageMinutes < lessThan) return true;
     }
-  )?.recoveryTimes;
+    return matchUpFormatCodes?.find((code) => code === matchUpFormat) && recoveryTimes;
+  })?.recoveryTimes;
 }

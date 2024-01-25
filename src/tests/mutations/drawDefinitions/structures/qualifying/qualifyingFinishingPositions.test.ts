@@ -11,9 +11,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 8, qualifyingPositions: 2 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 8, qualifyingPositions: 2 }],
           },
         ],
       },
@@ -26,10 +24,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   expect(matchUps.length).toEqual(6);
 
   const fprMap = {};
-  matchUps.forEach(
-    ({ roundNumber, finishingPositionRange }) =>
-      (fprMap[roundNumber] = finishingPositionRange)
-  );
+  matchUps.forEach(({ roundNumber, finishingPositionRange }) => (fprMap[roundNumber] = finishingPositionRange));
 
   expect(fprMap).toEqual({
     1: { loser: [5, 8], winner: [2, 4] },
@@ -41,12 +36,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   });
   const qualifyingParticipant = participants.find((p) => {
     const structureParticipation = p.draws?.[0]?.structureParticipation?.[0];
-    return (
-      structureParticipation.finishingRound === 1 &&
-      structureParticipation.participantWon
-    );
+    return structureParticipation.finishingRound === 1 && structureParticipation.participantWon;
   });
-  expect(
-    qualifyingParticipant.draws[0].structureParticipation[0].winCount
-  ).toEqual(2);
+  expect(qualifyingParticipant.draws[0].structureParticipation[0].winCount).toEqual(2);
 });

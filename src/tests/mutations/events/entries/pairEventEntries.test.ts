@@ -46,12 +46,8 @@ it('can add doubles events to a tournament record', () => {
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
   expect(updatedEvent.entries.length).toEqual(33);
 
-  const unpairedEntries = updatedEvent.entries.filter((entry) =>
-    isUngrouped(entry.entryStatus)
-  );
-  const unpairedParticipantIds = unpairedEntries.map(
-    (entry) => entry.participantId
-  );
+  const unpairedEntries = updatedEvent.entries.filter((entry) => isUngrouped(entry.entryStatus));
+  const unpairedParticipantIds = unpairedEntries.map((entry) => entry.participantId);
 
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: unpairedParticipantIds,

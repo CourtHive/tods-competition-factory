@@ -26,8 +26,7 @@ it('can generate main draw', () => {
   const drawDefinition = newDrawDefinition();
   setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
 
-  const structure = generateDrawTypeAndModifyDrawDefinition({ drawDefinition })
-    ?.structures?.[0];
+  const structure = generateDrawTypeAndModifyDrawDefinition({ drawDefinition })?.structures?.[0];
   const matchUps = structure?.matchUps ?? [];
   const matchUpsCount = matchUps?.length;
   expect(matchUpsCount).toEqual(15);
@@ -51,16 +50,10 @@ it('can generate main draw', () => {
     [],
   ];
 
-  matchUps.forEach((matchUp, i) =>
-    expect(matchUp.drawPositions?.filter(Boolean)).toMatchObject(
-      drawPositions[i]
-    )
-  );
+  matchUps.forEach((matchUp, i) => expect(matchUp.drawPositions?.filter(Boolean)).toMatchObject(drawPositions[i]));
 
   const finishingRounds = [4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2, 2, 1];
-  matchUps.forEach((matchUp, i) =>
-    expect(matchUp.finishingRound).toEqual(finishingRounds[i])
-  );
+  matchUps.forEach((matchUp, i) => expect(matchUp.finishingRound).toEqual(finishingRounds[i]));
 
   expect(validDrawPositions({ matchUps })).toEqual(true);
 });
@@ -68,8 +61,7 @@ it('can generate main draw', () => {
 it('generates main draw with expected finishing drawPositions', () => {
   const drawDefinition = newDrawDefinition();
   setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
-  const structure = generateDrawTypeAndModifyDrawDefinition({ drawDefinition })
-    ?.structures?.[0];
+  const structure = generateDrawTypeAndModifyDrawDefinition({ drawDefinition })?.structures?.[0];
   const matchUps = structure?.matchUps ?? [];
   const matchesCount = matchUps?.length;
   expect(matchesCount).toEqual(15);
@@ -86,12 +78,8 @@ it('generates main draw with expected finishing drawPositions', () => {
     const roundIndex = matchUp.roundNumber - 1;
     const expectedLoserRange = finishingPositionRanges[roundIndex].loser;
     const expectedWinnerRange = finishingPositionRanges[roundIndex].winner;
-    expect(matchUp.finishingPositionRange?.loser).toMatchObject(
-      expectedLoserRange
-    );
-    expect(matchUp.finishingPositionRange?.winner).toMatchObject(
-      expectedWinnerRange
-    );
+    expect(matchUp.finishingPositionRange?.loser).toMatchObject(expectedLoserRange);
+    expect(matchUp.finishingPositionRange?.winner).toMatchObject(expectedWinnerRange);
   });
 });
 
@@ -99,18 +87,14 @@ it('can set roundLimit and produce expected finishingRounds', () => {
   const { matchUps } = treeMatchUps({ drawSize: 16, roundLimit: 2 });
   expect(matchUps.length).toEqual(12);
   const finishingRounds = [2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1];
-  matchUps.forEach((matchUp, i) =>
-    expect(matchUp.finishingRound).toEqual(finishingRounds[i])
-  );
+  matchUps.forEach((matchUp, i) => expect(matchUp.finishingRound).toEqual(finishingRounds[i]));
 });
 
 it('can generate qualifying draw based on desired qualifyingPositions', () => {
   const { matchUps } = treeMatchUps({ drawSize: 16, qualifyingPositions: 8 });
   expect(matchUps.length).toEqual(8);
   const finishingRounds = [1, 1, 1, 1, 1, 1, 1, 1];
-  matchUps.forEach((matchUp, i) =>
-    expect(matchUp.finishingRound).toEqual(finishingRounds[i])
-  );
+  matchUps.forEach((matchUp, i) => expect(matchUp.finishingRound).toEqual(finishingRounds[i]));
 });
 
 it('can generate first matchUp loser consolation', () => {
@@ -171,9 +155,7 @@ it('can generate a Curtis Consolation draw', () => {
     { winner: [5, 5], loser: [6, 6] },
   ];
 
-  const structures = state?.structures?.sort((a, b) =>
-    structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES })
-  );
+  const structures = state?.structures?.sort((a, b) => structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }));
 
   structures?.forEach((structure, i) => {
     expect(structure.stage).toEqual(stages[i]);
@@ -183,18 +165,10 @@ it('can generate a Curtis Consolation draw', () => {
     const firstMatchUp = structure.matchUps?.[0];
     const finalMatchUp = structure.matchUps?.[structure.matchUps.length - 1];
 
-    expect(firstMatchUp?.finishingPositionRange?.winner).toMatchObject(
-      firstRoundFinishingPositions[i].winner
-    );
-    expect(finalMatchUp?.finishingPositionRange?.winner).toMatchObject(
-      finalRoundFinishingPositions[i].winner
-    );
-    expect(firstMatchUp?.finishingPositionRange?.loser).toMatchObject(
-      firstRoundFinishingPositions[i].loser
-    );
-    expect(finalMatchUp?.finishingPositionRange?.loser).toMatchObject(
-      finalRoundFinishingPositions[i].loser
-    );
+    expect(firstMatchUp?.finishingPositionRange?.winner).toMatchObject(firstRoundFinishingPositions[i].winner);
+    expect(finalMatchUp?.finishingPositionRange?.winner).toMatchObject(finalRoundFinishingPositions[i].winner);
+    expect(firstMatchUp?.finishingPositionRange?.loser).toMatchObject(firstRoundFinishingPositions[i].loser);
+    expect(finalMatchUp?.finishingPositionRange?.loser).toMatchObject(finalRoundFinishingPositions[i].loser);
   });
 });
 

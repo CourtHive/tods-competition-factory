@@ -11,9 +11,7 @@ export function tieFormatTelemetry({ drawDefinition, auditData }) {
 
   const updatedExtension = {
     name: TIE_FORMAT_MODIFICATIONS,
-    value: Array.isArray(extension?.value)
-      ? extension?.value.concat(auditData)
-      : [auditData],
+    value: Array.isArray(extension?.value) ? extension?.value.concat(auditData) : [auditData],
   };
   addExtension({ element: drawDefinition, extension: updatedExtension });
 }

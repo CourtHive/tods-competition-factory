@@ -91,9 +91,7 @@ export function setTournamentId(tournamentId) {
   }
 }
 
-export function setTournamentRecords(tournamentRecords: {
-  [key: string]: Tournament;
-}): void {
+export function setTournamentRecords(tournamentRecords: { [key: string]: Tournament }): void {
   syncGlobalState.tournamentRecords = tournamentRecords;
   const tournamentIds = Object.keys(tournamentRecords);
   if (tournamentIds.length === 1) {
@@ -105,8 +103,7 @@ export function setTournamentRecords(tournamentRecords: {
 
 export function removeTournamentRecord(tournamentId) {
   if (typeof tournamentId !== 'string') return { error: INVALID_VALUES };
-  if (!syncGlobalState.tournamentRecords[tournamentId])
-    return { error: NOT_FOUND };
+  if (!syncGlobalState.tournamentRecords[tournamentId]) return { error: NOT_FOUND };
 
   delete syncGlobalState.tournamentRecords[tournamentId];
   const tournamentIds = Object.keys(syncGlobalState.tournamentRecords);
@@ -119,11 +116,9 @@ export function removeTournamentRecord(tournamentId) {
 }
 
 export function setSubscriptions(params) {
-  if (typeof params.subscriptions !== 'object')
-    return { error: INVALID_VALUES };
+  if (typeof params.subscriptions !== 'object') return { error: INVALID_VALUES };
   Object.keys(params.subscriptions).forEach((subscription) => {
-    syncGlobalState.subscriptions[subscription] =
-      params.subscriptions[subscription];
+    syncGlobalState.subscriptions[subscription] = params.subscriptions[subscription];
   });
   return { ...SUCCESS };
 }
@@ -148,16 +143,13 @@ export function addNotice({ topic, payload, key }: Notice) {
 
   if (!syncGlobalState.disableNotifications) syncGlobalState.modified = true;
 
-  if (
-    syncGlobalState.disableNotifications ||
-    !syncGlobalState.subscriptions[topic]
-  ) {
+  if (syncGlobalState.disableNotifications || !syncGlobalState.subscriptions[topic]) {
     return;
   }
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(
-      (notice) => !(notice.topic === topic && notice.key === key)
+      (notice) => !(notice.topic === topic && notice.key === key),
     );
   }
 
@@ -171,9 +163,7 @@ export function getMethods() {
 }
 
 export function getNotices({ topic }: GetNoticesArgs) {
-  const notices = syncGlobalState.notices
-    .filter((notice) => notice.topic === topic)
-    .map((notice) => notice.payload);
+  const notices = syncGlobalState.notices.filter((notice) => notice.topic === topic).map((notice) => notice.payload);
   return notices.length && notices;
 }
 
@@ -183,7 +173,7 @@ export function deleteNotices() {
 
 export function deleteNotice({ topic, key }: DeleteNoticeArgs) {
   syncGlobalState.notices = syncGlobalState.notices.filter(
-    (notice) => (!topic || notice.topic === topic) && notice.key !== key
+    (notice) => (!topic || notice.topic === topic) && notice.key !== key,
   );
 }
 
@@ -199,12 +189,7 @@ export function callListener({ topic, notices }: CallListenerArgs) {
   }
 }
 
-export function handleCaughtError({
-  engineName,
-  methodName,
-  params,
-  err,
-}: HandleCaughtErrorArgs) {
+export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
   let error;
   if (typeof err === 'string') {
     error = err.toUpperCase();

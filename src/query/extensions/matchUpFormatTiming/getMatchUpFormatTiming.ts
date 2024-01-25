@@ -5,15 +5,8 @@ import { getScheduleTiming } from './getScheduleTiming';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { SINGLES_EVENT } from '../../../constants/eventConstants';
-import {
-  DOUBLES_SINGLES,
-  SINGLES_DOUBLES,
-} from '../../../constants/scheduleConstants';
-import {
-  Event,
-  Tournament,
-  EventTypeUnion,
-} from '../../../types/tournamentTypes';
+import { DOUBLES_SINGLES, SINGLES_DOUBLES } from '../../../constants/scheduleConstants';
+import { Event, Tournament, EventTypeUnion } from '../../../types/tournamentTypes';
 
 type GetMatchUpFormatTimingArgs = {
   defaultRecoveryMinutes?: number;
@@ -66,10 +59,7 @@ type MatchUpFormatTimesArgs = {
   eventType: EventTypeUnion;
   timingDetails: any;
 };
-export function matchUpFormatTimes({
-  timingDetails,
-  eventType,
-}: MatchUpFormatTimesArgs): ResultType & {
+export function matchUpFormatTimes({ timingDetails, eventType }: MatchUpFormatTimesArgs): ResultType & {
   typeChangeRecoveryMinutes?: number;
   recoveryMinutes?: number;
   averageMinutes?: number;
@@ -79,8 +69,7 @@ export function matchUpFormatTimes({
 
   const averageMinutes =
     averageTimes?.minutes &&
-    ((averageKeys?.includes(eventType) && averageTimes.minutes[eventType]) ||
-      averageTimes.minutes.default);
+    ((averageKeys?.includes(eventType) && averageTimes.minutes[eventType]) || averageTimes.minutes.default);
 
   const recoveryTimes = getMatchUpFormatRecoveryTimes({
     ...timingDetails,
@@ -90,17 +79,13 @@ export function matchUpFormatTimes({
   const recoveryKeys = Object.keys(recoveryTimes?.minutes || {});
   const recoveryMinutes =
     recoveryTimes?.minutes &&
-    ((recoveryKeys?.includes(eventType) && recoveryTimes.minutes[eventType]) ||
-      recoveryTimes.minutes.default);
+    ((recoveryKeys?.includes(eventType) && recoveryTimes.minutes[eventType]) || recoveryTimes.minutes.default);
 
-  const formatChangeKey =
-    eventType === SINGLES_EVENT ? SINGLES_DOUBLES : DOUBLES_SINGLES;
+  const formatChangeKey = eventType === SINGLES_EVENT ? SINGLES_DOUBLES : DOUBLES_SINGLES;
 
   const typeChangeRecoveryMinutes =
     recoveryTimes?.minutes &&
-    ((recoveryKeys?.includes(formatChangeKey) &&
-      recoveryTimes.minutes[formatChangeKey]) ||
-      recoveryMinutes);
+    ((recoveryKeys?.includes(formatChangeKey) && recoveryTimes.minutes[formatChangeKey]) || recoveryMinutes);
 
   return { averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes };
 }

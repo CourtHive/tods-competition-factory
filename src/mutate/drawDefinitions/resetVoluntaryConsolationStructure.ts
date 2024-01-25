@@ -1,31 +1,17 @@
-import {
-  deleteMatchUpsNotice,
-  modifyDrawNotice,
-} from '../notifications/drawNotifications';
+import { deleteMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
 
-export function resetVoluntaryConsolationStructure({
-  tournamentRecord,
-  drawDefinition,
-  resetEntries,
-  event,
-}) {
+export function resetVoluntaryConsolationStructure({ tournamentRecord, drawDefinition, resetEntries, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const structure = drawDefinition.structures?.find(
-    (structure) => structure.stage === VOLUNTARY_CONSOLATION
-  );
+  const structure = drawDefinition.structures?.find((structure) => structure.stage === VOLUNTARY_CONSOLATION);
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  const removedMatchUpIds =
-    structure.matchUps?.map(({ matchUpId }) => matchUpId) || [];
+  const removedMatchUpIds = structure.matchUps?.map(({ matchUpId }) => matchUpId) || [];
 
   structure.positionAssignments = [];
   structure.seedAssignments = [];
@@ -41,9 +27,7 @@ export function resetVoluntaryConsolationStructure({
   // TODO: add modifyPositionAssignmentsNotice, modifySeedAssignmentsNotice
 
   if (resetEntries) {
-    drawDefinition.entries = drawDefinition.entries.filter(
-      (entry) => entry.entryStage !== VOLUNTARY_CONSOLATION
-    );
+    drawDefinition.entries = drawDefinition.entries.filter((entry) => entry.entryStage !== VOLUNTARY_CONSOLATION);
   }
 
   modifyDrawNotice({

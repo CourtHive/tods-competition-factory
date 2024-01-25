@@ -10,10 +10,7 @@ import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_PARTICIPANT_ID,
 } from '../../../../constants/errorConditionConstants';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../../../constants/entryStatusConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 
 test('event entries are only removed when not placed in draw structures', () => {
   const gender = MALE;

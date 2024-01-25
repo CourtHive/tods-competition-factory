@@ -1,9 +1,6 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
-import {
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
@@ -20,11 +17,7 @@ import {
 } from '../../constants/timeItemConstants';
 import { TimeItem } from '../../types/tournamentTypes';
 
-export function resetDrawDefinition({
-  tournamentRecord,
-  removeScheduling,
-  drawDefinition,
-}) {
+export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   // for matchups in all structures:
@@ -37,19 +30,13 @@ export function resetDrawDefinition({
 
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
-  const getRawMatchUp = (matchUpId) =>
-    matchUpsMap?.drawMatchUps?.find(
-      (matchUp) => matchUp.matchUpId === matchUpId
-    );
+  const getRawMatchUp = (matchUpId) => matchUpsMap?.drawMatchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
 
   for (const structure of drawDefinition.structures || []) {
     const { positionAssignments, stage, stageSequence } = structure;
 
     // reset positionAssignments and seedAssignments where appropriate
-    if (
-      positionAssignments &&
-      (stageSequence !== 1 || ![QUALIFYING, MAIN].includes(stage))
-    ) {
+    if (positionAssignments && (stageSequence !== 1 || ![QUALIFYING, MAIN].includes(stage))) {
       structure.positionAssignments = positionAssignments.map((assignment) => {
         delete assignment.participantId;
         return assignment;
@@ -78,13 +65,10 @@ export function resetDrawDefinition({
 
         if (roundNumber && roundNumber > 1 && matchUp.drawPositions) {
           const fedDrawPositions = sides
-            ?.map(
-              ({ drawPosition, participantFed }) =>
-                !participantFed && drawPosition
-            )
+            ?.map(({ drawPosition, participantFed }) => !participantFed && drawPosition)
             .filter(Boolean);
           const drawPositions = matchUp.drawPositions.map((drawPosition) =>
-            !fedDrawPositions.includes(drawPosition) ? drawPosition : undefined
+            !fedDrawPositions.includes(drawPosition) ? drawPosition : undefined,
           ) as number[];
           matchUp.drawPositions = drawPositions;
         }
@@ -95,14 +79,9 @@ export function resetDrawDefinition({
           matchUp.timeItems = matchUp.timeItems.filter(
             (timeItem: TimeItem) =>
               timeItem.itemType &&
-              ![
-                ALLOCATE_COURTS,
-                ASSIGN_COURT,
-                ASSIGN_VENUE,
-                ASSIGN_OFFICIAL,
-                SCHEDULED_DATE,
-                SCHEDULED_TIME,
-              ].includes(timeItem.itemType)
+              ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, ASSIGN_OFFICIAL, SCHEDULED_DATE, SCHEDULED_TIME].includes(
+                timeItem.itemType,
+              ),
           );
         }
 
@@ -116,9 +95,7 @@ export function resetDrawDefinition({
     }
   }
 
-  const structureIds = (drawDefinition.structures || []).map(
-    ({ structureId }) => structureId
-  );
+  const structureIds = (drawDefinition.structures || []).map(({ structureId }) => structureId);
 
   modifyDrawNotice({ drawDefinition, structureIds });
 

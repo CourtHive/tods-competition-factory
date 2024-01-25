@@ -23,20 +23,14 @@ it('can toggle participant check-in state', () => {
 
   let {
     upcomingMatchUps: [matchUp],
-  } = tournamentEngine
-    .devContext(true)
-    .setState(tournamentRecord)
-    .drawMatchUps({
-      inContext: true,
-      drawId,
-    });
+  } = tournamentEngine.devContext(true).setState(tournamentRecord).drawMatchUps({
+    inContext: true,
+    drawId,
+  });
 
-  const participantIds = matchUp.sides.map(
-    ({ participantId }) => participantId
-  );
+  const participantIds = matchUp.sides.map(({ participantId }) => participantId);
 
-  let { allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp });
+  let { allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(0);
 
@@ -54,8 +48,7 @@ it('can toggle participant check-in state', () => {
     drawId,
   }));
 
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(1);
 
@@ -73,8 +66,7 @@ it('can toggle participant check-in state', () => {
     drawId,
   }));
 
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds?.length).toEqual(2);
 

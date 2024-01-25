@@ -2,10 +2,7 @@ import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { CONSOLATION } from '../../constants/drawDefinitionConstants';
-import {
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-} from '../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 
 import tournamentOne from './tournamentOne.tods.json';
 import tournamentTwo from './tournamentTwo.tods.json';
@@ -18,8 +15,7 @@ it('WO/WO advances SF player to F and sets winningSide', () => {
   });
 
   const targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, roundPosition }) =>
-      stage === CONSOLATION && roundNumber === 4 && roundPosition === 2
+    ({ stage, roundNumber, roundPosition }) => stage === CONSOLATION && roundNumber === 4 && roundPosition === 2,
   );
   const { drawId, matchUpId } = targetMatchUp;
   const result = tournamentEngine.setMatchUpStatus({
@@ -38,8 +34,7 @@ it('WO/WO advances SF player to F and sets winningSide', () => {
   });
 
   const targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, roundPosition }) =>
-      stage === CONSOLATION && roundNumber === 4 && roundPosition === 2
+    ({ stage, roundNumber, roundPosition }) => stage === CONSOLATION && roundNumber === 4 && roundPosition === 2,
   );
   const { drawId, matchUpId } = targetMatchUp;
   const result = tournamentEngine.setMatchUpStatus({

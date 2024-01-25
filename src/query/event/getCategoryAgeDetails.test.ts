@@ -140,14 +140,11 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can parse ageCategoryCodes',
-  ({ category, expectation }) => {
-    const result = getCategoryAgeDetails({ category, consideredDate });
-    if (expectation) {
-      expect(result).toEqual(expectation);
-    } else {
-      console.log({ category, expectation: result });
-    }
+it.each(scenarios)('can parse ageCategoryCodes', ({ category, expectation }) => {
+  const result = getCategoryAgeDetails({ category, consideredDate });
+  if (expectation) {
+    expect(result).toEqual(expectation);
+  } else {
+    console.log({ category, expectation: result });
   }
-);
+});

@@ -25,15 +25,12 @@ export function getMatchUpsToSchedule({
 
   // this must be done to preserve the order of matchUpIds
   const matchUpsToSchedule = orderedMatchUpIds
-    .map((matchUpId) =>
-      matchUps.find((matchUp) => matchUp.matchUpId === matchUpId)
-    )
+    .map((matchUpId) => matchUps.find((matchUp) => matchUp.matchUpId === matchUpId))
     .filter(Boolean)
     .filter((matchUp) => {
       const alreadyScheduled =
         !clearDate &&
-        (dateScheduledMatchUpIds.includes(matchUp.matchUpId) ||
-          alreadyScheduledMatchUpIds.includes(matchUp.matchUpId));
+        (dateScheduledMatchUpIds.includes(matchUp.matchUpId) || alreadyScheduledMatchUpIds.includes(matchUp.matchUpId));
 
       const doNotSchedule = [
         BYE,
@@ -58,8 +55,7 @@ export function getMatchUpsToSchedule({
     (aggregator, matchUp) => {
       const { drawId, tournamentId } = matchUp;
 
-      if (!aggregator.matchUpMap[tournamentId])
-        aggregator.matchUpMap[tournamentId] = {};
+      if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
       if (!aggregator.matchUpMap[tournamentId][drawId]) {
         aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
       } else {
@@ -75,7 +71,7 @@ export function getMatchUpsToSchedule({
 
       return aggregator;
     },
-    { matchUpMap: {} }
+    { matchUpMap: {} },
   );
   return { matchUpsToSchedule, matchUpMap };
 }

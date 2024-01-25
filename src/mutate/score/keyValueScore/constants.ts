@@ -18,11 +18,7 @@ export const OUTCOMES = [
   OUTCOME_INTERRUPTED,
 ];
 
-export const WINNING_OUTCOMES = [
-  OUTCOME_RETIREMENT,
-  OUTCOME_DEFAULT,
-  OUTCOME_WALKOVER,
-];
+export const WINNING_OUTCOMES = [OUTCOME_RETIREMENT, OUTCOME_DEFAULT, OUTCOME_WALKOVER];
 
 export const STATUS_DEFAULT = 'DEFAULTED';
 export const STATUS_COMPLETE = 'COMPLETED';
@@ -44,11 +40,7 @@ export const STATUSES = [
   STATUS_INTERRUPTED,
 ];
 
-export const WINNING_STATUSES = [
-  STATUS_RETIREMENT,
-  STATUS_DEFAULT,
-  STATUS_WALKOVER,
-];
+export const WINNING_STATUSES = [STATUS_RETIREMENT, STATUS_DEFAULT, STATUS_WALKOVER];
 
 export const PROMPT = 'Enter Score';
 export const SET_TIEBREAK_BRACKETS = '()';
@@ -64,14 +56,7 @@ export const ABANDON = 'a';
 export const DEFAULT = 'd';
 export const WALKOVER = 'w';
 export const INTERRUPT = 'i';
-export const OUTCOMEKEYS = [
-  RETIRE,
-  DEFAULT,
-  WALKOVER,
-  ABANDON,
-  SUSPEND,
-  INTERRUPT,
-];
+export const OUTCOMEKEYS = [RETIRE, DEFAULT, WALKOVER, ABANDON, SUSPEND, INTERRUPT];
 
 export const SPACE_KEY = 'space';
 export const OPENERS = ['[', '('];
@@ -86,23 +71,9 @@ export const ALTERNATE_JOINERS = [FORWARD_SLASH];
 
 export const ZERO = 0;
 export const TEST = ['=', '+', 'num_1', 'num_2', 'shift+=', 'shift+-'];
-export const SIDE1KEYS = [
-  '0',
-  '1',
-  '2',
-  '3',
-  '4',
-  '5',
-  '6',
-  '7',
-  '8',
-  '9',
-].concat(OUTCOMEKEYS);
+export const SIDE1KEYS = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'].concat(OUTCOMEKEYS);
 export const SIDE2KEYS = SIDE1KEYS.map((key) => `shift+${key}`);
-export const MODIFIERS = [SCORE_JOINER, BACKSPACE].concat(
-  CLOSERS,
-  ALTERNATE_JOINERS
-);
+export const MODIFIERS = [SCORE_JOINER, BACKSPACE].concat(CLOSERS, ALTERNATE_JOINERS);
 export const VALID_VALUE_KEYS = [SIDE1KEYS, SIDE2KEYS, MODIFIERS].join(',');
 export const HOTKEYS = [VALID_VALUE_KEYS, MOVEUP, MOVEDOWN, TEST].join(',');
 
@@ -118,7 +89,7 @@ export const SCORE_TEST_KEYS = [].concat(
   ...SIDE1KEYS,
   ...SIDE1KEYS,
   ...SIDE1KEYS,
-  ...SIDE1KEYS
+  ...SIDE1KEYS,
 );
 
 export const keyValueConstants = {

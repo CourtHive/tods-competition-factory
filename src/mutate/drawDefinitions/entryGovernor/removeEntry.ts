@@ -17,12 +17,7 @@ type RemoveEntryArgs = {
   participantId: string;
 };
 
-export function removeEntry({
-  autoEntryPositions = true,
-  drawDefinition,
-  participantId,
-  stages,
-}: RemoveEntryArgs) {
+export function removeEntry({ autoEntryPositions = true, drawDefinition, participantId, stages }: RemoveEntryArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
@@ -33,13 +28,10 @@ export function removeEntry({
     }).assignedParticipantIds ?? [];
   const isAssignedParticipant = assignedParticipantIds.includes(participantId);
 
-  if (isAssignedParticipant)
-    return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
+  if (isAssignedParticipant) return { error: EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT };
 
   if (drawDefinition?.entries) {
-    drawDefinition.entries = drawDefinition.entries.filter(
-      (entry) => entry.participantId !== participantId
-    );
+    drawDefinition.entries = drawDefinition.entries.filter((entry) => entry.participantId !== participantId);
   }
 
   if (autoEntryPositions) {

@@ -20,34 +20,22 @@ it('can return participant scheduled matchUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { rounds } = tournamentEngine.getRounds();
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.scheduleProfileRounds();
-  expect(
-    result.dateSchedulingProfiles[0].venues[0].rounds.map(
-      ({ roundTiming }) => roundTiming?.roundMinutes
-    )
-  ).toEqual([1440, 720, 360, 180, 90]);
+  expect(result.dateSchedulingProfiles[0].venues[0].rounds.map(({ roundTiming }) => roundTiming?.roundMinutes)).toEqual(
+    [1440, 720, 360, 180, 90],
+  );
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(23);
 
   result = tournamentEngine.getParticipantSchedules();
-  expect(
-    result.participantSchedules.map(({ matchUps }) => matchUps.length)
-  ).toEqual([
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 1, 1, 1, 1,
+  expect(result.participantSchedules.map(({ matchUps }) => matchUps.length)).toEqual([
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   ]);
-  expect(
-    result.participantSchedules.map(
-      ({ potentialMatchUps }) => potentialMatchUps.length
-    )
-  ).toEqual([
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 1, 1, 0, 0, 0, 0,
+  expect(result.participantSchedules.map(({ potentialMatchUps }) => potentialMatchUps.length)).toEqual([
+    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0,
   ]);
 });

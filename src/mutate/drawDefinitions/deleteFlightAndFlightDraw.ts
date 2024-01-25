@@ -4,20 +4,9 @@ import { refreshEventDrawOrder } from './refreshEventDrawOrder';
 import { deleteDrawDefinitions } from '../events/deleteDrawDefinitions';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import {
-  MISSING_DRAW_ID,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_ID, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
-export function deleteFlightAndFlightDraw({
-  autoPublish = true,
-  tournamentRecord,
-  auditData,
-  drawId,
-  event,
-  force,
-}) {
+export function deleteFlightAndFlightDraw({ autoPublish = true, tournamentRecord, auditData, drawId, event, force }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawId) return { error: MISSING_DRAW_ID };
   if (!event) return { error: MISSING_EVENT };
@@ -25,9 +14,7 @@ export function deleteFlightAndFlightDraw({
   const { flightProfile } = getFlightProfile({ event });
 
   if (flightProfile) {
-    const flight = flightProfile.flights?.find(
-      (flight) => flight.drawId === drawId
-    );
+    const flight = flightProfile.flights?.find((flight) => flight.drawId === drawId);
 
     if (flight) {
       const flights = flightProfile.flights.filter((flight) => {
@@ -46,9 +33,7 @@ export function deleteFlightAndFlightDraw({
     }
   }
 
-  const drawWasGenerated = event.drawDefinitions?.find(
-    (drawDefinition) => drawDefinition.drawId === drawId
-  );
+  const drawWasGenerated = event.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId);
   if (drawWasGenerated) {
     const result = deleteDrawDefinitions({
       drawIds: [drawId],

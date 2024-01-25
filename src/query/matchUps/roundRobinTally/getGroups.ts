@@ -4,11 +4,7 @@ type GetGroupsArgs = {
   attribute: string;
 };
 
-export function getGroups({
-  participantResults,
-  participantIds,
-  attribute,
-}: GetGroupsArgs) {
+export function getGroups({ participantResults, participantIds, attribute }: GetGroupsArgs) {
   const resultsArray = getResultsArray({ participantResults, participantIds });
   return resultsArray.reduce((groups, participantResult) => {
     const { participantId, results } = participantResult;
@@ -30,8 +26,7 @@ type GetResultsArrayArgs = {
 };
 
 export function getResultsArray(params: GetResultsArrayArgs) {
-  const participantIds =
-    params.participantIds || Object.keys(params.participantResults);
+  const participantIds = params.participantIds || Object.keys(params.participantResults);
   return participantIds.reduce((arr: any[], participantId: string, i) => {
     arr.push({
       participantId,

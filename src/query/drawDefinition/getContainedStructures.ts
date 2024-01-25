@@ -8,11 +8,7 @@ type GetContainedStructuresArgs = {
   drawDefinition?: DrawDefinition;
   event?: Event;
 };
-export function getContainedStructures({
-  tournamentRecord,
-  drawDefinition,
-  event,
-}: GetContainedStructuresArgs) {
+export function getContainedStructures({ tournamentRecord, drawDefinition, event }: GetContainedStructuresArgs) {
   const events = tournamentRecord?.events || (event && [event]);
   const drawDefinitions =
     events
@@ -34,14 +30,8 @@ export function getContainedStructures({
     const { structures, structureId } = structureContainer ?? {};
     structures &&
       structureId &&
-      (containedStructures[structureId] = structures?.map(
-        (structure) => structure.structureId
-      )) &&
-      structures.forEach(
-        (structure) =>
-          (containerStructures[structure.structureId] =
-            structureContainer?.structureId)
-      );
+      (containedStructures[structureId] = structures?.map((structure) => structure.structureId)) &&
+      structures.forEach((structure) => (containerStructures[structure.structureId] = structureContainer?.structureId));
   }
 
   return { containedStructures, containerStructures };

@@ -5,17 +5,8 @@ import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
-import {
-  BYE,
-  DEFAULTED,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -67,20 +58,15 @@ it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkov
   // target specific matchUp
   const targetMatchUp = byeMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 3
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 3);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 5
+    ({ drawPosition }) => drawPosition === 5,
   );
 
   expect(mainDrawPosition.participantId).not.toBeUndefined();
@@ -134,25 +120,18 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
   // target specific matchUp
   const targetMatchUp = byeMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 4
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 4);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 6
+    ({ drawPosition }) => drawPosition === 6,
   );
 
-  expect(mainDrawPosition.participantId).toEqual(
-    consolationDrawPosition.participantId
-  );
+  expect(mainDrawPosition.participantId).toEqual(consolationDrawPosition.participantId);
 });
 
 it('correctly places consolation BYE for WALKOVER outcome 2nd round match with participant who had bye', () => {
@@ -201,20 +180,15 @@ it('correctly places consolation BYE for WALKOVER outcome 2nd round match with p
   // target specific matchUp
   const targetMatchUp = matchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 2
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 2);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 1
+    ({ drawPosition }) => drawPosition === 1,
   );
 
   expect(mainDrawPosition.bye).toEqual(true);
@@ -268,20 +242,15 @@ it('correctly places WALKOVER loser of 2nd round match who had bye into consolat
   // target specific matchUp
   const targetMatchUp = byeMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 2
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 2);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 1
+    ({ drawPosition }) => drawPosition === 1,
   );
 
   expect(mainDrawPosition.bye).toEqual(true);
@@ -335,20 +304,15 @@ it('correctly places WALKOVER loser of 2nd round match who had BYE into consolat
   // target specific matchUp
   const targetMatchUp = byeMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 2
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 2);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 1
+    ({ drawPosition }) => drawPosition === 1,
   );
 
   expect(mainDrawPosition.bye).toEqual(true);
@@ -402,21 +366,16 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
   // target specific matchUp
   let targetMatchUp = byeMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 1 &&
-      stage === CONSOLATION &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 1 && stage === CONSOLATION && stageSequence === 1,
   );
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const mainStructure = drawDefinition.structures[0];
   let consolationStructure = drawDefinition.structures[1];
-  const mainDrawPosition = mainStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 2
-  );
+  const mainDrawPosition = mainStructure.positionAssignments.find(({ drawPosition }) => drawPosition === 2);
   const consolationDrawPosition = consolationStructure.positionAssignments.find(
-    ({ drawPosition }) => drawPosition === 1
+    ({ drawPosition }) => drawPosition === 1,
   );
 
   expect(mainDrawPosition.bye).toEqual(true);
@@ -425,10 +384,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
   // find 2nd round WALKOVER matchUp
   const matchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 2 &&
-      roundPosition === 1 &&
-      stage === MAIN &&
-      stageSequence === 1
+      roundNumber === 2 && roundPosition === 1 && stage === MAIN && stageSequence === 1,
   );
   expect(matchUp.matchUpStatus).toEqual(DEFAULTED);
 
@@ -444,9 +400,7 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
     drawId,
     inContext: true,
   });
-  targetMatchUp = matchUps.find(
-    ({ matchUpId }) => matchUp.matchUpId === matchUpId
-  );
+  targetMatchUp = matchUps.find(({ matchUpId }) => matchUp.matchUpId === matchUpId);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.score).toEqual({});
   expect(targetMatchUp.winningSide).toBeUndefined();
@@ -454,7 +408,5 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   consolationStructure = drawDefinition.structures[1];
   expect(consolationStructure.positionAssignments[0].bye).not.toEqual(true);
-  expect(
-    consolationStructure.positionAssignments[1].participantId
-  ).toBeUndefined();
+  expect(consolationStructure.positionAssignments[1].participantId).toBeUndefined();
 });

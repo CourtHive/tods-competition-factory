@@ -27,8 +27,7 @@ const scenario = {
 };
 
 it('can substitute an individual participant in a TEAM tieMatchUp', () => {
-  const { tournamentRecord, drawId, valueGoal } =
-    generateTeamTournament(scenario);
+  const { tournamentRecord, drawId, valueGoal } = generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
   tournamentEngine.devContext(true).setState(tournamentRecord);
@@ -36,18 +35,14 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   // get positionAssignments to determine drawPositions
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 
-  const lineUpExtension = drawDefinition.extensions.find(
-    ({ name }) => name === LINEUPS
-  );
+  const lineUpExtension = drawDefinition.extensions.find(({ name }) => name === LINEUPS);
   expect(lineUpExtension).toBeUndefined();
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps({
     matchUpFilters: { roundNumbers: [1] },
   });
 
-  const singlesMatchUps = matchUps.filter(
-    ({ matchUpType }) => matchUpType === SINGLES_MATCHUP
-  );
+  const singlesMatchUps = matchUps.filter(({ matchUpType }) => matchUpType === SINGLES_MATCHUP);
 
   expect(singlesMatchUps.length).toEqual(24);
 
@@ -67,9 +62,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   let validActions = result.validActions.map(({ type }) => type);
   expect(validActions).toEqual([REFEREE, SCHEDULE, ASSIGN_PARTICIPANT]);
 
-  let assignPositionAction = result.validActions.find(
-    ({ type }) => type === ASSIGN_PARTICIPANT
-  );
+  let assignPositionAction = result.validActions.find(({ type }) => type === ASSIGN_PARTICIPANT);
   let { method, payload, availableParticipantIds } = assignPositionAction;
   let participantId = availableParticipantIds[0];
 
@@ -87,9 +80,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     .filter(Boolean);
   expect(teamLineUps.length).toEqual(1);
 
-  expect(
-    teamLineUps.every((lineUp) => validateLineUp({ lineUp }).valid)
-  ).toEqual(true);
+  expect(teamLineUps.every((lineUp) => validateLineUp({ lineUp }).valid)).toEqual(true);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,
@@ -97,13 +88,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    REMOVE_PARTICIPANT,
-    REPLACE_PARTICIPANT,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, REMOVE_PARTICIPANT, REPLACE_PARTICIPANT]);
 
   result = tournamentEngine.matchUpActions({
     matchUpId: singlesMatchUpId,
@@ -113,9 +98,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   validActions = result.validActions.map(({ type }) => type);
   expect(validActions).toEqual([REFEREE, SCHEDULE, ASSIGN_PARTICIPANT]);
 
-  assignPositionAction = result.validActions.find(
-    ({ type }) => type === ASSIGN_PARTICIPANT
-  );
+  assignPositionAction = result.validActions.find(({ type }) => type === ASSIGN_PARTICIPANT);
   ({ method, payload, availableParticipantIds } = assignPositionAction);
   participantId = availableParticipantIds[0];
 
@@ -127,16 +110,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    REMOVE_PARTICIPANT,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, REMOVE_PARTICIPANT]);
 
   // add an incomplete outcome and confirm SUBSTITUTION for SINGLES_MATCHUP
   const outcome = {
@@ -155,14 +129,5 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
     drawId,
   });
   validActions = result.validActions.map(({ type }) => type);
-  expect(validActions).toEqual([
-    REFEREE,
-    SCHEDULE,
-    PENALTY,
-    STATUS,
-    SCORE,
-    START,
-    END,
-    SUBSTITUTION,
-  ]);
+  expect(validActions).toEqual([REFEREE, SCHEDULE, PENALTY, STATUS, SCORE, START, END, SUBSTITUTION]);
 });

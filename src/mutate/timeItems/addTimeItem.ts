@@ -21,22 +21,15 @@ type AddTimeItemArgs = {
   element: any;
 };
 export function addTimeItem(params: AddTimeItemArgs) {
-  const {
-    duplicateValues = true,
-    creationTime = true,
-    removePriorValues,
-    timeItem,
-    element,
-  } = params;
+  const { duplicateValues = true, creationTime = true, removePriorValues, timeItem, element } = params;
   if (!timeItem) return { error: MISSING_TIME_ITEM };
   if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
 
   const timeItemAttributes = timeItem && Object.keys(timeItem);
   const requiredAttributes = ['itemType', 'itemValue'];
   const validTimeItem =
-    requiredAttributes.filter((attribute) =>
-      timeItemAttributes.includes(attribute)
-    ).length === requiredAttributes.length;
+    requiredAttributes.filter((attribute) => timeItemAttributes.includes(attribute)).length ===
+    requiredAttributes.length;
 
   if (!validTimeItem) return { error: INVALID_TIME_ITEM };
 
@@ -54,8 +47,7 @@ export function addTimeItem(params: AddTimeItemArgs) {
       })?.timeItem;
     if (
       existingTimeItem &&
-      JSON.stringify(existingTimeItem?.itemValue) ===
-        JSON.stringify(itemValue) &&
+      JSON.stringify(existingTimeItem?.itemValue) === JSON.stringify(itemValue) &&
       !duplicateValues
     ) {
       return { ...SUCCESS };
@@ -72,9 +64,7 @@ export function addTimeItem(params: AddTimeItemArgs) {
   }
 
   if (removePriorValues) {
-    element.timeItems = element.timeItems.filter(
-      ({ itemType }) => timeItem.itemType !== itemType
-    );
+    element.timeItems = element.timeItems.filter(({ itemType }) => timeItem.itemType !== itemType);
   }
 
   // if priorValues are being remvoed and there is no new itemValue, do not add by pushing
@@ -118,13 +108,7 @@ export function addParticipantTimeItem({
 }
 
 export function addTournamentTimeItem(params) {
-  const {
-    removePriorValues,
-    tournamentRecord,
-    duplicateValues,
-    creationTime,
-    timeItem,
-  } = params;
+  const { removePriorValues, tournamentRecord, duplicateValues, creationTime, timeItem } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   return addTimeItem({
     element: tournamentRecord,
@@ -136,8 +120,7 @@ export function addTournamentTimeItem(params) {
 }
 
 export function addEventTimeItem(params) {
-  const { removePriorValues, duplicateValues, creationTime, timeItem, event } =
-    params;
+  const { removePriorValues, duplicateValues, creationTime, timeItem, event } = params;
   if (!event) return { error: EVENT_NOT_FOUND };
   return addTimeItem({
     removePriorValues,

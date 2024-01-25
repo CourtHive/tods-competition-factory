@@ -6,10 +6,7 @@ import { findExtension } from '../../acquire/findExtension';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  COURT_IDS,
-  TOURNAMENT_RECORDS,
-} from '../../constants/attributeConstants';
+import { COURT_IDS, TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
 
 export function enableCourts(params) {
   const tournamentRecords = resolveTournamentRecords(params);

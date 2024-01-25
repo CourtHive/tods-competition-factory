@@ -3,15 +3,8 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_MATCHUP,
-  MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { INVALID_MATCHUP, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type ResetMatchUpLineUps = {
   tournamentRecord?: Tournament;

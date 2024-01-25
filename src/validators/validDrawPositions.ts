@@ -22,16 +22,11 @@ export function validDrawPositions({ matchUps }) {
 
   const allPositionsValid = drawPositions?.every(validDrawPosition);
 
-  const matchUpDrawPositionsNotArray = matchUps.find(
-    (matchUp) => !Array.isArray(matchUp.drawPositions)
-  );
+  const matchUpDrawPositionsNotArray = matchUps.find((matchUp) => !Array.isArray(matchUp.drawPositions));
 
   return allPositionsValid && !matchUpDrawPositionsNotArray;
 }
 
 function validDrawPosition(drawPosition) {
-  return (
-    drawPosition !== null &&
-    (drawPosition === undefined || !isNaN(drawPosition))
-  );
+  return drawPosition !== null && (drawPosition === undefined || !isNaN(drawPosition));
 }

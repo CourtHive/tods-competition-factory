@@ -26,14 +26,7 @@ it.each([
   },
 ])(
   'can modify matchUpAverageTimes for for matchUpFormats',
-  ({
-    matchUpFormat,
-    categoryName,
-    categoryType,
-    averageMinutes,
-    recoveryMinutes,
-    eventType,
-  }) => {
+  ({ matchUpFormat, categoryName, categoryType, averageMinutes, recoveryMinutes, eventType }) => {
     const {
       eventIds: [eventId],
       tournamentRecord,
@@ -45,17 +38,15 @@ it.each([
       ],
     });
 
-    let result = tournamentEngine
-      .setState(tournamentRecord)
-      .getMatchUpFormatTiming({
-        defaultAverageMinutes: 87,
-        defaultRecoveryMinutes: 57,
-        matchUpFormat,
-        categoryName,
-        categoryType,
-        eventType,
-        eventId,
-      });
+    let result = tournamentEngine.setState(tournamentRecord).getMatchUpFormatTiming({
+      defaultAverageMinutes: 87,
+      defaultRecoveryMinutes: 57,
+      matchUpFormat,
+      categoryName,
+      categoryType,
+      eventType,
+      eventId,
+    });
     expect(result.averageMinutes).toEqual(87);
     if (recoveryMinutes) {
       expect(result.recoveryMinutes).toEqual(57);
@@ -99,7 +90,7 @@ it.each([
 
     result = tournamentEngine.getModifiedMatchUpFormatTiming({ matchUpFormat });
     expect(result.averageTimes.length).toEqual(1);
-  }
+  },
 );
 
 it('can modify timing for multiple matchUpFormat codes', () => {
@@ -238,15 +229,12 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
   });
   expect(result.averageMinutes).toEqual(107);
 
-  let { eventMatchUpFormatTiming } =
-    tournamentEngine.getEventMatchUpFormatTiming({
-      eventId,
-      categoryType: ADULT,
-      matchUpFormats: [FORMAT_STANDARD, set6TB12, short3TB7, shortTB10],
-    });
-  expect(
-    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
-  ).toEqual([90, 107, 107, 137]);
+  let { eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
+    eventId,
+    categoryType: ADULT,
+    matchUpFormats: [FORMAT_STANDARD, set6TB12, short3TB7, shortTB10],
+  });
+  expect(eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)).toEqual([90, 107, 107, 137]);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     categoryType: ADULT,
@@ -258,19 +246,13 @@ it('can return matchUpFormatTiming for all matchUpFormats in an event', () => {
       { matchUpFormat: FORMAT_STANDARD, description: '4' },
     ],
   }));
-  expect(
-    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
-  ).toEqual([137, 107, 107, 90]);
-  expect(
-    eventMatchUpFormatTiming.map(({ description }) => description)
-  ).toEqual(['1', '2', '3', '4']);
+  expect(eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)).toEqual([137, 107, 107, 90]);
+  expect(eventMatchUpFormatTiming.map(({ description }) => description)).toEqual(['1', '2', '3', '4']);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
     categoryType: JUNIOR,
     matchUpFormats: [shortTB10, set6TB12, short3TB7, FORMAT_STANDARD],
   }));
-  expect(
-    eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)
-  ).toEqual([90, 90, 60, 127]);
+  expect(eventMatchUpFormatTiming.map(({ averageMinutes }) => averageMinutes)).toEqual([90, 90, 60, 127]);
 });

@@ -2,10 +2,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  COMPASS,
-  FEED_IN_CHAMPIONSHIP,
-} from '../../../constants/drawDefinitionConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
 
 it('can bulkSchedule matchUps using matchUpDetails', () => {
   const venueId = 'cc-venue-id';
@@ -38,29 +35,24 @@ it('can bulkSchedule matchUps using matchUpDetails', () => {
     endDate,
   }).tournamentRecord;
 
-  let result = competitionEngine.setState([
-    tournamentRecord1,
-    tournamentRecord2,
-  ]);
+  let result = competitionEngine.setState([tournamentRecord1, tournamentRecord2]);
 
   expect(result.success).toEqual(true);
 
   const matchUps = competitionEngine.allCompetitionMatchUps().matchUps;
   const scheduleTimes = ['08:00', '09:00', '10:00', '11:00', '12:00'];
 
-  const matchUpDetails = matchUps.map(
-    ({ tournamentId, drawId, matchUpId }, i) => ({
-      schedule: {
-        scheduledTime: scheduleTimes[i % 4],
-        courtOrder: (i % 4) + 1,
-        scheduledDate,
-        venueId,
-      },
-      tournamentId,
-      matchUpId,
-      drawId,
-    })
-  );
+  const matchUpDetails = matchUps.map(({ tournamentId, drawId, matchUpId }, i) => ({
+    schedule: {
+      scheduledTime: scheduleTimes[i % 4],
+      courtOrder: (i % 4) + 1,
+      scheduledDate,
+      venueId,
+    },
+    tournamentId,
+    matchUpId,
+    drawId,
+  }));
 
   result = competitionEngine.bulkScheduleMatchUps({ matchUpDetails });
   expect(result.success).toEqual(true);

@@ -28,9 +28,7 @@ test('team ROUND_robin with 3 teams', () => {
   expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({});
-  let matchUp = matchUps.find(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
+  let matchUp = matchUps.find(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
 
   const tieScore = {
     scoreStringSide1: '7-7',

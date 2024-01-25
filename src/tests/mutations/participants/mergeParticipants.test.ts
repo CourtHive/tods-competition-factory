@@ -3,10 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import {
-  ADD_PARTICIPANTS,
-  MODIFY_PARTICIPANTS,
-} from '../../../constants/topicConstants';
+import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 
 test('participants can be merged', () => {
   let participantAddEventsCounter = 0;
@@ -32,14 +29,11 @@ test('participants can be merged', () => {
   modifiedParticipant.person.previousNames = ['Previous Name'];
   const { participantId } = modifiedParticipant;
 
-  let { participants: tournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantIds: [participantId] },
-    });
+  let { participants: tournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantIds: [participantId] },
+  });
 
-  expect(modifiedParticipant.person).not.toEqual(
-    tournamentParticipants[0].person
-  );
+  expect(modifiedParticipant.person).not.toEqual(tournamentParticipants[0].person);
 
   let result = tournamentEngine.mergeParticipants({
     participants: [modifiedParticipant],
@@ -86,8 +80,7 @@ test('participants can be merged', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ participants: tournamentParticipants } =
-    tournamentEngine.getParticipants());
+  ({ participants: tournamentParticipants } = tournamentEngine.getParticipants());
   expect(tournamentParticipants.length).toEqual(20);
 
   result = tournamentEngine.newTournamentRecord();
@@ -96,8 +89,7 @@ test('participants can be merged', () => {
   result = tournamentEngine.mergeParticipants({ participants });
   expect(result.success).toEqual(true);
 
-  ({ participants: tournamentParticipants } =
-    tournamentEngine.getParticipants());
+  ({ participants: tournamentParticipants } = tournamentEngine.getParticipants());
   expect(tournamentParticipants.length).toEqual(10);
 
   expect(participantAddEventsCounter).toEqual(3);

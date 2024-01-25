@@ -7,9 +7,7 @@ import { ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConst
 
 test('provisional positioning is possible', () => {
   const mockProfile = {
-    drawProfiles: [
-      { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 16, completionGoal: 23 },
-    ],
+    drawProfiles: [{ drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 16, completionGoal: 23 }],
   };
 
   const {
@@ -31,9 +29,7 @@ test('provisional positioning is possible', () => {
     drawId,
   });
   expect(result.success).toEqual(true);
-  expect(
-    result.structurePositionAssignments[0].positionAssignments.length
-  ).toEqual(4);
+  expect(result.structurePositionAssignments[0].positionAssignments.length).toEqual(4);
 
   // by default provisional positioning is not allowed
   result = tournamentEngine.automatedPlayoffPositioning({
@@ -72,7 +68,7 @@ test('provisional positioning is possible', () => {
     drawId,
   });
   let assignedPositionsCount = positionAssignments.filter(
-    (assignment) => assignment.participantId || assignment.bye
+    (assignment) => assignment.participantId || assignment.bye,
   ).length;
   expect(assignedPositionsCount).toEqual(0);
 
@@ -88,16 +84,14 @@ test('provisional positioning is possible', () => {
   }).positionAssignments;
 
   assignedPositionsCount = positionAssignments.filter(
-    (assignment) => assignment.participantId || assignment.bye
+    (assignment) => assignment.participantId || assignment.bye,
   ).length;
   expect(assignedPositionsCount).toEqual(4);
 });
 
 test('setPositionAssignments', () => {
   const mockProfile = {
-    drawProfiles: [
-      { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 16, completionGoal: 23 },
-    ],
+    drawProfiles: [{ drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 16, completionGoal: 23 }],
   };
 
   const {
@@ -139,7 +133,7 @@ test('setPositionAssignments', () => {
     drawId,
   });
   let assignedPositionsCount = positionAssignments.filter(
-    (assignment) => assignment.participantId || assignment.bye
+    (assignment) => assignment.participantId || assignment.bye,
   ).length;
   expect(assignedPositionsCount).toEqual(0);
 
@@ -156,7 +150,7 @@ test('setPositionAssignments', () => {
   }).positionAssignments;
 
   assignedPositionsCount = positionAssignments.filter(
-    (assignment) => assignment.participantId || assignment.bye
+    (assignment) => assignment.participantId || assignment.bye,
   ).length;
   expect(assignedPositionsCount).toEqual(4);
 });
@@ -177,8 +171,7 @@ test.each([
       ],
     };
 
-    const { tournamentRecord } =
-      mocksEngine.generateTournamentRecord(mockProfile);
+    const { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
 
     tournamentEngine.setState(tournamentRecord);
 
@@ -187,9 +180,9 @@ test.each([
 
     const assignedPositionsCount =
       tournamentRecord.events[0].drawDefinitions[0].structures[1].positionAssignments.filter(
-        (assignment) => assignment.participantId || assignment.bye
+        (assignment) => assignment.participantId || assignment.bye,
       ).length;
 
     expect(assignedPositionsCount).toEqual(playoffAssignmentsCount);
-  }
+  },
 );

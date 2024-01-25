@@ -95,14 +95,11 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can determine whether categories can contain other categories',
-  ({ scenario, expectation }) => {
-    const result = categoryCanContain(scenario);
-    if (expectation) {
-      expect(result).toEqual(expectation);
-    } else {
-      console.log({ scenario }, result);
-    }
+it.each(scenarios)('can determine whether categories can contain other categories', ({ scenario, expectation }) => {
+  const result = categoryCanContain(scenario);
+  if (expectation) {
+    expect(result).toEqual(expectation);
+  } else {
+    console.log({ scenario }, result);
   }
-);
+});

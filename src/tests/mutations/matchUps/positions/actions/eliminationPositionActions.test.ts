@@ -4,15 +4,8 @@ import { expect, it, test } from 'vitest';
 
 import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
 import { MAIN } from '../../../../../constants/drawDefinitionConstants';
-import {
-  INVALID_DRAW_POSITION,
-  INVALID_VALUES,
-} from '../../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
+import { INVALID_DRAW_POSITION, INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 import {
   SWAP_PARTICIPANTS,
   ADD_PENALTY,
@@ -121,9 +114,7 @@ it('returns correct positionActions for participants in completed matchUps', () 
   const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
 
   let drawPosition = 1;
-  let targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  let targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   let result = tournamentEngine.positionActions({
@@ -145,9 +136,7 @@ it('returns correct positionActions for participants in completed matchUps', () 
 
   // now check that loser position is considered active
   drawPosition = 2;
-  targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
   result = tournamentEngine.positionActions({
@@ -169,9 +158,7 @@ it('returns correct positionActions for participants in completed matchUps', () 
 
   // now check inactive drawPosition
   drawPosition = 3;
-  targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 
   result = tournamentEngine.positionActions({
@@ -230,8 +217,7 @@ it('returns correct positionActions for BYE positions where paired participants 
 
   let drawPosition = 1;
   let targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition),
   );
   expect(targetMatchUp.matchUpStatus).toEqual(COMPLETED);
 
@@ -254,9 +240,7 @@ it('returns correct positionActions for BYE positions where paired participants 
 
   // now check that BYE position is considered active
   drawPosition = 2;
-  targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
@@ -278,9 +262,7 @@ it('returns correct positionActions for BYE positions where paired participants 
 
   // now check inactive BYE position
   drawPosition = 31;
-  targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
@@ -302,10 +284,7 @@ it('returns correct positionActions for BYE positions where paired participants 
 
   // now check inactive position paired with BYE
   drawPosition = 32;
-  targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === 1 && matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.roundNumber === 1 && matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(BYE);
 
   result = tournamentEngine.positionActions({
@@ -327,9 +306,7 @@ it('returns correct positionActions for BYE positions where paired participants 
 
   // now check an inactive assigned drawPosition
   drawPosition = 5;
-  targetMatchUp = matchUps.find((matchUp) =>
-    matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).not.toEqual(BYE);
 
   result = tournamentEngine.positionActions({
@@ -366,9 +343,7 @@ test('seedValues can be defined for unseeded positions', () => {
     withEvents: true,
     withDraws: true,
   });
-  let participantsWithSeedings = p.participants.filter(
-    (participant) => participant.seedings?.[SINGLES_EVENT]
-  );
+  let participantsWithSeedings = p.participants.filter((participant) => participant.seedings?.[SINGLES_EVENT]);
   expect(participantsWithSeedings.length).toEqual(4);
 
   let result = tournamentEngine.positionActions({
@@ -379,9 +354,7 @@ test('seedValues can be defined for unseeded positions', () => {
   const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(SEED_VALUE)).toEqual(true);
 
-  const action = result.validActions.find(
-    (action) => action.type === SEED_VALUE
-  );
+  const action = result.validActions.find((action) => action.type === SEED_VALUE);
   const { method, payload } = action;
 
   payload.seedValue = 'x';
@@ -398,21 +371,13 @@ test('seedValues can be defined for unseeded positions', () => {
     withEvents: true,
     withDraws: true,
   });
-  participantsWithSeedings = p.participants.filter(
-    (participant) => participant.seedings?.[SINGLES_EVENT]
-  );
+  participantsWithSeedings = p.participants.filter((participant) => participant.seedings?.[SINGLES_EVENT]);
   expect(participantsWithSeedings.length).toEqual(5);
 
   for (const participant of participantsWithSeedings) {
     const { participantId } = participant;
     expect(participant.seedings[SINGLES_EVENT].length).toBeDefined();
-    expect(
-      p.participantMap[participantId].events[eventId].seedAssignments[MAIN]
-        .seedValue
-    ).toBeDefined();
-    expect(
-      p.participantMap[participantId].draws[drawId].seedAssignments[MAIN]
-        .seedValue
-    ).toBeDefined();
+    expect(p.participantMap[participantId].events[eventId].seedAssignments[MAIN].seedValue).toBeDefined();
+    expect(p.participantMap[participantId].draws[drawId].seedAssignments[MAIN].seedValue).toBeDefined();
   }
 });

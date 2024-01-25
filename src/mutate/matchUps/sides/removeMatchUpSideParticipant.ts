@@ -13,20 +13,13 @@ import {
   MISSING_VALUE,
 } from '../../../constants/errorConditionConstants';
 
-export function removeMatchUpSideParticipant({
-  tournamentRecord,
-  drawDefinition,
-  sideNumber,
-  matchUpId,
-  event,
-}) {
+export function removeMatchUpSideParticipant({ tournamentRecord, drawDefinition, sideNumber, matchUpId, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   if (!sideNumber) return { error: MISSING_VALUE };
 
-  if (![1, 2].includes(sideNumber))
-    return { error: INVALID_VALUES, sideNumber };
+  if (![1, 2].includes(sideNumber)) return { error: INVALID_VALUES, sideNumber };
 
   const { matchUp, structure } = findDrawMatchUp({
     drawDefinition,

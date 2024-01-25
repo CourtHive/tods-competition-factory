@@ -5,26 +5,18 @@
  * @param {object[]} positionAssignments - array of assignment objects { drawPosition, participantId }
  *
  */
-function getPositionProfiles({
-  participantIdGroups,
-  positionAssignments,
-  groupsToAvoid,
-}) {
+function getPositionProfiles({ participantIdGroups, positionAssignments, groupsToAvoid }) {
   return Object.assign(
     {},
     ...positionAssignments
       .filter((assignment) => assignment?.participantId)
       .map((assginment) => {
         const { drawPosition, participantId } = assginment;
-        const participantGroups = participantIdGroups
-          ? participantIdGroups[participantId] || []
-          : [];
+        const participantGroups = participantIdGroups ? participantIdGroups[participantId] || [] : [];
 
-        const includesGroupsToAvoid = !!groupsToAvoid.some((group) =>
-          participantGroups.includes(group)
-        );
+        const includesGroupsToAvoid = !!groupsToAvoid.some((group) => participantGroups.includes(group));
         return { [drawPosition]: { participantGroups, includesGroupsToAvoid } };
-      })
+      }),
   );
 }
 
@@ -47,13 +39,9 @@ export function analyzeEliminationDrawPositions(params) {
   const profiledPositions = getPositionProfiles(params);
 
   const checkedChunk = chunkedDrawPositions.map((chunkedGrouping) => {
-    const unassigned = unfilledPositions.filter((unfilledPosition) =>
-      chunkedGrouping.includes(unfilledPosition)
-    );
+    const unassigned = unfilledPositions.filter((unfilledPosition) => chunkedGrouping.includes(unfilledPosition));
     const unpaired = unpairedPositions(unassigned);
-    const paired = unassigned.filter(
-      (drawPosition) => !unpaired.includes(drawPosition)
-    );
+    const paired = unassigned.filter((drawPosition) => !unpaired.includes(drawPosition));
     const pairedNoConflict = paired.filter((drawPosition) => {
       const pairedPosition = getPairedPosition(drawPosition);
       return !profiledPositions[pairedPosition]?.includesGroupsToAvoid;
@@ -93,13 +81,10 @@ export function analyzeRoundRobinDrawPositions(params) {
   const profiledPositions = getPositionProfiles(params);
 
   return chunkedDrawPositions.map((chunkedGrouping) => {
-    const unassigned = unfilledPositions.filter((unfilledPosition) =>
-      chunkedGrouping.includes(unfilledPosition)
-    );
-    const unpaired =
-      unassigned.length === chunkedGrouping.length ? unassigned : [];
+    const unassigned = unfilledPositions.filter((unfilledPosition) => chunkedGrouping.includes(unfilledPosition));
+    const unpaired = unassigned.length === chunkedGrouping.length ? unassigned : [];
     const conflictsCount = chunkedGrouping.filter(
-      (drawPosition) => profiledPositions[drawPosition]?.includesGroupsToAvoid
+      (drawPosition) => profiledPositions[drawPosition]?.includesGroupsToAvoid,
     ).length;
     const pairedNoConflict = conflictsCount ? [] : unassigned;
     return { unassigned, unpaired, pairedNoConflict, conflictsCount };
@@ -125,7 +110,5 @@ function getPairedPosition(drawPosition) {
  *
  */
 export function getParticipantGroups({ allGroups, participantId }) {
-  return Object.keys(allGroups).filter((key) =>
-    allGroups[key].includes(participantId)
-  );
+  return Object.keys(allGroups).filter((key) => allGroups[key].includes(participantId));
 }

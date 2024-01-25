@@ -5,10 +5,7 @@ import { removeExtension } from '../extensions/removeExtension';
 import { DISABLED } from '../../constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  TOURNAMENT_RECORDS,
-  VENUE_IDS,
-} from '../../constants/attributeConstants';
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '../../constants/attributeConstants';
 
 type EnableVenuesArgs = {
   tournamentRecords: TournamentRecords;
@@ -26,8 +23,7 @@ export function enableVenues(params: EnableVenuesArgs) {
   const { venueIds, enableAll } = params;
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     for (const venue of tournamentRecord.venues || []) {
-      if (enableAll || venueIds?.includes(venue.venueId))
-        removeExtension({ element: venue, name: DISABLED });
+      if (enableAll || venueIds?.includes(venue.venueId)) removeExtension({ element: venue, name: DISABLED });
     }
   }
 

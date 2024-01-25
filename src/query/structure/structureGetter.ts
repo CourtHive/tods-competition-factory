@@ -12,10 +12,7 @@ type GetPlayoffStructuresArgs = {
   structureId: string;
 };
 
-export function getPlayoffStructures({
-  drawDefinition,
-  structureId,
-}: GetPlayoffStructuresArgs) {
+export function getPlayoffStructures({ drawDefinition, structureId }: GetPlayoffStructuresArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { structure } = findStructure({ drawDefinition, structureId });
@@ -24,8 +21,8 @@ export function getPlayoffStructures({
     .filter((link) => link.source?.structureId === structureId)
     .map((link) => link.target?.structureId);
 
-  const playoffStructures = (drawDefinition?.structures || []).filter(
-    (structure) => targetStructureIds.includes(structure.structureId)
+  const playoffStructures = (drawDefinition?.structures || []).filter((structure) =>
+    targetStructureIds.includes(structure.structureId),
   );
 
   return { playoffStructures, structure };
@@ -45,16 +42,15 @@ export function getEventStructures({
   const structures: Structure[] = [];
 
   for (const drawDefinition of event.drawDefinitions || []) {
-    const { structures: drawStructures, stageStructures: drawStageStructures } =
-      getDrawStructures({
-        withStageGrouping,
-        stageSequences,
-        drawDefinition,
-        stageSequence,
-        roundTarget,
-        stages,
-        stage,
-      });
+    const { structures: drawStructures, stageStructures: drawStageStructures } = getDrawStructures({
+      withStageGrouping,
+      stageSequences,
+      drawDefinition,
+      stageSequence,
+      roundTarget,
+      stages,
+      stage,
+    });
 
     structures.push(...drawStructures);
     if (drawStageStructures) {
@@ -82,10 +78,7 @@ export function getTournamentStructures({
   const structures: Structure[] = [];
 
   for (const event of tournamentRecord.events || []) {
-    const {
-      structures: eventStructures,
-      stageStructures: eventStageStructures,
-    } = getEventStructures({
+    const { structures: eventStructures, stageStructures: eventStageStructures } = getEventStructures({
       withStageGrouping,
       stageSequences,
       stageSequence,

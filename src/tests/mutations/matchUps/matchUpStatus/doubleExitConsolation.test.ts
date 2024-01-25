@@ -2,29 +2,13 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import {
-  printGlobalLog,
-  pushGlobalLog,
-} from '../../../../global/functions/globalLog';
-import {
-  setDevContext,
-  setSubscriptions,
-} from '../../../../global/state/globalState';
+import { printGlobalLog, pushGlobalLog } from '../../../../global/functions/globalLog';
+import { setDevContext, setSubscriptions } from '../../../../global/state/globalState';
 
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  BYE,
-  COMPLETED,
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;
@@ -32,7 +16,7 @@ const getTarget = (params) => {
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
-      (!stage || matchUp.stage === stage)
+      (!stage || matchUp.stage === stage),
   );
 };
 
@@ -306,9 +290,7 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
     ],
   });
 
-  const doubleWalkoverOutcome = (outcomes || updates)?.find(
-    ({ matchUpStatus }) => matchUpStatus === DOUBLE_WALKOVER
-  );
+  const doubleWalkoverOutcome = (outcomes || updates)?.find(({ matchUpStatus }) => matchUpStatus === DOUBLE_WALKOVER);
 
   tournamentEngine.setState(tournamentRecord);
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
@@ -343,16 +325,13 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
         matchUps,
       });
       if (check.includeCheck !== false) {
-        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
-          check.drawPositions
-        );
+        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(check.drawPositions);
         expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
         expect(targetMatchUp.winningSide).toEqual(check.winningSide);
       }
       const { roundNumber, roundPosition } = targetMatchUp;
       const color =
-        JSON.stringify(targetMatchUp.drawPositions) !==
-        JSON.stringify(check.drawPositions)
+        JSON.stringify(targetMatchUp.drawPositions) !== JSON.stringify(check.drawPositions)
           ? 'brightmagenta'
           : 'brightgreen';
       pushGlobalLog({
@@ -370,13 +349,10 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
       });
 
       if (check.losingSideMatchUpStatusCode) {
-        const losingSideMatchUpStatusCode =
-          targetMatchUp.matchUpStatusCodes.find(
-            (side) => side.sideNumber !== targetMatchUp.winningSide
-          ).previousMatchUpStatus;
-        expect(losingSideMatchUpStatusCode).toEqual(
-          check.losingSideMatchUpStatusCode
-        );
+        const losingSideMatchUpStatusCode = targetMatchUp.matchUpStatusCodes.find(
+          (side) => side.sideNumber !== targetMatchUp.winningSide,
+        ).previousMatchUpStatus;
+        expect(losingSideMatchUpStatusCode).toEqual(check.losingSideMatchUpStatusCode);
       }
     }
   }
@@ -407,8 +383,7 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
         matchUps,
       });
       const color =
-        JSON.stringify(targetMatchUp.drawPositions) !==
-        JSON.stringify(check.drawPositions)
+        JSON.stringify(targetMatchUp.drawPositions) !== JSON.stringify(check.drawPositions)
           ? 'brightmagenta'
           : 'brightgreen';
       const { roundNumber, roundPosition } = targetMatchUp;
@@ -426,9 +401,7 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
         check: JSON.stringify(check.drawPositions),
       });
       if (check.includeCheck !== false) {
-        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(
-          check.drawPositions
-        );
+        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(check.drawPositions);
         expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
         expect(targetMatchUp.winningSide).toEqual(check.winningSide);
       }

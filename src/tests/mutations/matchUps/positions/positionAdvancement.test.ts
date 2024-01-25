@@ -44,9 +44,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
 
   // test first matchUp in roundNumber: 1
   let matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
-    return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
-      ? matchUp.matchUpId
-      : matchUpId;
+    return matchUp.roundNumber === 1 && matchUp.roundPosition === 1 ? matchUp.matchUpId : matchUpId;
   }, undefined);
 
   let {
@@ -70,9 +68,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
 
   // test last matchUp in roundNumber: 1
   matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
-    return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
-      ? matchUp.matchUpId
-      : matchUpId;
+    return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2 ? matchUp.matchUpId : matchUpId;
   }, undefined);
 
   ({
@@ -97,10 +93,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   matchUpId = pendingMatchUps?.[0]?.matchUpId;
   const {
     matchUp: matchUp2ndRound,
-    targetMatchUps: {
-      winnerMatchUp: winnerMatchUp2ndRound,
-      loserMatchUp: loserMatchUp2ndRound,
-    },
+    targetMatchUps: { winnerMatchUp: winnerMatchUp2ndRound, loserMatchUp: loserMatchUp2ndRound },
   } = positionTargets({
     drawDefinition,
     inContextDrawMatchUps,
@@ -110,9 +103,7 @@ it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOL
   expect(matchUp2ndRound.roundNumber).toEqual(2);
   expect(winnerMatchUp2ndRound.roundNumber).toEqual(3);
 
-  expect(matchUp2ndRound.structureId).toEqual(
-    winnerMatchUp2ndRound.structureId
-  );
+  expect(matchUp2ndRound.structureId).toEqual(winnerMatchUp2ndRound.structureId);
   expect(loserMatchUp2ndRound.roundNumber).toEqual(2);
   expect(loserMatchUp2ndRound.roundPosition).toEqual(1);
 });
@@ -144,9 +135,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
 
   // test first matchUp in roundNumber: 1
   let matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
-    return matchUp.roundNumber === 1 && matchUp.roundPosition === 1
-      ? matchUp.matchUpId
-      : matchUpId;
+    return matchUp.roundNumber === 1 && matchUp.roundPosition === 1 ? matchUp.matchUpId : matchUpId;
   }, undefined);
 
   let {
@@ -171,9 +160,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
 
   // test last matchUp in roundNumber: 1
   matchUpId = upcomingMatchUps?.reduce((matchUpId: any, matchUp) => {
-    return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2
-      ? matchUp.matchUpId
-      : matchUpId;
+    return matchUp.roundNumber === 1 && matchUp.roundPosition === drawSize / 2 ? matchUp.matchUpId : matchUpId;
   }, undefined);
 
   ({
@@ -199,10 +186,7 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   matchUpId = pendingMatchUps?.[0].matchUpId;
   const {
     matchUp: matchUp2ndRound,
-    targetMatchUps: {
-      winnerMatchUp: winnerMatchUp2ndRound,
-      loserMatchUp: loserMatchUp2ndRound,
-    },
+    targetMatchUps: { winnerMatchUp: winnerMatchUp2ndRound, loserMatchUp: loserMatchUp2ndRound },
   } = positionTargets({
     drawDefinition,
     inContextDrawMatchUps,
@@ -218,15 +202,9 @@ it('can direct participants in FEED_IN_CHAMPIONSHIP structure', () => {
   // 2nd round should be fed BOTTOM_UP
   expect(loserMatchUp2ndRound.roundPosition).toEqual(4);
 
-  expect(matchUp2ndRound.structureId).toEqual(
-    winnerMatchUp2ndRound.structureId
-  );
-  expect(matchUp2ndRound.structureId).not.toEqual(
-    loserMatchUp2ndRound.structureId
-  );
-  expect(matchUp2ndRound.structureId).not.toEqual(
-    loserMatchUp2ndRound.structureId
-  );
+  expect(matchUp2ndRound.structureId).toEqual(winnerMatchUp2ndRound.structureId);
+  expect(matchUp2ndRound.structureId).not.toEqual(loserMatchUp2ndRound.structureId);
+  expect(matchUp2ndRound.structureId).not.toEqual(loserMatchUp2ndRound.structureId);
 
   expect(loserMatchUp.structureId).toEqual(loserMatchUp2ndRound.structureId);
 });
@@ -268,11 +246,9 @@ it('can direct participants in COMPASS', () => {
 
   const structureNameMap = Object.assign(
     {},
-    ...(drawDefinition.structures ?? []).map(
-      ({ structureId, structureName = '' }) => ({
-        [structureName]: structureId,
-      })
-    )
+    ...(drawDefinition.structures ?? []).map(({ structureId, structureName = '' }) => ({
+      [structureName]: structureId,
+    })),
   );
 
   expect(matchUp.roundNumber).toEqual(1);
@@ -293,10 +269,7 @@ it('can direct participants in COMPASS', () => {
   const {
     matchUp: matchUp2ndRound,
     targetLinks: { loserTargetLink: round2loserTargetLink },
-    targetMatchUps: {
-      winnerMatchUp: winnerMatchUp2ndRound,
-      loserMatchUp: loserMatchUp2ndRound,
-    },
+    targetMatchUps: { winnerMatchUp: winnerMatchUp2ndRound, loserMatchUp: loserMatchUp2ndRound },
   } = positionTargets({
     inContextDrawMatchUps,
     drawDefinition,
@@ -311,20 +284,10 @@ it('can direct participants in COMPASS', () => {
   expect(winnerMatchUp.roundPosition).toEqual(1);
   expect(loserMatchUp.roundPosition).toEqual(1);
 
-  expect(round2loserTargetLink.source.structureId).toEqual(
-    structureNameMap['East']
-  );
-  expect(round2loserTargetLink.target.structureId).toEqual(
-    structureNameMap['North']
-  );
+  expect(round2loserTargetLink.source.structureId).toEqual(structureNameMap['East']);
+  expect(round2loserTargetLink.target.structureId).toEqual(structureNameMap['North']);
 
-  expect(matchUp2ndRound.structureId).toEqual(
-    winnerMatchUp2ndRound.structureId
-  );
-  expect(matchUp2ndRound.structureId).not.toEqual(
-    loserMatchUp2ndRound.structureId
-  );
-  expect(loserMatchUp.structureId).not.toEqual(
-    loserMatchUp2ndRound.structureId
-  );
+  expect(matchUp2ndRound.structureId).toEqual(winnerMatchUp2ndRound.structureId);
+  expect(matchUp2ndRound.structureId).not.toEqual(loserMatchUp2ndRound.structureId);
+  expect(loserMatchUp.structureId).not.toEqual(loserMatchUp2ndRound.structureId);
 });

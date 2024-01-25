@@ -51,9 +51,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
   });
 
   for (const matchUp of matchUps) {
-    const singlesMatchUps = matchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
+    const singlesMatchUps = matchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
     singlesMatchUps.forEach((singlesMatchUp, i) => {
       const { outcome } = mocksEngine.generateOutcomeFromScoreString({
         scoreString: scoreStrings.pop(),
@@ -79,15 +77,11 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
     structureId,
   });
 
-  const assignmentsWithTally = positionAssignments.filter(
-    ({ extensions }) => extensions
-  );
+  const assignmentsWithTally = positionAssignments.filter(({ extensions }) => extensions);
   expect(assignmentsWithTally.length).toEqual(4);
 
   assignmentsWithTally.forEach((assignment) => {
-    expect(
-      assignment.extensions.filter(({ name }) => name === TALLY).length
-    ).toEqual(1);
+    expect(assignment.extensions.filter(({ name }) => name === TALLY).length).toEqual(1);
   });
 
   const GEMscores = assignmentsWithTally

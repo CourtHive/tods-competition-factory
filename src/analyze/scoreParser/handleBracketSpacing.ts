@@ -22,10 +22,7 @@ export function handleBracketSpacing({ score, applied }) {
     const setsEndComma = score.match(setComma);
     if (setsEndComma?.length) {
       setsEndComma.forEach((commaEnd) => {
-        score = score.replace(
-          commaEnd,
-          commaEnd.slice(0, commaEnd.length - 1) + ' '
-        );
+        score = score.replace(commaEnd, commaEnd.slice(0, commaEnd.length - 1) + ' ');
       });
       applied.push('setsEndComma');
     }

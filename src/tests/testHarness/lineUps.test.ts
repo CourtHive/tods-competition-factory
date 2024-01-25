@@ -12,9 +12,7 @@ it('can get competitionScheduleMatchUps', () => {
 
   const participantId = 'BFFDEFF0-C0EA-453D-A813-DCCB767C150A';
 
-  const participant = participants.find(
-    (participant) => participant.participantId === participantId
-  );
+  const participant = participants.find((participant) => participant.participantId === participantId);
 
   expect(participant.matchUps.length).toEqual(8);
 });

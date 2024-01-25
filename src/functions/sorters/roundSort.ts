@@ -9,7 +9,7 @@ export function roundSort(a, b) {
     (stageOrder[a?.stage] || 0) - (stageOrder[b?.stage] || 0) ||
     b.matchUpsCount - a.matchUpsCount ||
     `${a.stageSequence}-${a.roundNumber}-${a.minFinishingSum}`.localeCompare(
-      `${b.stageSequence}-${b.roundNumber}-${b.minFinishingSum}`
+      `${b.stageSequence}-${b.roundNumber}-${b.minFinishingSum}`,
     )
   );
 }

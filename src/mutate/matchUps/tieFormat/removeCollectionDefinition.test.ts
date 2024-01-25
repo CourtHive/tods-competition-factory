@@ -8,19 +8,14 @@ import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConst
 import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../constants/eventConstants';
-import {
-  COLLEGE_D3,
-  USTA_BREWER_CUP,
-} from '../../../constants/tieFormatConstants';
+import { COLLEGE_D3, USTA_BREWER_CUP } from '../../../constants/tieFormatConstants';
 
 it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
   const deletedMatchUpIds: string[] = [];
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
+        notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
       },
     },
   });
@@ -45,8 +40,7 @@ it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
   expect(drawDefaultTieFormat).toBeUndefined();
   expect(eventDefaultTieFormat.winCriteria.valueGoal).toEqual(5);
 
-  const collectionId =
-    eventDefaultTieFormat.collectionDefinitions[0].collectionId;
+  const collectionId = eventDefaultTieFormat.collectionDefinitions[0].collectionId;
   result = tournamentEngine.removeCollectionDefinition({
     collectionId,
     drawId,
@@ -59,9 +53,7 @@ it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
   const prunedMatchUpsCount = matchUps.length;
 
   expect(deletedMatchUpIds.length).toEqual(3);
-  expect(prunedMatchUpsCount).toEqual(
-    originalMatchUpsCount - deletedMatchUpIds.length
-  );
+  expect(prunedMatchUpsCount).toEqual(originalMatchUpsCount - deletedMatchUpIds.length);
 });
 
 it('can remove a collectionDefinition from a structure tieFormat', () => {
@@ -69,9 +61,7 @@ it('can remove a collectionDefinition from a structure tieFormat', () => {
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
+        notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
       },
     },
   });
@@ -98,21 +88,14 @@ it('can remove a collectionDefinition from a structure tieFormat', () => {
 
   let { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
   let structure = drawDefinition.structures[0];
-  expect([
-    !!event.tieFormat,
-    !!drawDefinition.tieFormat,
-    !!structure.tieFormat,
-  ]).toEqual([true, false, false]);
+  expect([!!event.tieFormat, !!drawDefinition.tieFormat, !!structure.tieFormat]).toEqual([true, false, false]);
 
   // 1 team matchUps
   expect(drawDefinition.structures[0].matchUps.length).toEqual(1);
   // 9 tieMatchUps within each team matchUp
-  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(
-    9
-  );
+  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(9);
 
-  const collectionId =
-    eventDefaultTieFormat.collectionDefinitions[0].collectionId;
+  const collectionId = eventDefaultTieFormat.collectionDefinitions[0].collectionId;
   result = tournamentEngine.removeCollectionDefinition({
     structureId: structure.structureId,
     collectionId,
@@ -124,19 +107,13 @@ it('can remove a collectionDefinition from a structure tieFormat', () => {
 
   ({ drawDefinition, event } = tournamentEngine.getEvent({ drawId }));
   structure = drawDefinition.structures[0];
-  expect([
-    !!event.tieFormat,
-    !!drawDefinition.tieFormat,
-    !!structure.tieFormat,
-  ]).toEqual([true, false, true]);
+  expect([!!event.tieFormat, !!drawDefinition.tieFormat, !!structure.tieFormat]).toEqual([true, false, true]);
 
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const prunedMatchUpsCount = matchUps.length;
 
   expect(deletedMatchUpIds.length).toEqual(3);
-  expect(prunedMatchUpsCount).toEqual(
-    originalMatchUpsCount - deletedMatchUpIds.length
-  );
+  expect(prunedMatchUpsCount).toEqual(originalMatchUpsCount - deletedMatchUpIds.length);
 });
 
 // * will also remove collectionGroupNumber from all relevant collectionDefinitions
@@ -146,9 +123,7 @@ it('removing collectionDefinition that is part of collectionGroup will remove co
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
+        notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
       },
     },
   });
@@ -159,9 +134,7 @@ it('removing collectionDefinition that is part of collectionGroup will remove co
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -176,7 +149,7 @@ it('removing collectionDefinition that is part of collectionGroup will remove co
 
   // select one of the collectionDefinitions that is part of the collectionGroup
   const collectionId = eventDefaultTieFormat.collectionDefinitions.find(
-    ({ collectionGroupNumber }) => collectionGroupNumber === 1
+    ({ collectionGroupNumber }) => collectionGroupNumber === 1,
   ).collectionId;
 
   expect(collectionId).not.toBeUndefined();
@@ -193,9 +166,7 @@ it('removing collectionDefinition that is part of collectionGroup will remove co
   const prunedMatchUpsCount = matchUps.length;
 
   expect(deletedMatchUpIds.length).toEqual(1);
-  expect(prunedMatchUpsCount).toEqual(
-    originalMatchUpsCount - deletedMatchUpIds.length
-  );
+  expect(prunedMatchUpsCount).toEqual(originalMatchUpsCount - deletedMatchUpIds.length);
 });
 
 it('deleted collectionDefinitions are not removed from inProgress matchUps', () => {
@@ -204,9 +175,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
 
   const subscriptions = {
     [DELETED_MATCHUP_IDS]: (notices) => {
-      notices.forEach(({ matchUpIds }) =>
-        deletedMatchUpIds.push(...matchUpIds)
-      );
+      notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
     },
     modifyMatchUp: (payload) => {
       if (Array.isArray(payload)) {
@@ -235,42 +204,34 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
   let structure = drawDefinition.structures[0];
   const structureId = structure.structureId;
 
-  expect([
-    !!event.tieFormat,
-    !!drawDefinition.tieFormat,
-    !!structure.tieFormat,
-  ]).toEqual([true, false, false]);
+  expect([!!event.tieFormat, !!drawDefinition.tieFormat, !!structure.tieFormat]).toEqual([true, false, false]);
 
   const collectionId = event.tieFormat.collectionDefinitions[0].collectionId;
 
   // 3 team matchUps
   expect(drawDefinition.structures[0].matchUps.length).toEqual(3);
   // 9 tieMatchUps within each team matchUp
-  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(
-    9
-  );
+  expect(drawDefinition.structures[0].matchUps[0].tieMatchUps.length).toEqual(9);
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
-  const { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    });
+  const { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
@@ -325,33 +286,24 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
   structure = drawDefinition.structures[0];
   expect(structure.tieFormat.collectionDefinitions.length).toEqual(1);
 
-  expect([
-    !!event.tieFormat,
-    !!drawDefinition.tieFormat,
-    !!structure.tieFormat,
-  ]).toEqual([true, false, true]);
+  expect([!!event.tieFormat, !!drawDefinition.tieFormat, !!structure.tieFormat]).toEqual([true, false, true]);
 
-  expect(
-    drawDefinition.structures[0].tieFormat.collectionDefinitions.length
-  ).toEqual(1);
-  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(
-    4
-  );
+  expect(drawDefinition.structures[0].tieFormat.collectionDefinitions.length).toEqual(1);
+  expect(drawDefinition.structures[0].tieFormat.winCriteria.valueGoal).toEqual(4);
 
   // 2 of the 3 TEAM matchUps have been modified
   expect(matchUpModifyNotices.length - modifiedCount).toEqual(2);
 
   // confirm that team participant's drawPosition has advanced
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
 
   // the tieFormat of the in progress team matchUp should not have added a collectionDefinition
   firstRoundDualMatchUps.forEach((matchUp) => {
@@ -371,20 +323,17 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
 
   expect(result.success).toEqual(true);
 
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
 
-  teamMatchUp = firstRoundDualMatchUps.find(
-    (matchUp) => matchUp.matchUpId === teamMatchUpId
-  );
+  teamMatchUp = firstRoundDualMatchUps.find((matchUp) => matchUp.matchUpId === teamMatchUpId);
   expect(teamMatchUp.tieMatchUps.length).toEqual(6);
 });
 
@@ -398,23 +347,21 @@ test('removing collection when matchUps are scored and team participant has adva
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
   expect(firstRoundDualMatchUps[0].winningSide).toBeUndefined();
 
-  let { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [2],
-      },
-    });
+  let { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [2],
+    },
+  });
   expect(secondRoundDualMatchUps[0].drawPositions).toEqual(undefined);
 
   const outcome = {

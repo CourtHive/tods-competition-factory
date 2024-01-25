@@ -10,16 +10,11 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
 
-export function modifyParticipantName({
-  tournamentRecord,
-  participantName,
-  participantId,
-}) {
+export function modifyParticipantName({ tournamentRecord, participantName, participantId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 
-  if (!participantName)
-    return { error: MISSING_VALUE, info: 'Missing participantName' };
+  if (!participantName) return { error: MISSING_VALUE, info: 'Missing participantName' };
 
   const { participant } = findTournamentParticipant({
     tournamentRecord,

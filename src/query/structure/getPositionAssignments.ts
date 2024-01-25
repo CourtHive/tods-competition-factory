@@ -6,11 +6,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Structure,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Structure, Tournament } from '../../types/tournamentTypes';
 
 type GetPositionAssignmentsArgs = {
   tournamentRecord: Tournament;
@@ -31,12 +27,9 @@ export function getPositionAssignments({
   if (
     !structure &&
     !structureId &&
-    drawDefinition?.structures?.filter((structure) => structure.stage === stage)
-      .length === 1
+    drawDefinition?.structures?.filter((structure) => structure.stage === stage).length === 1
   ) {
-    structure = drawDefinition.structures.find(
-      (structure) => structure.stage === stage
-    );
+    structure = drawDefinition.structures.find((structure) => structure.stage === stage);
   }
   if (!structure && !structureId) return { error: MISSING_STRUCTURE_ID };
 

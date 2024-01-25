@@ -2,10 +2,7 @@ import { structureAssignedDrawPositions } from '../../../../../query/drawDefinit
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
-import {
-  getOrderedDrawPositionPairs,
-  removeAssignment,
-} from '../../../drawDefinitions/testingUtilities';
+import { getOrderedDrawPositionPairs, removeAssignment } from '../../../drawDefinitions/testingUtilities';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
 
@@ -68,11 +65,9 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
   });
   let { filteredOrderedPairs } = odpp;
   const { matchUps } = odpp;
-  const structureMatchUps = matchUps.filter(
-    (matchUp) => matchUp.structureId === mainStructure.structureId
-  );
+  const structureMatchUps = matchUps.filter((matchUp) => matchUp.structureId === mainStructure.structureId);
   const finalMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1,
   );
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
@@ -152,9 +147,7 @@ it('can advance participants when double BYEs are created removing 3-4', () => {
   const consolationStructureAssignments: any = structureAssignedDrawPositions({
     structure: consolationStructure,
   });
-  const byePositions = consolationStructureAssignments?.byePositions.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const byePositions = consolationStructureAssignments?.byePositions.map(({ drawPosition }) => drawPosition);
   expect(byePositions).toEqual([1, 3, 4, 6]);
 });
 
@@ -185,11 +178,9 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
   });
   let { filteredOrderedPairs } = odpp;
   const { matchUps } = odpp;
-  const structureMatchUps = matchUps.filter(
-    (matchUp) => matchUp.structureId === mainStructure.structureId
-  );
+  const structureMatchUps = matchUps.filter((matchUp) => matchUp.structureId === mainStructure.structureId);
   const finalMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1
+    ({ roundNumber, roundPosition }) => roundNumber === 2 && roundPosition === 1,
   );
   expect(finalMatchUp.drawPositions).toEqual([1, undefined]);
   expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
@@ -264,9 +255,7 @@ it('can advance participants when double BYEs are created removing 5-6', () => {
   const consolationStructureAssignments: any = structureAssignedDrawPositions({
     structure: consolationStructure,
   });
-  const byePositions = consolationStructureAssignments?.byePositions.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const byePositions = consolationStructureAssignments?.byePositions.map(({ drawPosition }) => drawPosition);
   expect(byePositions).toEqual([2, 3, 5, 6]);
 });
 
@@ -299,11 +288,9 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   });
   let { filteredOrderedPairs } = odpp;
   const { matchUps } = odpp;
-  const structureMatchUps = matchUps.filter(
-    (matchUp) => matchUp.structureId === mainStructure.structureId
-  );
+  const structureMatchUps = matchUps.filter((matchUp) => matchUp.structureId === mainStructure.structureId);
   const finalMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
+    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1,
   );
   if (finalMatchUp.drawPositions) {
     expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
@@ -352,14 +339,7 @@ it('does not remove CONSOLATION BYE if at least one source position is a BYE', (
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1],
-    [8],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [8]]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,

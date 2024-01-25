@@ -1,10 +1,7 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  getContextMatchUp,
-  getOrderedDrawPositionPairs,
-} from '../../drawDefinitions/testingUtilities';
+import { getContextMatchUp, getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../../constants/errorConditionConstants';
 import { INCOMPLETE } from '../../../../constants/matchUpStatusConstants';
@@ -39,9 +36,7 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   const { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -62,14 +57,7 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1, 3],
-    [1],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1, 3], [1]]);
 });
 
 it('removes advanced participant when completed score changes to incomplete result', () => {
@@ -96,9 +84,7 @@ it('removes advanced participant when completed score changes to incomplete resu
     drawProfiles,
   });
 
-  let { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+  let { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,
@@ -119,13 +105,7 @@ it('removes advanced participant when completed score changes to incomplete resu
   expect(result.success).toEqual(true);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [3],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [3]]);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   ({ matchUp } = getContextMatchUp({
@@ -154,9 +134,7 @@ it('removes advanced participant in FINAL when completed score changes to incomp
     drawProfiles,
   });
 
-  let { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps();
+  let { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
     matchUps,
     roundNumber: 1,

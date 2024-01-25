@@ -16,12 +16,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
 
 /**
  *
@@ -55,19 +50,14 @@ export function setSubOrder({
   let targetStructure: Structure | undefined = structure;
 
   if (structure.structures && structure.structureType === CONTAINER) {
-    targetStructure = structure.structures?.find(
-      (currentStructure) =>
-        currentStructure.positionAssignments?.find(
-          (assignment) => assignment.drawPosition === drawPosition
-        )
+    targetStructure = structure.structures?.find((currentStructure) =>
+      currentStructure.positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition),
     );
   }
 
   const positionAssignments = targetStructure?.positionAssignments;
 
-  const assignment = positionAssignments?.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  const assignment = positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition);
 
   const extension = {
     name: SUB_ORDER,
@@ -87,8 +77,7 @@ export function setSubOrder({
     matchUpFilters,
     event,
   });
-  const matchUpFormat =
-    structure?.matchUpFormat ?? drawDefinition.matchUpFormat;
+  const matchUpFormat = structure?.matchUpFormat ?? drawDefinition.matchUpFormat;
 
   updateAssignmentParticipantResults({
     positionAssignments,

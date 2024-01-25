@@ -37,18 +37,13 @@ export function getTimeItem({
   element,
 }: TimeItemArgs): TimeItemResult & ResultType {
   if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
-  if (itemSubTypes && !Array.isArray(itemSubTypes))
-    return { error: INVALID_VALUES, context: { itemSubTypes } };
+  if (itemSubTypes && !Array.isArray(itemSubTypes)) return { error: INVALID_VALUES, context: { itemSubTypes } };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };
 
   const filteredSorted = element.timeItems
     .filter((timeItem) => timeItem?.itemType === itemType)
     .filter(
-      (timeItem) =>
-        !itemSubTypes?.length ||
-        itemSubTypes.some(
-          (subType) => timeItem?.itemSubTypes?.includes(subType)
-        )
+      (timeItem) => !itemSubTypes?.length || itemSubTypes.some((subType) => timeItem?.itemSubTypes?.includes(subType)),
     )
     .sort((a, b) => {
       const aDate = new Date(a.createdAt || undefined).getTime();
@@ -60,20 +55,14 @@ export function getTimeItem({
 
   if (timeItem) {
     const result = { timeItem, ...SUCCESS };
-    if (returnPreviousValues)
-      Object.assign(result, { previousItems: filteredSorted });
+    if (returnPreviousValues) Object.assign(result, { previousItems: filteredSorted });
     return result;
   } else {
     return { info: NOT_FOUND };
   }
 }
 
-export function getDrawDefinitionTimeItem({
-  returnPreviousValues,
-  drawDefinition,
-  itemSubTypes,
-  itemType,
-}) {
+export function getDrawDefinitionTimeItem({ returnPreviousValues, drawDefinition, itemSubTypes, itemType }) {
   if (!drawDefinition) return { error: MISSING_DRAW_ID };
   if (!drawDefinition.timeItems) return { info: NOT_FOUND };
 
@@ -92,12 +81,7 @@ type GetEventTimeItemArgs = {
   itemType: string;
   event: Event;
 };
-export function getEventTimeItem({
-  returnPreviousValues,
-  itemSubTypes,
-  itemType,
-  event,
-}: GetEventTimeItemArgs) {
+export function getEventTimeItem({ returnPreviousValues, itemSubTypes, itemType, event }: GetEventTimeItemArgs) {
   if (!event) return { error: MISSING_EVENT };
   if (!event.timeItems) return { info: NOT_FOUND };
 

@@ -15,9 +15,7 @@ import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
 type GetEntryStatusReportsArgs = {
   tournamentRecord: Tournament;
 };
-export function getEntryStatusReports({
-  tournamentRecord,
-}: GetEntryStatusReportsArgs) {
+export function getEntryStatusReports({ tournamentRecord }: GetEntryStatusReportsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const tournamentId = tournamentRecord.tournamentId;
@@ -36,15 +34,14 @@ export function getEntryStatusReports({
     }).matchUps ?? [];
 
   const nonTeamEnteredParticipantIds = nonTeamMatchUps
-    .flatMap(
-      ({ sides, matchUpType }) =>
-        sides
-          ?.flatMap((side: any) =>
-            matchUpType === DOUBLES_MATCHUP
-              ? side?.participant?.individualParticipantIds
-              : side?.participant?.participantId || side.participantId
-          )
-          .filter(Boolean)
+    .flatMap(({ sides, matchUpType }) =>
+      sides
+        ?.flatMap((side: any) =>
+          matchUpType === DOUBLES_MATCHUP
+            ? side?.participant?.individualParticipantIds
+            : side?.participant?.participantId || side.participantId,
+        )
+        .filter(Boolean),
     )
     .filter(Boolean);
 
@@ -56,8 +53,7 @@ export function getEntryStatusReports({
   let drawDefinitionsCount = 0;
 
   const pushEntryReport = ({ id, entry, eventId, eventType }) => {
-    const { qualifyingSeeding, mainSeeding, entryStatus, entryStage, drawId } =
-      entry;
+    const { qualifyingSeeding, mainSeeding, entryStatus, entryStage, drawId } = entry;
 
     if (!participantEntryReports[id]) participantEntryReports[id] = [];
 
@@ -85,11 +81,9 @@ export function getEntryStatusReports({
 
   // Who was in a draw and how they got there...
   for (const event of tournamentRecord.events ?? []) {
-    const entryStatuses: { [key: string]: { count: number; pct?: number } } =
-      {};
+    const entryStatuses: { [key: string]: { count: number; pct?: number } } = {};
     const countEntryStatus = (entryStatus) => {
-      if (!entryStatuses[entryStatus])
-        entryStatuses[entryStatus] = { count: 0 };
+      if (!entryStatuses[entryStatus]) entryStatuses[entryStatus] = { count: 0 };
       entryStatuses[entryStatus].count += 1;
     };
 
@@ -100,8 +94,7 @@ export function getEntryStatusReports({
 
       // build up assignedParticipantIds array
       // to ensure that only assignedParticipants are included
-      const stageFilter = ({ stage, stageSequence }) =>
-        (stage === MAIN && stageSequence === 1) || stage === QUALIFYING;
+      const stageFilter = ({ stage, stageSequence }) => (stage === MAIN && stageSequence === 1) || stage === QUALIFYING;
       const structures: any[] = params.structures ?? [];
       const assignedParticipantIds = structures
         .filter(stageFilter)
@@ -109,21 +102,14 @@ export function getEntryStatusReports({
         .filter(Boolean)
         .map(({ participantId }) => participantId);
 
-      const entryFilter = ({ participantId }) =>
-        assignedParticipantIds.includes(participantId);
+      const entryFilter = ({ participantId }) => assignedParticipantIds.includes(participantId);
 
       const createEntryProfile = (params) => {
         const { participantId, entryStatus, entryStage } = params;
         countEntryStatus(entryStatus);
 
-        const mainSeeding =
-          participantMap?.[participantId]?.draws?.[drawId]?.seedAssignments?.[
-            MAIN
-          ];
-        const qualifyingSeeding =
-          participantMap?.[participantId]?.draws?.[drawId]?.seedAssignments?.[
-            QUALIFYING
-          ];
+        const mainSeeding = participantMap?.[participantId]?.draws?.[drawId]?.seedAssignments?.[MAIN];
+        const qualifyingSeeding = participantMap?.[participantId]?.draws?.[drawId]?.seedAssignments?.[QUALIFYING];
 
         return {
           qualifyingSeeding,
@@ -140,25 +126,18 @@ export function getEntryStatusReports({
 
     const createEntryMap = (entry) => {
       const participantId = entry.participantId;
-      const individualParticipantIds = participantMap?.[
-        participantId
-      ].participant.individualParticipantIds?.filter(
+      const individualParticipantIds = participantMap?.[participantId].participant.individualParticipantIds?.filter(
         // ensure that for TEAM events individuals who did not compete are not included
-        (id) => nonTeamEnteredParticipantIds.includes(id)
+        (id) => nonTeamEnteredParticipantIds.includes(id),
       );
       return participantId && { [participantId]: { individualParticipantIds } };
     };
 
     const processDoublesEvent = () => {
-      const participantEntriesMap = Object.assign(
-        {},
-        ...entries.map(createEntryMap).filter(Boolean)
-      );
+      const participantEntriesMap = Object.assign({}, ...entries.map(createEntryMap).filter(Boolean));
 
       const processIndividuals = (entry) => {
-        participantEntriesMap[
-          entry.participantId
-        ].individualParticipantIds.forEach((individualParticipantId) => {
+        participantEntriesMap[entry.participantId].individualParticipantIds.forEach((individualParticipantId) => {
           pushEntryReport({
             id: individualParticipantId,
             eventType,
@@ -186,10 +165,7 @@ export function getEntryStatusReports({
       });
     }
 
-    const totalEntries: number = Object.values(entryStatuses).reduce(
-      (p, c: any) => p + c.count,
-      0
-    );
+    const totalEntries: number = Object.values(entryStatuses).reduce((p, c: any) => p + c.count, 0);
     Object.keys(entryStatuses).forEach((key) => {
       entryStatuses[key].pct = (entryStatuses[key].count / totalEntries) * 100;
     });
@@ -208,7 +184,7 @@ export function getEntryStatusReports({
             [entryStatus + '_pct']: entryStatuses[entryStatus]?.pct,
           },
         ];
-      })
+      }),
     );
     entryStatusReports[eventId] = {
       tournamentId,
@@ -219,13 +195,10 @@ export function getEntryStatusReports({
 
   const individualParticipants = Object.values(participantMap ?? {}).filter(
     ({ participant: { participantType, participantRole } }) =>
-      participantType === INDIVIDUAL && participantRole === COMPETITOR
+      participantType === INDIVIDUAL && participantRole === COMPETITOR,
   );
   const nonParticipatingParticipantIds = individualParticipants
-    .filter(
-      ({ participant }) =>
-        !nonTeamEnteredParticipantIds.includes(participant.participantId)
-    )
+    .filter(({ participant }) => !nonTeamEnteredParticipantIds.includes(participant.participantId))
     .map(({ participant }) => participant.participantId);
 
   const tournamentEntryReport = {

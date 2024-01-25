@@ -3,10 +3,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import {
-  MISSING_DRAW_ID,
-  MISSING_EVENT,
-} from '../../../../constants/errorConditionConstants';
+import { MISSING_DRAW_ID, MISSING_EVENT } from '../../../../constants/errorConditionConstants';
 
 it('can delete flight and flightDrawDefinition', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -34,9 +31,7 @@ it('can delete flight and flightDrawDefinition', () => {
     eventId,
   });
   expect(flightProfile.flights.length).toEqual(flightsCount);
-  expect(flightProfile.flights[0].drawEntries.length).toEqual(
-    participantIds.length / 2
-  );
+  expect(flightProfile.flights[0].drawEntries.length).toEqual(participantIds.length / 2);
 
   flightProfile.flights?.forEach((flight) => {
     const { drawDefinition } = tournamentEngine.generateDrawDefinition({
@@ -99,9 +94,7 @@ it('can delete drawDefinition when there is no flight', () => {
 
 test('deleted flights will trigger refresh of drawOrder', () => {
   const mockProfile = {
-    eventProfiles: [
-      { drawProfiles: [{ drawSize: 4 }, { drawSize: 4 }, { drawSize: 4 }] },
-    ],
+    eventProfiles: [{ drawProfiles: [{ drawSize: 4 }, { drawSize: 4 }, { drawSize: 4 }] }],
   };
 
   const {
@@ -112,9 +105,7 @@ test('deleted flights will trigger refresh of drawOrder', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
-  const drawId = flightProfile.flights.find(
-    (flight) => flight.flightNumber === 2
-  ).drawId;
+  const drawId = flightProfile.flights.find((flight) => flight.flightNumber === 2).drawId;
 
   const result = tournamentEngine.deleteFlightAndFlightDraw({
     eventId,
@@ -123,8 +114,6 @@ test('deleted flights will trigger refresh of drawOrder', () => {
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  const flightNumbers = flightProfile.flights.map(
-    ({ flightNumber }) => flightNumber
-  );
+  const flightNumbers = flightProfile.flights.map(({ flightNumber }) => flightNumber);
   expect(flightNumbers).toEqual([1, 2]);
 });

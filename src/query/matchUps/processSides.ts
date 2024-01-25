@@ -53,7 +53,7 @@ export function processSides(params) {
             }
           );
         })
-        .filter(Boolean)
+        .filter(Boolean),
     );
 
   for (const side of sides) {
@@ -98,16 +98,11 @@ export function processSides(params) {
           stage,
         };
         if (withOpponents) {
-          const opponentParticipantInfo = getOpponentInfo(
-            opponentParticipantId
-          );
-          participantMap[participantId].matchUps[
-            matchUpId
-          ].opponentParticipantInfo = opponentParticipantInfo;
+          const opponentParticipantInfo = getOpponentInfo(opponentParticipantId);
+          participantMap[participantId].matchUps[matchUpId].opponentParticipantInfo = opponentParticipantInfo;
         }
         if (collectionId) {
-          participantMap[participantId].matchUps[matchUpId].collectionId =
-            collectionId;
+          participantMap[participantId].matchUps[matchUpId].collectionId = collectionId;
         }
       }
 
@@ -157,29 +152,18 @@ export function processSides(params) {
     const addPartner = ({ participant, partnerParticipantId }) => {
       const addPartnerParticiapntId = (element, partnerParticipantId) => {
         if (element) {
-          if (!element.partnerParticipantIds)
-            element.partnerParticipantIds = [];
+          if (!element.partnerParticipantIds) element.partnerParticipantIds = [];
           if (!element.partnerParticipantIds.includes(partnerParticipantId))
             element.partnerParticipantIds.push(partnerParticipantId);
         }
       };
 
-      if (withDraws)
-        addPartnerParticiapntId(
-          participant?.draws?.[drawId],
-          partnerParticipantId
-        );
+      if (withDraws) addPartnerParticiapntId(participant?.draws?.[drawId], partnerParticipantId);
       if (withEvents) {
-        addPartnerParticiapntId(
-          participant?.events?.[eventId],
-          partnerParticipantId
-        );
+        addPartnerParticiapntId(participant?.events?.[eventId], partnerParticipantId);
       }
       if (withMatchUps) {
-        addPartnerParticiapntId(
-          participant?.matchUps?.[matchUpId],
-          partnerParticipantId
-        );
+        addPartnerParticiapntId(participant?.matchUps?.[matchUpId], partnerParticipantId);
       }
     };
 
@@ -188,11 +172,8 @@ export function processSides(params) {
 
       addMatchUp(participantId, opponentParticipantId);
 
-      const isPair =
-        participantMap[participantId]?.participant.participantType === PAIR;
-      const individualParticipantIds =
-        participantMap[participantId]?.participant.individualParticipantIds ||
-        [];
+      const isPair = participantMap[participantId]?.participant.participantType === PAIR;
+      const individualParticipantIds = participantMap[participantId]?.participant.individualParticipantIds || [];
 
       if (matchUpTieId) {
         if (withTeamMatchUps) {
@@ -208,11 +189,8 @@ export function processSides(params) {
         }
 
         if (withDraws && !participantMap[participantId].draws[drawId]) {
-          const teamParticipantId = matchUpSides.find(
-            (s) => s.sideNumber === sideNumber
-          )?.participant?.participantId;
-          const teamEntryStatus =
-            participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
+          const teamParticipantId = matchUpSides.find((s) => s.sideNumber === sideNumber)?.participant?.participantId;
+          const teamEntryStatus = participantMap[teamParticipantId]?.draws?.[drawId]?.entryStatus;
 
           const addDrawData = (participantId) =>
             (participantMap[participantId].draws[drawId] = {
@@ -228,9 +206,7 @@ export function processSides(params) {
 
       if (isPair) {
         individualParticipantIds.forEach(
-          (participantId) =>
-            participantMap[participantId] &&
-            addMatchUp(participantId, opponentParticipantId)
+          (participantId) => participantMap[participantId] && addMatchUp(participantId, opponentParticipantId),
         );
         individualParticipantIds.forEach((participantId, i) => {
           const partnerParticipantId = individualParticipantIds[1 - i];
@@ -240,12 +216,9 @@ export function processSides(params) {
 
         // in TEAM events PAIR participants do not appear in entries
         if (withEvents && matchUpSides) {
-          const teamParticipantId = matchUpSides.find(
-            (s) => s.sideNumber === sideNumber
-          )?.participant?.participantId;
+          const teamParticipantId = matchUpSides.find((s) => s.sideNumber === sideNumber)?.participant?.participantId;
           if (teamParticipantId) {
-            const teamEntry =
-              participantMap[teamParticipantId]?.events[eventId];
+            const teamEntry = participantMap[teamParticipantId]?.events[eventId];
 
             if (teamEntry) {
               participantMap[participantId].events[eventId] = { ...teamEntry };
@@ -253,7 +226,7 @@ export function processSides(params) {
                 (individualParticiapntId) =>
                   (participantMap[individualParticiapntId].events[eventId] = {
                     ...teamEntry,
-                  })
+                  }),
               );
             } else {
               console.log('Missing teamEntry', { eventId, teamParticipantId });

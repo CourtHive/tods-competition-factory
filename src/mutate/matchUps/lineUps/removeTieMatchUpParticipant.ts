@@ -90,8 +90,9 @@ export function removeTieMatchUpParticipantId(
   )
     return decorateResult({ result: { error: EXISTING_OUTCOME }, stack });
 
-  const teamParticipantId = inContextDualMatchUp?.sides?.find(({ sideNumber }) => sideNumber === side.sideNumber)
-    ?.participantId;
+  const teamParticipantId = inContextDualMatchUp?.sides?.find(
+    ({ sideNumber }) => sideNumber === side.sideNumber,
+  )?.participantId;
 
   if (!teamParticipantId) return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 

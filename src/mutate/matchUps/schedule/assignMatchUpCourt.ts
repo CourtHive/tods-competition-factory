@@ -4,11 +4,7 @@ import { assignMatchUpVenue } from './assignMatchUpVenue';
 
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
-import {
-  ErrorType,
-  MISSING_MATCHUP_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_MATCHUP_ID, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 type AssignMatchUpCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -30,8 +26,7 @@ export function assignMatchUpCourt({
   matchUpId,
   courtId, // not required as "unasigning" court can be achieved by setting value to `undefined`
 }: AssignMatchUpCourtArgs): { error?: ErrorType; success?: boolean } {
-  if (!tournamentRecord && !tournamentRecords)
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord && !tournamentRecords) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
   if (courtId) {

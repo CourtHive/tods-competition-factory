@@ -1,10 +1,7 @@
 import { POLICY_POSITION_ACTIONS_DEFAULT } from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_DEFAULT';
 import { POLICY_MATCHUP_ACTIONS_DEFAULT } from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
-import {
-  POLICY_TYPE_POSITION_ACTIONS,
-  POLICY_TYPE_MATCHUP_ACTIONS,
-} from '../../../constants/policyConstants';
+import { POLICY_TYPE_POSITION_ACTIONS, POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
 
 export const POSITION_ACTION = 'positionAction';
@@ -30,92 +27,55 @@ export function getEnabledStructures({
     (actionType === POSITION_ACTION && POLICY_POSITION_ACTIONS_DEFAULT) ||
     (actionType === MATCHUP_ACTION && POLICY_MATCHUP_ACTIONS_DEFAULT);
 
-  const actionsPolicy =
-    policyType &&
-    (appliedPolicies?.[policyType] || defaultPolicy?.[policyType]);
+  const actionsPolicy = policyType && (appliedPolicies?.[policyType] || defaultPolicy?.[policyType]);
 
-  const relevantLinks = drawDefinition.links?.filter(
-    (link) => link?.target?.structureId === structure?.structureId
-  );
-  const targetFeedProfiles =
-    relevantLinks?.map(({ target }) => target.feedProfile) ?? [];
+  const relevantLinks = drawDefinition.links?.filter((link) => link?.target?.structureId === structure?.structureId);
+  const targetFeedProfiles = relevantLinks?.map(({ target }) => target.feedProfile) ?? [];
 
   const { enabledStructures, disabledStructures } = actionsPolicy || {};
   const actionsDisabled = disabledStructures?.find((structurePolicy) => {
-    const { stages, stageSequences, structureTypes, feedProfiles } =
-      structurePolicy;
+    const { stages, stageSequences, structureTypes, feedProfiles } = structurePolicy;
     return (
       (!feedProfiles?.length ||
         (Array.isArray(feedProfiles) &&
-          feedProfiles.some((feedProfile) =>
-            targetFeedProfiles.includes(feedProfile)
-          ))) &&
-      (!stages?.length ||
-        (Array.isArray(stages) && stages?.includes(structure?.stage))) &&
+          feedProfiles.some((feedProfile) => targetFeedProfiles.includes(feedProfile)))) &&
+      (!stages?.length || (Array.isArray(stages) && stages?.includes(structure?.stage))) &&
       (!structureTypes?.length ||
-        (Array.isArray(structureTypes) &&
-          structureTypes?.includes(structure?.structureType))) &&
-      (!stageSequences?.length ||
-        (Array.isArray(stageSequences) &&
-          stageSequences.includes(structure?.stageSequence)))
+        (Array.isArray(structureTypes) && structureTypes?.includes(structure?.structureType))) &&
+      (!stageSequences?.length || (Array.isArray(stageSequences) && stageSequences.includes(structure?.stageSequence)))
     );
   });
 
   return { enabledStructures, actionsDisabled, actionsPolicy };
 }
 
-export function activePositionsCheck({
-  activePositionOverrides,
-  activeDrawPositions,
-  action,
-}) {
+export function activePositionsCheck({ activePositionOverrides, activeDrawPositions, action }) {
   if (action && activePositionOverrides.includes(action)) return true;
   return !activeDrawPositions.length;
 }
 
-export function getPolicyActions({
-  enabledStructures,
-  drawDefinition,
-  structure,
-}) {
+export function getPolicyActions({ enabledStructures, drawDefinition, structure }) {
   if (enabledStructures === false) return {};
 
-  if (!enabledStructures?.length)
-    return { policyActions: { enabledActions: [], disabledActions: [] } };
+  if (!enabledStructures?.length) return { policyActions: { enabledActions: [], disabledActions: [] } };
 
   const { stage, stageSequence, structureType } = structure || {};
 
-  const relevantLinks = drawDefinition.links?.filter(
-    (link) => link?.target?.structureId === structure?.structureId
-  );
-  const targetFeedProfiles =
-    relevantLinks?.map(({ target }) => target.feedProfile) || [];
+  const relevantLinks = drawDefinition.links?.filter((link) => link?.target?.structureId === structure?.structureId);
+  const targetFeedProfiles = relevantLinks?.map(({ target }) => target.feedProfile) || [];
 
   const policyActions = enabledStructures.find((structurePolicy) => {
-    const { stages, stageSequences, structureTypes, feedProfiles } =
-      structurePolicy || {};
+    const { stages, stageSequences, structureTypes, feedProfiles } = structurePolicy || {};
 
-    const matchesStage =
-      !stages?.length || (Array.isArray(stages) && stages.includes(stage));
+    const matchesStage = !stages?.length || (Array.isArray(stages) && stages.includes(stage));
     const matchesStageSequence =
-      !stageSequences?.length ||
-      (Array.isArray(stageSequences) && stageSequences.includes(stageSequence));
+      !stageSequences?.length || (Array.isArray(stageSequences) && stageSequences.includes(stageSequence));
     const matchesStructureType =
-      !structureTypes?.length ||
-      (Array.isArray(structureTypes) && structureTypes.includes(structureType));
+      !structureTypes?.length || (Array.isArray(structureTypes) && structureTypes.includes(structureType));
     const matchesFeedProfile =
       !feedProfiles?.length ||
-      (Array.isArray(feedProfiles) &&
-        feedProfiles.some((feedProfile) =>
-          targetFeedProfiles.includes(feedProfile)
-        ));
-    return (
-      matchesStageSequence &&
-      matchesStructureType &&
-      matchesFeedProfile &&
-      structurePolicy &&
-      matchesStage
-    );
+      (Array.isArray(feedProfiles) && feedProfiles.some((feedProfile) => targetFeedProfiles.includes(feedProfile)));
+    return matchesStageSequence && matchesStructureType && matchesFeedProfile && structurePolicy && matchesStage;
   });
 
   return { policyActions };
@@ -124,13 +84,10 @@ export function getPolicyActions({
 export function isAvailableAction({ action, policyActions }) {
   const disabled =
     !policyActions?.enabledActions ||
-    (policyActions?.disabledActions?.length &&
-      policyActions.disabledActions.includes(action));
+    (policyActions?.disabledActions?.length && policyActions.disabledActions.includes(action));
   if (disabled) return false;
 
-  const enabled =
-    policyActions?.enabledActions.length === 0 ||
-    policyActions?.enabledActions.includes(action);
+  const enabled = policyActions?.enabledActions.length === 0 || policyActions?.enabledActions.includes(action);
 
   return enabled && !disabled;
 }

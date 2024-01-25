@@ -6,21 +6,13 @@ import { TEAM } from '../../constants/eventConstants';
 /**
  * function called internally to cleanup event entries when individuals have been added to team events
  */
-export function updateTeamEventEntries({
-  individualParticipantIds,
-  groupingParticipantId,
-  tournamentRecord,
-}) {
+export function updateTeamEventEntries({ individualParticipantIds, groupingParticipantId, tournamentRecord }) {
   const relevantEvents = (tournamentRecord.events || []).filter(
     (event) =>
-      event?.eventType === TEAM &&
-      event?.entries?.some(
-        (entry) => entry.participantId === groupingParticipantId
-      )
+      event?.eventType === TEAM && event?.entries?.some((entry) => entry.participantId === groupingParticipantId),
   );
 
-  const filterEntry = (entry) =>
-    !individualParticipantIds.includes(entry.participantId);
+  const filterEntry = (entry) => !individualParticipantIds.includes(entry.participantId);
 
   for (const event of relevantEvents) {
     event.entries = (event.entries || []).filter(filterEntry);
@@ -31,9 +23,7 @@ export function updateTeamEventEntries({
     });
 
     event?.drawDefinitions?.forEach((drawDefinition) => {
-      drawDefinition.entries = (drawDefinition.entries || []).filter(
-        filterEntry
-      );
+      drawDefinition.entries = (drawDefinition.entries || []).filter(filterEntry);
     });
   }
 

@@ -2,10 +2,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLE_WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 test('bye propagated double walkover hydration', () => {
@@ -29,9 +26,7 @@ test('bye propagated double walkover hydration', () => {
 
   result = tournamentEngine.allTournamentMatchUps({ inContext: true });
 
-  const matchUp = result.matchUps.find(
-    (m) => m.roundNumber === 3 && m.roundPosition === 1
-  );
+  const matchUp = result.matchUps.find((m) => m.roundNumber === 3 && m.roundPosition === 1);
   expect(matchUp.sides[1].sideNumber).toEqual(2);
   expect(matchUp.sides.length).toEqual(2);
 });
@@ -84,8 +79,6 @@ test('bye propagated double walkover in final has correct sideNumber', () => {
 
   result = tournamentEngine.allTournamentMatchUps({ inContext: true });
 
-  const matchUp = result.matchUps.find(
-    (m) => m.stage === CONSOLATION && m.roundNumber === 3
-  );
+  const matchUp = result.matchUps.find((m) => m.stage === CONSOLATION && m.roundNumber === 3);
   expect(matchUp.winningSide).toEqual(2);
 });

@@ -7,11 +7,7 @@ import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DE
 import { SCORES_PRESENT } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import {
-  CONSOLATION,
-  CURTIS_CONSOLATION,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, CURTIS_CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('will not delete structures when scores are present', () => {
   const {

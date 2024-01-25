@@ -1,9 +1,6 @@
 import { updateFactoryExtension } from '../../../mutate/tournaments/updateFactoryExtension';
 import { factoryVersion } from '../../../global/functions/factoryVersion';
-import {
-  cycleMutationStatus,
-  getTournamentRecords,
-} from '../../../global/state/globalState';
+import { cycleMutationStatus, getTournamentRecords } from '../../../global/state/globalState';
 
 export function getMutationStatus({ timeStamp }): boolean {
   const tournamentRecords = getTournamentRecords();

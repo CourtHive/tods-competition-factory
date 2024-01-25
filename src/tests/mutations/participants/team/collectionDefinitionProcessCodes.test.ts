@@ -11,9 +11,7 @@ it('collectionDefinitions support processCodes', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { eventType: TEAM_EVENT, drawSize: 4, drawType: ROUND_ROBIN },
-    ],
+    drawProfiles: [{ eventType: TEAM_EVENT, drawSize: 4, drawType: ROUND_ROBIN }],
   });
 
   let result = tournamentEngine.setState(tournamentRecord);
@@ -36,9 +34,5 @@ it('collectionDefinitions support processCodes', () => {
   });
 
   expect(result.addedMatchUps.length).toEqual(6);
-  expect(
-    result.addedMatchUps.every(
-      (matchUp) => matchUp.processCodes[0] === processCode
-    )
-  ).toEqual(true);
+  expect(result.addedMatchUps.every((matchUp) => matchUp.processCodes[0] === processCode)).toEqual(true);
 });

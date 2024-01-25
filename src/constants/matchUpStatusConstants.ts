@@ -103,12 +103,7 @@ export const activeMatchUpStatuses = [
   WALKOVER,
 ];
 
-export const upcomingMatchUpStatuses = [
-  IN_PROGRESS,
-  INCOMPLETE,
-  SUSPENDED,
-  TO_BE_PLAYED,
-];
+export const upcomingMatchUpStatuses = [IN_PROGRESS, INCOMPLETE, SUSPENDED, TO_BE_PLAYED];
 
 export const matchUpStatusConstants = {
   ABANDONED,

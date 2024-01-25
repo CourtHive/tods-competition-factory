@@ -52,9 +52,7 @@ export function directParticipants(params) {
       event,
     });
     annotate = tieMatchUpResult && { tieMatchUpResult };
-    const matchUpTie = inContextDrawMatchUps.find(
-      ({ matchUpId }) => matchUpId === matchUpTieId
-    );
+    const matchUpTie = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === matchUpTieId);
     drawPositions = matchUpTie?.drawPositions;
     if (!dualWinningSideChange) {
       return decorateResult({ result: { ...SUCCESS, ...annotate }, stack });
@@ -67,9 +65,7 @@ export function directParticipants(params) {
 
   if (drawPositions) {
     // if projectedWinningSide is present then a TEAM matchUp is being directed, not the tieMatchUp
-    const winningIndex = projectedWinningSide
-      ? projectedWinningSide - 1
-      : winningSide - 1;
+    const winningIndex = projectedWinningSide ? projectedWinningSide - 1 : winningSide - 1;
     const losingIndex = 1 - winningIndex;
 
     const winningDrawPosition = drawPositions[winningIndex];
@@ -88,8 +84,7 @@ export function directParticipants(params) {
 
     if (winnerMatchUp) {
       const result = directWinner({
-        sourceMatchUpStatus:
-          (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
         winnerMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,
@@ -107,8 +102,7 @@ export function directParticipants(params) {
     }
     if (loserMatchUp) {
       const result = directLoser({
-        sourceMatchUpStatus:
-          (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
         loserMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,
@@ -128,9 +122,7 @@ export function directParticipants(params) {
 
     if (byeMatchUp) {
       const targetMatchUpDrawPositions = byeMatchUp.drawPositions || [];
-      const backdrawPosition = Math.min(
-        ...targetMatchUpDrawPositions.filter(Boolean)
-      );
+      const backdrawPosition = Math.min(...targetMatchUpDrawPositions.filter(Boolean));
       const targetStructureId = byeTargetLink.target.structureId;
       const result = assignDrawPositionBye({
         drawPosition: backdrawPosition,

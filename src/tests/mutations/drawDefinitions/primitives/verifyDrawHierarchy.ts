@@ -5,10 +5,7 @@ export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
   const { hierarchy: drawHierarchy } = buildDrawHierarchy({ matchUps });
 
   expect(drawHierarchy.children.length).toEqual(2);
-  expect(
-    drawHierarchy.children[0].children[0].children[0].children[0].children[0]
-      .drawPosition
-  ).toEqual(1);
+  expect(drawHierarchy.children[0].children[0].children[0].children[0].children[0].drawPosition).toEqual(1);
 
   hierarchyVerification.forEach((verification: any) => {
     const attribute = verification.attribute;
@@ -18,11 +15,7 @@ export function verifyDrawHierarchy({ matchUps, hierarchyVerification = [] }) {
       navigationProfile,
       attribute,
     });
-    if (
-      !attribute &&
-      verification.result &&
-      typeof verification.result === 'object'
-    ) {
+    if (!attribute && verification.result && typeof verification.result === 'object') {
       expect(result).toMatchObject(verification.result);
     } else if (verification.existance) {
       expect(result).not.toEqual(undefined);

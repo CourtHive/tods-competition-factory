@@ -35,12 +35,6 @@ export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
     gamesCreditForWalkovers: false, // whether or not to award e.g. 12 games won for participant who wins by opponent WALKOVER
     gamesCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT
     gamesCreditForTiebreakSets: true, // defaults to true; whether to count a tiebreak set as a game won, e.g. 6-2 2-6 [10-3]
-    GEMscore: [
-      'matchUpsPct',
-      'tieMatchUpsPct',
-      'setsPct',
-      'gamesPct',
-      'pointsPct',
-    ],
+    GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'setsPct', 'gamesPct', 'pointsPct'],
   },
 };

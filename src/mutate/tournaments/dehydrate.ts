@@ -1,19 +1,14 @@
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 export function dehydrateMatchUps({ tournamentRecord }): {
   success?: boolean;
   error?: ErrorType;
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (typeof tournamentRecord !== 'object' || !tournamentRecord.tournamentId)
-    return { error: INVALID_VALUES };
+  if (typeof tournamentRecord !== 'object' || !tournamentRecord.tournamentId) return { error: INVALID_VALUES };
 
   const { matchUps } = allTournamentMatchUps({
     tournamentRecord,
@@ -32,20 +27,15 @@ export function getMatchUpFormatMap({ tournamentRecord }) {
   const matchUpFormatMap = {};
 
   for (const event of tournamentRecord.events || []) {
-    if (event.matchUpFormat)
-      matchUpFormatMap[event.eventId] = event.matchUpFormat;
+    if (event.matchUpFormat) matchUpFormatMap[event.eventId] = event.matchUpFormat;
 
     for (const drawDefinition of event.drawDefinitions || []) {
-      if (drawDefinition.matchUpFormat)
-        matchUpFormatMap[drawDefinition.drawId] = drawDefinition.matchUpFormat;
+      if (drawDefinition.matchUpFormat) matchUpFormatMap[drawDefinition.drawId] = drawDefinition.matchUpFormat;
 
       for (const structure of drawDefinition.structures || []) {
-        if (structure.matchUpFormat)
-          matchUpFormatMap[structure.structureId] = structure.matchUpFormat;
+        if (structure.matchUpFormat) matchUpFormatMap[structure.structureId] = structure.matchUpFormat;
         for (const childStructure of structure.structures || []) {
-          if (childStructure.matchUpFormat)
-            matchUpFormatMap[childStructure.structureId] =
-              childStructure.matchUpFormat;
+          if (childStructure.matchUpFormat) matchUpFormatMap[childStructure.structureId] = childStructure.matchUpFormat;
         }
       }
     }
@@ -83,14 +73,9 @@ export function removeExtraneousAttributes(matchUps, matchUpFormatMap = {}) {
   for (const matchUp of matchUps) {
     const { structureId, drawId, eventId } = matchUp;
     const inheritedMatchUpFormat =
-      matchUpFormatMap[structureId] ||
-      matchUpFormatMap[drawId] ||
-      matchUpFormatMap[eventId];
+      matchUpFormatMap[structureId] || matchUpFormatMap[drawId] || matchUpFormatMap[eventId];
 
-    const matchUpFormat =
-      matchUp.matchUpFormat === inheritedMatchUpFormat
-        ? undefined
-        : matchUp.matchUpFormat;
+    const matchUpFormat = matchUp.matchUpFormat === inheritedMatchUpFormat ? undefined : matchUp.matchUpFormat;
 
     for (const key of Object.keys(matchUp)) {
       if (!baseAttributeKeys.includes(key)) delete matchUp[key];

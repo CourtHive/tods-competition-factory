@@ -10,7 +10,7 @@ export function getPositionedParticipants({
     {},
     ...participantsWithGroupings.map((participant) => ({
       [participant.participantId]: participant,
-    }))
+    })),
   );
 
   return candidatePositionAssignments.map((assignment) => {

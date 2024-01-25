@@ -2,14 +2,8 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  INVALID_VALUES,
-  MISSING_PARTICIPANT_ID,
-} from '../../../../constants/errorConditionConstants';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-} from '../../../../constants/entryStatusConstants';
+import { INVALID_VALUES, MISSING_PARTICIPANT_ID } from '../../../../constants/errorConditionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
 
 it('can set entryPositions', () => {
   const drawProfiles = [
@@ -94,23 +88,17 @@ it('can set entryPositions', () => {
   const directAcceptanceParticipantIds = entries
     .filter((entry) => entry.entryStatus === DIRECT_ACCEPTANCE)
     .map((entry) => entry.participantId);
-  expect(
-    directAcceptanceParticipantIds.includes(firstAlternate.participantId)
-  ).toEqual(true);
+  expect(directAcceptanceParticipantIds.includes(firstAlternate.participantId)).toEqual(true);
 
   // be able to set entryPosition to undefined
-  entryPositions = [
-    { participantId: alternates[0].participantId, entryPosition: undefined },
-  ];
+  entryPositions = [{ participantId: alternates[0].participantId, entryPosition: undefined }];
   result = tournamentEngine.setEntryPositions({
     entryPositions,
     eventId,
   });
   expect(result.success).toEqual(true);
 
-  entryPositions = [
-    { participantId: alternates[0].participantId, entryPosition: 0 },
-  ];
+  entryPositions = [{ participantId: alternates[0].participantId, entryPosition: 0 }];
   result = tournamentEngine.setEntryPositions({
     entryPositions,
     eventId,

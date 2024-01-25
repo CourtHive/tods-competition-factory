@@ -122,26 +122,13 @@ it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () 
 
 function getRoundLosingParticipantIds({ matchUps, roundNumber }) {
   return matchUps
-    .filter(
-      (matchUp) => matchUp.roundNumber === roundNumber && matchUp.winningSide
-    )
-    .map(
-      ({ winningSide, sides }) =>
-        sides.find(({ sideNumber }) => sideNumber !== winningSide).participantId
-    );
+    .filter((matchUp) => matchUp.roundNumber === roundNumber && matchUp.winningSide)
+    .map(({ winningSide, sides }) => sides.find(({ sideNumber }) => sideNumber !== winningSide).participantId);
 }
 
-function scoreMatchUp({
-  roundNumber,
-  roundPosition,
-  matchUps,
-  drawId,
-  winningSide,
-}) {
+function scoreMatchUp({ roundNumber, roundPosition, matchUps, drawId, winningSide }) {
   const matchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
+    (matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition,
   );
   const { matchUpId } = matchUp || {};
   const result = tournamentEngine.setMatchUpStatus({

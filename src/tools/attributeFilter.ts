@@ -20,7 +20,7 @@ export function attributeFilter(params?: any): any {
       ...oKeys
         .filter((key) => key.indexOf('||'))
         .map((key) => key.split('||').map((or) => ({ [or]: key })))
-        .flat()
+        .flat(),
     );
     const allKeys = oKeys.concat(...Object.keys(orMap));
     const wildcard = allKeys.includes('*');
@@ -31,11 +31,7 @@ export function attributeFilter(params?: any): any {
         const tobj = templateObject[templateKey] || wildcard;
         const vobj = valuesObject[vKey];
 
-        if (
-          typeof tobj === 'object' &&
-          typeof vobj !== 'function' &&
-          !Array.isArray(tobj)
-        ) {
+        if (typeof tobj === 'object' && typeof vobj !== 'function' && !Array.isArray(tobj)) {
           if (Array.isArray(vobj)) {
             const mappedElements = vobj
               .map((arrayMember) => {
@@ -54,10 +50,7 @@ export function attributeFilter(params?: any): any {
           const exclude = Array.isArray(tobj) && !tobj.includes(value);
           if (exclude) return false;
 
-          if (
-            templateObject[vKey] ||
-            (wildcard && templateObject[vKey] !== false)
-          ) {
+          if (templateObject[vKey] || (wildcard && templateObject[vKey] !== false)) {
             outputObject[vKey] = value;
           }
         }

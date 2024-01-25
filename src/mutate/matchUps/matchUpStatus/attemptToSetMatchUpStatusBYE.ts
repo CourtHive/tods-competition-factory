@@ -4,17 +4,9 @@ import { decorateResult } from '../../../global/functions/decorateResult';
 
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  INVALID_MATCHUP_STATUS_BYE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_STATUS, INVALID_MATCHUP_STATUS_BYE } from '../../../constants/errorConditionConstants';
 
-export function attemptToSetMatchUpStatusBYE({
-  tournamentRecord,
-  drawDefinition,
-  structure,
-  matchUp,
-}) {
+export function attemptToSetMatchUpStatusBYE({ tournamentRecord, drawDefinition, structure, matchUp }) {
   const stack = 'attemptToSetMatchUpStatusBYE';
   if (matchUp?.winningSide) {
     return decorateResult({
@@ -34,9 +26,7 @@ export function attemptToSetMatchUpStatusBYE({
     ?.filter((assignment) => assignment.bye)
     .map((assignment) => assignment.drawPosition);
 
-  const matchUpIncludesBye = matchUp.drawPositions?.some(
-    (position) => byeAssignedDrawPositions?.includes(position)
-  );
+  const matchUpIncludesBye = matchUp.drawPositions?.some((position) => byeAssignedDrawPositions?.includes(position));
 
   if (matchUpIncludesBye) {
     matchUp.matchUpStatus = BYE;

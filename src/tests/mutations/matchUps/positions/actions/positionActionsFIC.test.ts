@@ -14,17 +14,14 @@ test.each([
   [8, FEED_IN_CHAMPIONSHIP, [3, 2, 7, 8]],
   [16, FEED_IN_CHAMPIONSHIP, [15, 7, 1, 10, 11, 13, 16, 8]],
   [16, FEED_IN_CHAMPIONSHIP, [6, 15, 4, 1, 3, 12, 5, 9]],
-])(
-  'pass specific bye replacement scenarios',
-  (drawSize, drawType, positionsToReplaceWithBye) => {
-    const result = replacementTest({
-      drawType,
-      drawSize,
-      positionsToReplaceWithBye,
-    });
-    if (!result.success) {
-      console.log('FAILED', { drawSize, drawType, positionsToReplaceWithBye });
-    }
-    expect(result.success).toEqual(true);
+])('pass specific bye replacement scenarios', (drawSize, drawType, positionsToReplaceWithBye) => {
+  const result = replacementTest({
+    drawType,
+    drawSize,
+    positionsToReplaceWithBye,
+  });
+  if (!result.success) {
+    console.log('FAILED', { drawSize, drawType, positionsToReplaceWithBye });
   }
-);
+  expect(result.success).toEqual(true);
+});

@@ -1,11 +1,7 @@
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { isActiveMatchUpStatus } from '../../../mutate/drawDefinitions/matchUpGovernor/checkStatusType';
 
-import {
-  DEFAULTED,
-  IN_PROGRESS,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { DEFAULTED, IN_PROGRESS, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 import { Score } from '../../../types/tournamentTypes';
 
@@ -20,13 +16,7 @@ type IsActiveMatchUpArgs = {
   sides?: any[];
   score?: Score;
 };
-export function isActiveMatchUp({
-  matchUpStatus,
-  winningSide,
-  tieMatchUps,
-  sides,
-  score,
-}: IsActiveMatchUpArgs) {
+export function isActiveMatchUp({ matchUpStatus, winningSide, tieMatchUps, sides, score }: IsActiveMatchUpArgs) {
   const participantAssigned = sides?.find(({ participantId }) => participantId);
   const activeTieMatchUps = tieMatchUps?.filter(isActiveMatchUp)?.length;
   const scoreExists = checkScoreHasValue({ score });

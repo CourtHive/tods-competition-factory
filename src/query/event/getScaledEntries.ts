@@ -3,10 +3,7 @@ import { getParticipantScaleItem } from '../participant/getParticipantScaleItem'
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { Entry, Event, Tournament } from '../../types/tournamentTypes';
 import { ScaleAttributes } from '../../types/factoryTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 /**
  *
@@ -44,10 +41,8 @@ export function getScaledEntries({
   const stageEntries = entries.filter(
     (entry: any) =>
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      (!stageSequence ||
-        !entry.entryStageSequence ||
-        entry.entryStageSequence === stageSequence) &&
-      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)
+      (!stageSequence || !entry.entryStageSequence || entry.entryStageSequence === stageSequence) &&
+      STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus),
   );
 
   const scaledEntries = stageEntries
@@ -64,8 +59,7 @@ export function getScaledEntries({
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;
       // if a custom sort method is not provided, filter out entries with non-float values
-      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue)))
-        return false;
+      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue))) return false;
       return scaleValue;
     })
     .sort(scaleSortMethod || defaultScaleValueSort);
@@ -73,9 +67,7 @@ export function getScaledEntries({
   return { scaledEntries };
 
   function defaultScaleValueSort(a, b) {
-    return sortDescending
-      ? scaleItemValue(b) - scaleItemValue(a)
-      : scaleItemValue(a) - scaleItemValue(b);
+    return sortDescending ? scaleItemValue(b) - scaleItemValue(a) : scaleItemValue(a) - scaleItemValue(b);
   }
 
   function scaleItemValue(scaleItem) {
