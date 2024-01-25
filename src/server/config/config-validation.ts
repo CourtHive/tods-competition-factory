@@ -32,7 +32,7 @@ export function validateConfig(configuration: Record<string, unknown>) {
 
   let index = 0;
   for (const err of errors) {
-    for (const constraint of Object.values(err?.constraints || {})) {
+    for (const constraint of Object.values(err?.constraints ?? {})) {
       ++index;
       console.log(index, constraint);
     }
