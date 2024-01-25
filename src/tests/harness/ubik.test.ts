@@ -9,14 +9,9 @@ import fs from 'fs';
  */
 
 test.skip('can execute abitrary methods', () => {
-  const tournamentRecordJSON = fs.readFileSync(
-    './src/global/tests/generic/tournament.tods.json',
-    'utf-8'
-  );
+  const tournamentRecordJSON = fs.readFileSync('./src/global/tests/generic/tournament.tods.json', 'utf-8');
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
-  let result = tournamentEngine
-    .devContext(true)
-    .setState(tournamentRecord, false);
+  let result = tournamentEngine.devContext(true).setState(tournamentRecord, false);
   expect(result.success).toEqual(true);
 
   // START: preMutation

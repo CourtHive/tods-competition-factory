@@ -1,21 +1,12 @@
-import {
-  replaceWithBye,
-  assignDrawPosition,
-} from '../../../drawDefinitions/testingUtilities';
+import { replaceWithBye, assignDrawPosition } from '../../../drawDefinitions/testingUtilities';
 import { setSubscriptions } from '../../../../../global/state/globalState';
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../../constants/drawDefinitionConstants';
-import {
-  BYE,
-  TO_BE_PLAYED,
-} from '../../../../../constants/matchUpStatusConstants';
-import {
-  MODIFY_MATCHUP,
-  MODIFY_POSITION_ASSIGNMENTS,
-} from '../../../../../constants/topicConstants';
+import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP, MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
 
 it('will remove BYEs fed into CONSOLATION', () => {
   const {
@@ -57,14 +48,10 @@ it('will remove BYEs fed into CONSOLATION', () => {
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  const assignedByes = mainStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  const assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(2);
 
-  let consolationAssignedByes = consolationStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  let consolationAssignedByes = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(consolationAssignedByes.length).toEqual(2);
 
   expect(matchUpModifyNotices.length).toEqual(0);
@@ -89,16 +76,12 @@ it('will remove BYEs fed into CONSOLATION', () => {
     },
   } = tournamentEngine.getEvent({ drawId }));
 
-  consolationAssignedByes = consolationStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  consolationAssignedByes = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(consolationAssignedByes.length).toEqual(3);
 
-  const secondRoundConsolationByeMatchUps =
-    consolationStructure.matchUps.filter(
-      ({ matchUpStatus, roundNumber }) =>
-        matchUpStatus === BYE && roundNumber === 2
-    );
+  const secondRoundConsolationByeMatchUps = consolationStructure.matchUps.filter(
+    ({ matchUpStatus, roundNumber }) => matchUpStatus === BYE && roundNumber === 2,
+  );
   expect(secondRoundConsolationByeMatchUps.length).toEqual(1);
   const targetMatchUpId = secondRoundConsolationByeMatchUps[0].matchUpId;
 
@@ -118,8 +101,6 @@ it('will remove BYEs fed into CONSOLATION', () => {
     },
   } = tournamentEngine.getEvent({ drawId }));
 
-  const targetMatchUp = consolationStructure.matchUps.find(
-    ({ matchUpId }) => matchUpId === targetMatchUpId
-  );
+  const targetMatchUp = consolationStructure.matchUps.find(({ matchUpId }) => matchUpId === targetMatchUpId);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
 });

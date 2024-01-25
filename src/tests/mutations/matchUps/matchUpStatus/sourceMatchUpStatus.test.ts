@@ -2,10 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('generates appropriate sourceMatchUpStatuses in matchUpStatusCodes', () => {
   const {
@@ -36,11 +33,10 @@ it('generates appropriate sourceMatchUpStatuses in matchUpStatusCodes', () => {
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   let matchUp = matchUps.find(({ roundNumber }) => roundNumber === 2);
 
-  expect(
-    matchUp.matchUpStatusCodes.map(
-      ({ previousMatchUpStatus }) => previousMatchUpStatus
-    )
-  ).toEqual(['DOUBLE_WALKOVER', 'COMPLETED']);
+  expect(matchUp.matchUpStatusCodes.map(({ previousMatchUpStatus }) => previousMatchUpStatus)).toEqual([
+    'DOUBLE_WALKOVER',
+    'COMPLETED',
+  ]);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     matchUpStatus: TO_BE_PLAYED,
@@ -48,7 +44,7 @@ it('generates appropriate sourceMatchUpStatuses in matchUpStatusCodes', () => {
   });
 
   const matchUpId = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2
+    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2,
   ).matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -61,9 +57,8 @@ it('generates appropriate sourceMatchUpStatuses in matchUpStatusCodes', () => {
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   matchUp = matchUps.find(({ roundNumber }) => roundNumber === 2);
 
-  expect(
-    matchUp.matchUpStatusCodes.map(
-      ({ previousMatchUpStatus }) => previousMatchUpStatus
-    )
-  ).toEqual(['DOUBLE_WALKOVER', 'TO_BE_PLAYED']);
+  expect(matchUp.matchUpStatusCodes.map(({ previousMatchUpStatus }) => previousMatchUpStatus)).toEqual([
+    'DOUBLE_WALKOVER',
+    'TO_BE_PLAYED',
+  ]);
 });

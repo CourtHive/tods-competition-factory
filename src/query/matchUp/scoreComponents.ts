@@ -1,16 +1,8 @@
-import {
-  COMPETITIVE,
-  DECISIVE,
-  ROUTINE,
-  WALKOVER,
-} from '../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE, WALKOVER } from '../../constants/statsConstants';
 
 const add = (a, b) => (a || 0) + (b || 0);
 
-export function getBand(
-  spread: number | [number],
-  bandProfiles: { [key: string]: number }
-) {
+export function getBand(spread: number | [number], bandProfiles: { [key: string]: number }) {
   const spreadValue = Array.isArray(spread) ? spread[0] : spread;
   return (
     (isNaN(spreadValue) && WALKOVER) ||
@@ -29,7 +21,7 @@ export function getScoreComponents({ score }) {
       p[1] += c.side2Score || 0;
       return p;
     },
-    [0, 0]
+    [0, 0],
   );
   const stb = sets.reduce(
     (p, c) => {
@@ -37,7 +29,7 @@ export function getScoreComponents({ score }) {
       p[1] += c.side2TiebreakScore || 0;
       return p;
     },
-    [0, 0]
+    [0, 0],
   );
 
   // add an extra game to the winner of tiebreak

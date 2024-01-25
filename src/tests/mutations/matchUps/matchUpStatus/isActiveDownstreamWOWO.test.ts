@@ -6,11 +6,7 @@ import { DOUBLE_WALKOVER } from '../../../../constants/matchUpStatusConstants';
 import { SCORE } from '../../../../constants/matchUpActionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 it('can recognize when double WO/WO propagated WO/WO is NOT active downstream', () => {
   const drawSize = 16;
@@ -50,7 +46,7 @@ it('can recognize when double WO/WO propagated WO/WO is NOT active downstream', 
       matchUpStatus,
       roundNumber,
       roundPosition,
-    ])
+    ]),
   ).toEqual([
     ['DOUBLE_WALKOVER', 1, 1], // { roundNumber: 1, roundPosition: 1 }
     ['DOUBLE_WALKOVER', 1, 2],
@@ -70,9 +66,8 @@ it('can recognize when double WO/WO propagated WO/WO is NOT active downstream', 
 
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let types = validActions.reduce(
-    (types, action) =>
-      types.includes(action.type) ? types : types.concat(action.type),
-    []
+    (types, action) => (types.includes(action.type) ? types : types.concat(action.type)),
+    [],
   );
   expect(types.includes(SCORE)).toEqual(true);
 
@@ -84,11 +79,7 @@ it('can recognize when double WO/WO propagated WO/WO is NOT active downstream', 
   expect(matchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
-  types = validActions.reduce(
-    (types, action) =>
-      types.includes(action.type) ? types : types.concat(action.type),
-    []
-  );
+  types = validActions.reduce((types, action) => (types.includes(action.type) ? types : types.concat(action.type)), []);
   expect(types.includes(SCORE)).toEqual(true);
 });
 
@@ -137,9 +128,8 @@ it('can recognize when double WO/WO propagated WO/WO is active downstream', () =
 
   let { validActions } = tournamentEngine.matchUpActions(matchUp);
   let types = validActions.reduce(
-    (types, action) =>
-      types.includes(action.type) ? types : types.concat(action.type),
-    []
+    (types, action) => (types.includes(action.type) ? types : types.concat(action.type)),
+    [],
   );
   expect(types.includes(SCORE)).toEqual(false);
 
@@ -151,10 +141,6 @@ it('can recognize when double WO/WO propagated WO/WO is active downstream', () =
   expect(matchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
   ({ validActions } = tournamentEngine.matchUpActions(matchUp));
-  types = validActions.reduce(
-    (types, action) =>
-      types.includes(action.type) ? types : types.concat(action.type),
-    []
-  );
+  types = validActions.reduce((types, action) => (types.includes(action.type) ? types : types.concat(action.type)), []);
   expect(types.includes(SCORE)).toEqual(false);
 });

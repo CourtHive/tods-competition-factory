@@ -1,11 +1,10 @@
 {
   "include": ["src/**/*.ts", "src/**/*.js"],
-  "exclude": ["src/**/scratch/**", "**/tsconfig/**"],
+  "exclude": ["src/**/scratch/**", "**/*tsconfig*/**"],
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
-    // "baseUrl": "src/",
-    "declaration": false,
+    "declaration": true,
     "downlevelIteration": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -19,10 +18,22 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "resolveJsonModule": true,
     "outDir": "./scratch",
-    "rootDir": "./src",
+    "resolveJsonModule": true,
+    "rootDir": ".",
     "sourceMap": false,
-    "strict": true
+    "strict": true,
+    "baseUrl": "./",
+    "paths": {
+      "@Server/*": ["./src/server/*"],
+      "@Tools/*": ["./src/tools/*"],
+      "@Types/*": ["./src/types/*"]
+    },
+
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "target": "ES2021"
   }
 }

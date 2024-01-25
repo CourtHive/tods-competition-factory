@@ -3,12 +3,7 @@ import { addNotes } from '../base/addRemoveNotes';
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
-export function setTournamentName({
-  tournamentRecord,
-  promotionalName,
-  tournamentName,
-  formalName,
-}) {
+export function setTournamentName({ tournamentRecord, promotionalName, tournamentName, formalName }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (tournamentName) tournamentRecord.tournamentName = tournamentName;
   if (promotionalName) tournamentRecord.promotionalName = promotionalName;

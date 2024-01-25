@@ -2,10 +2,7 @@ import { findExtension } from '../../../../acquire/findExtension';
 
 import { MATCHUP_HISTORY } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import {
-  ErrorType,
-  NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+import { ErrorType, NOT_FOUND } from '../../../../constants/errorConditionConstants';
 
 export function getHistory({ matchUp }): {
   undoHistory?: any[];

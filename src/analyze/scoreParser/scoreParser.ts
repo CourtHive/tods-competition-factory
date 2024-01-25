@@ -31,12 +31,7 @@ const processingOrder = [
 ];
 
 // secondPass is used to process only numbers which have been extracted from strings
-const secondPass = [
-  'handleNumeric',
-  'separateScoreBlocks',
-  'sensibleSets',
-  'superSquare',
-];
+const secondPass = ['handleNumeric', 'separateScoreBlocks', 'sensibleSets', 'superSquare'];
 
 export function getInvalid() {
   return invalid;
@@ -54,15 +49,7 @@ export function resetTransformations() {
 
 export function tidyScore(params) {
   if (!params.score) return { error: INVALID_VALUES };
-  const {
-    score: incomingScore,
-    sheetName,
-    identifier,
-    fileName,
-    stepLog,
-    fullLog,
-    profile,
-  } = params;
+  const { score: incomingScore, sheetName, identifier, fileName, stepLog, fullLog, profile } = params;
 
   const modifications: any[] = [];
   let matchUpStatus,
@@ -87,10 +74,7 @@ export function tidyScore(params) {
         modifications.push({ method, score: result.score });
       }
 
-      if (
-        stepLog &&
-        (fullLog || modified || result.matchUpStatus !== matchUpStatus)
-      ) {
+      if (stepLog && (fullLog || modified || result.matchUpStatus !== matchUpStatus)) {
         if (matchUpStatus) {
           console.log({ score: result.score, matchUpStatus }, method);
         } else {

@@ -11,19 +11,10 @@ import {
 import { ALTERNATE } from '../../../constants/entryStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DRAW_SIZE_MISMATCH,
-  INVALID_STAGE,
-  MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+import { DRAW_SIZE_MISMATCH, INVALID_STAGE, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 
-export function setStageDrawSize({
-  stageSequence = 1,
-  drawDefinition,
-  drawSize,
-  stage,
-}) {
+export function setStageDrawSize({ stageSequence = 1, drawDefinition, drawSize, stage }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };
@@ -56,11 +47,7 @@ export function setStageDrawSize({
   return { ...SUCCESS, entryProfile };
 }
 
-export function setStageAlternatesCount({
-  alternatesCount,
-  drawDefinition,
-  stage,
-}) {
+export function setStageAlternatesCount({ alternatesCount, drawDefinition, stage }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };
@@ -121,14 +108,12 @@ export function setStageWildcardsCount({
 
   if (wildcardsCount < wildcardEntriesCount) {
     const error = Object.assign(DRAW_SIZE_MISMATCH, {
-      message:
-        'Number of Wildcards cannot be less than number of Wildcards already entered',
+      message: 'Number of Wildcards cannot be less than number of Wildcards already entered',
     });
     return { error };
   }
 
-  const totalStageEntriesCount =
-    directAcceptanceEntriesCount + wildcardsCount + qualifiersCount;
+  const totalStageEntriesCount = directAcceptanceEntriesCount + wildcardsCount + qualifiersCount;
   if (totalStageEntriesCount > stageDrawPositions) {
     return {
       error: DRAW_SIZE_MISMATCH,
@@ -145,11 +130,7 @@ export function setStageWildcardsCount({
   return { ...SUCCESS };
 }
 
-export function setStageQualifiersCount({
-  qualifiersCount = 0,
-  drawDefinition,
-  stage,
-}) {
+export function setStageQualifiersCount({ qualifiersCount = 0, drawDefinition, stage }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!stageExists({ drawDefinition, stage })) {
     return { error: INVALID_STAGE };

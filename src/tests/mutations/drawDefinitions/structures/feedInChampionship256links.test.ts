@@ -25,16 +25,7 @@ it('can properly generate feed in championship links', () => {
       [2, 1, 4, 3, 6, 5, 8, 7], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
       [1], // complete round BOTTOM_UP
     ],
-    roundFeedProfiles: [
-      TOP_DOWN,
-      BOTTOM_UP,
-      BOTTOM_UP,
-      BOTTOM_UP,
-      BOTTOM_UP,
-      BOTTOM_UP,
-      BOTTOM_UP,
-      BOTTOM_UP,
-    ],
+    roundFeedProfiles: [TOP_DOWN, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP],
   };
   const drawProfiles = [
     {
@@ -180,45 +171,34 @@ it('can properly generate feed in championship links', () => {
     [4, 17, '249-256'],
     [4, 32, '129-136'],
   ];
-  sourceRangeExpectations.forEach(
-    ([roundNumber, roundPosition, side1Range, side2Range]) => {
-      const matchUp = consolationRoundMatchUps[roundNumber].find((matchUp) => {
-        return matchUp.roundPosition === roundPosition;
-      });
-      if (side1Range) {
-        expect(matchUp.sides[0].sourceDrawPositionRange).toEqual(side1Range);
-      }
-      if (side2Range) {
-        expect(matchUp.sides[1].sourceDrawPositionRange).toEqual(side2Range);
-      }
+  sourceRangeExpectations.forEach(([roundNumber, roundPosition, side1Range, side2Range]) => {
+    const matchUp = consolationRoundMatchUps[roundNumber].find((matchUp) => {
+      return matchUp.roundPosition === roundPosition;
+    });
+    if (side1Range) {
+      expect(matchUp.sides[0].sourceDrawPositionRange).toEqual(side1Range);
     }
-  );
+    if (side2Range) {
+      expect(matchUp.sides[1].sourceDrawPositionRange).toEqual(side2Range);
+    }
+  });
 
   const directedLoserParticipantIdExpectations = [[3, 1, 4, 16]];
 
   directedLoserParticipantIdExpectations.forEach(
-    ([
-      sourceRoundNumber,
-      sourceRoundPosition,
-      targetRoundNumber,
-      targetRoundPosition,
-    ]) => {
+    ([sourceRoundNumber, sourceRoundPosition, targetRoundNumber, targetRoundPosition]) => {
       const sourceMatchUp: any =
-        mainDrawRoundMatchUps[sourceRoundNumber].find(
-          (matchUp) => matchUp.roundPosition === sourceRoundPosition
-        ) ?? {};
+        mainDrawRoundMatchUps[sourceRoundNumber].find((matchUp) => matchUp.roundPosition === sourceRoundPosition) ?? {};
       const sourceLosingParticipantId = sourceMatchUp?.sides?.find(
-        ({ sideNumber }) => sideNumber !== sourceMatchUp?.winningSide
+        ({ sideNumber }) => sideNumber !== sourceMatchUp?.winningSide,
       ).participantId;
-      const targetMatchUp: any = consolationRoundMatchUps[
-        targetRoundNumber
-      ].find((matchUp) => matchUp.roundPosition === targetRoundPosition);
-      const targetFedParticipantId = targetMatchUp.sides.find(
-        ({ sideNumber }) => sideNumber === 1
-      ).participantId;
+      const targetMatchUp: any = consolationRoundMatchUps[targetRoundNumber].find(
+        (matchUp) => matchUp.roundPosition === targetRoundPosition,
+      );
+      const targetFedParticipantId = targetMatchUp.sides.find(({ sideNumber }) => sideNumber === 1).participantId;
 
       expect(sourceLosingParticipantId).toEqual(targetFedParticipantId);
-    }
+    },
   );
 
   /*

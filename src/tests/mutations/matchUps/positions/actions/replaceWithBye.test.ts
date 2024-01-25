@@ -2,15 +2,8 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  ASSIGN_BYE,
-  REMOVE_ASSIGNMENT,
-} from '../../../../../constants/positionActionConstants';
-import {
-  ALTERNATE,
-  DIRECT_ACCEPTANCE,
-  WITHDRAWN,
-} from '../../../../../constants/entryStatusConstants';
+import { ASSIGN_BYE, REMOVE_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE, WITHDRAWN } from '../../../../../constants/entryStatusConstants';
 
 it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [
@@ -57,9 +50,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   } = tournamentEngine.getEvent({ drawId }));
 
   let { positionAssignments } = structures[0];
-  let assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  let assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(assignment.bye).toEqual(true);
 
   // Now test that a BYE can be removed
@@ -69,9 +60,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
     drawPosition,
   });
 
-  option = result.validActions.find(
-    (action) => action.type === REMOVE_ASSIGNMENT
-  );
+  option = result.validActions.find((action) => action.type === REMOVE_ASSIGNMENT);
 
   payload = { ...option.payload };
   result = tournamentEngine[option.method](payload);
@@ -82,9 +71,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   } = tournamentEngine.getEvent({ drawId }));
 
   ({ positionAssignments } = structures[0]);
-  assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(assignment.bye).toBeUndefined();
 
   // now check that BYE can be placed
@@ -104,9 +91,7 @@ it('can replace positioned participant with a bye and move to ALTERNATEs', () =>
   } = tournamentEngine.getEvent({ drawId }));
 
   ({ positionAssignments } = structures[0]);
-  assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(assignment.bye).toEqual(true);
 });
 
@@ -136,20 +121,16 @@ it('can withdraw and replace positioned participant with a bye', () => {
 
   const drawPosition = 1;
   let { positionAssignments } = structures[0];
-  let assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  let assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(!!assignment.bye).toEqual(false);
   let byeAssignments = positionAssignments.filter(({ bye }) => bye);
   expect(byeAssignments.length).toEqual(2);
 
   expect(byeAssignments.length).toEqual(2);
   const participantId = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
+    (assignment) => assignment.drawPosition === drawPosition,
   ).participantId;
-  const entryStatus = event.entries.find(
-    (entry) => entry.participantId === participantId
-  ).entryStatus;
+  const entryStatus = event.entries.find((entry) => entry.participantId === participantId).entryStatus;
   expect(entryStatus).toEqual(DIRECT_ACCEPTANCE);
 
   let result = tournamentEngine.positionActions({
@@ -161,9 +142,7 @@ it('can withdraw and replace positioned participant with a bye', () => {
   expect(result.isByePosition).toEqual(false);
   const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(ASSIGN_BYE)).toEqual(true);
-  const option = result.validActions.find(
-    (action) => action.type === ASSIGN_BYE
-  );
+  const option = result.validActions.find((action) => action.type === ASSIGN_BYE);
 
   const payload = {
     ...option.payload,
@@ -178,15 +157,11 @@ it('can withdraw and replace positioned participant with a bye', () => {
     drawDefinition: { structures },
   } = tournamentEngine.getEvent({ drawId }));
 
-  const updatedEntryStatus = event.entries.find(
-    (entry) => entry.participantId === participantId
-  ).entryStatus;
+  const updatedEntryStatus = event.entries.find((entry) => entry.participantId === participantId).entryStatus;
   expect(updatedEntryStatus).toEqual(WITHDRAWN);
 
   ({ positionAssignments } = structures[0]);
-  assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  assignment = positionAssignments.find((assignment) => assignment.drawPosition === drawPosition);
   expect(assignment.bye).toEqual(true);
   byeAssignments = positionAssignments.filter(({ bye }) => bye);
   expect(byeAssignments.length).toEqual(3);

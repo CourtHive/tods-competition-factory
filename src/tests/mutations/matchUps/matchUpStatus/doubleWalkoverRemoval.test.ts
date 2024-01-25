@@ -7,16 +7,8 @@ import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../../constants/errorConditio
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  COMPLETED,
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP_TO_SF,
-} from '../../../../constants/drawDefinitionConstants';
+import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../constants/drawDefinitionConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;
@@ -24,7 +16,7 @@ const getTarget = (params) => {
     (matchUp) =>
       matchUp.roundNumber === roundNumber &&
       matchUp.roundPosition === roundPosition &&
-      (!stage || matchUp.stage === stage)
+      (!stage || matchUp.stage === stage),
   );
 };
 
@@ -50,9 +42,7 @@ test('drawSize: 4 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -167,9 +157,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -411,9 +399,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -475,9 +461,7 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
     drawId,
     matchUpId: targetMatchUp.matchUpId,
   });
-  expect(result.validActions.map(({ type }) => type).includes(SCORE)).toEqual(
-    true
-  );
+  expect(result.validActions.map(({ type }) => type).includes(SCORE)).toEqual(true);
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
@@ -538,9 +522,7 @@ test('DOUBLE_WALKOVER cannot be removed when active downstream matchUps', () => 
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -608,9 +590,7 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -676,9 +656,7 @@ test('drawSize: 8 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in su
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -722,9 +700,7 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -753,9 +729,7 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   const statuses = matchUps.reduce((statuses, matchUp) => {
     const { matchUpStatus } = matchUp;
-    return statuses.includes(matchUpStatus)
-      ? statuses
-      : statuses.concat(matchUpStatus);
+    return statuses.includes(matchUpStatus) ? statuses : statuses.concat(matchUpStatus);
   }, []);
   expect(statuses).toEqual([DOUBLE_WALKOVER, WALKOVER]);
 
@@ -793,9 +767,7 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -808,9 +780,7 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
 
   // Enter score for first 7 roundNumber: 1 matchUps
   matchUps
-    .filter(
-      ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition < 8
-    )
+    .filter(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition < 8)
     .forEach(({ matchUpId }) => {
       result = tournamentEngine.setMatchUpStatus({
         drawId,
@@ -826,9 +796,7 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   const statuses = matchUps.reduce((statuses, matchUp) => {
     const { matchUpStatus } = matchUp;
-    return statuses.includes(matchUpStatus)
-      ? statuses
-      : statuses.concat(matchUpStatus);
+    return statuses.includes(matchUpStatus) ? statuses : statuses.concat(matchUpStatus);
   }, []);
   expect(statuses).toEqual([DOUBLE_WALKOVER, WALKOVER, TO_BE_PLAYED]);
 

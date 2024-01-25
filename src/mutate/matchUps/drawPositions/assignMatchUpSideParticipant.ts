@@ -1,9 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -16,16 +13,8 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../constants/errorConditionConstants';
-import {
-  completedMatchUpStatuses,
-  DOUBLE_DEFAULT,
-  DOUBLE_WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { completedMatchUpStatuses, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type AssignMatchUpSideParticipantArgs = {
   tournamentRecord: Tournament;
@@ -45,8 +34,7 @@ export function assignMatchUpSideParticipant({
   matchUpId,
   event,
 }: AssignMatchUpSideParticipantArgs): ResultType & { sidesSwapped?: boolean } {
-  if (participantId && typeof participantId !== 'string')
-    return { error: INVALID_PARTICIPANT_ID };
+  if (participantId && typeof participantId !== 'string') return { error: INVALID_PARTICIPANT_ID };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
@@ -78,8 +66,7 @@ export function assignMatchUpSideParticipant({
     !participantId &&
     (matchUp?.score?.scoreStringSide1 ||
       completedMatchUpStatuses.includes(matchUp?.matchUpstatus) ||
-      (matchUp?.matchUpStatus &&
-        [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus)))
+      (matchUp?.matchUpStatus && [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus)))
   )
     return {
       error: CANNOT_REMOVE_PARTICIPANTS,
@@ -88,13 +75,11 @@ export function assignMatchUpSideParticipant({
 
   if (matchUp) {
     matchUp.sides = [1, 2].map((currentSideNumber) => {
-      const existingSide = matchUp.sides?.find(
-        (side) => side.sideNumber === currentSideNumber
-      ) ?? { sideNumber: currentSideNumber };
+      const existingSide = matchUp.sides?.find((side) => side.sideNumber === currentSideNumber) ?? {
+        sideNumber: currentSideNumber,
+      };
 
-      return sideNumber === currentSideNumber
-        ? { ...existingSide, participantId }
-        : existingSide;
+      return sideNumber === currentSideNumber ? { ...existingSide, participantId } : existingSide;
     });
 
     // makes it possible to use this method with no sideNumber provided

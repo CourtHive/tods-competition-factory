@@ -8,7 +8,6 @@ export function calculatePeriodLength({
   periodLength = 30,
   recoveryMinutes,
 }: CalculatePeriodLengthArgs) {
-  const combinedMinutes =
-    (averageMatchUpMinutes || 90) + (recoveryMinutes || 0);
+  const combinedMinutes = (averageMatchUpMinutes || 90) + (recoveryMinutes || 0);
   return periodLength > combinedMinutes ? combinedMinutes : periodLength || 30;
 }

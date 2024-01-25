@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
-import {
-  awardProfileFlights,
-  awardProfilePercentageFlights,
-} from './awardProfileExamples';
+import { awardProfileFlights, awardProfilePercentageFlights } from './awardProfileExamples';
 
 import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
 import { getAwardProfile } from '../../../query/scales/getAwardProfile';
@@ -71,9 +68,7 @@ it('can award points for flights', () => {
   let fpMap = getFpMap(participants, result.personPoints);
 
   const pointTotal = 2;
-  let totalPointsAwarded = fpMap
-    .map((entry) => entry[pointTotal])
-    .reduce((a, b) => (a || 0) + (b || 0), 0);
+  let totalPointsAwarded = fpMap.map((entry) => entry[pointTotal]).reduce((a, b) => (a || 0) + (b || 0), 0);
   expect(totalPointsAwarded).toEqual(3079);
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions, level: 5 });
@@ -81,30 +76,22 @@ it('can award points for flights', () => {
 
   fpMap = getFpMap(participants, result.personPoints);
 
-  totalPointsAwarded = fpMap
-    .map((entry) => entry[pointTotal])
-    .reduce((a, b) => (a || 0) + (b || 0), 0);
+  totalPointsAwarded = fpMap.map((entry) => entry[pointTotal]).reduce((a, b) => (a || 0) + (b || 0), 0);
   expect(totalPointsAwarded).toEqual(1710);
 
   // use a different awardProfile
-  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [
-    awardProfileFlights,
-  ];
+  policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [awardProfileFlights];
   result = scaleEngine.getTournamentPoints({ policyDefinitions, level: 4 });
   expect(result.success).toEqual(true);
 
   fpMap = getFpMap(participants, result.personPoints);
-  totalPointsAwarded = fpMap
-    .map((entry) => entry[pointTotal])
-    .reduce((a, b) => (a || 0) + (b || 0), 0);
+  totalPointsAwarded = fpMap.map((entry) => entry[pointTotal]).reduce((a, b) => (a || 0) + (b || 0), 0);
   expect(totalPointsAwarded).toEqual(3075);
 
   result = scaleEngine.getTournamentPoints({ policyDefinitions, level: 5 });
   expect(result.success).toEqual(true);
 
   fpMap = getFpMap(participants, result.personPoints);
-  totalPointsAwarded = fpMap
-    .map((entry) => entry[pointTotal])
-    .reduce((a, b) => (a || 0) + (b || 0), 0);
+  totalPointsAwarded = fpMap.map((entry) => entry[pointTotal]).reduce((a, b) => (a || 0) + (b || 0), 0);
   expect(totalPointsAwarded).toEqual(1710);
 });

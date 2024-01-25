@@ -7,10 +7,7 @@ import { expect, it } from 'vitest';
 import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-} from '../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConstants';
 
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;
@@ -47,12 +44,8 @@ it('correctly assigns BYE positions in consolation structure', () => {
   } = getDrawStructures({ drawDefinition, stage: CONSOLATION });
 
   const { roundMatchUps } = getRoundMatchUps(consolationStructure);
-  const round1ByeCount = roundMatchUps?.[1].map(
-    (matchUp) => matchUp.matchUpStatus === BYE
-  ).length;
+  const round1ByeCount = roundMatchUps?.[1].map((matchUp) => matchUp.matchUpStatus === BYE).length;
   expect(round1ByeCount).toEqual(8);
-  const round2ByeCount = roundMatchUps?.[2].map(
-    (matchUp) => matchUp.matchUpStatus === BYE
-  ).length;
+  const round2ByeCount = roundMatchUps?.[2].map((matchUp) => matchUp.matchUpStatus === BYE).length;
   expect(round2ByeCount).toEqual(8);
 });

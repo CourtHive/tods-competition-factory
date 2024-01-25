@@ -11,8 +11,7 @@ import {
 
 export function validDateAvailability({ dateAvailability }) {
   if (!dateAvailability) return { error: MISSING_DATE_AVAILABILITY };
-  if (!Array.isArray(dateAvailability))
-    return { error: INVALID_DATE_AVAILABILITY };
+  if (!Array.isArray(dateAvailability)) return { error: INVALID_DATE_AVAILABILITY };
 
   const dateNote = 'Dates must be formated => YYYY-MM-DD';
   const timeNote = 'Times must be 24 hour => 00:00';

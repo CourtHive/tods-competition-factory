@@ -1,9 +1,9 @@
 import { decorateResult } from '../global/functions/decorateResult';
-import { makeDeepCopy } from '../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
 
-import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '../constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,

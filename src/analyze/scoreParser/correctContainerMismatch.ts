@@ -3,10 +3,7 @@ export function correctContainerMismatch(score) {
   const parens = '()';
   const types = brackets + parens;
   const openers = [brackets[0], parens[0]];
-  const typeCount = Object.assign(
-    {},
-    ...types.split('').map((char) => ({ [char]: 0 }))
-  );
+  const typeCount = Object.assign({}, ...types.split('').map((char) => ({ [char]: 0 })));
 
   let lastType = '';
   const corrected = score
@@ -21,10 +18,7 @@ export function correctContainerMismatch(score) {
       }
       if (!isOpener && type && lastType && type !== lastType) {
         typeCount[lastType] -= 1;
-        const domain =
-          (brackets.includes(lastType) && brackets) ||
-          (parens.includes(lastType) && parens) ||
-          '';
+        const domain = (brackets.includes(lastType) && brackets) || (parens.includes(lastType) && parens) || '';
         const complement = domain.split('').find((c) => c !== lastType);
         if (!domain.includes(type)) {
           if (!typeCount[type]) lastType = '';

@@ -22,10 +22,7 @@ export function generateEventParticipants(params) {
 
   const { category, gender, eventType } = event;
 
-  const eventParticipantType =
-    (eventType === SINGLES && INDIVIDUAL) ||
-    (eventType === DOUBLES && PAIR) ||
-    eventType;
+  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
 
   const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;
@@ -36,9 +33,7 @@ export function generateEventParticipants(params) {
 
   const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
 
-  const idPrefix = participantsProfile?.idPrefix
-    ? `E-${eventIndex}-${participantsProfile?.idPrefix}`
-    : undefined;
+  const idPrefix = participantsProfile?.idPrefix ? `E-${eventIndex}-${participantsProfile?.idPrefix}` : undefined;
   const { participants: uniqueFlightParticipants } = generateParticipants({
     uuids: eventProfile.uuids || uuids,
     ...participantsProfile,
@@ -61,7 +56,7 @@ export function generateEventParticipants(params) {
   if (result.error) return result;
 
   const uniqueDrawParticipants = uniqueFlightParticipants?.filter(
-    ({ participantType }) => participantType === eventParticipantType
+    ({ participantType }) => participantType === eventParticipantType,
   );
   const uniqueParticipantIds = uniqueFlightParticipants?.map(getParticipantId);
 

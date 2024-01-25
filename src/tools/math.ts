@@ -78,13 +78,7 @@ function stepRound(value, step) {
   return Math.round(value * inv) / inv;
 }
 
-export function skewedDistribution(
-  min: number,
-  max: number,
-  skew: number,
-  step?,
-  significantDecimals = 2
-) {
+export function skewedDistribution(min: number, max: number, skew: number, step?, significantDecimals = 2) {
   const u = 1 - Math.random();
   const v = 1 - Math.random();
   let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);

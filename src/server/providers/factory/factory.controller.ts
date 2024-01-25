@@ -1,3 +1,4 @@
+import { FetchTournamentRecordsDto } from './dto/fetchTournamentRecords.dto';
 import { RemoveTournamentRecordsDto } from './dto/removeTournamentRecords.dto';
 import { QueryTournamentRecordsDto } from './dto/queryTournamentRecords.dto';
 import { SaveTournamentRecordsDto } from './dto/saveTournamentRecords.dto';
@@ -8,7 +9,6 @@ import { Public } from '../../auth/decorators/public.decorator';
 import { Roles } from '../../auth/decorators/roles.decorator';
 import { RolesGuard } from '../../auth/guards/role.guard';
 import { FactoryService } from './factory.service';
-import { FetchTournamentRecordsDto } from './dto/fetchTournamentRecords.dto';
 
 @UseGuards(RolesGuard)
 @Controller('factory')

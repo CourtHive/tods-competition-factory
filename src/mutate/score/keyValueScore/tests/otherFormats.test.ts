@@ -12,12 +12,7 @@ it('handles set tiebreak with NoAD', () => {
   const matchUpFormat = FORMAT_NOAD_SET_TIEBREAK;
   let matchUp: any = { scoreString: undefined, sets: [], matchUpFormat };
 
-  const values = [
-    { lowSide: 2, value: '6' },
-    { lowSide: 2, value: '7' },
-    { lowSide: 2, value: '6' },
-    TIEBREAK_CLOSER,
-  ];
+  const values = [{ lowSide: 2, value: '6' }, { lowSide: 2, value: '7' }, { lowSide: 2, value: '6' }, TIEBREAK_CLOSER];
 
   ({ matchUp } = enterValues({ values, matchUp }));
   expect(matchUp.scoreString.trim()).toEqual(`7-6(6)`);

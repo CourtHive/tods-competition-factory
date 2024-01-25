@@ -9,17 +9,14 @@ export function getWinningSide(score) {
         .match(getSetScores)
         .slice(1)
         .map((s) => parseInt(s));
-      const winningSide =
-        (setScores[0] > setScores[1] && 1) ||
-        (setScores[1] > setScores[0] && 2);
+      const winningSide = (setScores[0] > setScores[1] && 1) || (setScores[1] > setScores[0] && 2);
       if (winningSide) {
         setsWon[winningSide - 1] += 1;
         setWinners.push(winningSide);
       }
     }
   });
-  const winningSide =
-    (setsWon[0] > setsWon[1] && 1) || (setsWon[1] > setsWon[0] && 2);
+  const winningSide = (setsWon[0] > setsWon[1] && 1) || (setsWon[1] > setsWon[0] && 2);
   const setsTied = setsWon[0] > 0 && setsWon[0] === setsWon[1];
   const totalSets = setsWon.reduce((a, b) => a + b, 0);
 

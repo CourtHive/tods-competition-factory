@@ -1,18 +1,11 @@
 import { pairingHash } from './generateCandidate';
 
-export function getParticipantPairingValues({
-  possiblePairings,
-  valueObjects,
-}) {
+export function getParticipantPairingValues({ possiblePairings, valueObjects }) {
   const pairingValues = {};
 
   for (const participantId of Object.keys(possiblePairings)) {
-    const participantValues = possiblePairings[participantId].map((opponent) =>
-      pairingValue(participantId, opponent)
-    );
-    pairingValues[participantId] = participantValues.sort(
-      (a, b) => a.value - b.value
-    );
+    const participantValues = possiblePairings[participantId].map((opponent) => pairingValue(participantId, opponent));
+    pairingValues[participantId] = participantValues.sort((a, b) => a.value - b.value);
   }
 
   function pairingValue(participantId, opponent) {

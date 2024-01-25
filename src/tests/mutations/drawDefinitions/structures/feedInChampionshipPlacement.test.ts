@@ -43,12 +43,8 @@ it('returns properly ordered drawPositions for consolation structure feed rounds
     matchUpFilters: { structureIds: [structureId] },
   });
   const roundProfile = getRoundMatchUps({ matchUps }).roundProfile;
-  expect(roundProfile?.[1].drawPositions).toEqual([
-    16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31,
-  ]);
-  expect(roundProfile?.[2].drawPositions).toEqual([
-    8, 17, 9, 19, 10, 21, 11, 23, 12, 24, 13, 26, 14, 28, 15, 30,
-  ]);
+  expect(roundProfile?.[1].drawPositions).toEqual([16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]);
+  expect(roundProfile?.[2].drawPositions).toEqual([8, 17, 9, 19, 10, 21, 11, 23, 12, 24, 13, 26, 14, 28, 15, 30]);
   // order of subsequent rounds has randomized undefined due to bye placements
 });
 
@@ -86,12 +82,8 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
     structureId: mainStructure.structureId,
   });
 
-  const firstRoundMatchUps = upcomingMatchUps?.filter(
-    (matchUp) => matchUp.roundNumber === 1
-  );
-  const secondRoundMatchUps = upcomingMatchUps?.filter(
-    (matchUp) => matchUp.roundNumber === 2
-  );
+  const firstRoundMatchUps = upcomingMatchUps?.filter((matchUp) => matchUp.roundNumber === 1);
+  const secondRoundMatchUps = upcomingMatchUps?.filter((matchUp) => matchUp.roundNumber === 2);
   expect(secondRoundMatchUps?.length).toEqual(1);
   const targetSecondRoundMatchUp = secondRoundMatchUps?.[0];
   const matchUpId = targetSecondRoundMatchUp?.matchUpId;
@@ -106,43 +98,29 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
   [mainStructure, consolationStructure] = drawDefinition.structures;
-  const mainDrawLosingParticipantAssignment =
-    mainStructure.positionAssignments.find(
-      (assignment) => assignment.drawPosition === losingDrawPosition
-    );
+  const mainDrawLosingParticipantAssignment = mainStructure.positionAssignments.find(
+    (assignment) => assignment.drawPosition === losingDrawPosition,
+  );
 
   const structure = drawDefinition.structures.find(
-    ({ structureId }) => structureId === consolationStructure.structureId
+    ({ structureId }) => structureId === consolationStructure.structureId,
   );
   const matchUps = getAllStructureMatchUps({ structure }).matchUps;
 
   const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps;
-  const consolationTargetMatchUp = roundMatchUps?.[2].find(
-    (matchUp) => matchUp.matchUpStatus !== BYE
+  const consolationTargetMatchUp = roundMatchUps?.[2].find((matchUp) => matchUp.matchUpStatus !== BYE);
+  const fedDrawPosition = Math.min(...(consolationTargetMatchUp?.drawPositions ?? []));
+  const targetConsolationAssignment = consolationStructure.positionAssignments.find(
+    (assignment) => assignment.drawPosition === fedDrawPosition,
   );
-  const fedDrawPosition = Math.min(
-    ...(consolationTargetMatchUp?.drawPositions ?? [])
-  );
-  const targetConsolationAssignment =
-    consolationStructure.positionAssignments.find(
-      (assignment) => assignment.drawPosition === fedDrawPosition
-    );
-  expect(mainDrawLosingParticipantAssignment.participantId).toEqual(
-    targetConsolationAssignment.participantId
-  );
+  expect(mainDrawLosingParticipantAssignment.participantId).toEqual(targetConsolationAssignment.participantId);
 
-  const consolationFirstRoundDrawPositions = roundMatchUps?.[1]
-    .map((matchUp) => matchUp.drawPositions)
-    .flat();
+  const consolationFirstRoundDrawPositions = roundMatchUps?.[1].map((matchUp) => matchUp.drawPositions).flat();
 
-  let consolationFirstRoundAssignments =
-    consolationStructure.positionAssignments
-      .filter(
-        (assignment) =>
-          consolationFirstRoundDrawPositions?.includes(assignment.drawPosition)
-      )
-      .map((assignment) => assignment.participantId)
-      .filter(Boolean);
+  let consolationFirstRoundAssignments = consolationStructure.positionAssignments
+    .filter((assignment) => consolationFirstRoundDrawPositions?.includes(assignment.drawPosition))
+    .map((assignment) => assignment.participantId)
+    .filter(Boolean);
 
   // expect that no first round positions have been assigned
   expect(consolationFirstRoundAssignments.length).toEqual(0);
@@ -163,10 +141,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   [mainStructure, consolationStructure] = drawDefinition.structures;
 
   consolationFirstRoundAssignments = consolationStructure.positionAssignments
-    .filter(
-      (assignment) =>
-        consolationFirstRoundDrawPositions?.includes(assignment.drawPosition)
-    )
+    .filter((assignment) => consolationFirstRoundDrawPositions?.includes(assignment.drawPosition))
     .map((assignment) => assignment.participantId)
     .filter(Boolean);
 

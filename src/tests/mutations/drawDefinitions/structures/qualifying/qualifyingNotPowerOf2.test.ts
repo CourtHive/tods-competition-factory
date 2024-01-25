@@ -45,45 +45,40 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can generate qualifying non-power-of-2 # of participants',
-  (scenario) => {
-    const result = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        {
-          ignoreDefaults: true,
-          qualifyingProfiles: [
-            {
-              structureProfiles: [scenario],
-              roundTarget: 1,
-            },
-          ],
-        },
-      ],
-    });
+it.each(scenarios)('can generate qualifying non-power-of-2 # of participants', (scenario) => {
+  const result = mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        ignoreDefaults: true,
+        qualifyingProfiles: [
+          {
+            structureProfiles: [scenario],
+            roundTarget: 1,
+          },
+        ],
+      },
+    ],
+  });
 
-    if (result.error) {
-      console.log(result, { scenario });
-    } else {
-      const {
-        tournamentRecord,
-        drawIds: [drawId],
-      } = result;
-      tournamentEngine.setState(tournamentRecord);
+  if (result.error) {
+    console.log(result, { scenario });
+  } else {
+    const {
+      tournamentRecord,
+      drawIds: [drawId],
+    } = result;
+    tournamentEngine.setState(tournamentRecord);
 
-      const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
-      if (scenario.participantsCount) {
-        expect(event.entries.length).toEqual(scenario.participantsCount);
-        expect(drawDefinition.entries.length).toEqual(
-          scenario.participantsCount
-        );
-      } else if (scenario.drawSize) {
-        expect(event.entries.length).toEqual(scenario.drawSize);
-        expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
-      }
-
-      const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
-      expect(matchUps.length).toEqual(scenario.expectation.matchUpsCount);
+    const { drawDefinition, event } = tournamentEngine.getEvent({ drawId });
+    if (scenario.participantsCount) {
+      expect(event.entries.length).toEqual(scenario.participantsCount);
+      expect(drawDefinition.entries.length).toEqual(scenario.participantsCount);
+    } else if (scenario.drawSize) {
+      expect(event.entries.length).toEqual(scenario.drawSize);
+      expect(drawDefinition.entries.length).toEqual(scenario.drawSize);
     }
+
+    const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId });
+    expect(matchUps.length).toEqual(scenario.expectation.matchUpsCount);
   }
-);
+});

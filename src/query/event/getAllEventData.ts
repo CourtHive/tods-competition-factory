@@ -61,12 +61,7 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
         drawId,
       }))(drawDefinition);
 
-      const {
-        abandonedMatchUps,
-        completedMatchUps,
-        upcomingMatchUps,
-        pendingMatchUps,
-      } = getDrawMatchUps({
+      const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps } = getDrawMatchUps({
         requireParticipants: true,
         tournamentParticipants,
         context: { eventId },

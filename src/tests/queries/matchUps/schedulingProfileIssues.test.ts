@@ -5,11 +5,7 @@ import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import {
-  INVALID_DATE,
-  INVALID_TOURNAMENT_RECORD,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const startDate = '2022-01-01';
 const endDate = '2022-01-07';
@@ -75,13 +71,7 @@ test.each([
   },
 ])(
   'it can report issues when schedulingProfile rounds are out of order',
-  ({
-    drawSize,
-    drawType,
-    roundNumbers,
-    roundIndexShouldBeAfter,
-    matchUpIdShouldBeAfterCount,
-  }) => {
+  ({ drawSize, drawType, roundNumbers, roundIndexShouldBeAfter, matchUpIdShouldBeAfterCount }) => {
     const venueProfiles = [
       {
         startTime: '08:00',
@@ -140,10 +130,8 @@ test.each([
 
     const result = tournamentEngine.getSchedulingProfileIssues();
     expect(result.roundIndexShouldBeAfter).toEqual(roundIndexShouldBeAfter);
-    expect(
-      Object.keys(result.profileIssues.matchUpIdShouldBeAfter).length
-    ).toEqual(matchUpIdShouldBeAfterCount);
-  }
+    expect(Object.keys(result.profileIssues.matchUpIdShouldBeAfter).length).toEqual(matchUpIdShouldBeAfterCount);
+  },
 );
 
 test('getScheduligProfileIssues thows appropriate errors', () => {

@@ -2,11 +2,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', () => {
   const mockProfile = {
@@ -14,14 +10,12 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
     drawProfiles: [{ drawSize: 4, participantsCount: 3 }],
   };
 
-  const { tournamentRecord } =
-    mocksEngine.generateTournamentRecord(mockProfile);
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord(mockProfile);
 
   tournamentEngine.setState(tournamentRecord);
 
   // there should be only one matchUp ready for scoring
-  let scoringMatchUp =
-    tournamentEngine.tournamentMatchUps().upcomingMatchUps[0];
+  let scoringMatchUp = tournamentEngine.tournamentMatchUps().upcomingMatchUps[0];
   expect(scoringMatchUp.roundNumber).toEqual(1);
   expect(scoringMatchUp.roundPosition).toEqual(2);
 
@@ -57,9 +51,7 @@ it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', (
   expect(finalMatchUp.roundNumber).toEqual(2);
   expect(finalMatchUp.winningSide).toEqual(1);
   expect(finalMatchUp.matchUpStatus).toEqual(WALKOVER);
-  expect(
-    finalMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)
-  ).toEqual([]);
+  expect(finalMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)).toEqual([]);
 
   // outcome copied from client payload
   outcome = {

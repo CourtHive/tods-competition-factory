@@ -2,10 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  SINGLES_EVENT,
-  TEAM_EVENT,
-} from '../../../../constants/eventConstants';
+import { SINGLES_EVENT, TEAM_EVENT } from '../../../../constants/eventConstants';
 import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';
 import { TEAM_PARTICIPANT } from '../../../../constants/participantConstants';
 import { COLLEGE_D3 } from '../../../../constants/tieFormatConstants';
@@ -13,9 +10,7 @@ import { getConflicts } from './testGetConflicts';
 
 it('can separate team members in an elimination structure', () => {
   // first create a tournament with a team event to mock teams with # of players
-  const drawProfiles = [
-    { drawSize: 8, eventType: TEAM_EVENT, tieFormatName: COLLEGE_D3 },
-  ];
+  const drawProfiles = [{ drawSize: 8, eventType: TEAM_EVENT, tieFormatName: COLLEGE_D3 }];
   const eventProfiles = [{ eventType: SINGLES_EVENT }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     eventProfiles,
@@ -29,14 +24,12 @@ it('can separate team members in an elimination structure', () => {
   }).participants;
   expect(teamParticipants.length).toEqual(8);
 
-  const individualParticipantIds = teamParticipants.flatMap(
-    ({ individualParticipantIds }) => individualParticipantIds.slice(0, 4)
+  const individualParticipantIds = teamParticipants.flatMap(({ individualParticipantIds }) =>
+    individualParticipantIds.slice(0, 4),
   );
   expect(individualParticipantIds.length).toEqual(32);
 
-  const singlesEvent = tournamentRecord.events.find(
-    ({ eventType }) => eventType === SINGLES_EVENT
-  );
+  const singlesEvent = tournamentRecord.events.find(({ eventType }) => eventType === SINGLES_EVENT);
 
   const result = tournamentEngine.addEventEntries({
     participantIds: individualParticipantIds,

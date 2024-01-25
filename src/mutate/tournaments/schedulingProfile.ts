@@ -10,29 +10,20 @@ import { SCHEDULING_PROFILE } from '../../constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import {
-  ErrorType,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 type GetSchedulingProfileArgs = {
   tournamentRecords?: TournamentRecords;
   tournamentRecord?: Tournament;
 };
 
-export function getSchedulingProfile({
-  tournamentRecords,
-  tournamentRecord,
-}: GetSchedulingProfileArgs): {
+export function getSchedulingProfile({ tournamentRecords, tournamentRecord }: GetSchedulingProfileArgs): {
   schedulingProfile?: any;
   modifications?: number;
   error?: ErrorType;
   issues?: string[];
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const { extension } = findExtension({
@@ -51,13 +42,12 @@ export function getSchedulingProfile({
     });
     const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
 
-    const { updatedSchedulingProfile, modifications, issues } =
-      getUpdatedSchedulingProfile({
-        schedulingProfile,
-        venueIds,
-        eventIds,
-        drawIds,
-      });
+    const { updatedSchedulingProfile, modifications, issues } = getUpdatedSchedulingProfile({
+      schedulingProfile,
+      venueIds,
+      eventIds,
+      drawIds,
+    });
 
     if (modifications) {
       schedulingProfile = updatedSchedulingProfile;
@@ -129,13 +119,12 @@ export function checkAndUpdateSchedulingProfile(params) {
   const { venueIds } = getCompetitionVenues({ tournamentRecords });
   const { eventIds, drawIds } = getEventIdsAndDrawIds({ tournamentRecords });
 
-  const { updatedSchedulingProfile, modifications, issues } =
-    getUpdatedSchedulingProfile({
-      schedulingProfile: params.schedulingProfile,
-      venueIds,
-      eventIds,
-      drawIds,
-    });
+  const { updatedSchedulingProfile, modifications, issues } = getUpdatedSchedulingProfile({
+    schedulingProfile: params.schedulingProfile,
+    venueIds,
+    eventIds,
+    drawIds,
+  });
 
   if (modifications) {
     return {

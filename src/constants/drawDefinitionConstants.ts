@@ -5,13 +5,7 @@ export const CONSOLATION = 'CONSOLATION';
 export const VOLUNTARY_CONSOLATION = 'VOLUNTARY_CONSOLATION';
 export const PLAY_OFF = 'PLAY_OFF';
 
-export const validStages = [
-  MAIN,
-  QUALIFYING,
-  CONSOLATION,
-  PLAY_OFF,
-  VOLUNTARY_CONSOLATION,
-];
+export const validStages = [MAIN, QUALIFYING, CONSOLATION, PLAY_OFF, VOLUNTARY_CONSOLATION];
 
 export const stageOrder = {
   [QUALIFYING]: 1,

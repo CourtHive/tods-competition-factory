@@ -3,13 +3,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import {
-  DrawDefinition,
-  Event,
-  PositionAssignment,
-  Structure,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
 
 type ModifyRoundRobinMatchUpStatusArgs = {
   positionAssignments: PositionAssignment[];
@@ -35,12 +29,10 @@ export function modifyRoundRobinMatchUpsStatus({
   });
 
   matchUps.forEach((matchUp) => {
-    const matchUpAssignments = positionAssignments.filter(
-      ({ drawPosition }) => matchUp.drawPositions?.includes(drawPosition)
+    const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+      matchUp.drawPositions?.includes(drawPosition),
     );
-    const matchUpContainsBye = matchUpAssignments.filter(
-      (assignment) => assignment.bye
-    ).length;
+    const matchUpContainsBye = matchUpAssignments.filter((assignment) => assignment.bye).length;
 
     if (!matchUp.winningSide) {
       const matchUpStatus = matchUpContainsBye ? BYE : TO_BE_PLAYED;

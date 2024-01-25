@@ -45,8 +45,7 @@ it('can recognize valid ALTERNATES', () => {
   // get valid actions for drawPosition 1
   const drawPosition = 1;
   let targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
+    (matchUp) => matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition),
   );
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
@@ -61,9 +60,7 @@ it('can recognize valid ALTERNATES', () => {
   const options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true);
 
-  const option = result.validActions.find(
-    (action) => action.type === ALTERNATE_PARTICIPANT
-  );
+  const option = result.validActions.find((action) => action.type === ALTERNATE_PARTICIPANT);
   expect(option.availableAlternates.length).toEqual(2);
 
   const payload = option.payload;
@@ -78,25 +75,17 @@ it('can recognize valid ALTERNATES', () => {
   } = tournamentEngine.getEvent({ drawId }));
   const modifiedPositionAssignments = structures[0].positionAssignments;
 
-  expect(originalPositionAssignments[0].participantId).not.toEqual(
-    modifiedPositionAssignments[0].participantId
-  );
+  expect(originalPositionAssignments[0].participantId).not.toEqual(modifiedPositionAssignments[0].participantId);
 
-  expect(modifiedPositionAssignments[0].participantId).toEqual(
-    payload.alternateParticipantId
-  );
+  expect(modifiedPositionAssignments[0].participantId).toEqual(payload.alternateParticipantId);
 
   // ensure that drawPosition is still advanced to the second round
-  targetMatchUp = matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition)
-  );
+  targetMatchUp = matchUps.find((matchUp) => matchUp.roundNumber === 2 && matchUp.drawPositions.includes(drawPosition));
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.drawPositions.includes(drawPosition)).toEqual(true);
 
   // now test structureReports
-  const { structureReports, eventStructureReports } =
-    tournamentEngine.getStructureReports();
+  const { structureReports, eventStructureReports } = tournamentEngine.getStructureReports();
   const report = structureReports.find((s) => s.structureId === structureId);
   expect(report.positionManipulations).toEqual(1);
   expect(report.avgWTN).toEqual(0);
@@ -143,12 +132,8 @@ it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', (
     event,
   } = tournamentEngine.getEvent({ drawId });
 
-  const attachedPolicy = event.extensions.find(
-    ({ name }) => name === APPLIED_POLICIES
-  );
-  expect(
-    attachedPolicy.value[POLICY_TYPE_POSITION_ACTIONS]
-  ).not.toBeUndefined();
+  const attachedPolicy = event.extensions.find(({ name }) => name === APPLIED_POLICIES);
+  expect(attachedPolicy.value[POLICY_TYPE_POSITION_ACTIONS]).not.toBeUndefined();
 
   let result = tournamentEngine.positionActions({
     drawPosition: 1,
@@ -156,16 +141,10 @@ it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', (
     drawId,
   });
 
-  let alternateAction = result.validActions.find(
-    ({ type }) => type === ALTERNATE_PARTICIPANT
-  );
+  let alternateAction = result.validActions.find(({ type }) => type === ALTERNATE_PARTICIPANT);
   expect(alternateAction).not.toBeUndefined();
-  expect(alternateAction.availableAlternatesParticipantIds.length).toEqual(
-    secondDrawSize
-  );
-  alternateAction.availableAlternates.forEach((alternate) =>
-    expect(alternate.entryPosition).toBeUndefined()
-  );
+  expect(alternateAction.availableAlternatesParticipantIds.length).toEqual(secondDrawSize);
+  alternateAction.availableAlternates.forEach((alternate) => expect(alternate.entryPosition).toBeUndefined());
 
   result = tournamentEngine.removePolicy({
     policyType: POLICY_TYPE_POSITION_ACTIONS,
@@ -179,8 +158,6 @@ it('can extend Alternates to DIRECT_ACCEPTANCE participants in other flights', (
     drawId,
   });
 
-  alternateAction = result.validActions.find(
-    ({ type }) => type === ALTERNATE_PARTICIPANT
-  );
+  alternateAction = result.validActions.find(({ type }) => type === ALTERNATE_PARTICIPANT);
   expect(alternateAction).toBeUndefined();
 });

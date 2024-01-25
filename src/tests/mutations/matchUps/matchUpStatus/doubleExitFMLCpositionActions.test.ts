@@ -17,16 +17,10 @@ import {
 } from '../../../../constants/positionActionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 test('A DOUBLE_WALKOVER in FMLC does not restrict positionActions', () => {
-  const drawProfiles = [
-    { drawSize: 16, drawType: FIRST_MATCH_LOSER_CONSOLATION },
-  ];
+  const drawProfiles = [{ drawSize: 16, drawType: FIRST_MATCH_LOSER_CONSOLATION }];
   const {
     tournamentRecord,
     drawIds: [drawId],

@@ -43,10 +43,8 @@ it('can use drawProfiles to generate gendered SINGLES event', () => {
 
   const genders = participants.reduce(
     (genders, participant) =>
-      genders.includes(participant.person?.sex)
-        ? genders
-        : genders.concat(participant.person?.sex),
-    []
+      genders.includes(participant.person?.sex) ? genders : genders.concat(participant.person?.sex),
+    [],
   );
   expect(genders).toEqual([MALE]);
 });
@@ -87,10 +85,8 @@ it('can use eventProfiles to generate gendered SINGLES event', () => {
 
   const genders = participants.reduce(
     (genders, participant) =>
-      genders.includes(participant.person?.sex)
-        ? genders
-        : genders.concat(participant.person?.sex),
-    []
+      genders.includes(participant.person?.sex) ? genders : genders.concat(participant.person?.sex),
+    [],
   );
   expect(genders).toEqual([MALE]);
 });

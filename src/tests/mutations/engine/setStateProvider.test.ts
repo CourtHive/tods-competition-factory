@@ -2,10 +2,7 @@ import syncGlobalState from '../../../global/state/syncGlobalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import {
-  setStateProvider,
-  setSubscriptions,
-} from '../../../global/state/globalState';
+import { setStateProvider, setSubscriptions } from '../../../global/state/globalState';
 
 import { DELETED_DRAW_IDS } from '../../../constants/topicConstants';
 
@@ -90,8 +87,7 @@ test('state provider implementation of handleCaughtError', () => {
   }
 
   function addNotice({ topic }) {
-    if (topic === DELETED_DRAW_IDS)
-      throw new Error('Global state provider error');
+    if (topic === DELETED_DRAW_IDS) throw new Error('Global state provider error');
   }
 
   const result: any = setStateProvider({

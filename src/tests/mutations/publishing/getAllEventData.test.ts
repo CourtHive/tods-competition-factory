@@ -5,10 +5,7 @@ import { expect, it } from 'vitest';
 import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 it('can return all event data', () => {
-  const drawProfiles = [
-    { drawSize: 32 },
-    { drawSize: 16, drawType: ROUND_ROBIN },
-  ];
+  const drawProfiles = [{ drawSize: 32 }, { drawSize: 16, drawType: ROUND_ROBIN }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     startDate: '2021-01-01',
     endDate: '2021-01-01',
@@ -16,10 +13,7 @@ it('can return all event data', () => {
   });
 
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine
-    .setState(tournamentRecord)
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  let result = tournamentEngine.setState(tournamentRecord).devContext({ addVenue: true }).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;

@@ -2,31 +2,25 @@ import { DOUBLES } from '../../../../constants/matchUpTypes';
 
 export function getIndividualParticipantIds(matchUp) {
   const { sides, matchUpType } = matchUp || {};
-  const potentialIndividualParticipantIds = matchUp.potentialParticipants
-    ?.length
+  const potentialIndividualParticipantIds = matchUp.potentialParticipants?.length
     ? matchUp.potentialParticipants
         .flat()
         .map((participant) => {
-          return matchUpType === DOUBLES
-            ? participant?.individualParticipantIds || []
-            : participant.participantId;
+          return matchUpType === DOUBLES ? participant?.individualParticipantIds || [] : participant.participantId;
         })
         .flat()
     : [];
   const enteredIndividualParticipantIds = (sides || [])
     .map((side) => {
       return (
-        (matchUpType === DOUBLES &&
-          (side?.participant?.individualParticipantIds || [])) ||
+        (matchUpType === DOUBLES && (side?.participant?.individualParticipantIds || [])) ||
         (side?.participantId && [side.participantId]) ||
         []
       );
     })
     .flat();
 
-  const individualParticipantIds = enteredIndividualParticipantIds
-    .concat(potentialIndividualParticipantIds)
-    .flat();
+  const individualParticipantIds = enteredIndividualParticipantIds.concat(potentialIndividualParticipantIds).flat();
 
   return {
     individualParticipantIds,

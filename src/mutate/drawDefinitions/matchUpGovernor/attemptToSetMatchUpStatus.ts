@@ -4,15 +4,9 @@ import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeD
 import { decorateResult } from '../../../global/functions/decorateResult';
 import { updateTieMatchUpScore } from '../../matchUps/score/tieMatchUpScore';
 import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import {
-  isDirectingMatchUpStatus,
-  isNonDirectingMatchUpStatus,
-} from './checkStatusType';
+import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from './checkStatusType';
 
-import {
-  INVALID_MATCHUP_STATUS,
-  UNRECOGNIZED_MATCHUP_STATUS,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import {
   BYE,
   CANCELLED,
@@ -23,37 +17,26 @@ import {
 } from '../../../constants/matchUpStatusConstants';
 
 export function attemptToSetMatchUpStatus(params) {
-  const {
-    tournamentRecord,
-    drawDefinition,
-    matchUpStatus,
-    structure,
-    matchUp,
-  } = params;
+  const { tournamentRecord, drawDefinition, matchUpStatus, structure, matchUp } = params;
 
   const teamRoundRobinContext = !!(
     matchUp.tieMatchUps &&
     !matchUp.rondPosition &&
-    params.inContextDrawMatchUps.find(
-      (icdm) => icdm.matchUpId === matchUp.matchUpId
-    ).containerStructureId
+    params.inContextDrawMatchUps.find((icdm) => icdm.matchUpId === matchUp.matchUpId).containerStructureId
   );
 
   const stack = 'attemptToSetMatchUpStatus';
 
   const isBYE = matchUpStatus === BYE;
   const existingWinningSide = matchUp.winningSide;
-  const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(
-    matchUpStatus
-  );
+  const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUpStatus);
 
   const directing = isDirectingMatchUpStatus({ matchUpStatus });
   const nonDirecting = isNonDirectingMatchUpStatus({ matchUpStatus });
   const unrecognized = !directing && !nonDirecting;
 
   // if matchUpTieId present a TEAM matchUp is being modified...
-  const onlyModifyScore =
-    params.matchUpTieId || (existingWinningSide && directing && !isDoubleExit);
+  const onlyModifyScore = params.matchUpTieId || (existingWinningSide && directing && !isDoubleExit);
 
   const changeCompletedToDoubleExit = existingWinningSide && isDoubleExit;
 
@@ -67,8 +50,7 @@ export function attemptToSetMatchUpStatus(params) {
   return (
     (unrecognized && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (onlyModifyScore && scoreModification(params)) ||
-    (changeCompletedToDoubleExit &&
-      removeWinningSideAndSetDoubleExit(params)) ||
+    (changeCompletedToDoubleExit && removeWinningSideAndSetDoubleExit(params)) ||
     (existingWinningSide && removeDirectedParticipants(params)) ||
     (nonDirecting && clearScore()) ||
     (isBYE &&
@@ -103,10 +85,7 @@ function modifyScoreAndAdvanceDoubleExit(params) {
 function scoreModification(params) {
   const stack = 'scoreModification';
 
-  const removeDirected =
-    params.isCollectionMatchUp &&
-    params.dualMatchUp?.winningSide &&
-    !params.projectedWinningSide;
+  const removeDirected = params.isCollectionMatchUp && params.dualMatchUp?.winningSide && !params.projectedWinningSide;
 
   if (removeDirected) {
     const result = removeDirectedParticipants(params);

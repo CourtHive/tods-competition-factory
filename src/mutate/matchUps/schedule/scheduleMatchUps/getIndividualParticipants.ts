@@ -5,8 +5,7 @@ export function getIndividualParticipants(matchUp) {
   return (sides || [])
     .map((side) => {
       return (
-        (matchUpType === DOUBLES &&
-          (side?.participant?.individualParticipants || [])) ||
+        (matchUpType === DOUBLES && (side?.participant?.individualParticipants || [])) ||
         (side?.participant && [side.participant]) ||
         []
       );

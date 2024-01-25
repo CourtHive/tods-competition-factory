@@ -22,15 +22,13 @@ test('it can use tieFormatName in addEvent', () => {
   const { eventId } = eventResult;
   expect(result.success).toEqual(true);
 
-  eventResult.tieFormat.collectionDefinitions.forEach(
-    (collectionDefinition) => {
-      expect(collectionDefinition.collectionId).not.toBeUndefined();
-    }
-  );
+  eventResult.tieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+    expect(collectionDefinition.collectionId).not.toBeUndefined();
+  });
 
   // must remove the collectionIds to check equality with template
   eventResult.tieFormat.collectionDefinitions.forEach(
-    (collectionDefinition) => (collectionDefinition.collectionId = undefined)
+    (collectionDefinition) => (collectionDefinition.collectionId = undefined),
   );
   expect(eventResult.tieFormat).toEqual(tieFormats[LAVER_CUP]);
 

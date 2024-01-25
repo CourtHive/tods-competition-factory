@@ -7,11 +7,7 @@ export function getSeedValue({ participant, drawId, event }) {
 
   const { categoryName, ageCategoryCode } = event?.category || {};
 
-  const potentialScaleNames = [
-    drawId,
-    categoryName || ageCategoryCode,
-    event?.eventId,
-  ].filter(Boolean);
+  const potentialScaleNames = [drawId, categoryName || ageCategoryCode, event?.eventId].filter(Boolean);
 
   for (const scaleName of potentialScaleNames) {
     const result = participantScaleItem({

@@ -2,22 +2,15 @@
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import {
-  BYE,
-  DEFAULTED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { BYE, DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
-  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } =
-    params;
+  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } = params;
 
   // const matchUpsMap = params.matchUpsMap || getMatchUpsMap({ drawDefinition });
 
-  const fmlcBYE =
-    relevantLink?.linkCondition === FIRST_MATCHUP &&
-    targetData?.matchUp?.matchUpStatus === BYE;
+  const fmlcBYE = relevantLink?.linkCondition === FIRST_MATCHUP && targetData?.matchUp?.matchUpStatus === BYE;
 
   if (fmlcBYE) return false;
 
@@ -26,12 +19,9 @@ export function isActiveDownstream(params) {
     targetLinks,
   } = targetData;
 
-  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(
-    loserMatchUp?.matchUpStatus
-  );
+  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus);
 
-  const winnerDrawPositionsCount =
-    winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
+  const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
   // if a winnerMatchUp contains a WALKOVER and its source matchUps have no winningSides it cannot be considered active
   // unless one of its downstream matchUps is active
@@ -48,8 +38,7 @@ export function isActiveDownstream(params) {
     // NOTE: produced WALKOVER, DEFAULTEED fed into consolation structures should NOT be considered active
     (winnerMatchUp?.winningSide &&
       winnerDrawPositionsCount === 2 &&
-      (!winnerMatchUp.feedRound ||
-        ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
+      (!winnerMatchUp.feedRound || ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
   ) {
     return true;
   }

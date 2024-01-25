@@ -23,12 +23,7 @@ import { RANKING } from '../../../../constants/scaleConstants';
 
 export function avoidanceTest(params) {
   const { avoidance, eventType, participantType, sex } = params;
-  const {
-    valuesCount = 10,
-    valuesInstanceLimit,
-    participantsCount = 32,
-    drawType = SINGLE_ELIMINATION,
-  } = params;
+  const { valuesCount = 10, valuesInstanceLimit, participantsCount = 32, drawType = SINGLE_ELIMINATION } = params;
 
   let { seedsCount } = params;
   if (!seedsCount) seedsCount = participantsCount / 4;
@@ -60,13 +55,10 @@ export function avoidanceTest(params) {
   const drawSize = 32;
   const category = { categoryName: 'U18' };
 
-  const eventParticipantType =
-    (eventType === SINGLES && INDIVIDUAL) || (DOUBLES && PAIR);
+  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (DOUBLES && PAIR);
 
   const relevantParticipants = participants
-    .filter(
-      (participant) => participant.participantType === eventParticipantType
-    )
+    .filter((participant) => participant.participantType === eventParticipantType)
     .slice(0, seedsCount);
 
   relevantParticipants.forEach((participant, index) => {
@@ -92,9 +84,7 @@ export function avoidanceTest(params) {
   const { eventId } = eventResult;
   expect(success).toEqual(true);
 
-  const eventParticipants = participants.filter(
-    (participant) => participant.participantType === eventParticipantType
-  );
+  const eventParticipants = participants.filter((participant) => participant.participantType === eventParticipantType);
   const participantIds = eventParticipants.map((p) => p.participantId);
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
@@ -108,8 +98,7 @@ export function avoidanceTest(params) {
     drawType,
     eventId,
   };
-  const { error, conflicts, drawDefinition } =
-    tournamentEngine.generateDrawDefinition(values);
+  const { error, conflicts, drawDefinition } = tournamentEngine.generateDrawDefinition(values);
 
   result = tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
   expect(result.success).toEqual(true);
@@ -121,14 +110,10 @@ export function avoidanceTest(params) {
   const report = upcomingMatchUps.map((m) => ({
     drawPositions: m.drawPositions,
     seeds: m.sides.map((s) => s.seedValue || ''),
-    names: m.sides.map(
-      (s) => s.participant.name || s.participant.participantName
-    ),
+    names: m.sides.map((s) => s.participant.name || s.participant.participantName),
     ioc: m.sides.map((s) => {
       if (eventType === DOUBLES) {
-        return s.participant.individualParticipants.map(
-          (i) => i.person.nationalityCode
-        );
+        return s.participant.individualParticipants.map((i) => i.person.nationalityCode);
       } else {
         return s.participant.person.nationalityCode;
       }

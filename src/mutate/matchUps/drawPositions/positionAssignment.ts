@@ -9,14 +9,8 @@ import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import {
-  ResultType,
-  decorateResult,
-} from '../../../global/functions/decorateResult';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
+import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '../../../global/functions/extractors';
 import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
@@ -41,13 +35,7 @@ import {
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  CONSOLATION,
-  CONTAINER,
-  MAIN,
-  PLAY_OFF,
-  QUALIFYING,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   Event,
@@ -110,8 +98,7 @@ export function assignDrawPosition({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // there are no drawPositions assigned for ADHOC structures
-  if (isAdHoc({ drawDefinition, structure }))
-    return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
+  if (isAdHoc({ drawDefinition, structure })) return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,
@@ -119,9 +106,7 @@ export function assignDrawPosition({
     structure,
   });
 
-  const relevantAssignment = seedAssignments?.find(
-    (assignment) => assignment.participantId === participantId
-  );
+  const relevantAssignment = seedAssignments?.find((assignment) => assignment.participantId === participantId);
   const participantSeedNumber = relevantAssignment?.seedNumber;
 
   const { appliedPolicies } = getAppliedPolicies({
@@ -148,11 +133,8 @@ export function assignDrawPosition({
   }
 
   const sadp = structureAssignedDrawPositions({ structure });
-  const positionAssignments: PositionAssignment[] =
-    sadp.positionAssignments || [];
-  const positionAssignment = positionAssignments?.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  const positionAssignments: PositionAssignment[] = sadp.positionAssignments || [];
+  const positionAssignment = positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition);
   if (!positionAssignment)
     return decorateResult({
       result: { error: INVALID_DRAW_POSITION },
@@ -160,9 +142,7 @@ export function assignDrawPosition({
       stack,
     });
 
-  const participantAlreadyAssigned = positionAssignments
-    ?.map(getParticipantId)
-    .includes(participantId);
+  const participantAlreadyAssigned = positionAssignments?.map(getParticipantId).includes(participantId);
 
   if (participantAlreadyAssigned) {
     return decorateResult({
@@ -172,8 +152,7 @@ export function assignDrawPosition({
     });
   }
 
-  const { containsParticipant, containsBye } =
-    drawPositionFilled(positionAssignment);
+  const { containsParticipant, containsBye } = drawPositionFilled(positionAssignment);
 
   if (containsBye) {
     const result = clearDrawPosition({
@@ -188,10 +167,7 @@ export function assignDrawPosition({
     if (result.error) return decorateResult({ result, stack });
   }
 
-  if (
-    containsParticipant &&
-    positionAssignment.participantId !== participantId
-  ) {
+  if (containsParticipant && positionAssignment.participantId !== participantId) {
     const { activeDrawPositions } = getStructureDrawPositionProfiles({
       drawDefinition,
       structureId,
@@ -215,19 +191,13 @@ export function assignDrawPosition({
   positionAssignment.participantId = participantId;
   if (isQualifierPosition) positionAssignment.qualifier = true;
 
-  if (
-    (structure?.stageSequence || 0) > 1 ||
-    (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))
-  ) {
+  if ((structure?.stageSequence || 0) > 1 || (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
     const targetStructure = drawDefinition.structures?.find(
-      (structure) =>
-        structure?.stage === targetStage && structure?.stageSequence === 1
+      (structure) => structure?.stage === targetStage && structure?.stageSequence === 1,
     );
     const seedAssignments = targetStructure?.seedAssignments ?? [];
-    const assignment = seedAssignments.find(
-      (assignment) => assignment.participantId === participantId
-    );
+    const assignment = seedAssignments.find((assignment) => assignment.participantId === participantId);
 
     if (assignment?.participantId) {
       const { participantId, seedNumber, seedValue } = assignment;
@@ -278,16 +248,11 @@ export function assignDrawPosition({
     });
 
     // if a team participant is being assigned and there is a default lineUp, attach to side
-    if (
-      drawPositions &&
-      matchUps?.length === 1 &&
-      matchUps[0].matchUpType === TEAM
-    ) {
+    if (drawPositions && matchUps?.length === 1 && matchUps[0].matchUpType === TEAM) {
       const sides: any = targetMatchUps?.[0].sides ?? [];
       const drawPositionSideIndex = sides.reduce(
-        (sideIndex, side, i: number) =>
-          drawPositions?.includes(side.drawPosition) ? i : sideIndex,
-        undefined
+        (sideIndex, side, i: number) => (drawPositions?.includes(side.drawPosition) ? i : sideIndex),
+        undefined,
       );
 
       updateSideLineUp({
@@ -349,9 +314,7 @@ function addDrawPositionToMatchUps({
 
   const matchUp =
     initialRoundNumber &&
-    roundMatchUps?.[initialRoundNumber].find(
-      (matchUp) => matchUp.drawPositions?.includes(drawPosition)
-    );
+    roundMatchUps?.[initialRoundNumber].find((matchUp) => matchUp.drawPositions?.includes(drawPosition));
 
   if (matchUp) {
     const result = assignMatchUpDrawPosition({

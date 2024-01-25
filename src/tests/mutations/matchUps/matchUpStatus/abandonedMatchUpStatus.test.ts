@@ -3,10 +3,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  ABANDONED,
-  COMPLETED,
-} from '../../../../constants/matchUpStatusConstants';
+import { ABANDONED, COMPLETED } from '../../../../constants/matchUpStatusConstants';
 
 it('can set matchUp score and advance winningSide when changing from ABANDONED matchUpStatus', () => {
   const drawProfiles = [
@@ -19,9 +16,7 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   let result;
@@ -52,11 +47,5 @@ it('can set matchUp score and advance winningSide when changing from ABANDONED m
   expect(completedMatchUps[0].matchUpId).toEqual(matchUpId);
 
   const { filteredOrderedPairs } = getOrderedDrawPositionPairs();
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1]]);
 });

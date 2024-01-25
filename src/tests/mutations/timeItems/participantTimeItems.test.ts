@@ -3,11 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { RETRIEVAL } from '../../../constants/timeItemConstants';
-import {
-  INVALID_TIME_ITEM,
-  MISSING_TIME_ITEM,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 it('can add and read timeItems from participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -45,19 +41,17 @@ it('can add and read timeItems from participants', () => {
   result = tournamentEngine.addParticipantTimeItem({ participantId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, info } =
-    tournamentEngine.getParticipantTimeItem({
-      participantId,
-      itemType: 'TESTING.1',
-    });
+  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getParticipantTimeItem({
+    participantId,
+    itemType: 'TESTING.1',
+  });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(info).toEqual(undefined);
 
-  ({ timeItem: retrievedTimeItem, info } =
-    tournamentEngine.getParticipantTimeItem({
-      participantId,
-      itemType: 'TESTING.2',
-    }));
+  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getParticipantTimeItem({
+    participantId,
+    itemType: 'TESTING.2',
+  }));
   expect(retrievedTimeItem).toEqual(undefined);
   expect(info).toEqual(NOT_FOUND);
 });

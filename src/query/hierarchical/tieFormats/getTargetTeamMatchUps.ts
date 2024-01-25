@@ -4,10 +4,7 @@ import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 
 import { MatchUp } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  COMPLETED,
-  IN_PROGRESS,
-} from '../../../constants/matchUpStatusConstants';
+import { COMPLETED, IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
 
 export function getTargetTeamMatchUps({
   updateInProgressMatchUps,
@@ -39,8 +36,7 @@ export function getTargetTeamMatchUps({
     (matchUp) =>
       !matchUp.winningSide &&
       matchUp.matchUpStatus !== COMPLETED &&
-      (updateInProgressMatchUps ||
-        (matchUp.matchUpStatus !== IN_PROGRESS && !checkScoreHasValue(matchUp)))
+      (updateInProgressMatchUps || (matchUp.matchUpStatus !== IN_PROGRESS && !checkScoreHasValue(matchUp))),
   );
 
   return { targetMatchUps };

@@ -22,30 +22,18 @@ it('supports disabling and then re-enabling auto-Calc', () => {
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, pendingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { completedMatchUps, pendingMatchUps } = tournamentEngine.tournamentMatchUps();
 
   // completing 5 DOUBLES/SINGLES resulted in one first round TEAM match being completed
   expect(completedMatchUps.length).toEqual(6);
 
-  let targetTeamMatchUp = completedMatchUps.find(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
-  let winnerTeamMatchUp = pendingMatchUps.find(
-    (matchUp) => matchUp.matchUpId === targetTeamMatchUp.winnerMatchUpId
-  );
+  let targetTeamMatchUp = completedMatchUps.find(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
+  let winnerTeamMatchUp = pendingMatchUps.find((matchUp) => matchUp.matchUpId === targetTeamMatchUp.winnerMatchUpId);
 
-  const {
-    matchUpId,
-    drawId,
-    winningSide: originalWinningSide,
-  } = targetTeamMatchUp;
+  const { matchUpId, drawId, winningSide: originalWinningSide } = targetTeamMatchUp;
 
   // in this case winningSide happens to equal drawPosition... because matchUp is { roundNumber : 1, roundPosition: 1 }
-  const {
-    matchUpId: winnerTeamMatchUpId,
-    drawPositions: originalDrawPositions,
-  } = winnerTeamMatchUp;
+  const { matchUpId: winnerTeamMatchUpId, drawPositions: originalDrawPositions } = winnerTeamMatchUp;
   expect(originalDrawPositions).toEqual([originalWinningSide]);
 
   // now manually change the team score to not match the calculated score
@@ -104,30 +92,18 @@ it('disabled auto calc with manually advanced team will not advance calculated w
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, pendingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { completedMatchUps, pendingMatchUps } = tournamentEngine.tournamentMatchUps();
 
   // completing 5 DOUBLES/SINGLES resulted in one first round TEAM match being completed
   expect(completedMatchUps.length).toEqual(6);
 
-  let targetTeamMatchUp = completedMatchUps.find(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
-  let winnerTeamMatchUp = pendingMatchUps.find(
-    (matchUp) => matchUp.matchUpId === targetTeamMatchUp.winnerMatchUpId
-  );
+  let targetTeamMatchUp = completedMatchUps.find(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
+  let winnerTeamMatchUp = pendingMatchUps.find((matchUp) => matchUp.matchUpId === targetTeamMatchUp.winnerMatchUpId);
 
-  const {
-    winningSide: originalWinningSide,
-    matchUpId,
-    drawId,
-  } = targetTeamMatchUp;
+  const { winningSide: originalWinningSide, matchUpId, drawId } = targetTeamMatchUp;
 
   // in this case winningSide happens to equal drawPosition... because matchUp is { roundNumber : 1, roundPosition: 1 }
-  const {
-    matchUpId: winnerTeamMatchUpId,
-    drawPositions: originalDrawPositions,
-  } = winnerTeamMatchUp;
+  const { matchUpId: winnerTeamMatchUpId, drawPositions: originalDrawPositions } = winnerTeamMatchUp;
   expect(originalDrawPositions).toEqual([originalWinningSide]);
 
   // now manually change the team score to not match the calculated score
@@ -152,9 +128,7 @@ it('disabled auto calc with manually advanced team will not advance calculated w
   }).matchUp;
   expect(winnerTeamMatchUp.drawPositions).toEqual([3 - originalWinningSide]);
 
-  const incompleteSingles = targetTeamMatchUp.tieMatchUps.find(
-    ({ readyToScore }) => readyToScore
-  );
+  const incompleteSingles = targetTeamMatchUp.tieMatchUps.find(({ readyToScore }) => readyToScore);
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     winningSide: originalWinningSide,
     scoreString: '7-5 7-5',
@@ -211,12 +185,9 @@ it('will properly tally team games when automated scoring is disabled', () => {
   const { completedMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(6);
 
-  let targetTeamMatchUp = completedMatchUps.find(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
+  let targetTeamMatchUp = completedMatchUps.find(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
 
-  const { winningSide, sides, structureId, matchUpId, drawId } =
-    targetTeamMatchUp;
+  const { winningSide, sides, structureId, matchUpId, drawId } = targetTeamMatchUp;
   expect(winningSide).toEqual(1);
 
   let side = sides.find(({ sideNumber }) => sideNumber === winningSide);
@@ -225,9 +196,7 @@ it('will properly tally team games when automated scoring is disabled', () => {
     drawId,
   });
 
-  let assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === side.drawPosition
-  );
+  let assignment = positionAssignments.find((assignment) => assignment.drawPosition === side.drawPosition);
   let tally = assignment.extensions.find(({ name }) => name === TALLY).value;
   checkTally(tally);
 
@@ -272,17 +241,13 @@ it('will properly tally team games when automated scoring is disabled', () => {
     scoreStringSide2: '2-0',
   });
 
-  side = targetTeamMatchUp.sides.find(
-    ({ sideNumber }) => sideNumber === winningSide
-  );
+  side = targetTeamMatchUp.sides.find(({ sideNumber }) => sideNumber === winningSide);
   positionAssignments = tournamentEngine.getPositionAssignments({
     structureId,
     drawId,
   }).positionAssignments;
 
-  assignment = positionAssignments.find(
-    (assignment) => assignment.drawPosition === side.drawPosition
-  );
+  assignment = positionAssignments.find((assignment) => assignment.drawPosition === side.drawPosition);
   tally = assignment.extensions.find(({ name }) => name === TALLY).value;
   checkTally(tally);
 });

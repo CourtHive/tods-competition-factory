@@ -22,21 +22,13 @@ it('can recognize absolute ties between multiple participants', () => {
   ];
 
   const { participantResults } = generateScenario({ outcomeValues });
-  const drawPositions = participantResults.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const drawPositions = participantResults.map(({ drawPosition }) => drawPosition);
   // with 5 ties the drawPositions are still in order
   expect(drawPositions).toEqual([1, 2, 3, 4, 5]);
 
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual([1, 1, 1, 1, 1]);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual([1, 1, 1, 1, 1]);
 
-  expect(
-    participantResults.map(({ participantResult }) => participantResult.ties)
-  ).toEqual([5, 5, 5, 5, 5]);
+  expect(participantResults.map(({ participantResult }) => participantResult.ties)).toEqual([5, 5, 5, 5, 5]);
 });
 
 it('can breat 3 way ties bye matchUpsWon ratio', () => {
@@ -65,16 +57,10 @@ it('can breat 3 way ties bye matchUpsWon ratio', () => {
   // idsFilter needs to be used to scope the winsRatios to the tied group
 
   const { participantResults } = generateScenario({ outcomeValues });
-  const drawPositions = participantResults.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const drawPositions = participantResults.map(({ drawPosition }) => drawPosition);
   expect(drawPositions).toEqual([4, 1, 2, 3, 5]);
 
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual([1, 2, 3, 4, 5]);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual([1, 2, 3, 4, 5]);
 });
 
 it('can recognize unbreakable 3 way ties', () => {
@@ -100,16 +86,10 @@ it('can recognize unbreakable 3 way ties', () => {
   // drawPosition 5 had only one win and is 5th
 
   const { participantResults } = generateScenario({ outcomeValues });
-  const drawPositions = participantResults.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const drawPositions = participantResults.map(({ drawPosition }) => drawPosition);
   expect(drawPositions).toEqual([4, 1, 2, 3, 5]);
 
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual([1, 2, 2, 2, 5]);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual([1, 2, 2, 2, 5]);
 });
 
 it('can break 3 way ties by setsPct without idsFilter', () => {
@@ -139,16 +119,10 @@ it('can break 3 way ties by setsPct without idsFilter', () => {
   // does not need to use the idsFilter
 
   const { participantResults } = generateScenario({ outcomeValues });
-  const drawPositions = participantResults.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const drawPositions = participantResults.map(({ drawPosition }) => drawPosition);
   expect(drawPositions).toEqual([4, 2, 3, 1, 5]);
 
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual([1, 2, 3, 4, 5]);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual([1, 2, 3, 4, 5]);
 });
 
 it('can break 3 way ties by gamesPct', () => {
@@ -174,16 +148,10 @@ it('can break 3 way ties by gamesPct', () => {
   // drawPosition 5 had only one win and is 5th
 
   const { participantResults } = generateScenario({ outcomeValues });
-  const drawPositions = participantResults.map(
-    ({ drawPosition }) => drawPosition
-  );
+  const drawPositions = participantResults.map(({ drawPosition }) => drawPosition);
   expect(drawPositions).toEqual([4, 2, 3, 1, 5]);
 
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual([1, 2, 3, 4, 5]);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual([1, 2, 3, 4, 5]);
 });
 
 it('can break h2h ties between 2 participants', () => {
@@ -211,35 +179,21 @@ it('can break h2h ties between 2 participants', () => {
   const expectation = [1, 2, 3, 4, 5];
 
   const { participantResults } = generateScenario({ outcomeValues });
-  expect(
-    participantResults.map(
-      ({ participantResult }) => participantResult.groupOrder
-    )
-  ).toEqual(expectation);
+  expect(participantResults.map(({ participantResult }) => participantResult.groupOrder)).toEqual(expectation);
 
   // expect thta the 1st/2nd place finish was decided by h2h win
-  expect(
-    participantResults[0].participantResult.victories.includes(
-      participantResults[1].participantId
-    )
-  ).toEqual(true);
+  expect(participantResults[0].participantResult.victories.includes(participantResults[1].participantId)).toEqual(true);
 
   // expect thta the 4th/5th place finish was decided by h2h win
-  expect(
-    participantResults[3].participantResult.victories.includes(
-      participantResults[4].participantId
-    )
-  ).toEqual(true);
+  expect(participantResults[3].participantResult.victories.includes(participantResults[4].participantId)).toEqual(true);
 });
 
 function generateScenario({ outcomeValues }) {
-  const outcomes = outcomeValues.map(
-    ([drawPositions, scoreString, winningSide]) => ({
-      drawPositions,
-      scoreString,
-      winningSide,
-    })
-  );
+  const outcomes = outcomeValues.map(([drawPositions, scoreString, winningSide]) => ({
+    drawPositions,
+    scoreString,
+    winningSide,
+  }));
   const drawProfiles = [
     {
       drawSize: 5,
@@ -259,13 +213,10 @@ function generateScenario({ outcomeValues }) {
     participantsProfile: { participantsCount: 5 },
   });
 
-  const { eventData } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEventData({ drawId });
-  const participantResults =
-    eventData.drawsData[0].structures[0].participantResults.sort(
-      (a, b) => a.participantResult.groupOrder - b.participantResult.groupOrder
-    );
+  const { eventData } = tournamentEngine.setState(tournamentRecord).getEventData({ drawId });
+  const participantResults = eventData.drawsData[0].structures[0].participantResults.sort(
+    (a, b) => a.participantResult.groupOrder - b.participantResult.groupOrder,
+  );
 
   return { participantResults };
 }

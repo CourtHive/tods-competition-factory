@@ -4,10 +4,7 @@ import { expect, it } from 'vitest';
 
 import { REMOVE_SEED } from '../../../../../constants/positionActionConstants';
 import { MALE } from '../../../../../constants/genderConstants';
-import {
-  DOUBLES_EVENT,
-  SINGLES_EVENT,
-} from '../../../../../constants/eventConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../../../constants/eventConstants';
 
 // TODO: complete!
 it('can re-position seeds when a seed is withdrawn', () => {
@@ -45,9 +42,7 @@ it('can re-position seeds when a seed is withdrawn', () => {
     if (drawId === targetDrawId) {
       // complete a matchUp
       const matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
-      const matchUp = matchUps.find(({ drawPositions }) =>
-        drawPositions.includes(32)
-      );
+      const matchUp = matchUps.find(({ drawPositions }) => drawPositions.includes(32));
       const result = tournamentEngine.setMatchUpStatus({
         matchUpId: matchUp.matchUpId,
         outcome: { winningSide: 2 },
@@ -79,9 +74,7 @@ it('can re-position seeds when a seed is withdrawn', () => {
     } else {
       expect(validActions.includes(REMOVE_SEED)).toEqual(true);
 
-      const removeAction = result.validActions.find(
-        ({ type }) => type === REMOVE_SEED
-      );
+      const removeAction = result.validActions.find(({ type }) => type === REMOVE_SEED);
 
       const params = {
         ...removeAction.payload,

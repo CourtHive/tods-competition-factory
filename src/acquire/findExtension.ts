@@ -26,29 +26,21 @@ export function findExtension({
   if (!element || !name) {
     if (discover && params) {
       const attr = Object.keys(params)
-        .filter(
-          (key) =>
-            typeof discover === 'boolean' ||
-            (Array.isArray(discover) && discover.includes(key))
-        )
+        .filter((key) => typeof discover === 'boolean' || (Array.isArray(discover) && discover.includes(key)))
         .find((key) => {
           if (!Array.isArray(params[key]?.extensions)) return false;
-          return params[key].extensions.find(
-            (extension) => extension?.name === name
-          );
+          return params[key].extensions.find((extension) => extension?.name === name);
         });
 
       let element = attr && params[attr];
 
       if (!element && params.tournamentRecords) {
         element = Object.values(params.tournamentRecords).find(
-          (tournamentRecord) => tournamentRecord.extensions?.length
+          (tournamentRecord) => tournamentRecord.extensions?.length,
         );
       }
 
-      const extension = element?.extensions?.find(
-        (extension) => extension?.name === name
-      );
+      const extension = element?.extensions?.find((extension) => extension?.name === name);
       const info = !extension ? NOT_FOUND : undefined;
 
       return { extension, info };
@@ -58,9 +50,7 @@ export function findExtension({
 
   if (!Array.isArray(element.extensions)) return { info: 'no extensions' };
 
-  const extension = element.extensions.find(
-    (extension) => extension?.name === name
-  );
+  const extension = element.extensions.find((extension) => extension?.name === name);
 
   const info = !extension ? NOT_FOUND : undefined;
 

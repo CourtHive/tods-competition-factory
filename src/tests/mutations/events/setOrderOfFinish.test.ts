@@ -6,10 +6,7 @@ import { expect, it } from 'vitest';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import {
-  INVALID_MATCHUP_STATUS,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_STATUS, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament({
@@ -37,9 +34,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     winningSide: 1,
   });
 
-  const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-    ({ matchUpType }) => matchUpType === SINGLES
-  );
+  const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
   expect(singlesMatchUps.length).toEqual(6);
 
   singlesMatchUps.slice(0, 3).forEach((singlesMatchUp) => {
@@ -52,9 +47,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     expect(result.success).toEqual(true);
   });
 
-  const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES);
   expect(doublesMatchUps.length).toEqual(3);
 
   doublesMatchUps.slice(0, 1).forEach((doublesMatchUp) => {
@@ -73,12 +66,10 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
 
   // attempt to assign orderOfFinish to all singlesMatchUps
   // expect an error because orderOfFinish value is 0
-  let finishingOrder = singlesMatchUps
-    .slice(0, 3)
-    .map(({ matchUpId }, index) => ({
-      orderOfFinish: index,
-      matchUpId,
-    }));
+  let finishingOrder = singlesMatchUps.slice(0, 3).map(({ matchUpId }, index) => ({
+    orderOfFinish: index,
+    matchUpId,
+  }));
   result = tournamentEngine.setOrderOfFinish({
     finishingOrder,
     drawId,

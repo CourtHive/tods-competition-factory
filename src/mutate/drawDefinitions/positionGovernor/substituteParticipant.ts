@@ -38,8 +38,7 @@ export function substituteParticipant({
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-  if (!matchUp.collectionId)
-    return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
+  if (!matchUp.collectionId) return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
@@ -50,29 +49,23 @@ export function substituteParticipant({
     matchUpsMap,
   });
 
-  const inContextMatchUp = inContextDrawMatchUps?.find(
-    (drawMatchUp) => drawMatchUp.matchUpId === matchUpId
-  );
+  const inContextMatchUp = inContextDrawMatchUps?.find((drawMatchUp) => drawMatchUp.matchUpId === matchUpId);
 
   const inContextDualMatchUp = inContextDrawMatchUps?.find(
-    (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp?.matchUpTieId
+    (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp?.matchUpTieId,
   );
 
   // ensure that existingParticipantId and substituteParticipantId are on the same team
   const relevantSide = inContextDualMatchUp?.sides?.find((side: any) =>
-    side.participant.individualParticipants.some(
-      ({ participantId }) => participantId === existingParticipantId
-    )
+    side.participant.individualParticipants.some(({ participantId }) => participantId === existingParticipantId),
   ) as HydratedSide & { [key: string]: any };
 
-  if (!relevantSide || (sideNumber && relevantSide.sideNumber !== sideNumber))
-    return { error: INVALID_PARTICIPANT_ID };
+  if (!relevantSide || (sideNumber && relevantSide.sideNumber !== sideNumber)) return { error: INVALID_PARTICIPANT_ID };
 
   // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber
-  const availableParticipantIds =
-    relevantSide.participant?.individualParticipants
-      ?.map(getParticipantId)
-      .filter((participantId) => participantId !== existingParticipantId);
+  const availableParticipantIds = relevantSide.participant?.individualParticipants
+    ?.map(getParticipantId)
+    .filter((participantId) => participantId !== existingParticipantId);
 
   if (!availableParticipantIds?.includes(substituteParticipantId))
     return decorateResult({ result: { error: INVALID_PARTICIPANT_ID }, stack });

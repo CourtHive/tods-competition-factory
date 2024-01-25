@@ -3,10 +3,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import {
-  MISSING_STRUCTURE_ID,
-  STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+import { MISSING_STRUCTURE_ID, STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
 import { getNextUnfilledDrawPositions } from '../../../../query/drawDefinition/positionActions/getNextUnfilledDrawPositions';
 import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
 
@@ -20,10 +17,9 @@ it('can report on drawPositions available for placement', () => {
   });
   tournamentEngine.setState(tournamentRecord);
 
-  const { participants: tournamentParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: tournamentParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 
@@ -48,8 +44,7 @@ it('can report on drawPositions available for placement', () => {
   expect(nextUnfilledDrawPositions).toEqual([1]);
 
   let drawPosition = nextUnfilledDrawPositions?.pop();
-  let participantId =
-    drawPosition && tournamentParticipants[drawPosition - 1].participantId;
+  let participantId = drawPosition && tournamentParticipants[drawPosition - 1].participantId;
 
   result =
     drawPosition &&
@@ -68,8 +63,7 @@ it('can report on drawPositions available for placement', () => {
   expect(nextUnfilledDrawPositions).toEqual([32]);
 
   drawPosition = nextUnfilledDrawPositions?.pop();
-  participantId =
-    drawPosition && tournamentParticipants[drawPosition - 1].participantId;
+  participantId = drawPosition && tournamentParticipants[drawPosition - 1].participantId;
   result =
     drawPosition &&
     assignDrawPosition({

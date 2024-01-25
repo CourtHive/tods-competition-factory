@@ -35,18 +35,15 @@ test.each([
   [16, 8, CURTIS_CONSOLATION],
   [16, 8, MODIFIED_FEED_IN_CHAMPIONSHIP],
   [16, 8, FEED_IN_CHAMPIONSHIP],
-])(
-  'passes byeLimit tests for various values',
-  (drawSize, byeLimit, drawType) => {
-    const result = replacementTest({
-      drawSize,
-      byeLimit,
-      drawType,
-      devMode: true,
-    });
-    if (!result.success) {
-      console.log('FAILED', { drawSize, byeLimit, drawType });
-    }
-    expect(result.success).toEqual(true);
+])('passes byeLimit tests for various values', (drawSize, byeLimit, drawType) => {
+  const result = replacementTest({
+    drawSize,
+    byeLimit,
+    drawType,
+    devMode: true,
+  });
+  if (!result.success) {
+    console.log('FAILED', { drawSize, byeLimit, drawType });
   }
-);
+  expect(result.success).toEqual(true);
+});

@@ -1,10 +1,6 @@
 import { Substitution } from '../../types/factoryTypes';
 
-export function getCollectionPositionAssignments({
-  collectionPosition,
-  collectionId,
-  lineUp,
-}) {
+export function getCollectionPositionAssignments({ collectionPosition, collectionId, lineUp }) {
   let assignedParticipantIds: string[] = [];
   const substitutions: Substitution[] = [];
 
@@ -15,21 +11,15 @@ export function getCollectionPositionAssignments({
         const { collectionAssignments, participantId } = teamCompetitor;
         const assignment = collectionAssignments?.find(
           (assignment) =>
-            assignment.collectionPosition === collectionPosition &&
-            assignment.collectionId === collectionId
+            assignment.collectionPosition === collectionPosition && assignment.collectionId === collectionId,
         );
         return assignment && { participantId, ...assignment };
       })
       .filter(Boolean)
-      .sort(
-        (a, b) =>
-          getOrderValue(a.substitutionOrder) -
-          getOrderValue(b.substitutionOrder)
-      );
+      .sort((a, b) => getOrderValue(a.substitutionOrder) - getOrderValue(b.substitutionOrder));
 
     for (const competitorAssignment of competitorAssignments) {
-      const { participantId, previousParticipantId, substitutionOrder } =
-        competitorAssignment;
+      const { participantId, previousParticipantId, substitutionOrder } = competitorAssignment;
       if (assignedParticipantIds.includes(participantId)) continue;
       if (previousParticipantId)
         substitutions.push({
@@ -37,9 +27,7 @@ export function getCollectionPositionAssignments({
           substitutionOrder,
           participantId,
         });
-      assignedParticipantIds = assignedParticipantIds.filter(
-        (id) => id !== previousParticipantId
-      );
+      assignedParticipantIds = assignedParticipantIds.filter((id) => id !== previousParticipantId);
       assignedParticipantIds.push(participantId);
     }
   }

@@ -1,10 +1,7 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { findStructure } from '../../../acquire/findStructure';
-import {
-  modifyDrawNotice,
-  modifyMatchUpNotice,
-} from '../../notifications/drawNotifications';
+import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { TEAM } from '../../../constants/eventConstants';
@@ -18,11 +15,7 @@ import {
   ErrorType,
   MATCHUP_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type SetMatchUpMatchUpFormatArgs = {
   tournamentRecord?: Tournament;
@@ -42,19 +35,11 @@ export function setMatchUpMatchUpFormat(params: SetMatchUpMatchUpFormatArgs): {
   info?: string;
 } {
   let structureIds = params.structureIds;
-  const {
-    tournamentRecord,
-    drawDefinition,
-    matchUpFormat,
-    structureId,
-    matchUpId,
-    event,
-  } = params;
+  const { tournamentRecord, drawDefinition, matchUpFormat, structureId, matchUpId, event } = params;
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (!isValidMatchUpFormat({ matchUpFormat }))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat({ matchUpFormat })) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
   const stack = 'setMatchUpFormat';
 
   if (matchUpId) {

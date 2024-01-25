@@ -96,9 +96,8 @@ it('can auto schedule Round Robin draws respecting daily limits', () => {
   expect(scheduledMatchUps.length).toEqual(16);
 
   const roundNumbers = scheduledMatchUps.reduce(
-    (rn, matchUp) =>
-      rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber),
-    []
+    (rn, matchUp) => (rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber)),
+    [],
   );
   expect(roundNumbers).toEqual([1, 2]);
 });
@@ -191,9 +190,8 @@ it('can auto schedule Round Robin draws without daily limits', () => {
   expect(scheduledMatchUps.length).toEqual(24);
 
   const roundNumbers = scheduledMatchUps.reduce(
-    (rn, matchUp) =>
-      rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber),
-    []
+    (rn, matchUp) => (rn.includes(matchUp.roundNumber) ? rn : rn.concat(matchUp.roundNumber)),
+    [],
   );
   expect(roundNumbers).toEqual([1, 2, 3]);
 });

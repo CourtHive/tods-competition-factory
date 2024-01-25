@@ -2,19 +2,12 @@
 
 export function countryToFlag(isoCode: string): string {
   return isoCode && typeof String.fromCodePoint !== 'undefined'
-    ? isoCode
-        .toUpperCase()
-        .replace(/./g, (char) =>
-          String.fromCodePoint(char.charCodeAt(0) + 127397)
-        )
+    ? isoCode.toUpperCase().replace(/./g, (char) => String.fromCodePoint(char.charCodeAt(0) + 127397))
     : isoCode;
 }
 
 export function flagIOC(ioc: string): string {
-  const ioc2iso = Object.assign(
-    {},
-    ...countries.filter((c) => c.ioc).map((c) => ({ [c.ioc]: c.iso }))
-  );
+  const ioc2iso = Object.assign({}, ...countries.filter((c) => c.ioc).map((c) => ({ [c.ioc]: c.iso })));
   return countryToFlag(ioc2iso[ioc]);
 }
 

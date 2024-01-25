@@ -31,11 +31,9 @@ export function addDrawEntries({
   if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawId) return { error: MISSING_DRAW_ID };
 
-  const eventEnteredParticipantIds = (event.entries || []).map(
-    getParticipantId
-  );
+  const eventEnteredParticipantIds = (event.entries || []).map(getParticipantId);
   const missingEventEntries = participantIds.filter(
-    (participantId) => !eventEnteredParticipantIds.includes(participantId)
+    (participantId) => !eventEnteredParticipantIds.includes(participantId),
   );
   if (missingEventEntries.length) return { error: MISSING_ENTRIES };
 
@@ -55,9 +53,7 @@ export function addDrawEntries({
   }
 
   const { flightProfile } = getFlightProfile({ event });
-  const flight = flightProfile?.flights.find(
-    (flight) => flight.drawId === drawId
-  );
+  const flight = flightProfile?.flights.find((flight) => flight.drawId === drawId);
 
   if (flight?.drawEntries) {
     participantIds.forEach((participantId) => {
@@ -115,7 +111,7 @@ function participantInFlightEntries({
     (entry) =>
       entry.participantId === participantId &&
       (!entryStatus || entryStatus === entry.entryStatus) &&
-      (!entryStage || entryStage === entry.entryStage)
+      (!entryStage || entryStage === entry.entryStage),
   );
   return participantId && inEntries;
 }

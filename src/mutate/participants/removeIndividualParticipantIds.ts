@@ -6,10 +6,7 @@ import { decorateResult } from '../../global/functions/decorateResult';
 import { findExtension } from '../../acquire/findExtension';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { addNotice } from '../../global/state/globalState';
-import {
-  addDrawNotice,
-  modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+import { addDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
 import { MappedMatchUps } from '../../query/matchUps/getMatchUpsMap';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
@@ -27,16 +24,8 @@ import {
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import {
-  GROUP,
-  TEAM,
-  TEAM_PARTICIPANT,
-} from '../../constants/participantConstants';
-import {
-  Participant,
-  ParticipantRoleUnion,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { GROUP, TEAM, TEAM_PARTICIPANT } from '../../constants/participantConstants';
+import { Participant, ParticipantRoleUnion, Tournament } from '../../types/tournamentTypes';
 
 type RemoveIndividualParticipantIdsArgs = {
   addIndividualParticipantsToEvents?: boolean;
@@ -63,13 +52,10 @@ export function removeIndividualParticipantIds({
 
   const tournamentParticipants = tournamentRecord.participants ?? [];
 
-  const groupingParticipant: any = tournamentParticipants.find(
-    (participant) => {
-      return participant.participantId === groupingParticipantId;
-    }
-  );
-  if (!groupingParticipant)
-    return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
+  const groupingParticipant: any = tournamentParticipants.find((participant) => {
+    return participant.participantId === groupingParticipantId;
+  });
+  if (!groupingParticipant) return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
   if (![TEAM, GROUP].includes(groupingParticipant.participantType)) {
     return decorateResult({
@@ -93,14 +79,10 @@ export function removeIndividualParticipantIds({
 
   if (addIndividualParticipantsToEvents) {
     for (const event of tournamentRecord.events ?? []) {
-      const enteredIds = (event.entries ?? [])
-        .map(({ participantId }) => participantId)
-        .filter(Boolean);
+      const enteredIds = (event.entries ?? []).map(({ participantId }) => participantId).filter(Boolean);
 
       if (enteredIds.includes(groupingParticipantId)) {
-        const participantIdsToEnter = removed?.filter(
-          (participantId) => !enteredIds.includes(participantId)
-        );
+        const participantIdsToEnter = removed?.filter((participantId) => !enteredIds.includes(participantId));
         addEventEntries({
           participantIds: participantIdsToEnter,
           entryStatus: UNGROUPED,
@@ -160,88 +142,73 @@ function removeParticipantIdsFromGroupingParticipant({
   }
 
   const inContextGroupingParticipant: any = participants?.find(
-    ({ participantId }) => participantId === groupingParticipant.participantId
+    ({ participantId }) => participantId === groupingParticipant.participantId,
   );
 
-  const groupingParticipantEventIds = inContextGroupingParticipant?.events?.map(
-    ({ eventId }) => eventId
-  );
+  const groupingParticipantEventIds = inContextGroupingParticipant?.events?.map(({ eventId }) => eventId);
 
-  const updatedIndividualParticipantIds = (
-    groupingParticipant.individualParticipantIds ?? []
-  ).filter((participantId) => {
-    const targetParticipant = individualParticipantIds?.includes(participantId);
-    const scoredParticipantGroupingMatchUps =
-      targetParticipant &&
-      participants
-        ?.find((participant) => participant.participantId === participantId)
-        ?.matchUps.filter(({ eventId }) =>
-          groupingParticipantEventIds.includes(eventId)
-        )
-        .map(({ matchUpId }) => mappedMatchUps?.[matchUpId])
-        .filter(
-          ({ winningSide, score }) =>
-            winningSide || checkScoreHasValue({ score })
-        );
+  const updatedIndividualParticipantIds = (groupingParticipant.individualParticipantIds ?? []).filter(
+    (participantId) => {
+      const targetParticipant = individualParticipantIds?.includes(participantId);
+      const scoredParticipantGroupingMatchUps =
+        targetParticipant &&
+        participants
+          ?.find((participant) => participant.participantId === participantId)
+          ?.matchUps.filter(({ eventId }) => groupingParticipantEventIds.includes(eventId))
+          .map(({ matchUpId }) => mappedMatchUps?.[matchUpId])
+          .filter(({ winningSide, score }) => winningSide || checkScoreHasValue({ score }));
 
-    const removeParticipant =
-      targetParticipant && !scoredParticipantGroupingMatchUps?.length;
+      const removeParticipant = targetParticipant && !scoredParticipantGroupingMatchUps?.length;
 
-    if (targetParticipant && !removeParticipant) {
-      cannotRemove.push(participantId);
-    }
+      if (targetParticipant && !removeParticipant) {
+        cannotRemove.push(participantId);
+      }
 
-    if (removeParticipant) {
-      removed.push(participantId);
+      if (removeParticipant) {
+        removed.push(participantId);
 
-      for (const event of tournamentRecord.events ?? []) {
-        for (const drawDefinition of event.drawDefinitions ?? []) {
-          const { extension } = findExtension({
-            element: drawDefinition,
-            name: LINEUPS,
-          });
-          const lineUp = extension?.value[groupingParticipant.participantId];
-          if (extension && lineUp) {
-            extension.value[groupingParticipant.participantId] = lineUp.filter(
-              (assignment) => assignment.participantId !== participantId
-            );
-            addExtension({ element: drawDefinition, extension });
-            addDrawNotice({ drawDefinition });
-          }
-
-          const matchUps =
-            allDrawMatchUps({ drawDefinition, inContext: false }).matchUps ??
-            [];
-
-          for (const matchUp of matchUps) {
-            const sides = matchUp.sides ?? [];
-            for (const side of sides) {
-              const lineUp = side.lineUp ?? [];
-              const containsParticipant = lineUp.find(
-                (assignment) => assignment.participantId === participantId
+        for (const event of tournamentRecord.events ?? []) {
+          for (const drawDefinition of event.drawDefinitions ?? []) {
+            const { extension } = findExtension({
+              element: drawDefinition,
+              name: LINEUPS,
+            });
+            const lineUp = extension?.value[groupingParticipant.participantId];
+            if (extension && lineUp) {
+              extension.value[groupingParticipant.participantId] = lineUp.filter(
+                (assignment) => assignment.participantId !== participantId,
               );
-              if (containsParticipant) {
-                side.lineUp = lineUp.filter(
-                  (assignment) => assignment.participantId !== participantId
-                );
-                modifyMatchUpNotice({
-                  tournamentId: tournamentRecord?.tournamentId,
-                  drawDefinition,
-                  matchUp,
-                });
+              addExtension({ element: drawDefinition, extension });
+              addDrawNotice({ drawDefinition });
+            }
+
+            const matchUps = allDrawMatchUps({ drawDefinition, inContext: false }).matchUps ?? [];
+
+            for (const matchUp of matchUps) {
+              const sides = matchUp.sides ?? [];
+              for (const side of sides) {
+                const lineUp = side.lineUp ?? [];
+                const containsParticipant = lineUp.find((assignment) => assignment.participantId === participantId);
+                if (containsParticipant) {
+                  side.lineUp = lineUp.filter((assignment) => assignment.participantId !== participantId);
+                  modifyMatchUpNotice({
+                    tournamentId: tournamentRecord?.tournamentId,
+                    drawDefinition,
+                    matchUp,
+                  });
+                }
               }
             }
           }
         }
+      } else {
+        notRemoved.push(participantId);
       }
-    } else {
-      notRemoved.push(participantId);
-    }
-    return !removeParticipant;
-  });
+      return !removeParticipant;
+    },
+  );
 
-  groupingParticipant.individualParticipantIds =
-    updatedIndividualParticipantIds;
+  groupingParticipant.individualParticipantIds = updatedIndividualParticipantIds;
 
   const result = {
     groupingParticipantId: groupingParticipant.participantId,
@@ -286,8 +253,7 @@ export function removeParticipantIdsFromAllTeams({
   tournamentParticipants
     .filter((participant) => {
       return (
-        (participant.participantRole === participantRole ||
-          !participant.participantRole) &&
+        (participant.participantRole === participantRole || !participant.participantRole) &&
         participant.participantType &&
         groupingTypes.includes(participant.participantType)
       );

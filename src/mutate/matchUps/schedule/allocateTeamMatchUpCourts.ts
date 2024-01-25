@@ -33,22 +33,18 @@ export function allocateTeamMatchUpCourts({
   matchUpId,
   courtIds,
 }: AllocateTeamMatchUpCourtsArgs) {
-  if (!tournamentRecord && !tournamentRecords)
-    return { error: MISSING_TOURNAMENT_RECORD };
+  if (!tournamentRecord && !tournamentRecords) return { error: MISSING_TOURNAMENT_RECORD };
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
   const result = findDrawMatchUp({
     drawDefinition,
     matchUpId,
   });
   if (result.error) return result;
-  if (result?.matchUp?.matchUpType !== TEAM_MATCHUP)
-    return { error: INVALID_MATCHUP };
+  if (result?.matchUp?.matchUpType !== TEAM_MATCHUP) return { error: INVALID_MATCHUP };
 
   const validCourtIds =
     courtIds === undefined ||
-    (Array.isArray(courtIds) &&
-      courtIds.length &&
-      courtIds.every((id) => typeof id === 'string'));
+    (Array.isArray(courtIds) && courtIds.length && courtIds.every((id) => typeof id === 'string'));
   if (!validCourtIds) return { error: INVALID_VALUES, context: { courtIds } };
 
   let itemValue;
@@ -63,9 +59,7 @@ export function allocateTeamMatchUpCourts({
     });
     if (result.error) return result;
 
-    const specifiedCourts = result.courts?.filter((court) =>
-      courtIds.includes(court.courtId)
-    );
+    const specifiedCourts = result.courts?.filter((court) => courtIds.includes(court.courtId));
     if (specifiedCourts?.length !== courtIds.length) {
       return { error: INVALID_VALUES, context: { courtIds } };
     }

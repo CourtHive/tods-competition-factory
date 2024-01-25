@@ -18,9 +18,7 @@ test('mocksEngine can publish generated events', () => {
 
   const { event } = tournamentEngine.getEvent({ drawId });
 
-  const publishStatus = event.timeItems.find(
-    (timeItem) => timeItem.itemType === `${PUBLISH}.${STATUS}`
-  );
+  const publishStatus = event.timeItems.find((timeItem) => timeItem.itemType === `${PUBLISH}.${STATUS}`);
 
   expect(publishStatus).not.toBeUndefined();
 });

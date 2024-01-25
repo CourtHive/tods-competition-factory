@@ -4,18 +4,10 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 /*
   drawSize: 4
@@ -39,9 +31,7 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -123,7 +113,5 @@ test('Replacing an outcome with a DOUBLE_WALKOVER will advance paired position',
   expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([1]);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(1);
-  expect(
-    targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)
-  ).toEqual([]);
+  expect(targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)).toEqual([]);
 });

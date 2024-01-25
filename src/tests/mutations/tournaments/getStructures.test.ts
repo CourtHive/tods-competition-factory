@@ -58,26 +58,17 @@ it('can extract and collate event and tournament structures', () => {
 
   let totalStructuresCount = 0;
   for (const eventProfile of eventProfiles) {
-    const { structures, stageStructures } = tournamentEngine.getEventStructures(
-      {
-        eventId: eventProfile.eventId,
-        withStageGrouping: true,
-      }
-    );
+    const { structures, stageStructures } = tournamentEngine.getEventStructures({
+      eventId: eventProfile.eventId,
+      withStageGrouping: true,
+    });
     expect(structures.length).toEqual(eventProfile.expectation.structuresCount);
-    expect(Object.keys(stageStructures)).toEqual(
-      eventProfile.expectation.stageStructures
-    );
+    expect(Object.keys(stageStructures)).toEqual(eventProfile.expectation.stageStructures);
     totalStructuresCount += structures.length;
   }
 
-  const { structures, stageStructures } =
-    tournamentEngine.getTournamentStructures({ withStageGrouping: true });
+  const { structures, stageStructures } = tournamentEngine.getTournamentStructures({ withStageGrouping: true });
 
   expect(structures.length).toEqual(totalStructuresCount);
-  expect(Object.keys(stageStructures)).toEqual([
-    'MAIN',
-    'PLAY_OFF',
-    'CONSOLATION',
-  ]);
+  expect(Object.keys(stageStructures)).toEqual(['MAIN', 'PLAY_OFF', 'CONSOLATION']);
 });

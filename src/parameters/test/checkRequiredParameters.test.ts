@@ -65,23 +65,16 @@ it('can check required parameters', () => {
   result = checkRequiredParameters(params, [{ [MATCHUP_ID]: true }]);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters(params, [
-    { [PARTICIPANT_ID]: true },
-    { [MATCHUP_ID]: true },
-  ]);
+  result = checkRequiredParameters(params, [{ [PARTICIPANT_ID]: true }, { [MATCHUP_ID]: true }]);
   expect(result.valid).toEqual(true);
 
-  result = checkRequiredParameters(params, [
-    { [PARTICIPANT_ID]: true, [MATCHUP_ID]: true },
-  ]);
+  result = checkRequiredParameters(params, [{ [PARTICIPANT_ID]: true, [MATCHUP_ID]: true }]);
   expect(result.valid).toEqual(true);
 
   result = checkRequiredParameters(params, [{ [DRAW_ID]: true }]);
   expect(result.error).toEqual(MISSING_DRAW_ID);
 
-  result = checkRequiredParameters(params, [
-    { [PARTICIPANT_ID]: true, [MATCHUP_ID]: true, [DRAW_ID]: true },
-  ]);
+  result = checkRequiredParameters(params, [{ [PARTICIPANT_ID]: true, [MATCHUP_ID]: true, [DRAW_ID]: true }]);
   expect(result.error).toEqual(MISSING_DRAW_ID);
 
   result = checkRequiredParameters({}, [{ [TOURNAMENT_RECORD]: true }]);
@@ -131,56 +124,39 @@ it('can check required parameters', () => {
 });
 
 it('can check for one of multiple possible parameters', () => {
-  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [
-    { [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } },
-  ]);
+  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [{ [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } }]);
   expect(result.valid).toEqual(true);
-  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [
-    { [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } },
-  ]);
+  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [{ [ONE_OF]: { [EVENT_ID]: true, [EVENT]: true } }]);
   expect(result.error).toEqual(INVALID_VALUES);
-  result = checkRequiredParameters(
-    { [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' },
-    [{ [ONE_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } }]
-  );
+  result = checkRequiredParameters({ [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' }, [
+    { [ONE_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } },
+  ]);
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
 it('can check for one or more of multiple possible parameters', () => {
-  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [
-    { [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } },
-  ]);
+  let result = checkRequiredParameters({ [EVENT_ID]: 'eventId' }, [{ [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } }]);
   expect(result.valid).toEqual(true);
-  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [
-    { [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } },
-  ]);
+  result = checkRequiredParameters({ [DRAW_ID]: 'drawId' }, [{ [ANY_OF]: { [EVENT_ID]: true, [EVENT]: true } }]);
   expect(result.error).toEqual(INVALID_VALUES);
-  result = checkRequiredParameters(
-    { [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' },
-    [{ [ANY_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } }]
-  );
+  result = checkRequiredParameters({ [EVENT_ID]: 'eventId', [DRAW_ID]: 'drawId' }, [
+    { [ANY_OF]: { [EVENT_ID]: true, [DRAW_ID]: true } },
+  ]);
   expect(result.valid).toEqual(true);
 });
 
 it('can check required parameter types', () => {
-  let result = checkRequiredParameters({ [DRAW_DEFINITION]: 'string' }, [
-    { [DRAW_DEFINITION]: true },
-  ]);
+  let result = checkRequiredParameters({ [DRAW_DEFINITION]: 'string' }, [{ [DRAW_DEFINITION]: true }]);
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = checkRequiredParameters({ [DRAW_DEFINITION]: {} }, [
-    { [DRAW_DEFINITION]: true },
-  ]);
+  result = checkRequiredParameters({ [DRAW_DEFINITION]: {} }, [{ [DRAW_DEFINITION]: true }]);
   expect(result.valid).toEqual(true);
 
   result = checkRequiredParameters({ [MATCHUPS]: {} }, [{ [MATCHUPS]: true }]);
   expect(result.error).toEqual(INVALID_VALUES);
 
   // checking can be bypassed
-  result = checkRequiredParameters(
-    { [MATCHUPS]: {}, [BYPASS_PARAM_CHECK]: true },
-    [{ [MATCHUPS]: true }]
-  );
+  result = checkRequiredParameters({ [MATCHUPS]: {}, [BYPASS_PARAM_CHECK]: true }, [{ [MATCHUPS]: true }]);
   expect(result.valid).toEqual(true);
 
   result = checkRequiredParameters({ [MATCHUPS]: [] }, [{ [MATCHUPS]: true }]);

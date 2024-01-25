@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import {
-  MAIN,
-  VOLUNTARY_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { MAIN, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 test('can return participants eligible for voluntary consolation', () => {
   const {
@@ -19,43 +16,38 @@ test('can return participants eligible for voluntary consolation', () => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      drawId,
-    });
+  let { eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    drawId,
+  });
   expect(losingParticipantIds.length).toEqual(31);
   expect(eligibleParticipants.length).toEqual(31);
 
-  ({ eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      winsLimit: 1,
-      drawId,
-    }));
+  ({ eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    winsLimit: 1,
+    drawId,
+  }));
 
   expect(losingParticipantIds.length).toEqual(31);
   expect(eligibleParticipants.length).toEqual(24);
 
-  ({ eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      winsLimit: 2,
-      drawId,
-    }));
+  ({ eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    winsLimit: 2,
+    drawId,
+  }));
 
   expect(eligibleParticipants.length).toEqual(28);
 
-  ({ eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      winsLimit: 3,
-      drawId,
-    }));
+  ({ eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    winsLimit: 3,
+    drawId,
+  }));
 
   expect(eligibleParticipants.length).toEqual(30);
 
-  ({ eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      requireLoss: false,
-      drawId,
-    }));
+  ({ eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    requireLoss: false,
+    drawId,
+  }));
 
   expect(losingParticipantIds.length).toEqual(31);
   expect(eligibleParticipants.length).toEqual(32);
@@ -71,17 +63,17 @@ test('can return participants eligible for voluntary consolation when play is no
 
   tournamentEngine.setState(tournamentRecord);
 
-  let { eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
+  let { eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    drawId,
+  });
   expect(losingParticipantIds.length).toEqual(0);
   expect(eligibleParticipants.length).toEqual(0);
 
-  ({ eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      requirePlay: false,
-      requireLoss: false,
-      drawId,
-    }));
+  ({ eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    requirePlay: false,
+    requireLoss: false,
+    drawId,
+  }));
 
   expect(losingParticipantIds.length).toEqual(0);
   expect(eligibleParticipants.length).toEqual(32);
@@ -105,21 +97,19 @@ test('can consider event.entries as eligible for voluntary consolation', () => {
   expect(drawDefinition.entries.length).toEqual(4);
   expect(event.entries.length).toEqual(32);
 
-  let { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      includeEventParticipants: true,
-      requireLoss: false,
-      requirePlay: false,
-      drawId,
-    });
+  let { eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    includeEventParticipants: true,
+    requireLoss: false,
+    requirePlay: false,
+    drawId,
+  });
 
   expect(eligibleParticipants.length).toEqual(32);
 
-  ({ eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      includeEventParticipants: true,
-      drawId,
-    }));
+  ({ eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    includeEventParticipants: true,
+    drawId,
+  }));
 
   expect(eligibleParticipants.length).toEqual(0);
 });
@@ -142,32 +132,29 @@ test('can consider participants from other event draws as eligible for voluntary
   expect(drawDefinition.entries.length).toEqual(4);
   expect(event.entries.length).toEqual(32);
 
-  let { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      includeEventParticipants: true,
-      requireLoss: false,
-      requirePlay: false,
-      drawId, // first draw with drawSize; 4
-    });
+  let { eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    includeEventParticipants: true,
+    requireLoss: false,
+    requirePlay: false,
+    drawId, // first draw with drawSize; 4
+  });
 
   expect(eligibleParticipants.length).toEqual(32);
 
   // if loss is not required the all participants which have played in the 2nd draw are eligible
-  ({ eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      includeEventParticipants: true,
-      requireLoss: false,
-      drawId, // first draw with draawSize; 4
-    }));
+  ({ eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    includeEventParticipants: true,
+    requireLoss: false,
+    drawId, // first draw with draawSize; 4
+  }));
 
   expect(eligibleParticipants.length).toEqual(32);
 
   // if includeEventParticipants, participants losing in 2nd draw are eligible
-  ({ eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      includeEventParticipants: true,
-      drawId, // first draw with drawSize; 4
-    }));
+  ({ eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    includeEventParticipants: true,
+    drawId, // first draw with drawSize; 4
+  }));
 
   expect(eligibleParticipants.length).toEqual(31);
 });
@@ -218,17 +205,17 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
   });
   expect(result.success).toEqual(true);
 
-  let { eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({ drawId });
+  let { eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    drawId,
+  });
   expect(losingParticipantIds.length).toEqual(0);
   expect(eligibleParticipants.length).toEqual(0);
 
-  ({ eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      requirePlay: false,
-      matchUpsLimit: 1,
-      drawId,
-    }));
+  ({ eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    requirePlay: false,
+    matchUpsLimit: 1,
+    drawId,
+  }));
 
   expect(losingParticipantIds.length).toEqual(2);
   expect(eligibleParticipants.length).toEqual(2);
@@ -244,12 +231,11 @@ test('DOUBLE_WALKOVER produceds participants eligible for voluntary consolation 
   });
   expect(result.success).toEqual(true);
 
-  ({ eligibleParticipants, losingParticipantIds } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      requirePlay: false,
-      matchUpsLimit: 1,
-      drawId,
-    }));
+  ({ eligibleParticipants, losingParticipantIds } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    requirePlay: false,
+    matchUpsLimit: 1,
+    drawId,
+  }));
 
   expect(losingParticipantIds.length).toEqual(3);
   expect(eligibleParticipants.length).toEqual(3);

@@ -4,8 +4,8 @@ import { Test } from '@nestjs/testing';
 import request from 'supertest';
 
 import { TEST_EMAIL, TEST_PASSWORD } from '../../common/constants/test';
-import { SINGLES } from '../../../../constants/eventConstants';
-import { mocksEngine } from '../../../..';
+import { SINGLES } from '../../../constants/eventConstants';
+import { mocksEngine } from '../../..';
 
 describe('AppService', () => {
   let app: INestApplication;

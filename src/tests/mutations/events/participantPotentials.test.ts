@@ -5,10 +5,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT } from '../../../constants/eventConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 it('can return event matchUps with potential participants', () => {
   const drawProfiles = [
@@ -40,9 +37,9 @@ it('can return event matchUps with potential participants', () => {
   expect(winnerMatchUpId).toEqual(firstPositionThirdRoundMatchUpId);
 
   // expect the potentialParticipants for the 2nd round match to include 1st round participants
-  expect(
-    roundMatchUps[1][1].sides.map(({ participant }) => participant)
-  ).toEqual(roundMatchUps[2][0].potentialParticipants[0]);
+  expect(roundMatchUps[1][1].sides.map(({ participant }) => participant)).toEqual(
+    roundMatchUps[2][0].potentialParticipants[0],
+  );
 });
 
 it('participant object include potentials', () => {
@@ -63,9 +60,7 @@ it('participant object include potentials', () => {
     withPotentialMatchUps: true,
     withMatchUps: true,
   });
-  expect(participants.length).toEqual(
-    participants.map((p) => p.potentialMatchUps).filter(Boolean).length
-  );
+  expect(participants.length).toEqual(participants.map((p) => p.potentialMatchUps).filter(Boolean).length);
 });
 
 it('handles potential BYES for FMLC consolation structures', () => {
@@ -87,9 +82,7 @@ it('handles potential BYES for FMLC consolation structures', () => {
     nextMatchUps: true,
   });
 
-  const consolationMatchUps = matchUps.filter(
-    ({ stage }) => stage === CONSOLATION
-  );
+  const consolationMatchUps = matchUps.filter(({ stage }) => stage === CONSOLATION);
   const roundMatchUps: any = getRoundMatchUps({
     matchUps: consolationMatchUps,
   }).roundMatchUps;
@@ -126,14 +119,9 @@ it('removes potential participants when side participant is known', () => {
   });
 
   const { roundMatchUps } = getRoundMatchUps({ matchUps });
-  expect(
-    roundMatchUps?.[2]?.[0]?.sides?.filter(({ sideNumber }) => sideNumber)
-      .length
-  ).toEqual(1);
+  expect(roundMatchUps?.[2]?.[0]?.sides?.filter(({ sideNumber }) => sideNumber).length).toEqual(1);
   expect(roundMatchUps?.[2][0].potentialParticipants.length).toEqual(1);
 
-  expect(
-    roundMatchUps?.[2]?.[1].sides?.filter(({ sideNumber }) => sideNumber).length
-  ).toEqual(0);
+  expect(roundMatchUps?.[2]?.[1].sides?.filter(({ sideNumber }) => sideNumber).length).toEqual(0);
   expect(roundMatchUps?.[2][1].potentialParticipants.length).toEqual(2);
 });

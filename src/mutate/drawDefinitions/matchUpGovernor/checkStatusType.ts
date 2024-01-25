@@ -16,8 +16,6 @@ export function isActiveMatchUpStatus({ matchUpStatus }) {
 type IsNonDirectingArgs = {
   matchUpStatus: MatchUpStatusUnion;
 };
-export function isNonDirectingMatchUpStatus({
-  matchUpStatus,
-}: IsNonDirectingArgs) {
+export function isNonDirectingMatchUpStatus({ matchUpStatus }: IsNonDirectingArgs) {
   return nonDirectingMatchUpStatuses.includes(matchUpStatus);
 }

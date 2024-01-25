@@ -1,10 +1,6 @@
 import { getObjectTieFormat } from './getObjectTieFormat';
 import { getItemTieFormat } from './getItemTieFormat';
-import {
-  DrawDefinition,
-  Structure,
-  Event,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Structure, Event } from '../../../types/tournamentTypes';
 
 // use with resolved objects, not uuid references to objects
 
@@ -15,12 +11,7 @@ type ResolveTieFormatArgs = {
   event?: Event;
 };
 
-export function resolveTieFormat({
-  drawDefinition,
-  structure,
-  matchUp,
-  event,
-}: ResolveTieFormatArgs) {
+export function resolveTieFormat({ drawDefinition, structure, matchUp, event }: ResolveTieFormatArgs) {
   return {
     tieFormat:
       getItemTieFormat({

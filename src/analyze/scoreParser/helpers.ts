@@ -18,10 +18,9 @@ export function isDiffOne(score) {
 }
 
 export function getSuper(values, index) {
-  const parts = [
-    values.slice(index, index + 2),
-    index ? values.slice(0, 1) : values.slice(2),
-  ].map((n) => parseInt(n.join('')));
+  const parts = [values.slice(index, index + 2), index ? values.slice(0, 1) : values.slice(2)].map((n) =>
+    parseInt(n.join('')),
+  );
   // preserve order
   if (index) parts.reverse();
   const scores = parts;
@@ -35,9 +34,7 @@ export function dashJoin(part) {
   if (part.length === 2) {
     return part.split('').join('-');
   }
-  [', ', ',', '/', ' '].forEach(
-    (separator) => (part = part.split(separator).join('-'))
-  );
+  [', ', ',', '/', ' '].forEach((separator) => (part = part.split(separator).join('-')));
   part = part.replace(/-{2,}/, '-'); // handle repeating '-'
   return part;
 }

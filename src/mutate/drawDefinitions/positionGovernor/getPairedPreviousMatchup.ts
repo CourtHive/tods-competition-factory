@@ -1,10 +1,6 @@
 import { getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
 
-export function getPairedPreviousMatchUp({
-  structureId,
-  matchUpsMap,
-  matchUp,
-}) {
+export function getPairedPreviousMatchUp({ structureId, matchUpsMap, matchUp }) {
   const sourceRoundPosition = matchUp?.roundPosition;
   const offset = sourceRoundPosition % 2 ? 1 : -1;
   const pairedRoundPosition = sourceRoundPosition + offset;
@@ -13,9 +9,7 @@ export function getPairedPreviousMatchUp({
     structureId,
   });
   const pairedPreviousMatchUp = structureMatchUps.find(
-    ({ roundNumber, roundPosition }) =>
-      roundNumber === matchUp?.roundNumber &&
-      roundPosition === pairedRoundPosition
+    ({ roundNumber, roundPosition }) => roundNumber === matchUp?.roundNumber && roundPosition === pairedRoundPosition,
   );
   return { pairedPreviousMatchUp };
 }

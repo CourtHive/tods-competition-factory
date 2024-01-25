@@ -48,11 +48,10 @@ it('can set participant scaleItems', () => {
   }));
   expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
 
-  ({ scaleItem: result, tournamentId } =
-    tournamentEngine.getParticipantScaleItem({
-      scaleAttributes,
-      participantId,
-    }));
+  ({ scaleItem: result, tournamentId } = tournamentEngine.getParticipantScaleItem({
+    scaleAttributes,
+    participantId,
+  }));
   expect(result?.scaleValue).toEqual(scaleItem.scaleValue);
   expect(tournamentId).toEqual(tournamentRecord.tournamentId);
 

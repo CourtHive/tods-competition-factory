@@ -27,11 +27,7 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '../../../../../constants/positionActionConstants';
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
 
 // demonstrates that policyDefinitions can be used to change the behavior of positionActions
 it('supports policyDefinitions in positionActions', () => {
@@ -101,9 +97,7 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
     drawId,
   });
-  expect(result.validActions.map(({ type }) => type)).toEqual(
-    noMovementActions
-  );
+  expect(result.validActions.map(({ type }) => type)).toEqual(noMovementActions);
 
   // now check the available positionActions for the consolation structure
   result = tournamentEngine.positionActions({
@@ -118,9 +112,7 @@ it('supports policyDefinitions in positionActions', () => {
     contextFilters,
   });
 
-  const firstRoundMain = upcomingMatchUps.filter(
-    ({ roundNumber }) => roundNumber === 1
-  );
+  const firstRoundMain = upcomingMatchUps.filter(({ roundNumber }) => roundNumber === 1);
 
   firstRoundMain.forEach(({ matchUpId }) => {
     const result = tournamentEngine.setMatchUpStatus({
@@ -139,27 +131,18 @@ it('supports policyDefinitions in positionActions', () => {
     drawPosition,
   });
   expect(result.isActiveDrawPosition).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual([
-    ADD_PENALTY,
-    ADD_NICKNAME,
-  ]);
+  expect(result.validActions.map(({ type }) => type)).toEqual([ADD_PENALTY, ADD_NICKNAME]);
 
   contextFilters = { stages: [CONSOLATION] };
   ({ upcomingMatchUps } = tournamentEngine.tournamentMatchUps({
     contextFilters,
   }));
-  const firstRoundConsolation = upcomingMatchUps.filter(
-    ({ roundNumber }) => roundNumber === 1
-  );
+  const firstRoundConsolation = upcomingMatchUps.filter(({ roundNumber }) => roundNumber === 1);
   // every firstRoundConsolation matchUp should be readyToScore...
   // ...which means each matchUp must have participantsAssigned
-  expect(
-    firstRoundConsolation.every(({ readyToScore }) => readyToScore)
-  ).toEqual(true);
+  expect(firstRoundConsolation.every(({ readyToScore }) => readyToScore)).toEqual(true);
 
-  const firstRoundConsolationDrawPositions = firstRoundConsolation
-    .map(({ drawPositions }) => drawPositions)
-    .flat();
+  const firstRoundConsolationDrawPositions = firstRoundConsolation.map(({ drawPositions }) => drawPositions).flat();
 
   // now check the available positionActions for the consolation structure when participants are present
   result = tournamentEngine.positionActions({
@@ -168,10 +151,7 @@ it('supports policyDefinitions in positionActions', () => {
     drawId,
   });
   expect(result.hasPositionAssigned).toEqual(true);
-  expect(result.validActions.map(({ type }) => type)).toEqual([
-    ADD_PENALTY,
-    ADD_NICKNAME,
-  ]);
+  expect(result.validActions.map(({ type }) => type)).toEqual([ADD_PENALTY, ADD_NICKNAME]);
 
   // now check the available positionActions for the consolation structure when participants are present
   // ...when an unrestricted policyDefinitions is applied

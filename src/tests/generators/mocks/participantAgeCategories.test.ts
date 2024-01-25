@@ -27,25 +27,19 @@ test.each(ageCategoryScenarios)('it can parse ageCategoryCodes', (scenario) => {
   });
 });
 
-test.each(ageCategoryScenarios)(
-  'can generate partiicpants with category details',
-  (scenario) => {
-    const consideredDate = '2022-01-01';
+test.each(ageCategoryScenarios)('can generate partiicpants with category details', (scenario) => {
+  const consideredDate = '2022-01-01';
 
-    const participantsProfile = {
-      category: scenario.category,
-      participantsCount: 1,
-      consideredDate,
-    };
+  const participantsProfile = {
+    category: scenario.category,
+    participantsCount: 1,
+    consideredDate,
+  };
 
-    const {
-      participants: [participant],
-    } = mocksEngine.generateParticipants(participantsProfile);
+  const {
+    participants: [participant],
+  } = mocksEngine.generateParticipants(participantsProfile);
 
-    if (
-      Object.keys(scenario.expectation).length &&
-      !scenario.expectation.combinedAge
-    )
-      expect(participant.person.birthDate).not.toBeUndefined();
-  }
-);
+  if (Object.keys(scenario.expectation).length && !scenario.expectation.combinedAge)
+    expect(participant.person.birthDate).not.toBeUndefined();
+});

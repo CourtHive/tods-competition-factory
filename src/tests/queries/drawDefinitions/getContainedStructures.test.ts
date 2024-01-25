@@ -32,7 +32,7 @@ it('can determine containedStructures for tournamentRecords, events, and drawDef
     expect(containedStructureIds.length).toEqual(8);
     expect(containedStructures[containerStructureIds[0]].length).toEqual(8);
     containedStructureIds.forEach((structureId) =>
-      expect(containerStructures[structureId]).toEqual(containerStructureIds[0])
+      expect(containerStructures[structureId]).toEqual(containerStructureIds[0]),
     );
   }
 });

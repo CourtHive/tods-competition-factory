@@ -4,11 +4,7 @@ import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
 import { MALE } from '../../../constants/genderConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-  MAIN,
-} from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '../../../constants/drawDefinitionConstants';
 
 it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', () => {
   const participantsProfile = {
@@ -32,12 +28,10 @@ it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', 
     drawProfiles,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allDrawMatchUps({
-      inContext: true,
-      drawId,
-    });
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allDrawMatchUps({
+    inContext: true,
+    drawId,
+  });
 
   checkGoesTo(matchUps, [MAIN, 1, 1, MAIN, 2, 1, CONSOLATION, 1, 1]);
   checkGoesTo(matchUps, [MAIN, 1, 2, MAIN, 2, 1, CONSOLATION, 1, 1]);
@@ -83,17 +77,10 @@ function checkGoesTo(matchUps, expectation) {
   expect(winnerMatchUpId).toEqual(expectedWinnerMatchUp.matchUpId);
   expect(loserMatchUpId).toEqual(expectedloserMatchUp.matchUpId);
 
-  function findTargetMatchUpByAttributes({
-    roundPosition,
-    roundNumber,
-    matchUps,
-    stage,
-  }) {
+  function findTargetMatchUpByAttributes({ roundPosition, roundNumber, matchUps, stage }) {
     return matchUps.find(
       (matchUp) =>
-        matchUp.stage === stage &&
-        matchUp.roundNumber === roundNumber &&
-        matchUp.roundPosition === roundPosition
+        matchUp.stage === stage && matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition,
     );
   }
 }

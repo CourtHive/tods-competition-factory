@@ -4,18 +4,9 @@ import { getParticipantId } from '../../../global/functions/extractors';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  MAIN,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+import { MAIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
-export function generateFlight({
-  autoEntryPositions,
-  tournamentRecord,
-  drawParticipants,
-  drawProfile,
-  event,
-}) {
+export function generateFlight({ autoEntryPositions, tournamentRecord, drawParticipants, drawProfile, event }) {
   const {
     drawType = SINGLE_ELIMINATION,
     qualifyingPositions = 0,
@@ -27,9 +18,7 @@ export function generateFlight({
 
   const entriesCount = drawSize - qualifyingPositions;
 
-  const drawParticipantIds = drawParticipants
-    .slice(0, entriesCount)
-    .map(getParticipantId);
+  const drawParticipantIds = drawParticipants.slice(0, entriesCount).map(getParticipantId);
 
   if (drawParticipantIds.length) {
     const result = addEventEntries({

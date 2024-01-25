@@ -6,10 +6,7 @@ import { expect, test } from 'vitest';
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../../constants/tieFormatConstants';
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
-import {
-  MODIFY_DRAW_DEFINITION,
-  MODIFY_MATCHUP,
-} from '../../../../constants/topicConstants';
+import { MODIFY_DRAW_DEFINITION, MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 import {
   INVALID_MATCHUP,
   INVALID_VALUES,
@@ -30,21 +27,14 @@ test('can clear TEAM matchUp "scorecards"', () => {
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
         if (trackMatchUpModifications) {
-          matchUps.forEach(({ matchUp }) =>
-            modifiedMatchUpLog.push({ [matchUp.matchUpId]: matchUp.score })
-          );
+          matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push({ [matchUp.matchUpId]: matchUp.score }));
         }
       },
       [MODIFY_DRAW_DEFINITION]: (result) => {
-        const targetMatchUp =
-          result[0].drawDefinition.structures[0].matchUps.find(
-            (m) => m.matchUpId === matchUpId
-          );
+        const targetMatchUp = result[0].drawDefinition.structures[0].matchUps.find((m) => m.matchUpId === matchUpId);
         if (targetMatchUp) {
           firstMatchUpScoringLog.push(targetMatchUp.score.scoreStringSide1);
-          firstMatchUpTieMatchUpScoringLog.push(
-            targetMatchUp.tieMatchUps.map((t) => t.score)
-          );
+          firstMatchUpTieMatchUpScoringLog.push(targetMatchUp.tieMatchUps.map((t) => t.score));
         }
       },
     },
@@ -82,13 +72,12 @@ test('can clear TEAM matchUp "scorecards"', () => {
     },
   };
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
   matchUpId = firstRoundDualMatchUps[0].matchUpId;
@@ -106,16 +95,13 @@ test('can clear TEAM matchUp "scorecards"', () => {
     });
   });
 
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
-  let targetMatchUp = firstRoundDualMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
+  let targetMatchUp = firstRoundDualMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(targetMatchUp.score.sets[0].side1Score).toEqual(9);
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -206,9 +192,7 @@ test('can clear TEAM matchUp "scorecards"', () => {
     },
   }).matchUps;
 
-  targetMatchUp = firstRoundDualMatchUps.find(
-    (matchUp) => matchUp.matchUpId === matchUpId
-  );
+  targetMatchUp = firstRoundDualMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
 
   expect(targetMatchUp.score.scoreStringSide1).toBeUndefined();
 

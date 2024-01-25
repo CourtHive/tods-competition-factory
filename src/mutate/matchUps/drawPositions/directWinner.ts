@@ -29,8 +29,7 @@ export function directWinner({
 
   if (winnerTargetLink) {
     const targetMatchUpDrawPositions = winnerMatchUp.drawPositions || [];
-    const targetMatchUpDrawPosition =
-      targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
+    const targetMatchUpDrawPosition = targetMatchUpDrawPositions[winnerMatchUpDrawPositionIndex];
 
     const sourceStructureId = winnerTargetLink.source.structureId;
     const result = findStructure({
@@ -40,47 +39,37 @@ export function directWinner({
     if (result.error) return result;
     const { structure } = result;
 
-    const { positionAssignments: sourcePositionAssignments } =
-      structureAssignedDrawPositions({
-        structureId: sourceStructureId,
-        drawDefinition,
-      });
+    const { positionAssignments: sourcePositionAssignments } = structureAssignedDrawPositions({
+      structureId: sourceStructureId,
+      drawDefinition,
+    });
 
     const relevantSourceAssignment = sourcePositionAssignments?.find(
-      (assignment) => assignment.drawPosition === winningDrawPosition
+      (assignment) => assignment.drawPosition === winningDrawPosition,
     );
     const winnerParticipantId = relevantSourceAssignment?.participantId;
 
     const targetStructureId = winnerTargetLink.target.structureId;
-    const { positionAssignments: targetPositionAssignments } =
-      structureAssignedDrawPositions({
-        structureId: targetStructureId,
-        drawDefinition,
-      });
+    const { positionAssignments: targetPositionAssignments } = structureAssignedDrawPositions({
+      structureId: targetStructureId,
+      drawDefinition,
+    });
 
     const relevantAssignment = targetPositionAssignments?.find(
-      (assignment) => assignment.participantId === winnerParticipantId
+      (assignment) => assignment.participantId === winnerParticipantId,
     );
     const winnerExistingDrawPosition = relevantAssignment?.drawPosition;
 
     const unfilledTargetMatchUpDrawPositions = targetPositionAssignments
       ?.filter((assignment) => {
-        const inTarget = targetMatchUpDrawPositions.includes(
-          assignment.drawPosition
-        );
-        const unfilled =
-          !assignment.participantId && !assignment.bye && !assignment.qualifier;
+        const inTarget = targetMatchUpDrawPositions.includes(assignment.drawPosition);
+        const unfilled = !assignment.participantId && !assignment.bye && !assignment.qualifier;
         return inTarget && unfilled;
       })
       .map((assignment) => assignment.drawPosition);
-    const targetDrawPositionIsUnfilled =
-      unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
+    const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
 
-    if (
-      winnerParticipantId &&
-      winnerTargetLink.target.roundNumber === 1 &&
-      targetDrawPositionIsUnfilled
-    ) {
+    if (winnerParticipantId && winnerTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled) {
       assignDrawPosition({
         drawPosition: targetMatchUpDrawPosition,
         participantId: winnerParticipantId,
@@ -92,10 +81,7 @@ export function directWinner({
         matchUpsMap,
         event,
       });
-    } else if (
-      winnerParticipantId &&
-      unfilledTargetMatchUpDrawPositions?.length
-    ) {
+    } else if (winnerParticipantId && unfilledTargetMatchUpDrawPositions?.length) {
       const drawPosition = unfilledTargetMatchUpDrawPositions.pop();
       drawPosition &&
         assignDrawPosition({
@@ -131,12 +117,9 @@ export function directWinner({
     }
 
     // propagate seedAssignments
-    if (
-      structure?.seedAssignments &&
-      structure.structureId !== targetStructureId
-    ) {
+    if (structure?.seedAssignments && structure.structureId !== targetStructureId) {
       const seedAssignment = structure.seedAssignments.find(
-        ({ participantId }) => participantId === winnerParticipantId
+        ({ participantId }) => participantId === winnerParticipantId,
       );
       const participantId = seedAssignment?.participantId;
       if (seedAssignment && participantId) {
@@ -166,38 +149,25 @@ export function directWinner({
 
   if (dualMatchUp && projectedWinningSide) {
     // propagate lineUp
-    const side = dualMatchUp.sides?.find(
-      (side) => side.sideNumber === projectedWinningSide
-    );
+    const side = dualMatchUp.sides?.find((side) => side.sideNumber === projectedWinningSide);
     if (side?.lineUp) {
       const source = dualMatchUp.roundPosition;
       const target = winnerMatchUp.roundPosition;
-      const targetSideNumber =
-        (source === target && source !== 1) || Math.floor(source / 2) === target
-          ? 2
-          : 1; // this may need to take roundNumber into consideration for cross structure propagation of lineUps
+      const targetSideNumber = (source === target && source !== 1) || Math.floor(source / 2) === target ? 2 : 1; // this may need to take roundNumber into consideration for cross structure propagation of lineUps
 
-      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(
-        ({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId
-      );
+      const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === winnerMatchUp.matchUpId);
 
       const updatedSides = [1, 2].map((sideNumber) => {
-        const existingSide =
-          targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) ||
-          {};
+        const existingSide = targetMatchUp.sides?.find((side) => side.sideNumber === sideNumber) || {};
         return { ...existingSide, sideNumber };
       });
 
       targetMatchUp.sides = updatedSides;
-      const targetSide = targetMatchUp.sides.find(
-        (side) => side.sideNumber === targetSideNumber
-      );
+      const targetSide = targetMatchUp.sides.find((side) => side.sideNumber === targetSideNumber);
 
       // attach to appropriate side of winnerMatchUp
       if (targetSide) {
-        const filteredLineUp = side.lineUp?.filter(
-          (assignment) => assignment?.participantId
-        );
+        const filteredLineUp = side.lineUp?.filter((assignment) => assignment?.participantId);
 
         targetSide.lineUp = removeLineUpSubstitutions({
           lineUp: filteredLineUp,

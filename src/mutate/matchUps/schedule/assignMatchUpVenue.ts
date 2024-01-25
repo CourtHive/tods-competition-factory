@@ -3,10 +3,7 @@ import { findVenue } from '../../venues/findVenue';
 
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
 
 type AssignMatchUpVenueArgs = {
   tournamentRecords?: { [key: string]: Tournament };

@@ -61,13 +61,7 @@ it('can generate COMPASS and properly place BYEs in consolation structures 32/25
   });
 });
 
-function compassByesTest({
-  expectations,
-  drawSize,
-  participantsCount,
-  matchUpsCount,
-  byeMatchUpsCount,
-}) {
+function compassByesTest({ expectations, drawSize, participantsCount, matchUpsCount, byeMatchUpsCount }) {
   const drawProfiles = [
     {
       drawSize,
@@ -109,9 +103,7 @@ function compassByesTest({
       structure,
     });
     if (expectations) {
-      expect(expectations[structure.structureName]).toEqual(
-        byePositions?.length
-      );
+      expect(expectations[structure.structureName]).toEqual(byePositions?.length);
     } else {
       console.log(structure.structureName, byePositions?.length);
     }
@@ -123,8 +115,7 @@ function compassByesTest({
   } else {
     console.log('matchUps:', matchUps.length);
   }
-  const { byeMatchUps, completedMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { byeMatchUps, completedMatchUps } = tournamentEngine.tournamentMatchUps();
   if (byeMatchUpsCount !== undefined) {
     expect(byeMatchUps.length).toEqual(byeMatchUpsCount);
     expect(completedMatchUps.length).toEqual(matchUpsCount - byeMatchUpsCount);

@@ -4,10 +4,7 @@ export const POLICY_AVOIDANCE_COUNTRY = {
   [POLICY_TYPE_AVOIDANCE]: {
     roundsToSeparate: undefined,
     policyName: 'Nationality Code',
-    policyAttributes: [
-      { key: 'person.nationalityCode' },
-      { key: 'individualParticipants.person.nationalityCode' },
-    ],
+    policyAttributes: [{ key: 'person.nationalityCode' }, { key: 'individualParticipants.person.nationalityCode' }],
   },
 };
 

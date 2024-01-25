@@ -5,11 +5,7 @@ import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COM
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 import { MatchUp, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MISSING_MATCHUP,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES, MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 
 type GetMatchUpCompetitivenessArgs = {
   tournamentRecord?: Tournament;
@@ -43,8 +39,7 @@ export function getMatchUpCompetitiveProfile({
   const bandProfiles =
     profileBands ||
     policy?.profileBands ||
-    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
-      .profileBands;
+    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS].profileBands;
 
   const scoreComponents = getScoreComponents({ score });
   const spread = pctSpread([scoreComponents]);

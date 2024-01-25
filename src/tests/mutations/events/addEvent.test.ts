@@ -4,12 +4,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import {
-  FEED_IN,
-  MAIN,
-  QUALIFYING,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
+import { FEED_IN, MAIN, QUALIFYING, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
 
 it('can generate an event with a draw and attach it to a tournamentRecord', () => {
   tournamentEngine.devContext(true);
@@ -77,21 +72,15 @@ it('can generate an event with a draw and attach it to a tournamentRecord', () =
   // should equal 31 + 16 (second round feed) => 47
   expect(mainStageMatchUps.length).toEqual(47);
 
-  const qualifyingStageOne = matchUps.filter(
-    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 1
-  );
+  const qualifyingStageOne = matchUps.filter(({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 1);
   // should equal (16 + 8 + 4) + 24 => 52
   expect(qualifyingStageOne.length).toEqual(52);
 
-  const qualifyingStageTwo = matchUps.filter(
-    ({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 2
-  );
+  const qualifyingStageTwo = matchUps.filter(({ stage, stageSequence }) => stage === QUALIFYING && stageSequence === 2);
   // should equal (8 + 4) + (8 + 4) => 24
   expect(qualifyingStageTwo.length).toEqual(24);
 
-  const mainStructure = event.drawDefinitions[0].structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  const mainStructure = event.drawDefinitions[0].structures.find(({ stage }) => stage === MAIN);
 
   const firstRoundQualifiersCount = mainStructure.positionAssignments
     .filter((assignment) => assignment.drawPosition > 16)

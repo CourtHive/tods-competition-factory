@@ -24,9 +24,7 @@ it('can bulk schedule matchUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const myCourts = { venueName: 'My Courts' };
-  let result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  let result = tournamentEngine.devContext({ addVenue: true }).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -109,9 +107,7 @@ it('can bulk schedule matchUps', () => {
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
+  let matchUpsWithScheduledTime = matchUps.filter((matchUp) => matchUp.schedule?.scheduledTime);
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds?.length);
 
@@ -127,9 +123,7 @@ it('can bulk schedule matchUps', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
+  matchUpsWithScheduledTime = matchUps.filter((matchUp) => matchUp.schedule?.scheduledTime);
   expect(matchUpsWithScheduledTime.length).toEqual(0);
 });
 
@@ -191,9 +185,7 @@ test('recognizes scheduling conflicts', () => {
     afterRecoveryTimes: true,
     nextMatchUps: true,
   }));
-  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
-    true
-  );
+  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(true);
 
   visualizeScheduledMatchUps({
     scheduledMatchUps: matchUps,
@@ -202,14 +194,10 @@ test('recognizes scheduling conflicts', () => {
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps }));
   roundMatchUps[1].forEach((firstRoundMatchUp) => {
-    expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual(
-      'string'
-    );
+    expect(typeof firstRoundMatchUp.winnerTo.schedule.scheduleConflict).toEqual('string');
   });
   roundMatchUps[2].forEach((secondRoundMatchUp) =>
-    expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual(
-      'string'
-    )
+    expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual('string'),
   );
 
   ({ matchUps } = tournamentEngine.allCompetitionMatchUps({
@@ -218,23 +206,18 @@ test('recognizes scheduling conflicts', () => {
   }));
 
   // visibilityThreshold has removed all schedule details except for time and milliseconds
-  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(
-    false
-  );
+  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(false);
   expect(Object.keys(matchUps[0].schedule).length).toEqual(2);
 
-  const { participantIdsWithConflicts: ceConflicts } =
-    tournamentEngine.getCompetitionParticipants({
-      scheduleAnalysis: true,
-    });
-
-  const {
-    participants: tournamentParticipants,
-    participantIdsWithConflicts: teConflicts,
-  } = tournamentEngine.getParticipants({
+  const { participantIdsWithConflicts: ceConflicts } = tournamentEngine.getCompetitionParticipants({
     scheduleAnalysis: true,
-    withMatchUps: true,
   });
+
+  const { participants: tournamentParticipants, participantIdsWithConflicts: teConflicts } =
+    tournamentEngine.getParticipants({
+      scheduleAnalysis: true,
+      withMatchUps: true,
+    });
 
   expect(teConflicts.length).toEqual(16);
   expect(ceConflicts.length).toEqual(16);
@@ -242,11 +225,7 @@ test('recognizes scheduling conflicts', () => {
   const participantResult = tournamentEngine.getCompetitionParticipants({
     scheduleAnalysis: { scheduledMinutesDifference: Infinity },
   });
-  let {
-    participantIdsWithConflicts: gpConflicts,
-    mappedMatchUps,
-    participantMap,
-  } = participantResult;
+  let { participantIdsWithConflicts: gpConflicts, mappedMatchUps, participantMap } = participantResult;
   const participants = participantResult.participants;
   expect(Object.values(participantMap).length).toEqual(16);
   expect(participants.length).toEqual(16);
@@ -262,8 +241,8 @@ test('recognizes scheduling conflicts', () => {
   }));
   expect(gpConflicts.length).toEqual(16);
 
-  const participantWithConflict = tournamentParticipants.find(
-    ({ participantId }) => teConflicts.includes(participantId)
+  const participantWithConflict = tournamentParticipants.find(({ participantId }) =>
+    teConflicts.includes(participantId),
   );
 
   const matchUpId = participantWithConflict.potentialMatchUps[0].matchUpId;
@@ -272,46 +251,39 @@ test('recognizes scheduling conflicts', () => {
 
   const targetParticipantId = participantWithConflict.participantId;
   expect(
-    typeof mappedMatchUps[
-      Object.keys(participantMap[targetParticipantId].potentialMatchUps)[0]
-    ].schedule.scheduleConflict
+    typeof mappedMatchUps[Object.keys(participantMap[targetParticipantId].potentialMatchUps)[0]].schedule
+      .scheduleConflict,
   ).toEqual('string');
 
-  let { participantIdsWithConflicts } =
-    tournamentEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 60 },
-    });
+  let { participantIdsWithConflicts } = tournamentEngine.getCompetitionParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 60 },
+  });
 
   expect(participantIdsWithConflicts.length).toEqual(16);
 
-  ({ participantIdsWithConflicts } =
-    tournamentEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 50 },
-    }));
+  ({ participantIdsWithConflicts } = tournamentEngine.getCompetitionParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 50 },
+  }));
 
   expect(participantIdsWithConflicts.length).toEqual(0);
 
-  ({ participantIdsWithConflicts: gpConflicts } =
-    tournamentEngine.getParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 60 },
-    }));
+  ({ participantIdsWithConflicts: gpConflicts } = tournamentEngine.getParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 60 },
+  }));
   expect(gpConflicts.length).toEqual(16);
 
-  ({ participantIdsWithConflicts: gpConflicts } =
-    tournamentEngine.getParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 50 },
-    }));
+  ({ participantIdsWithConflicts: gpConflicts } = tournamentEngine.getParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 50 },
+  }));
   expect(gpConflicts.length).toEqual(0);
 
-  ({ participantIdsWithConflicts: gpConflicts } =
-    tournamentEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 60 },
-    }));
+  ({ participantIdsWithConflicts: gpConflicts } = tournamentEngine.getCompetitionParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 60 },
+  }));
   expect(gpConflicts.length).toEqual(16);
 
-  ({ participantIdsWithConflicts: gpConflicts } =
-    tournamentEngine.getCompetitionParticipants({
-      scheduleAnalysis: { scheduledMinutesDifference: 50 },
-    }));
+  ({ participantIdsWithConflicts: gpConflicts } = tournamentEngine.getCompetitionParticipants({
+    scheduleAnalysis: { scheduledMinutesDifference: 50 },
+  }));
   expect(gpConflicts.length).toEqual(0);
 });

@@ -11,17 +11,9 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import {
-  SIGNED_IN,
-  SIGNED_OUT,
-  SIGN_IN_STATUS,
-} from '../../constants/participantConstants';
+import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '../../constants/participantConstants';
 
-export function modifyParticipantsSignInStatus({
-  tournamentRecord,
-  participantIds,
-  signInState,
-}) {
+export function modifyParticipantsSignInStatus({ tournamentRecord, participantIds, signInState }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(participantIds)) return { error: MISSING_VALUE };
 
@@ -32,11 +24,8 @@ export function modifyParticipantsSignInStatus({
   if (!participants.length) return { error: MISSING_PARTICIPANTS };
 
   const allParticipantIds = participants.map(getParticipantId);
-  const invalidParticipantIds = participantIds.filter(
-    (participantId) => !allParticipantIds.includes(participantId)
-  );
-  if (invalidParticipantIds.length)
-    return { error: INVALID_VALUES, context: { invalidParticipantIds } };
+  const invalidParticipantIds = participantIds.filter((participantId) => !allParticipantIds.includes(participantId));
+  if (invalidParticipantIds.length) return { error: INVALID_VALUES, context: { invalidParticipantIds } };
 
   const modifiedParticipants: Participant[] = [];
   const createdAt = new Date().toISOString();

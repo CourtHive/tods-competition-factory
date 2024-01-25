@@ -47,9 +47,7 @@ it('returns eventData when there is no drawsData', () => {
   } = mocksEngine.generateTournamentRecord({
     eventProfiles,
   });
-  const { eventData } = tournamentEngine
-    .setState(tournamentRecord)
-    .getEventData({ eventId });
+  const { eventData } = tournamentEngine.setState(tournamentRecord).getEventData({ eventId });
   expect(eventData.drawsData.length).toEqual(0);
 
   const { event } = tournamentEngine.getEvent({ eventId });
@@ -111,9 +109,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
     .forEach(({ sides }) => {
       const persons = sides
         .map(
-          ({ participant }) =>
-            participant?.person ||
-            participant?.individualParticipants.map(({ person }) => person)
+          ({ participant }) => participant?.person || participant?.individualParticipants.map(({ person }) => person),
         )
         .flat()
         .filter(Boolean);

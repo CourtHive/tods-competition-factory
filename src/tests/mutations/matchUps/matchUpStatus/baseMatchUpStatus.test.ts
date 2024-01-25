@@ -105,25 +105,17 @@ it('removes scores for CANCELLED and WALKOVER outcomes', () => {
     participantsProfile,
   });
 
-  const { matchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .allTournamentMatchUps({
-      inContext: true,
-      drawId,
-    });
+  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps({
+    inContext: true,
+    drawId,
+  });
 
-  const abandoned = matchUps.find(
-    ({ matchUpStatus }) => matchUpStatus === ABANDONED
-  );
+  const abandoned = matchUps.find(({ matchUpStatus }) => matchUpStatus === ABANDONED);
   expect(abandoned.score.scoreStringSide1).toEqual('6-1');
-  const walkover = matchUps.find(
-    ({ matchUpStatus }) => matchUpStatus === WALKOVER
-  );
+  const walkover = matchUps.find(({ matchUpStatus }) => matchUpStatus === WALKOVER);
   expect(walkover.score).toEqual({});
 
-  const cancelled = matchUps.find(
-    ({ matchUpStatus }) => matchUpStatus === CANCELLED
-  );
+  const cancelled = matchUps.find(({ matchUpStatus }) => matchUpStatus === CANCELLED);
   expect(cancelled.score).toEqual({});
 });
 
@@ -145,9 +137,7 @@ it('allows AWAITING_RESULT status with no outcome', () => {
     drawProfiles,
   });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   let result = tournamentEngine.setMatchUpStatus({
@@ -190,11 +180,9 @@ it('does not allow IN_PROGRESS or AWAITING_RESULT status when < 2 drawPositions'
     drawProfiles,
   });
 
-  const { pendingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({
-      drawId,
-    });
+  const { pendingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({
+    drawId,
+  });
   const matchUpId = pendingMatchUps[0].matchUpId;
 
   let result = tournamentEngine.setMatchUpStatus({
@@ -234,9 +222,7 @@ it('attaches notes to matchUps', () => {
     drawProfiles,
   });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const firstNote = 'first note';

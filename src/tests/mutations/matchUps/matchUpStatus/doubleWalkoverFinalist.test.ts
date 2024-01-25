@@ -2,18 +2,10 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  COMPLETED,
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 it('DOUBLE_WALKOVER can Advance participant to final when scores entered after WOWO', () => {
   const drawProfiles = [

@@ -12,11 +12,7 @@ import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SINGLES } from '../../../constants/matchUpTypes';
-import {
-  MAIN,
-  ROUND_ROBIN,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,

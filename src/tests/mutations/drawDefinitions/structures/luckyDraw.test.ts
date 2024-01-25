@@ -50,47 +50,39 @@ const scenarios = [
   },
 ];
 
-test.each(scenarios)(
-  'it can generate luckyDraw structures for any drawSize',
-  ({ drawSize, expectation }) => {
-    const drawProfiles = [{ drawSize, drawType: LUCKY_DRAW }];
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      drawProfiles,
-    });
+test.each(scenarios)('it can generate luckyDraw structures for any drawSize', ({ drawSize, expectation }) => {
+  const drawProfiles = [{ drawSize, drawType: LUCKY_DRAW }];
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+  });
 
-    tournamentEngine.setState(tournamentRecord);
+  tournamentEngine.setState(tournamentRecord);
 
-    const { matchUps } = tournamentEngine.allTournamentMatchUps();
-    const firstRoundByeMatchUps = matchUps.filter(
-      ({ roundNumber, matchUpStatus }) =>
-        roundNumber === 1 && matchUpStatus === BYE
-    );
-    expect(firstRoundByeMatchUps.length).toBeLessThanOrEqual(1);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const firstRoundByeMatchUps = matchUps.filter(
+    ({ roundNumber, matchUpStatus }) => roundNumber === 1 && matchUpStatus === BYE,
+  );
+  expect(firstRoundByeMatchUps.length).toBeLessThanOrEqual(1);
 
-    const roundProfile =
-      getRoundMatchUps({
-        matchUps,
-      }).roundProfile ?? {};
+  const roundProfile =
+    getRoundMatchUps({
+      matchUps,
+    }).roundProfile ?? {};
 
-    if (expectation.matchUpCounts) {
-      const matchUpCounts = Object.values(roundProfile).map(
-        (values: any) => values.matchUpsCount
-      );
-      expect(matchUpCounts).toEqual(expectation.matchUpCounts);
-    }
-
-    const finishingPositionRanges = Object.values(roundProfile).map(
-      (values: any) => Object.values(values.finishingPositionRange)
-    );
-    if (expectation.finishingPositionRanges) {
-      expect(finishingPositionRanges).toEqual(
-        expectation.finishingPositionRanges
-      );
-    } else {
-      console.log(finishingPositionRanges);
-    }
+  if (expectation.matchUpCounts) {
+    const matchUpCounts = Object.values(roundProfile).map((values: any) => values.matchUpsCount);
+    expect(matchUpCounts).toEqual(expectation.matchUpCounts);
   }
-);
+
+  const finishingPositionRanges = Object.values(roundProfile).map((values: any) =>
+    Object.values(values.finishingPositionRange),
+  );
+  if (expectation.finishingPositionRanges) {
+    expect(finishingPositionRanges).toEqual(expectation.finishingPositionRanges);
+  } else {
+    console.log(finishingPositionRanges);
+  }
+});
 
 test('drawProfile scenario coverage', () => {
   const drawProfiles = [
@@ -133,9 +125,7 @@ test.each([5, 6, 7, 8, 9])('drawProfile participant generation', (drawSize) => {
     structureId,
   });
 
-  const filledDrawPositions = positionAssignments?.filter(
-    (assignment) => assignment.participantId
-  );
+  const filledDrawPositions = positionAssignments?.filter((assignment) => assignment.participantId);
   expect(filledDrawPositions?.length).toEqual(drawSize);
   expect(tournamentRecord.participants.length).toEqual(drawSize);
 });

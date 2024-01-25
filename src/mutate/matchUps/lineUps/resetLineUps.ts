@@ -7,12 +7,7 @@ import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  Structure,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
 
 type ResetLineUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -50,9 +45,7 @@ export function resetLineUps({
 
     (inContextMatchUp.sides ?? []).forEach((side: any, sideIndex) => {
       if (side?.drawPosition && drawPositions?.includes(side.drawPosition)) {
-        const matchUp = matchUps.find(
-          ({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId
-        );
+        const matchUp = matchUps.find(({ matchUpId }) => matchUpId === inContextMatchUp.matchUpId);
         if (matchUp?.sides?.[sideIndex]) {
           delete matchUp.sides[sideIndex].lineUp;
 

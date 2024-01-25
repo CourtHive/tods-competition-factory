@@ -1,10 +1,7 @@
 import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
-import {
-  replaceWithBye,
-  getOrderedDrawPositionPairs,
-} from '../../../drawDefinitions/testingUtilities';
+import { replaceWithBye, getOrderedDrawPositionPairs } from '../../../drawDefinitions/testingUtilities';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
@@ -48,9 +45,7 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
     drawId,
   });
 
-  let targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1
-  );
+  let targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 1);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '7-5 7-5',
@@ -64,9 +59,7 @@ it('able to enter MAIN structure score after manually placing BYE in CONSOLATION
   });
   expect(result.success).toEqual(true);
 
-  targetMatchUp = matchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2
-  );
+  targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 2);
   result = tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,

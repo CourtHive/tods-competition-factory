@@ -86,9 +86,7 @@ test('positionActions work when team score is 0-0', () => {
 });
 
 function processOutcome({ dualMatchUp, outcome, expectedScore }) {
-  const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-    ({ matchUpType }) => matchUpType === SINGLES
-  );
+  const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
   const { drawId } = dualMatchUp;
   singlesMatchUps.forEach((singlesMatchUp) => {
     const { matchUpId } = singlesMatchUp;
@@ -141,9 +139,7 @@ test('BYEs can be placed in TEAM RR', () => {
     drawId,
   });
 
-  let drawPosition = positionAssignments.find(
-    (assignemnt) => !assignemnt.participantId
-  ).drawPosition;
+  let drawPosition = positionAssignments.find((assignemnt) => !assignemnt.participantId).drawPosition;
   expect(drawPosition).toEqual(2);
 
   validActions = tournamentEngine.positionActions({
@@ -160,9 +156,7 @@ test('BYEs can be placed in TEAM RR', () => {
     drawId,
   }).positionAssignments;
 
-  drawPosition = positionAssignments.find(
-    (assignemnt) => assignemnt.bye
-  ).drawPosition;
+  drawPosition = positionAssignments.find((assignemnt) => assignemnt.bye).drawPosition;
   expect(drawPosition).toEqual(2);
 });
 

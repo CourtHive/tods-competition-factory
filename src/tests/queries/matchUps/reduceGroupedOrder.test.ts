@@ -12,13 +12,10 @@ it.each([
     roundPositionsCount: 2,
     sizedGroupOrder: [1, 2],
   },
-])(
-  'properly reduces groupedOrder',
-  ({ groupedOrder, roundPositionsCount, sizedGroupOrder }) => {
-    const result = reduceGroupedOrder({
-      roundPositionsCount,
-      groupedOrder,
-    });
-    expect(result).toEqual(sizedGroupOrder);
-  }
-);
+])('properly reduces groupedOrder', ({ groupedOrder, roundPositionsCount, sizedGroupOrder }) => {
+  const result = reduceGroupedOrder({
+    roundPositionsCount,
+    groupedOrder,
+  });
+  expect(result).toEqual(sizedGroupOrder);
+});

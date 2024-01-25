@@ -2,8 +2,7 @@ import { INVALID_DRAW_DEFINITION } from '../../constants/errorConditionConstants
 import { CONSOLATION, PLAY_OFF } from '../../constants/drawDefinitionConstants';
 
 export function getExitProfiles({ drawDefinition }) {
-  if (typeof drawDefinition !== 'object')
-    return { error: INVALID_DRAW_DEFINITION };
+  if (typeof drawDefinition !== 'object') return { error: INVALID_DRAW_DEFINITION };
 
   const exitProfiles = {};
   const { structures = [], links = [] } = drawDefinition || {};
@@ -20,9 +19,7 @@ export function getExitProfiles({ drawDefinition }) {
 
   for (const stage of Object.keys(stageStructures)) {
     // there can only be one structure per stage with stageSequence 1
-    const initialStructure = stageStructures[stage].find(
-      ({ stageSequence }) => stageSequence === 1
-    );
+    const initialStructure = stageStructures[stage].find(({ stageSequence }) => stageSequence === 1);
 
     if (!initialStructure) continue;
 
@@ -45,32 +42,20 @@ export function getExitProfiles({ drawDefinition }) {
 
   return { exitProfiles };
 
-  function addExitProfiles({
-    exitProfiles,
-    exitProfile,
-    structureId,
-    targetRound,
-    aggregator,
-    stage,
-  }) {
+  function addExitProfiles({ exitProfiles, exitProfile, structureId, targetRound, aggregator, stage }) {
     if (!exitProfiles[structureId]) exitProfiles[structureId] = [];
 
     // initialStructure of CONSOLATION and PLAY_OFF do not need to be captured
-    if (!(exitProfile === '0' && [CONSOLATION, PLAY_OFF].includes(stage)))
-      exitProfiles[structureId].push(exitProfile);
+    if (!(exitProfile === '0' && [CONSOLATION, PLAY_OFF].includes(stage))) exitProfiles[structureId].push(exitProfile);
     const relevantLinks = links.filter(
-      (link) =>
-        link.source.structureId === structureId &&
-        link.source.roundNumber >= targetRound // this doesn't work for ROUND_ROBIN. Will need to use roundProfile to determine final roundNumber.
+      (link) => link.source.structureId === structureId && link.source.roundNumber >= targetRound, // this doesn't work for ROUND_ROBIN. Will need to use roundProfile to determine final roundNumber.
     );
 
     for (const link of relevantLinks) {
       const exitRound = link.source.roundNumber;
       const targetRound = link.target.roundNumber;
       const targetStructureId = link.target.structureId;
-      const stage = structures.find(
-        (structure) => structure.structureId === targetStructureId
-      ).stage;
+      const stage = structures.find((structure) => structure.structureId === targetStructureId).stage;
 
       const fp = [stage, targetStructureId, targetRound, exitRound].join('|');
       if (aggregator[fp]) return;

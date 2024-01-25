@@ -56,8 +56,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   });
-  const { sideParticipantIds, individualParticipantIds } =
-    getMatchUpParticipantIds({ matchUp });
+  const { sideParticipantIds, individualParticipantIds } = getMatchUpParticipantIds({ matchUp });
 
   result = tournamentEngine.checkInParticipant({
     participantId: individualParticipantIds?.[0],
@@ -86,8 +85,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  let { allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp });
+  let { allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp });
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(1);
 
@@ -105,8 +103,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(1);
 
@@ -123,8 +120,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // checkedInParticipantIds.length is 3 becuase of 2 individualParticipantIds and their pair participantId
   expect(checkedInParticipantIds?.length).toEqual(3);
@@ -142,8 +138,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(4);
 
@@ -160,8 +155,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(true);
   expect(checkedInParticipantIds?.length).toEqual(6);
 
@@ -179,8 +173,7 @@ it('can check participants in and out', () => {
     inContext: true,
     drawId,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   expect(checkedInParticipantIds?.length).toEqual(3);
 
@@ -215,8 +208,7 @@ it('can check participants in and out', () => {
     drawId,
     inContext: true,
   }));
-  ({ allParticipantsCheckedIn, checkedInParticipantIds } =
-    getCheckedInParticipantIds({ matchUp }));
+  ({ allParticipantsCheckedIn, checkedInParticipantIds } = getCheckedInParticipantIds({ matchUp }));
   expect(allParticipantsCheckedIn).toEqual(false);
   // count has changed from 3 to 1 because removing an individual participantId also removed pair participantId
   expect(checkedInParticipantIds?.length).toEqual(1);

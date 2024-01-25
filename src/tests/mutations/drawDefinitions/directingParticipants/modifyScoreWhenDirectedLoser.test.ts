@@ -66,10 +66,7 @@ it('can modify score for main draw match after loser directed to consolation', (
   // target specific matchUp
   const targetMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, stage, stageSequence }) =>
-      roundNumber === 1 &&
-      roundPosition === 2 &&
-      stage === MAIN &&
-      stageSequence === 1
+      roundNumber === 1 && roundPosition === 2 && stage === MAIN && stageSequence === 1,
   );
   const { matchUpId, score, winningSide } = targetMatchUp;
   expect(score.scoreStringSide1).toEqual('6-1 6-2');

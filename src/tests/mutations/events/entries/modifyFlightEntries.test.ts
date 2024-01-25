@@ -1,10 +1,7 @@
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
-import {
-  getParticipantId,
-  getParticipantIds,
-} from '../../../../global/functions/extractors';
+import { getParticipantId, getParticipantIds } from '../../../../global/functions/extractors';
 
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { INDIVIDUAL } from '../../../../constants/participantConstants';
@@ -46,9 +43,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
     eventId,
   });
   expect(flightProfile.flights.length).toEqual(3);
-  expect(
-    flightProfile.flights.map(({ drawEntries }) => drawEntries.length)
-  ).toEqual([12, 12, 12]);
+  expect(flightProfile.flights.map(({ drawEntries }) => drawEntries.length)).toEqual([12, 12, 12]);
   expect(flightProfile.flights.every(({ drawId }) => drawId));
 
   const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
@@ -81,9 +76,7 @@ it('will modify flight.drawEntries when no drawDefinition is present', () => {
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
   expect(flightProfile.flights[0].drawEntries.length).toEqual(14);
 
-  let firstFlightParticipantIds = flightProfile.flights[0].drawEntries.map(
-    ({ participantId }) => participantId
-  );
+  let firstFlightParticipantIds = flightProfile.flights[0].drawEntries.map(({ participantId }) => participantId);
   const participantIdsToRemove = firstFlightParticipantIds.slice(0, 2);
   result = tournamentEngine.removeDrawEntries({
     participantIds: participantIdsToRemove,

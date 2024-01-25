@@ -13,10 +13,9 @@ it('can retrieve team lineUps', () => {
   const { participants: teamParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM] },
   });
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   let result = tournamentEngine.getTeamLineUp({ drawId });
   expect(result.error).toEqual(MISSING_PARTICIPANT_ID);

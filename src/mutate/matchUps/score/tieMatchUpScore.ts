@@ -25,11 +25,7 @@ import {
   IN_PROGRESS,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type UpdateTieMatchUpScoreArgs = {
   tournamentRecords?: TournamentRecords;
@@ -51,15 +47,7 @@ export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
   success?: boolean;
   score?: any;
 } {
-  const {
-    exitWhenNoValues,
-    drawDefinition,
-    matchUpStatus,
-    removeScore,
-    matchUpsMap,
-    matchUpId,
-    event,
-  } = params;
+  const { exitWhenNoValues, drawDefinition, matchUpStatus, removeScore, matchUpsMap, matchUpId, event } = params;
 
   const tournamentRecords =
     params.tournamentRecords ||
@@ -68,8 +56,7 @@ export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
     }) ||
     {};
 
-  const tournamentId =
-    params.tournamentId || params.tournamentRecord?.tournamentId;
+  const tournamentId = params.tournamentId || params.tournamentRecord?.tournamentId;
   tournamentRecords && findTournamentId({ tournamentRecords, ...params });
   const tournamentRecord = tournamentId && tournamentRecords[tournamentId];
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -147,10 +134,9 @@ export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
   const removeWinningSide = !!(matchUp.winningSide && !hasWinner);
   const hasResults = matchUp.tieMatchUps.find(
     ({ score, winningSide, matchUpStatus }) =>
-      (score?.sets?.length &&
-        (score.sets[0].side1Score || score.sets[0].side2Score)) ||
+      (score?.sets?.length && (score.sets[0].side1Score || score.sets[0].side2Score)) ||
       (matchUpStatus && completedMatchUpStatuses.includes(matchUpStatus)) ||
-      winningSide
+      winningSide,
   );
 
   let tieFormatRemoved;
@@ -163,10 +149,7 @@ export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
       event,
     })?.tieFormat;
 
-    if (
-      inheritedTieFormat &&
-      JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)
-    ) {
+    if (inheritedTieFormat && JSON.stringify(tieFormat) === JSON.stringify(inheritedTieFormat)) {
       matchUp.tieFormatId = undefined;
       matchUp.tieFormat = undefined;
       tieFormatRemoved = true;

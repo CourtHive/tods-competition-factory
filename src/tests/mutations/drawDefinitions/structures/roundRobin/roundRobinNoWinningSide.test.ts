@@ -3,11 +3,7 @@ import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import {
-  ABANDONED,
-  CANCELLED,
-  DOUBLE_WALKOVER,
-} from '../../../../../constants/matchUpStatusConstants';
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER } from '../../../../../constants/matchUpStatusConstants';
 
 test('completed matchUp outcomes with no winningSide will not cause destructuring errors', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

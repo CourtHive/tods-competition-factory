@@ -21,16 +21,13 @@ it('can generate a draw with voluntary consolation stage', () => {
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(2);
 
-  const { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      matchUpsLimit: 1,
-      drawId,
-    });
+  const { eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    matchUpsLimit: 1,
+    drawId,
+  });
   expect(eligibleParticipants.length).toEqual(16);
 
-  const eligileParticipantIds = eligibleParticipants.map(
-    ({ participantId }) => participantId
-  );
+  const eligileParticipantIds = eligibleParticipants.map(({ participantId }) => participantId);
 
   let result = tournamentEngine.addDrawEntries({
     participantIds: eligileParticipantIds,
@@ -42,9 +39,7 @@ it('can generate a draw with voluntary consolation stage', () => {
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
 
-  const vcstageEntries = drawDefinition.entries.filter(
-    (e) => e.entryStage === VOLUNTARY_CONSOLATION
-  );
+  const vcstageEntries = drawDefinition.entries.filter((e) => e.entryStage === VOLUNTARY_CONSOLATION);
 
   expect(vcstageEntries.length).toEqual(16);
 
@@ -62,13 +57,9 @@ it('can generate a draw with voluntary consolation stage', () => {
   expect(matchUps.length).toEqual(15);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const { positionAssignments } = drawDefinition.structures.find(
-    ({ stage }) => stage === VOLUNTARY_CONSOLATION
-  );
+  const { positionAssignments } = drawDefinition.structures.find(({ stage }) => stage === VOLUNTARY_CONSOLATION);
   expect(positionAssignments.length).toEqual(16);
-  const assignedPositions = positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedPositions = positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedPositions.length).toEqual(16);
 
   result = tournamentEngine.resetVoluntaryConsolationStructure({
@@ -77,14 +68,12 @@ it('can generate a draw with voluntary consolation stage', () => {
   expect(result.success).toEqual(true);
 
   let voluntaryConsolationEntries = drawDefinition.entries.filter(
-    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION
+    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION,
   );
   expect(voluntaryConsolationEntries.length).toEqual(16);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const voluntaryStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === VOLUNTARY_CONSOLATION
-  );
+  const voluntaryStructure = drawDefinition.structures.find(({ stage }) => stage === VOLUNTARY_CONSOLATION);
   expect(voluntaryStructure.matchUps.length).toEqual(0);
   expect(voluntaryStructure.seedAssignments.length).toEqual(0);
   expect(voluntaryStructure.positionAssignments.length).toEqual(0);
@@ -96,9 +85,7 @@ it('can generate a draw with voluntary consolation stage', () => {
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  voluntaryConsolationEntries = drawDefinition.entries.filter(
-    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION
-  );
+  voluntaryConsolationEntries = drawDefinition.entries.filter((entry) => entry.entryStage === VOLUNTARY_CONSOLATION);
   expect(voluntaryConsolationEntries.length).toEqual(0);
 });
 
@@ -132,12 +119,8 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
 
   const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
-  const mainEntries = flightProfile.flights.find(
-    (flight) => flight.flightNumber === 1
-  ).drawEntries;
-  const consolationParticipantIds = mainEntries.map(
-    ({ participantId }) => participantId
-  );
+  const mainEntries = flightProfile.flights.find((flight) => flight.flightNumber === 1).drawEntries;
+  const consolationParticipantIds = mainEntries.map(({ participantId }) => participantId);
 
   result = tournamentEngine.addDrawEntries({
     participantIds: consolationParticipantIds,
@@ -149,9 +132,7 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
 
-  const vcstageEntries = drawDefinition.entries.filter(
-    (e) => e.entryStage === VOLUNTARY_CONSOLATION
-  );
+  const vcstageEntries = drawDefinition.entries.filter((e) => e.entryStage === VOLUNTARY_CONSOLATION);
 
   expect(vcstageEntries.length).toEqual(32);
 
@@ -183,13 +164,9 @@ it('can generate a draw with voluntary consolation stage and delay attachment', 
   expect(matchUps.length).toEqual(31);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const { positionAssignments } = drawDefinition.structures.find(
-    ({ stage }) => stage === VOLUNTARY_CONSOLATION
-  );
+  const { positionAssignments } = drawDefinition.structures.find(({ stage }) => stage === VOLUNTARY_CONSOLATION);
   expect(positionAssignments.length).toEqual(32);
-  const assignedPositions = positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedPositions = positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedPositions.length).toEqual(32);
 
   result = tournamentEngine.getDrawData({ drawId });
@@ -213,16 +190,13 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(2);
 
-  const { eligibleParticipants } =
-    tournamentEngine.getEligibleVoluntaryConsolationParticipants({
-      matchUpsLimit: 1,
-      drawId,
-    });
+  const { eligibleParticipants } = tournamentEngine.getEligibleVoluntaryConsolationParticipants({
+    matchUpsLimit: 1,
+    drawId,
+  });
   expect(eligibleParticipants.length).toEqual(16);
 
-  const eligileParticipantIds = eligibleParticipants
-    .map(({ participantId }) => participantId)
-    .slice(0, 5);
+  const eligileParticipantIds = eligibleParticipants.map(({ participantId }) => participantId).slice(0, 5);
 
   let result = tournamentEngine.addDrawEntries({
     participantIds: eligileParticipantIds,
@@ -234,9 +208,7 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
 
-  const vcstageEntries = drawDefinition.entries.filter(
-    (e) => e.entryStage === VOLUNTARY_CONSOLATION
-  );
+  const vcstageEntries = drawDefinition.entries.filter((e) => e.entryStage === VOLUNTARY_CONSOLATION);
 
   expect(vcstageEntries.length).toEqual(5);
 
@@ -260,13 +232,9 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   expect(matchUps.length).toEqual(7);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const { positionAssignments } = drawDefinition.structures.find(
-    ({ stage }) => stage === VOLUNTARY_CONSOLATION
-  );
+  const { positionAssignments } = drawDefinition.structures.find(({ stage }) => stage === VOLUNTARY_CONSOLATION);
   expect(positionAssignments.length).toEqual(8);
-  const assignedPositions = positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedPositions = positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedPositions.length).toEqual(5);
 
   result = tournamentEngine.resetVoluntaryConsolationStructure({
@@ -275,14 +243,12 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   expect(result.success).toEqual(true);
 
   let voluntaryConsolationEntries = drawDefinition.entries.filter(
-    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION
+    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION,
   );
   expect(voluntaryConsolationEntries.length).toEqual(5);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const voluntaryStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === VOLUNTARY_CONSOLATION
-  );
+  const voluntaryStructure = drawDefinition.structures.find(({ stage }) => stage === VOLUNTARY_CONSOLATION);
   expect(voluntaryStructure.matchUps.length).toEqual(0);
   expect(voluntaryStructure.seedAssignments.length).toEqual(0);
   expect(voluntaryStructure.positionAssignments.length).toEqual(0);
@@ -294,8 +260,6 @@ it('can generate a draw with voluntary consolation stage with 5 entries', () => 
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  voluntaryConsolationEntries = drawDefinition.entries.filter(
-    (entry) => entry.entryStage === VOLUNTARY_CONSOLATION
-  );
+  voluntaryConsolationEntries = drawDefinition.entries.filter((entry) => entry.entryStage === VOLUNTARY_CONSOLATION);
   expect(voluntaryConsolationEntries.length).toEqual(0);
 });

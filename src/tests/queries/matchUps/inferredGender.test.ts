@@ -18,9 +18,7 @@ test('contextProfile can specify inferGender - works with SINGLES', () => {
     contextProfile: { inferGender: true },
   });
 
-  expect(
-    matchUps.map((m) => m.inferredGender).filter(Boolean).length
-  ).toBeGreaterThanOrEqual(1);
+  expect(matchUps.map((m) => m.inferredGender).filter(Boolean).length).toBeGreaterThanOrEqual(1);
 
   matchUps = tournamentEngine.allDrawMatchUps({
     contextProfile: { inferGender: true },
@@ -59,9 +57,7 @@ test('contextProfile can specify inferGender - works with DOUBLES', () => {
     contextProfile: { inferGender: true },
   });
 
-  expect(
-    matchUps.map((m) => m.inferredGender).filter(Boolean).length
-  ).toBeGreaterThanOrEqual(1);
+  expect(matchUps.map((m) => m.inferredGender).filter(Boolean).length).toBeGreaterThanOrEqual(1);
 
   matchUps = tournamentEngine.allDrawMatchUps({
     contextProfile: { inferGender: true },

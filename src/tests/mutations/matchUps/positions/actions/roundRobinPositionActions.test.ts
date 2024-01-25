@@ -80,18 +80,14 @@ it('can return accurate position details when requesting positionActions', () =>
     structureId,
     drawId,
   });
-  const { method, payload } = result.validActions.find(
-    ({ type }) => type === ASSIGN_BYE
-  );
+  const { method, payload } = result.validActions.find(({ type }) => type === ASSIGN_BYE);
   result = tournamentEngine[method](payload);
-  const m = tournamentEngine
-    .allTournamentMatchUps()
-    .matchUps.filter((x) => x.drawPositions.includes(6));
+  const m = tournamentEngine.allTournamentMatchUps().matchUps.filter((x) => x.drawPositions.includes(6));
   expect(
     m
       .map((x) => x.sides)
       .flat(Infinity)
       .filter((y) => y.drawPosition === 6)
-      .map((z) => z.bye)
+      .map((z) => z.bye),
   ).toEqual([true, true, true]);
 });

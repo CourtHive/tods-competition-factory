@@ -87,8 +87,8 @@ export function getTieMatchUpContext({
   if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType)) return { error: INVALID_MATCHUP };
 
   const { positionAssignments } = getPositionAssignments({ structure });
-  const relevantAssignments = positionAssignments?.filter(
-    (assignment) => drawPositions?.includes(assignment.drawPosition),
+  const relevantAssignments = positionAssignments?.filter((assignment) =>
+    drawPositions?.includes(assignment.drawPosition),
   );
 
   const { matchUp: dualMatchUp } = findDrawMatchUp({

@@ -4,18 +4,10 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import {
-  DOUBLE_WALKOVER,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
-  matchUps.find(
-    (matchUp) =>
-      matchUp.roundNumber === roundNumber &&
-      matchUp.roundPosition === roundPosition
-  );
+  matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
 
 /*
   drawSize: 4
@@ -39,9 +31,7 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -146,9 +136,7 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
   let result = setSubscriptions({
     subscriptions: {
       [MODIFY_MATCHUP]: (matchUps) => {
-        matchUps.forEach(({ matchUp }) =>
-          modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition])
-        );
+        matchUps.forEach(({ matchUp }) => modifiedMatchUpLog.push([matchUp.roundNumber, matchUp.roundPosition]));
       },
     },
   });
@@ -232,9 +220,7 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
-  expect(
-    targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)
-  ).toEqual([]);
+  expect(targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)).toEqual([]);
 
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(undefined);

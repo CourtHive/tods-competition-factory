@@ -13,19 +13,12 @@ export function getStageParticipants({
   const stageParticipants = {
     QUALIFYING: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
-      .filter(
-        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-      )
+      .filter(({ participantId }) => !allUniqueParticipantIds.includes(participantId))
       .slice(0, qualifyingParticipantsCount),
     MAIN: targetParticipants
       .filter(({ participantType }) => participantType === eventParticipantType)
-      .filter(
-        ({ participantId }) => !allUniqueParticipantIds.includes(participantId)
-      )
-      .slice(
-        qualifyingParticipantsCount,
-        qualifyingParticipantsCount + mainParticipantsCount
-      ),
+      .filter(({ participantId }) => !allUniqueParticipantIds.includes(participantId))
+      .slice(qualifyingParticipantsCount, qualifyingParticipantsCount + mainParticipantsCount),
   };
 
   return { stageParticipants };

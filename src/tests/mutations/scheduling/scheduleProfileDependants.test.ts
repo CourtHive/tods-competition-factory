@@ -41,15 +41,13 @@ it('will not schedule Round 1 after Round 2 if Round 2 was manually scheduled at
     matchUpFilters: { roundNumbers: [2] },
   });
 
-  const matchUpContextIds = matchUps.map(
-    ({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
-      tournamentId,
-      structureId,
-      matchUpId,
-      eventId,
-      drawId,
-    })
-  );
+  const matchUpContextIds = matchUps.map(({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
+    tournamentId,
+    structureId,
+    matchUpId,
+    eventId,
+    drawId,
+  }));
 
   let result = competitionEngine.bulkScheduleMatchUps({
     matchUpContextIds,
@@ -115,15 +113,13 @@ it('will schedule Round 1 after Round 2 if Round 2 was manually scheduled later 
     matchUpFilters: { roundNumbers: [2] },
   });
 
-  const matchUpContextIds = matchUps.map(
-    ({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
-      tournamentId,
-      structureId,
-      matchUpId,
-      eventId,
-      drawId,
-    })
-  );
+  const matchUpContextIds = matchUps.map(({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
+    tournamentId,
+    structureId,
+    matchUpId,
+    eventId,
+    drawId,
+  }));
 
   let result = competitionEngine.bulkScheduleMatchUps({
     matchUpContextIds,

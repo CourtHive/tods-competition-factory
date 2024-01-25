@@ -15,14 +15,8 @@ export function getAwardProfile(params) {
   const isValidDateRange = (profile) => {
     if ((!startDate && !endDate) || !profile.dateRanges) return true;
     return profile.dateRanges.some((dateRange) => {
-      const validStartDate =
-        !startDate ||
-        !dateRange.startDate ||
-        new Date(startDate) > new Date(dateRange.startDate);
-      const validEndDate =
-        !endDate ||
-        !dateRange.endDate ||
-        new Date(endDate) <= new Date(dateRange.endDate);
+      const validStartDate = !startDate || !dateRange.startDate || new Date(startDate) > new Date(dateRange.startDate);
+      const validEndDate = !endDate || !dateRange.endDate || new Date(endDate) <= new Date(dateRange.endDate);
       return validStartDate && validEndDate;
     });
   };
@@ -41,13 +35,9 @@ export function getAwardProfile(params) {
       (!flightNumber ||
         !profile.flights?.flightNumbers?.length ||
         profile.flights.flightNumbers.includes(flightNumber)) &&
-      (!profile.participationOrder ||
-        profile.participationOrder === participationOrder) &&
-      (!profile.category?.ageCategoryCodes ||
-        profile.category.ageCategoryCodes.includes(
-          category?.ageCategoryCode
-        )) &&
-      (!profile.eventTypes?.length || profile.eventTypes?.includes(eventType))
+      (!profile.participationOrder || profile.participationOrder === participationOrder) &&
+      (!profile.category?.ageCategoryCodes || profile.category.ageCategoryCodes.includes(category?.ageCategoryCode)) &&
+      (!profile.eventTypes?.length || profile.eventTypes?.includes(eventType)),
   );
 
   return { awardProfile };

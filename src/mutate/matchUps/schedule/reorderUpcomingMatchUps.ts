@@ -19,18 +19,14 @@ import {
 export function reorderUpcomingMatchUps(params) {
   const stack = 'reorderUpcomingMatchUps';
   const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return decorateResult({
       result: { error: MISSING_TOURNAMENT_RECORDS },
       stack,
     });
 
   const { matchUpsContextIds, firstToLast } = params;
-  if (!matchUpsContextIds)
-    return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (!matchUpsContextIds) return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const matchUpsCount = matchUpsContextIds?.length;
   if (!matchUpsCount) return { ...SUCCESS };
@@ -41,8 +37,7 @@ export function reorderUpcomingMatchUps(params) {
     let calculatedIndex = index + (firstToLast ? -1 : 1);
     if (calculatedIndex < 0) calculatedIndex = matchUpsCount - 1;
     if (calculatedIndex === matchUpsCount) calculatedIndex = 0;
-    const scheduledTime =
-      matchUpsContextIds[calculatedIndex].schedule.scheduledTime;
+    const scheduledTime = matchUpsContextIds[calculatedIndex].schedule.scheduledTime;
     const result = assignMatchUpScheduledTime({
       tournamentId,
       scheduledTime,
@@ -60,12 +55,7 @@ export function reorderUpcomingMatchUps(params) {
     ? SUCCESS
     : decorateResult({ result: { error: MODIFICATIONS_FAILED }, stack });
 
-  function assignMatchUpScheduledTime({
-    tournamentId,
-    scheduledTime,
-    matchUpId,
-    drawId,
-  }) {
+  function assignMatchUpScheduledTime({ tournamentId, scheduledTime, matchUpId, drawId }) {
     const tournamentRecord = tournamentRecords[tournamentId];
     const { drawDefinition } = findDrawDefinition({
       tournamentRecord,

@@ -2,11 +2,7 @@ import { isValidExtension } from '../../validators/isValidExtension';
 import { decorateResult } from '../../global/functions/decorateResult';
 
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../constants/errorConditionConstants';
 
 import { TournamentRecords } from '../../types/factoryTypes';
 import { Extension } from '../../types/tournamentTypes';
@@ -61,9 +57,7 @@ export function addExtension(params?: AddExtensionArgs): {
     Object.assign(params.extension, { createdAt });
   }
 
-  const existingExtension = params.element.extensions.find(
-    ({ name }) => name === params.extension.name
-  );
+  const existingExtension = params.element.extensions.find(({ name }) => name === params.extension.name);
   if (existingExtension) {
     existingExtension.value = params.extension.value;
   } else if (params.extension.value) {

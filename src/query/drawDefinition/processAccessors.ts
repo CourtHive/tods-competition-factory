@@ -4,11 +4,7 @@ type ProcessAccessorsArgs = {
   value: any;
 };
 
-export function processAccessors({
-  significantCharacters,
-  accessors = [],
-  value,
-}: ProcessAccessorsArgs): string[] {
+export function processAccessors({ significantCharacters, accessors = [], value }: ProcessAccessorsArgs): string[] {
   const extractedValues: any[] = [];
   const accessor = accessors[0];
   if (value?.[accessor]) {
@@ -40,9 +36,7 @@ export function processAccessors({
 
   function checkValue({ value }) {
     if (value && ['string', 'number'].includes(typeof value)) {
-      const extractedValue = significantCharacters
-        ? value.slice(0, significantCharacters)
-        : value;
+      const extractedValue = significantCharacters ? value.slice(0, significantCharacters) : value;
       extractedValues.push(extractedValue);
     }
   }

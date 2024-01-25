@@ -7,14 +7,12 @@ const { BALL_ABUSE } = penaltyConstants;
 
 test('penalties can be administered via competitionEngine', () => {
   const participantsCount = 10;
-  const { tournamentRecord: firstTournament } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile: { participantsCount },
-    });
-  const { tournamentRecord: secondTournament } =
-    mocksEngine.generateTournamentRecord({
-      participantsProfile: { participantsCount },
-    });
+  const { tournamentRecord: firstTournament } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
+  });
+  const { tournamentRecord: secondTournament } = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
+  });
   competitionEngine.setState([firstTournament, secondTournament]);
 
   let result = competitionEngine.getCompetitionParticipants();

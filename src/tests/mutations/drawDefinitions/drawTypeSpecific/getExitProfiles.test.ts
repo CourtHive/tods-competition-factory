@@ -3,10 +3,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import {
-  COMPASS,
-  CURTIS_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+import { COMPASS, CURTIS_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 test('can recreate an exitProfile for a COMPASS draw', () => {
   const {
@@ -42,10 +39,5 @@ test('can recreate an exitProfile for a CURTIS_CONSOLATION draw', () => {
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const exitProfiles = getExitProfiles({ drawDefinition }).exitProfiles ?? {};
-  expect(Object.values(exitProfiles)).toEqual([
-    ['0'],
-    ['0-1', '0-2'],
-    ['0-3', '0-4'],
-    ['0-5'],
-  ]);
+  expect(Object.values(exitProfiles)).toEqual([['0'], ['0-1', '0-2'], ['0-3', '0-4'], ['0-5']]);
 });

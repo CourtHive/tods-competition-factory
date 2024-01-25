@@ -19,7 +19,7 @@ export function participantInEntries({
     (entry) =>
       entry.participantId === participantId &&
       (!entryStatus || entryStatus === entry.entryStatus) &&
-      (!entryStage || entryStage === entry.entryStage)
+      (!entryStage || entryStage === entry.entryStage),
   );
   return participantId && inEntries;
 }

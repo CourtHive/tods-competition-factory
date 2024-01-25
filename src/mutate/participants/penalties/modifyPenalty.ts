@@ -12,18 +12,11 @@ import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import {
-  Participant,
-  Penalty,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { Participant, Penalty, Tournament } from '../../../types/tournamentTypes';
 
 export function modifyPenalty(params) {
   const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -42,11 +35,7 @@ type ModifyPenaltyArgs = {
   string;
 };
 
-function penaltyModify({
-  tournamentRecord,
-  modifications,
-  penaltyId,
-}: ModifyPenaltyArgs): {
+function penaltyModify({ tournamentRecord, modifications, penaltyId }: ModifyPenaltyArgs): {
   modifications?: any;
   error?: ErrorType;
   success?: boolean;
@@ -58,16 +47,13 @@ function penaltyModify({
 
   const participants = tournamentRecord?.participants ?? [];
 
-  const validAttributes = Object.keys(penaltyTemplate()).filter(
-    (attribute) => attribute !== 'penaltyId'
+  const validAttributes = Object.keys(penaltyTemplate()).filter((attribute) => attribute !== 'penaltyId');
+
+  const validModificationAttributes = Object.keys(modifications).filter((attribute) =>
+    validAttributes.includes(attribute),
   );
 
-  const validModificationAttributes = Object.keys(modifications).filter(
-    (attribute) => validAttributes.includes(attribute)
-  );
-
-  if (!validModificationAttributes.length)
-    return { error: NO_VALID_ATTRIBUTES };
+  if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
   let updatedPenalty;
   const modifiedParticipants: Participant[] = [];
@@ -77,7 +63,7 @@ function penaltyModify({
       if (penalty.penaltyId === penaltyId) {
         participantModified = true;
         validModificationAttributes.forEach((attribute) =>
-          Object.assign(penalty, { [attribute]: modifications[attribute] })
+          Object.assign(penalty, { [attribute]: modifications[attribute] }),
         );
 
         if (!updatedPenalty) updatedPenalty = penalty;
@@ -98,7 +84,5 @@ function penaltyModify({
     });
   }
 
-  return updatedPenalty
-    ? { ...SUCCESS, penalty: updatedPenalty }
-    : { error: PENALTY_NOT_FOUND };
+  return updatedPenalty ? { ...SUCCESS, penalty: updatedPenalty } : { error: PENALTY_NOT_FOUND };
 }

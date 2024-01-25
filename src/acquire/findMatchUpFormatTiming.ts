@@ -27,21 +27,17 @@ export function findMatchUpFormatTiming({
   eventType,
   eventId,
 }: FindMatchUpFormatTiming) {
-  if (!isValidMatchUpFormat({ matchUpFormat }))
-    return { error: UNRECOGNIZED_MATCHUP_FORMAT };
+  if (!isValidMatchUpFormat({ matchUpFormat })) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
-    (currentTournamentId) =>
-      !tournamentId || currentTournamentId === tournamentId
+    (currentTournamentId) => !tournamentId || currentTournamentId === tournamentId,
   );
 
   let timing;
   tournamentIds.forEach((currentTournamentId) => {
     if (timing) return;
     const tournamentRecord = tournamentRecords[currentTournamentId];
-    const event = eventId
-      ? findEvent({ tournamentRecord, eventId })?.event
-      : undefined;
+    const event = eventId ? findEvent({ tournamentRecord, eventId })?.event : undefined;
     timing = getMatchUpFormatTiming({
       tournamentRecord,
       matchUpFormat,
@@ -56,9 +52,6 @@ export function findMatchUpFormatTiming({
   return {
     recoveryMinutes: timing?.recoveryMinutes || defaultRecoveryMinutes,
     averageMinutes: timing?.averageMinutes || defaultAverageMinutes,
-    typeChangeRecoveryMinutes:
-      timing?.typeChangeRecoveryMinutes ||
-      timing?.recoveryMinutes ||
-      defaultRecoveryMinutes,
+    typeChangeRecoveryMinutes: timing?.typeChangeRecoveryMinutes || timing?.recoveryMinutes || defaultRecoveryMinutes,
   };
 }

@@ -3,11 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  INVALID_TIME_ITEM,
-  MISSING_TIME_ITEM,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { RETRIEVAL } from '../../../constants/timeItemConstants';
 
 it('can add and read timeItems from events', () => {
@@ -53,12 +49,10 @@ it('can add and read timeItems from events', () => {
   result = tournamentEngine.addEventTimeItem({ eventId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getEventTimeItem(
-    {
-      itemType: 'RETRIEVAL.RATING.SINGLES.U18',
-      eventId,
-    }
-  );
+  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getEventTimeItem({
+    itemType: 'RETRIEVAL.RATING.SINGLES.U18',
+    eventId,
+  });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(info).toEqual(undefined);
 
