@@ -37,8 +37,7 @@ export function getRoundContextProfile({
   const isRoundRobin = structure.structures;
   const roundNamingProfile = {};
 
-  const defaultRoundNamingPolicy =
-    POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
+  const defaultRoundNamingPolicy = POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING];
 
   const isQualifying = structure.stage === QUALIFYING;
   const qualifyingStageSequences: number = isQualifying
@@ -46,56 +45,36 @@ export function getRoundContextProfile({
         ...(drawDefinition?.structures ?? [])
           .filter((structure) => structure.stage === QUALIFYING)
           .map(({ stageSequence }) => stageSequence ?? 1),
-        0
+        0,
       )
     : 0;
 
   const preQualifyingSequence =
-    (structure.stageSequence ?? 1) < qualifyingStageSequences
-      ? structure.stageSequence ?? 1
-      : '';
+    (structure.stageSequence ?? 1) < qualifyingStageSequences ? structure.stageSequence ?? 1 : '';
 
   const preQualifyingAffix = preQualifyingSequence
-    ? roundNamingPolicy?.affixes?.preQualifying ||
-      defaultRoundNamingPolicy.affixes.preQualifying ||
-      ''
+    ? roundNamingPolicy?.affixes?.preQualifying || defaultRoundNamingPolicy.affixes.preQualifying || ''
     : '';
 
-  const roundNamingMap =
-    roundNamingPolicy?.roundNamingMap ||
-    defaultRoundNamingPolicy.roundNamingMap ||
-    {};
+  const roundNamingMap = roundNamingPolicy?.roundNamingMap || defaultRoundNamingPolicy.roundNamingMap || {};
 
   const abbreviatedRoundNamingMap =
-    roundNamingPolicy?.abbreviatedRoundNamingMap ||
-    defaultRoundNamingPolicy.abbreviatedRoundNamingMap ||
-    {};
+    roundNamingPolicy?.abbreviatedRoundNamingMap || defaultRoundNamingPolicy.abbreviatedRoundNamingMap || {};
 
-  const preFeedAffix =
-    roundNamingPolicy?.affixes?.preFeedRound ||
-    defaultRoundNamingPolicy.affixes.preFeedRound;
+  const preFeedAffix = roundNamingPolicy?.affixes?.preFeedRound || defaultRoundNamingPolicy.affixes.preFeedRound;
 
-  const roundNumberAffix =
-    roundNamingPolicy?.affixes?.roundNumber ||
-    defaultRoundNamingPolicy.affixes.roundNumber;
+  const roundNumberAffix = roundNamingPolicy?.affixes?.roundNumber || defaultRoundNamingPolicy.affixes.roundNumber;
 
-  const namingConventions =
-    roundNamingPolicy?.namingConventions ||
-    defaultRoundNamingPolicy.namingConventions;
+  const namingConventions = roundNamingPolicy?.namingConventions || defaultRoundNamingPolicy.namingConventions;
   const roundNameFallback = namingConventions.round;
 
   const stageInitial = stage && stage !== MAIN ? stage[0] : '';
-  const stageConstants =
-    roundNamingPolicy?.stageConstants ||
-    defaultRoundNamingPolicy.stageConstants;
+  const stageConstants = roundNamingPolicy?.stageConstants || defaultRoundNamingPolicy.stageConstants;
   const stageIndicator = (stage && stageConstants?.[stage]) || stageInitial;
   const stageConstant = `${preQualifyingAffix}${stageIndicator}${preQualifyingSequence}`;
 
   const roundProfileKeys = roundProfile ? Object.keys(roundProfile) : [];
-  const qualifyingAffix =
-    isQualifying && stageConstants?.[QUALIFYING]
-      ? `${stageConstants?.[QUALIFYING]}-`
-      : '';
+  const qualifyingAffix = isQualifying && stageConstants?.[QUALIFYING] ? `${stageConstants?.[QUALIFYING]}-` : '';
 
   if (isRoundRobin || isAdHocStructure || isLuckyStructure) {
     Object.assign(
@@ -104,14 +83,11 @@ export function getRoundContextProfile({
         const roundName = `${qualifyingAffix}${roundNameFallback} ${key}`;
         const abbreviatedRoundName = `${roundNumberAffix}${key}`;
         return { [key]: { roundName, abbreviatedRoundName } };
-      })
+      }),
     );
   } else {
     const qualifyingFinishgMap =
-      isQualifying &&
-      (roundNamingPolicy?.qualifyingFinishMap ||
-        defaultRoundNamingPolicy?.qualifyingFinishMap ||
-        {});
+      isQualifying && (roundNamingPolicy?.qualifyingFinishMap || defaultRoundNamingPolicy?.qualifyingFinishMap || {});
 
     Object.assign(
       roundNamingProfile,
@@ -129,28 +105,16 @@ export function getRoundContextProfile({
         const suffix = preFeedRound ? `-${preFeedAffix}` : '';
         const profileRoundName = `${sizedRoundName}${suffix}`;
 
-        const roundName = [
-          stageConstant,
-          structureAbbreviation,
-          profileRoundName,
-        ]
-          .filter(Boolean)
-          .join('-');
+        const roundName = [stageConstant, structureAbbreviation, profileRoundName].filter(Boolean).join('-');
 
-        const sizedAbbreviation =
-          abbreviatedRoundNamingMap[matchUpsCount] ||
-          `${roundNumberAffix}${participantsCount}`;
+        const sizedAbbreviation = abbreviatedRoundNamingMap[matchUpsCount] || `${roundNumberAffix}${participantsCount}`;
         const profileAbbreviation = `${sizedAbbreviation}${suffix}`;
-        const abbreviatedRoundName = [
-          stageConstant,
-          structureAbbreviation,
-          profileAbbreviation,
-        ]
+        const abbreviatedRoundName = [stageConstant, structureAbbreviation, profileAbbreviation]
           .filter(Boolean)
           .join('-');
 
         return { [round]: { abbreviatedRoundName, roundName } };
-      })
+      }),
     );
   }
 

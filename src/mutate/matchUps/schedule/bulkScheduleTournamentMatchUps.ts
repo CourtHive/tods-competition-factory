@@ -12,10 +12,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '../../../constants/errorConditionConstants';
-import {
-  BYE,
-  completedMatchUpStatuses,
-} from '../../../constants/matchUpStatusConstants';
+import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 
 type BulkScheduleMachUpsArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -49,11 +46,9 @@ export function bulkScheduleTournamentMatchUps({
   warnings?: any[];
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpDetails && (!matchUpIds || !Array.isArray(matchUpIds)))
-    return { error: MISSING_MATCHUP_IDS };
+  if (!matchUpDetails && (!matchUpIds || !Array.isArray(matchUpIds))) return { error: MISSING_MATCHUP_IDS };
 
-  if (!matchUpDetails && (!schedule || typeof schedule !== 'object'))
-    return { error: MISSING_SCHEDULE };
+  if (!matchUpDetails && (!schedule || typeof schedule !== 'object')) return { error: MISSING_SCHEDULE };
 
   let inContextMatchUps;
   const warnings: any[] = [];
@@ -84,8 +79,7 @@ export function bulkScheduleTournamentMatchUps({
     const { matchUpId, drawId, matchUpStatus } = matchUp;
     if (
       (scheduleByeMatchUps || matchUpStatus !== BYE) &&
-      (scheduleCompletedMatchUps ||
-        !completedMatchUpStatuses.includes(matchUpStatus))
+      (scheduleCompletedMatchUps || !completedMatchUpStatuses.includes(matchUpStatus))
     ) {
       if (drawIdMap[drawId]) {
         drawIdMap[drawId].push(matchUpId);
@@ -106,8 +100,7 @@ export function bulkScheduleTournamentMatchUps({
     if (!drawDefinition) continue;
 
     const drawMatchUpIds = drawIdMap[drawId].filter(
-      (matchUpId) =>
-        matchUpIds?.includes(matchUpId) ?? detailMatchUpIds?.includes(matchUpId)
+      (matchUpId) => matchUpIds?.includes(matchUpId) ?? detailMatchUpIds?.includes(matchUpId),
     );
 
     // optimize matchUp retrieval
@@ -117,9 +110,7 @@ export function bulkScheduleTournamentMatchUps({
     }).matchUps;
 
     for (const matchUpId of drawMatchUpIds) {
-      const matchUpSchedule =
-        matchUpDetails?.find((details) => details.matchUpId === matchUpId)
-          ?.schedule || schedule;
+      const matchUpSchedule = matchUpDetails?.find((details) => details.matchUpId === matchUpId)?.schedule || schedule;
       const result = addMatchUpScheduleItems({
         schedule: matchUpSchedule,
         matchUpDependencies,
@@ -139,7 +130,5 @@ export function bulkScheduleTournamentMatchUps({
     }
   }
 
-  return warnings.length
-    ? { ...SUCCESS, scheduled, warnings }
-    : { ...SUCCESS, scheduled };
+  return warnings.length ? { ...SUCCESS, scheduled, warnings } : { ...SUCCESS, scheduled };
 }

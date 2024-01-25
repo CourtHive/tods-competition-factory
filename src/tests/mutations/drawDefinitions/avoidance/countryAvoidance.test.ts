@@ -11,10 +11,7 @@ const { SINGLES, DOUBLES } = eventConstants;
 const avoidancePolicy = {
   roundsToSeparate: undefined,
   policyName: 'Nationality Code',
-  policyAttributes: [
-    { key: 'person.nationalityCode' },
-    { key: 'individualParticipants.person.nationalityCode' },
-  ],
+  policyAttributes: [{ key: 'person.nationalityCode' }, { key: 'individualParticipants.person.nationalityCode' }],
 };
 
 it('can generate SINGLE_ELIMINATION drawDefinition using country avoidance with PAIR participants', () => {
@@ -122,15 +119,12 @@ it('can generate ROUND_ROBIN drawDefinition using country avoidance with INDIVID
     valuesCount: 8,
   });
   if (error) console.log({ error });
-  if (conflicts?.unseededConflicts)
-    console.log('RR conflicts:', conflicts?.unseededConflicts);
+  if (conflicts?.unseededConflicts) console.log('RR conflicts:', conflicts?.unseededConflicts);
 
   const matchUps = allDrawMatchUps({ drawDefinition }).matchUps;
   expect(matchUps?.length).toEqual(48);
   const structure = drawDefinition.structures[0];
   const { positionAssignments } = getPositionAssignments({ structure });
-  const assignedPositions = positionAssignments?.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedPositions = positionAssignments?.filter(({ participantId }) => participantId);
   expect(assignedPositions?.length).toEqual(32);
 });

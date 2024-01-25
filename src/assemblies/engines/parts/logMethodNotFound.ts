@@ -9,11 +9,7 @@ type LogMethodNotFoundArgs = {
   start?: number;
 };
 
-export function logMethodNotFound({
-  methodName,
-  params,
-  start,
-}: LogMethodNotFoundArgs): ResultType {
+export function logMethodNotFound({ methodName, params, start }: LogMethodNotFoundArgs): ResultType {
   const result = { error: METHOD_NOT_FOUND, methodName };
   const elapsed = start ? Date.now() - start : 0;
   engineLogging({

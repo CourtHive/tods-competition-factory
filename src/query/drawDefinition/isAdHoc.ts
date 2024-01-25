@@ -1,8 +1,5 @@
 import { DrawDefinition } from '../../types/tournamentTypes';
-import {
-  AD_HOC,
-  VOLUNTARY_CONSOLATION,
-} from '../../constants/drawDefinitionConstants';
+import { AD_HOC, VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
 
 type IsAdHocArgs = {
   drawDefinition?: DrawDefinition;
@@ -11,14 +8,10 @@ type IsAdHocArgs = {
 export function isAdHoc({ drawDefinition, structure }: IsAdHocArgs): boolean {
   if (!structure) return false;
 
-  const matchUps =
-    structure.matchUps ||
-    (structure.roundMatchUps && Object.values(structure.roundMatchUps).flat());
+  const matchUps = structure.matchUps || (structure.roundMatchUps && Object.values(structure.roundMatchUps).flat());
 
   const hasRoundPosition = matchUps?.find((matchUp) => matchUp?.roundPosition);
-  const hasDrawPosition = matchUps?.find(
-    (matchUp) => matchUp?.drawPositions?.length
-  );
+  const hasDrawPosition = matchUps?.find((matchUp) => matchUp?.drawPositions?.length);
 
   return (
     !structure?.structures &&

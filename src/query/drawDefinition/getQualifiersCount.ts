@@ -14,32 +14,21 @@ type GetQualifiersCountArgs = {
   stage?: string;
 };
 export function getQualifiersCount(params: GetQualifiersCountArgs) {
-  const {
-    provisionalPositioning,
-    drawDefinition,
-    stageSequence,
-    structureId,
-    stage,
-  } = params;
+  const { provisionalPositioning, drawDefinition, stageSequence, structureId, stage } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const { entryProfile } = getEntryProfile({ drawDefinition });
   const profileQualifiersCount =
-    (stage &&
-      stageSequence &&
-      entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount) ||
+    (stage && stageSequence && entryProfile?.[stage]?.stageSequence?.[stageSequence]?.qualifiersCount) ||
     (stage && entryProfile?.[stage]?.qualifiersCount) ||
     0;
 
   const roundQualifiersCounts = {};
 
-  if (!structureId)
-    return { qualifiersCount: profileQualifiersCount, roundQualifiersCounts };
+  if (!structureId) return { qualifiersCount: profileQualifiersCount, roundQualifiersCounts };
 
   const { structure } = findStructure({ drawDefinition, structureId });
-  const relevantLinks = drawDefinition.links?.filter(
-    (link) => link?.target?.structureId === structure?.structureId
-  );
+  const relevantLinks = drawDefinition.links?.filter((link) => link?.target?.structureId === structure?.structureId);
 
   let qualifiersCount = 0;
 
@@ -52,8 +41,7 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
       })?.structure;
 
       if (sourceStructure?.stage === QUALIFYING) {
-        const sourceRoundNumber: number = relevantLink.source
-          .roundNumber as number;
+        const sourceRoundNumber: number = relevantLink.source.roundNumber as number;
         const roundTarget = relevantLink.target.roundNumber;
         let count = 0;
 
@@ -61,8 +49,7 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
           // for Round Robin qualifying the number of qualifiers needs to be derived from:
           // the number of groups (substructures) * the length of source.finishingPositions[]
           const groupCount = sourceStructure.structures?.length ?? 0;
-          const finishingPositionsCount =
-            relevantLink.source.finishingPositions?.length ?? 0;
+          const finishingPositionsCount = relevantLink.source.finishingPositions?.length ?? 0;
 
           count = groupCount * finishingPositionsCount;
         } else {
@@ -78,8 +65,7 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
           count = matchUps?.length || 0;
         }
 
-        if (!roundQualifiersCounts[roundTarget])
-          roundQualifiersCounts[roundTarget] = 0;
+        if (!roundQualifiersCounts[roundTarget]) roundQualifiersCounts[roundTarget] = 0;
         roundQualifiersCounts[roundTarget] += count;
 
         qualifiersCount += count;
@@ -93,7 +79,7 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
     const qualifyingRound = qualifyingRounds[0] || 1;
     roundQualifiersCounts[qualifyingRound] = Math.max(
       roundQualifiersCounts[qualifyingRound] || 0,
-      profileQualifiersCount
+      profileQualifiersCount,
     );
   }
 

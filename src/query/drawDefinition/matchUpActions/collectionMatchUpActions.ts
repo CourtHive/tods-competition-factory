@@ -77,18 +77,17 @@ export function collectionMatchUpActions({
   const inContextDualMatchUp = inContextDrawMatchUps?.find(
     (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId,
   );
-  const availableIndividualParticipants = inContextDualMatchUp?.sides?.map(
-    (side: any) =>
-      side.participant?.individualParticipants.filter(
-        ({ participantId, person }) =>
-          !existingParticipantIds?.includes(participantId) &&
-          (!gender ||
-            gender === ANY ||
-            person.sex === gender ||
-            // case where one gendered member has been assigned
-            (gender === MIXED && !assignedGender) ||
-            (assignedGender && person.sex !== assignedGender)),
-      ),
+  const availableIndividualParticipants = inContextDualMatchUp?.sides?.map((side: any) =>
+    side.participant?.individualParticipants.filter(
+      ({ participantId, person }) =>
+        !existingParticipantIds?.includes(participantId) &&
+        (!gender ||
+          gender === ANY ||
+          person.sex === gender ||
+          // case where one gendered member has been assigned
+          (gender === MIXED && !assignedGender) ||
+          (assignedGender && person.sex !== assignedGender)),
+    ),
   );
 
   // if no sideNumber is provided, segregate available by sideNumber and specify sideNumber

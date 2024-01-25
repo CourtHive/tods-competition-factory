@@ -3,15 +3,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  MAIN,
-  QUALIFYING,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
-import {
-  MISSING_DRAW_DEFINITION,
-  MISSING_STRUCTURE_ID,
-} from '../../../constants/errorConditionConstants';
+import { MAIN, QUALIFYING, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
 
 it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
   'can specify qualifiersCount when no qualifying draws are generated',
@@ -26,14 +19,10 @@ it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
     tournamentEngine.setState(tournamentRecord);
 
     const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-    const mainStructure = drawDefinition.structures.find(
-      ({ stage }) => stage === MAIN
-    );
-    const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-      ({ qualifier }) => qualifier
-    );
+    const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+    const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
     expect(mainStructureQualifiers.length).toEqual(qualifiersCount);
-  }
+  },
 );
 
 it('drawProfile qualifiersCount will override qualifyingProfile if greater', () => {
@@ -48,9 +37,7 @@ it('drawProfile qualifiersCount will override qualifyingProfile if greater', () 
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN }],
           },
         ],
       },
@@ -60,12 +47,8 @@ it('drawProfile qualifiersCount will override qualifyingProfile if greater', () 
   tournamentEngine.setState(tournamentRecord);
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(8);
 });
 
@@ -81,9 +64,7 @@ it('will place BYEs properly in ROUND_ROBIN qualifying structure', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 14, drawType: ROUND_ROBIN },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 14, drawType: ROUND_ROBIN }],
           },
         ],
       },
@@ -93,17 +74,11 @@ it('will place BYEs properly in ROUND_ROBIN qualifying structure', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(8);
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   const byePositionAssignments = tournamentEngine
     .getPositionAssignments({
       drawId,
@@ -124,12 +99,8 @@ it('can add a qualifying structure to an existing drawDefinition', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(0);
 
   let result = tournamentEngine.addQualifyingStructure({
@@ -169,12 +140,8 @@ it('can generate and attach a qualifying structure to an existing drawDefinition
   tournamentEngine.setState(tournamentRecord);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  let mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  let mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(0);
 
   let result = tournamentEngine.generateQualifyingStructure({
@@ -205,9 +172,7 @@ it('can generate and attach a qualifying structure to an existing drawDefinition
   const keys = roundMatchUps && Object.keys(roundMatchUps);
   expect(keys).toEqual(['1', '2']);
 
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   result = tournamentEngine.removeStructure({
     structureId: qualifyingStructure.structureId,
     drawId,
@@ -234,9 +199,7 @@ it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, drawType: ROUND_ROBIN }],
           },
         ],
       },
@@ -246,12 +209,8 @@ it('will ignore drawProfile qualifiersCount if qualifyingProfile.qualifiersCount
   tournamentEngine.setState(tournamentRecord);
 
   const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(4);
 });
 
@@ -266,9 +225,7 @@ it('can add a qualifying structure to an existing draw which has existing qualif
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 16, qualifyingPositions: 4 },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 16, qualifyingPositions: 4 }],
           },
         ],
       },
@@ -278,12 +235,8 @@ it('can add a qualifying structure to an existing draw which has existing qualif
   tournamentEngine.setState(tournamentRecord);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  const mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
-  const mainStructureQualifiers = mainStructure.positionAssignments.filter(
-    ({ qualifier }) => qualifier
-  );
+  const mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
+  const mainStructureQualifiers = mainStructure.positionAssignments.filter(({ qualifier }) => qualifier);
   expect(mainStructureQualifiers.length).toEqual(4);
   expect(drawDefinition.links.length).toEqual(1);
 

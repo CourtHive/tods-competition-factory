@@ -29,8 +29,7 @@ export function addStructureParticipation({
     };
   }
 
-  const structureParticipation =
-    participantAggregator.structureParticipation[structureId];
+  const structureParticipation = participantAggregator.structureParticipation[structureId];
 
   const { winner, loser } = matchUpFinishingPositionRanges as any;
   const finishingPositionRange = participantWon ? winner : loser;
@@ -47,17 +46,13 @@ export function addStructureParticipation({
   if (
     finishingPositionRange &&
     (!structureParticipation.finishingPositionRange ||
-      diff(finishingPositionRange) <
-        diff(structureParticipation.finishingPositionRange))
+      diff(finishingPositionRange) < diff(structureParticipation.finishingPositionRange))
   ) {
     structureParticipation.finishingPositionRange = finishingPositionRange;
   }
 
   if (finishingRound) {
-    if (
-      !structureParticipation.finishingRound ||
-      finishingRound < structureParticipation.finishingRound
-    ) {
+    if (!structureParticipation.finishingRound || finishingRound < structureParticipation.finishingRound) {
       structureParticipation.finishingMatchUpId = matchUpId;
       structureParticipation.finishingRound = finishingRound;
       structureParticipation.roundNumber = roundNumber;

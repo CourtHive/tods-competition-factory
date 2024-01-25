@@ -134,9 +134,7 @@ test('entries with no entryStage can be promoted', () => {
 
   // it can get event by drawId when no drawDefinition is present and promote and alternate with no entryStage
   const { event } = tournamentEngine.getEvent({ drawId });
-  const alternateEntry = event.entries.find(
-    ({ entryStatus }) => entryStatus === ALTERNATE
-  );
+  const alternateEntry = event.entries.find(({ entryStatus }) => entryStatus === ALTERNATE);
   expect(alternateEntry.entryStage).toBeUndefined();
 
   result = tournamentEngine.promoteAlternate({

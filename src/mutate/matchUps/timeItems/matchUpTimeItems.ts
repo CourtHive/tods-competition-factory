@@ -4,12 +4,7 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  DrawDefinition,
-  Event,
-  TimeItem,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, TimeItem, Tournament } from '../../../types/tournamentTypes';
 
 /*
   generic function to addMatchUpTimeItem

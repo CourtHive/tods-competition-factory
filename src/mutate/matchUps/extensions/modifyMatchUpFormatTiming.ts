@@ -12,8 +12,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 
 export function modifyMatchUpFormatTiming(params) {
-  const { matchUpFormat, recoveryTimes, averageTimes, tournamentId, eventId } =
-    params;
+  const { matchUpFormat, recoveryTimes, averageTimes, tournamentId, eventId } = params;
 
   const tournamentRecords =
     params?.tournamentRecords ??
@@ -22,16 +21,13 @@ export function modifyMatchUpFormatTiming(params) {
     }) ??
     {};
 
-  if (!Object.keys(tournamentRecords).length)
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
-    (currentTournamentId) =>
-      !tournamentId || tournamentId === currentTournamentId
+    (currentTournamentId) => !tournamentId || tournamentId === currentTournamentId,
   );
 
-  if (tournamentId && !tournamentIds.includes(tournamentId))
-    return { error: INVALID_VALUES };
+  if (tournamentId && !tournamentIds.includes(tournamentId)) return { error: INVALID_VALUES };
 
   let eventModified;
   for (const currentTournamentId of tournamentIds) {
@@ -50,23 +46,13 @@ export function modifyMatchUpFormatTiming(params) {
     if (result.error) return result;
   }
 
-  return !eventId || eventModified
-    ? { ...SUCCESS }
-    : { error: EVENT_NOT_FOUND };
+  return !eventId || eventModified ? { ...SUCCESS } : { error: EVENT_NOT_FOUND };
 }
 
-function modifyTiming({
-  tournamentRecord,
-  recoveryTimes,
-  matchUpFormat,
-  averageTimes,
-  event,
-}) {
+function modifyTiming({ tournamentRecord, recoveryTimes, matchUpFormat, averageTimes, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (averageTimes && !Array.isArray(averageTimes))
-    return { error: INVALID_VALUES };
-  if (recoveryTimes && !Array.isArray(recoveryTimes))
-    return { error: INVALID_VALUES };
+  if (averageTimes && !Array.isArray(averageTimes)) return { error: INVALID_VALUES };
+  if (recoveryTimes && !Array.isArray(recoveryTimes)) return { error: INVALID_VALUES };
 
   const name = SCHEDULE_TIMING;
 
@@ -102,19 +88,13 @@ function modifyTiming({
 }
 
 function modifyScheduling(params) {
-  const {
-    matchUpRecoveryTimes = [],
-    matchUpAverageTimes = [],
-    matchUpFormat,
-  } = params;
+  const { matchUpRecoveryTimes = [], matchUpAverageTimes = [], matchUpFormat } = params;
 
-  let { averageTimes: formatAverageTimes, recoveryTimes: formatRecoveryTimes } =
-    params;
+  let { averageTimes: formatAverageTimes, recoveryTimes: formatRecoveryTimes } = params;
 
   // don't allow modification without categoryName
   formatAverageTimes = (formatAverageTimes || []).filter(
-    (averageTime) =>
-      averageTime?.categoryNames?.length || averageTime?.categoryTypes?.length
+    (averageTime) => averageTime?.categoryNames?.length || averageTime?.categoryTypes?.length,
   );
   // if there are formatAverageTimes specified...
   const updatedMatchUpAverageTimes =
@@ -125,11 +105,9 @@ function modifyScheduling(params) {
         definition?.matchUpFormatCodes.includes(matchUpFormat)
           ? {
               ...definition,
-              matchUpFormatCodes: definition.matchUpFormatCodes?.filter(
-                (code) => code !== matchUpFormat
-              ),
+              matchUpFormatCodes: definition.matchUpFormatCodes?.filter((code) => code !== matchUpFormat),
             }
-          : definition
+          : definition,
       )
       // filter out any definitions that no longer have matchUpFormatCodes
       .filter(({ matchUpFormatCodes }) => matchUpFormatCodes?.length)
@@ -140,8 +118,7 @@ function modifyScheduling(params) {
 
   // don't allow modification without categoryName
   formatRecoveryTimes = (formatRecoveryTimes || []).filter(
-    (recoveryTime) =>
-      recoveryTime?.categoryNames?.length || recoveryTime?.categoryTypes?.length
+    (recoveryTime) => recoveryTime?.categoryNames?.length || recoveryTime?.categoryTypes?.length,
   );
   // if there are formatRecoveryTimes specified...
   const updatedMatchUpRecoveryTimes =
@@ -152,29 +129,20 @@ function modifyScheduling(params) {
         definition?.matchUpFormatCodes.includes(matchUpFormat)
           ? {
               ...definition,
-              matchUpFormatCodes: definition.matchUpFormatCodes?.filter(
-                (code) => code !== matchUpFormat
-              ),
+              matchUpFormatCodes: definition.matchUpFormatCodes?.filter((code) => code !== matchUpFormat),
             }
-          : definition
+          : definition,
       )
       // filter out any definitions that no longer have matchUpFormatCodes OR averageTimes
       // recoveryTimes can be keyed to averageTimes instead of matchUpFormats...
-      .filter(
-        ({ matchUpFormatCodes, averageTimes }) =>
-          matchUpFormatCodes?.length || averageTimes
-      )
+      .filter(({ matchUpFormatCodes, averageTimes }) => matchUpFormatCodes?.length || averageTimes)
       .concat({
         matchUpFormatCodes: [matchUpFormat],
         recoveryTimes: formatRecoveryTimes,
       });
 
   return {
-    matchUpAverageTimes:
-      (updatedMatchUpAverageTimes?.length && updatedMatchUpAverageTimes) ||
-      matchUpAverageTimes,
-    matchUpRecoveryTimes:
-      (updatedMatchUpRecoveryTimes?.length && updatedMatchUpRecoveryTimes) ||
-      matchUpRecoveryTimes,
+    matchUpAverageTimes: (updatedMatchUpAverageTimes?.length && updatedMatchUpAverageTimes) || matchUpAverageTimes,
+    matchUpRecoveryTimes: (updatedMatchUpRecoveryTimes?.length && updatedMatchUpRecoveryTimes) || matchUpRecoveryTimes,
   };
 }

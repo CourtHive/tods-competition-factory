@@ -27,13 +27,11 @@ export const POLICY_SCORING_USTA = {
         matchUpFormat: 'SET3-S:6/TB7-F:TB7',
       },
       {
-        description:
-          'Two tiebreak sets, 10-point match tiebreak at one set all',
+        description: 'Two tiebreak sets, 10-point match tiebreak at one set all',
         matchUpFormat: 'SET3-S:6/TB7-F:TB10',
       },
       {
-        description:
-          'One standard tiebreak set to 6, 7-point tiebreak at 6 games all',
+        description: 'One standard tiebreak set to 6, 7-point tiebreak at 6 games all',
         matchUpFormat: 'SET1-S:6/TB7',
       },
       {
@@ -41,8 +39,7 @@ export const POLICY_SCORING_USTA = {
         matchUpFormat: 'SET3-S:4/TB7',
       },
       {
-        description:
-          'Two out of three short sets to 4 with 5-point tiebreak at 3 games all',
+        description: 'Two out of three short sets to 4 with 5-point tiebreak at 3 games all',
         matchUpFormat: 'SET3-S:4/TB5@3',
       },
       {
@@ -54,13 +51,11 @@ export const POLICY_SCORING_USTA = {
         matchUpFormat: 'SET1-S:4/TB5@3',
       },
       {
-        description:
-          'Two short sets to 4, 10-point match tiebreak at one set all',
+        description: 'Two short sets to 4, 10-point match tiebreak at one set all',
         matchUpFormat: 'SET3-S:4/TB7-F:TB10',
       },
       {
-        description:
-          'Two short sets to 4, 7-point match tiebreak at one set all',
+        description: 'Two short sets to 4, 7-point match tiebreak at one set all',
         matchUpFormat: 'SET3-S:4/TB7-F:TB7',
       },
       {
@@ -72,13 +67,11 @@ export const POLICY_SCORING_USTA = {
         matchUpFormat: 'SET1-S:6NOAD',
       },
       {
-        description:
-          'One short set to 4, deciding game is played at 3 games all',
+        description: 'One short set to 4, deciding game is played at 3 games all',
         matchUpFormat: 'SET1-S:4NOAD',
       },
       {
-        description:
-          'Two short sets to 4 with deciding game at 3-3, 7-point match tiebreak at one set all',
+        description: 'Two short sets to 4 with deciding game at 3-3, 7-point match tiebreak at one set all',
         matchUpFormat: 'SET3-S:4NOAD-F:TB7',
       },
       {

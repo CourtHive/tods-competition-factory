@@ -10,11 +10,7 @@ type LastVisibleTimeItemValueArgs = {
   timeItems: TimeItem[];
   itemType: string;
 };
-export function latestVisibleTimeItemValue({
-  visibilityThreshold,
-  timeItems,
-  itemType,
-}: LastVisibleTimeItemValueArgs) {
+export function latestVisibleTimeItemValue({ visibilityThreshold, timeItems, itemType }: LastVisibleTimeItemValueArgs) {
   // TODO: should visibilityThreshold be combination of scheduled date/time
 
   const latestVisible = timeItems
@@ -22,8 +18,7 @@ export function latestVisibleTimeItemValue({
       (timeItem) =>
         timeItem &&
         timeItem.itemType === itemType &&
-        (!visibilityThreshold ||
-          getTimeStamp(timeItem) < new Date(visibilityThreshold).getTime())
+        (!visibilityThreshold || getTimeStamp(timeItem) < new Date(visibilityThreshold).getTime()),
     )
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
@@ -39,7 +34,7 @@ export function lastVisibleSchedule(timeItems, visibilityThreshold) {
       (timeItem) =>
         timeItem &&
         timeItem.itemType === SCHEDULE &&
-        (!visibilityThreshold || getTimeStamp(timeItem) < visibilityThreshold)
+        (!visibilityThreshold || getTimeStamp(timeItem) < visibilityThreshold),
     )
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();

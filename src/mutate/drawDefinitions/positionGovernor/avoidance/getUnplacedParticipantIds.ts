@@ -5,14 +5,7 @@ type GetUnplaced = {
   participantIds: string[];
 };
 
-export function getUnplacedParticipantIds({
-  positionAssignments,
-  participantIds,
-}: GetUnplaced) {
-  const assignedParticipantIds = positionAssignments.map(
-    (assignment) => assignment.participantId
-  );
-  return participantIds.filter(
-    (participantId) => !assignedParticipantIds.includes(participantId)
-  );
+export function getUnplacedParticipantIds({ positionAssignments, participantIds }: GetUnplaced) {
+  const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId);
+  return participantIds.filter((participantId) => !assignedParticipantIds.includes(participantId));
 }

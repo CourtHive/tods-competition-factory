@@ -6,16 +6,12 @@ import { addTimeItem } from './addTimeItem';
 import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
 import { PUBLISH_ORDER_OF_PLAY } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 
 export function publishOrderOfPlay(params) {
   const tournamentRecords = resolveTournamentRecords(params);
 
-  if (!Object.keys(tournamentRecords).length)
-    return { error: MISSING_TOURNAMENT_RECORDS };
+  if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = publishOOP({
@@ -28,13 +24,7 @@ export function publishOrderOfPlay(params) {
   return { ...SUCCESS };
 }
 
-function publishOOP({
-  scheduledDates = [],
-  removePriorValues,
-  tournamentRecord,
-  status = PUBLIC,
-  eventIds = [],
-}) {
+function publishOOP({ scheduledDates = [], removePriorValues, tournamentRecord, status = PUBLIC, eventIds = [] }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;

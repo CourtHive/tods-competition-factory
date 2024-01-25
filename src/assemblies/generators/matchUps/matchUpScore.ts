@@ -28,10 +28,7 @@ export function matchUpScore(params) {
     sets,
   });
 
-  const loserPerspective =
-    scoreStringSide1 === winnerPerspective
-      ? scoreStringSide2
-      : scoreStringSide1;
+  const loserPerspective = scoreStringSide1 === winnerPerspective ? scoreStringSide2 : scoreStringSide1;
 
   if (winningSide) {
     scoreStringSide1 = winningSide === 1 ? winnerPerspective : loserPerspective;

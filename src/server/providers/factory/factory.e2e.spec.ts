@@ -3,7 +3,7 @@ import { AppModule } from '../../app.module';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 
-import { TEST, TEST_EMAIL, TEST_PASSWORD } from '../../common/constants/test';
+import { TEST, TEST_EMAIL, TEST_PASSWORD } from '@Server/common/constants/test';
 
 describe('AppService', () => {
   let app: INestApplication;

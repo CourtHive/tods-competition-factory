@@ -88,9 +88,7 @@ test('tournamentEngine can setMatchUpStatus', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  const { startDate } = tournamentEngine
-    .devContext(true)
-    .getCompetitionDateRange();
+  const { startDate } = tournamentEngine.devContext(true).getCompetitionDateRange();
 
   let { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
 
@@ -112,9 +110,7 @@ test('tournamentEngine can setMatchUpStatus', () => {
   let { completedMatchUps } = tournamentEngine.getCompetitionMatchUps();
   expect(completedMatchUps.length).toEqual(1);
 
-  expect(completedMatchUps[0].score.scoreStringSide1).toEqual(
-    outcome.score.scoreStringSide1
-  );
+  expect(completedMatchUps[0].score.scoreStringSide1).toEqual(outcome.score.scoreStringSide1);
 
   ({ upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps());
 
@@ -161,13 +157,11 @@ test('tournamentEngine can bulkScheduleMatchUps', () => {
 
   let { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
 
-  let matchUpContextIds = upcomingMatchUps.map(
-    ({ tournamentId, drawId, matchUpId }) => ({
-      tournamentId,
-      matchUpId,
-      drawId,
-    })
-  );
+  let matchUpContextIds = upcomingMatchUps.map(({ tournamentId, drawId, matchUpId }) => ({
+    tournamentId,
+    matchUpId,
+    drawId,
+  }));
 
   let schedule = {
     scheduledDate: startDate,
@@ -248,10 +242,9 @@ test('can modify event timing for matchUpFormat codes', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 32 }],
   });
-  const { tournamentRecord: secondTournament } =
-    mocksEngine.generateTournamentRecord({
-      drawProfiles: [{ drawSize: 32 }],
-    });
+  const { tournamentRecord: secondTournament } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32 }],
+  });
 
   tournamentEngine.setState([firstTournament, secondTournament]);
 
@@ -294,11 +287,7 @@ test('can modify event timing for matchUpFormat codes', () => {
   result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   });
-  expect(
-    result.eventMatchUpFormatTiming.find(
-      (t) => t.matchUpFormat === FORMAT_STANDARD
-    ).averageMinutes
-  ).toEqual(90);
+  expect(result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === FORMAT_STANDARD).averageMinutes).toEqual(90);
 
   result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: FORMAT_STANDARD,
@@ -311,11 +300,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     matchUpFormats: [FORMAT_STANDARD],
     eventId,
   });
-  expect(
-    result.eventMatchUpFormatTiming.find(
-      (t) => t.matchUpFormat === FORMAT_STANDARD
-    ).averageMinutes
-  ).toEqual(127);
+  expect(result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === FORMAT_STANDARD).averageMinutes).toEqual(127);
 
   result = tournamentEngine.modifyEventMatchUpFormatTiming({
     matchUpFormat: SHORT4TB10,
@@ -328,10 +313,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     eventId,
   });
   expect(result.eventMatchUpFormatTiming.length).toEqual(2);
-  expect(
-    result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10)
-      .averageMinutes
-  ).toEqual(137);
+  expect(result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10).averageMinutes).toEqual(137);
 
   // overwriting value of 137 with 117
   result = tournamentEngine.modifyEventMatchUpFormatTiming({
@@ -345,26 +327,17 @@ test('can modify event timing for matchUpFormat codes', () => {
     eventId,
   });
 
-  expect(
-    result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10)
-      .averageMinutes
-  ).toEqual(117);
+  expect(result.eventMatchUpFormatTiming.find((t) => t.matchUpFormat === SHORT4TB10).averageMinutes).toEqual(117);
 
-  expect(result.eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
-    127, 117,
-  ]);
-  expect(result.eventMatchUpFormatTiming.map((t) => t.recoveryMinutes)).toEqual(
-    [60, 60]
-  );
+  expect(result.eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([127, 117]);
+  expect(result.eventMatchUpFormatTiming.map((t) => t.recoveryMinutes)).toEqual([60, 60]);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     matchUpFormats: [FORMAT_STANDARD, SHORT4TB10, SHORT4TB10],
     eventId,
   }));
   // expect duplicated matchUpFormat to be filtered out
-  expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
-    127, 117,
-  ]);
+  expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([127, 117]);
 
   result = tournamentEngine.removeEventMatchUpFormatTiming({ eventId });
   expect(result.success).toEqual(true);
@@ -373,9 +346,7 @@ test('can modify event timing for matchUpFormat codes', () => {
     matchUpFormats: [FORMAT_STANDARD, SHORT4TB10],
     eventId,
   }));
-  expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([
-    90, 90,
-  ]);
+  expect(eventMatchUpFormatTiming.map((t) => t.averageMinutes)).toEqual([90, 90]);
 
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
@@ -392,9 +363,7 @@ test('can modify event timing for matchUpFormat codes', () => {
   ({ eventMatchUpFormatTiming } = tournamentEngine.getEventMatchUpFormatTiming({
     eventId,
   }));
-  expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(
-    eventMatchUpFormatTiming.length
-  );
+  expect(policyDefinitions.scoring.matchUpFormats.length).toEqual(eventMatchUpFormatTiming.length);
 
   result = tournamentEngine.getEventMatchUpFormatTiming({
     eventId: 'bogusId',

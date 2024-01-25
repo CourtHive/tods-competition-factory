@@ -8,11 +8,7 @@ type SaveHistoryArgs = {
   matchUp: MatchUp;
   history?: any[];
 };
-export function saveHistory({
-  undoHistory,
-  history,
-  matchUp,
-}: SaveHistoryArgs) {
+export function saveHistory({ undoHistory, history, matchUp }: SaveHistoryArgs) {
   const extension = {
     value: { history, undoHistory },
     name: MATCHUP_HISTORY,

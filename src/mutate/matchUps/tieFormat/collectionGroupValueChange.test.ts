@@ -12,9 +12,7 @@ it('changing value assignment of collectionDefinition that is part of collection
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
+        notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
       },
     },
   });
@@ -25,9 +23,7 @@ it('changing value assignment of collectionDefinition that is part of collection
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -46,7 +42,7 @@ it('changing value assignment of collectionDefinition that is part of collection
 
   // select one of the collectionDefinitions that is part of the collectionGroup
   const collectionId = eventDefaultTieFormat.collectionDefinitions.find(
-    ({ collectionGroupNumber }) => collectionGroupNumber === 1
+    ({ collectionGroupNumber }) => collectionGroupNumber === 1,
   ).collectionId;
 
   expect(collectionId).not.toBeUndefined();
@@ -70,9 +66,7 @@ it('changing value assignment of collectionDefinition that is part of collection
   let result = setSubscriptions({
     subscriptions: {
       [DELETED_MATCHUP_IDS]: (notices) => {
-        notices.forEach(({ matchUpIds }) =>
-          deletedMatchUpIds.push(...matchUpIds)
-        );
+        notices.forEach(({ matchUpIds }) => deletedMatchUpIds.push(...matchUpIds));
       },
     },
   });
@@ -83,9 +77,7 @@ it('changing value assignment of collectionDefinition that is part of collection
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP },
-    ],
+    drawProfiles: [{ drawSize: 2, eventType: TEAM, tieFormatName: USTA_BREWER_CUP }],
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -100,7 +92,7 @@ it('changing value assignment of collectionDefinition that is part of collection
 
   // select one of the collectionDefinitions that is part of the collectionGroup
   const collectionId = eventDefaultTieFormat.collectionDefinitions.find(
-    ({ collectionGroupNumber }) => collectionGroupNumber === 1
+    ({ collectionGroupNumber }) => collectionGroupNumber === 1,
   ).collectionId;
 
   expect(collectionId).not.toBeUndefined();

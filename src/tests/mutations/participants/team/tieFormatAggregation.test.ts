@@ -5,12 +5,7 @@ import { expect, it } from 'vitest';
 
 import { TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
-import {
-  COLLEGE_JUCO,
-  USTA_BREWER_CUP,
-  USTA_COLLEGE,
-  USTA_TOC,
-} from '../../../../constants/tieFormatConstants';
+import { COLLEGE_JUCO, USTA_BREWER_CUP, USTA_COLLEGE, USTA_TOC } from '../../../../constants/tieFormatConstants';
 
 it('can aggregate tieFormats found in drawDefinitions to event.tieFormats', () => {
   const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({

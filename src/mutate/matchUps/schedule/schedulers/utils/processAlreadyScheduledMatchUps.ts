@@ -49,9 +49,7 @@ export function processAlreadyScheduledMatchUps({
           matchUpId: matchUp.matchUpId,
         });
       return (
-        !isByeMatchUp &&
-        hasSchedule({ schedule }) &&
-        (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
+        !isByeMatchUp && hasSchedule({ schedule }) && (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate)
       );
     });
 
@@ -60,15 +58,11 @@ export function processAlreadyScheduledMatchUps({
 
   // first build up a map of matchUpNotBeforeTimes and matchUpPotentialParticipantIds
   // based on already scheduled matchUps
-  const clearDate = Array.isArray(clearScheduleDates)
-    ? clearScheduleDates.includes(scheduleDate)
-    : clearScheduleDates;
+  const clearDate = Array.isArray(clearScheduleDates) ? clearScheduleDates.includes(scheduleDate) : clearScheduleDates;
 
   const alreadyScheduled = clearDate
     ? []
-    : matchUps.filter(({ matchUpId }) =>
-        dateScheduledMatchUpIds.includes(matchUpId)
-      );
+    : matchUps.filter(({ matchUpId }) => dateScheduledMatchUpIds.includes(matchUpId));
 
   for (const matchUp of alreadyScheduled) {
     modifyParticipantMatchUpsCount({

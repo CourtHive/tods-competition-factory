@@ -71,14 +71,13 @@ test.skip('competitionSchedule performance 30 events', () => {
     },
   ];
 
-  const { scheduledRounds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      autoSchedule: true,
-      schedulingProfile,
-      venueProfiles,
-      drawProfiles,
-      startDate,
-    });
+  const { scheduledRounds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+  });
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result).not.toBeUndefined();
@@ -118,14 +117,13 @@ test.skip('competitionSchedule performance 4 events', () => {
       ],
     },
   ];
-  const { scheduledRounds, tournamentRecord } =
-    mocksEngine.generateTournamentRecord({
-      autoSchedule: true,
-      schedulingProfile,
-      venueProfiles,
-      drawProfiles,
-      startDate,
-    });
+  const { scheduledRounds, tournamentRecord } = mocksEngine.generateTournamentRecord({
+    autoSchedule: true,
+    schedulingProfile,
+    venueProfiles,
+    drawProfiles,
+    startDate,
+  });
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result).not.toBeUndefined();

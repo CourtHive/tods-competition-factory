@@ -10,11 +10,7 @@ import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { tieFormats } from '../../../fixtures/scoring/tieFormats';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { TEAM } from '../../../constants/eventConstants';
-import {
-  COLLEGE_D3,
-  DOMINANT_DUO,
-  TEAM_DOUBLES_3_AGGREGATION,
-} from '../../../constants/tieFormatConstants';
+import { COLLEGE_D3, DOMINANT_DUO, TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
 
 const matchUpFormat = FORMAT_STANDARD;
 
@@ -76,8 +72,7 @@ it('validates fixture tieFormats', () => {
 
 it.each(successConditions)('can validate tieFormats', (errorCondition: any) => {
   const result = validateTieFormat(errorCondition);
-  if (!result.valid)
-    console.log(errorCondition.tieFormat.collectionDefinitions[0], result);
+  if (!result.valid) console.log(errorCondition.tieFormat.collectionDefinitions[0], result);
   expect(result.valid).toEqual(true);
   expect(result?.errors?.length).toEqual(0);
 });
@@ -88,23 +83,19 @@ test('various tieFormat defaults', () => {
   let result = validateTieFormat({ tieFormat: format });
   expect(result.valid).toEqual(true);
 
-  let doubles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  let doubles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(doubles.collectionValue).toEqual(1);
   expect(doubles.matchUpValue).toBeUndefined();
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: doubles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
-  let singles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  let singles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: singles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
 
   format = tieFormatDefaults({ namedFormat: 'COLLEGE_JUCO' });
@@ -112,22 +103,18 @@ test('various tieFormat defaults', () => {
   result = validateTieFormat({ tieFormat: format });
   expect(result.valid).toEqual(true);
 
-  doubles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  doubles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(doubles.matchUpValue).toEqual(1);
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: doubles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
-  singles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  singles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: singles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
 
   format = tieFormatDefaults({ namedFormat: COLLEGE_D3 });
@@ -135,23 +122,19 @@ test('various tieFormat defaults', () => {
   result = validateTieFormat({ tieFormat: format });
   expect(result.valid).toEqual(true);
 
-  doubles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  doubles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(doubles.matchUpValue).toEqual(1);
   expect(doubles.collectionValue).toBeUndefined();
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: doubles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
-  singles = format.collectionDefinitions.find(
-    ({ matchUpType }) => matchUpType === DOUBLES
-  );
+  singles = format.collectionDefinitions.find(({ matchUpType }) => matchUpType === DOUBLES);
   expect(
     tournamentEngine.isValidMatchUpFormat({
       matchUpFormat: singles.matchUpFormat,
-    })
+    }),
   ).toEqual(true);
 });
 
@@ -192,12 +175,8 @@ it('can use tieFormatName to generate TEAM events', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { event } = tournamentEngine.getEvent({ eventId });
-  expect(event.tieFormat.winCriteria).toEqual(
-    tieFormats.COLLEGE_D3.winCriteria
-  );
-  expect(event.tieFormat.tieFormatName).toEqual(
-    tieFormats.COLLEGE_D3.tieFormatName
-  );
+  expect(event.tieFormat.winCriteria).toEqual(tieFormats.COLLEGE_D3.winCriteria);
+  expect(event.tieFormat.tieFormatName).toEqual(tieFormats.COLLEGE_D3.tieFormatName);
 });
 
 it('cal enforce gender in collectionDefinitions', () => {

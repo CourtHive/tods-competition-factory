@@ -4,10 +4,7 @@ import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { findStructure } from '../../acquire/findStructure';
 
 import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
-import {
-  RoundMatchUpsResult,
-  getRoundMatchUps,
-} from '../matchUps/getRoundMatchUps';
+import { RoundMatchUpsResult, getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 
 type GetStructureRoundProfileArgs = {
   drawDefinition: DrawDefinition;

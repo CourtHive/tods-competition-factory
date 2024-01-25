@@ -1,16 +1,12 @@
 import { getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
 
-import {
-  DOUBLE_DEFAULT,
-  DOUBLE_WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+import { DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 export function getPairedPreviousMatchUpIsDoubleExit(params) {
   let { sourceMatchUp } = params;
   const { targetMatchUp, structure, matchUpsMap, drawPosition } = params;
 
-  const previousRoundNumber =
-    targetMatchUp.roundNumber > 1 && targetMatchUp.roundNumber - 1;
+  const previousRoundNumber = targetMatchUp.roundNumber > 1 && targetMatchUp.roundNumber - 1;
 
   const structureMatchUps = getMappedStructureMatchUps({
     structureId: structure.structureId,
@@ -19,9 +15,7 @@ export function getPairedPreviousMatchUpIsDoubleExit(params) {
 
   if (!sourceMatchUp && drawPosition) {
     sourceMatchUp = structureMatchUps.find(
-      ({ drawPositions, roundNumber }) =>
-        roundNumber === previousRoundNumber &&
-        drawPositions?.includes(drawPosition)
+      ({ drawPositions, roundNumber }) => roundNumber === previousRoundNumber && drawPositions?.includes(drawPosition),
     );
   }
 
@@ -33,16 +27,11 @@ export function getPairedPreviousMatchUpIsDoubleExit(params) {
   const pairedPreviousMatchUp =
     previousRoundNumber &&
     structureMatchUps.find(
-      ({ roundNumber, roundPosition }) =>
-        roundNumber === previousRoundNumber &&
-        roundPosition === pairedRoundPosition
+      ({ roundNumber, roundPosition }) => roundNumber === previousRoundNumber && roundPosition === pairedRoundPosition,
     );
 
   const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
-  const pairedPreviousMatchUpIsDoubleExit = [
-    DOUBLE_WALKOVER,
-    DOUBLE_DEFAULT,
-  ].includes(pairedPreviousMatchUpStatus);
+  const pairedPreviousMatchUpIsDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(pairedPreviousMatchUpStatus);
 
   return { pairedPreviousMatchUp, pairedPreviousMatchUpIsDoubleExit };
 }

@@ -16,19 +16,10 @@ import {
 export function matchUpScheduleChange(params) {
   const stack = 'matchUpScheduleChange';
   const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
-  const {
-    sourceMatchUpContextIds,
-    targetMatchUpContextIds,
-    sourceCourtId,
-    targetCourtId,
-    courtDayDate,
-  } = params || {};
+  const { sourceMatchUpContextIds, targetMatchUpContextIds, sourceCourtId, targetCourtId, courtDayDate } = params || {};
 
   const {
     drawId: sourceDrawId,
@@ -42,8 +33,7 @@ export function matchUpScheduleChange(params) {
     tournamentId: targetTournamentId,
   } = targetMatchUpContextIds || {};
 
-  if (!sourceMatchUpId && !targetMatchUpId)
-    return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (!sourceMatchUpId && !targetMatchUpId) return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   const { matchUps } = allCompetitionMatchUps({
     matchUpFilters: {
@@ -53,12 +43,8 @@ export function matchUpScheduleChange(params) {
     tournamentRecords: params.tournamentRecords,
   });
 
-  const sourceMatchUp = matchUps?.find(
-    ({ matchUpId }) => matchUpId === sourceMatchUpId
-  );
-  const targetMatchUp = matchUps?.find(
-    ({ matchUpId }) => matchUpId === targetMatchUpId
-  );
+  const sourceMatchUp = matchUps?.find(({ matchUpId }) => matchUpId === sourceMatchUpId);
+  const targetMatchUp = matchUps?.find(({ matchUpId }) => matchUpId === targetMatchUpId);
 
   let matchUpsModified = 0;
 
@@ -75,12 +61,7 @@ export function matchUpScheduleChange(params) {
     });
     if (result?.success) matchUpsModified++;
     if (result.error) return decorateResult({ result, stack });
-  } else if (
-    sourceCourtId &&
-    targetCourtId &&
-    sourceMatchUpId &&
-    targetMatchUpId
-  ) {
+  } else if (sourceCourtId && targetCourtId && sourceMatchUpId && targetMatchUpId) {
     const sourceResult = assignMatchUp({
       tournamentId: sourceTournamentId,
       matchUpId: sourceMatchUpId,
@@ -92,8 +73,7 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
     if (sourceResult.success) matchUpsModified++;
-    if (sourceResult.error)
-      return decorateResult({ result: sourceResult, stack, info: 'source' });
+    if (sourceResult.error) return decorateResult({ result: sourceResult, stack, info: 'source' });
 
     const targetResult = assignMatchUp({
       tournamentId: targetTournamentId,
@@ -106,15 +86,12 @@ export function matchUpScheduleChange(params) {
       courtDayDate,
     });
     if (targetResult.success) matchUpsModified++;
-    if (targetResult.error)
-      return decorateResult({ result: targetResult, stack, info: 'target' });
+    if (targetResult.error) return decorateResult({ result: targetResult, stack, info: 'target' });
   } else {
     return { error: MISSING_VALUE };
   }
 
-  return matchUpsModified
-    ? SUCCESS
-    : decorateResult({ result: { error: NO_MODIFICATIONS_APPLIED }, stack });
+  return matchUpsModified ? SUCCESS : decorateResult({ result: { error: NO_MODIFICATIONS_APPLIED }, stack });
 
   function assignMatchUp(params): { error?: ErrorType; success?: boolean } {
     const { tournamentRecords, tournamentId, matchUp, drawId } = params;
@@ -148,9 +125,7 @@ export function matchUpScheduleChange(params) {
     courtId,
   }) {
     const courtIds = [courtId].concat(
-      matchUp.schedule.allocatedCourts
-        .map(({ courtId }) => courtId)
-        .filter((courtId) => courtId !== sourceCourtId)
+      matchUp.schedule.allocatedCourts.map(({ courtId }) => courtId).filter((courtId) => courtId !== sourceCourtId),
     );
     return allocateTeamMatchUpCourts({
       removePriorValues,

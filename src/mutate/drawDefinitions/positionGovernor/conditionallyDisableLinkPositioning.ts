@@ -4,21 +4,13 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { DISABLE_LINKS } from '../../../constants/extensionConstants';
 
-export function conditionallyDisableLinkPositioning({
-  drawPositions,
-  structure,
-}) {
-  if (
-    [QUALIFYING, MAIN].includes(structure.stage) &&
-    structure.stageSequence === 1
-  ) {
+export function conditionallyDisableLinkPositioning({ drawPositions, structure }) {
+  if ([QUALIFYING, MAIN].includes(structure.stage) && structure.stageSequence === 1) {
     // positionActions are not disabled for first stage QUALIFYING and MAIN structures
     return;
   }
   const { positionAssignments } = getPositionAssignments({ structure });
-  const relevantAssignments = positionAssignments?.filter(
-    ({ drawPosition }) => drawPositions?.includes(drawPosition)
-  );
+  const relevantAssignments = positionAssignments?.filter(({ drawPosition }) => drawPositions?.includes(drawPosition));
   relevantAssignments?.forEach((assignment) => {
     const extension = {
       name: DISABLE_LINKS,

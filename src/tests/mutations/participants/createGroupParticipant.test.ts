@@ -29,10 +29,7 @@ it('can create group participants', () => {
 
   const [participant1, participant2] = individualParticipants;
 
-  const individualParticipantIds = [
-    participant1.participantId,
-    participant2.participantId,
-  ];
+  const individualParticipantIds = [participant1.participantId, participant2.participantId];
   result = tournamentEngine.createGroupParticipant({
     individualParticipantIds,
   });
@@ -58,8 +55,7 @@ it('can create group participants', () => {
   expect(result.success).toEqual(true);
   expect(participantAddCounter).toBeGreaterThan(0);
 
-  const { tournamentRecord: updatedTournamentRecord } =
-    tournamentEngine.getTournament();
+  const { tournamentRecord: updatedTournamentRecord } = tournamentEngine.getTournament();
   const { participants: groupParticipants } = getParticipants({
     tournamentRecord: updatedTournamentRecord,
     participantFilters: { participantTypes: [GROUP] },

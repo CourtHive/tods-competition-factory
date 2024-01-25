@@ -49,9 +49,7 @@ it('can keep time for various processes', async () => {
   expect(+result.elapsedTime).toBeGreaterThan(firstTimerElapsedTime);
 
   result = timeKeeper('report', 'firstTimer');
-  expect(parseFloat(result.elapsedTime).toFixed(2)).toEqual(
-    parseFloat(firstTimerElapsedTime).toFixed(2)
-  );
+  expect(parseFloat(result.elapsedTime).toFixed(2)).toEqual(parseFloat(firstTimerElapsedTime).toFixed(2));
 
   result = timeKeeper('start', 'firstTimer');
   expect(result.state).toEqual('active');

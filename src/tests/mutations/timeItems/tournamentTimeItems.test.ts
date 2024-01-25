@@ -3,11 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MODIFICATION } from '../../../constants/timeItemConstants';
-import {
-  INVALID_TIME_ITEM,
-  MISSING_TIME_ITEM,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 const MODIFICATION_CONTENT = 'MODIFICATION.CONTENT';
 const MODIFICATION_OTHER = 'MODIFICATION.OTHER';

@@ -58,9 +58,7 @@ it('can accurately determine seedsCount from drawSize and participantsCount', ()
     [POLICY_TYPE_SEEDING]: {
       seedingProfile: { positioning: CLUSTER },
       duplicateSeedNumbers: true,
-      seedsCountThresholds: [
-        { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
-      ],
+      seedsCountThresholds: [{ drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 }],
     },
   };
 

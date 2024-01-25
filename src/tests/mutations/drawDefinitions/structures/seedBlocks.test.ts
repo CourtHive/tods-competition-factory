@@ -64,31 +64,27 @@ const scenarios = [
   },
 ];
 
-it.each(scenarios)(
-  'can generate seedingThresholds for Round Robin groups',
-  (scenario) => {
-    const { drawSize, roundRobinGroupsCount, seedGroupsCount, expectation } =
-      scenario;
+it.each(scenarios)('can generate seedingThresholds for Round Robin groups', (scenario) => {
+  const { drawSize, roundRobinGroupsCount, seedGroupsCount, expectation } = scenario;
 
-    const { seedGroups } = getSeedGroups({ roundRobinGroupsCount, drawSize });
+  const { seedGroups } = getSeedGroups({ roundRobinGroupsCount, drawSize });
 
-    const { seedingThresholds, error } = getSeedingThresholds({
-      participantsCount: drawSize,
-      roundRobinGroupsCount,
-    });
+  const { seedingThresholds, error } = getSeedingThresholds({
+    participantsCount: drawSize,
+    roundRobinGroupsCount,
+  });
 
-    if (error) {
-      expect(scenario.error).toEqual(true);
-    } else {
-      if (seedGroupsCount) {
-        expect(seedGroups.length).toEqual(seedGroupsCount);
-      }
-      if (expectation) {
-        expect(seedingThresholds).toEqual(expectation);
-      }
+  if (error) {
+    expect(scenario.error).toEqual(true);
+  } else {
+    if (seedGroupsCount) {
+      expect(seedGroups.length).toEqual(seedGroupsCount);
+    }
+    if (expectation) {
+      expect(seedingThresholds).toEqual(expectation);
     }
   }
-);
+});
 
 it('will throw an error for invalid roundRobinGroupsCount', () => {
   const drawSize = 13;

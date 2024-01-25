@@ -6,7 +6,7 @@ export const aggregateGames = (sets) => {
         aggregate[1] += set.side2Score;
         return aggregate;
       },
-      [0, 0]
+      [0, 0],
     ) || [0, 0]
   );
 };
@@ -18,7 +18,7 @@ export const aggregateSets = (sets) => {
         if (set.winningSide) aggregate[set.winningSide - 1] += 1;
         return aggregate;
       },
-      [0, 0]
+      [0, 0],
     ) || [0, 0]
   );
 };

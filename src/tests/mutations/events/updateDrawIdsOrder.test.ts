@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 it('can modify the drawOrder of flightProfile.flights and drawDefniitions within an event', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({});
@@ -41,17 +38,12 @@ it('can modify the drawOrder of flightProfile.flights and drawDefniitions within
   });
 
   let { event: updatedEvent } = tournamentEngine.getEvent({ eventId });
-  const existingOrder = updatedEvent.drawDefinitions.map(
-    ({ drawOrder }) => drawOrder
-  );
+  const existingOrder = updatedEvent.drawDefinitions.map(({ drawOrder }) => drawOrder);
   expect(existingOrder).toEqual([1, 2, 3]);
 
   const drawIds = updatedEvent.drawDefinitions.map(({ drawId }) => drawId);
   const newOrder = [3, 1, 2];
-  let orderedDrawIdsMap = Object.assign(
-    {},
-    ...drawIds.map((drawId, i) => ({ [drawId]: newOrder[i] }))
-  );
+  let orderedDrawIdsMap = Object.assign({}, ...drawIds.map((drawId, i) => ({ [drawId]: newOrder[i] })));
 
   result = tournamentEngine.updateDrawIdsOrder({ eventId });
   expect(result.error).toEqual(MISSING_VALUE);
@@ -66,36 +58,23 @@ it('can modify the drawOrder of flightProfile.flights and drawDefniitions within
   expect(result.success).toEqual(true);
 
   ({ event: updatedEvent } = tournamentEngine.getEvent({ eventId }));
-  const drawOrders = updatedEvent.drawDefinitions.map(
-    ({ drawOrder }) => drawOrder
-  );
+  const drawOrders = updatedEvent.drawDefinitions.map(({ drawOrder }) => drawOrder);
   expect(drawOrders).toEqual(newOrder);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  const flightNumbers = flightProfile.flights.map(
-    ({ flightNumber }) => flightNumber
-  );
+  const flightNumbers = flightProfile.flights.map(({ flightNumber }) => flightNumber);
   expect(flightNumbers).toEqual(newOrder);
 
-  orderedDrawIdsMap = Object.assign(
-    {},
-    ...drawIds.map((drawId) => ({ [drawId]: 'NaN' }))
-  );
+  orderedDrawIdsMap = Object.assign({}, ...drawIds.map((drawId) => ({ [drawId]: 'NaN' })));
   result = tournamentEngine.updateDrawIdsOrder({ eventId, orderedDrawIdsMap });
   expect(result.error).toEqual(INVALID_VALUES);
 
   const notUnique = [0, 0, 1, 1];
-  orderedDrawIdsMap = Object.assign(
-    {},
-    ...drawIds.map((drawId, i) => ({ [drawId]: notUnique[i] }))
-  );
+  orderedDrawIdsMap = Object.assign({}, ...drawIds.map((drawId, i) => ({ [drawId]: notUnique[i] })));
   result = tournamentEngine.updateDrawIdsOrder({ eventId, orderedDrawIdsMap });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  orderedDrawIdsMap = Object.assign(
-    {},
-    ...drawIds.map((_, i) => ({ ['bogusId']: newOrder[i] }))
-  );
+  orderedDrawIdsMap = Object.assign({}, ...drawIds.map((_, i) => ({ ['bogusId']: newOrder[i] })));
   expect(result.error).toEqual(INVALID_VALUES);
 });
 
@@ -121,24 +100,17 @@ it('can modify the drawOrder of flightProfile.flights', () => {
     eventId,
   });
 
-  const existingOrder = flightProfile.flights.map(
-    ({ flightNumber }) => flightNumber
-  );
+  const existingOrder = flightProfile.flights.map(({ flightNumber }) => flightNumber);
   expect(existingOrder).toEqual([1, 2, 3]);
 
   const drawIds = flightProfile.flights.map(({ drawId }) => drawId);
   const newOrder = [3, 1, 2];
-  const orderedDrawIdsMap = Object.assign(
-    {},
-    ...drawIds.map((drawId, i) => ({ [drawId]: newOrder[i] }))
-  );
+  const orderedDrawIdsMap = Object.assign({}, ...drawIds.map((drawId, i) => ({ [drawId]: newOrder[i] })));
   result = tournamentEngine.updateDrawIdsOrder({ eventId, orderedDrawIdsMap });
   expect(result.success).toEqual(true);
 
   ({ flightProfile } = tournamentEngine.getFlightProfile({ eventId }));
-  let flightNumbers = flightProfile.flights.map(
-    ({ flightNumber }) => flightNumber
-  );
+  let flightNumbers = flightProfile.flights.map(({ flightNumber }) => flightNumber);
   expect(flightNumbers).toEqual(newOrder);
 
   result = tournamentEngine.refreshEventDrawOrder({ eventId });

@@ -1,12 +1,7 @@
 import { getFlightProfile } from '../event/getFlightProfile';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import {
-  DrawDefinition,
-  Entry,
-  EntryStatusUnion,
-  Event,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Entry, EntryStatusUnion, Event } from '../../types/tournamentTypes';
 
 type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusUnion[];
@@ -28,9 +23,7 @@ export function getStageEntries({
 
   if (drawId) {
     const { flightProfile } = getFlightProfile({ event });
-    const flight = flightProfile?.flights?.find(
-      (flight) => flight.drawId === drawId
-    );
+    const flight = flightProfile?.flights?.find((flight) => flight.drawId === drawId);
     if (flight) {
       entries = flight.drawEntries;
     } else if (drawDefinition.entries) {
@@ -40,13 +33,9 @@ export function getStageEntries({
 
   const stageEntries = entries.filter(
     (entry) =>
-      (!entryStatuses?.length ||
-        !entry.entryStatus ||
-        entryStatuses.includes(entry.entryStatus)) &&
+      (!entryStatuses?.length || !entry.entryStatus || entryStatuses.includes(entry.entryStatus)) &&
       (!stage || !entry.entryStage || entry.entryStage === stage) &&
-      (!selected ||
-        (entry.entryStatus &&
-          STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus)))
+      (!selected || (entry.entryStatus && STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus))),
   );
   return { entries, stageEntries };
 }

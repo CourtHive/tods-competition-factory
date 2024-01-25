@@ -1,14 +1,8 @@
 import { removeExtension } from '../extensions/removeExtension';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
-import {
-  addTournamentExtension,
-  removeTournamentExtension,
-} from '../extensions/addRemoveExtensions';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { addTournamentExtension, removeTournamentExtension } from '../extensions/addRemoveExtensions';
 
 import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
@@ -24,15 +18,8 @@ import { getTournamentIds } from '../../query/tournaments/getTournamentIds';
  * Links all tournaments which are currently loaded into competitionEngine state
  */
 
-export function linkTournaments({
-  tournamentRecords,
-}: {
-  tournamentRecords: TournamentRecords;
-}): ResultType {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+export function linkTournaments({ tournamentRecords }: { tournamentRecords: TournamentRecords }): ResultType {
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const result = getTournamentIds({ tournamentRecords });
@@ -57,13 +44,8 @@ export function linkTournaments({
 type UnlinkTournamentsArgs = {
   tournamentRecords: TournamentRecords;
 };
-export function unlinkTournaments({
-  tournamentRecords,
-}: UnlinkTournamentsArgs): ResultType {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+export function unlinkTournaments({ tournamentRecords }: UnlinkTournamentsArgs): ResultType {
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const result = removeExtension({
@@ -82,18 +64,14 @@ type UnlinkTournamentArgs = {
   tournamentRecords: TournamentRecords;
   tournamentId: string;
 };
-export function unlinkTournament({
-  tournamentRecords,
-  tournamentId,
-}: UnlinkTournamentArgs): ResultType {
+export function unlinkTournament({ tournamentRecords, tournamentId }: UnlinkTournamentArgs): ResultType {
   if (typeof tournamentRecords !== 'object') return { error: INVALID_VALUES };
   if (!tournamentId) return { error: MISSING_TOURNAMENT_ID };
 
   const result = getTournamentIds({ tournamentRecords });
   const { tournamentIds } = result;
 
-  if (!tournamentIds.includes(tournamentId))
-    return { error: MISSING_TOURNAMENT_ID };
+  if (!tournamentIds.includes(tournamentId)) return { error: MISSING_TOURNAMENT_ID };
 
   // not using bulk update function here to handle scenario where
   // tournamentRecords loaded into state are not all linked
@@ -114,8 +92,7 @@ export function unlinkTournament({
     // if there are no tournamentIds
     if (
       !linkedTournamentIds?.length ||
-      (linkedTournamentIds.length === 1 &&
-        linkedTournamentIds.includes(tournamentId)) ||
+      (linkedTournamentIds.length === 1 && linkedTournamentIds.includes(tournamentId)) ||
       currentTournamentId === tournamentId
     ) {
       const result = removeTournamentExtension({
@@ -126,9 +103,7 @@ export function unlinkTournament({
       return result.success;
     }
 
-    const tournamentIds = linkedTournamentIds.filter(
-      (linkedTournamentId) => linkedTournamentId !== tournamentId
-    );
+    const tournamentIds = linkedTournamentIds.filter((linkedTournamentId) => linkedTournamentId !== tournamentId);
     extension.value = { tournamentIds };
 
     const result = addTournamentExtension({ tournamentRecord, extension });

@@ -5,13 +5,7 @@ function getInt(value) {
 }
 
 export function validTimePeriod({ startTime = '', endTime = '' } = {}) {
-  if (
-    !startTime ||
-    !endTime ||
-    !timeValidation.test(startTime) ||
-    !timeValidation.test(endTime)
-  )
-    return false;
+  if (!startTime || !endTime || !timeValidation.test(startTime) || !timeValidation.test(endTime)) return false;
 
   const [startHour, startMinute] = startTime.split(':').map(getInt);
   const [endHour, endMinute] = endTime.split(':').map(getInt);

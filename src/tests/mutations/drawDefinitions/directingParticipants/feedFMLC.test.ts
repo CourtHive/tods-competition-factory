@@ -2,10 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
 
 it('Feeds both consolation rounds TOP_DOWN', () => {
   const drawProfiles = [
@@ -26,7 +23,5 @@ it('Feeds both consolation rounds TOP_DOWN', () => {
   tournamentEngine.setState(tournamentRecord);
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.links.length).toEqual(2);
-  drawDefinition.links.forEach((link) =>
-    expect(link.target.feedProfile).toEqual(TOP_DOWN)
-  );
+  drawDefinition.links.forEach((link) => expect(link.target.feedProfile).toEqual(TOP_DOWN));
 });

@@ -36,7 +36,7 @@ test.each(scenarios)(
     } else {
       expect(result.error).not.toBeUndefined();
     }
-  }
+  },
 );
 
 it('recognizes no AD sets with no tiebreak as valid', () => {

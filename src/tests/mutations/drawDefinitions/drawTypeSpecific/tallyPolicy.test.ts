@@ -49,10 +49,6 @@ test('roundRobinTally policy can specify tally by games only', () => {
     const { GEMscore, gamesPct = 0 } = result;
     const expectation = parseInt((gamesPct * 1000).toString().slice(0, 2));
     // in very rare instances the GEMscore calc is expectation - 1
-    expect(
-      [expectation - 1, expectation].includes(
-        parseInt(GEMscore?.toString()?.slice(0, 2))
-      )
-    ).toEqual(true);
+    expect([expectation - 1, expectation].includes(parseInt(GEMscore?.toString()?.slice(0, 2)))).toEqual(true);
   });
 });

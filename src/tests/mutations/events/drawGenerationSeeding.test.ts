@@ -10,10 +10,7 @@ import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { SEEDING } from '../../../constants/scaleConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  MISSING_DRAW_SIZE,
-  UNRECOGNIZED_DRAW_TYPE,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
 
 const TEST_EVENT = 'Test Event';
 const d200606 = '2020-06-06';
@@ -61,8 +58,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
       scaleAttributes,
       participantId,
     });
-    if (scaleValues[index])
-      expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
+    if (scaleValues[index]) expect(scaleItem.scaleValue).toEqual(scaleValues[index]);
 
     const result = tournamentEngine.getParticipantScaleItem({
       scaleAttributes,
@@ -71,8 +67,7 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
 
     expect(result.tournamentId).toEqual(tournamentRecord.tournamentId);
 
-    if (scaleValues[index])
-      expect(result.scaleItem.scaleValue).toEqual(scaleValues[index]);
+    if (scaleValues[index]) expect(result.scaleItem.scaleValue).toEqual(scaleValues[index]);
   });
 
   const { flightProfile } = tournamentEngine.generateFlightProfile({
@@ -104,14 +99,8 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     drawDefinitions.push(drawDefinition);
 
     expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
-    expect(drawDefinition.structures[0].seedAssignments.length).toEqual(
-      seedsCount
-    );
-    expect(
-      drawDefinition.structures[0].seedAssignments.map(
-        ({ seedValue }) => seedValue
-      )
-    ).toEqual([1, 2, 3, 4]);
+    expect(drawDefinition.structures[0].seedAssignments.length).toEqual(seedsCount);
+    expect(drawDefinition.structures[0].seedAssignments.map(({ seedValue }) => seedValue)).toEqual([1, 2, 3, 4]);
 
     result = tournamentEngine.getEntriesAndSeedsCount({
       policyDefinitions: SEEDING_USTA,
@@ -216,11 +205,9 @@ it('can constrain seedsCount by policyDefinitions', () => {
     eventId,
   });
 
-  expect(
-    drawDefinition.structures[0].seedAssignments.map(
-      ({ seedValue }) => seedValue
-    )
-  ).toEqual([1, 2, 3, 4, 5, 5, 5, 5]);
+  expect(drawDefinition.structures[0].seedAssignments.map(({ seedValue }) => seedValue)).toEqual([
+    1, 2, 3, 4, 5, 5, 5, 5,
+  ]);
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 
   drawDefinition = tournamentEngine.generateDrawDefinition({
@@ -230,11 +217,9 @@ it('can constrain seedsCount by policyDefinitions', () => {
     eventId,
   }).drawDefinition;
 
-  expect(
-    drawDefinition.structures[0].seedAssignments.map(
-      ({ seedValue }) => seedValue
-    )
-  ).toEqual([1, 2, 3, 3, 5, 5, 5, 5]);
+  expect(drawDefinition.structures[0].seedAssignments.map(({ seedValue }) => seedValue)).toEqual([
+    1, 2, 3, 3, 5, 5, 5, 5,
+  ]);
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 });
 
@@ -287,11 +272,9 @@ it('can constrain seedsCount by policyDefinitions', () => {
     eventId,
   });
 
-  expect(
-    drawDefinition.structures[0].seedAssignments.map(
-      ({ seedValue }) => seedValue
-    )
-  ).toEqual([1, 2, 3, 3, 5, 5, 5, 5]);
+  expect(drawDefinition.structures[0].seedAssignments.map(({ seedValue }) => seedValue)).toEqual([
+    1, 2, 3, 3, 5, 5, 5, 5,
+  ]);
   expect(drawDefinition.structures[0].seedLimit).toEqual(seedsCount);
 });
 
@@ -316,13 +299,11 @@ it('can define seeds using seededParticipants', () => {
   result = tournamentEngine.addEventEntries({ eventId, participantIds });
   expect(result.success).toEqual(true);
 
-  const seededParticipants = participantIds
-    .slice(0, 8)
-    .map((participantId, i) => ({
-      participantId,
-      seedNumber: 8 - i,
-      seedValue: 8 - i,
-    }));
+  const seededParticipants = participantIds.slice(0, 8).map((participantId, i) => ({
+    participantId,
+    seedNumber: 8 - i,
+    seedValue: 8 - i,
+  }));
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     seededParticipants,

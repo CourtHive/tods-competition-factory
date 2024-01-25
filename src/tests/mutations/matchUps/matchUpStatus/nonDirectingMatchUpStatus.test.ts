@@ -24,9 +24,7 @@ it('supports entering CANCELED matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -51,9 +49,7 @@ it('supports entering ABANDONED matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -78,9 +74,7 @@ it('supports entering INCOMPLETE matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -105,9 +99,7 @@ it('supports entering SUSPENDED matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -132,9 +124,7 @@ it('supports entering DEAD_RUBBER matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -159,9 +149,7 @@ it('supports entering NOT_PLAYED matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -186,9 +174,7 @@ it('supports entering IN_PROGRESS matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({
@@ -213,9 +199,7 @@ it('supports entering AWAITING_RESULT matchUpStatus', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({ drawProfiles });
 
-  const { upcomingMatchUps } = tournamentEngine
-    .setState(tournamentRecord)
-    .drawMatchUps({ drawId });
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
 
   const result = tournamentEngine.setMatchUpStatus({

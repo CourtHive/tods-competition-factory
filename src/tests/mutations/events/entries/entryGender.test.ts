@@ -2,12 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import {
-  ANY,
-  FEMALE,
-  MALE,
-  MIXED,
-} from '../../../../constants/genderConstants';
+import { ANY, FEMALE, MALE, MIXED } from '../../../../constants/genderConstants';
 
 it('supports adding MALE/FEMALE to ANY and MIXED gender events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -30,10 +25,7 @@ it('supports adding MALE/FEMALE to ANY and MIXED gender events', () => {
   expect(event.gender).toEqual(ANY);
 
   result = tournamentEngine.addEventEntries({
-    participantIds: [
-      femaleParticipant.participantId,
-      maleParticipant.participantId,
-    ],
+    participantIds: [femaleParticipant.participantId, maleParticipant.participantId],
     entryStatus: 'ALTERNATE',
     eventId: event.eventId,
   });
@@ -43,10 +35,7 @@ it('supports adding MALE/FEMALE to ANY and MIXED gender events', () => {
   expect(event.gender).toEqual(MIXED);
 
   result = tournamentEngine.addEventEntries({
-    participantIds: [
-      femaleParticipant.participantId,
-      maleParticipant.participantId,
-    ],
+    participantIds: [femaleParticipant.participantId, maleParticipant.participantId],
     entryStatus: 'ALTERNATE',
     eventId: event.eventId,
   });

@@ -2,10 +2,7 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  MAIN,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '../../../../../constants/participantConstants';
 import { SEEDING } from '../../../../../constants/scaleConstants';
 import { SINGLES } from '../../../../../constants/eventConstants';
@@ -74,53 +71,39 @@ it('can generateDrawDefinition and place qualifiers', () => {
     qualifyingOnly: true,
     eventId,
   });
-  const qualifyingStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === QUALIFYING
-  );
+  const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
   expect(qualifyingStructure.matchUps.length).toEqual(12);
 
   const participantIdDrawPositionMap = Object.assign(
     {},
-    ...qualifyingStructure.positionAssignments.map(
-      ({ participantId, drawPosition }) => ({ [participantId]: drawPosition })
-    )
+    ...qualifyingStructure.positionAssignments.map(({ participantId, drawPosition }) => ({
+      [participantId]: drawPosition,
+    })),
   );
-  let seededDrawPositions = qualifyingStructure.seedAssignments.map(
-    (assignment) => [
-      assignment.seedNumber,
-      participantIdDrawPositionMap[assignment.participantId],
-    ]
-  );
-  let positionsSeeded = seededDrawPositions
-    .map((seeding) => seeding[1])
-    .sort((a, b) => a - b);
+  let seededDrawPositions = qualifyingStructure.seedAssignments.map((assignment) => [
+    assignment.seedNumber,
+    participantIdDrawPositionMap[assignment.participantId],
+  ]);
+  let positionsSeeded = seededDrawPositions.map((seeding) => seeding[1]).sort((a, b) => a - b);
   expect(positionsSeeded).toEqual([1, 5, 9, 13]);
 
-  let mainStructure = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  );
+  let mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(mainStructure.matchUps.length).toEqual(0);
 
   drawDefinition = tournamentEngine.generateDrawDefinition({
     qualifyingProfiles: [
       {
-        structureProfiles: [
-          { seedsCount: 4, drawSize: 16, qualifyingPositions: 4 },
-        ],
+        structureProfiles: [{ seedsCount: 4, drawSize: 16, qualifyingPositions: 4 }],
       },
     ],
     eventId,
   }).drawDefinition;
 
-  seededDrawPositions = qualifyingStructure.seedAssignments.map(
-    (assignment) => [
-      assignment.seedNumber,
-      participantIdDrawPositionMap[assignment.participantId],
-    ]
-  );
-  positionsSeeded = seededDrawPositions
-    .map((seeding) => seeding[1])
-    .sort((a, b) => a - b);
+  seededDrawPositions = qualifyingStructure.seedAssignments.map((assignment) => [
+    assignment.seedNumber,
+    participantIdDrawPositionMap[assignment.participantId],
+  ]);
+  positionsSeeded = seededDrawPositions.map((seeding) => seeding[1]).sort((a, b) => a - b);
   expect(positionsSeeded).toEqual([1, 5, 9, 13]);
 
   mainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);

@@ -125,8 +125,8 @@ export function getValidLuckyLosersAction({
     });
   }
 
-  const availableLuckyLosers = tournamentParticipants?.filter(
-    (participant: Participant) => availableLuckyLoserParticipantIds?.includes(participant.participantId),
+  const availableLuckyLosers = tournamentParticipants?.filter((participant: Participant) =>
+    availableLuckyLoserParticipantIds?.includes(participant.participantId),
   );
 
   availableLuckyLosers?.forEach((luckyLoser: any) => {

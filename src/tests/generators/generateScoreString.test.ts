@@ -14,11 +14,7 @@ test('can generate matchUp tiebreak string scores', () => {
 });
 
 test('can generate matchUp set scores when no tiebreak', () => {
-  const sets = [
-    { side1Score: 7, side2Score: 3 },
-    { side1Score: 1, side2Score: 7 },
-    { side1Score: 3 },
-  ];
+  const sets = [{ side1Score: 7, side2Score: 3 }, { side1Score: 1, side2Score: 7 }, { side1Score: 3 }];
   const result = generateScoreString({ sets, autoComplete: true });
   expect(result).toEqual('7-3 1-7 3-0');
 });

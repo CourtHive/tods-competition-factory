@@ -4,11 +4,7 @@ import { expect, it } from 'vitest';
 
 import { MODIFICATION } from '../../../constants/timeItemConstants';
 import { SINGLES } from '../../../constants/eventConstants';
-import {
-  INVALID_TIME_ITEM,
-  MISSING_TIME_ITEM,
-  NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 const MODIFICATION_CONTENT = 'MODIFICATION.CONTENT';
 
@@ -81,19 +77,17 @@ it('can add and read timeItems from events', async () => {
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, info } =
-    tournamentEngine.getDrawDefinitionTimeItem({
-      drawId,
-      itemType: MODIFICATION_CONTENT,
-    });
+  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getDrawDefinitionTimeItem({
+    drawId,
+    itemType: MODIFICATION_CONTENT,
+  });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(info).toEqual(undefined);
 
-  ({ timeItem: retrievedTimeItem, info } =
-    tournamentEngine.getDrawDefinitionTimeItem({
-      drawId,
-      itemType: 'MODIFICATION.OTHER',
-    }));
+  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getDrawDefinitionTimeItem({
+    drawId,
+    itemType: 'MODIFICATION.OTHER',
+  }));
   expect(retrievedTimeItem).toEqual(undefined);
   expect(info).toEqual(NOT_FOUND);
 
@@ -103,7 +97,5 @@ it('can add and read timeItems from events', async () => {
     },
   } = tournamentEngine.getEvent({ eventId });
   expect(updatedDrawDefinition.timeItems.length).toEqual(1);
-  expect(new Date(updatedDrawDefinition.updatedAt).getTime()).toBeGreaterThan(
-    new Date(createdAt).getTime()
-  );
+  expect(new Date(updatedDrawDefinition.updatedAt).getTime()).toBeGreaterThan(new Date(createdAt).getTime());
 });

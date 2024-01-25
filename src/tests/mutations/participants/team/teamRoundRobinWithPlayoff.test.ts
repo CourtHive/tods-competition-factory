@@ -6,10 +6,7 @@ import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { TEAM } from '../../../../constants/eventConstants';
-import {
-  MAIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../constants/drawDefinitionConstants';
 
 test('changing scores after playoffs generated in team round robin with playoffs', () => {
   const structureOptions = {
@@ -51,9 +48,7 @@ test('changing scores after playoffs generated in team round robin with playoffs
   });
 
   mainStageMatchUps.forEach((dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
     singlesMatchUps.forEach((singlesMatchUp) => {
       const { matchUpId } = singlesMatchUp;
       const result = tournamentEngine.setMatchUpStatus({
@@ -63,9 +58,7 @@ test('changing scores after playoffs generated in team round robin with playoffs
       });
       expect(result.success).toEqual(true);
     });
-    const doublesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === DOUBLES
-    );
+    const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES);
     doublesMatchUps.forEach((doublesMatchUp) => {
       const { matchUpId } = doublesMatchUp;
       const result = tournamentEngine.setMatchUpStatus({
@@ -90,12 +83,8 @@ test('changing scores after playoffs generated in team round robin with playoffs
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
   const dualMatchUp = mainStageMatchUps[0];
-  const doublesMatchUpId = dualMatchUp.tieMatchUps.find(
-    (m) => m.matchUpType === DOUBLES
-  ).matchUpId;
-  const singlesMatchUpId = dualMatchUp.tieMatchUps.find(
-    (m) => m.matchUpType === SINGLES
-  ).matchUpId;
+  const doublesMatchUpId = dualMatchUp.tieMatchUps.find((m) => m.matchUpType === DOUBLES).matchUpId;
+  const singlesMatchUpId = dualMatchUp.tieMatchUps.find((m) => m.matchUpType === SINGLES).matchUpId;
 
   const doublesMatchUp = matchUps.find((m) => m.matchUpId === doublesMatchUpId);
   const singlesMatchUp = matchUps.find((m) => m.matchUpId === singlesMatchUpId);

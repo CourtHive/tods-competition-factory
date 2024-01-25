@@ -15,9 +15,7 @@ it('can return participant scheduled matchUps', () => {
     tournamentRecord,
     venueIds: [venueId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 8, eventType: TEAM, tieFormatName: DOMINANT_DUO },
-    ],
+    drawProfiles: [{ drawSize: 8, eventType: TEAM, tieFormatName: DOMINANT_DUO }],
     venueProfiles,
     startDate,
     endDate,
@@ -26,9 +24,7 @@ it('can return participant scheduled matchUps', () => {
   tournamentEngine.setState(tournamentRecord);
 
   const { rounds } = tournamentEngine.getRounds();
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   let result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
@@ -39,7 +35,5 @@ it('can return participant scheduled matchUps', () => {
   const { matchUps } = tournamentEngine.allCompetitionMatchUps({
     matchUpFilters: { matchUpTypes: [SINGLES, DOUBLES] },
   });
-  expect(matchUps.every(({ schedule }) => schedule.scheduledTime)).toEqual(
-    true
-  );
+  expect(matchUps.every(({ schedule }) => schedule.scheduledTime)).toEqual(true);
 });

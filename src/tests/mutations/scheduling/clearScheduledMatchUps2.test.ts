@@ -73,9 +73,7 @@ it('can clear matchUp schedules', () => {
   expect(result.success).toEqual(true);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
-  let matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
+  let matchUpsWithScheduledTime = matchUps.filter((matchUp) => matchUp.schedule?.scheduledTime);
 
   expect(matchUpsWithScheduledTime.length).toEqual(matchUpIds?.length);
 
@@ -88,8 +86,6 @@ it('can clear matchUp schedules', () => {
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
-  matchUpsWithScheduledTime = matchUps.filter(
-    (matchUp) => matchUp.schedule?.scheduledTime
-  );
+  matchUpsWithScheduledTime = matchUps.filter((matchUp) => matchUp.schedule?.scheduledTime);
   expect(matchUpsWithScheduledTime.length).toEqual(0);
 });

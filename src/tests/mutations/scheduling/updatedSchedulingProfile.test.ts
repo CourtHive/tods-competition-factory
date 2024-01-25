@@ -5,10 +5,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
-import {
-  INVALID_DATE,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 const scheduleDate = '2022-01-03';
 it('can update a schedulingProfile when venues change', () => {
@@ -17,13 +14,12 @@ it('can update a schedulingProfile when venues change', () => {
     { venueName: 'venue 1', courtsCount: 4 },
     { venueName: 'venue 2', courtsCount: 8 },
   ];
-  const { tournamentRecord, venueIds, eventIds, drawIds } =
-    mocksEngine.generateTournamentRecord({
-      startDate: '2022-01-01',
-      endDate: '2022-01-07',
-      venueProfiles,
-      drawProfiles,
-    });
+  const { tournamentRecord, venueIds, eventIds, drawIds } = mocksEngine.generateTournamentRecord({
+    startDate: '2022-01-01',
+    endDate: '2022-01-07',
+    venueProfiles,
+    drawProfiles,
+  });
 
   tournamentEngine.setState(tournamentRecord);
 
@@ -46,8 +42,7 @@ it('can update a schedulingProfile when venues change', () => {
   });
   expect(result.success).toEqual(true);
 
-  let { schedulingProfile, modifications, issues } =
-    tournamentEngine.getSchedulingProfile();
+  let { schedulingProfile, modifications, issues } = tournamentEngine.getSchedulingProfile();
 
   expect(modifications).toEqual(0);
   expect(issues).toBeUndefined();
@@ -77,8 +72,7 @@ it('can update a schedulingProfile when venues change', () => {
   result = tournamentEngine.deleteVenue({ venueId: venueIds[0] });
   expect(result.success).toEqual(true);
 
-  ({ schedulingProfile, modifications, issues } =
-    tournamentEngine.getSchedulingProfile());
+  ({ schedulingProfile, modifications, issues } = tournamentEngine.getSchedulingProfile());
 
   expect(modifications).toEqual(0);
   expect(issues).toBeUndefined();

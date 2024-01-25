@@ -8,11 +8,7 @@ import {
   MAIN,
   PLAY_OFF,
 } from '../../../../constants/drawDefinitionConstants';
-import {
-  BYE,
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff', () => {
   const {
@@ -73,22 +69,16 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
   const playoffMatchUps = matchUps.filter(({ stage }) => stage === PLAY_OFF);
   expect(playoffMatchUps.length).toEqual(1);
 
-  let playoff34 = matchUps.find(
-    ({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId
-  );
+  let playoff34 = matchUps.find(({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId);
   expect(playoff34.sides[0].participantId).toBeUndefined();
 
   let fmlcTarget = matchUps.find(
-    (matchUp) =>
-      matchUp.stage === CONSOLATION &&
-      matchUp.roundNumber === 2 &&
-      matchUp.roundPosition === 1
+    (matchUp) => matchUp.stage === CONSOLATION && matchUp.roundNumber === 2 && matchUp.roundPosition === 1,
   );
   expect(fmlcTarget.matchUpStatus).toEqual(TO_BE_PLAYED);
 
   const targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, roundPosition }) =>
-      stage === MAIN && roundNumber === 2 && roundPosition === 1
+    ({ stage, roundNumber, roundPosition }) => stage === MAIN && roundNumber === 2 && roundPosition === 1,
   );
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
     scoreString: '6-1 6-1',
@@ -105,16 +95,11 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
   // loser from 2nd round main has progressed to 3-4 playoff
-  playoff34 = matchUps.find(
-    ({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId
-  );
+  playoff34 = matchUps.find(({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId);
   expect(playoff34.sides[0].participantId).not.toBeUndefined();
 
   fmlcTarget = matchUps.find(
-    (matchUp) =>
-      matchUp.stage === CONSOLATION &&
-      matchUp.roundNumber === 2 &&
-      matchUp.roundPosition === 1
+    (matchUp) => matchUp.stage === CONSOLATION && matchUp.roundNumber === 2 && matchUp.roundPosition === 1,
   );
   expect(fmlcTarget.matchUpStatus).toEqual(BYE);
 
@@ -133,16 +118,11 @@ it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
   // loser from 2nd round main has progressed to 3-4 playoff
-  playoff34 = matchUps.find(
-    ({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId
-  );
+  playoff34 = matchUps.find(({ matchUpId }) => matchUpId === playoffMatchUps[0].matchUpId);
   expect(playoff34.sides[0].participantId).toBeUndefined();
 
   fmlcTarget = matchUps.find(
-    (matchUp) =>
-      matchUp.stage === CONSOLATION &&
-      matchUp.roundNumber === 2 &&
-      matchUp.roundPosition === 1
+    (matchUp) => matchUp.stage === CONSOLATION && matchUp.roundNumber === 2 && matchUp.roundPosition === 1,
   );
   expect(fmlcTarget.matchUpStatus).toEqual(TO_BE_PLAYED);
 });

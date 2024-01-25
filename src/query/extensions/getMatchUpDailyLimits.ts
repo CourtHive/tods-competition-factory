@@ -13,21 +13,14 @@ type GetMatchUpDailyLimitsArgs = {
   tournamentRecords: { [key: string]: Tournament };
   tournamentId?: string;
 };
-export function getMatchUpDailyLimits({
-  tournamentRecords,
-  tournamentId,
-}: GetMatchUpDailyLimitsArgs): ResultType & {
+export function getMatchUpDailyLimits({ tournamentRecords, tournamentId }: GetMatchUpDailyLimitsArgs): ResultType & {
   matchUpDailyLimits?: any;
 } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const tournamentIds = Object.keys(tournamentRecords).filter(
-    (currentTournamentId) =>
-      !tournamentId || currentTournamentId === tournamentId
+    (currentTournamentId) => !tournamentId || currentTournamentId === tournamentId,
   );
 
   let dailyLimits;
@@ -46,9 +39,7 @@ export function getMatchUpDailyLimits({
 export function getDailyLimit(params): ResultType & {
   matchUpDailyLimits?: number;
 } {
-  const paramCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORD]: true },
-  ]);
+  const paramCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORD]: true }]);
   if (paramCheck.error) return paramCheck;
 
   const { tournamentRecord } = params;

@@ -34,9 +34,7 @@ it('can generate and seed a qualifying structure', () => {
   expect(result.success).toEqual(true);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
-  const mainStructureId = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  ).structureId;
+  const mainStructureId = drawDefinition.structures.find(({ stage }) => stage === MAIN).structureId;
 
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId: mainStructureId,
@@ -54,11 +52,8 @@ it('can generate and seed a qualifying structure', () => {
       drawPosition,
       drawId,
     });
-    const qualifyingAction = result.validActions.find(
-      ({ type }) => type === QUALIFYING_PARTICIPANT
-    );
-    const qualifyingParticipantId =
-      qualifyingAction.qualifyingParticipantIds[0];
+    const qualifyingAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
+    const qualifyingParticipantId = qualifyingAction.qualifyingParticipantIds[0];
     const payload = { ...qualifyingAction.payload, qualifyingParticipantId };
     result = tournamentEngine[qualifyingAction.method](payload);
     expect(result.success).toEqual(true);
@@ -76,13 +71,9 @@ it('can generate and seed a qualifying structure', () => {
       getRoundMatchUps({
         matchUps: incompleteMatchUps,
       }).roundProfile ?? {};
-    const roundNumbers: number[] = Object.keys(roundProfile).map((k) =>
-      parseInt(k)
-    );
+    const roundNumbers: number[] = Object.keys(roundProfile).map((k) => parseInt(k));
     const minRound = Math.min(...roundNumbers);
-    const matchUp = incompleteMatchUps.find(
-      ({ roundNumber }) => roundNumber === minRound
-    );
+    const matchUp = incompleteMatchUps.find(({ roundNumber }) => roundNumber === minRound);
 
     const { outcome } = mocksEngine.generateOutcome();
     result = tournamentEngine.setMatchUpStatus({

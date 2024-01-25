@@ -1,20 +1,36 @@
-*.log
-.DS_Store
-benchmarks
-coverage
-node_modules
-node_*
-scratch
-dist
-*.un~
-.*.un~
-*.code-workspace
-*.VSCodeCounter
-.nvim*
-.eslintcache
+# Documentation
 documentation/.docusaurus
 documentation/build
-.DS_Store
+
+# Server
+storage/
+
+# Testing
+benchmarks
+coverage
+scratch
 *decoy*
-/html
+
+# Dependencies
+node_modules
+node_*
+
+# Builds
 *.tsbuildinfo
+/html
+dist
+
+# IDEs and editors and OS files
+*.code-workspace
+*.VSCodeCounter
+.DS_Store
+.*.un~
+*.un~
+.nvim*
+*.log
+
+# Pipeline
+.eslintcache
+
+# Local
+.env

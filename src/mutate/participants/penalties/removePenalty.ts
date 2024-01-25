@@ -9,18 +9,11 @@ import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import {
-  Participant,
-  Penalty,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { Participant, Penalty, Tournament } from '../../../types/tournamentTypes';
 
 export function removePenalty(params) {
   const { tournamentRecords } = params;
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
@@ -73,7 +66,5 @@ function penaltyRemove({ tournamentRecord, penaltyId }: RemovePenaltyArgs): {
     });
   }
 
-  return removedPenalty
-    ? { ...SUCCESS, penalty: removedPenalty }
-    : { error: PENALTY_NOT_FOUND };
+  return removedPenalty ? { ...SUCCESS, penalty: removedPenalty } : { error: PENALTY_NOT_FOUND };
 }

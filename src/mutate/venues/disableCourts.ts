@@ -4,10 +4,7 @@ import { addExtension } from '../extensions/addExtension';
 
 import { DISABLED } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  COURT_IDS,
-  TOURNAMENT_RECORDS,
-} from '../../constants/attributeConstants';
+import { COURT_IDS, TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
 
 type DisableCourtsArgs = {
   tournamentRecords: any;
@@ -19,9 +16,7 @@ type DisableCourtsArgs = {
 export function disableCourts(params: DisableCourtsArgs) {
   const { courtIds, dates } = params;
   const tournamentRecords = resolveTournamentRecords(params);
-  const paramsToCheck: any[] = [
-    { [TOURNAMENT_RECORDS]: true, [COURT_IDS]: true },
-  ];
+  const paramsToCheck: any[] = [{ [TOURNAMENT_RECORDS]: true, [COURT_IDS]: true }];
   const paramCheck = checkRequiredParameters(params, paramsToCheck);
   if (paramCheck.error) return paramCheck;
 

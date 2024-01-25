@@ -34,9 +34,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   const mainMatchUps = mainStructure.matchUps;
-  const finalMatchUp = mainMatchUps.find(
-    ({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1
-  );
+  const finalMatchUp = mainMatchUps.find(({ roundNumber, roundPosition }) => roundNumber === 3 && roundPosition === 1);
   expect(finalMatchUp.drawPositions.filter(Boolean)).toEqual([]);
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
@@ -52,25 +50,15 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
-    [4, 5],
-    [6, 7],
-    [2],
-    [3],
-    [1],
-  ]);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([[4, 5], [6, 7], [2], [3], [1]]);
 
-  let assignedParticipantIds = mainStructure.positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  let assignedParticipantIds = mainStructure.positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedParticipantIds.length).toEqual(8);
 
   let assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(0);
 
-  assignedByes = consolationStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  assignedByes = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(0);
 
   // STEP #2: replace all positions with BYEs
@@ -114,17 +102,13 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ]);
 
   // STEP #3: check main structure has 0 participants and 8 BYEs
-  assignedParticipantIds = mainStructure.positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  assignedParticipantIds = mainStructure.positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedParticipantIds.length).toEqual(0);
   assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(8);
 
   // STEP #4: check consolation structure has 7 BYEs
-  assignedByes = consolationStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  assignedByes = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(7);
 
   // STEP #5: place two alternates
@@ -169,15 +153,11 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ]);
 
   // STEP #6: check main structure has 2 participants and 6 BYEs
-  assignedParticipantIds = mainStructure.positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  assignedParticipantIds = mainStructure.positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedParticipantIds.length).toEqual(2);
   assignedByes = mainStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(6);
-  assignedByes = consolationStructure.positionAssignments.filter(
-    ({ bye }) => bye
-  );
+  assignedByes = consolationStructure.positionAssignments.filter(({ bye }) => bye);
   expect(assignedByes.length).toEqual(6);
 
   removeAssignment({
@@ -195,15 +175,7 @@ it('can remove transitive BYEs in consolation of FIC', () => {
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs).toEqual([
-    [1, 2],
-    [3, 4],
-    [5, 6],
-    [7, 8],
-    [1],
-    [6, 7],
-    [7],
-  ]);
+  expect(filteredOrderedPairs).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [6, 7], [7]]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,

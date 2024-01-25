@@ -5,11 +5,7 @@ import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TimeItem } from '../../types/tournamentTypes';
-import {
-  INVALID_MATCHUP,
-  MISSING_CONTEXT,
-  MISSING_MATCHUP,
-} from '../../constants/errorConditionConstants';
+import { INVALID_MATCHUP, MISSING_CONTEXT, MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 
 /*
   takes a matchUpWithContext
@@ -19,11 +15,7 @@ import {
     - if sideParticipant is participantType TEAM or PAIR and is checkedIn then
       all individualParticipants are considered checkedIn
 */
-export function getCheckedInParticipantIds({
-  matchUp,
-}: {
-  matchUp: HydratedMatchUp;
-}): ResultType & {
+export function getCheckedInParticipantIds({ matchUp }: { matchUp: HydratedMatchUp }): ResultType & {
   allRelevantParticipantIds?: string[];
   allParticipantsCheckedIn?: boolean;
   checkedInParticipantIds?: string[];
@@ -37,80 +29,50 @@ export function getCheckedInParticipantIds({
     return { error: INVALID_MATCHUP };
   }
 
-  const {
-    nestedIndividualParticipantIds,
-    allRelevantParticipantIds,
-    sideParticipantIds,
-  } = getMatchUpParticipantIds({ matchUp });
+  const { nestedIndividualParticipantIds, allRelevantParticipantIds, sideParticipantIds } = getMatchUpParticipantIds({
+    matchUp,
+  });
 
   const timeItems = matchUp.timeItems ?? [];
   const checkInItems: TimeItem[] = timeItems
-    .filter(
-      (timeItem) =>
-        timeItem?.itemType && [CHECK_IN, CHECK_OUT].includes(timeItem.itemType)
-    )
+    .filter((timeItem) => timeItem?.itemType && [CHECK_IN, CHECK_OUT].includes(timeItem.itemType))
     .sort(
       (a, b) =>
-        (a.createdAt ? new Date(a.createdAt).getTime() : 0) -
-        (b.createdAt ? new Date(b.createdAt).getTime() : 0)
+        (a.createdAt ? new Date(a.createdAt).getTime() : 0) - (b.createdAt ? new Date(b.createdAt).getTime() : 0),
     );
-  const timeItemParticipantIds = checkInItems.map(
-    (timeItem) => timeItem.itemValue
-  );
+  const timeItemParticipantIds = checkInItems.map((timeItem) => timeItem.itemValue);
 
   // first determine whether each timeItemParticipantId is checkedIn
-  const checkedInParticipantIds = timeItemParticipantIds.filter(
-    (participantId) => {
-      return (
-        checkInItems
-          .filter((timeItem) => timeItem?.itemValue === participantId)
-          .reverse()[0].itemType === CHECK_IN
-      );
-    }
-  );
+  const checkedInParticipantIds = timeItemParticipantIds.filter((participantId) => {
+    return checkInItems.filter((timeItem) => timeItem?.itemValue === participantId).reverse()[0].itemType === CHECK_IN;
+  });
 
   // if all individuals on one side are checked in then side is checked in
-  nestedIndividualParticipantIds?.forEach(
-    (sideIndividualParticipantIds, sideIndex) => {
-      const sideParticipantId = sideParticipantIds?.[sideIndex];
-      const allIndividualsCheckedIn =
-        sideIndividualParticipantIds?.length &&
-        sideIndividualParticipantIds.every((participantId) =>
-          checkedInParticipantIds.includes(participantId)
-        );
+  nestedIndividualParticipantIds?.forEach((sideIndividualParticipantIds, sideIndex) => {
+    const sideParticipantId = sideParticipantIds?.[sideIndex];
+    const allIndividualsCheckedIn =
+      sideIndividualParticipantIds?.length &&
+      sideIndividualParticipantIds.every((participantId) => checkedInParticipantIds.includes(participantId));
 
-      if (
-        sideParticipantId &&
-        allIndividualsCheckedIn &&
-        !checkedInParticipantIds.includes(sideParticipantId)
-      ) {
-        checkedInParticipantIds.push(sideParticipantId);
-      }
+    if (sideParticipantId && allIndividualsCheckedIn && !checkedInParticipantIds.includes(sideParticipantId)) {
+      checkedInParticipantIds.push(sideParticipantId);
     }
-  );
+  });
 
   // if side is checked in then all individuals on that side are checked in
   sideParticipantIds?.forEach((sideParticipantId: string, sideIndex) => {
     if (checkedInParticipantIds.includes(sideParticipantId)) {
-      (nestedIndividualParticipantIds?.[sideIndex] ?? []).forEach(
-        (participantId) => {
-          if (
-            participantId &&
-            !checkedInParticipantIds.includes(participantId)
-          ) {
-            checkedInParticipantIds.push(participantId);
-          }
+      (nestedIndividualParticipantIds?.[sideIndex] ?? []).forEach((participantId) => {
+        if (participantId && !checkedInParticipantIds.includes(participantId)) {
+          checkedInParticipantIds.push(participantId);
         }
-      );
+      });
     }
   });
 
-  const allParticipantsCheckedIn = sideParticipantIds?.reduce(
-    (checkedIn, participantId) => {
-      return checkedInParticipantIds.includes(participantId) && checkedIn;
-    },
-    true
-  );
+  const allParticipantsCheckedIn = sideParticipantIds?.reduce((checkedIn, participantId) => {
+    return checkedInParticipantIds.includes(participantId) && checkedIn;
+  }, true);
 
   return {
     allRelevantParticipantIds,

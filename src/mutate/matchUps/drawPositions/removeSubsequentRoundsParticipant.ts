@@ -1,9 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import {
-  MatchUpsMap,
-  getMatchUpsMap,
-} from '../../../query/matchUps/getMatchUpsMap';
+import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
 import { findStructure } from '../../../acquire/findStructure';
@@ -11,17 +8,8 @@ import { findStructure } from '../../../acquire/findStructure';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  BYE,
-  DEFAULTED,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type RemoveSubsequentDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -65,7 +53,7 @@ export function removeSubsequentRoundsParticipant({
     (matchUp: any) =>
       matchUp.roundNumber >= roundNumber &&
       matchUp.roundNumber !== initialRoundNumber &&
-      matchUp.drawPositions?.includes(targetDrawPosition)
+      matchUp.drawPositions?.includes(targetDrawPosition),
   );
 
   const { positionAssignments } = getPositionAssignments({
@@ -109,42 +97,32 @@ function removeDrawPosition({
 
   if (dualMatchUp) {
     // remove propagated lineUp
-    const inContextMatchUp = inContextDrawMatchUps.find(
-      ({ matchUpId }) => matchUp.matchUpId === matchUpId
-    );
+    const inContextMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUp.matchUpId === matchUpId);
     const targetSideNumber = inContextMatchUp.sides?.find(
-      (side) => side.drawPosition === targetDrawPosition
+      (side) => side.drawPosition === targetDrawPosition,
     )?.sideNumber;
-    const targetSide = matchUp.sides?.find(
-      (side) => side.sideNumber === targetSideNumber
-    );
+    const targetSide = matchUp.sides?.find((side) => side.sideNumber === targetSideNumber);
     if (targetSide) {
       delete targetSide.lineUp;
     }
   }
 
   matchUp.drawPositions = (matchUp.drawPositions || [])
-    .map((drawPosition) =>
-      drawPosition === targetDrawPosition ? undefined : drawPosition
-    )
+    .map((drawPosition) => (drawPosition === targetDrawPosition ? undefined : drawPosition))
     .filter(Boolean);
-  const matchUpAssignments = positionAssignments.filter(
-    ({ drawPosition }) => matchUp.drawPositions?.includes(drawPosition)
+  const matchUpAssignments = positionAssignments.filter(({ drawPosition }) =>
+    matchUp.drawPositions?.includes(drawPosition),
   );
-  const matchUpContainsBye = matchUpAssignments.filter(
-    (assignment) => assignment.bye
-  ).length;
+  const matchUpContainsBye = matchUpAssignments.filter((assignment) => assignment.bye).length;
 
   matchUp.matchUpStatus =
     (matchUpContainsBye && BYE) ||
-    ([DEFAULTED, WALKOVER].includes(matchUp.matchUpStatus) &&
-      matchUp.matchUpStatus) ||
+    ([DEFAULTED, WALKOVER].includes(matchUp.matchUpStatus) && matchUp.matchUpStatus) ||
     TO_BE_PLAYED;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // ... and the winningSide must be removed
-  if ([WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus))
-    matchUp.winningSide = undefined;
+  if ([WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus)) matchUp.winningSide = undefined;
 
   if (matchUp.matchUpStatusCodes) {
     updateMatchUpStatusCodes({

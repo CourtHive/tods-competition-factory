@@ -16,9 +16,7 @@ const d210102 = '2021-01-02';
 const d220202 = '2022-02-02';
 
 test('will not allow saving of Invalid Date in dateAvailability', () => {
-  let dateAvailability: Availability[] = [
-    { date: d210102, startTime: '09:00', endTime: '16:00' },
-  ];
+  let dateAvailability: Availability[] = [{ date: d210102, startTime: '09:00', endTime: '16:00' }];
   let result = validDateAvailability({ dateAvailability });
   expect(result.valid).toEqual(true);
 
@@ -28,21 +26,15 @@ test('will not allow saving of Invalid Date in dateAvailability', () => {
   result = validDateAvailability({ dateAvailability: ['not an object'] });
   expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
 
-  dateAvailability = [
-    { date: invalidTime, startTime: '09:00', endTime: '16:00' },
-  ];
+  dateAvailability = [{ date: invalidTime, startTime: '09:00', endTime: '16:00' }];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_DATE);
 
-  dateAvailability = [
-    { date: d210102, startTime: invalidTime, endTime: '16:00' },
-  ];
+  dateAvailability = [{ date: d210102, startTime: invalidTime, endTime: '16:00' }];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
-  dateAvailability = [
-    { date: d210102, startTime: '09:00', endTime: invalidTime },
-  ];
+  dateAvailability = [{ date: d210102, startTime: '09:00', endTime: invalidTime }];
   result = validDateAvailability({ dateAvailability });
   expect(result.error).toEqual(INVALID_TIME);
 
@@ -201,17 +193,13 @@ it('can add events, venues, and modify court availbility', () => {
   const court = courts.find((court) => court.courtId === courtId);
 
   // overlapping dateAvailability has been merged
-  expect(court.dateAvailability).toEqual([
-    { date: d220202, startTime: '08:00', endTime: '20:00' },
-  ]);
+  expect(court.dateAvailability).toEqual([{ date: d220202, startTime: '08:00', endTime: '20:00' }]);
 
   const { rounds } = tournamentEngine.getRounds();
   const matchUps = rounds.flatMap((round) => round.matchUps);
   expect(matchUps.length).toEqual(7);
 
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
@@ -219,9 +207,7 @@ it('can add events, venues, and modify court availbility', () => {
   result = tournamentEngine.scheduleProfileRounds({
     periodLength: 30,
   });
-  expect(Object.keys(result.matchUpScheduleTimes).length).toEqual(
-    matchUps.length
-  );
+  expect(Object.keys(result.matchUpScheduleTimes).length).toEqual(matchUps.length);
 
   // TODO: scheduling policy specify that e.g. SF rounds should begin at the same time
   expect(Object.values(result.matchUpScheduleTimes)).toEqual([

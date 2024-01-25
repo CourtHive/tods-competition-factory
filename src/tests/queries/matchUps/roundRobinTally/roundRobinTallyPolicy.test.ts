@@ -5,10 +5,7 @@ import { expect, it } from 'vitest';
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
 import { TALLY } from '../../../../constants/extensionConstants';
-import {
-  RETIRED,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { RETIRED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
   return positionAssignments

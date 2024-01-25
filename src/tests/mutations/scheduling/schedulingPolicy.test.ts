@@ -34,13 +34,7 @@ it.each([
   },
 ])(
   'can retrieve matchUpAverageTimes for for matchUpFormats',
-  ({
-    matchUpFormat,
-    categoryType,
-    averageMinutes,
-    recoveryMinutes,
-    eventType,
-  }) => {
+  ({ matchUpFormat, categoryType, averageMinutes, recoveryMinutes, eventType }) => {
     const {
       eventIds: [eventId],
       tournamentRecord,
@@ -52,16 +46,14 @@ it.each([
       ],
     });
 
-    let result = tournamentEngine
-      .setState(tournamentRecord)
-      .getMatchUpFormatTiming({
-        defaultAverageMinutes: 87,
-        defaultRecoveryMinutes: 57,
-        matchUpFormat,
-        categoryType,
-        eventType,
-        eventId,
-      });
+    let result = tournamentEngine.setState(tournamentRecord).getMatchUpFormatTiming({
+      defaultAverageMinutes: 87,
+      defaultRecoveryMinutes: 57,
+      matchUpFormat,
+      categoryType,
+      eventType,
+      eventId,
+    });
     expect(result.averageMinutes).toEqual(87);
     if (recoveryMinutes) {
       expect(result.recoveryMinutes).toEqual(57);
@@ -84,5 +76,5 @@ it.each([
     if (recoveryMinutes) {
       expect(result.recoveryMinutes).toEqual(recoveryMinutes);
     }
-  }
+  },
 );

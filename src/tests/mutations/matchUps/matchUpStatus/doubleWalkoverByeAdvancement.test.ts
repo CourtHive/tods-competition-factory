@@ -3,15 +3,8 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
-import {
-  BYE,
-  DOUBLE_WALKOVER,
-  WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { BYE, DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 
 test('Consolation WO/WO advancing fed BYE', () => {
   // prettier-ignore
@@ -23,25 +16,19 @@ test('Consolation WO/WO advancing fed BYE', () => {
     { stage: CONSOLATION, scoreString: '6-1 6-2', winningSide: 1 },
   ];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 16, outcomes },
-    ],
+    drawProfiles: [{ drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 16, outcomes }],
   });
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { completedMatchUps, upcomingMatchUps } =
-    tournamentEngine.tournamentMatchUps();
+  const { completedMatchUps, upcomingMatchUps } = tournamentEngine.tournamentMatchUps();
   expect(completedMatchUps.length).toEqual(5);
 
   const targetMatchUp = upcomingMatchUps.find(
-    ({ stage, roundNumber, roundPosition }) =>
-      stage === CONSOLATION && roundNumber === 1 && roundPosition === 2
+    ({ stage, roundNumber, roundPosition }) => stage === CONSOLATION && roundNumber === 1 && roundPosition === 2,
   );
   expect(targetMatchUp.drawPositions).toEqual([7, 8]);
-  const bothSidesAsigned = targetMatchUp.sides.every(
-    (side) => side.participant
-  );
+  const bothSidesAsigned = targetMatchUp.sides.every((side) => side.participant);
   expect(bothSidesAsigned).toEqual(true);
   expect(targetMatchUp.readyToScore).toEqual(true);
 

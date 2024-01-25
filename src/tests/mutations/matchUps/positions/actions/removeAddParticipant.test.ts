@@ -2,10 +2,7 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  ASSIGN_PARTICIPANT,
-  REMOVE_ASSIGNMENT,
-} from '../../../../../constants/positionActionConstants';
+import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
 
 it('can remove drawPosition assignment and add it back', () => {
   const drawProfiles = [
@@ -37,9 +34,7 @@ it('can remove drawPosition assignment and add it back', () => {
   expect(result.isByePosition).toEqual(false);
   let options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
-  let option = result.validActions.find(
-    (action) => action.type === REMOVE_ASSIGNMENT
-  );
+  let option = result.validActions.find((action) => action.type === REMOVE_ASSIGNMENT);
 
   result = tournamentEngine[option.method](option.payload);
   expect(result.success).toEqual(true);
@@ -52,9 +47,7 @@ it('can remove drawPosition assignment and add it back', () => {
   options = result.validActions?.map((validAction) => validAction.type);
 
   expect(options.includes(ASSIGN_PARTICIPANT)).toEqual(true);
-  option = result.validActions.find(
-    (action) => action.type === ASSIGN_PARTICIPANT
-  );
+  option = result.validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
   expect(option.availableParticipantIds.length).toEqual(1);
   expect(option.participantsAvailable.length).toEqual(1);
 

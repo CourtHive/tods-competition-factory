@@ -1,7 +1,4 @@
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { DrawDefinition, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -32,11 +29,8 @@ export function removeSeededParticipant({
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const structure = (drawDefinition.structures ?? []).find(
-    (structure) => structure.structureId === structureId
-  );
-  if (!structure)
-    return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
+  const structure = (drawDefinition.structures ?? []).find((structure) => structure.structureId === structureId);
+  if (!structure) return decorateResult({ result: { error: STRUCTURE_NOT_FOUND }, stack });
 
   if (
     !structure.stage ||
@@ -46,9 +40,7 @@ export function removeSeededParticipant({
     return decorateResult({ result: { error: INVALID_STRUCTURE }, stack });
   }
 
-  const seedAssignment = structure.seedAssignments?.find(
-    (assignment) => assignment.participantId === participantId
-  );
+  const seedAssignment = structure.seedAssignments?.find((assignment) => assignment.participantId === participantId);
 
   if (!seedAssignment)
     return decorateResult({

@@ -6,16 +6,14 @@ test('engines share state', () => {
   let tournamentIds = tournamentEngine.getTournamentIds().tournamentIds;
   expect(tournamentIds.length).toEqual(0);
 
-  const { tournamentRecord: firstRecord } =
-    mocksEngine.generateTournamentRecord({
-      tournamentName: 'First Tournament',
-      participantsProfile: { participantsCount: 64 },
-    });
-  const { tournamentRecord: secondRecord } =
-    mocksEngine.generateTournamentRecord({
-      tournamentName: 'Second Tournament',
-      participantsProfile: { participantsCount: 32 },
-    });
+  const { tournamentRecord: firstRecord } = mocksEngine.generateTournamentRecord({
+    tournamentName: 'First Tournament',
+    participantsProfile: { participantsCount: 64 },
+  });
+  const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord({
+    tournamentName: 'Second Tournament',
+    participantsProfile: { participantsCount: 32 },
+  });
   tournamentEngine.setState([firstRecord, secondRecord]);
 
   tournamentIds = tournamentEngine.getTournamentIds().tournamentIds;

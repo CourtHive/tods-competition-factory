@@ -78,9 +78,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   expect(structures.length).toEqual(2);
   expect(structures[1].structureName).toEqual('Playoff 3-4');
 
-  const consolationAssignedParticipantIds = getParticipantIds(
-    structures[1].positionAssignments
-  );
+  const consolationAssignedParticipantIds = getParticipantIds(structures[1].positionAssignments);
   expect(consolationAssignedParticipantIds.length).toEqual(2);
 
   expect(allMatchUps.length).toEqual(8);
@@ -88,12 +86,7 @@ it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
 });
 
 function tournamentEngineAddPlayoffsTest(params) {
-  const {
-    playoffStructureNameBase,
-    playoffPositions,
-    roundNumbers,
-    drawProfiles,
-  } = params;
+  const { playoffStructureNameBase, playoffPositions, roundNumbers, drawProfiles } = params;
   const {
     drawIds: [drawId],
     tournamentRecord,

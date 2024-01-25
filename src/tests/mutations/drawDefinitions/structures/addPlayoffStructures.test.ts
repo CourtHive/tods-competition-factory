@@ -1,10 +1,7 @@
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '../../../../types/tournamentTypes';
-import {
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-} from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { addPlayoffStructures } from '../../../../mutate/drawDefinitions/addPlayoffStructures';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
@@ -101,9 +98,7 @@ function drawEngineAddStructuresTest(params) {
   });
   expect(result.success).toEqual(true);
 
-  const mainStructure = drawDefinition.structures?.find(
-    (structure) => structure.stage === MAIN
-  );
+  const mainStructure = drawDefinition.structures?.find((structure) => structure.stage === MAIN);
   result = addPlayoffStructures({
     structureId: mainStructure?.structureId,
     playoffPositions,

@@ -32,9 +32,7 @@ it('can publish only specific rounds of AD_HOC structures', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
-  expect(
-    Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)
-  ).toEqual(['1', '2', '3']);
+  expect(Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)).toEqual(['1', '2', '3']);
 
   const structureId = result.eventData.drawsData[0].structures[0].structureId;
 
@@ -48,9 +46,7 @@ it('can publish only specific rounds of AD_HOC structures', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
-  expect(
-    Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)
-  ).toEqual(['1']);
+  expect(Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)).toEqual(['1']);
 
   result = tournamentEngine.publishEvent({
     drawDetails: {
@@ -62,15 +58,9 @@ it('can publish only specific rounds of AD_HOC structures', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
-  expect(
-    Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)
-  ).toEqual(['1', '2']);
+  expect(Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)).toEqual(['1', '2']);
 
-  expect(
-    result.eventData.eventInfo.publish.drawDetails[drawId].structureDetails[
-      structureId
-    ].roundLimit
-  ).toEqual(2);
+  expect(result.eventData.eventInfo.publish.drawDetails[drawId].structureDetails[structureId].roundLimit).toEqual(2);
 
   result = tournamentEngine.publishEvent({
     drawDetails: {
@@ -82,7 +72,5 @@ it('can publish only specific rounds of AD_HOC structures', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
-  expect(
-    Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)
-  ).toEqual(['1', '2', '3']);
+  expect(Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)).toEqual(['1', '2', '3']);
 });

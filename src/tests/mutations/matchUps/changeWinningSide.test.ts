@@ -3,10 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { CANNOT_CHANGE_WINNING_SIDE } from '../../../constants/errorConditionConstants';
-import {
-  COMPASS,
-  FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
 
 // This should only apply when eventType is SINGLES or DOUBLES, NOT WHEN TEAM!
 test('changing winningSide can propagate changes through multiple structures', () => {
@@ -30,55 +27,46 @@ test('changing winningSide can propagate changes through multiple structures', (
 
   const firstMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, structureName }) =>
-      roundNumber === 1 && roundPosition === 1 && structureName === 'East'
+      roundNumber === 1 && roundPosition === 1 && structureName === 'East',
   );
   const firstMatchUpWinnerParticipantId = firstMatchUp.sides.find(
-    ({ sideNumber }) => sideNumber === firstMatchUp.winningSide
+    ({ sideNumber }) => sideNumber === firstMatchUp.winningSide,
   ).participantId;
   const firstMatchUpLoserParticipantId = firstMatchUp.sides.find(
-    ({ sideNumber }) => sideNumber !== firstMatchUp.winningSide
+    ({ sideNumber }) => sideNumber !== firstMatchUp.winningSide,
   ).participantId;
   const westFinal = completedMatchUps.find(
-    ({ finishingRound, structureName }) =>
-      finishingRound === 1 && structureName === 'West'
+    ({ finishingRound, structureName }) => finishingRound === 1 && structureName === 'West',
   );
   const westFinalWinnerParticipantId = westFinal.sides.find(
-    ({ sideNumber }) => sideNumber === westFinal.winningSide
+    ({ sideNumber }) => sideNumber === westFinal.winningSide,
   ).participantId;
 
   expect(firstMatchUpLoserParticipantId).toEqual(westFinalWinnerParticipantId);
 
-  let result = tournamentEngine
-    .devContext({ winningSideChange: true })
-    .setMatchUpStatus({
-      matchUpId: firstMatchUp.matchUpId,
-      allowChangePropagation: false,
-      outcome: { winningSide: 2 },
-      drawId,
-    });
+  let result = tournamentEngine.devContext({ winningSideChange: true }).setMatchUpStatus({
+    matchUpId: firstMatchUp.matchUpId,
+    allowChangePropagation: false,
+    outcome: { winningSide: 2 },
+    drawId,
+  });
   expect(result.error).toEqual(CANNOT_CHANGE_WINNING_SIDE);
 
-  result = tournamentEngine
-    .devContext({ winningSideChange: true })
-    .setMatchUpStatus({
-      matchUpId: firstMatchUp.matchUpId,
-      allowChangePropagation: true,
-      outcome: { winningSide: 2 },
-      drawId,
-    });
+  result = tournamentEngine.devContext({ winningSideChange: true }).setMatchUpStatus({
+    matchUpId: firstMatchUp.matchUpId,
+    allowChangePropagation: true,
+    outcome: { winningSide: 2 },
+    drawId,
+  });
   expect(result.success).toEqual(true);
 
   matchUps = tournamentEngine.tournamentMatchUps();
-  const updatedWestFinal = matchUps.completedMatchUps.find(
-    ({ matchUpId }) => matchUpId === westFinal.matchUpId
-  );
+  const updatedWestFinal = matchUps.completedMatchUps.find(({ matchUpId }) => matchUpId === westFinal.matchUpId);
   const updatedWestFinalWinnerParticipantId = updatedWestFinal.sides.find(
-    ({ sideNumber }) => sideNumber === westFinal.winningSide
+    ({ sideNumber }) => sideNumber === westFinal.winningSide,
   ).participantId;
 
-  expect(firstMatchUpWinnerParticipantId).toEqual(
-    updatedWestFinalWinnerParticipantId
-  );
+  expect(firstMatchUpWinnerParticipantId).toEqual(updatedWestFinalWinnerParticipantId);
 });
 
 test('changing winningSide can propagate changes through FMLC', () => {
@@ -98,61 +86,50 @@ test('changing winningSide can propagate changes through FMLC', () => {
   let matchUps = tournamentEngine.tournamentMatchUps();
   const { completedMatchUps, byeMatchUps, matchUpsCount } = matchUps;
 
-  expect(completedMatchUps.length + byeMatchUps.length).toEqual(
-    expectedMatchUpsCount
-  );
+  expect(completedMatchUps.length + byeMatchUps.length).toEqual(expectedMatchUpsCount);
   expect(matchUpsCount).toEqual(expectedMatchUpsCount);
 
   const firstMatchUp = completedMatchUps.find(
     ({ roundNumber, roundPosition, structureName }) =>
-      roundNumber === 1 && roundPosition === 1 && structureName === 'Main'
+      roundNumber === 1 && roundPosition === 1 && structureName === 'Main',
   );
   const firstMatchUpWinnerParticipantId = firstMatchUp.sides.find(
-    ({ sideNumber }) => sideNumber === firstMatchUp.winningSide
+    ({ sideNumber }) => sideNumber === firstMatchUp.winningSide,
   ).participantId;
   const firstMatchUpLoserParticipantId = firstMatchUp.sides.find(
-    ({ sideNumber }) => sideNumber !== firstMatchUp.winningSide
+    ({ sideNumber }) => sideNumber !== firstMatchUp.winningSide,
   ).participantId;
   const consolationFinal = completedMatchUps.find(
-    ({ finishingRound, structureName }) =>
-      finishingRound === 1 && structureName === 'Consolation'
+    ({ finishingRound, structureName }) => finishingRound === 1 && structureName === 'Consolation',
   );
   const consolationFinalParticipantId = consolationFinal.sides.find(
-    ({ sideNumber }) => sideNumber === consolationFinal.winningSide
+    ({ sideNumber }) => sideNumber === consolationFinal.winningSide,
   ).participantId;
 
   expect(firstMatchUpLoserParticipantId).toEqual(consolationFinalParticipantId);
 
-  let result = tournamentEngine
-    .devContext({ winningSideChange: true })
-    .setMatchUpStatus({
-      matchUpId: firstMatchUp.matchUpId,
-      allowChangePropagation: false,
-      outcome: { winningSide: 2 },
-      drawId,
-    });
+  let result = tournamentEngine.devContext({ winningSideChange: true }).setMatchUpStatus({
+    matchUpId: firstMatchUp.matchUpId,
+    allowChangePropagation: false,
+    outcome: { winningSide: 2 },
+    drawId,
+  });
   expect(result.error).toEqual(CANNOT_CHANGE_WINNING_SIDE);
 
-  result = tournamentEngine
-    .devContext({ winningSideChange: true })
-    .setMatchUpStatus({
-      matchUpId: firstMatchUp.matchUpId,
-      allowChangePropagation: true,
-      outcome: { winningSide: 2 },
-      drawId,
-    });
+  result = tournamentEngine.devContext({ winningSideChange: true }).setMatchUpStatus({
+    matchUpId: firstMatchUp.matchUpId,
+    allowChangePropagation: true,
+    outcome: { winningSide: 2 },
+    drawId,
+  });
 
   expect(result.success).toEqual(true);
 
   matchUps = tournamentEngine.tournamentMatchUps();
-  const updatedWestFinal = matchUps.completedMatchUps.find(
-    ({ matchUpId }) => matchUpId === consolationFinal.matchUpId
-  );
+  const updatedWestFinal = matchUps.completedMatchUps.find(({ matchUpId }) => matchUpId === consolationFinal.matchUpId);
   const updatedConsolationFinalParticipantId = updatedWestFinal.sides.find(
-    ({ sideNumber }) => sideNumber === consolationFinal.winningSide
+    ({ sideNumber }) => sideNumber === consolationFinal.winningSide,
   ).participantId;
 
-  expect(firstMatchUpWinnerParticipantId).toEqual(
-    updatedConsolationFinalParticipantId
-  );
+  expect(firstMatchUpWinnerParticipantId).toEqual(updatedConsolationFinalParticipantId);
 });

@@ -3,16 +3,11 @@ import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getFlightProfile } from '../event/getFlightProfile';
 
-import {
-  GetMatchUpsArgs,
-  GroupsMatchUpsResult,
-} from '../../types/factoryTypes';
+import { GetMatchUpsArgs, GroupsMatchUpsResult } from '../../types/factoryTypes';
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { eventMatchUps } from './getEventMatchUps';
 
-export function tournamentMatchUps(
-  params: GetMatchUpsArgs
-): GroupsMatchUpsResult {
+export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   let contextContent = params.contextContent;
   const {
@@ -58,8 +53,7 @@ export function tournamentMatchUps(
     .map((event) => {
       const flightProfile = getFlightProfile({ event }).flightProfile;
       const additionalContext = {
-        eventDrawsCount:
-          flightProfile?.flights?.length || event.drawDefinitions?.length || 0,
+        eventDrawsCount: flightProfile?.flights?.length || event.drawDefinitions?.length || 0,
         ...context,
       };
 
@@ -88,10 +82,7 @@ export function tournamentMatchUps(
   const eventsDrawMatchUpsResult = eventsDrawsMatchUps.reduce(
     (matchUps, eventMatchUps) => {
       const keys =
-        eventMatchUps &&
-        Object.keys(eventMatchUps).filter(
-          (key) => !['success', 'matchUpsMap'].includes(key)
-        );
+        eventMatchUps && Object.keys(eventMatchUps).filter((key) => !['success', 'matchUpsMap'].includes(key));
       keys?.forEach((key) => {
         if (Array.isArray(eventMatchUps[key])) {
           if (!matchUps[key]) matchUps[key] = [];
@@ -102,7 +93,7 @@ export function tournamentMatchUps(
 
       return matchUps;
     },
-    { matchUpsCount: 0 }
+    { matchUpsCount: 0 },
   );
 
   return { ...eventsDrawMatchUpsResult, groupInfo };

@@ -9,11 +9,9 @@ type GetPairedDrawPosition = {
   drawPosition: number;
   roundNumber: number;
 };
-export function getPairedDrawPosition({
-  drawPosition,
-  roundNumber,
-  matchUps,
-}: GetPairedDrawPosition): { pairedDrawPosition?: number | undefined } {
+export function getPairedDrawPosition({ drawPosition, roundNumber, matchUps }: GetPairedDrawPosition): {
+  pairedDrawPosition?: number | undefined;
+} {
   if (!matchUps) return {};
 
   const { roundProfile } = getRoundMatchUps({ matchUps }) || {};
@@ -24,12 +22,8 @@ export function getPairedDrawPosition({
 
   const roundIndex = roundNumber || initialRoundNumber;
   const targetRoundProfile: any = roundIndex && roundProfile?.[roundIndex];
-  const pairedDrawPositions = targetRoundProfile?.pairedDrawPositions?.find(
-    (pair) => pair.includes(drawPosition)
-  );
-  const pairedDrawPosition = pairedDrawPositions?.find(
-    (currentPosition) => currentPosition !== drawPosition
-  );
+  const pairedDrawPositions = targetRoundProfile?.pairedDrawPositions?.find((pair) => pair.includes(drawPosition));
+  const pairedDrawPosition = pairedDrawPositions?.find((currentPosition) => currentPosition !== drawPosition);
 
   return { pairedDrawPosition };
 }

@@ -2,26 +2,15 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import {
-  INVALID_OBJECT,
-  VENUE_EXISTS,
-  VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_OBJECT, VENUE_EXISTS, VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 test('competitionEngine can modify venues', () => {
   const startDate = '2020-01-01';
-  const { tournamentRecord: firstTournament } =
-    mocksEngine.generateTournamentRecord({ startDate });
-  const { tournamentRecord: secondTournament } =
-    mocksEngine.generateTournamentRecord({ startDate });
-  const { tournamentRecord: thirdTournament } =
-    mocksEngine.generateTournamentRecord({ startDate });
+  const { tournamentRecord: firstTournament } = mocksEngine.generateTournamentRecord({ startDate });
+  const { tournamentRecord: secondTournament } = mocksEngine.generateTournamentRecord({ startDate });
+  const { tournamentRecord: thirdTournament } = mocksEngine.generateTournamentRecord({ startDate });
 
-  competitionEngine.setState([
-    firstTournament,
-    secondTournament,
-    thirdTournament,
-  ]);
+  competitionEngine.setState([firstTournament, secondTournament, thirdTournament]);
 
   const myCourts = { venueName: 'My Courts', venueId: 'venueId' };
   let result = competitionEngine.addVenue({ venue: myCourts });

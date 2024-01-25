@@ -13,25 +13,19 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
     element: drawDefinition,
   });
 
-  const existingValue = Array.isArray(extension?.value)
-    ? extension?.value ?? []
-    : [];
+  const existingValue = Array.isArray(extension?.value) ? extension?.value ?? [] : [];
 
   if (!existingValue?.length) {
-    const mainStructure = drawDefinition.structures.find(
-      (structure) => structure.stage === MAIN
-    );
+    const mainStructure = drawDefinition.structures.find((structure) => structure.stage === MAIN);
     if (mainStructure) {
       const initialAssignments = getPositionAssignments({
         structure: mainStructure,
-      }).positionAssignments?.map(
-        ({ drawPosition, participantId, bye, qualifier }) => ({
-          drawPosition,
-          participantId,
-          qualifier,
-          bye,
-        })
-      );
+      }).positionAssignments?.map(({ drawPosition, participantId, bye, qualifier }) => ({
+        drawPosition,
+        participantId,
+        qualifier,
+        bye,
+      }));
 
       existingValue.push({
         name: 'initialMainAssignments',

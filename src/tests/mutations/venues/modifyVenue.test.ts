@@ -35,9 +35,7 @@ it('can define and modify a venue', () => {
   expect(result.success).toEqual(true);
 
   const myCourts = { venueName: 'My Courts' };
-  result = tournamentEngine
-    .devContext({ addVenue: true })
-    .addVenue({ venue: myCourts });
+  result = tournamentEngine.devContext({ addVenue: true }).addVenue({ venue: myCourts });
   const {
     venue: { venueId },
   } = result;
@@ -289,16 +287,13 @@ it('can define and modify a venue', () => {
   });
   expect(result.error).toEqual(INVALID_DATE_AVAILABILITY);
 
-  const { startDate: sd, endDate: ed } =
-    tournamentEngine.getTournamentInfo().tournamentInfo;
+  const { startDate: sd, endDate: ed } = tournamentEngine.getTournamentInfo().tournamentInfo;
   expect(startDate).toEqual(sd);
   expect(endDate).toEqual(ed);
 
   // dateAvailability does not have to be within tournament dates
   result = tournamentEngine.modifyCourtAvailability({
-    dateAvailability: [
-      { date: '2022-02-02', startTime: '08:00', endTime: '20:00' },
-    ],
+    dateAvailability: [{ date: '2022-02-02', startTime: '08:00', endTime: '20:00' }],
     courtId,
   });
   expect(result.success).toEqual(true);

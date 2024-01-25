@@ -9,11 +9,7 @@ import {
 import { SUCCESS } from '../../constants/resultConstants';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 
-export function modifyParticipantOtherName({
-  tournamentRecord,
-  participantId,
-  participantOtherName,
-}) {
+export function modifyParticipantOtherName({ tournamentRecord, participantId, participantOtherName }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

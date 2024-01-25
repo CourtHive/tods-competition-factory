@@ -1,11 +1,7 @@
 // groups schedule profile rounds where adjacent hashes are equivalent
 // if { garmanSinglePass: true } then group all rounds into a single group
 // if { garmanSinglePass: true } then the one group has greatestAverageMinutes
-export function getGroupedRounds({
-  scheduledRoundsDetails,
-  greatestAverageMinutes,
-  garmanSinglePass,
-}) {
+export function getGroupedRounds({ scheduledRoundsDetails, greatestAverageMinutes, garmanSinglePass }) {
   const groupedRounds: any[] = [];
   let groupedMatchUpIds = [];
   let roundPeriodLength;
@@ -28,9 +24,7 @@ export function getGroupedRounds({
       });
       groupedMatchUpIds = roundDetails.matchUpIds;
     }
-    averageMinutes = garmanSinglePass
-      ? greatestAverageMinutes
-      : roundDetails.averageMinutes;
+    averageMinutes = garmanSinglePass ? greatestAverageMinutes : roundDetails.averageMinutes;
     recoveryMinutes = roundDetails.recoveryMinutes;
     roundPeriodLength = roundDetails.roundPeriodLength;
   }

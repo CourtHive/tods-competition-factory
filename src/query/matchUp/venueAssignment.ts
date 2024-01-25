@@ -8,17 +8,13 @@ export function matchUpAssignedVenueId({
   schedule,
   matchUp,
 }: import('./scheduledMatchUpArgs').ScheduledMatchUpArgs) {
-  const { itemValue: venueId, timeStamp: itemTimeStamp } =
-    latestVisibleTimeItemValue({
-      timeItems: matchUp?.timeItems || [],
-      itemType: ASSIGN_VENUE,
-      visibilityThreshold,
-    });
+  const { itemValue: venueId, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({
+    timeItems: matchUp?.timeItems || [],
+    itemType: ASSIGN_VENUE,
+    visibilityThreshold,
+  });
 
-  return !schedule ||
-    (itemTimeStamp &&
-      timeStamp &&
-      new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())
+  return !schedule || (itemTimeStamp && timeStamp && new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())
     ? { venueId }
     : schedule;
 }

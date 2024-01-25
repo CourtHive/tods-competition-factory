@@ -13,10 +13,7 @@ import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import {
-  COURT_ID,
-  TOURNAMENT_RECORDS,
-} from '../../constants/attributeConstants';
+import { COURT_ID, TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
 
 type DeleteCourtArgs = {
   tournamentRecords?: TournamentRecords;
@@ -28,9 +25,7 @@ type DeleteCourtArgs = {
 export function deleteCourt(params: DeleteCourtArgs) {
   const { courtId, disableNotice, force } = params;
   const tournamentRecords = resolveTournamentRecords(params);
-  const paramsCheck = checkRequiredParameters(params, [
-    { [TOURNAMENT_RECORDS]: true, [COURT_ID]: true },
-  ]);
+  const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true, [COURT_ID]: true }]);
   if (paramsCheck.error) return paramsCheck;
 
   let courtDeleted;
@@ -45,12 +40,7 @@ export function deleteCourt(params: DeleteCourtArgs) {
   return courtDeleted ? { ...SUCCESS } : result;
 }
 
-export function courtDeletion({
-  tournamentRecord,
-  disableNotice,
-  courtId,
-  force,
-}) {
+export function courtDeletion({ tournamentRecord, disableNotice, courtId, force }) {
   const result = findCourt({ tournamentRecord, courtId });
   if (result.error) return result;
   const venue = result.venue;
@@ -65,9 +55,7 @@ export function courtDeletion({
   })?.appliedPolicies;
 
   const allowModificationWhenMatchUpsScheduled =
-    force ??
-    appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent
-      ?.courts;
+    force ?? appliedPolicies?.[POLICY_TYPE_SCHEDULING]?.allowDeletionWithScoresPresent?.courts;
 
   if (!matchUps?.length || allowModificationWhenMatchUpsScheduled) {
     for (const matchUp of matchUps ?? []) {

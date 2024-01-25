@@ -6,18 +6,12 @@ import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getDrawStructures } from '../../acquire/findStructure';
 import { filterMatchUps } from '../filterMatchUps';
-import {
-  ResultType,
-  decorateResult,
-} from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
 import { GroupsMatchUpsResult } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import {
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state
@@ -33,20 +27,13 @@ export function getAllDrawMatchUps(params): ResultType & {
 
   if (result.error) return decorateResult({ result, stack });
 
-  const {
-    abandonedMatchUps,
-    completedMatchUps,
-    upcomingMatchUps,
-    pendingMatchUps,
-    byeMatchUps,
-    matchUpsMap,
-  } = result;
+  const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps, byeMatchUps, matchUpsMap } = result;
 
   const matchUps: HydratedMatchUp[] = (abandonedMatchUps ?? []).concat(
     ...(completedMatchUps ?? []),
     ...(upcomingMatchUps ?? []),
     ...(pendingMatchUps ?? []),
-    ...(byeMatchUps ?? [])
+    ...(byeMatchUps ?? []),
   );
 
   return { matchUps, matchUpsMap };
@@ -100,15 +87,11 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   if (!tournamentParticipants?.length && tournamentRecord) {
     tournamentParticipants = tournamentRecord?.participants;
 
-    if (
-      (inContext || participantsProfile?.withGroupings) &&
-      tournamentParticipants?.length
-    ) {
-      ({ participantsWithGroupings: tournamentParticipants, groupInfo } =
-        addParticipantGroupings({
-          participants: tournamentParticipants,
-          participantsProfile,
-        }));
+    if ((inContext || participantsProfile?.withGroupings) && tournamentParticipants?.length) {
+      ({ participantsWithGroupings: tournamentParticipants, groupInfo } = addParticipantGroupings({
+        participants: tournamentParticipants,
+        participantsProfile,
+      }));
     }
   }
 
@@ -122,8 +105,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
   // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
   // ...optionally pass these seedAssignments to other stage structures
 
-  const exitProfiles =
-    drawDefinition && getExitProfiles({ drawDefinition }).exitProfiles;
+  const exitProfiles = drawDefinition && getExitProfiles({ drawDefinition }).exitProfiles;
 
   structures.forEach((structure) => {
     const {
@@ -206,7 +188,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
       ...((completed && allCompletedMatchUps) || []),
       ...((upcoming && allUpcomingMatchUps) || []),
       ...((pending && allPendingMatchUps) || []),
-      ...((bye && allByeMatchUps) || [])
+      ...((bye && allByeMatchUps) || []),
     );
     addUpcomingMatchUps({
       inContextDrawMatchUps: matchUps,

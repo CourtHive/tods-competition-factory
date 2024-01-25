@@ -2,10 +2,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  EXISTING_STRUCTURE,
-  INVALID_VALUES,
-} from '../../../../constants/errorConditionConstants';
+import { EXISTING_STRUCTURE, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 
 it('will not allow attaching structures with links duplicating existing links', () => {
   const {

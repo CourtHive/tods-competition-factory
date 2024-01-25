@@ -6,10 +6,7 @@ import { expect, it } from 'vitest';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-} from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('will remove redundant tieFormat on matchUp with no results', () => {
   const {
@@ -42,16 +39,15 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
     },
   };
 
-  let { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    });
+  let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  });
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
 
@@ -68,16 +64,15 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
     });
   });
 
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+  }));
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const { winningSide, matchUpStatus, score, tieMatchUps } = dualMatchUp;
@@ -104,17 +99,16 @@ it('will remove redundant tieFormat on matchUp with no results', () => {
     });
   });
 
-  ({ matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      contextFilters: {
-        stages: [MAIN],
-      },
-      matchUpFilters: {
-        matchUpTypes: [TEAM],
-        roundNumbers: [1],
-      },
-      inContext: false,
-    }));
+  ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    contextFilters: {
+      stages: [MAIN],
+    },
+    matchUpFilters: {
+      matchUpTypes: [TEAM],
+      roundNumbers: [1],
+    },
+    inContext: false,
+  }));
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
     const { winningSide, matchUpStatus, score, tieMatchUps } = dualMatchUp;

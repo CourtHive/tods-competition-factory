@@ -54,9 +54,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
   // first three individual participants belong to groupParticipant
-  participantIds = tournamentParticipants
-    .slice(0, 3)
-    .map((participant) => participant.participantId);
+  participantIds = tournamentParticipants.slice(0, 3).map((participant) => participant.participantId);
 
   result = tournamentEngine.addParticipant({
     returnParticipant: true,
@@ -86,9 +84,7 @@ it('can add a GROUP participant and add individualParticipantIds', () => {
   expect(result.error).not.toBeUndefined();
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
 
-  individualParticipantIds = tournamentParticipants
-    .slice(0, 4)
-    .map((participant) => participant.participantId);
+  individualParticipantIds = tournamentParticipants.slice(0, 4).map((participant) => participant.participantId);
 
   // attempt to add to non-existent group participant
   result = tournamentEngine.addIndividualParticipantIds({
@@ -129,9 +125,7 @@ it('can add a GROUP participant and remove individualParticipantIds', () => {
   }).participants;
 
   // first four individual participants belong to groupParticipant
-  const individualParticipantIds = tournamentParticipants
-    .slice(0, 4)
-    .map((participant) => participant.participantId);
+  const individualParticipantIds = tournamentParticipants.slice(0, 4).map((participant) => participant.participantId);
 
   let result = tournamentEngine.addParticipant({
     returnParticipant: true,
@@ -198,9 +192,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   }).participants;
 
   // first four individual participants belong to groupParticipant
-  const individualParticipantIds = tournamentParticipants
-    .slice(0, 4)
-    .map((participant) => participant.participantId);
+  const individualParticipantIds = tournamentParticipants.slice(0, 4).map((participant) => participant.participantId);
 
   let result = tournamentEngine.addParticipant({
     returnParticipant: true,
@@ -218,9 +210,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
   let { participant } = tournamentEngine.findParticipant({
     participantId: groupingParticipantId,
   });
-  expect(individualParticipantIds).toEqual(
-    participant.individualParticipantIds
-  );
+  expect(individualParticipantIds).toEqual(participant.individualParticipantIds);
 
   const newIndividualParticipantIds = tournamentParticipants
     .slice(2, 6)
@@ -250,9 +240,7 @@ it('can modify individualParticipantIds of a grouping participant', () => {
     participantId: groupingParticipantId,
   }));
 
-  expect(newIndividualParticipantIds).toEqual(
-    participant.individualParticipantIds
-  );
+  expect(newIndividualParticipantIds).toEqual(participant.individualParticipantIds);
 });
 
 it('can remove individualParticipantIds from a grouping participant', () => {
@@ -264,9 +252,7 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   }).participants;
 
   // first four individual participants belong to groupParticipant
-  const individualParticipantIds = tournamentParticipants.map(
-    (participant) => participant.participantId
-  );
+  const individualParticipantIds = tournamentParticipants.map((participant) => participant.participantId);
 
   let result = tournamentEngine.addParticipant({
     returnParticipant: true,
@@ -284,9 +270,7 @@ it('can remove individualParticipantIds from a grouping participant', () => {
   const { participant } = tournamentEngine.findParticipant({
     participantId: groupingParticipantId,
   });
-  expect(individualParticipantIds).toEqual(
-    participant.individualParticipantIds
-  );
+  expect(individualParticipantIds).toEqual(participant.individualParticipantIds);
 
   result = tournamentEngine.removeParticipantIdsFromAllTeams({
     individualParticipantIds,
@@ -305,12 +289,9 @@ it('will add individualParticipants to events as UNGROUPED when removed from TEA
 
   tournamentEngine.setState(tournamentRecord);
 
-  const teamParticipant = tournamentRecord.participants.find(
-    (participant) => participant.participantType === TEAM
-  );
+  const teamParticipant = tournamentRecord.participants.find((participant) => participant.participantType === TEAM);
 
-  const individualParticipantIdToRemove =
-    teamParticipant.individualParticipantIds[0];
+  const individualParticipantIdToRemove = teamParticipant.individualParticipantIds[0];
 
   const result = tournamentEngine.removeIndividualParticipantIds({
     individualParticipantIds: [individualParticipantIdToRemove],

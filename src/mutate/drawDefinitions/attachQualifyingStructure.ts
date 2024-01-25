@@ -3,10 +3,7 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { decorateResult } from '../../global/functions/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
-import {
-  addMatchUpsNotice,
-  modifyDrawNotice,
-} from '../notifications/drawNotifications';
+import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import {
@@ -15,18 +12,9 @@ import {
   MISSING_TARGET_LINK,
   MISSING_TOURNAMENT_RECORD,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  DrawLink,
-  Structure,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, Structure } from '../../types/tournamentTypes';
 
-export function attachQualifyingStructure({
-  tournamentRecord,
-  drawDefinition,
-  structure,
-  link,
-}) {
+export function attachQualifyingStructure({ tournamentRecord, drawDefinition, structure, link }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -59,13 +47,7 @@ type AttachQualifyingArgs = {
   eventId?: string;
   link: DrawLink;
 };
-export function attachQualifying({
-  drawDefinition,
-  tournamentId,
-  structure,
-  eventId,
-  link,
-}: AttachQualifyingArgs) {
+export function attachQualifying({ drawDefinition, tournamentId, structure, eventId, link }: AttachQualifyingArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structure) return { error: MISSING_STRUCTURE };
   if (!link) return { error: MISSING_TARGET_LINK };

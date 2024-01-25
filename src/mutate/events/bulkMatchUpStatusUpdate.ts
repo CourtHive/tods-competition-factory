@@ -1,16 +1,12 @@
 import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
 import { findEvent } from '../../acquire/findEvent';
 
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 export function bulkMatchUpStatusUpdate(params) {
   if (!params?.outcomes) return { error: MISSING_VALUE };
-  if (!Array.isArray(params.outcomes))
-    return { error: MISSING_VALUE, info: { outcomes: params.outcomes } };
+  if (!Array.isArray(params.outcomes)) return { error: MISSING_VALUE, info: { outcomes: params.outcomes } };
 
   const tournamentRecords =
     params.tournamentRecords ||
@@ -23,18 +19,14 @@ export function bulkMatchUpStatusUpdate(params) {
 
   const tournamentIds = outcomes.reduce(
     (tournamentIds, outcome) =>
-      !tournamentIds.includes(outcome.tournamentId)
-        ? tournamentIds.concat(outcome.tournamentId)
-        : tournamentIds,
-    []
+      !tournamentIds.includes(outcome.tournamentId) ? tournamentIds.concat(outcome.tournamentId) : tournamentIds,
+    [],
   );
 
   for (const tournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[tournamentId];
     if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-    const tournamentOutcomes = outcomes.filter(
-      (outcome) => outcome.tournamentId === tournamentId
-    );
+    const tournamentOutcomes = outcomes.filter((outcome) => outcome.tournamentId === tournamentId);
     if (tournamentOutcomes.length) {
       const result = bulkUpdate({
         outcomes: tournamentOutcomes,
@@ -48,8 +40,7 @@ export function bulkMatchUpStatusUpdate(params) {
 }
 
 function bulkUpdate(params) {
-  const { tournamentRecords, tournamentRecord, outcomes, policyDefinitions } =
-    params;
+  const { tournamentRecords, tournamentRecord, outcomes, policyDefinitions } = params;
   const events = {};
 
   // group outcomes by events to optimize
@@ -64,9 +55,7 @@ function bulkUpdate(params) {
 
     for (const outcome of events[eventId]) {
       const { drawId } = outcome;
-      const drawDefinition = event?.drawDefinitions?.find(
-        (drawDefinition) => drawDefinition.drawId === drawId
-      );
+      const drawDefinition = event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId);
       if (drawDefinition && drawId) {
         const { matchUpFormat, matchUpId } = outcome;
         const result = setMatchUpStatus({

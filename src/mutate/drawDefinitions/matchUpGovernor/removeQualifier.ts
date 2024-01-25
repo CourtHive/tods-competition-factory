@@ -8,11 +8,7 @@ import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ResultType } from '../../../global/functions/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  DrawDefinition,
-  Event,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type RemoveQualifierArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];
@@ -22,9 +18,7 @@ type RemoveQualifierArgs = {
   targetData: any;
   event?: Event;
 };
-export function removeQualifier(
-  params: RemoveQualifierArgs
-): ResultType & { qualifierRemoved?: boolean } {
+export function removeQualifier(params: RemoveQualifierArgs): ResultType & { qualifierRemoved?: boolean } {
   let qualifierRemoved;
   const { inContextDrawMatchUps, inContextMatchUp, drawDefinition } = params;
 
@@ -32,20 +26,15 @@ export function removeQualifier(
 
   if (winnerTargetLink.target.feedProfile === DRAW) {
     const previousWinningParticipantId = inContextMatchUp.sides?.find(
-      ({ sideNumber }) => sideNumber === inContextMatchUp.winningSide
+      ({ sideNumber }) => sideNumber === inContextMatchUp.winningSide,
     )?.participantId;
     const mainDrawTargetMatchUp = inContextDrawMatchUps.find(
       (m) =>
         m.structureId === winnerTargetLink.target.structureId &&
         m.roundNumber === winnerTargetLink.target.roundNumber &&
-        m.sides?.some(
-          ({ participantId }) => participantId === previousWinningParticipantId
-        )
+        m.sides?.some(({ participantId }) => participantId === previousWinningParticipantId),
     );
-    if (
-      mainDrawTargetMatchUp &&
-      mainDrawTargetMatchUp.matchUpStatus === TO_BE_PLAYED
-    ) {
+    if (mainDrawTargetMatchUp && mainDrawTargetMatchUp.matchUpStatus === TO_BE_PLAYED) {
       // prevoius winningSide participant was placed in MAIN
       const targetData = positionTargets({
         matchUpId: mainDrawTargetMatchUp.matchUpId,
@@ -67,9 +56,7 @@ export function removeQualifier(
         }).positionAssignments;
 
         for (const positionAssignment of positionAssignments || []) {
-          if (
-            positionAssignment.participantId === previousWinningParticipantId
-          ) {
+          if (positionAssignment.participantId === previousWinningParticipantId) {
             positionAssignment.participantId = undefined;
 
             // update positionAssignments on structure
@@ -80,14 +67,12 @@ export function removeQualifier(
                 {},
                 ...(positionAssignments || []).map((assignment) => ({
                   [assignment.drawPosition]: assignment.participantId,
-                }))
+                })),
               );
 
               for (const subStructure of structure?.structures || []) {
                 subStructure.positionAssignments?.forEach(
-                  (assignment) =>
-                    (assignment.participantId =
-                      assignmentMap[assignment.drawPosition])
+                  (assignment) => (assignment.participantId = assignmentMap[assignment.drawPosition]),
                 );
               }
             }

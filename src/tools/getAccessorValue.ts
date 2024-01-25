@@ -19,11 +19,7 @@ export function getAccessorValue({ element, accessor }) {
   if (values.length) result.values = values;
   return result;
 
-  function processKeys({
-    targetElement,
-    attributes = [],
-    significantCharacters,
-  }: ProcessKeysArgs) {
+  function processKeys({ targetElement, attributes = [], significantCharacters }: ProcessKeysArgs) {
     for (const [index, attribute] of attributes.entries()) {
       if (targetElement?.[attribute]) {
         const remainingKeys = attributes.slice(index + 1);
@@ -38,7 +34,7 @@ export function getAccessorValue({ element, accessor }) {
             processKeys({
               targetElement: nestedTarget,
               attributes: remainingKeys,
-            })
+            }),
           );
         } else {
           targetElement = targetElement[attribute];
@@ -48,14 +44,8 @@ export function getAccessorValue({ element, accessor }) {
     }
 
     function checkValue({ targetElement, index }) {
-      if (
-        targetElement &&
-        index === attributes.length - 1 &&
-        ['string', 'number'].includes(typeof targetElement)
-      ) {
-        const extractedValue = significantCharacters
-          ? targetElement.slice(0, significantCharacters)
-          : targetElement;
+      if (targetElement && index === attributes.length - 1 && ['string', 'number'].includes(typeof targetElement)) {
+        const extractedValue = significantCharacters ? targetElement.slice(0, significantCharacters) : targetElement;
 
         if (value) {
           if (!values.includes(extractedValue)) {

@@ -11,19 +11,10 @@ type GetScheduleTimingArgs = {
   categoryType?: string;
   event?: Event;
 };
-export function getScheduleTiming({
-  tournamentRecord,
-  categoryName,
-  categoryType,
-  event,
-}: GetScheduleTimingArgs) {
-  categoryName =
-    categoryName ??
-    event?.category?.categoryName ??
-    event?.category?.ageCategoryCode;
+export function getScheduleTiming({ tournamentRecord, categoryName, categoryType, event }: GetScheduleTimingArgs) {
+  categoryName = categoryName ?? event?.category?.categoryName ?? event?.category?.ageCategoryCode;
 
-  categoryType =
-    categoryType ?? event?.category?.categoryType ?? event?.category?.subType;
+  categoryType = categoryType ?? event?.category?.categoryType ?? event?.category?.subType;
 
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCHEDULING,

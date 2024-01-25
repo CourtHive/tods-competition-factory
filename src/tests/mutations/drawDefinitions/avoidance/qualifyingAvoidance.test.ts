@@ -36,18 +36,14 @@ it('properly handles qualifiers with avoidances', () => {
 
   expect(
     drawDefinition.structures[0].positionAssignments.every(
-      ({ participantId, qualifier }) => participantId || qualifier
-    )
+      ({ participantId, qualifier }) => participantId || qualifier,
+    ),
   ).toEqual(true);
-  expect(
-    drawDefinition.structures[0].positionAssignments.filter(
-      ({ qualifier }) => qualifier
-    ).length
-  ).toEqual(qualifiersCount);
+  expect(drawDefinition.structures[0].positionAssignments.filter(({ qualifier }) => qualifier).length).toEqual(
+    qualifiersCount,
+  );
 
-  const mainStructureId = drawDefinition.structures.find(
-    (structure) => structure.stage === MAIN
-  ).structureId;
+  const mainStructureId = drawDefinition.structures.find((structure) => structure.stage === MAIN).structureId;
 
   const { conflicts } = getConflicts({
     tournamentRecord: tournamentEngine.getTournament().tournamentRecord,

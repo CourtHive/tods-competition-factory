@@ -23,12 +23,8 @@ it('will return participant events including all entryStatuses', () => {
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const { event } = tournamentEngine.getEvent({ drawId });
-  const alternateEntries = event.entries.filter(
-    ({ entryStatus }) => entryStatus === ALTERNATE
-  );
-  const alternateParticipantIds = alternateEntries.map(
-    ({ participantId }) => participantId
-  );
+  const alternateEntries = event.entries.filter(({ entryStatus }) => entryStatus === ALTERNATE);
+  const alternateParticipantIds = alternateEntries.map(({ participantId }) => participantId);
 
   const structureId = drawDefinition.structures[0].structureId;
   const updatedAt = drawDefinition.structures[0].updatedAt;
@@ -62,21 +58,15 @@ it('will return participant events including all entryStatuses', () => {
   expect(result.success).toEqual(true);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  const structure = drawDefinition.structures.find(
-    (structure) => structure.structureId === structureId
-  );
-  expect(new Date(structure.updatedAt).getTime()).toBeGreaterThan(
-    new Date(updatedAt).getTime()
-  );
+  const structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
+  expect(new Date(structure.updatedAt).getTime()).toBeGreaterThan(new Date(updatedAt).getTime());
 
   ({ positionAssignments } = tournamentEngine.getPositionAssignments({
     structureId,
     drawId,
   }));
   expect(positionAssignments[1].bye).not.toEqual(true);
-  expect(positionAssignments[1].participantId).toEqual(
-    alternateParticipantIds[0]
-  );
+  expect(positionAssignments[1].participantId).toEqual(alternateParticipantIds[0]);
 
   const { participants } = tournamentEngine.getParticipants({
     participantFilters: { participantIds: [alternateParticipantIds[0]] },
@@ -88,12 +78,8 @@ it('will return participant events including all entryStatuses', () => {
   expect(participants[0].events[0].entryStatus).toEqual(ALTERNATE);
   const { opponents, matchUps } = participants[0];
   expect(alternateParticipantIds[0]).not.toEqual(opponents[0].participantId);
-  expect(matchUps[0].opponentParticipantInfo[0].participantId).toEqual(
-    opponents[0].participantId
-  );
-  expect(positionAssignments[0].participantId).toEqual(
-    opponents[0].participantId
-  );
+  expect(matchUps[0].opponentParticipantInfo[0].participantId).toEqual(opponents[0].participantId);
+  expect(positionAssignments[0].participantId).toEqual(opponents[0].participantId);
 
   result = tournamentEngine.assignDrawPosition({
     drawPosition: 2,

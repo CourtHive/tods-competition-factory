@@ -9,10 +9,7 @@ import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/polici
 import { QUALIFYING_PARTICIPANT } from '../../../../../constants/positionActionConstants';
 import { MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
 import { POLICY_TYPE_PROGRESSION } from '../../../../../constants/policyConstants';
-import {
-  MAIN,
-  QUALIFYING,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
 
 it('generates expected finishingPositions for qualifying structures', () => {
   let assignmentNotifications: any[] = [];
@@ -36,9 +33,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
         qualifyingProfiles: [
           {
             roundTarget: 1,
-            structureProfiles: [
-              { stageSequence: 1, drawSize: 8, qualifyingPositions },
-            ],
+            structureProfiles: [{ stageSequence: 1, drawSize: 8, qualifyingPositions }],
           },
         ],
       },
@@ -52,10 +47,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
 
   // find a drawPosition in the first round of MAIN
   const matchUpWithQualifier = matchUps.find(
-    ({ stage, roundNumber, sides }) =>
-      sides.some(({ qualifier }) => qualifier) &&
-      roundNumber === 1 &&
-      stage === MAIN
+    ({ stage, roundNumber, sides }) => sides.some(({ qualifier }) => qualifier) && roundNumber === 1 && stage === MAIN,
   );
 
   const structureId = matchUpWithQualifier.structureId;
@@ -63,12 +55,8 @@ it('generates expected finishingPositions for qualifying structures', () => {
     structureId,
     drawId,
   }).positionAssignments;
-  expect(
-    positionAssignments.filter(({ qualifier }) => qualifier).length
-  ).toEqual(qualifyingPositions);
-  const drawPosition = matchUpWithQualifier.sides.find(
-    ({ qualifier }) => qualifier
-  )?.drawPosition;
+  expect(positionAssignments.filter(({ qualifier }) => qualifier).length).toEqual(qualifyingPositions);
+  const drawPosition = matchUpWithQualifier.sides.find(({ qualifier }) => qualifier)?.drawPosition;
 
   // get positionActions
   result = tournamentEngine.positionActions({
@@ -79,11 +67,8 @@ it('generates expected finishingPositions for qualifying structures', () => {
   });
 
   // find action which will assign qualifier
-  const qualifierAssingmentAction = result.validActions.find(
-    ({ type }) => type === QUALIFYING_PARTICIPANT
-  );
-  let qualifyingParticipantId =
-    qualifierAssingmentAction.qualifyingParticipantIds[0];
+  const qualifierAssingmentAction = result.validActions.find(({ type }) => type === QUALIFYING_PARTICIPANT);
+  let qualifyingParticipantId = qualifierAssingmentAction.qualifyingParticipantIds[0];
   const payload = {
     ...qualifierAssingmentAction.payload,
     qualifyingParticipantId,
@@ -95,10 +80,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // Find the match in the final round of qualifying which was won by qualifyingParticipant
   let qualifyingMatchUp = matchUps.find(
     ({ finishingRound, sides }) =>
-      finishingRound === 1 &&
-      sides.some(
-        ({ participantId }) => participantId === qualifyingParticipantId
-      )
+      finishingRound === 1 && sides.some(({ participantId }) => participantId === qualifyingParticipantId),
   );
 
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant placed
@@ -106,9 +88,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
 
   let mainDrawMatchUp = matchUps.find(
     ({ stage, roundNumber, sides }) =>
-      stage === MAIN &&
-      roundNumber === 1 &&
-      sides.some((side) => side.participantId === qualifyingParticipantId)
+      stage === MAIN && roundNumber === 1 && sides.some((side) => side.participantId === qualifyingParticipantId),
   );
   const { matchUpId: mainDrawMatchUpId } = mainDrawMatchUp;
 
@@ -142,20 +122,14 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant REPLACED
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  mainDrawMatchUp = matchUps.find(
-    ({ matchUpId }) => matchUpId === mainDrawMatchUpId
-  );
-  let participantIds = mainDrawMatchUp.sides
-    .map(getParticipantId)
-    .filter(Boolean);
+  mainDrawMatchUp = matchUps.find(({ matchUpId }) => matchUpId === mainDrawMatchUpId);
+  let participantIds = mainDrawMatchUp.sides.map(getParticipantId).filter(Boolean);
   expect(participantIds.includes(qualifyingParticipantId)).toEqual(false);
   positionAssignments = tournamentEngine.getPositionAssignments({
     structureId,
     drawId,
   }).positionAssignments;
-  expect(
-    positionAssignments.filter(({ qualifier }) => qualifier).length
-  ).toEqual(qualifyingPositions);
+  expect(positionAssignments.filter(({ qualifier }) => qualifier).length).toEqual(qualifyingPositions);
 
   // remove winner of qualifying match and expect previous qualifier to be removed from MAIN
   result = tournamentEngine.setMatchUpStatus({
@@ -172,9 +146,7 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant REMOVED
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  mainDrawMatchUp = matchUps.find(
-    ({ matchUpId }) => matchUpId === mainDrawMatchUpId
-  );
+  mainDrawMatchUp = matchUps.find(({ matchUpId }) => matchUpId === mainDrawMatchUpId);
   participantIds = mainDrawMatchUp.sides.map(getParticipantId).filter(Boolean);
   // handle rare case where no qualifiers are placed
   expect([0, 1].includes(participantIds.length)).toEqual(true);
@@ -194,21 +166,15 @@ it('generates expected finishingPositions for qualifying structures', () => {
   // refresh matchUps to enable discovery of MAIN matchUp with qualifying participant PLACED
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
 
-  qualifyingMatchUp = matchUps.find(
-    ({ matchUpId }) => matchUpId === qualifyingMatchUp.matchUpId
-  );
+  qualifyingMatchUp = matchUps.find(({ matchUpId }) => matchUpId === qualifyingMatchUp.matchUpId);
   expect(qualifyingMatchUp.stage).toEqual(QUALIFYING);
   qualifyingParticipantId = qualifyingMatchUp.sides.find(
-    (side) => side.sideNumber === qualifyingMatchUp.winningSide
+    (side) => side.sideNumber === qualifyingMatchUp.winningSide,
   ).participantId;
   mainDrawMatchUp = matchUps.find(
-    ({ sides, stage }) =>
-      stage === MAIN &&
-      sides.some((side) => side.participantId === qualifyingParticipantId)
+    ({ sides, stage }) => stage === MAIN && sides.some((side) => side.participantId === qualifyingParticipantId),
   );
-  const qualifyingSide = mainDrawMatchUp.sides.find(
-    (side) => side.participantId === qualifyingParticipantId
-  );
+  const qualifyingSide = mainDrawMatchUp.sides.find((side) => side.participantId === qualifyingParticipantId);
   expect(qualifyingSide).not.toBeUndefined();
   expect(qualifyingSide.qualifier).toEqual(true);
   expect(qualifyingSide.participant.entryStage).toEqual(QUALIFYING);

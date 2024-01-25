@@ -41,15 +41,13 @@ it('can simulate clearing schedule on dryRun scheduleProfileRounds', () => {
     matchUpFilters: { roundNumbers: [1] },
   });
 
-  const matchUpContextIds = upcomingMatchUps.map(
-    ({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
-      tournamentId,
-      structureId,
-      matchUpId,
-      eventId,
-      drawId,
-    })
-  );
+  const matchUpContextIds = upcomingMatchUps.map(({ drawId, eventId, matchUpId, structureId, tournamentId }) => ({
+    tournamentId,
+    structureId,
+    matchUpId,
+    eventId,
+    drawId,
+  }));
 
   let result = competitionEngine.bulkScheduleMatchUps({
     matchUpContextIds,

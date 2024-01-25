@@ -83,9 +83,7 @@ test('mocksEngine can modify existing tournamentRecords and complete SOME matchU
 
   const { event } = tournamentEngine.getEvent({ eventId });
 
-  const publishStatus = event.timeItems.find(
-    (timeItem) => timeItem.itemType === `${PUBLISH}.${STATUS}`
-  );
+  const publishStatus = event.timeItems.find((timeItem) => timeItem.itemType === `${PUBLISH}.${STATUS}`);
 
   expect(publishStatus).not.toBeUndefined();
 });
@@ -234,9 +232,7 @@ test('mocksEngine can modify existing tournamentRecords with drawProfiles', () =
   });
 
   const { rounds } = competitionEngine.setState(tournamentRecord).getRounds();
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   const result = mocksEngine.modifyTournamentRecord({
     autoSchedule: true,
@@ -245,9 +241,5 @@ test('mocksEngine can modify existing tournamentRecords with drawProfiles', () =
     drawProfiles,
   });
   expect(result.success).toEqual(true);
-  expect(Object.values(result.schedulerResult.matchUpScheduleTimes)).toEqual([
-    '07:00',
-    '07:00',
-    '08:30',
-  ]);
+  expect(Object.values(result.schedulerResult.matchUpScheduleTimes)).toEqual(['07:00', '07:00', '08:30']);
 });

@@ -6,10 +6,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import {
-  COMPLETED,
-  IN_PROGRESS,
-} from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';
 
 const getMatchUp = (id, inContext?) => {
   const {
@@ -35,10 +32,9 @@ it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
-    });
+  const { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  });
 
   // generate outcome to be applied to each first round singles matchUp
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -49,10 +45,9 @@ it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
 
   processOutcome({ dualMatchUps: firstRoundDualMatchUps, outcome, valueGoal });
 
-  let { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
-    });
+  let { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  });
 
   // check that all second round matchUps have two advanced positions
   if (secondRoundDualMatchUps.length) {
@@ -64,10 +59,9 @@ it.each(scenarios)('can remove directed teamParticipants', (scenario) => {
   // remove outcomes
   processOutcome({ dualMatchUps: firstRoundDualMatchUps, outcome: toBePlayed });
 
-  ({ matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
-    }));
+  ({ matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  }));
 
   // check that all second round matchUps have two advanced positions
   if (secondRoundDualMatchUps.length) {
@@ -84,10 +78,9 @@ it.each(scenarios)('can change winningSide', (scenario) => {
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
-    });
+  const { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  });
 
   let dualWinningSide = 1;
   // generate outcome to be applied to each first round singles matchUp
@@ -105,10 +98,9 @@ it.each(scenarios)('can change winningSide', (scenario) => {
     outcome,
   });
 
-  let { matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
-    });
+  let { matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  });
 
   // check that all second round matchUps have two advanced positions
   if (secondRoundDualMatchUps.length) {
@@ -135,10 +127,9 @@ it.each(scenarios)('can change winningSide', (scenario) => {
     outcome,
   });
 
-  ({ matchUps: secondRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
-    }));
+  ({ matchUps: secondRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [2] },
+  }));
 
   if (secondRoundDualMatchUps.length) {
     secondRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -148,17 +139,9 @@ it.each(scenarios)('can change winningSide', (scenario) => {
 });
 
 function processOutcome(params) {
-  const {
-    dualWinningSide = 1,
-    checkForInProgress,
-    dualMatchUps,
-    valueGoal,
-    outcome,
-  } = params;
+  const { dualWinningSide = 1, checkForInProgress, dualMatchUps, valueGoal, outcome } = params;
   dualMatchUps.forEach((dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
     const { drawId } = dualMatchUp;
     singlesMatchUps.forEach((singlesMatchUp, i) => {
       const { matchUpId } = singlesMatchUp;

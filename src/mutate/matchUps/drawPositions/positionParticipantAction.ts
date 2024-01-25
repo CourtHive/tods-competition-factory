@@ -48,9 +48,7 @@ export function positionParticipantAction(params) {
     drawDefinition,
     structureId,
   });
-  const positionAssignment = positionAssignments?.find(
-    (assignment) => assignment.drawPosition === drawPosition
-  );
+  const positionAssignment = positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition);
 
   if (positionAssignment?.participantId) {
     const removedParticipantId = positionAssignment.participantId;
@@ -95,8 +93,7 @@ export function positionParticipantAction(params) {
     matchUpsMap,
     event,
   });
-  if (!assignResult.success)
-    return decorateResult({ result: assignResult, stack });
+  if (!assignResult.success) return decorateResult({ result: assignResult, stack });
 
   return successNotice({ removedParticipantId });
 

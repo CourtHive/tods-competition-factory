@@ -2,11 +2,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  DOUBLES,
-  SINGLES,
-  TEAM_MATCHUP,
-} from '../../../constants/matchUpTypes';
+import { DOUBLES, SINGLES, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../constants/eventConstants';
 
 it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak sets', () => {
@@ -42,9 +38,7 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
   tournamentEngine.setState(tournamentRecord);
 
   let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
-  let singlesMatchUp = matchUps.find(
-    ({ matchUpType }) => matchUpType === SINGLES
-  );
+  let singlesMatchUp = matchUps.find(({ matchUpType }) => matchUpType === SINGLES);
 
   const outcome = {
     winningSide: 2,
@@ -81,8 +75,6 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   singlesMatchUp = matchUps.find(({ matchUpType }) => matchUpType === SINGLES);
   expect(singlesMatchUp.score.scoreStringSide1).toEqual('6-1 1-6 [1-10]');
-  const teamMatchUp = matchUps.find(
-    ({ matchUpType }) => matchUpType === TEAM_MATCHUP
-  );
+  const teamMatchUp = matchUps.find(({ matchUpType }) => matchUpType === TEAM_MATCHUP);
   expect(teamMatchUp.score.scoreStringSide1).toEqual('7-8');
 });

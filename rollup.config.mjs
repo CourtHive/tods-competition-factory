@@ -31,12 +31,7 @@ const esmExports = [...esmProfile.map(esmBundle)];
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
 
-const buildOutput = ({
-  packageName = 'tods-competition-factory',
-  minified,
-  folder,
-  format,
-}) => {
+const buildOutput = ({ packageName = 'tods-competition-factory', minified, folder, format }) => {
   const development = format === 'cjs' && !minified ? 'development.' : '';
   const subFolder = folder ? `/${folder}` : '';
   const file = `${distPath}${subFolder}/${packageName}.${development}${format}.js`;
@@ -80,9 +75,7 @@ if (process.env.NODE_ENV === 'production') {
 function createExport({ input, folder, packageName, cjs, esm }) {
   const output = [];
   if (esm) {
-    const esmBuilds = [
-      ...buildOutput({ format: 'esm', minified: true, folder, packageName }),
-    ];
+    const esmBuilds = [...buildOutput({ format: 'esm', minified: true, folder, packageName })];
     output.push(...esmBuilds);
   }
   if (cjs) {
@@ -94,11 +87,11 @@ function createExport({ input, folder, packageName, cjs, esm }) {
   }
   return {
     plugins: [
-      typescript({ declaration: false, sourceMap: true }),
+      typescript({ tsconfig: './tsconfig.json', declaration: false, sourceMap: true }),
+      babel({ babelHelpers: 'bundled' }),
       nodeResolve(),
       commonjs(),
       json(),
-      babel({ babelHelpers: 'bundled' }),
     ],
 
     input,

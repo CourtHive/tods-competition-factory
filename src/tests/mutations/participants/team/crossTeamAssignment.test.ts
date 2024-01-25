@@ -13,21 +13,18 @@ test.skip('participants can play for a team even when not part of team', () => {
     drawSize: 4,
   };
 
-  const { tournamentRecord, drawId, valueGoal } =
-    generateTeamTournament(scenario);
+  const { tournamentRecord, drawId, valueGoal } = generateTeamTournament(scenario);
   expect(valueGoal).toEqual(scenario.valueGoal);
 
   tournamentEngine.setState(tournamentRecord);
 
-  const { matchUps: firstRoundDualMatchUps } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
-    });
+  const { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+  });
 
-  const { participants: individualParticipants } =
-    tournamentEngine.getParticipants({
-      participantFilters: { participantTypes: [INDIVIDUAL] },
-    });
+  const { participants: individualParticipants } = tournamentEngine.getParticipants({
+    participantFilters: { participantTypes: [INDIVIDUAL] },
+  });
 
   const { participants: teamParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM] },
@@ -40,22 +37,17 @@ test.skip('participants can play for a team even when not part of team', () => {
   const participantIndex = 0;
   // for each first round dualMatchUp assign individualParticipants to singles matchUps
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
-    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(
-      ({ matchUpType }) => matchUpType === SINGLES
-    );
+    const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
     singlesMatchUps.forEach((singlesMatchUp) => {
       const tieMatchUpId = singlesMatchUp.matchUpId;
       singlesMatchUp.sides.forEach((side) => {
         const { drawPosition } = side;
         const teamParticipant = teamParticipants.find((teamParticipant) => {
           const { participantId } = teamParticipant;
-          const assignment = positionAssignments.find(
-            (assignment) => assignment.participantId === participantId
-          );
+          const assignment = positionAssignments.find((assignment) => assignment.participantId === participantId);
           return assignment.drawPosition === drawPosition;
         });
-        const individualParticipantId =
-          individualParticipants[participantIndex].participantId;
+        const individualParticipantId = individualParticipants[participantIndex].participantId;
         const result = tournamentEngine.assignTieMatchUpParticipantId({
           teamParticipantId: teamParticipant.participantId,
           participantId: individualParticipantId,

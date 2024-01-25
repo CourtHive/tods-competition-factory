@@ -24,10 +24,7 @@ export function matchKnownPatterns({ score, applied }) {
   const smashSlash = /(^|\s)(\d)\/(\d)(\d)\/(\d)(\(|$)/;
   if (smashSlash.test(score)) {
     const [before, s1, s2, s3, s4, after] = score.match(smashSlash).slice(1);
-    score = score.replace(
-      smashSlash,
-      `${before}${s1}-${s2} ${s3}-${s4}${after}`
-    );
+    score = score.replace(smashSlash, `${before}${s1}-${s2} ${s3}-${s4}${after}`);
     applied.push('smashSlashPattern');
   }
 
@@ -205,9 +202,7 @@ export function matchKnownPatterns({ score, applied }) {
   // #-# # => #-#(#) with boundary constraints
   const spaceSeparatedSetTB = /(^|\s)(\d+-\d+)\s(\d+)(\s|$)/g;
   for (const ssb of score.match(spaceSeparatedSetTB) || []) {
-    const [before, setScore, tb, after] = ssb
-      .match(/(^|\s)(\d+-\d+)\s(\d+)(\s|$)/)
-      .slice(1);
+    const [before, setScore, tb, after] = ssb.match(/(^|\s)(\d+-\d+)\s(\d+)(\s|$)/).slice(1);
     const [s1, s2] = setScore.split('-').map((s) => parseInt(s));
     const diff = Math.abs(s1 - s2);
     if (diff === 1) {
@@ -233,10 +228,7 @@ export function matchKnownPatterns({ score, applied }) {
   for (const spacedTB of score.match(getSpacedTibreakSets) || []) {
     const getSpacedTibreakSet = /(^|\s)(\d \d)\(/;
     const [before, spacedScore] = spacedTB.match(getSpacedTibreakSet).slice(1);
-    score = score.replace(
-      spacedTB,
-      `${before}${spacedScore.split(' ').join('-')}(`
-    );
+    score = score.replace(spacedTB, `${before}${spacedScore.split(' ').join('-')}(`);
     applied.push('spacedTiebreakPattern');
   }
 

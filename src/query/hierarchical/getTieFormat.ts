@@ -11,14 +11,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
 } from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Structure,
-  TieFormat,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
 
 // NOTE: method exclusively for external use
 

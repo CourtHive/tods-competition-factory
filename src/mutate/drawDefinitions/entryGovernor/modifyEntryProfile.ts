@@ -8,10 +8,7 @@ type ModifyEntryProfileArgs = {
   drawDefinition: DrawDefinition;
   attributes: any[];
 };
-export function modifyEntryProfile({
-  drawDefinition,
-  attributes,
-}: ModifyEntryProfileArgs) {
+export function modifyEntryProfile({ drawDefinition, attributes }: ModifyEntryProfileArgs) {
   let { extension } = findExtension({
     element: drawDefinition,
     name: ENTRY_PROFILE,

@@ -4,11 +4,7 @@ import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { COMPASS } from '../../../../../constants/drawDefinitionConstants';
-import {
-  COMPLETED,
-  TO_BE_PLAYED,
-  WALKOVER,
-} from '../../../../../constants/matchUpStatusConstants';
+import { COMPLETED, TO_BE_PLAYED, WALKOVER } from '../../../../../constants/matchUpStatusConstants';
 import POLICY_PROGRESSION_DEFAULT from '../../../../../fixtures/policies/POLICY_PROGRESSION_DEFAULT';
 
 it('will not allow BYE removal when there are active matchUps in connected structures', () => {
@@ -20,24 +16,18 @@ it('will not allow BYE removal when there are active matchUps in connected struc
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      { drawSize: 16, participantsCount, drawType: COMPASS, completionGoal },
-    ],
+    drawProfiles: [{ drawSize: 16, participantsCount, drawType: COMPASS, completionGoal }],
     policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);
 
   let drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
-  let structure = drawDefinition.structures.find(
-    ({ stageSequence }) => stageSequence === 1
-  );
+  let structure = drawDefinition.structures.find(({ stageSequence }) => stageSequence === 1);
   const { positionAssignments } = tournamentEngine.getPositionAssignments({
     structure,
   });
-  const assignedParticipantIds = positionAssignments.filter(
-    ({ participantId }) => participantId
-  );
+  const assignedParticipantIds = positionAssignments.filter(({ participantId }) => participantId);
   expect(assignedParticipantIds.length).toEqual(participantsCount);
 
   let { matchUps: completedMatchUps } = tournamentEngine.allTournamentMatchUps({
@@ -45,21 +35,17 @@ it('will not allow BYE removal when there are active matchUps in connected struc
   });
   expect(completedMatchUps.length).toEqual(completionGoal);
 
-  expect(
-    completedMatchUps.every(
-      ({ stageSequence, roundNumber }) =>
-        roundNumber === 1 && stageSequence === 1
-    )
-  ).toEqual(true);
+  expect(completedMatchUps.every(({ stageSequence, roundNumber }) => roundNumber === 1 && stageSequence === 1)).toEqual(
+    true,
+  );
 
-  const { matchUps: matchUpsToBePlayed } =
-    tournamentEngine.allTournamentMatchUps({
-      matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
-    });
+  const { matchUps: matchUpsToBePlayed } = tournamentEngine.allTournamentMatchUps({
+    matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+  });
 
   let targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'East' && roundNumber === 1 && roundPosition === 7
+      structureName === 'East' && roundNumber === 1 && roundPosition === 7,
   );
   const eastStructureId = targetMatchUp.structureId;
 
@@ -72,7 +58,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'West' && roundNumber === 1 && roundPosition === 3
+      structureName === 'West' && roundNumber === 1 && roundPosition === 3,
   );
 
   result = tournamentEngine.setMatchUpStatus({
@@ -85,7 +71,7 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'West' && roundNumber === 1 && roundPosition === 2
+      structureName === 'West' && roundNumber === 1 && roundPosition === 2,
   );
   const westStructureId = targetMatchUp.structureId;
 
@@ -102,17 +88,13 @@ it('will not allow BYE removal when there are active matchUps in connected struc
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   structure = drawDefinition.structures.find(
-    ({ structureName, stageSequence }) =>
-      stageSequence === 3 && structureName === 'South'
+    ({ structureName, stageSequence }) => stageSequence === 3 && structureName === 'South',
   );
-  expect(
-    structure.positionAssignments.filter(({ participantId }) => participantId)
-      .length
-  ).toEqual(2);
+  expect(structure.positionAssignments.filter(({ participantId }) => participantId).length).toEqual(2);
 
   targetMatchUp = matchUpsToBePlayed.find(
     ({ structureName, roundNumber, roundPosition }) =>
-      structureName === 'South' && roundNumber === 2 && roundPosition === 1
+      structureName === 'South' && roundNumber === 2 && roundPosition === 1,
   );
   const southStructureId = targetMatchUp.structureId;
 

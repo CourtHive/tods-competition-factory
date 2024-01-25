@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import {
-  EVENT_NOT_FOUND,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
 
 // categoryTypes
 const JUNIOR = 'JUNIOR';
@@ -28,11 +25,10 @@ test.each([tournamentEngine])(
       startDate: '2022-01-01',
       endDate: '2022-01-07',
     });
-    const { tournamentRecord: secondRecord } =
-      mocksEngine.generateTournamentRecord({
-        startDate: '2022-01-02',
-        endDate: '2022-01-10',
-      });
+    const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord({
+      startDate: '2022-01-02',
+      endDate: '2022-01-10',
+    });
     tournamentEngine.setState([firstRecord, secondRecord]);
 
     let { tournamentRecords } = tournamentEngine.getState();
@@ -71,9 +67,7 @@ test.each([tournamentEngine])(
 
     tournamentIds.forEach((tournamentId) => {
       const tournamentRecord = tournamentRecords[tournamentId];
-      expect(
-        tournamentRecord.extensions[0].value.matchUpAverageTimes.length
-      ).toEqual(1);
+      expect(tournamentRecord.extensions[0].value.matchUpAverageTimes.length).toEqual(1);
       tournamentEngine.setTournamentId(tournamentId);
       result = tournamentEngine.getMatchUpFormatTiming({
         matchUpFormat,
@@ -97,5 +91,5 @@ test.each([tournamentEngine])(
       matchUpFormats: [matchUpFormat],
     });
     expect(result.eventMatchUpFormatTiming[0].averageMinutes).toEqual(127);
-  }
+  },
 );

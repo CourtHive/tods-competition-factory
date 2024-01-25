@@ -3,10 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  COMPASS,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+import { COMPASS, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
 
 it.each([
   { drawSize: 4, dependencyMap: { 1: 0, 2: 2 } },
@@ -36,9 +33,7 @@ it.each([
 
   Object.keys(dependencyMap).forEach((roundNumber) => {
     roundMatchUps[roundNumber].forEach(({ matchUpId }) =>
-      expect(matchUpDependencies[matchUpId].matchUpIds.length).toEqual(
-        dependencyMap[roundNumber]
-      )
+      expect(matchUpDependencies[matchUpId].matchUpIds.length).toEqual(dependencyMap[roundNumber]),
     );
   });
 });
@@ -63,8 +58,7 @@ it('can build a dependency map across structures', () => {
   });
 
   const targetMatchUp = matchUps.find(
-    ({ structureName, roundNumber }) =>
-      structureName === 'West' && roundNumber === 1
+    ({ structureName, roundNumber }) => structureName === 'West' && roundNumber === 1,
   );
   const dependencies = matchUpDependencies[targetMatchUp.matchUpId].matchUpIds;
   matchUps
@@ -78,9 +72,7 @@ it('can build a dependency map across structures', () => {
 
 it('can capture distance between matchUps', () => {
   const drawSize = 16;
-  const drawProfiles = [
-    { drawSize, drawType: SINGLE_ELIMINATION, idPrefix: 'dist' },
-  ];
+  const drawProfiles = [{ drawSize, drawType: SINGLE_ELIMINATION, idPrefix: 'dist' }];
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles,
   });
@@ -89,10 +81,7 @@ it('can capture distance between matchUps', () => {
 
   const { matchUpDependencies } = tournamentEngine.getMatchUpDependencies();
   const sourceDistance = (a, b) =>
-    matchUpDependencies[a].sources.reduce(
-      (distance, round, index) => (round.includes(b) && index + 1) || distance,
-      0
-    );
+    matchUpDependencies[a].sources.reduce((distance, round, index) => (round.includes(b) && index + 1) || distance, 0);
   const getDistance = (x, y) => sourceDistance(x, y) || sourceDistance(y, x);
   expect(getDistance('dist-4-1', 'dist-1-1')).toEqual(3);
   expect(getDistance('dist-3-1', 'dist-1-1')).toEqual(2);

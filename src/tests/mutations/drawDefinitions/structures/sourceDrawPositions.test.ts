@@ -2,20 +2,10 @@ import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStruct
 import { feedInChampionship } from '../primitives/feedIn';
 import { it, expect } from 'vitest';
 
-import {
-  BOTTOM_UP,
-  FEED_IN_CHAMPIONSHIP_TO_SF,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
+import { BOTTOM_UP, FEED_IN_CHAMPIONSHIP_TO_SF, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
 
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
-  const {
-    links,
-    drawDefinition,
-    mainDrawMatchUps,
-    consolationMatchUps,
-    consolationStructure,
-  } = feedInChampionship({
+  const { links, drawDefinition, mainDrawMatchUps, consolationMatchUps, consolationStructure } = feedInChampionship({
     drawSize: 32,
     drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
     feedPolicy: {
@@ -27,14 +17,7 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
         [1, 2, 3, 4], // 1st Qtr BOTTOM_UP, 2nd Qtr BOTTOM_UP, 3rd Qtr BOTTOM_UP, 4th Qtr BOTTOM_UP
         [1], // complete round BOTTOM_UP
       ],
-      roundFeedProfiles: [
-        TOP_DOWN,
-        BOTTOM_UP,
-        BOTTOM_UP,
-        BOTTOM_UP,
-        BOTTOM_UP,
-        BOTTOM_UP,
-      ],
+      roundFeedProfiles: [TOP_DOWN, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP],
     },
   });
 
@@ -92,12 +75,9 @@ it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
 
 function validateSourceDrawPositionRanges({ matchUps, validations }) {
   validations.forEach((validation) => {
-    const [roundNumber, roundPosition, sideNumber, range, roundName] =
-      validation;
+    const [roundNumber, roundPosition, sideNumber, range, roundName] = validation;
     const matchUp = matchUps.find(
-      (matchUp) =>
-        matchUp.roundNumber === roundNumber &&
-        matchUp.roundPosition === roundPosition
+      (matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition,
     );
     const side = matchUp.sides.find((side) => side.sideNumber === sideNumber);
 

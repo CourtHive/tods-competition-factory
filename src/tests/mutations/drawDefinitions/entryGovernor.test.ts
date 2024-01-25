@@ -1,7 +1,4 @@
-import {
-  addDrawEntries,
-  addDrawEntry,
-} from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { addDrawEntries, addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { removeEntry } from '../../../mutate/drawDefinitions/entryGovernor/removeEntry';

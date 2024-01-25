@@ -3,17 +3,8 @@ import { getStageEntries } from '../drawDefinition/stageGetter';
 import { findStructure } from '../../acquire/findStructure';
 
 import { PLAY_OFF } from '../../constants/drawDefinitionConstants';
-import {
-  ErrorType,
-  MISSING_SEED_ASSIGNMENTS,
-  STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  SeedAssignment,
-  StageTypeUnion,
-  Structure,
-} from '../../types/tournamentTypes';
+import { ErrorType, MISSING_SEED_ASSIGNMENTS, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { DrawDefinition, SeedAssignment, StageTypeUnion, Structure } from '../../types/tournamentTypes';
 
 type GetStructureSeedAssignmentsArgs = {
   provisionalPositioning?: boolean;
@@ -47,8 +38,7 @@ export function getStructureSeedAssignments({
     structure,
   }).positionAssignments;
 
-  if (error || !structure)
-    return { seedAssignments: [], error: STRUCTURE_NOT_FOUND };
+  if (error || !structure) return { seedAssignments: [], error: STRUCTURE_NOT_FOUND };
 
   if (!structureId) structureId = structure.structureId;
 
@@ -72,11 +62,7 @@ export function getStructureSeedAssignments({
         .sort((a, b) => {
           // GEMscore is used here because headToHead encounters are not relevant
           // when the participants are derived from more than one RR group
-          return (
-            (a.GEMscore < b.GEMscore && 1) ||
-            (a.GEMscore > b.GEMscore && -1) ||
-            0
-          );
+          return (a.GEMscore < b.GEMscore && 1) || (a.GEMscore > b.GEMscore && -1) || 0;
         })
         .map((entry, index) => {
           const seedNumber = index + 1;
@@ -91,7 +77,7 @@ export function getStructureSeedAssignments({
 
   const seedProxies = proxiedEntries?.slice(
     0,
-    returnAllProxies ? proxiedEntries.length : positionAssignments.length / 2
+    returnAllProxies ? proxiedEntries.length : positionAssignments.length / 2,
   );
 
   if (seedProxies.length) {
@@ -103,8 +89,7 @@ export function getStructureSeedAssignments({
     error = MISSING_SEED_ASSIGNMENTS;
   }
 
-  const seedLimit =
-    structure.seedLimit ?? structure?.positionAssignments?.length;
+  const seedLimit = structure.seedLimit ?? structure?.positionAssignments?.length;
 
   return {
     seedAssignments,

@@ -4,10 +4,7 @@ import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieForma
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 
-import {
-  INVALID_VALUES,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 export function addCollectionGroup({
   updateInProgressMatchUps = true,
@@ -23,8 +20,7 @@ export function addCollectionGroup({
   event,
 }) {
   const stack = 'addCollectionGroup';
-  if (!Array.isArray(collectionIds))
-    return decorateResult({ result: { error: MISSING_VALUE }, stack });
+  if (!Array.isArray(collectionIds)) return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
   // TODO: validate groupDefinition
 
@@ -64,26 +60,21 @@ export function addCollectionGroup({
 
   const maxGroupNumber = (tieFormat.collectionGroups || []).reduce(
     (max, group) => (group.groupNumber > max ? group.groupNumber : max),
-    0
+    0,
   );
   const collectionGroupNumber = maxGroupNumber + 1;
   groupDefinition.groupNumber = collectionGroupNumber;
 
   // add collectionGroupNumber to all targeted collectionDefinitions
-  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map(
-    (collectionDefinition) => {
-      if (collectionIds.includes(collectionDefinition.collectionId)) {
-        return { ...collectionDefinition, collectionGroupNumber };
-      } else {
-        return collectionDefinition;
-      }
+  tieFormat.collectionDefinitions = tieFormat.collectionDefinitions.map((collectionDefinition) => {
+    if (collectionIds.includes(collectionDefinition.collectionId)) {
+      return { ...collectionDefinition, collectionGroupNumber };
+    } else {
+      return collectionDefinition;
     }
-  );
+  });
 
-  tieFormat.collectionGroups = [
-    ...(tieFormat.collecitonGroups || []),
-    groupDefinition,
-  ];
+  tieFormat.collectionGroups = [...(tieFormat.collecitonGroups || []), groupDefinition];
 
   return collectionGroupUpdate({
     updateInProgressMatchUps,

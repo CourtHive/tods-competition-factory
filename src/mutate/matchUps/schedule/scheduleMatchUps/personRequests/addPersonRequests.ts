@@ -5,13 +5,7 @@ import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getP
 
 import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
 import { TournamentRecords } from '../../../../../types/factoryTypes';
-import {
-  ARRAY,
-  INVALID,
-  OF_TYPE,
-  PERSON_ID,
-  TOURNAMENT_RECORDS,
-} from '../../../../../constants/attributeConstants';
+import { ARRAY, INVALID, OF_TYPE, PERSON_ID, TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
 
 type AddPersonRequestsArgs = {
   tournamentRecords: TournamentRecords;

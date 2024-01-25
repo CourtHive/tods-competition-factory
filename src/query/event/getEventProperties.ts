@@ -1,10 +1,7 @@
 import { participantScaleItem } from '../participant/participantScaleItem';
 
 import { RANKING, RATING, SEEDING } from '../../constants/timeItemConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 
 export function getEventProperties({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -13,15 +10,12 @@ export function getEventProperties({ tournamentRecord, event }) {
   const eventEntries = event.entries || [];
   const tournamentParticipants = tournamentRecord.participants || [];
 
-  const scaleName =
-    event.category?.categoryName || event.category?.ageCategoryCode;
+  const scaleName = event.category?.categoryName || event.category?.ageCategoryCode;
   const { eventType } = event;
 
-  const enteredParticipantIds = eventEntries.map(
-    (entry) => entry.participantId
-  );
+  const enteredParticipantIds = eventEntries.map((entry) => entry.participantId);
   const enteredParticipants = tournamentParticipants.filter((participant) =>
-    enteredParticipantIds.includes(participant.participantId)
+    enteredParticipantIds.includes(participant.participantId),
   );
 
   let hasSeededParticipants, hasRankedParticipants, hasRatedParticipants;
@@ -29,14 +23,11 @@ export function getEventProperties({ tournamentRecord, event }) {
     const { participantId, participantName, name } = participant;
 
     let scaleAttributes = { scaleType: SEEDING, eventType, scaleName };
-    const seed = participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue;
+    const seed = participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue;
     scaleAttributes = { scaleType: RANKING, eventType, scaleName };
-    const ranking = participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue;
+    const ranking = participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue;
     scaleAttributes = { scaleType: RATING, eventType, scaleName };
-    const rating = participantScaleItem({ participant, scaleAttributes })
-      ?.scaleItem?.scaleValue;
+    const rating = participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue;
 
     hasSeededParticipants = !!(hasSeededParticipants || seed);
     hasRankedParticipants = !!(hasRankedParticipants || ranking);

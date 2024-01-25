@@ -20,19 +20,15 @@ it('recognizes scheduled matchUps when court dateAvailability changes', () => {
   competitionEngine.setState(tournamentRecord);
 
   const { rounds } = competitionEngine.getRounds();
-  const schedulingProfile = [
-    { scheduleDate: startDate, venues: [{ venueId, rounds }] },
-  ];
+  const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   let result = competitionEngine.setSchedulingProfile({ schedulingProfile });
   expect(result.success).toEqual(true);
 
   result = competitionEngine.scheduleProfileRounds();
-  expect(
-    result.dateSchedulingProfiles[0].venues[0].rounds.map(
-      ({ roundTiming }) => roundTiming?.roundMinutes
-    )
-  ).toEqual([1440, 720, 360, 180, 90]);
+  expect(result.dateSchedulingProfiles[0].venues[0].rounds.map(({ roundTiming }) => roundTiming?.roundMinutes)).toEqual(
+    [1440, 720, 360, 180, 90],
+  );
   expect(result.scheduledMatchUpIds[startDate].length).toEqual(23);
 
   result = competitionEngine.getVenuesAndCourts();
@@ -40,9 +36,7 @@ it('recognizes scheduled matchUps when court dateAvailability changes', () => {
   const modifiedDateAvailability = dateAvailability.slice(2);
 
   const courts = result.courts.map((court) =>
-    court.courtId === courtId
-      ? { ...court, dateAvailability: modifiedDateAvailability }
-      : court
+    court.courtId === courtId ? { ...court, dateAvailability: modifiedDateAvailability } : court,
   );
   const modifications = { courts };
 

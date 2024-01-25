@@ -2,10 +2,7 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  MAIN,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
 
 it('can handle RR playoffs which are only BYEs', () => {
   const structureOptions = {
@@ -35,8 +32,7 @@ it('can handle RR playoffs which are only BYEs', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const mainMatchUps = matchUps.filter(
-    ({ stage, sides }) =>
-      stage === MAIN && sides.every(({ participant }) => participant)
+    ({ stage, sides }) => stage === MAIN && sides.every(({ participant }) => participant),
   );
   expect(mainMatchUps.length).toEqual(9);
 
@@ -56,9 +52,7 @@ it('can handle RR playoffs which are only BYEs', () => {
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(5);
-  const structureId = drawDefinition.structures.find(
-    ({ stage }) => stage === MAIN
-  ).structureId;
+  const structureId = drawDefinition.structures.find(({ stage }) => stage === MAIN).structureId;
 
   result = tournamentEngine.automatedPlayoffPositioning({
     applyPositioning: false,
@@ -74,7 +68,7 @@ it('can handle RR playoffs which are only BYEs', () => {
     drawId,
   });
   const assignedPositionsCount = positionAssignments.filter(
-    (assignment) => assignment.participantId || assignment.bye
+    (assignment) => assignment.participantId || assignment.bye,
   ).length;
 
   expect(assignedPositionsCount).toEqual(0);

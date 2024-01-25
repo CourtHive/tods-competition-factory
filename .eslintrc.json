@@ -15,7 +15,7 @@
     "plugin:import/recommended",
     "plugin:import/typescript",
     "plugin:sonarjs/recommended",
-    "prettier"
+    "plugin:prettier/recommended"
   ],
   "plugins": ["sonarjs"],
   "parserOptions": {

@@ -1,16 +1,8 @@
 import { formatPersonName } from './formatPersonName';
 
-import {
-  INDIVIDUAL,
-  PAIR,
-  TEAM_PARTICIPANT,
-} from '../../../constants/participantConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
 
-export function formatParticipantName({
-  participantMap,
-  participant,
-  formats,
-}) {
+export function formatParticipantName({ participantMap, participant, formats }) {
   const { participantType, individualParticipantIds, person } = participant;
   const format = participantType && formats[participantType];
   if (participantType === TEAM_PARTICIPANT) return;

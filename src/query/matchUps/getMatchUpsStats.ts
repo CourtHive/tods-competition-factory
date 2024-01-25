@@ -1,22 +1,12 @@
 import { validMatchUps } from '../../validators/validMatchUp';
-import {
-  getBand,
-  getScoreComponents,
-  pctSpread,
-} from '../matchUp/scoreComponents';
+import { getBand, getScoreComponents, pctSpread } from '../matchUp/scoreComponents';
 import { findPolicy } from '../../acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
 import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import {
-  COMPETITIVE,
-  DECISIVE,
-  RETIRED,
-  ROUTINE,
-  WALKOVER,
-} from '../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, RETIRED, ROUTINE, WALKOVER } from '../../constants/statsConstants';
 
 export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
@@ -31,8 +21,7 @@ export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   const bandProfiles =
     profileBands ||
     policy?.profileBands ||
-    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS]
-      .profileBands;
+    POLICY_COMPETITIVE_BANDS_DEFAULT[POLICY_TYPE_COMPETITIVE_BANDS].profileBands;
 
   const relevantMatchUps = matchUps.filter(({ winningSide }) => winningSide);
 
@@ -44,19 +33,13 @@ export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
     return p;
   };
 
-  const pctspd: { [key: string]: number } = pctSpread(gamesMap).reduce(
-    (p, c) => categorize(p, c),
-    {
-      [COMPETITIVE]: 0,
-      [ROUTINE]: 0,
-      [DECISIVE]: 0,
-      [WALKOVER]: 0,
-    }
-  );
-  const total: number = Object.keys(pctspd).reduce(
-    (a, k) => (pctspd[k] || 0) + a,
-    0
-  );
+  const pctspd: { [key: string]: number } = pctSpread(gamesMap).reduce((p, c) => categorize(p, c), {
+    [COMPETITIVE]: 0,
+    [ROUTINE]: 0,
+    [DECISIVE]: 0,
+    [WALKOVER]: 0,
+  });
+  const total: number = Object.keys(pctspd).reduce((a, k) => (pctspd[k] || 0) + a, 0);
 
   const competitiveBands: any = Object.keys(pctspd).map((k: any) => {
     const value = parseFloat((pctspd[k] / total).toFixed(4));
@@ -65,9 +48,7 @@ export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
     };
   });
 
-  const retiredCount = relevantMatchUps.filter(
-    ({ matchUpStatus }) => matchUpStatus === RETIRED
-  ).length;
+  const retiredCount = relevantMatchUps.filter(({ matchUpStatus }) => matchUpStatus === RETIRED).length;
 
   competitiveBands.push({
     [RETIRED]: parseFloat((retiredCount / total).toFixed(4)) * 100,

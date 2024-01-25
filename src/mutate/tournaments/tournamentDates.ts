@@ -20,32 +20,20 @@ type SetTournamentDatesArgs = {
   startDate?: string;
   endDate?: string;
 };
-export function setTournamentDates({
-  tournamentRecord,
-  startDate,
-  endDate,
-}: SetTournamentDatesArgs) {
+export function setTournamentDates({ tournamentRecord, startDate, endDate }: SetTournamentDatesArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (
-    (startDate && !dateValidation.test(startDate)) ||
-    (endDate && !dateValidation.test(endDate))
-  )
+  if ((startDate && !dateValidation.test(startDate)) || (endDate && !dateValidation.test(endDate)))
     return { error: INVALID_DATE };
 
   if (!startDate && !endDate) return { error: MISSING_DATE };
 
-  if (endDate && startDate && new Date(endDate) < new Date(startDate))
-    return { error: INVALID_VALUES };
+  if (endDate && startDate && new Date(endDate) < new Date(startDate)) return { error: INVALID_VALUES };
 
   let checkScheduling;
   // if start has moved closer to end or end has moved closer to start, check for scheduling issues
   if (
-    (startDate &&
-      tournamentRecord.startDate &&
-      new Date(startDate) > new Date(tournamentRecord.startDate)) ||
-    (endDate &&
-      tournamentRecord.endDate &&
-      new Date(endDate) < new Date(tournamentRecord.endDate))
+    (startDate && tournamentRecord.startDate && new Date(startDate) > new Date(tournamentRecord.startDate)) ||
+    (endDate && tournamentRecord.endDate && new Date(endDate) < new Date(tournamentRecord.endDate))
   ) {
     checkScheduling = true;
   }
@@ -54,26 +42,16 @@ export function setTournamentDates({
   if (endDate) tournamentRecord.endDate = endDate;
 
   // if there is a startDate specified after current endDate, endDate must be set to startDate
-  if (
-    startDate &&
-    tournamentRecord.endDate &&
-    new Date(startDate) > new Date(tournamentRecord.endDate)
-  ) {
+  if (startDate && tournamentRecord.endDate && new Date(startDate) > new Date(tournamentRecord.endDate)) {
     tournamentRecord.endDate = startDate;
   }
 
   // if there is a endDate specified before current startDate, startDate must be set to endDate
-  if (
-    endDate &&
-    tournamentRecord.startDate &&
-    new Date(endDate) < new Date(tournamentRecord.startDate)
-  ) {
+  if (endDate && tournamentRecord.startDate && new Date(endDate) < new Date(tournamentRecord.startDate)) {
     tournamentRecord.startDate = endDate;
   }
 
-  const unscheduledMatchUpIds =
-    checkScheduling &&
-    removeInvalidScheduling({ tournamentRecord })?.unscheduledMatchUpIds;
+  const unscheduledMatchUpIds = checkScheduling && removeInvalidScheduling({ tournamentRecord })?.unscheduledMatchUpIds;
 
   updateCourtAvailability({ tournamentRecord });
 
@@ -97,10 +75,8 @@ export function setTournamentEndDate({ tournamentRecord, endDate }) {
 export function removeInvalidScheduling({ tournamentRecord }) {
   const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
 
-  const startDate =
-    tournamentRecord.startDate && new Date(tournamentRecord.startDate);
-  const endDate =
-    tournamentRecord.endDate && new Date(tournamentRecord.endDate);
+  const startDate = tournamentRecord.startDate && new Date(tournamentRecord.startDate);
+  const endDate = tournamentRecord.endDate && new Date(tournamentRecord.endDate);
 
   const invalidScheduledDates: string[] = [];
   const invalidSchedulingMatchUpIds: string[] = [];
@@ -109,13 +85,9 @@ export function removeInvalidScheduling({ tournamentRecord }) {
     if (!schedule) continue;
     if (schedule.scheduledDate) {
       const scheduledDate = new Date(schedule.scheduledDate);
-      if (
-        (startDate && scheduledDate < startDate) ||
-        (endDate && scheduledDate > endDate)
-      ) {
+      if ((startDate && scheduledDate < startDate) || (endDate && scheduledDate > endDate)) {
         invalidSchedulingMatchUpIds.push(matchUpId);
-        if (!invalidScheduledDates.includes(schedule.scheduledDate))
-          invalidScheduledDates.push(schedule.scheduledDate);
+        if (!invalidScheduledDates.includes(schedule.scheduledDate)) invalidScheduledDates.push(schedule.scheduledDate);
       }
     }
   }

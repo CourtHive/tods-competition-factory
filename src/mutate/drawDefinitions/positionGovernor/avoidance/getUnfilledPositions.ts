@@ -6,15 +6,12 @@
  * Returns an array of drawPositions which have not been filled
  */
 
-export function getUnfilledPositions({
-  drawPositionGroups,
-  positionAssignments,
-}) {
+export function getUnfilledPositions({ drawPositionGroups, positionAssignments }) {
   const assignmentMap = Object.assign(
     {},
     ...positionAssignments.map((assignment) => ({
       [assignment.drawPosition]: assignment,
-    }))
+    })),
   );
 
   return drawPositionGroups

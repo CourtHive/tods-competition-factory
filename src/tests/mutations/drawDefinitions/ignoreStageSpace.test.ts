@@ -40,20 +40,16 @@ it('generateDrawDefinition can ignoreStageSpace', () => {
     ...flight,
   });
   expect(result.success).toEqual(true);
-  expect(
-    result.drawDefinition.structures[0].positionAssignments
-      .map(getParticipantId)
-      .filter(Boolean).length
-  ).toEqual(8);
+  expect(result.drawDefinition.structures[0].positionAssignments.map(getParticipantId).filter(Boolean).length).toEqual(
+    8,
+  );
 
   // it is possible to generate a drawDefinition of all wildcards by using eventId directly
   // but no participants will be assigned to any positions
   result = tournamentEngine.generateDrawDefinition({ eventId });
   expect(result.drawDefinition).not.toBeUndefined();
   expect(result.success).toEqual(true);
-  expect(
-    result.drawDefinition.structures[0].positionAssignments
-      .map(getParticipantId)
-      .filter(Boolean).length
-  ).toEqual(0);
+  expect(result.drawDefinition.structures[0].positionAssignments.map(getParticipantId).filter(Boolean).length).toEqual(
+    0,
+  );
 });

@@ -100,21 +100,12 @@ it('Can split rounds across multiple venues', () => {
   });
   expect(extension.name).toEqual(APPLIED_POLICIES);
 
-  const { schedulingProfile: attachedSchedulingProfile } =
-    tournamentEngine.getSchedulingProfile();
+  const { schedulingProfile: attachedSchedulingProfile } = tournamentEngine.getSchedulingProfile();
 
-  expect(attachedSchedulingProfile[0].venues[0].rounds[0].roundNumber).toEqual(
-    1
-  );
-  expect(attachedSchedulingProfile[0].venues[1].rounds[0].roundNumber).toEqual(
-    1
-  );
-  expect(
-    attachedSchedulingProfile[0].venues[0].rounds[0].roundSegment.segmentNumber
-  ).toEqual(1);
-  expect(
-    attachedSchedulingProfile[0].venues[1].rounds[0].roundSegment.segmentNumber
-  ).toEqual(2);
+  expect(attachedSchedulingProfile[0].venues[0].rounds[0].roundNumber).toEqual(1);
+  expect(attachedSchedulingProfile[0].venues[1].rounds[0].roundNumber).toEqual(1);
+  expect(attachedSchedulingProfile[0].venues[0].rounds[0].roundSegment.segmentNumber).toEqual(1);
+  expect(attachedSchedulingProfile[0].venues[1].rounds[0].roundSegment.segmentNumber).toEqual(2);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
@@ -196,18 +187,10 @@ it('Can split rounds across multiple venues', () => {
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });
 
-  expect(
-    Object.keys(result.schedulerResult.matchUpScheduleTimes).length
-  ).toEqual(24);
-  expect(
-    result.schedulerResult.skippedScheduleTimes[startDate].second.length
-  ).toEqual(0);
-  expect(
-    result.schedulerResult.scheduleTimesRemaining[startDate].first.length
-  ).toEqual(14);
-  expect(
-    result.schedulerResult.scheduleTimesRemaining[startDate].second.length
-  ).toEqual(7);
+  expect(Object.keys(result.schedulerResult.matchUpScheduleTimes).length).toEqual(24);
+  expect(result.schedulerResult.skippedScheduleTimes[startDate].second.length).toEqual(0);
+  expect(result.schedulerResult.scheduleTimesRemaining[startDate].first.length).toEqual(14);
+  expect(result.schedulerResult.scheduleTimesRemaining[startDate].second.length).toEqual(7);
 });
 
 it('Can split rounds with multiple BYEs', () => {
@@ -287,8 +270,7 @@ it('Can split rounds with multiple BYEs', () => {
   });
   expect(extension.name).toEqual(APPLIED_POLICIES);
 
-  const { schedulingProfile: attachedSchedulingProfile } =
-    tournamentEngine.getSchedulingProfile();
+  const { schedulingProfile: attachedSchedulingProfile } = tournamentEngine.getSchedulingProfile();
 
   const venues = attachedSchedulingProfile[0].venues;
   expect(venues[0].rounds[0].roundSegment.segmentNumber).toEqual(1);
@@ -298,9 +280,7 @@ it('Can split rounds with multiple BYEs', () => {
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const scheduledMatchUps = matchUps.filter(hasSchedule);
-  expect(scheduledMatchUps[0].schedule.venueId).not.toEqual(
-    scheduledMatchUps[1].schedule.venueId
-  );
+  expect(scheduledMatchUps[0].schedule.venueId).not.toEqual(scheduledMatchUps[1].schedule.venueId);
   expect(scheduledMatchUps.length).toEqual(2);
 
   visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog });

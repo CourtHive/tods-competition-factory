@@ -14,16 +14,13 @@ export function getTallyReport({ matchUps, order, report }) {
   if (Array.isArray(report)) {
     report.forEach((step, i) => {
       if (step.excludedDirectives?.length) {
-        const attributes = step.excludedDirectives
-          .map(({ attribute }) => attribute)
-          .join(', ');
+        const attributes = step.excludedDirectives.map(({ attribute }) => attribute).join(', ');
         const note = `${attributes.length} directives were excluded due to participants limit}`;
         readable.push(note);
         const excluded = `Excluded: ${attributes}`;
         readable.push(excluded);
       } else {
-        const floatSort = (a, b) =>
-          parseFloat(step.reversed ? a : b) - parseFloat(step.reversed ? b : a);
+        const floatSort = (a, b) => parseFloat(step.reversed ? a : b) - parseFloat(step.reversed ? b : a);
 
         const participantsCount = step.groups
           ? Object.values(step.groups).flat(Infinity).length
@@ -45,9 +42,7 @@ export function getTallyReport({ matchUps, order, report }) {
         const reversed = step.reversed ? ' in reverse order' : '';
 
         const action = step.groups ? 'grouped' : 'separated';
-        const description = `Step ${
-          i + 1
-        }: ${participantsCount} particiants were ${action}${reversed} by ${
+        const description = `Step ${i + 1}: ${participantsCount} particiants were ${action}${reversed} by ${
           step.attribute
         }`;
         readable.push(description);
@@ -65,9 +60,7 @@ export function getTallyReport({ matchUps, order, report }) {
   order.forEach((orderEntry) => {
     const { participantId, resolved } = orderEntry;
     const pOrder = orderEntry.groupOrder || orderEntry.provisionalOrder;
-    readable.push(
-      `${pOrder}: ${participants[participantId]} => resolved: ${!!resolved}`
-    );
+    readable.push(`${pOrder}: ${participants[participantId]} => resolved: ${!!resolved}`);
   });
 
   return readable.join('\r\n');

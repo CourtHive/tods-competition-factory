@@ -25,7 +25,7 @@ export function getStructurePositionedSeeds({
       .map((assignment: any) => ({
         // because we already know participantId is present!
         [assignment.participantId]: assignment,
-      }))
+      })),
   );
   return positionAssignments
     ?.map((assignment: any) => {

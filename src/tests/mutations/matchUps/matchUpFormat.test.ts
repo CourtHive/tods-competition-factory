@@ -9,12 +9,7 @@ import {
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '../../../constants/errorConditionConstants';
-import {
-  FORMAT_FAST4,
-  FORMAT_SHORT_SETS,
-  FORMAT_STANDARD,
-  TIMED20,
-} from '../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_FAST4, FORMAT_SHORT_SETS, FORMAT_STANDARD, TIMED20 } from '../../../fixtures/scoring/matchUpFormats';
 
 it('can set and return matchUpFormat codes', () => {
   const matchUpFormat = FORMAT_STANDARD;

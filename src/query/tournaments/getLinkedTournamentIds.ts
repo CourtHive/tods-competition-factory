@@ -10,10 +10,7 @@ export function getLinkedTournamentIds({
 }: {
   tournamentRecords: TournamentRecords;
 }): ResultType & { linkedTournamentIds?: string[] } {
-  if (
-    typeof tournamentRecords !== 'object' ||
-    !Object.keys(tournamentRecords).length
-  )
+  if (typeof tournamentRecords !== 'object' || !Object.keys(tournamentRecords).length)
     return { error: MISSING_TOURNAMENT_RECORDS };
 
   const linkedTournamentIds = Object.assign(
@@ -28,11 +25,11 @@ export function getLinkedTournamentIds({
       });
 
       const tournamentIds = (extension?.value?.tournamentIds || []).filter(
-        (currentTournamentId) => currentTournamentId !== touranmentId
+        (currentTournamentId) => currentTournamentId !== touranmentId,
       );
 
       return { [tournamentId]: tournamentIds };
-    })
+    }),
   );
 
   return { linkedTournamentIds };

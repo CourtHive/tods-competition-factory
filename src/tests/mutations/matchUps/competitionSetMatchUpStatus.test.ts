@@ -2,23 +2,17 @@ import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import {
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 test.each([competitionEngineSync])(
   'can set matchUpStatus via competitionEngine for multiple tournament records',
   async (competitionEngine) => {
     const drawProfiles = [{ drawSize: 16 }];
-    const { tournamentRecord: firstRecord } =
-      mocksEngine.generateTournamentRecord({ drawProfiles });
-    const { tournamentRecord: secondRecord } =
-      mocksEngine.generateTournamentRecord({ drawProfiles });
+    const { tournamentRecord: firstRecord } = mocksEngine.generateTournamentRecord({ drawProfiles });
+    const { tournamentRecord: secondRecord } = mocksEngine.generateTournamentRecord({ drawProfiles });
     await competitionEngine.setState([firstRecord, secondRecord]);
 
-    const { upcomingMatchUps } =
-      await competitionEngine.getCompetitionMatchUps();
+    const { upcomingMatchUps } = await competitionEngine.getCompetitionMatchUps();
 
     const { outcome } = mocksEngine.generateOutcomeFromScoreString({
       scoreString: '7-5 7-5',
@@ -35,8 +29,7 @@ test.each([competitionEngineSync])(
     });
     expect(result.success).toEqual(true);
 
-    let { completedMatchUps } =
-      await competitionEngine.getCompetitionMatchUps();
+    let { completedMatchUps } = await competitionEngine.getCompetitionMatchUps();
     expect(completedMatchUps.length).toEqual(1);
 
     const score = outcome.score;
@@ -67,5 +60,5 @@ test.each([competitionEngineSync])(
     ({ completedMatchUps } = await competitionEngine.getCompetitionMatchUps());
     // expect that 8 + 8 first round matchUps will be completed
     expect(completedMatchUps.length).toEqual(16);
-  }
+  },
 );
