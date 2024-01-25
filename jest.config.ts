@@ -4,7 +4,6 @@ const jestConfig: JestConfigWithTsJest = {
   moduleNameMapper: {
     '@Server/(.*)$': '<rootDir>/server/$1',
     '@Tools/(.*)$': '<rootDir>/tools/$1',
-    '@Types/(.*)$': '<rootDir>/types/$1',
   },
   moduleFileExtensions: ['js', 'json', 'ts'],
   transform: { '^.+\\.(t|j)s$': 'ts-jest' },

@@ -26,8 +26,7 @@
     "baseUrl": "./",
     "paths": {
       "@Server/*": ["./src/server/*"],
-      "@Tools/*": ["./src/tools/*"],
-      "@Types/*": ["./src/types/*"]
+      "@Tools/*": ["./src/tools/*"]
     },
 
     "emitDecoratorMetadata": true,
