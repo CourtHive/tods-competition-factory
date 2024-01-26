@@ -2,11 +2,12 @@ import { getMatchUpFormatRecoveryTimes } from './getMatchUpFormatRecoveryTimes';
 import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { getScheduleTiming } from './getScheduleTiming';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import { DOUBLES_SINGLES, SINGLES_DOUBLES } from '../../../constants/scheduleConstants';
 import { Event, Tournament, EventTypeUnion } from '../../../types/tournamentTypes';
+import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 type GetMatchUpFormatTimingArgs = {
   defaultRecoveryMinutes?: number;

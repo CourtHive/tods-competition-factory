@@ -1,12 +1,13 @@
-import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { attemptToModifyScore } from '../../drawDefinitions/matchUpGovernor/attemptToModifyScore';
-import { isDirectingMatchUpStatus } from '../../drawDefinitions/matchUpGovernor/checkStatusType';
-import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
+import { attemptToModifyScore } from '@Mutate/drawDefinitions/matchUpGovernor/attemptToModifyScore';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
 
+// constants
 import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
 import { COMPLETED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -45,6 +46,7 @@ export function directParticipants(params) {
   if (isCollectionMatchUp) {
     const { matchUpTieId, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
+      appliedPolicies: params.appliedPolicies,
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,

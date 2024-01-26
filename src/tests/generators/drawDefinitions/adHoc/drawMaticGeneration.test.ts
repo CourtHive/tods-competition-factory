@@ -1,4 +1,4 @@
-import { getParticipantId } from '../../../../global/functions/extractors';
+import { getParticipantId } from '../../../../functions/global/extractors';
 import { generateRange, unique } from '../../../../tools/arrays';
 import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
 import mocksEngine from '../../../../assemblies/engines/mock';

@@ -1,5 +1,5 @@
 import { getCategoryAgeDetails } from '../query/event/getCategoryAgeDetails';
-import { decorateResult } from '../global/functions/decorateResult';
+import { decorateResult } from '../functions/global/decorateResult';
 import { isObject } from '../tools/objects';
 
 import { INVALID_VALUES } from '../constants/errorConditionConstants';

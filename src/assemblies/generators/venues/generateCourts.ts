@@ -1,16 +1,17 @@
-import { generateDateRange, isTimeString, isValidDateString } from '../../../tools/dateTime';
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { generateRange } from '../../../tools/arrays';
-import { isString } from '../../../tools/objects';
-import { isNumeric } from '../../../tools/math';
-import { UUID } from '../../../tools/UUID';
+import { generateDateRange, isTimeString, isValidDateString } from '@Tools/dateTime';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { generateRange } from '@Tools/arrays';
+import { isString } from '@Tools/objects';
+import { isNumeric } from '@Tools/math';
+import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 import { Court, Tournament } from '../../../types/tournamentTypes';
 import { VALIDATE } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 type GenerateCourtsArgs = {
   tournamentRecord?: Tournament;

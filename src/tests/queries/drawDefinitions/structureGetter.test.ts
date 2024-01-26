@@ -2,13 +2,13 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/gen
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../mutations/drawDefinitions/primitives/feedIn';
+import { findStructure, getDrawStructures } from '../../../acquire/findStructure';
 import { constantToString } from '../../../tools/strings';
 import { expect, it } from 'vitest';
-import { findStructure, getDrawStructures } from '../../../acquire/findStructure';
 
-import { ERROR } from '../../../constants/resultConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
 import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../../types/tournamentTypes';
+import { ERROR } from '../../../constants/resultConstants';
 
 it('can find structures by structureId', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

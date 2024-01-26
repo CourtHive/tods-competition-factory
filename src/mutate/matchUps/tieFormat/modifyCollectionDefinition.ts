@@ -1,21 +1,23 @@
-import { validateCollectionValueProfiles } from '../../../validators/validateCollectionValueProfiles';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
-import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { updateTieFormat } from '../../tieFormat/updateTieFormat';
-import { isConvertableInteger } from '../../../tools/math';
+import { validateCollectionValueProfiles } from '@Validators/validateCollectionValueProfiles';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { updateTieFormat } from '@Mutate/tieFormat/updateTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { intersection } from '../../../tools/arrays';
+import { isConvertableInteger } from '@Tools/math';
+import { intersection } from '@Tools/arrays';
 
+// constants and types
 import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '../../../constants/errorConditionConstants';
 import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
 import { genderConstants } from '../../../constants/genderConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 import {
   Category,
   CollectionValueProfile,

@@ -1,11 +1,11 @@
-import { findExtension } from './findExtension';
-import { ResultType } from '../global/functions/decorateResult';
-import { structureSort } from '../functions/sorters/structureSort';
+import { structureSort } from '@Functions/sorters/structureSort';
+import { findExtension } from '@Acquire/findExtension';
 
-import { DrawDefinition, Structure } from '../types/tournamentTypes';
+// constants and types
+import { StructureSortConfig, ResultType } from '../types/factoryTypes';
 import { ITEM, validStages } from '../constants/drawDefinitionConstants';
+import { DrawDefinition, Structure } from '../types/tournamentTypes';
 import { ROUND_TARGET } from '../constants/extensionConstants';
-import { StructureSortConfig } from '../types/factoryTypes';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,

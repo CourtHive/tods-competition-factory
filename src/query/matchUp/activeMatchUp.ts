@@ -1,9 +1,9 @@
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { isActiveMatchUpStatus } from '../../../mutate/drawDefinitions/matchUpGovernor/checkStatusType';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { isActiveMatchUpStatus } from '@Query/matchUp/checkStatusType';
 
-import { DEFAULTED, IN_PROGRESS, WALKOVER } from '../../../constants/matchUpStatusConstants';
-
-import { Score } from '../../../types/tournamentTypes';
+// constants and types
+import { DEFAULTED, IN_PROGRESS, WALKOVER } from '../../constants/matchUpStatusConstants';
+import { Score } from '../../types/tournamentTypes';
 
 // an active matchUp is one that has a winningSide, more than one set, or a single set with any score value greater than zero
 // when { matchUpType: TEAM } the child tieMatchUps must be checked as well

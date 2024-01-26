@@ -1,12 +1,13 @@
-import { getStructureRoundProfile } from '../structure/getStructureRoundProfile';
-import { numericSort } from '../../tools/sorting';
-import { roundValueRanges } from '../../mutate/drawDefinitions/structureGovernor/structureUtils';
-import { unique } from '../../tools/arrays';
+import { roundValueRanges } from '@Mutate/drawDefinitions/structureGovernor/structureUtils';
+import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
+import { numericSort } from '@Tools/sorting';
+import { unique } from '@Tools/arrays';
 
-import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
+// constants and types
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { MatchUpsMap } from '../../types/factoryTypes';
 
 // NOTE: positionsNotPlayedOff may not be accurate when structureIds are are provided
 type GetPositionsPlayedOff = {

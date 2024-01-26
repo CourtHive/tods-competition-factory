@@ -1,15 +1,17 @@
-import { Tally, countGames, countPoints, countSets } from '../matchUps/roundRobinTally/scoreCounters';
-import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
-import { getParticipantId } from '../../global/functions/extractors';
-import { getParticipants } from '../participants/getParticipants';
-import { intersection } from '../../tools/arrays';
-import { isObject } from '../../tools/objects';
+import { countGames, countPoints, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
+import { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetitiveProfile';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getParticipantId } from '@Functions/global/extractors';
+import { intersection } from '@Tools/arrays';
+import { isObject } from '@Tools/objects';
 
+// constants and types
 import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
+import { ResultType, Tally } from '../../types/factoryTypes';
 import { BYE } from '../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';

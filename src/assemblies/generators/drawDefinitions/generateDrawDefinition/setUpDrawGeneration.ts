@@ -1,10 +1,12 @@
+import { newDrawDefinition } from '@Generators/drawDefinitions/newDrawDefinition';
 import { checkFormatScopeEquivalence } from './checkFormatScopeEquivalence';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { policyAttachment } from './drawDefinitionPolicyAttachment';
-import { newDrawDefinition } from '../newDrawDefinition';
 
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+// constants and types
 import { DrawDefinition, DrawTypeUnion } from '../../../../types/tournamentTypes';
 import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function setUpDrawGeneration(params): ResultType & {
   existingQualifyingPlaceholderStructureId?: string | boolean;

@@ -1,7 +1,7 @@
 import { deleteParticipants } from '../participants/deleteParticipants';
 import { getStageEntries } from '../../query/drawDefinition/getStageEntries';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { getParticipantId } from '../../global/functions/extractors';
+import { decorateResult } from '../../functions/global/decorateResult';
+import { getParticipantId } from '../../functions/global/extractors';
 import { arrayIndices } from '../../tools/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';

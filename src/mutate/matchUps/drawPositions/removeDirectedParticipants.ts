@@ -1,22 +1,23 @@
-import { includesMatchUpStatuses } from '../../drawDefinitions/matchUpGovernor/includesMatchUpStatuses';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { includesMatchUpStatuses } from '@Mutate/drawDefinitions/matchUpGovernor/includesMatchUpStatuses';
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
-import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
-import { findStructure } from '../../../acquire/findStructure';
-import { instanceCount } from '../../../tools/arrays';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
+import { instanceCount } from '@Tools/arrays';
 
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+// constants and types
 import { ErrorType, MISSING_DRAW_POSITIONS, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, DrawLink, Event, Tournament } from '../../../types/tournamentTypes';
+import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 export function removeDirectedParticipants(params): {
   error?: ErrorType;
@@ -62,6 +63,7 @@ export function removeDirectedParticipants(params): {
   if (isCollectionMatchUp) {
     const { matchUpTieId, matchUpsMap } = params;
     tieMatchUpResult = updateTieMatchUpScore({
+      appliedPolicies: params.appliedPolicies,
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,

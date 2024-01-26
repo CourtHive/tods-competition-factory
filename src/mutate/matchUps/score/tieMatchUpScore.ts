@@ -1,17 +1,18 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { isActiveMatchUp } from '../../../tests/queries/matchUps/activeMatchUp';
-import { removeExtension } from '../../extensions/removeExtension';
-import { findTournamentId } from '../../../acquire/findTournamentId';
-import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findExtension } from '../../../acquire/findExtension';
-import { modifyMatchUpScore } from './modifyMatchUpScore';
+import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { ensureSideLineUps } from '@Mutate/matchUps/lineUps/ensureSideLineUps';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { isActiveMatchUp } from '@Query/matchUp/activeMatchUp';
+import { findTournamentId } from '@Acquire/findTournamentId';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
+import { PolicyDefinitions, TournamentRecords, MatchUpsMap } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -25,10 +26,10 @@ import {
   IN_PROGRESS,
   TO_BE_PLAYED,
 } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type UpdateTieMatchUpScoreArgs = {
   tournamentRecords?: TournamentRecords;
+  appliedPolicies?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   exitWhenNoValues?: boolean;
@@ -157,6 +158,7 @@ export function updateTieMatchUpScore(params: UpdateTieMatchUpScoreArgs): {
   }
 
   modifyMatchUpScore({
+    appliedPolicies: params.appliedPolicies,
     matchUpStatus: newMatchUpStatus,
     score: scoreObject,
     removeWinningSide,

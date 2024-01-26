@@ -1,6 +1,6 @@
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { getMatchUpIds } from '../../../functions/global/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';

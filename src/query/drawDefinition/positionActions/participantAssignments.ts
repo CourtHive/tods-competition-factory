@@ -1,4 +1,4 @@
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { definedAttributes } from '../../../tools/definedAttributes';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { getDrawMatchUps } from '../../matchUps/drawMatchUps';

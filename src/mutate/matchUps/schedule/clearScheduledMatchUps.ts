@@ -1,12 +1,13 @@
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { getMatchUpId } from '../../../global/functions/extractors';
-import { isObject } from '../../../tools/objects';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { isObject } from '@Tools/objects';
 
+// constants and types
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
@@ -21,7 +22,6 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 
 type ClearScheduledMatchUpsArgs = {
   ignoreMatchUpStatuses?: MatchUpStatusUnion[];
@@ -61,7 +61,7 @@ export function clearScheduledMatchUps(params: ClearScheduledMatchUpsArgs): Resu
       venueIds,
     });
     if (result.error) return result;
-    clearedScheduleCount += result.clearedScheduleCount || 0;
+    clearedScheduleCount += result.clearedScheduleCount ?? 0;
   }
 
   return { ...SUCCESS, clearedScheduleCount };

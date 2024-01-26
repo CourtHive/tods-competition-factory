@@ -1,7 +1,7 @@
 import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { getDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { isConvertableInteger } from '../../../tools/math';
 import { uniqueValues } from '../../../tools/arrays';

@@ -1,14 +1,12 @@
-import { addDrawEntry } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { generateQualifyingStructures } from '../drawTypes/generateQualifyingStructures';
-import { getQualifiersCount } from '../../../../query/drawDefinition/getQualifiersCount';
-import { generateQualifyingLink } from '../links/generateQualifyingLink';
-import {
-  setStageDrawSize,
-  setStageQualifiersCount,
-} from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { generateQualifyingStructures } from '@Generators/drawDefinitions/drawTypes/generateQualifyingStructures';
+import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
+import { addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 
+// constants and types
 import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { ResultType } from '../../../../global/functions/decorateResult';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function processExistingDrawDefinition(params): ResultType & {
   structureId?: string;

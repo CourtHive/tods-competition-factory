@@ -1,9 +1,10 @@
 import { processExistingDrawDefinition } from './processExistingDrawDefinition';
 import { generateNewDrawDefinition } from './generateNewDrawDefinition';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { setUpDrawGeneration } from './setUpDrawGeneration';
 
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { DrawMaticArgs, PolicyDefinitions } from '../../../../types/factoryTypes';
+// constants and types
+import { DrawMaticArgs, PolicyDefinitions, ResultType } from '../../../../types/factoryTypes';
 import {
   DrawDefinition,
   DrawTypeUnion,

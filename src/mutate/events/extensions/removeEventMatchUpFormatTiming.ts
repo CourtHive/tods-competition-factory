@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { removeEventExtension } from '../../extensions/addRemoveExtensions';
 import { findEvent } from '../../../acquire/findEvent';
 

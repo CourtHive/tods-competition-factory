@@ -1,24 +1,27 @@
-import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
-import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../tools/ensureInt';
-import { positionTargets } from './positionTargets';
-import { overlap } from '../../../tools/arrays';
-import { getPositionAssignments, structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { modifyPositionAssignmentsNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { modifyRoundRobinMatchUpsStatus } from '@Mutate/matchUps/matchUpStatus/modifyRoundRobinMatchUpsStatus';
+import { getPositionAssignments, structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { modifyPositionAssignmentsNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { pushGlobalLog } from '@Functions/global/globalLog';
+import { findStructure } from '@Acquire/findStructure';
+import { ensureInt } from '@Tools/ensureInt';
+import { overlap } from '@Tools/arrays';
 
+// constants and types
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
+import { MatchUpsMap, ResultType } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 
 import {
   DRAW_POSITION_ACTIVE,
@@ -27,7 +30,6 @@ import {
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
 
 type ClearDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

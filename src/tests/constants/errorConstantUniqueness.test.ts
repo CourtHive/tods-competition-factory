@@ -1,7 +1,7 @@
-import { unique } from '../tools/arrays';
+import { unique } from '../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import errorConditionConstants from './errorConditionConstants';
+import errorConditionConstants from '../../constants/errorConditionConstants';
 
 test('all error codes are unique', () => {
   const isUpperCase = (str) => /^[A-Z_]+$/.test(str);

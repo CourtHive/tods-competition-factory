@@ -1,15 +1,15 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { findStructure } from '../../../acquire/findStructure';
-import { generateRange } from '../../../tools/arrays';
+import { getValidSeedBlocks, getNextSeedBlock } from '@Query/drawDefinition/seedGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { assignDrawPosition } from './positionAssignment';
-import { getValidSeedBlocks, getNextSeedBlock } from '../../../query/drawDefinition/seedGetter';
+import { findStructure } from '@Acquire/findStructure';
+import { generateRange } from '@Tools/arrays';
 
-import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PolicyDefinitions, SeedBlock, SeedingProfile } from '../../../types/factoryTypes';
+// constants and types
+import { PolicyDefinitions, SeedBlock, SeedingProfile, MatchUpsMap } from '../../../types/factoryTypes';
 import { ErrorType, MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
+import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
+import { SUCCESS } from '../../../constants/resultConstants';
 
 type PositionSeedBlocksArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

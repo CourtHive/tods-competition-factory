@@ -1,4 +1,4 @@
-import { getParticipantIds } from '../../../../../global/functions/extractors';
+import { getParticipantIds } from '../../../../../functions/global/extractors';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import mocksEngine from '../../../../../assemblies/engines/mock';

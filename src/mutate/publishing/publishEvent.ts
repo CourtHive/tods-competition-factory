@@ -1,7 +1,7 @@
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { getEventData } from '../../query/event/getEventData';
 import { addNotice } from '../../global/state/globalState';
 

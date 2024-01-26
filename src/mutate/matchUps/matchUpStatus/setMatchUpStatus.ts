@@ -1,4 +1,4 @@
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../../helpers/parameters/resolveTournamentRecords';
 import { matchUpScore } from '../../../assemblies/generators/matchUps/matchUpScore';
 import { setMatchUpMatchUpFormat } from '../matchUpFormat/setMatchUpMatchUpFormat';
 import { findPolicy } from '../../../acquire/findPolicy';

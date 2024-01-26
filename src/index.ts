@@ -1,4 +1,4 @@
-export { factoryVersion as version } from './global/functions/factoryVersion';
+export { factoryVersion as version } from './functions/global/factoryVersion';
 
 // GOVERNORS ------------------------------------------------------------
 export * as governors from './assemblies/governors';

@@ -1,5 +1,5 @@
 import { getEventAlternateParticipantIds } from './getEventAlternateParticipantids';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { getFlightProfile } from '../../event/getFlightProfile';

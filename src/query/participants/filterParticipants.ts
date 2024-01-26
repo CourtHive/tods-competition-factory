@@ -1,5 +1,5 @@
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getAccessorValue } from '../../tools/getAccessorValue';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { getTimeItem } from '../base/timeItems';

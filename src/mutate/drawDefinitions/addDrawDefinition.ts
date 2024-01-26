@@ -1,19 +1,22 @@
-import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { getMatchUpId } from '../../global/functions/extractors';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { ensureInt } from '../../tools/ensureInt';
+import { addEventExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { ensureInt } from '@Tools/ensureInt';
 import {
   addDrawNotice,
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
-} from '../notifications/drawNotifications';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+} from '@Mutate/notifications/drawNotifications';
 
+// constants and types
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   DRAW_ID_EXISTS,
   INVALID_DRAW_DEFINITION,
@@ -21,7 +24,6 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 
 type AddDrawDefinitionArgs = {
   flight?: { flightNumber: number };

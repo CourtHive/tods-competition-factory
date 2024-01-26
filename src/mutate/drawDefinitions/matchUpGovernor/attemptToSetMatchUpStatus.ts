@@ -1,11 +1,12 @@
-import { doubleExitAdvancement } from '../positionGovernor/doubleExitAdvancement';
-import { attemptToSetMatchUpStatusBYE } from '../../matchUps/matchUpStatus/attemptToSetMatchUpStatusBYE';
-import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { updateTieMatchUpScore } from '../../matchUps/score/tieMatchUpScore';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from './checkStatusType';
+import { attemptToSetMatchUpStatusBYE } from '@Mutate/matchUps/matchUpStatus/attemptToSetMatchUpStatusBYE';
+import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
+import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
+import { doubleExitAdvancement } from '@Mutate/drawDefinitions/positionGovernor/doubleExitAdvancement';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { decorateResult } from '@Functions/global/decorateResult';
 
+// constants
 import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
 import {
   BYE,
@@ -92,13 +93,14 @@ function scoreModification(params) {
     if (result.error) return decorateResult({ result, stack });
   }
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
-  const result = modifyMatchUpScore(params);
+  const result = modifyMatchUpScore({ ...params, context: stack });
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
+      appliedPolicies: params.appliedPolicies,
       matchUpId: matchUpTieId,
       event: params.event,
       drawDefinition,

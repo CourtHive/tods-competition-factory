@@ -1,12 +1,13 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { findExtension } from '../../acquire/findExtension';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { TOURNAMENT_RECORD } from '../../constants/attributeConstants';
 import { SCHEDULE_LIMITS } from '../../constants/extensionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament } from '../../types/tournamentTypes';
+import { ResultType } from '../../types/factoryTypes';
 import { findPolicy } from '../../acquire/findPolicy';
 
 type GetMatchUpDailyLimitsArgs = {

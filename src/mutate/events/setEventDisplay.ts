@@ -1,11 +1,13 @@
-import { isObject, objShallowEqual } from '../../tools/objects';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isObject, objShallowEqual } from '@Tools/objects';
 
+// constants and types
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 type ScheduleDetails = {
   attributes: { [key: string]: boolean }; // true indicates display; false indicates excise from data

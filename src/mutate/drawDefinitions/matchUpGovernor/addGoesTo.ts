@@ -1,11 +1,13 @@
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { addFinishingRounds } from '../../../assemblies/generators/drawDefinitions/addFinishingRounds';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { MatchUpsMap, getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
+import { addFinishingRounds } from '@Assemblies/generators/drawDefinitions/addFinishingRounds';
+import { getMappedStructureMatchUps } from '@Query/matchUps/getMatchUpsMap';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 type AddGoesToArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

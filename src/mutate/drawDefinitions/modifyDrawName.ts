@@ -1,13 +1,14 @@
-import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { addEventExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { Flight, FlightProfile } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+// constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { Flight, FlightProfile, ResultType } from '../../types/factoryTypes';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 type ModifyDrawNameArgs = {
   tournamentRecord: Tournament;

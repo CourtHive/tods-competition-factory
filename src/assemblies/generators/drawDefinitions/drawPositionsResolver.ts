@@ -1,4 +1,4 @@
-import { getDrawPosition } from '../../../global/functions/extractors';
+import { getDrawPosition } from '../../../functions/global/extractors';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { ensureInt } from '../../../tools/ensureInt';
 import { chunkArray, generateRange, overlap, randomPop, shuffleArray } from '../../../tools/arrays';

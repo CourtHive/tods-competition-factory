@@ -1,12 +1,11 @@
-import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
-import { checkMatchUpIsComplete } from '../matchUp/checkMatchUpIsComplete';
-import { findStructure } from '../../acquire/findStructure';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
 import { DrawDefinition, Event, Participant, Structure, Tournament } from '../../types/tournamentTypes';
 import { ABANDONED, upcomingMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { ResultType } from '../../global/functions/decorateResult';
-import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
@@ -14,8 +13,10 @@ import {
   ContextProfile,
   ExitProfiles,
   MatchUpFilters,
+  MatchUpsMap,
   ParticipantMap,
   PolicyDefinitions,
+  ResultType,
   ScheduleTiming,
   ScheduleVisibilityFilters,
 } from '../../types/factoryTypes';

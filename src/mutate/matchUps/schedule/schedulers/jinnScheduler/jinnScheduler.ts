@@ -9,7 +9,7 @@ import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps'
 import { getVenueSchedulingDetails } from '../../../../../query/matchUps/scheduling/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
-import { getMatchUpId } from '../../../../../global/functions/extractors';
+import { getMatchUpId } from '../../../../../functions/global/extractors';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import { extractDate, sameDay, timeStringMinutes, zeroPad } from '../../../../../tools/dateTime';

@@ -1,21 +1,20 @@
-import { getSourceStructureIdsAndRelevantLinks } from '../../structure/getSourceStructureIdsAndRelevantLinks';
-import { getStructureDrawPositionProfiles } from '../../structure/getStructureDrawPositionProfiles';
-import { getAppliedPolicies } from '../../extensions/getAppliedPolicies';
-import { getStructureSeedAssignments } from '../../structure/getStructureSeedAssignments';
-import { getAssignedParticipantIds } from '../getAssignedParticipantIds';
+import { getSourceStructureIdsAndRelevantLinks } from '@Query/structure/getSourceStructureIdsAndRelevantLinks';
+import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
-import { structureAssignedDrawPositions } from '../positionsGetter';
-import { MatchUpsMap } from '../../matchUps/getMatchUpsMap';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
+import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidQualifiersAction } from './getValidQualifiersAction';
-import { isValidSeedPosition } from '../seedGetter';
-import { getStageEntries } from '../stageGetter';
-import { findStructure } from '../../../acquire/findStructure';
-import { isCompletedStructure } from '../structureActions';
-import { getValidSwapAction } from './getValidSwapAction';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { matchUpActions } from '../matchUpActions/matchUpActions';
+import { getValidSwapAction } from './getValidSwapAction';
+import { findStructure } from '@Acquire/findStructure';
 import {
   activePositionsCheck,
   getEnabledStructures,
@@ -24,9 +23,9 @@ import {
   POSITION_ACTION,
 } from './actionPolicyUtils';
 
+// constants and types
+import { PolicyDefinitions, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { PAIR } from '../../../constants/participantConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {

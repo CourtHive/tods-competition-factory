@@ -3,7 +3,7 @@ import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps
 import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
 import { isConvertableInteger, isPowerOf2 } from '../../../tools/math';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { findEvent } from '../../../acquire/findEvent';
 import { filterMatchUps } from '../../filterMatchUps';

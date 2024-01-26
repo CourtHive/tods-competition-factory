@@ -1,12 +1,12 @@
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { hydrateParticipants } from '../participants/hydrateParticipants';
-import { getContextContent } from '../hierarchical/getContextContent';
+import { hydrateParticipants } from '@Query/participants/hydrateParticipants';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getContextContent } from '@Query/hierarchical/getContextContent';
 import { allEventMatchUps } from './getAllEventMatchUps';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { GetMatchUpsArgs, ResultType } from '../../types/factoryTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { GetMatchUpsArgs } from '../../types/factoryTypes';
 
 export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
   matchUps?: HydratedMatchUp[];

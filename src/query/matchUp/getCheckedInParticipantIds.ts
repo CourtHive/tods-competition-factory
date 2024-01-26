@@ -1,11 +1,12 @@
 import { getMatchUpParticipantIds } from './getMatchUpParticipantIds';
 
+// constants and types
+import { INVALID_MATCHUP, MISSING_CONTEXT, MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 import { CHECK_IN, CHECK_OUT } from '../../constants/timeItemConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TimeItem } from '../../types/tournamentTypes';
-import { INVALID_MATCHUP, MISSING_CONTEXT, MISSING_MATCHUP } from '../../constants/errorConditionConstants';
 
 /*
   takes a matchUpWithContext

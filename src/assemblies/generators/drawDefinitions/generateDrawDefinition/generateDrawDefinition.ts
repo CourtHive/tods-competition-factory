@@ -1,15 +1,16 @@
-import { addVoluntaryConsolationStructure } from '../../../../mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { getParticipants } from '../../../../query/participants/getParticipants';
-import { validateAndDeriveDrawValues } from '../validateAndDeriveDrawValues';
+import { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { validateAndDeriveDrawValues } from '@Generators/drawDefinitions/validateAndDeriveDrawValues';
+import { getDrawFormat } from '@Generators/drawDefinitions/getDrawFormat';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { generateOrGetExisting } from './generateOrGetExisting';
 import { qualifyingGeneration } from './qualifyingGeneration';
-import { constantToString } from '../../../../tools/strings';
-import { getDrawFormat } from '../getDrawFormat';
+import { constantToString } from '@Tools/strings';
 
+// constants and types
 import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { ErrorType, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { GenerateDrawDefinitionArgs } from '../../../../types/factoryTypes';
+import { GenerateDrawDefinitionArgs, ResultType } from '../../../../types/factoryTypes';
 import { DrawDefinition, Entry } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 

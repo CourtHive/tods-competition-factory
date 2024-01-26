@@ -1,6 +1,6 @@
 import { addDrawEntries as addEntries } from './entryGovernor/addDrawEntries';
 import { refreshEntryPositions } from '../entries/refreshEntryPositions';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 
 import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';

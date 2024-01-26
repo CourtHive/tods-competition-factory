@@ -1,28 +1,29 @@
 import { positionUnseededParticipants } from '../matchUps/drawPositions/positionUnseededParticipants';
-import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
-import { getQualifiersCount } from '../../query/drawDefinition/getQualifiersCount';
-import { positionQualifiers } from '../matchUps/drawPositions/positionQualifiers';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { getSeedPattern, getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
+import { positionQualifiers } from '@Mutate/matchUps/drawPositions/positionQualifiers';
+import { disableNotifications, enableNotifications } from '@Global/state/globalState';
+import { positionSeedBlocks } from '@Mutate/matchUps/drawPositions/positionSeeds';
 import { positionByes } from './positionGovernor/byePositioning/positionByes';
-import { positionSeedBlocks } from '../matchUps/drawPositions/positionSeeds';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getStageEntries } from '../../query/drawDefinition/stageGetter';
-import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
-import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { findStructure } from '../../acquire/findStructure';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { getSeedPattern, getValidSeedBlocks } from '../../query/drawDefinition/seedGetter';
-import { MatchUpsMap, getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
-import { disableNotifications, enableNotifications } from '../../global/state/globalState';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findStructure } from '@Acquire/findStructure';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
+import { PolicyDefinitions, SeedingProfile, MatchUpsMap, ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
 import { LUCKY_DRAW, WATERFALL } from '../../constants/drawDefinitionConstants';
 import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
-import { PolicyDefinitions, SeedingProfile } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {

@@ -1,20 +1,22 @@
-import { getPositionRangeMap } from '../../../../query/drawDefinition/getPositionRangeMap';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { structureSort } from '../../../../functions/sorters/structureSort';
-import { generatePlayoffStructures } from '../drawTypes/playoffStructures';
+import { generatePlayoffStructures } from '@Generators/drawDefinitions/drawTypes/playoffStructures';
+import { getPositionRangeMap } from '@Query/drawDefinition/getPositionRangeMap';
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';
-import structureTemplate from '../../templates/structureTemplate';
+import structureTemplate from '@Generators/templates/structureTemplate';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { generateCurtisConsolation } from './curtisConsolation';
 import { generateRoundRobin } from './roundRobin/roundRobin';
-import { numericSort } from '../../../../tools/sorting';
-import { nextPowerOf2 } from '../../../../tools/math';
 import { feedInChampionship } from './feedInChamp';
 import { treeMatchUps } from './eliminationTree';
+import { numericSort } from '@Tools/sorting';
+import { nextPowerOf2 } from '@Tools/math';
 
+// constants and types
 import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
 import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { WIN_RATIO } from '../../../../constants/statsConstants';
+import { ResultType } from '../../../../types/factoryTypes';
 import {
   AD_HOC,
   COMPASS,

@@ -1,14 +1,15 @@
-import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
-import { allEventMatchUps } from '../../../query/matchUps/getAllEventMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { UUID } from '../../../tools/UUID';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { Tournament } from '../../../types/tournamentTypes';
+import { ResultType } from '../../../types/factoryTypes';
 
 type AggreateTieFormatsArgs = {
   tournamentRecord: Tournament;

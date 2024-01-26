@@ -1,12 +1,13 @@
-import { getNextRoundMatchUp } from '../../../query/matchUps/getNextRoundMatchUp';
-import { getTargetMatchUp } from '../../../query/matchUps/getTargetMatchUp';
-import { getRoundLinks, getTargetLink } from '../../../query/drawDefinition/linkGetter';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { findStructure } from '../../../acquire/findStructure';
+import { getRoundLinks, getTargetLink } from '@Query/drawDefinition/linkGetter';
+import { getNextRoundMatchUp } from '@Query/matchUps/getNextRoundMatchUp';
+import { getTargetMatchUp } from '@Query/matchUps/getTargetMatchUp';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { findStructure } from '@Acquire/findStructure';
 
-import { LOSER, WINNER, ROUND_OUTCOME, DRAW, FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
+// constants and types
+import { LOSER, WINNER, ROUND_OUTCOME, DRAW, FIRST_MATCHUP } from '../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../types/tournamentTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
 
 /**
  * @param {string=} matchUpId - matchUp identifier for sourceMatchUp

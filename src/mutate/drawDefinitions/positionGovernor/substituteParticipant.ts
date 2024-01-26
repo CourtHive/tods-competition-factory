@@ -1,9 +1,9 @@
 import { replaceTieMatchUpParticipantId } from '../../matchUps/lineUps/replaceTieMatchUpParticipant';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 
 import {
   INVALID_MATCHUP,

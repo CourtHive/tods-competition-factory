@@ -1,11 +1,12 @@
-import { analyzeScore } from '../query/matchUp/analyzeScore';
-import { mustBeAnArray } from '../tools/mustBeAnArray';
-import { isConvertableInteger } from '../tools/math';
-import { unique } from '../tools/arrays';
+import { analyzeScore } from '@Query/matchUp/analyzeScore';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { isConvertableInteger } from '@Tools/math';
+import { unique } from '@Tools/arrays';
 
-import type { Score } from '../types/tournamentTypes';
-import { ResultType } from '../global/functions/decorateResult';
+// constants and types
 import { INVALID_SCORE, INVALID_VALUES } from '../constants/errorConditionConstants';
+import type { Score } from '../types/tournamentTypes';
+import { ResultType } from '../types/factoryTypes';
 
 type validateScoreTypes = {
   existingMatchUpStatus?: string;

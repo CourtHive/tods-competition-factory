@@ -1,18 +1,19 @@
-import { removeExtension } from '../extensions/removeExtension';
-import { addExtension } from '../extensions/addExtension';
-import { findExtension } from '../../acquire/findExtension';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { addTournamentExtension, removeTournamentExtension } from '../extensions/addRemoveExtensions';
+import { addTournamentExtension, removeTournamentExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { getTournamentIds } from '@Query/tournaments/getTournamentIds';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
+import { TournamentRecords, ResultType } from '../../types/factoryTypes';
 import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../constants/errorConditionConstants';
-import { getTournamentIds } from '../../query/tournaments/getTournamentIds';
 
 /**
  * Links all tournaments which are currently loaded into competitionEngine state

@@ -2,7 +2,7 @@ import { structureAssignedDrawPositions } from '../../../query/drawDefinition/po
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { generateRange, randomPop } from '../../../tools/arrays';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../tools/ensureInt';

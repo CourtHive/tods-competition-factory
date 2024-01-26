@@ -1,14 +1,15 @@
-import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { findStructure } from '../../../acquire/findStructure';
-import { isActiveDownstream } from './isActiveDownstream';
+import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { ResultType } from '../../../types/factoryTypes';
 
 type RemoveQualifierArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];

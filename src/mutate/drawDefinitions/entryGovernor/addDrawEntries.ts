@@ -1,7 +1,7 @@
 import { refreshEntryPositions } from '../../entries/refreshEntryPositions';
 import { addExtension } from '../../extensions/addExtension';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { definedAttributes } from '../../../tools/definedAttributes';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { participantInEntries } from '../../../query/drawDefinition/entryGetter';

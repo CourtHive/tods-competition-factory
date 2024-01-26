@@ -1,14 +1,14 @@
-import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
-import courtTemplate from '../../assemblies/generators/templates/courtTemplate';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import courtTemplate from '@Assemblies/generators/templates/courtTemplate';
 import { modifyCourtAvailability } from './courtAvailability';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findCourt } from './findCourt';
 
+// constants and types
+import { TournamentRecords, ResultType } from '../../types/factoryTypes';
 import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
 import {

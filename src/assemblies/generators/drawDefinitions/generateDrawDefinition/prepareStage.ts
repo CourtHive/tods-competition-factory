@@ -1,19 +1,21 @@
-import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
-import { getScaledEntries } from '../../../../query/event/getScaledEntries';
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { findExtension } from '../../../../acquire/findExtension';
+import { initializeStructureSeedAssignments } from '@Mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
+import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getScaledEntries } from '@Query/event/getScaledEntries';
+import { getParticipantId } from '@Functions/global/extractors';
+import { getDrawStructures } from '@Acquire/findStructure';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
 import { STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
 import { AD_HOC, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { Entry, PositionAssignment } from '../../../../types/tournamentTypes';
 import { RANKING, SEEDING } from '../../../../constants/scaleConstants';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function prepareStage(params): ResultType & {
   positionAssignments?: PositionAssignment[];

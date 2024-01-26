@@ -1,28 +1,30 @@
-import { modifyRoundRobinMatchUpsStatus } from '../matchUpStatus/modifyRoundRobinMatchUpsStatus';
-import { getStructureDrawPositionProfiles } from '../../../query/structure/getStructureDrawPositionProfiles';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { modifyRoundRobinMatchUpsStatus } from '@Mutate/matchUps/matchUpStatus/modifyRoundRobinMatchUpsStatus';
+import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
+import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
+import { updateSideLineUp } from '@Mutate/matchUps/lineUps/updateSideLineUp';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
-import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
-import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
-import { findStructure } from '../../../acquire/findStructure';
-import { getTargetMatchUps } from '../../drawDefinitions/positionGovernor/getTargetMatchUps';
-import { updateSideLineUp } from '../lineUps/updateSideLineUp';
+import { getTargetMatchUps } from '@Query/matchUps/getTargetMatchUps';
+import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
+import { resetLineUps } from '@Mutate/matchUps/lineUps/resetLineUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { getParticipantId } from '@Functions/global/extractors';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
-import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
-import { resetLineUps } from '../lineUps/resetLineUps';
 
+// constants and types
+import { CONSOLATION, CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { SeedingProfile, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
@@ -35,7 +37,6 @@ import {
   ErrorType,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { CONSOLATION, CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   Event,

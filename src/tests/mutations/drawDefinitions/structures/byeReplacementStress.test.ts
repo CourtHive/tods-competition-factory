@@ -3,7 +3,7 @@ import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
-import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../../global/functions/globalLog';
+import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../../functions/global/globalLog';
 
 import { AUDIT_POSITION_ACTIONS } from '../../../../constants/extensionConstants';
 import {

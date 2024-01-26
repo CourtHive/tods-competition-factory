@@ -3,7 +3,6 @@ import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
-import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import {
   Category,
   DrawDefinition,
@@ -24,6 +23,7 @@ import {
   DrawTypeUnion,
   TieFormat,
   Structure,
+  MatchUp,
 } from './tournamentTypes';
 
 export type FactoryEngine = {
@@ -491,6 +491,7 @@ export type GenerateDrawDefinitionArgs = {
 
 export type DrawMaticArgs = {
   adHocRatings?: { [key: string]: number };
+  restrictRoundsCount?: boolean;
   restrictEntryStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
@@ -513,3 +514,28 @@ export type DrawMaticArgs = {
   scaleAccessor?: string;
   scaleName?: string; // custom rating name to seed dynamic ratings
 };
+
+export type ResultType = {
+  context?: { [key: string]: any };
+  stack?: string | string[];
+  errors?: string[];
+  error?: ErrorType;
+  success?: boolean;
+  valid?: boolean;
+  info?: any;
+};
+
+export type MappedMatchUps = {
+  [key: string]: {
+    matchUps: HydratedMatchUp[] | MatchUp[] | undefined;
+    itemStructureIds: string[];
+    structureName?: string;
+  };
+};
+
+export type MatchUpsMap = {
+  mappedMatchUps: MappedMatchUps;
+  drawMatchUps: MatchUp[];
+};
+
+export type Tally = [number, number];

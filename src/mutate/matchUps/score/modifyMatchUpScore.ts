@@ -1,24 +1,27 @@
-import { updateAssignmentParticipantResults } from '../../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getTopics } from '../../../global/state/globalState';
-import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
-import { isLucky } from '../../../query/drawDefinition/isLucky';
-import { addNotes } from '../../base/addRemoveNotes';
-import { unique } from '../../../tools/arrays';
-import { modifyMatchUpNotice, updateInContextMatchUp } from '../../notifications/drawNotifications';
+import { updateAssignmentParticipantResults } from '@Mutate/drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
+import { modifyMatchUpNotice, updateInContextMatchUp } from '@Mutate/notifications/drawNotifications';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { addNotes } from '@Mutate/base/addRemoveNotes';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { isLucky } from '@Query/drawDefinition/isLucky';
+import { getTopics } from '@Global/state/globalState';
+import { unique } from '@Tools/arrays';
 
+// types, constants and fixtures
+import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
 import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
 import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { PolicyDefinitions } from 'src/types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   AWAITING_RESULT,
@@ -29,7 +32,6 @@ import {
   WALKOVER,
   IN_PROGRESS,
 } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
 
 /**
  *
@@ -42,6 +44,7 @@ import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '
 
 type ModifyMatchUpScoreArgs = {
   matchUpStatus?: MatchUpStatusUnion;
+  appliedPolicies?: PolicyDefinitions;
   tournamentRecord?: Tournament;
   matchUpStatusCodes?: string[];
   drawDefinition?: DrawDefinition;
@@ -52,27 +55,42 @@ type ModifyMatchUpScoreArgs = {
   matchUpId: string;
   matchUp: MatchUp; // matchUp without context
   notes?: string;
+  context?: any;
   event?: Event;
   score?: any;
 };
 
-export function modifyMatchUpScore({
-  matchUpStatusCodes,
-  removeWinningSide,
-  tournamentRecord,
-  drawDefinition,
-  matchUpFormat,
-  matchUpStatus,
-  removeScore,
-  winningSide,
-  matchUpId,
-  matchUp, // matchUp without context
-  event,
-  notes,
-  score,
-}: ModifyMatchUpScoreArgs) {
+export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
   const stack = 'modifyMatchUpScore';
+  let matchUpFormat = params.matchUpFormat;
+  let matchUp = params.matchUp; // matchUp without context
   let structure;
+
+  const {
+    matchUpStatusCodes,
+    removeWinningSide,
+    tournamentRecord,
+    drawDefinition,
+    matchUpStatus,
+    removeScore,
+    winningSide,
+    matchUpId,
+    event,
+    notes,
+    score,
+  } = params;
+
+  const hasPolicies = params.appliedPolicies && Object.keys(params.appliedPolicies).length;
+
+  const appliedPolicies = hasPolicies
+    ? params.appliedPolicies
+    : getAppliedPolicies({
+        policyTypes: [POLICY_TYPE_SCORING],
+        tournamentRecord,
+        drawDefinition,
+        structure,
+        event,
+      })?.appliedPolicies;
 
   const isDualMatchUp = matchUp.matchUpType === TEAM;
 
@@ -127,13 +145,6 @@ export function modifyMatchUpScore({
 
   let defaultedProcessCodes;
   if ((wasDefaulted && matchUp?.processCodes?.length) || matchUpStatus === DEFAULTED) {
-    const appliedPolicies = getAppliedPolicies({
-      tournamentRecord,
-      drawDefinition,
-      structure,
-      event,
-    })?.appliedPolicies;
-
     defaultedProcessCodes = appliedPolicies?.[POLICY_TYPE_SCORING]?.processCodes?.incompleteAssignmentsOnDefault;
   }
 

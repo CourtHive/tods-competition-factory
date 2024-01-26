@@ -1,7 +1,10 @@
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+
+// constants
 import { SUCCESS } from '../../constants/resultConstants';
-import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
-import { modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 
 export function updateTargetTeamMatchUps({
   updateInProgressMatchUps,
@@ -19,11 +22,13 @@ export function updateTargetTeamMatchUps({
 
     let scoreUpdated;
     if (updateInProgressMatchUps) {
+      const appliedPolicies = getAppliedPolicies({ tournamentRecord, drawDefinition, event }).appliedPolicies;
       // recalculate score
       const result = updateTieMatchUpScore({
         matchUpId: targetMatchUp.matchUpId,
         exitWhenNoValues: true,
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         event,
       });

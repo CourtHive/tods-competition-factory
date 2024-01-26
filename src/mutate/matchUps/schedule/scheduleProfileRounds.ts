@@ -2,7 +2,7 @@ import { getContainedStructures } from '../../../query/drawDefinition/getContain
 import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
 import { extractDate, isValidDateString } from '../../../tools/dateTime';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';

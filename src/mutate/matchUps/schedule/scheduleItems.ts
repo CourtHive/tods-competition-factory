@@ -1,17 +1,18 @@
+import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from './scheduledTime';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
 import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { dateValidation, validTimeString } from '@Validators/regex';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findParticipant } from '../../../acquire/findParticipant';
-import { isConvertableInteger } from '../../../tools/math';
-import { ensureInt } from '../../../tools/ensureInt';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from './scheduledTime';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findParticipant } from '@Acquire/findParticipant';
+import { isConvertableInteger } from '@Tools/math';
+import { ensureInt } from '@Tools/ensureInt';
 import {
   convertTime,
   extractDate,
@@ -20,10 +21,10 @@ import {
   getIsoDateString,
   validTimeValue,
 } from '../../../tools/dateTime';
-import { dateValidation, validTimeString } from '../../../validators/regex';
 
+// constants and types
+import { AddScheduleAttributeArgs, ResultType } from '../../../types/factoryTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { AddScheduleAttributeArgs } from '../../../types/factoryTypes';
 import { OFFICIAL } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';

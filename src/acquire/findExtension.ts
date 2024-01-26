@@ -1,7 +1,9 @@
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
+
+// constants and types
 import { MISSING_VALUE, NOT_FOUND } from '../constants/errorConditionConstants';
+import { ResultType, TournamentRecords } from '../types/factoryTypes';
 import { Extension } from '../types/tournamentTypes';
-import { TournamentRecords } from '../types/factoryTypes';
 
 const stack = 'extensionQueries';
 

@@ -1,6 +1,6 @@
 import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMethods';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { factoryVersion } from '../../../global/functions/factoryVersion';
+import { factoryVersion } from '../../../functions/global/factoryVersion';
 import * as scoreGovernor from '../../governors/scoreGovernor';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import {

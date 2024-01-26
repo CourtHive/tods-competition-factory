@@ -1,6 +1,6 @@
 import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
 import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange } from '../../../tools/arrays';

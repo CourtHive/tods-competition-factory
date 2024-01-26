@@ -1,6 +1,6 @@
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';

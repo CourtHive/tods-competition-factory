@@ -1,4 +1,4 @@
-import { engineLogging } from '../../../global/functions/engineLogging';
+import { engineLogging } from '../../../global/state/engineLogging';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { FactoryEngine } from '../../../types/factoryTypes';
 import { paramsMiddleware } from './paramsMiddleware';

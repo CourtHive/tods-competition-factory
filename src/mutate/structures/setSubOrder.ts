@@ -1,14 +1,15 @@
-import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { addExtension } from '../extensions/addExtension';
-import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { findStructure } from '../../acquire/findStructure';
+import { updateAssignmentParticipantResults } from '@Mutate/drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
+import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 import { SUB_ORDER } from '../../constants/extensionConstants';
-
-import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
@@ -16,7 +17,6 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
 
 /**
  *

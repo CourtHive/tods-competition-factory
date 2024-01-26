@@ -1,16 +1,16 @@
-import { attachPolicies } from '../extensions/policies/attachPolicies';
-import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isObject } from '../../tools/objects';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { addEventExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { modifyDrawName } from './modifyDrawName';
+import { isObject } from '@Tools/objects';
 
-import { ResultType } from '../../global/functions/decorateResult';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+// constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { SUCCESS } from '../../constants/resultConstants';
 
 type ModifyDrawArgs = {
   drawUpdates: { drawName: string; policyDefinitions: PolicyDefinitions };

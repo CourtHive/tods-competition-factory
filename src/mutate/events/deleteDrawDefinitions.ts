@@ -5,7 +5,7 @@ import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

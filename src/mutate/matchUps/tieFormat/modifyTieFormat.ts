@@ -1,17 +1,18 @@
-import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
-import { removeCollectionDefinition } from '../../tieFormat/removeCollectionDefinition';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { modifyCollectionDefinition } from './modifyCollectionDefinition';
-import { xa } from '../../../tools/objects';
-import { numericSortValue } from '../../../tools/arrays';
+import { modifyCollectionDefinition } from '@Mutate/matchUps/tieFormat/modifyCollectionDefinition';
+import { removeCollectionDefinition } from '@Mutate/tieFormat/removeCollectionDefinition';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
+import { addCollectionDefinition } from '@Mutate/tieFormat/addCollectionDefinition';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { numericSortValue } from '@Tools/arrays';
+import { xa } from '@Tools/objects';
 
+// constants and types
+import { DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
 import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
 
 type ModifyTieFormatArgs = {
   updateInProgressMatchUps?: boolean;

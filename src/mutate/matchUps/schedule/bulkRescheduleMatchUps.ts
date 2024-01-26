@@ -1,9 +1,8 @@
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
 import { addMatchUpScheduledDate } from './scheduleItems';
 import { addMatchUpScheduledTime } from './scheduledTime';
@@ -15,10 +14,11 @@ import {
   timeStringMinutes,
 } from '../../../tools/dateTime';
 
-import { ResultType } from '../../../global/functions/decorateResult';
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { Tournament } from '../../../types/tournamentTypes';
+// constants and types
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '../../../types/tournamentTypes';
 import {
   INVALID_VALUES,
   MISSING_MATCHUP_IDS,

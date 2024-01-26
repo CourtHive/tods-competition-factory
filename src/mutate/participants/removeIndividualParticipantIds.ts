@@ -1,19 +1,22 @@
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { addExtension } from '../extensions/addExtension';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { addEventEntries } from '../entries/addEventEntries';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { findExtension } from '../../acquire/findExtension';
-import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { addNotice } from '../../global/state/globalState';
-import { addDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
+import { addDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { addNotice } from '@Global/state/globalState';
+import { findExtension } from '@Acquire/findExtension';
 
-import { MappedMatchUps } from '../../query/matchUps/getMatchUpsMap';
+// constants and types
+import { Participant, ParticipantRoleUnion, Tournament } from '../../types/tournamentTypes';
+import { GROUP, TEAM, TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { UNGROUPED } from '../../constants/entryStatusConstants';
 import { COMPETITOR } from '../../constants/participantRoles';
 import { LINEUPS } from '../../constants/extensionConstants';
 import { HydratedParticipant } from '../../types/hydrated';
+import { MappedMatchUps } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
@@ -24,8 +27,6 @@ import {
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { GROUP, TEAM, TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { Participant, ParticipantRoleUnion, Tournament } from '../../types/tournamentTypes';
 
 type RemoveIndividualParticipantIdsArgs = {
   addIndividualParticipantsToEvents?: boolean;

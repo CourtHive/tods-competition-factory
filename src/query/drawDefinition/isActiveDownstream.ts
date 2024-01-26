@@ -1,14 +1,12 @@
-// import { getMatchUpsMap } from '../../getters/getMatchUps/getMatchUpsMap';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { BYE, DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+// constants
+import { BYE, DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
+import { FIRST_MATCHUP } from '../../constants/drawDefinitionConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
   const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } = params;
-
-  // const matchUpsMap = params.matchUpsMap || getMatchUpsMap({ drawDefinition });
 
   const fmlcBYE = relevantLink?.linkCondition === FIRST_MATCHUP && targetData?.matchUp?.matchUpStatus === BYE;
 
@@ -23,6 +21,7 @@ export function isActiveDownstream(params) {
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
+  /**
   // if a winnerMatchUp contains a WALKOVER and its source matchUps have no winningSides it cannot be considered active
   // unless one of its downstream matchUps is active
   /*
@@ -31,7 +30,7 @@ export function isActiveDownstream(params) {
     params.matchUpsMap.drawMatchUps.filter(
       ({ winnerMatchUpId }) => winnerMatchUpId === winnerMatchUp.matchUpId
     );
-    */
+  */
 
   if (
     (loserMatchUp?.winningSide && !loserMatchUpExit) ||

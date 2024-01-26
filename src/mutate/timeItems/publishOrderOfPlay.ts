@@ -1,4 +1,4 @@
-import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
 import { addNotice } from '../../global/state/globalState';
 import { getTimeItem } from '../../query/base/timeItems';
 import { addTimeItem } from './addTimeItem';

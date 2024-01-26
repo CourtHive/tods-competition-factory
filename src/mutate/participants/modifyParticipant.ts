@@ -1,7 +1,7 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { definedAttributes } from '../../tools/definedAttributes';
 import { participantRoles } from '../../constants/participantRoles';
 import { genderConstants } from '../../constants/genderConstants';

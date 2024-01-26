@@ -1,5 +1,6 @@
-import ratingsParameters from '../../../../fixtures/ratings/ratingsParameters';
-import { DOUBLES } from '../../../../constants/eventConstants';
+// fixtures and constants
+import ratingsParameters from '../../../../../../fixtures/ratings/ratingsParameters';
+import { DOUBLES } from '../../../../../../constants/eventConstants';
 
 const DEFAULT_RATING = 0;
 

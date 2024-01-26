@@ -1,17 +1,8 @@
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { ErrorType } from '../../constants/errorConditionConstants';
+// constants
 import { SUCCESS } from '../../constants/resultConstants';
-
-export type ResultType = {
-  context?: { [key: string]: any };
-  stack?: string | string[];
-  error?: ErrorType;
-  errors?: string[];
-  success?: boolean;
-  valid?: boolean;
-  info?: any;
-};
+import { ResultType } from '../../types/factoryTypes';
 
 type DecorateResultArgs = {
   context?: { [key: string]: any };

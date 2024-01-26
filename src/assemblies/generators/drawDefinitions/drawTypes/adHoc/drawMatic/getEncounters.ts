@@ -1,4 +1,4 @@
-import { getParticipantId } from '../../../../global/functions/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { pairingHash } from './generateCandidate';
 
 export function getEncounters({ matchUps }) {

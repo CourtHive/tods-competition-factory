@@ -1,12 +1,13 @@
-import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { intersection, overlap } from '../../../tools/arrays';
-import { findStructure } from '../../../acquire/findStructure';
-import { removeDirectedBye, removeDirectedWinner } from '../../matchUps/drawPositions/removeDirectedParticipants';
+import { removeDirectedBye, removeDirectedWinner } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { intersection, overlap } from '@Tools/arrays';
+import { findStructure } from '@Acquire/findStructure';
 
-import { pushGlobalLog } from '../../../global/functions/globalLog';
+import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
+
+import { pushGlobalLog } from '../../../functions/global/globalLog';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -217,6 +218,11 @@ export function conditionallyRemoveDrawPosition(params) {
   const removeScore = !pairedPreviousDoubleExit;
   result = modifyMatchUpScore({
     ...params,
+    matchUpId: targetMatchUp.matchUpId,
+    matchUp: noContextTargetMatchUp,
+    removeWinningSide: true,
+    matchUpStatusCodes: [],
+    context: stack,
     matchUpStatus,
     removeScore,
     score: {
@@ -224,10 +230,6 @@ export function conditionallyRemoveDrawPosition(params) {
       scoreStringSide2: '',
       sets: undefined,
     },
-    removeWinningSide: true,
-    matchUp: noContextTargetMatchUp,
-    matchUpId: targetMatchUp.matchUpId,
-    matchUpStatusCodes: [],
   });
 
   if (result.error) return decorateResult({ result, stack });

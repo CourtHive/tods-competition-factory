@@ -4,9 +4,9 @@ import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/
 import { removeEntry } from '../../../mutate/drawDefinitions/entryGovernor/removeEntry';
 import { expect, it } from 'vitest';
 
+import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { ERROR, SUCCESS } from '../../../constants/resultConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import {
   INVALID_STAGE,
   EXISTING_PARTICIPANT,

@@ -1,8 +1,10 @@
-import { getGroupValueGroups } from '../../assemblies/generators/drawDefinitions/getGroupValueGroups';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { getGroupValueGroups } from '@Query/hierarchical/tieFormats/getGroupValueGroups';
+import { isConvertableInteger } from '@Tools/math';
+
+// constants and types
 import { CollectionDefinition } from '../../types/tournamentTypes';
-import { isConvertableInteger } from '../../tools/math';
+import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 type CalculateWinCriteriaArgs = {
   collectionGroups?: { groupValue?: number; groupNumber?: number }[];

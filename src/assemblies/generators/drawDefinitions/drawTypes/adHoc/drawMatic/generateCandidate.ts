@@ -1,5 +1,5 @@
-import { stringSort } from '../../../../functions/sorters/stringSort';
-import { chunkArray, randomPop, shuffleArray } from '../../../../tools/arrays';
+import { chunkArray, randomPop, shuffleArray } from '@Tools/arrays';
+import { stringSort } from '@Functions/sorters/stringSort';
 
 type GenerateCandidateArgs = {
   valueSortedPairings: { [key: string]: number }[];

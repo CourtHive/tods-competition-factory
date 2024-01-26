@@ -1,5 +1,5 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { intersection, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';

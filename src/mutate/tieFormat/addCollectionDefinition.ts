@@ -1,21 +1,22 @@
-import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { validateCollectionDefinition } from '../../validators/validateCollectionDefinition';
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
-import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
-import { validateTieFormat } from '../../validators/validateTieFormat';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { validUpdate } from '../../validators/validUpdate';
-import { UUID } from '../../tools/UUID';
+import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { generateCollectionMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
+import { validateCollectionDefinition } from '@Validators/validateCollectionDefinition';
+import { tieFormatTelemetry } from '@Mutate/matchUps/tieFormat/tieFormatTelemetry';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { validUpdate } from '@Validators/validUpdate';
+import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {

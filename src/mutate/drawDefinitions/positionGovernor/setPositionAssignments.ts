@@ -2,7 +2,7 @@ import { assignDrawPositionBye } from '../../matchUps/drawPositions/assignDrawPo
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { assignDrawPosition } from '../../matchUps/drawPositions/positionAssignment';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { findStructure } from '../../../acquire/findStructure';
 import { intersection } from '../../../tools/arrays';

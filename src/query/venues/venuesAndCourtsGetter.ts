@@ -1,14 +1,14 @@
-import { getDisabledStatus } from '../extensions/getDisabledStatus';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { findExtension } from '../../acquire/findExtension';
+import { getDisabledStatus } from '@Query/extensions/getDisabledStatus';
 import { getInContextCourt } from './getInContextCourt';
+import { findExtension } from '@Acquire/findExtension';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { TournamentRecords, ResultType } from '../../types/factoryTypes';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 
 type GetVenuesAndCourtsArgs = {

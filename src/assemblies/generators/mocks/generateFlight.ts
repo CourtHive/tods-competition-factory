@@ -1,6 +1,6 @@
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addFlight } from '../../../mutate/events/addFlight';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

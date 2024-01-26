@@ -1,12 +1,14 @@
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { generateQualifyingLink } from '../links/generateQualifyingLink';
-import structureTemplate from '../../templates/structureTemplate';
-import { mustBeAnArray } from '../../../../tools/mustBeAnArray';
-import { constantToString } from '../../../tools';
+import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
+import structureTemplate from '@Generators/templates/structureTemplate';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { constantToString } from '@Tools/strings';
 import { prepareStage } from './prepareStage';
 
+// constants and types
 import { POSITION, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
   const {

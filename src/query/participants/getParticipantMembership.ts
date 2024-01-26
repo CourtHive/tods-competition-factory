@@ -1,9 +1,10 @@
 import { getParticipants } from './getParticipants';
 
-import { GROUP, PAIR, TEAM } from '../../constants/participantConstants';
-import { ResultType } from '../../global/functions/decorateResult';
-import { Tournament } from '../../types/tournamentTypes';
+// constants and types
 import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { GROUP, PAIR, TEAM } from '../../constants/participantConstants';
+import { Tournament } from '../../types/tournamentTypes';
+import { ResultType } from '../../types/factoryTypes';
 
 // Returns all grouping participants which include individual participantId
 

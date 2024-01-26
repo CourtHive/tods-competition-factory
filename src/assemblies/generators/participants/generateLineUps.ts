@@ -1,18 +1,19 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { addParticipant } from '../../../mutate/participants/addParticipant';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { getParticipantId } from '../../../global/functions/extractors';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { generateRange } from '../../../tools/arrays';
-import { isNumeric } from '../../../tools/math';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { addParticipant } from '@Mutate/participants/addParticipant';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { getParticipantId } from '@Functions/global/extractors';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { generateRange } from '@Tools/arrays';
+import { isNumeric } from '@Tools/math';
 
+// constants and types
 import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType, LineUp } from '../../../types/factoryTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { DESCENDING } from '../../../constants/sortingConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';
@@ -20,7 +21,6 @@ import { TEAM_EVENT } from '../../../constants/eventConstants';
 import { PAIR } from '../../../constants/participantConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { RANKING } from '../../../constants/scaleConstants';
-import { LineUp } from '../../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_EVENT_TYPE,

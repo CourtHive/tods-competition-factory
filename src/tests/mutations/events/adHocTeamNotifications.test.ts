@@ -1,5 +1,5 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { mocksEngine, tournamentEngine } from '../../..';
 import { expect, it } from 'vitest';
 

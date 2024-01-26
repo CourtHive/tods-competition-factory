@@ -1,15 +1,17 @@
 import { conditionallyDisableLinkPositioning } from './positionGovernor/conditionallyDisableLinkPositioning';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { addPositionActionTelemetry } from './positionGovernor/addPositionActionTelemetry';
-import { assignDrawPositionBye } from '../matchUps/drawPositions/assignDrawPositionBye';
-import { clearDrawPosition } from '../matchUps/drawPositions/positionClear';
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { findStructure } from '../../acquire/findStructure';
-import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
-import { destroyPairEntry } from '../entries/destroyPairEntry';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { clearDrawPosition } from '@Mutate/matchUps/drawPositions/positionClear';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { modifyEntriesStatus } from '@Mutate/entries/modifyEntriesStatus';
+import { destroyPairEntry } from '@Mutate/entries/destroyPairEntry';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
 import { ALTERNATE, WITHDRAWN } from '../../constants/entryStatusConstants';
 import { PAIR } from '../../constants/participantConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 export function removeDrawPositionAssignment(params): ResultType & { participantId?: string } {
   const { tournamentRecord, replaceWithBye, drawDefinition, destroyPair, entryStatus, matchUpsMap, drawId } = params;

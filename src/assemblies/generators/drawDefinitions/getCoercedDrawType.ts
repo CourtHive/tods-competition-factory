@@ -1,8 +1,11 @@
+import { decorateResult } from '@Functions/global/decorateResult';
+import { ensureInt } from '@Tools/ensureInt';
+
+// constants and types
 import { MULTI_STRUCTURE_DRAWS, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
 import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { DrawTypeUnion } from '../../../types/tournamentTypes';
-import { ensureInt } from '../../../tools/ensureInt';
+import { ResultType } from '../../../types/factoryTypes';
 
 export function getCoercedDrawType(params): ResultType & { drawType: DrawTypeUnion } {
   const { drawTypeCoercion, enforceMinimumDrawSize } = params;

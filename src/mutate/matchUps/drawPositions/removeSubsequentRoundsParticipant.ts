@@ -1,15 +1,17 @@
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
-import { findStructure } from '../../../acquire/findStructure';
+import { updateMatchUpStatusCodes } from '@Mutate/drawDefinitions/matchUpGovernor/matchUpStatusCodes';
+import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 type RemoveSubsequentDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

@@ -1,4 +1,4 @@
-import { rgbColors } from '../../../global/functions/logColors';
+import { rgbColors } from '../../../functions/global/logColors';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 import diff from 'variable-diff';
 import chalk from 'chalk';
 import { setDevContext, setSubscriptions } from '../../../global/state/globalState';
-import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../global/functions/globalLog';
+import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../functions/global/globalLog';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../constants/entryStatusConstants';

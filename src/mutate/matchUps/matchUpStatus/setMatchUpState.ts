@@ -1,33 +1,31 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { getProjectedDualWinningSide } from '../../drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
-import { noDownstreamDependencies } from '../../drawDefinitions/matchUpGovernor/noDownstreamDependencies';
-import { isActiveDownstream } from '../../drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { addMatchUpScheduleItems } from '../schedule/scheduleItems';
-import { removeExtension } from '../../extensions/removeExtension';
-import { positionTargets } from '../drawPositions/positionTargets';
-import { pushGlobalLog } from '../../../global/functions/globalLog';
-import { swapWinnerLoser } from '../drawPositions/swapWinnerLoser';
+import { getProjectedDualWinningSide } from '@Mutate/drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
+import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGovernor/noDownstreamDependencies';
+import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { swapWinnerLoser } from '@Mutate/matchUps/drawPositions/swapWinnerLoser';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { ensureSideLineUps } from '@Mutate/matchUps/lineUps/ensureSideLineUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { validateScore } from '../../../validators/validateScore';
-import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
-import { ensureSideLineUps } from '../lineUps/ensureSideLineUps';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findStructure } from '../../../acquire/findStructure';
-import { addExtension } from '../../extensions/addExtension';
-import {
-  isDirectingMatchUpStatus,
-  isNonDirectingMatchUpStatus,
-} from '../../drawDefinitions/matchUpGovernor/checkStatusType';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { pushGlobalLog } from '@Functions/global/globalLog';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
 import { DrawDefinition, Event, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
+import { POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
 import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
 import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
@@ -61,6 +59,7 @@ import {
 type SetMatchUpStateArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
+  appliedPolicies?: PolicyDefinitions;
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
@@ -196,8 +195,8 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       tournamentId: tournamentRecord?.tournamentId,
       inContextDualMatchUp: inContextMatchUp,
       eventId: event?.eventId,
-      drawDefinition,
       dualMatchUp: matchUp,
+      drawDefinition,
     });
   }
 
@@ -267,7 +266,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const appliedPolicies =
     getAppliedPolicies({
-      policyTypes: [POLICY_TYPE_PROGRESSION],
+      policyTypes: [POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING],
       tournamentRecord,
       drawDefinition,
       event,
@@ -413,9 +412,9 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const matchUpWinner = (winningSide && !matchUpTieId) || params.projectedWinningSide;
 
   pushGlobalLog({
-    method: stack,
     activeDownstream,
     matchUpWinner,
+    method: stack,
     winningSide,
   });
 
@@ -459,6 +458,7 @@ function applyMatchUpValues(params) {
     ...params,
     matchUpStatus: newMatchUpStatus,
     removeWinningSide,
+    context: 'sms',
     removeScore,
   });
   if (result.error) return result;
@@ -467,6 +467,7 @@ function applyMatchUpValues(params) {
   if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition, matchUpsMap } = params;
     const tieMatchUpResult = updateTieMatchUpScore({
+      appliedPolicies: params.appliedPolicies,
       matchUpId: matchUpTieId,
       tournamentRecord,
       drawDefinition,

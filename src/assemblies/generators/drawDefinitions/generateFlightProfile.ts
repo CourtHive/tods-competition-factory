@@ -1,6 +1,6 @@
 import { attachFlightProfile as attachProfile } from '../../../mutate/events/attachFlightProfile';
 import { getScaledEntries } from '../../../query/event/getScaledEntries';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { getDevContext } from '../../../global/state/globalState';
 import { UUID } from '../../../tools/UUID';

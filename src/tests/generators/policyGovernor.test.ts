@@ -5,6 +5,7 @@ import tournamentEngine from '../engines/syncEngine';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test, it } from 'vitest';
 
+import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 import POLICY_SCORING_DEFAULT from '../../fixtures/policies/POLICY_SCORING_DEFAULT';
 import AVOIDANCE_COUNTRY from '../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
 import { SINGLES, TEAM_EVENT } from '../../constants/eventConstants';
@@ -19,7 +20,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   POLICY_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SCORING } from '../../constants/policyConstants';
 
 it('can set and remove policies from tournamentRecords and events', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicies');

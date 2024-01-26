@@ -1,18 +1,19 @@
-import { isDirectingMatchUpStatus } from '../../../mutate/drawDefinitions/matchUpGovernor/checkStatusType';
-import { isActiveDownstream } from '../../../mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
-import { allTournamentMatchUps } from '../../matchUps/getAllTournamentMatchUps';
-import { getMatchUpsMap, MatchUpsMap } from '../../matchUps/getMatchUpsMap';
-import { getAppliedPolicies } from '../../extensions/getAppliedPolicies';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { collectionMatchUpActions } from './collectionMatchUpActions';
-import { getParticipants } from '../../participants/getParticipants';
-import { structureAssignedDrawPositions } from '../positionsGetter';
-import { getAllDrawMatchUps } from '../../matchUps/drawMatchUps';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { adHocMatchUpActions } from './adHocMatchUpActions';
-import { isCompletedStructure } from '../structureActions';
-import { isString } from '../../../tools/objects';
-import { isAdHoc } from '../isAdHoc';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { isString } from '@Tools/objects';
 import {
   getEnabledStructures,
   getPolicyActions,
@@ -20,13 +21,13 @@ import {
   MATCHUP_ACTION,
 } from '../positionActions/actionPolicyUtils';
 
+// constants, fixtures and types
 import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import { MatchUpsMap, PolicyDefinitions, TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { BYE, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Participant, Tournament } from '../../../types/tournamentTypes';
 import { ADD_PENALTY, ADD_PENALTY_METHOD } from '../../../constants/positionActionConstants';
-import { decorateResult, ResultType } from '../../../global/functions/decorateResult';
-import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_VALUES,

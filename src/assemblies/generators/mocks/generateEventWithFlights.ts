@@ -5,7 +5,7 @@ import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { generateEventParticipants } from './generateEventParticipants';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { isValidExtension } from '../../../validators/isValidExtension';
 import { publishEvent } from '../../../mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';

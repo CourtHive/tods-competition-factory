@@ -1,11 +1,12 @@
-import { getTournamentPublishStatus } from '../../query/tournaments/getTournamentPublishStatus';
-import { getEventPublishStatus } from '../event/getEventPublishStatus';
-import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
-import { getDrawId } from '../../global/functions/extractors';
+import { getTournamentPublishStatus } from '@Query/tournaments/getTournamentPublishStatus';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { getDrawPublishStatus } from '@Query/event/getDrawPublishStatus';
+import { getDrawId } from '@Functions/global/extractors';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import { findEvent } from '../../acquire/findEvent';
 import { isString } from '../../tools/objects';
 import {

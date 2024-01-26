@@ -1,20 +1,22 @@
-import { getCollectionPositionAssignments } from '../../events/getCollectionPositionAssignments';
-import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { deleteParticipants } from '../../participants/deleteParticipants';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
-import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
-import { addParticipant } from '../../participants/addParticipant';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { getCollectionPositionAssignments } from '@Query/hierarchical/tieFormats/getCollectionPositionAssignments';
+import { getTieMatchUpContext } from '@Query/hierarchical/tieFormats/getTieMatchUpContext';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { deleteParticipants } from '@Mutate/participants/deleteParticipants';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { addParticipant } from '@Mutate/participants/addParticipant';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { unique } from '../../../tools/arrays';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { LineUp, PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { PAIR } from '../../../constants/participantConstants';
@@ -28,7 +30,6 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 
 type ReplaceTieMatchUpParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;

@@ -1,22 +1,24 @@
-import { getPairedPreviousMatchUpIsDoubleExit } from '../../drawDefinitions/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
-import { getUpdatedDrawPositions } from '../../drawDefinitions/matchUpGovernor/getUpdatedDrawPositions';
-import { updateMatchUpStatusCodes } from '../../drawDefinitions/matchUpGovernor/matchUpStatusCodes';
-import { getExitWinningSide } from '../../drawDefinitions/matchUpGovernor/getExitWinningSide';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { getPairedPreviousMatchUpIsDoubleExit } from '@Mutate/drawDefinitions/positionGovernor/getPairedPreviousMatchUpIsDoubleExit';
+import { getUpdatedDrawPositions } from '@Mutate/drawDefinitions/matchUpGovernor/getUpdatedDrawPositions';
+import { updateMatchUpStatusCodes } from '@Mutate/drawDefinitions/matchUpGovernor/matchUpStatusCodes';
+import { getExitWinningSide } from '@Mutate/drawDefinitions/matchUpGovernor/getExitWinningSide';
+import { getMappedStructureMatchUps, getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { updateSideLineUp } from '@Mutate/matchUps/lineUps/updateSideLineUp';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { positionTargets } from './positionTargets';
-import { overlap } from '../../../tools/arrays';
-import { MatchUpsMap, getMappedStructureMatchUps, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { overlap } from '@Tools/arrays';
 
+// constants and types
+import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
-import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 import {
   BYE,
   COMPLETED,

@@ -1,17 +1,19 @@
-import { generateQualifyingLink } from '../links/generateQualifyingLink';
-import { addExtension } from '../../../../mutate/extensions/addExtension';
-import { coerceEven, isConvertableInteger } from '../../../../tools/math';
-import structureTemplate from '../../templates/structureTemplate';
+import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
+import structureTemplate from '@Generators/templates/structureTemplate';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { coerceEven, isConvertableInteger } from '@Tools/math';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
-import { constantToString } from '../../../../tools/strings';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { constantToString } from '@Tools/strings';
 
+// constants and types
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
 import { MISSING_DRAW_SIZE } from '../../../../constants/errorConditionConstants';
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
 import { ROUND_TARGET } from '../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,

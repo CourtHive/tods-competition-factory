@@ -1,13 +1,15 @@
-import { deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { getMatchUpId } from '../../global/functions/extractors';
-import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
-import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../tools/sorting';
+import { deleteMatchUpsNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { findStructure } from '@Acquire/findStructure';
+import { numericSort } from '@Tools/sorting';
 
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+// constants and types
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,

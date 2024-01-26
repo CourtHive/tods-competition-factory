@@ -1,14 +1,16 @@
-import { getParticipants } from '../../query/participants/getParticipants';
-import { isObject, isString } from '../../tools/objects';
-import { unique } from '../../tools/arrays';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isObject, isString } from '@Tools/objects';
+import { unique } from '@Tools/arrays';
 
+// constants and types
+import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   // Category,
   Event,

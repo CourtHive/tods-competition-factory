@@ -1,10 +1,15 @@
+import { decorateResult } from '@Functions/global/decorateResult';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
-import { generateRange } from '../../../../tools';
+import { generateRange } from '@Tools/arrays';
 
-import { ResultType, decorateResult } from '../../../../../global/functions/decorateResult';
+// types
 import { DrawDefinition, Event, MatchUp } from '../../../../../types/tournamentTypes';
+import { getParticipantIds } from './drawMatic/getParticipantIds';
+import { ResultType } from '../../../../../types/factoryTypes';
 
 type GenerateAdHocRoundsArgs = {
+  restrictMatchUpsCount?: boolean;
+  restrictRoundsCount?: boolean;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];
@@ -17,22 +22,19 @@ type GenerateAdHocRoundsArgs = {
   event: Event;
 };
 
-export function generateAdHocRounds({
-  roundsCount = 1,
-  drawDefinition,
-  matchUpsCount,
-  structureId,
-  idPrefix,
-  isMock,
-  event,
-}: GenerateAdHocRoundsArgs): ResultType & { matchUps?: MatchUp[] } {
+export function generateAdHocRounds(params: GenerateAdHocRoundsArgs): ResultType & { matchUps?: MatchUp[] } {
   const matchUps: MatchUp[] = [];
+  const { roundsCount = 1, drawDefinition, matchUpsCount, structureId, idPrefix, isMock, event } = params;
   let roundNumber;
+
+  const idsResult = getParticipantIds(params);
+  if (idsResult.error) return idsResult;
 
   for (const iteration of generateRange(1, roundsCount + 1)) {
     // on the first iteration roundNumber is undefined and generateAdHocMatchUps will infer the roundNumber from existing matchUps
     // on subsequent iterations roundNumber will be incremented and ignoreLastRoundNumber will be true to avoid inference error
     const genResult = generateAdHocMatchUps({
+      restrictMatchUpsCount: params.restrictMatchUpsCount,
       ignoreLastRoundNumber: !!roundNumber,
       newRound: !roundNumber,
       drawDefinition,

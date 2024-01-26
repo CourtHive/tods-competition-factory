@@ -1,16 +1,18 @@
-import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../parameters/resolveFromParameters';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { generateCollectionMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpId } from '@Functions/global/extractors';
 
+// constants and types
 import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
 import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
 import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy

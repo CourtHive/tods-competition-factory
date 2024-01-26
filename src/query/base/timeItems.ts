@@ -1,9 +1,10 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 
-import { ResultType } from '../../global/functions/decorateResult';
+// constants and types
+import { Event, TimeItem, Tournament } from '../../types/tournamentTypes';
 import { ELEMENT_REQUIRED } from '../../constants/infoConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { Event, TimeItem, Tournament } from '../../types/tournamentTypes';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,

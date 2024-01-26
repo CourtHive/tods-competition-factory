@@ -1,5 +1,5 @@
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import {
   getTournamentId,
   getTournamentRecords,
@@ -7,11 +7,12 @@ import {
   setTournamentRecord as globalSetTournamentRecord,
   getTournamentRecord,
   setTournamentId,
-} from '../../../global/state/globalState';
+} from '@Global/state/globalState';
 
-import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+// constants and types
 import { INVALID_OBJECT, INVALID_RECORDS, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 type GetStateArgs = {
   convertExtensions?: boolean;

@@ -1,10 +1,11 @@
-import { intersection } from '../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 
+// constants and types
+import { countGames, countSets } from '../../query/matchUps/roundRobinTally/scoreCounters';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
-import { countGames, countSets } from '../../query/matchUps/roundRobinTally/scoreCounters';
+import { ResultType } from '../../types/factoryTypes';
 
 type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];

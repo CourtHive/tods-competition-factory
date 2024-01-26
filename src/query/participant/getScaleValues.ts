@@ -1,11 +1,12 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { unique } from '../../tools/arrays';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 import { RANKING, RATING, SCALE, SEEDING } from '../../constants/scaleConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 import { PARTICIPANT } from '../../constants/attributeConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 type ScaleType = {
   scaleName: string;

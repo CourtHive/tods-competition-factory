@@ -1,10 +1,10 @@
-export { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-export { generateAndPopulatePlayoffStructures } from '../../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
-export { generateVoluntaryConsolation } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
-export { generateQualifyingStructure } from '../../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
-export { generateDrawStructuresAndLinks } from '../../../assemblies/generators/drawDefinitions/generateDrawStructuresAndLinks';
-export { generateDrawMaticRound } from '../../../assemblies/generators/drawDefinitions/drawMatic/generateDrawMaticRound';
+export { generateDrawTypeAndModifyDrawDefinition } from '../../generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+export { generateAndPopulatePlayoffStructures } from '../../generators/drawDefinitions/generateAndPopulatePlayoffStructures';
+export { generateVoluntaryConsolation } from '../../generators/drawDefinitions/drawTypes/generateVoluntaryConsolation';
+export { generateQualifyingStructure } from '../../generators/drawDefinitions/drawTypes/generateQualifyingStructure';
+export { generateDrawMaticRound } from '../../generators/drawDefinitions/drawTypes/adHoc/drawMatic/generateDrawMaticRound';
+export { generateDrawStructuresAndLinks } from '../../generators/drawDefinitions/generateDrawStructuresAndLinks';
 export { generateDrawDefinition } from '../../generators/drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 export { generateAdHocMatchUps } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocMatchUps';
 export { generateAdHocRounds } from '../../generators/drawDefinitions/drawTypes/adHoc/generateAdHocRounds';
-export { drawMatic } from '../../../assemblies/generators/drawDefinitions/drawMatic/drawMatic';
+export { drawMatic } from '../../generators/drawDefinitions/drawTypes/adHoc/drawMatic/drawMatic';

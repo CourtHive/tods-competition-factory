@@ -1,4 +1,4 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { overlap } from '../../tools/arrays';
 
 import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';

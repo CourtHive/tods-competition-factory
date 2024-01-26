@@ -1,8 +1,10 @@
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
-import { dateValidation } from '../../validators/regex';
-import { extractDate } from '../../tools/dateTime';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { dateValidation } from '@Validators/regex';
+import { extractDate } from '@Tools/dateTime';
 
+// constants and types
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_DATE,
   INVALID_TOURNAMENT_DATES,

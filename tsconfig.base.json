@@ -25,7 +25,16 @@
     "strict": true,
     "baseUrl": "./",
     "paths": {
+      "@Generators/*": ["./src/assemblies/generators/*"],
+      "@Assemblies/*": ["./src/assemblies/*"],
+      "@Validators/*": ["./src/validators/*"],
+      "@Functions/*": ["./src/functions/*"],
+      "@Acquire/*": ["./src/acquire/*"],
+      "@Helpers/*": ["./src/helpers/*"],
+      "@Global/*": ["./src/global/*"],
+      "@Mutate/*": ["./src/mutate/*"],
       "@Server/*": ["./src/server/*"],
+      "@Query/*": ["./src/query/*"],
       "@Tools/*": ["./src/tools/*"]
     },
 

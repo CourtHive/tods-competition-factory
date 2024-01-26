@@ -1,16 +1,16 @@
-import { checkMatchUpIsComplete } from '../../matchUp/checkMatchUpIsComplete';
-import { getDevContext } from '../../../global/state/globalState';
-import { validMatchUps } from '../../../validators/validMatchUp';
+import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
 import { getParticipantResults } from './getParticipantResults';
-import { unique } from '../../../tools/arrays';
+import { getDevContext } from '@Global/state/globalState';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { getTallyReport } from './getTallyReport';
 import { getGroupOrder } from './getGroupOrder';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import { INVALID_VALUES, MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 
 type TallyParticipantResultsArgs = {

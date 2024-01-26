@@ -1,17 +1,19 @@
-import { courtTemplate } from '../../assemblies/generators/templates/courtTemplate';
-import { validDateAvailability } from '../../validators/validateDateAvailability';
-import { extractDate, extractTime, formatDate } from '../../tools/dateTime';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
-import { generateRange } from '../../tools/arrays';
-import { isNumeric } from '../../tools/math';
-import { UUID } from '../../tools/UUID';
+import { courtTemplate } from '@Assemblies/generators/templates/courtTemplate';
+import { validDateAvailability } from '@Validators/validateDateAvailability';
+import { extractDate, extractTime, formatDate } from '@Tools/dateTime';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { addNotice } from '@Global/state/globalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { generateRange } from '@Tools/arrays';
+import { isNumeric } from '@Tools/math';
 import { findVenue } from './findVenue';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { Availability, Court, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   MISSING_VENUE_ID,
   MISSING_COURTS_INFO,

@@ -1,10 +1,12 @@
-import { decorateResult, ResultType } from '../global/functions/decorateResult';
 import { validateCollectionDefinition } from './validateCollectionDefinition';
-import { mustBeAnArray } from '../tools/mustBeAnArray';
-import { unique } from '../tools/arrays';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import { INVALID_TIE_FORMAT } from '../constants/errorConditionConstants';
 import { Category, Event, GenderUnion } from '../types/tournamentTypes';
+import { ResultType } from '../types/factoryTypes';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;

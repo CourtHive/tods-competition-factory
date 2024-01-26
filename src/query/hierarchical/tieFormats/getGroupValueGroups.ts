@@ -1,5 +1,5 @@
-import { isConvertableInteger } from '../../../tools/math';
-import { ensureInt } from '../../../tools/ensureInt';
+import { isConvertableInteger } from '@Tools/math';
+import { ensureInt } from '@Tools/ensureInt';
 
 type GetGroupValueGroupsArgs = {
   collectionGroups: { groupValue?: number; groupNumber?: number }[];

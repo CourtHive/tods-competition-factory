@@ -1,15 +1,16 @@
-import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
-import { findStructure } from '../../../acquire/findStructure';
-import { isActiveDownstream } from './isActiveDownstream';
-import { randomMember } from '../../../tools/arrays';
+import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { findStructure } from '@Acquire/findStructure';
+import { randomMember } from '@Tools/arrays';
 
+// constants and types
 import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 export function placeQualifier(params): ResultType & { qualifierPlaced?: boolean } {
   let qualifierPlaced;

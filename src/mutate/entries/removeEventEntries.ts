@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { getParticipantId } from '../../global/functions/extractors';
+import { decorateResult } from '../../functions/global/decorateResult';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { refreshEntryPositions } from './refreshEntryPositions';
 import { intersection } from '../../tools/arrays';

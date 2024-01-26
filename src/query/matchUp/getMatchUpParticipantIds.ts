@@ -1,10 +1,11 @@
-import { unique } from '../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
+// constants and types
+import { MISSING_CONTEXT, MISSING_MATCHUP, INVALID_MATCHUP } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_CONTEXT, MISSING_MATCHUP, INVALID_MATCHUP } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 // Does NOT include potential participandIds
 

@@ -1,15 +1,17 @@
-import { getAllowedDrawTypes, getAppliedPolicies } from '../../governors/queryGovernor';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
-import { checkValidEntries } from '../../../validators/checkValidEntries';
+import { getAllowedDrawTypes, getAppliedPolicies } from '@Assemblies/governors/queryGovernor';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { checkValidEntries } from '@Validators/checkValidEntries';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
 import { getCoercedDrawType } from './getCoercedDrawType';
-import { makeDeepCopy, nextPowerOf2 } from '../../tools';
-import { ensureInt } from '../../../tools/ensureInt';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { ensureInt } from '@Tools/ensureInt';
+import { nextPowerOf2 } from '@Tools/math';
 
+// constants and types
 import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
 import { DrawTypeUnion } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

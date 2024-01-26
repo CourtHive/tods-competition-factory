@@ -1,9 +1,10 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 
+// constants and types
 import { TEAM, INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { ResultType } from '../../global/functions/decorateResult';
 import { SINGLES, DOUBLES } from '../../constants/matchUpTypes';
 import { MATCHUP } from '../../constants/attributeConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 // derive matchUpType from participants when not defined on matchUp
 export function getMatchUpType(params: {

@@ -1,4 +1,4 @@
-import { decorateResult } from '../global/functions/decorateResult';
+import { decorateResult } from '../functions/global/decorateResult';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
