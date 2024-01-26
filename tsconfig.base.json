@@ -30,6 +30,7 @@
       "@Validators/*": ["./src/validators/*"],
       "@Functions/*": ["./src/functions/*"],
       "@Acquire/*": ["./src/acquire/*"],
+      "@Helpers/*": ["./src/helpers/*"],
       "@Global/*": ["./src/global/*"],
       "@Mutate/*": ["./src/mutate/*"],
       "@Server/*": ["./src/server/*"],

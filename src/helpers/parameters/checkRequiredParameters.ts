@@ -1,7 +1,8 @@
-import { isFunction, isObject } from '../tools/objects';
-import { intersection } from '../tools/arrays';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isFunction, isObject } from '@Tools/objects';
+import { intersection } from '@Tools/arrays';
 
-import { ResultType, decorateResult } from '../functions/global/decorateResult';
+import { ResultType } from '../../types/factoryTypes';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -23,7 +24,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
-} from '../constants/errorConditionConstants';
+} from '../../constants/errorConditionConstants';
 import {
   ARRAY,
   COURT_ID,
@@ -49,7 +50,7 @@ import {
   TOURNAMENT_RECORDS,
   UUIDS,
   VENUE_IDS,
-} from '../constants/attributeConstants';
+} from '../../constants/attributeConstants';
 
 type Params = { [key: string]: any };
 type RequiredParams = {

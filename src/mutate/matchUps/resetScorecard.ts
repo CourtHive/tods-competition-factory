@@ -1,11 +1,11 @@
-import { isActiveDownstream } from '@Mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { positionTargets } from './drawPositions/positionTargets';
+import { positionTargets } from '../../query/matchUp/positionTargets';
 import { setMatchUpState } from './matchUpStatus/setMatchUpState';
 import { resetTieFormat } from '@Mutate/tieFormat/resetTieFormat';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';

@@ -1,8 +1,8 @@
 import { addMatchUpsNotice, deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../parameters/resolveFromParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { resolveFromParameters } from '../../helpers/parameters/resolveFromParameters';
 import { getMatchUpId } from '../../functions/global/extractors';
 
 import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';

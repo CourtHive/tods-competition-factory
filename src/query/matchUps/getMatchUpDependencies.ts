@@ -4,7 +4,7 @@
  */
 
 import { getIndividualParticipantIds } from '../../mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
-import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
 import { addGoesTo } from '../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '../../functions/sorters/matchUpSort';

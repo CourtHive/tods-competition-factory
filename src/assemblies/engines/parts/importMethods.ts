@@ -1,9 +1,9 @@
-import { getDevContext, handleCaughtError, setMethods } from '../../../global/state/globalState';
-import { isFunction, isObject } from '../../../tools/objects';
+import { getDevContext, handleCaughtError, setMethods } from '@Global/state/globalState';
+import { isFunction, isObject } from '@Tools/objects';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../functions/global/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 export function importMethods(engine, engineInvoke, submittedMethods, traverse, maxDepth?): ResultType {
   if (!isObject(submittedMethods)) return { error: INVALID_VALUES };

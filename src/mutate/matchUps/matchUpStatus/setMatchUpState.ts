@@ -2,10 +2,10 @@ import { getProjectedDualWinningSide } from '@Mutate/drawDefinitions/matchUpGove
 import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGovernor/noDownstreamDependencies';
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
-import { isActiveDownstream } from '@Mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems';
-import { positionTargets } from '@Mutate/matchUps/drawPositions/positionTargets';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 import { swapWinnerLoser } from '@Mutate/matchUps/drawPositions/swapWinnerLoser';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';

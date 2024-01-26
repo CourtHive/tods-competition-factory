@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { unique } from '../../tools/arrays';
 
 import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';

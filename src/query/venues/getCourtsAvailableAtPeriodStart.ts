@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { addMinutes, timeToDate } from '../../tools/dateTime';
 import { getEnoughTime } from './getEnoughTime';

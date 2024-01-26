@@ -1,15 +1,15 @@
 import { getRoundRobinGroupMatchUps, drawPositionsHash, groupRounds } from './roundRobinGroups';
-import { addExtension } from '../../../../../mutate/extensions/addExtension';
-import { structureTemplate } from '../../../templates/structureTemplate';
-import { constantToString } from '../../../../../tools/strings';
-import { generateRange } from '../../../../../tools/arrays';
-import { UUID } from '../../../../../tools/UUID';
+import { structureTemplate } from '@Generators/templates/structureTemplate';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { constantToString } from '@Tools/strings';
+import { generateRange } from '@Tools/arrays';
+import { UUID } from '@Tools/UUID';
 
-import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../../../types/factoryTypes';
+// constants and types
+import { PlayoffAttributes, PolicyDefinitions, SeedingProfile, ResultType } from '../../../../../types/factoryTypes';
 import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '../../../../../constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
-import { ResultType } from '../../../../../functions/global/decorateResult';
 import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
@@ -195,7 +195,7 @@ function roundRobinMatchUps({
 
   const matchUps = uniqueMatchUpGroupings
     .map(positionMatchUp)
-    .sort((a, b) => (a.roundNumber || Infinity) - (b.roundNumber || Infinity));
+    .sort((a, b) => (a.roundNumber ?? Infinity) - (b.roundNumber ?? Infinity));
 
   return matchUps;
 

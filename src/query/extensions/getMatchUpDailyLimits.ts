@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { findExtension } from '../../acquire/findExtension';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';

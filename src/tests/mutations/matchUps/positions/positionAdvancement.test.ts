@@ -1,5 +1,5 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { positionTargets } from '../../../../mutate/matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../../query/matchUp/positionTargets';
 import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';

@@ -1,7 +1,7 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
-import { checkRequiredParameters } from '../../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../../helpers/parameters/checkRequiredParameters';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';

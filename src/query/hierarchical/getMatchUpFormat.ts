@@ -1,5 +1,5 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../parameters/resolveFromParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { resolveFromParameters } from '../../helpers/parameters/resolveFromParameters';
 import { findStructure } from '../../acquire/findStructure';
 
 import { MISSING_DRAW_ID, MISSING_VALUE } from '../../constants/errorConditionConstants';

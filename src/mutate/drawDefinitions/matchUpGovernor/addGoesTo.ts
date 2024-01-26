@@ -1,6 +1,6 @@
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { addFinishingRounds } from '../../../assemblies/generators/drawDefinitions/addFinishingRounds';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { MatchUpsMap, getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
 
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

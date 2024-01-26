@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../../../helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../../../../extensions/removeExtension';
 import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getPersonRequests';
 import { savePersonRequests } from './savePersonRequests';

@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 
 import { TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
 import { ErrorType } from '../../constants/errorConditionConstants';
@@ -30,9 +30,9 @@ export function getEventIdsAndDrawIds(params: { tournamentRecords: TournamentRec
       aggregator.tournamentIdMap[tournamentId] = [];
 
       const tournamentRecord = params.tournamentRecords[tournamentId];
-      const events = tournamentRecord.events || [];
+      const events = tournamentRecord.events ?? [];
       const eventIds = events.map(({ eventId }) => eventId);
-      const drawIds = events.map((event) => (event.drawDefinitions || []).map(({ drawId }) => drawId)).flat();
+      const drawIds = events.map((event) => (event.drawDefinitions ?? []).map(({ drawId }) => drawId)).flat();
 
       aggregator.tournamentIdMap[tournamentId].push(...eventIds, ...drawIds);
       aggregator.eventIds.push(...eventIds);

@@ -1,5 +1,5 @@
 import { findMatchupFormatAverageTimes, findMatchupFormatRecoveryTimes } from '../../../acquire/findMatchUpFormatTimes';
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { findExtension } from '../../../acquire/findExtension';
 import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../constants/attributeConstants';

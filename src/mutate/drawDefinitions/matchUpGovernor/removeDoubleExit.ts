@@ -5,7 +5,7 @@ import { intersection, overlap } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 
 import { pushGlobalLog } from '../../../functions/global/globalLog';
 

@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { addExtension } from '../addExtension';

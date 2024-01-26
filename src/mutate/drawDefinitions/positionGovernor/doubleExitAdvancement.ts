@@ -1,7 +1,7 @@
 import { assignMatchUpDrawPosition } from '../../matchUps/drawPositions/assignMatchUpDrawPosition';
 import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
 import { decorateResult } from '../../../functions/global/decorateResult';

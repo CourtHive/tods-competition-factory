@@ -1,12 +1,13 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../generateDrawTypeAndModifyDrawDefinition';
-import { addDrawEntry } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { ensureInt } from '../../../../tools/ensureInt';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { ensureInt } from '@Tools/ensureInt';
 import { generateAdHoc } from './generateAdHoc';
 import { prepareStage } from './prepareStage';
 
+// constants and types
 import { AD_HOC, LUCKY_DRAW, MAIN } from '../../../../constants/drawDefinitionConstants';
-import { ResultType } from '../../../../functions/global/decorateResult';
 import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function generateNewDrawDefinition(params): ResultType & {
   drawDefinition?: DrawDefinition;

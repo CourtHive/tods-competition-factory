@@ -7,7 +7,7 @@ import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { pushGlobalLog } from '../../../functions/global/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../tools/ensureInt';
-import { positionTargets } from './positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { overlap } from '../../../tools/arrays';
 import { getPositionAssignments, structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { ResultType, decorateResult } from '../../../functions/global/decorateResult';

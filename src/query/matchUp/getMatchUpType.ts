@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 
 import { TEAM, INDIVIDUAL, PAIR } from '../../constants/participantConstants';
 import { ResultType } from '../../functions/global/decorateResult';

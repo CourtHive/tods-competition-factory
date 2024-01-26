@@ -2,7 +2,7 @@ import { generateVirtualCourts } from '../../mutate/matchUps/schedule/schedulers
 import { calculatePeriodLength } from '../../mutate/matchUps/schedule/schedulers/utils/calculatePeriodLength';
 import { courtGenerator } from '../../assemblies/generators/scheduling/courtGenerator';
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
-import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
 import { generateRange } from '../../tools/arrays';
 import { ensureInt } from '../../tools/ensureInt';
@@ -101,7 +101,7 @@ export function getScheduleTimes(params): ResultType & {
     // availableToScheduleCount calculated from periodStartTime and averageMatchUpMinutes
     // a court is only available if it can accommodate matchUps of duration averageMatchUpMinutes
     const availableResult = getCourtsAvailableAtPeriodStart({
-      courts: virtualCourts || [],
+      courts: virtualCourts ?? [],
       averageMatchUpMinutes,
       periodStart,
       date,

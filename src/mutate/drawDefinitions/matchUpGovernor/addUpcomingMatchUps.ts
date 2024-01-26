@@ -1,4 +1,4 @@
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getParticipantIds } from '../../../functions/global/extractors';
 import { timeStringMinutes } from '../../../tools/dateTime';

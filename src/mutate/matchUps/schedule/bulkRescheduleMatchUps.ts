@@ -1,5 +1,5 @@
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../../helpers/parameters/resolveTournamentRecords';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';

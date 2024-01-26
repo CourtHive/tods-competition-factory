@@ -1,17 +1,17 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getGroupValueGroups } from '@Query/hierarchical/tieFormats/getGroupValueGroups';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { evaluateCollectionResult } from './evaluateCollectionResult';
-import { getGroupValueGroups } from '../drawDefinitions/getGroupValueGroups';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
+// constants and types
 import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { ResultType } from '../../../functions/global/decorateResult';
-import { HydratedMatchUp } from '../../../types/hydrated';
 import { DrawDefinition, Event, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { ResultType } from '../../../types/factoryTypes';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`

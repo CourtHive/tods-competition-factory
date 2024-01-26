@@ -1,5 +1,7 @@
 import { DevContextType, getDevContext, globalLog } from './globalState';
-import { ResultType } from '../../functions/global/decorateResult';
+
+// types
+import { ResultType } from '../../types/factoryTypes';
 
 type EngineLoggingArgs = {
   params?: { [key: string]: any } | boolean;

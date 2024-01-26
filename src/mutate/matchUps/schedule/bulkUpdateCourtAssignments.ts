@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
 

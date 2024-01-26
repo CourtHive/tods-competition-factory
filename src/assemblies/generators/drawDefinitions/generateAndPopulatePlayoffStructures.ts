@@ -4,7 +4,7 @@ import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRp
 import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { NamingEntry, generatePlayoffStructures } from './drawTypes/playoffStructures';
 import { ResultType, decorateResult } from '../../../functions/global/decorateResult';

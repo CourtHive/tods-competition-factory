@@ -1,4 +1,4 @@
-import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
 import courtTemplate from '../../assemblies/generators/templates/courtTemplate';
 import { modifyCourtAvailability } from './courtAvailability';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';

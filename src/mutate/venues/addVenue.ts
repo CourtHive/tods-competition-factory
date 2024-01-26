@@ -1,4 +1,4 @@
-import { resolveTournamentRecords } from '../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
 import { definedAttributes } from '../../tools/definedAttributes';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addNotice } from '../../global/state/globalState';

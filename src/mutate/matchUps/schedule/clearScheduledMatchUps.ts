@@ -1,4 +1,4 @@
-import { resolveTournamentRecords } from '../../../parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '../../../helpers/parameters/resolveTournamentRecords';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
@@ -61,7 +61,7 @@ export function clearScheduledMatchUps(params: ClearScheduledMatchUpsArgs): Resu
       venueIds,
     });
     if (result.error) return result;
-    clearedScheduleCount += result.clearedScheduleCount || 0;
+    clearedScheduleCount += result.clearedScheduleCount ?? 0;
   }
 
   return { ...SUCCESS, clearedScheduleCount };

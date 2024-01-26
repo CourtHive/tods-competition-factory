@@ -9,7 +9,7 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { pushGlobalLog } from '../../../functions/global/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '../../../tools/sorting';
-import { positionTargets } from './positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { modifyMatchUpNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';

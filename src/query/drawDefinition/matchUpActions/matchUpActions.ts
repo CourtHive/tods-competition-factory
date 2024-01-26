@@ -1,6 +1,6 @@
-import { isActiveDownstream } from '@Mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { positionTargets } from '@Mutate/matchUps/drawPositions/positionTargets';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { getMatchUpsMap, MatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';

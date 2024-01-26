@@ -8,7 +8,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../functions/global/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { positionTargets } from './positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { overlap } from '../../../tools/arrays';
 import { MatchUpsMap, getMappedStructureMatchUps, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 

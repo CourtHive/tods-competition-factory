@@ -1,8 +1,8 @@
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
+import { positionTargets } from '../../../query/matchUp/positionTargets';
 import { findStructure } from '../../../acquire/findStructure';
-import { isActiveDownstream } from './isActiveDownstream';
+import { isActiveDownstream } from '../../../query/drawDefinition/isActiveDownstream';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { ResultType } from '../../../functions/global/decorateResult';

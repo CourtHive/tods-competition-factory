@@ -5,6 +5,7 @@ import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
 import { isObject } from '@Tools/objects';
 
+// constants and types
 import { TEAM } from '../../../../../../constants/participantConstants';
 import { SUCCESS } from '../../../../../../constants/resultConstants';
 import { ResultType } from '../../../../../../types/factoryTypes';
