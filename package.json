@@ -84,7 +84,6 @@
     "test": "VITE_CJS_IGNORE_WARNING=true vitest",
     "test:server": "jest",
     "test:server-debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/jest/bin/jest --runInBand",
-    "test:e2e": "jest --config ./jest-e2e.json",
     "tuic": "vitest --ui --coverage.enabled",
     "tui": "vitest --ui",
     "coverage": "vitest run --coverage",
