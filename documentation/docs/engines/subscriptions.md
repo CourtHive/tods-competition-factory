@@ -17,6 +17,7 @@ const subscriptions = {
   addMatchUps: (payload) => {}, // payload = [{ matchUps }]
   deletedMatchUpIds: (payload) => {}, // payload = [{ matchUpIds }]
   modifyMatchUp: (payload) => {}, // payload = [{ matchUp }]
+  updateInContextMatchUp: (payload) => {} // = [{ matchUp }]
 
   publishEvent: (payload) => (), // payload = [{ eventData }]
   unPublishEvent: (payload) => (), // payload = [{ eventId }]
