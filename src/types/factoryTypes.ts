@@ -537,3 +537,5 @@ export type MatchUpsMap = {
   mappedMatchUps: MappedMatchUps;
   drawMatchUps: MatchUp[];
 };
+
+export type Tally = [number, number];

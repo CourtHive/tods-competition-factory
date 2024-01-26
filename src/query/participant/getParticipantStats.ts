@@ -1,4 +1,4 @@
-import { Tally, countGames, countPoints, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
+import { countGames, countPoints, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
 import { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetitiveProfile';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { getParticipants } from '@Query/participants/getParticipants';
@@ -11,10 +11,10 @@ import { isObject } from '@Tools/objects';
 import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
+import { ResultType, Tally } from '../../types/factoryTypes';
 import { BYE } from '../../constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_IDS,

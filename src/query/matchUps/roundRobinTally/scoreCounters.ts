@@ -1,9 +1,11 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { ensureInt } from '../../../tools/ensureInt';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { ensureInt } from '@Tools/ensureInt';
 
+// constants and types
 import { DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import { Score } from '../../../types/tournamentTypes';
+import { Tally } from '../../../types/factoryTypes';
 
 type CountSetsArgs = {
   matchUpFormat?: string;
@@ -12,8 +14,6 @@ type CountSetsArgs = {
   tallyPolicy?: any;
   score?: Score;
 };
-
-export type Tally = [number, number];
 
 export function countSets({
   winningSide: matchUpWinningSide,
