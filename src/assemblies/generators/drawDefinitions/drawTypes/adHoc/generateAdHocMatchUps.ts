@@ -1,10 +1,12 @@
-import { resolveTieFormat } from '../../../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { definedAttributes } from '../../../../../tools/definedAttributes';
-import { isConvertableInteger } from '../../../../../tools/math';
-import { generateRange } from '../../../../../tools/arrays';
-import { generateTieMatchUps } from '../../tieMatchUps';
-import { UUID } from '../../../../../tools/UUID';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { generateTieMatchUps } from '@Generators/drawDefinitions/tieMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { isConvertableInteger } from '@Tools/math';
+import { generateRange } from '@Tools/arrays';
+import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../../../types/tournamentTypes';
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../../constants/entryStatusConstants';
 import { ROUND_OUTCOME } from '../../../../../constants/drawDefinitionConstants';
@@ -25,6 +27,7 @@ type GenerateAdHocMatchUpsArgs = {
     participantIds: [string | undefined, string | undefined];
   }[];
   ignoreLastRoundNumber?: boolean;
+  restrictMatchUpsCount?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
@@ -64,14 +67,14 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     return (matchUp?.roundNumber || 0) > roundNumber ? matchUp.roundNumber : roundNumber;
   }, 0);
 
-  if (!matchUpsCount) {
-    const selectedEntries =
-      drawDefinition?.entries?.filter((entry) => {
-        const entryStatus = entry.entryStatus as EntryStatusUnion;
-        return STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
-      }) ?? [];
-    const roundMatchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
+  const selectedEntries =
+    drawDefinition?.entries?.filter((entry) => {
+      const entryStatus = entry.entryStatus as EntryStatusUnion;
+      return STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
+    }) ?? [];
+  const roundMatchUpsCount = Math.floor(selectedEntries?.length / 2) || 1;
 
+  if (!matchUpsCount) {
     if (newRound) {
       matchUpsCount = roundMatchUpsCount;
     } else {
@@ -81,6 +84,10 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
       const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
       if (maxRemaining > 0) matchUpsCount = maxRemaining;
     }
+  } else if (matchUpsCount > roundMatchUpsCount && params.restrictMatchUpsCount !== false) {
+    return decorateResult({
+      result: { error: INVALID_VALUES, info: 'matchUpsCount error', context: { roundMatchUpsCount } },
+    });
   }
 
   if (

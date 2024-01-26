@@ -59,6 +59,7 @@ import {
 type SetMatchUpStateArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
+  appliedPolicies?: PolicyDefinitions;
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;

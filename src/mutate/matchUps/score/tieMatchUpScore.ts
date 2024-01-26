@@ -4,11 +4,10 @@ import { ensureSideLineUps } from '@Mutate/matchUps/lineUps/ensureSideLineUps';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { isActiveMatchUp } from '@Query/matchUp/activeMatchUp';
 import { findTournamentId } from '@Acquire/findTournamentId';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findExtension } from '@Acquire/findExtension';
-
-import { isActiveMatchUp } from '../../../tests/queries/matchUps/activeMatchUp';
 
 // constants and types
 import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';

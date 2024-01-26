@@ -1,13 +1,14 @@
-import { getContainedStructures } from '../drawDefinition/getContainedStructures';
-import { isActiveMatchUp } from '../../tests/queries/matchUps/activeMatchUp';
-import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
-import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
-import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../tools/sorting';
-import { isAdHoc } from '../drawDefinition/isAdHoc';
-import { unique } from '../../tools/arrays';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { isActiveMatchUp } from '@Query/matchUp/activeMatchUp';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { findStructure } from '@Acquire/findStructure';
+import { numericSort } from '@Tools/sorting';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure } from '../../types/tournamentTypes';
 

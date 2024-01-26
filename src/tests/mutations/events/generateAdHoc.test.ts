@@ -375,6 +375,15 @@ it('will not allow addition of AD_HOC matchUps to other draw types', () => {
     matchUpsCount: 8,
     newRound: true,
   });
+  // expect error because there are no entries
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.generateAdHocMatchUps({
+    restrictMatchUpsCount: false,
+    drawId: drawDefinition.drawId,
+    matchUpsCount: 8,
+    newRound: true,
+  });
   expect(result.success).toEqual(true);
   expect(result.matchUps.length).toEqual(8);
 
@@ -389,6 +398,7 @@ it('will not allow addition of AD_HOC matchUps to other draw types', () => {
   expect(matchUps.length).toEqual(23);
 
   result = tournamentEngine.generateAdHocMatchUps({
+    restrictMatchUpsCount: false,
     drawId: drawDefinition.drawId,
     matchUpsCount: 8,
     newRound: true,

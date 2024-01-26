@@ -1,22 +1,22 @@
-import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
-import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
+import { isActiveDownstream } from '@Mutate/drawDefinitions/matchUpGovernor/isActiveDownstream';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from './drawPositions/positionTargets';
 import { setMatchUpState } from './matchUpStatus/setMatchUpState';
-import { updateTieMatchUpScore } from './score/tieMatchUpScore';
-import { resetTieFormat } from '../tieFormat/resetTieFormat';
-import { findStructure } from '../../acquire/findStructure';
-import { isString } from '../../tools/objects';
-
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { resetTieFormat } from '@Mutate/tieFormat/resetTieFormat';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findStructure } from '@Acquire/findStructure';
+import { isString } from '@Tools/objects';
 
 // constants and types
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from 'src/types/factoryTypes';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
@@ -25,18 +25,6 @@ import {
   MISSING_MATCHUP_ID,
   INVALID_MATCHUP,
 } from '../../constants/errorConditionConstants';
-
-/**
- *
- * @param {string} drawDefinition - required to collect all draw matchUps for scenario analysis
- * @param {string} matchUpId - id of the matchUp to be modified
- * @param {object} score - score object { sets: [] }
- * @param {string} matchUpStatus - optional - new matchUpStatus
- * @param {number} winningSide - optional - new winningSide; 1 or 2
- * @param {object} tournamentRecord - optional - used to discover relevant policyDefinitions or to modify scheduling information (integrity checks)
- * @param {boolean} tiebreakReset - optional - check for tiebreak scenarios and reset tieFormat
- * @returns
- */
 
 type ResetScoreCardArgs = {
   score?: { sets: { side1Score: number; side2Score: number }[] };

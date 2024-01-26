@@ -1,6 +1,5 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
-import { decorateResult } from '@Functions/global/decorateResult';
-import { getParticipantId } from '@Functions/global/extractors';
+import { getParticipantIds } from './getParticipantIds';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { generateRange } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
@@ -9,16 +8,14 @@ import { isObject } from '@Tools/objects';
 import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 
 // types and constants
-import { EntryStatusUnion, Structure, EventTypeUnion, MatchUp } from '../../../../../../types/tournamentTypes';
 import { DrawMaticArgs, ScaleAttributes, ResultType } from '../../../../../../types/factoryTypes';
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../../../constants/entryStatusConstants';
+import { Structure, EventTypeUnion, MatchUp } from '../../../../../../types/tournamentTypes';
 import { AD_HOC, stageOrder } from '../../../../../../constants/drawDefinitionConstants';
 import { DYNAMIC, RATING } from '../../../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../../../constants/eventConstants';
 import { SUCCESS } from '../../../../../../constants/resultConstants';
 import {
   INVALID_DRAW_DEFINITION,
-  INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
 } from '../../../../../../constants/errorConditionConstants';
@@ -149,43 +146,6 @@ function getStructure(params): ResultType & { structure?: Structure } {
   if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
   return { structure };
-}
-
-function getParticipantIds(params): ResultType & { participantIds?: string[] } {
-  let { participantIds } = params;
-  const enteredParticipantIds =
-    params.drawDefinition?.entries
-      ?.filter((entry) => {
-        const entryStatus = entry.entryStatus as EntryStatusUnion;
-        return !params.restrictEntryStatus || STRUCTURE_SELECTED_STATUSES.includes(entryStatus);
-      })
-      .map(getParticipantId) ?? [];
-
-  if (participantIds) {
-    // ensure all participantIds are in drawDefinition.entries
-    const invalidParticipantIds = participantIds.filter(
-      (participantId) => !enteredParticipantIds?.includes(participantId),
-    );
-
-    if (invalidParticipantIds?.length)
-      return decorateResult({
-        result: { error: INVALID_PARTICIPANT_ID },
-        info: { invalidParticipantIds },
-      });
-  } else {
-    participantIds = enteredParticipantIds;
-  }
-
-  if (
-    params.roundsCount &&
-    params.restrictRoundsCount !== false &&
-    params.roundsCount > participantIds.length - 1 &&
-    (!params.enableDoubleRobin || params.roundsCount > (participantIds.length - 1) * 2)
-  ) {
-    return { error: INVALID_VALUES, info: 'Not enough participants for roundsCount' };
-  }
-
-  return { participantIds };
 }
 
 function checkParams(params) {

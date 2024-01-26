@@ -51,6 +51,7 @@ type RemoveCollectionDefinitionArgs = {
   eventId?: string;
   event?: Event;
 };
+
 export function removeCollectionDefinition({
   updateInProgressMatchUps = true,
   tieFormatComparison,
@@ -183,6 +184,8 @@ export function removeCollectionDefinition({
     return { error: NO_MODIFICATIONS_APPLIED };
   }
 
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+
   if (matchUpId && matchUp && updateInProgressMatchUps) {
     const collectionMatchUps = matchUp.tieMatchUps?.filter((tieMatchUp) => tieMatchUp.collectionId === collectionId);
     for (const collectionMatchUp of collectionMatchUps ?? []) {
@@ -192,6 +195,7 @@ export function removeCollectionDefinition({
         winningSide: undefined,
         removeScore: true,
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         event,
       });
@@ -205,8 +209,6 @@ export function removeCollectionDefinition({
       matchUp = result?.matchUp;
     }
   }
-
-  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
 
   const deletedMatchUpIds: string[] = [];
   for (const matchUp of targetMatchUps) {

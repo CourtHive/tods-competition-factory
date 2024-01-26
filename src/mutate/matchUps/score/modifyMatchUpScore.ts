@@ -10,10 +10,8 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { addNotes } from '@Mutate/base/addRemoveNotes';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { isLucky } from '@Query/drawDefinition/isLucky';
+import { getTopics } from '@Global/state/globalState';
 import { unique } from '@Tools/arrays';
-
-// global imports must be relative (vitest not happy)
-import { getTopics } from '../../../global/state/globalState';
 
 // types, constants and fixtures
 import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
