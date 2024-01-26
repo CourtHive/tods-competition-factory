@@ -1,6 +1,6 @@
 import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
 import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { getParticipants } from '../../../query/participants/getParticipants';

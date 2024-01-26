@@ -1,6 +1,6 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { ensureInt } from '../../tools/ensureInt';
 import {
@@ -9,7 +9,7 @@ import {
   deleteMatchUpsNotice,
   modifyDrawNotice,
 } from '../notifications/drawNotifications';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';

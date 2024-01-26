@@ -1,7 +1,7 @@
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 
 import { TEAM, INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SINGLES, DOUBLES } from '../../constants/matchUpTypes';
 import { MATCHUP } from '../../constants/attributeConstants';
 

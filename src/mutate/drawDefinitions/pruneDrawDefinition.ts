@@ -1,6 +1,6 @@
 import { deleteMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 import { analyzeDraws } from '../../query/tournaments/analyzeDraws';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 import { getDrawStructures } from '../../acquire/findStructure';
 
 import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';

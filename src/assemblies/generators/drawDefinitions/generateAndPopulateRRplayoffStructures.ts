@@ -2,9 +2,9 @@ import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/aut
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { findExtension } from '../../../acquire/findExtension';
 import { generateTieMatchUps } from './tieMatchUps';
 

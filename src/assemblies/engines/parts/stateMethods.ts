@@ -10,7 +10,7 @@ import {
 } from '../../../global/state/globalState';
 
 import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { INVALID_OBJECT, INVALID_RECORDS, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 type GetStateArgs = {

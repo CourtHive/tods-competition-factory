@@ -1,7 +1,7 @@
-import { engineLogging } from '../../../global/functions/engineLogging';
+import { engineLogging } from '../../../global/state/engineLogging';
 
 import { METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 
 type LogMethodNotFoundArgs = {
   params?: { [key: string]: any };

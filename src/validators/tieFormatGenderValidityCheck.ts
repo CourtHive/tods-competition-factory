@@ -1,4 +1,4 @@
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../functions/global/decorateResult';
 
 import { INVALID_GENDER } from '../constants/errorConditionConstants';
 import { ANY, FEMALE, MALE, MIXED } from '../constants/genderConstants';

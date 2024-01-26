@@ -1,7 +1,7 @@
 import { getParticipants } from '../../query/participants/getParticipants';
 import { isObject, isString } from '../../tools/objects';
 import { unique } from '../../tools/arrays';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';

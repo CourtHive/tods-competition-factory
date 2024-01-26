@@ -2,7 +2,7 @@ import { processExistingDrawDefinition } from './processExistingDrawDefinition';
 import { generateNewDrawDefinition } from './generateNewDrawDefinition';
 import { setUpDrawGeneration } from './setUpDrawGeneration';
 
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { DrawMaticArgs, PolicyDefinitions } from '../../../../types/factoryTypes';
 import {
   DrawDefinition,

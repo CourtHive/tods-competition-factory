@@ -3,7 +3,7 @@ import { getPairedParticipant } from '../../../query/participant/getPairedPartic
 import { getParticipants } from '../../../query/participants/getParticipants';
 import { addParticipant } from '../../../mutate/participants/addParticipant';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { generateRange } from '../../../tools/arrays';
 import { isNumeric } from '../../../tools/math';
@@ -12,7 +12,7 @@ import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } fr
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { DESCENDING } from '../../../constants/sortingConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';

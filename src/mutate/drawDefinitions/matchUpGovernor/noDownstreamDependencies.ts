@@ -1,16 +1,17 @@
-import { lastSetFormatIsTimed } from '../../../assemblies/generators/matchUpFormatCode/lastSetFormatisTimed';
-import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { updateTieMatchUpScore } from '../../matchUps/score/tieMatchUpScore';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
+import { lastSetFormatIsTimed } from '@Assemblies/generators/matchUpFormatCode/lastSetFormatisTimed';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { attemptToModifyScore } from './attemptToModifyScore';
 import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
 
+// constants
 import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
@@ -110,13 +111,14 @@ function scoreModification(params) {
     const result = removeDirectedParticipants(params);
     if (result.error) return result;
   }
-  const result = modifyMatchUpScore({ ...params });
+  const result = modifyMatchUpScore({ ...params, context: stack });
 
   // recalculate dualMatchUp score if isCollectionMatchUp
   if (params.isCollectionMatchUp) {
     const { matchUpTieId, drawDefinition, event, matchUpsMap } = params;
     const { removeWinningSide } = updateTieMatchUpScore({
       tournamentRecord: params.tournamentRecord,
+      appliedPolicies: params.appliedPolicies,
       matchUpId: matchUpTieId,
       drawDefinition,
       matchUpsMap,

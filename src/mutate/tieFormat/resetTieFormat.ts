@@ -3,12 +3,12 @@ import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefi
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { checkRequiredParameters } from '../../parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../parameters/resolveFromParameters';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 
 import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
 import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
 import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 

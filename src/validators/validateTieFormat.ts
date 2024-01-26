@@ -1,4 +1,4 @@
-import { decorateResult, ResultType } from '../global/functions/decorateResult';
+import { decorateResult, ResultType } from '../functions/global/decorateResult';
 import { validateCollectionDefinition } from './validateCollectionDefinition';
 import { mustBeAnArray } from '../tools/mustBeAnArray';
 import { unique } from '../tools/arrays';

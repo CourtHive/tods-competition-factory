@@ -5,7 +5,7 @@ import { generateAdHoc } from './generateAdHoc';
 import { prepareStage } from './prepareStage';
 
 import { AD_HOC, LUCKY_DRAW, MAIN } from '../../../../constants/drawDefinitionConstants';
-import { ResultType } from '../../../../global/functions/decorateResult';
+import { ResultType } from '../../../../functions/global/decorateResult';
 import { DrawDefinition } from '../../../../types/tournamentTypes';
 
 export function generateNewDrawDefinition(params): ResultType & {

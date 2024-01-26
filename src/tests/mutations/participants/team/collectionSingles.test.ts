@@ -1,4 +1,4 @@
-import { getParticipantId } from '../../../../global/functions/extractors';
+import { getParticipantId } from '../../../../functions/global/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';

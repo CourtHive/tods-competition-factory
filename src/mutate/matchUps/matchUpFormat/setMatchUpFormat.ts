@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { decorateResult } from '../../../functions/global/decorateResult';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
 import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 

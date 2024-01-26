@@ -1,7 +1,9 @@
-import { SUCCESS } from '../../../constants/resultConstants';
-import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { updateTieMatchUpScore } from '../score/tieMatchUpScore';
+
+// constants
+import { SUCCESS } from '../../../constants/resultConstants';
 
 export function updateTargetTeamMatchUps({
   updateInProgressMatchUps,

@@ -1,7 +1,7 @@
 import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 
 import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
 import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';

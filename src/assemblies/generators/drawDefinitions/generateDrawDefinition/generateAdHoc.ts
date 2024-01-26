@@ -1,8 +1,9 @@
-import { addAdHocMatchUps } from '../../../../mutate/structures/addAdHocMatchUps';
 import { generateAdHocRounds } from '../drawTypes/adHoc/generateAdHocRounds';
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { drawMatic } from '../drawMatic/drawMatic';
+import { addAdHocMatchUps } from '@Mutate/structures/addAdHocMatchUps';
+import { drawMatic } from '../drawTypes/adHoc/drawMatic/drawMatic';
+import { getParticipantId } from '@Functions/global/extractors';
 
+// constants
 import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';

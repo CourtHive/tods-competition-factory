@@ -5,7 +5,7 @@ import { findStructure } from '../../acquire/findStructure';
 
 import { DrawDefinition, Event, Participant, Structure, Tournament } from '../../types/tournamentTypes';
 import { ABANDONED, upcomingMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { TEAM } from '../../constants/matchUpTypes';

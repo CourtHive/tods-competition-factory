@@ -1,4 +1,4 @@
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../functions/global/decorateResult';
 import { MISSING_VALUE, NOT_FOUND } from '../constants/errorConditionConstants';
 import { Extension } from '../types/tournamentTypes';
 import { TournamentRecords } from '../types/factoryTypes';

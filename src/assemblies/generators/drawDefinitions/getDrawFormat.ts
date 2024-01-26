@@ -2,7 +2,7 @@ import { validateTieFormat } from '../../governors/scoreGovernor';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 
 import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
 import { TieFormat } from '../../../types/tournamentTypes';
 import { TEAM } from '../../../constants/eventConstants';

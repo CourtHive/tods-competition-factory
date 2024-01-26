@@ -1,24 +1,27 @@
-import { participantScaleItem } from '../../../../query/participant/participantScaleItem';
-import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
-import { getParticipantId } from '../../../../global/functions/extractors';
-import { isAdHoc } from '../../../../query/drawDefinition/isAdHoc';
-import { generateRange } from '../../../../tools/arrays';
-import { isObject } from '../../../../tools/objects';
+import { participantScaleItem } from '@Query/participant/participantScaleItem';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getParticipantId } from '@Functions/global/extractors';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { generateRange } from '@Tools/arrays';
+import { isObject } from '@Tools/objects';
 
-import { EntryStatusUnion, Structure, EventTypeUnion, MatchUp } from '../../../../types/tournamentTypes';
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
-import { AD_HOC, stageOrder } from '../../../../constants/drawDefinitionConstants';
-import { DrawMaticArgs, ScaleAttributes } from '../../../../types/factoryTypes';
-import { DYNAMIC, RATING } from '../../../../constants/scaleConstants';
-import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+// local
+import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
+
+// types and constants
+import { EntryStatusUnion, Structure, EventTypeUnion, MatchUp } from '../../../../../../types/tournamentTypes';
+import { DrawMaticArgs, ScaleAttributes, ResultType } from '../../../../../../types/factoryTypes';
+import { STRUCTURE_SELECTED_STATUSES } from '../../../../../../constants/entryStatusConstants';
+import { AD_HOC, stageOrder } from '../../../../../../constants/drawDefinitionConstants';
+import { DYNAMIC, RATING } from '../../../../../../constants/scaleConstants';
+import { SINGLES_EVENT } from '../../../../../../constants/eventConstants';
+import { SUCCESS } from '../../../../../../constants/resultConstants';
 import {
   INVALID_DRAW_DEFINITION,
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../../../../constants/errorConditionConstants';
 
 export function drawMatic(
   params: DrawMaticArgs,
@@ -175,6 +178,7 @@ function getParticipantIds(params): ResultType & { participantIds?: string[] } {
 
   if (
     params.roundsCount &&
+    params.restrictRoundsCount !== false &&
     params.roundsCount > participantIds.length - 1 &&
     (!params.enableDoubleRobin || params.roundsCount > (participantIds.length - 1) * 2)
   ) {

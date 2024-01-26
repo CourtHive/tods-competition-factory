@@ -4,13 +4,13 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { pushGlobalLog } from '../../../global/functions/globalLog';
+import { pushGlobalLog } from '../../../functions/global/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../tools/ensureInt';
 import { positionTargets } from './positionTargets';
 import { overlap } from '../../../tools/arrays';
 import { getPositionAssignments, structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { modifyPositionAssignmentsNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 

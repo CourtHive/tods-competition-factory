@@ -3,7 +3,7 @@ import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { getScheduleTiming } from './getScheduleTiming';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { SINGLES_EVENT } from '../../../constants/eventConstants';
 import { DOUBLES_SINGLES, SINGLES_DOUBLES } from '../../../constants/scheduleConstants';
 import { Event, Tournament, EventTypeUnion } from '../../../types/tournamentTypes';

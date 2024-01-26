@@ -1,5 +1,5 @@
 import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
-import { getDrawId, getParticipantId } from '../../global/functions/extractors';
+import { getDrawId, getParticipantId } from '../../functions/global/extractors';
 import { definedAttributes } from '../../tools/definedAttributes';
 import { getParticipants } from '../participants/getParticipants';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
@@ -11,7 +11,7 @@ import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstan
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 

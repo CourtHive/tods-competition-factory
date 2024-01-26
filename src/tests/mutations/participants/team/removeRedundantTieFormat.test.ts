@@ -1,4 +1,4 @@
-import { getMatchUpId } from '../../../../global/functions/extractors';
+import { getMatchUpId } from '../../../../functions/global/extractors';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';

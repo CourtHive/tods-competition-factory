@@ -1,7 +1,7 @@
 import { getEliminationDrawSize } from '../participants/getEliminationDrawSize';
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
 import { isConvertableInteger } from '../../tools/math';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';

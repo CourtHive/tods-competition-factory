@@ -3,7 +3,7 @@ import { refreshEntryPositions } from './refreshEntryPositions';
 import { findParticipant } from '../../acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { removeExtension } from '../extensions/removeExtension';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { addExtension } from '../extensions/addExtension';
 import { getFlightProfile } from '../../query/event/getFlightProfile';

@@ -1,5 +1,5 @@
 import { getAllowedDrawTypes, getAppliedPolicies } from '../../governors/queryGovernor';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { checkValidEntries } from '../../../validators/checkValidEntries';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
 import { getCoercedDrawType } from './getCoercedDrawType';

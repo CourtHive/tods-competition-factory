@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { getFlightProfile } from '../../../query/event/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
 import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
 import { findStructure } from '../../../acquire/findStructure';

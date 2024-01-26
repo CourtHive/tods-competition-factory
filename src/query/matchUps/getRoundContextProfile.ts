@@ -6,7 +6,7 @@ import { POLICY_ROUND_NAMING_DEFAULT } from '../../fixtures/policies/POLICY_ROUN
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 import { POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
 import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { RoundProfile } from '../../types/factoryTypes';
 

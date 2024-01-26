@@ -4,7 +4,7 @@ import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFor
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
 import { addCollectionDefinition } from '../../tieFormat/addCollectionDefinition';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { modifyCollectionDefinition } from './modifyCollectionDefinition';
 import { xa } from '../../../tools/objects';
 import { numericSortValue } from '../../../tools/arrays';

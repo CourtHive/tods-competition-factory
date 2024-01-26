@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '../../query/structure/getStructureS
 import { assignSeed } from '../drawDefinitions/entryGovernor/seedAssignment';
 import { uniqueValues } from '../../tools/arrays';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SeedingProfile } from '../../types/factoryTypes';
 import {

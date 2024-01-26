@@ -10,7 +10,7 @@ import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '../../../mutate/entries/addEventEntries';
 import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { addExtension } from '../../../mutate/extensions/addExtension';
 import { publishEvent } from '../../../mutate/publishing/publishEvent';
 import { generateRange, intersection } from '../../../tools/arrays';

@@ -9,7 +9,7 @@ import { PlayoffAttributes, PolicyDefinitions, SeedingProfile } from '../../../.
 import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '../../../../../constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
 import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
-import { ResultType } from '../../../../../global/functions/decorateResult';
+import { ResultType } from '../../../../../functions/global/decorateResult';
 import { ROUND_TARGET } from '../../../../../constants/extensionConstants';
 import { SUCCESS } from '../../../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';

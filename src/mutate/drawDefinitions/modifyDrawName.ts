@@ -1,7 +1,7 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { Flight, FlightProfile } from '../../types/factoryTypes';

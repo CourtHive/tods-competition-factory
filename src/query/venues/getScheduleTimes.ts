@@ -14,7 +14,7 @@ import {
   dayMinutesToTimeString,
 } from '../../tools/dateTime';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { ScheduleTimesResult } from '../../types/factoryTypes';
 import { ARRAY } from '../../constants/attributeConstants';
 

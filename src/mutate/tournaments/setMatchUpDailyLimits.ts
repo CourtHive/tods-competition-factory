@@ -1,7 +1,7 @@
 import { addExtension } from '../extensions/addExtension';
 
 import { SCHEDULE_LIMITS } from '../../constants/extensionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';

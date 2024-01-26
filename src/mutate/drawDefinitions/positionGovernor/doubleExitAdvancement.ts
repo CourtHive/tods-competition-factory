@@ -4,7 +4,7 @@ import { getPositionAssignments } from '../../../query/drawDefinition/positionsG
 import { positionTargets } from '../../matchUps/drawPositions/positionTargets';
 import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
 import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { definedAttributes } from '../../../tools/definedAttributes';
 import { findStructure } from '../../../acquire/findStructure';
 import { overlap } from '../../../tools/arrays';
@@ -208,9 +208,10 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const result = modifyMatchUpScore({
     ...params,
-    matchUp: noContextTargetMatchUp,
     winningSide: walkoverWinningSide,
+    matchUp: noContextTargetMatchUp,
     matchUpStatusCodes,
+    context: stack,
     matchUpStatus,
   });
   if (result.error) return decorateResult({ result, stack });
@@ -262,11 +263,13 @@ function conditionallyAdvanceDrawPosition(params) {
         });
 
         const result = modifyMatchUpScore({
+          appliedPolicies: params.appliedPolicies,
           matchUpId: noContextNextWinnerMatchUp.matchUpId,
           matchUp: noContextNextWinnerMatchUp,
           matchUpStatus: EXIT,
           matchUpStatusCodes: [],
           removeScore: true,
+          context: stack,
           drawDefinition,
           winningSide,
         });
@@ -318,9 +321,11 @@ function conditionallyAdvanceDrawPosition(params) {
 
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
+      appliedPolicies: params.appliedPolicies,
       matchUp: noContextNextWinnerMatchUp,
       matchUpStatusCodes: [],
       removeScore: true,
+      context: stack,
       drawDefinition,
       matchUpStatus,
     });

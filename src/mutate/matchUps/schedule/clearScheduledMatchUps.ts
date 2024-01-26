@@ -2,7 +2,7 @@ import { resolveTournamentRecords } from '../../../parameters/resolveTournamentR
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
 import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { isObject } from '../../../tools/objects';
 
 import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
@@ -21,7 +21,7 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '../../../constants/timeItemConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 
 type ClearScheduledMatchUpsArgs = {
   ignoreMatchUpStatuses?: MatchUpStatusUnion[];

@@ -3,7 +3,7 @@ import { getStructureSeedAssignments } from '../../../query/structure/getStructu
 import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
 import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
 import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';

@@ -1,6 +1,6 @@
 import { isObject, objShallowEqual } from '../../tools/objects';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
 import { PUBLIC } from '../../constants/timeItemConstants';

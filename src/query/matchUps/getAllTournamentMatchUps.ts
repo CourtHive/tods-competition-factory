@@ -4,7 +4,7 @@ import { getContextContent } from '../hierarchical/getContextContent';
 import { allEventMatchUps } from './getAllEventMatchUps';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { GetMatchUpsArgs } from '../../types/factoryTypes';
 

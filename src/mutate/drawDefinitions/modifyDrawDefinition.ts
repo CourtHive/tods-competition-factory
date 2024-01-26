@@ -5,7 +5,7 @@ import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { isObject } from '../../tools/objects';
 import { modifyDrawName } from './modifyDrawName';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';

@@ -1,5 +1,5 @@
 import { findExtension } from './findExtension';
-import { ResultType } from '../global/functions/decorateResult';
+import { ResultType } from '../functions/global/decorateResult';
 import { structureSort } from '../functions/sorters/structureSort';
 
 import { DrawDefinition, Structure } from '../types/tournamentTypes';

@@ -1,17 +1,19 @@
-import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
-import { structureSort } from '../../functions/sorters/structureSort';
-import { getStructureGroups } from '../structure/getStructureGroups';
-import { xa } from '../../tools/objects';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { getPositionAssignments } from './positionsGetter';
-import { findStructure } from '../../acquire/findStructure';
-import { findExtension } from '../../acquire/findExtension';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { structureSort } from '@Functions/sorters/structureSort';
+import { findStructure } from '@Acquire/findStructure';
+import { findExtension } from '@Acquire/findExtension';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { xa } from '@Tools/objects';
 
+// constants and types
+import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '../../constants/errorConditionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { PARTICIPANT_ID } from '../../constants/attributeConstants';
 import { TALLY } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '../../constants/errorConditionConstants';
 import {
   ABANDONED,
   BYE,
@@ -24,7 +26,6 @@ import {
   RETIRED,
   WALKOVER,
 } from '../../constants/matchUpStatusConstants';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 export function getDrawData(params): {
   structures?: any[];

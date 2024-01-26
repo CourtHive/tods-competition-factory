@@ -2,7 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { printGlobalLog, pushGlobalLog } from '../../../../global/functions/globalLog';
+import { printGlobalLog, pushGlobalLog } from '../../../../functions/global/globalLog';
 import { setDevContext, setSubscriptions } from '../../../../global/state/globalState';
 
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';

@@ -1,5 +1,5 @@
 import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { addParticipants } from '../participants/addParticipants';
 import { stringSort } from '../../functions/sorters/stringSort';
 import { addNotice } from '../../global/state/globalState';

@@ -2,7 +2,7 @@ import { intersection } from '../../tools/arrays';
 import syncGlobalState from './syncGlobalState';
 
 import { TournamentRecords } from '../../types/factoryTypes';
-import { ResultType } from '../functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import {
   ErrorType,
   INVALID_VALUES,

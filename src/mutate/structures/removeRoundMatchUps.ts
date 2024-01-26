@@ -1,10 +1,10 @@
 import { deleteMatchUpsNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 import { isAdHoc } from '../../query/drawDefinition/isAdHoc';
 import { findStructure } from '../../acquire/findStructure';
 import { numericSort } from '../../tools/sorting';
 
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';

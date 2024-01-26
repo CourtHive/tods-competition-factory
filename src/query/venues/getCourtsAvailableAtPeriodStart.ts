@@ -3,7 +3,7 @@ import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { addMinutes, timeToDate } from '../../tools/dateTime';
 import { getEnoughTime } from './getEnoughTime';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { ARRAY } from '../../constants/attributeConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { Court } from '../../types/tournamentTypes';

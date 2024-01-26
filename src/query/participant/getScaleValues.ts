@@ -3,7 +3,7 @@ import { unique } from '../../tools/arrays';
 
 import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 import { RANKING, RATING, SCALE, SEEDING } from '../../constants/scaleConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { PARTICIPANT } from '../../constants/attributeConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 

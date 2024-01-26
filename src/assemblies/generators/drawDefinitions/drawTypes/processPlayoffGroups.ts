@@ -1,5 +1,5 @@
 import { getPositionRangeMap } from '../../../../query/drawDefinition/getPositionRangeMap';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { structureSort } from '../../../../functions/sorters/structureSort';
 import { generatePlayoffStructures } from '../drawTypes/playoffStructures';
 import { firstRoundLoserConsolation } from './firstRoundLoserConsolation';

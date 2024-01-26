@@ -7,7 +7,7 @@ import { generateRange } from '../../tools/arrays';
 import { isNumeric } from '../../tools/math';
 import { UUID } from '../../tools/UUID';
 import { findVenue } from './findVenue';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { Availability, Court, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_VENUE } from '../../constants/topicConstants';

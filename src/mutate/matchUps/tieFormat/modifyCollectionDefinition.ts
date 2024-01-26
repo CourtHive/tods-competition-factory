@@ -1,5 +1,5 @@
 import { validateCollectionValueProfiles } from '../../../validators/validateCollectionValueProfiles';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';

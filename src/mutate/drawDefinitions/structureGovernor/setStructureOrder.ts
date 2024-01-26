@@ -1,6 +1,6 @@
 import { isConvertableInteger } from '../../../tools/math';
 import { numericSortValue } from '../../../tools/arrays';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';

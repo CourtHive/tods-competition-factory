@@ -6,7 +6,7 @@ import { addExtension } from '../addExtension';
 import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { isObject, isString } from '../../../tools/objects';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

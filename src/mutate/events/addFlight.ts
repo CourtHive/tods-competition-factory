@@ -1,6 +1,6 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 import { intersection } from '../../tools/arrays';
 import { ensureInt } from '../../tools/ensureInt';

@@ -6,7 +6,7 @@ import { findTournamentParticipant } from '../../acquire/findTournamentParticipa
 import { findStructure } from '../../acquire/findStructure';
 import { modifyEntriesStatus } from '../entries/modifyEntriesStatus';
 import { destroyPairEntry } from '../entries/destroyPairEntry';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { ALTERNATE, WITHDRAWN } from '../../constants/entryStatusConstants';
 import { PAIR } from '../../constants/participantConstants';

@@ -7,7 +7,7 @@ import { findEvent } from '../../acquire/findEvent';
 
 import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
 import { ScaleItem } from '../../types/factoryTypes';

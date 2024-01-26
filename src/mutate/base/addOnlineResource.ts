@@ -12,7 +12,7 @@ import {
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { DrawDefinition, Event, OnlineResource, Tournament } from '../../types/tournamentTypes';
 
 type AddOnlineResourceArgs = {

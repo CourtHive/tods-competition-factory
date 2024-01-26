@@ -4,9 +4,9 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
+import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';
 import { SCORE } from '../../../../constants/matchUpActionConstants';
-import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
 
 it('can create double bye and remove advanced participant when outcome is reset', () => {
   const participantsProfile = {
@@ -43,8 +43,8 @@ it('can create double bye and remove advanced participant when outcome is reset'
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
   tournamentEngine.setState(tournamentRecord);
 

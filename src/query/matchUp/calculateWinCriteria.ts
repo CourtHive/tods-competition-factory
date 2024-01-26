@@ -1,6 +1,6 @@
 import { getGroupValueGroups } from '../../assemblies/generators/drawDefinitions/getGroupValueGroups';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { CollectionDefinition } from '../../types/tournamentTypes';
 import { isConvertableInteger } from '../../tools/math';
 

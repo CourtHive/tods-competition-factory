@@ -5,7 +5,7 @@ import { findStructure } from '../../../acquire/findStructure';
 import { isActiveDownstream } from './isActiveDownstream';
 
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';

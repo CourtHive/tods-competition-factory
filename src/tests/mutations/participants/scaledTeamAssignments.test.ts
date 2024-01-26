@@ -1,5 +1,5 @@
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';

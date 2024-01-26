@@ -10,7 +10,7 @@ import { isConvertableInteger } from '../../../tools/math';
 import { ensureInt } from '../../../tools/ensureInt';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from './scheduledTime';
 import {
   convertTime,

@@ -1,7 +1,7 @@
 import { isFunction, isObject } from '../tools/objects';
 import { intersection } from '../tools/arrays';
 
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../functions/global/decorateResult';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,

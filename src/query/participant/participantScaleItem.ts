@@ -2,7 +2,7 @@ import { getAccessorValue } from '../../tools/getAccessorValue';
 
 import type { Participant, EventTypeUnion } from '../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem } from '../../types/factoryTypes';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
 import { isObject } from '../../tools/objects';

@@ -1,4 +1,4 @@
-import { getDrawId, getParticipantId } from '../../global/functions/extractors';
+import { getDrawId, getParticipantId } from '../../functions/global/extractors';
 import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';

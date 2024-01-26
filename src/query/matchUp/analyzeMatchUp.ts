@@ -3,7 +3,7 @@ import { instanceCount } from '../../tools/arrays';
 import { analyzeSet } from './analyzeSet';
 
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 

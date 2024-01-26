@@ -4,7 +4,7 @@ import { getNextSeedBlock } from '../seedGetter';
 
 import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, Event } from '../../../types/tournamentTypes';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { SeedingProfile } from '../../../types/factoryTypes';
 
 type GetNextUfilledDrawPositionsArgs = {

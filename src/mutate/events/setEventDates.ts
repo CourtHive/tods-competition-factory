@@ -1,4 +1,4 @@
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { dateValidation } from '../../validators/regex';
 import { extractDate } from '../../tools/dateTime';
 

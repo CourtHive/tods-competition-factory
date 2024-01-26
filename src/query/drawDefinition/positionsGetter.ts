@@ -1,8 +1,8 @@
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { findStructure } from '../../acquire/findStructure';
 
 import { DrawDefinition, PositionAssignment, Structure } from '../../types/tournamentTypes';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,

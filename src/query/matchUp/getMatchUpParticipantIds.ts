@@ -1,7 +1,7 @@
 import { unique } from '../../tools/arrays';
 
 import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 import { MISSING_CONTEXT, MISSING_MATCHUP, INVALID_MATCHUP } from '../../constants/errorConditionConstants';

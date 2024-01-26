@@ -2,7 +2,7 @@ import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGo
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '../../tools/arrays';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 import { xa } from '../../tools/objects';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';

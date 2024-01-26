@@ -1,4 +1,4 @@
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { getMatchUpIds } from '../../../functions/global/extractors';
 import { generateRange, randomPop } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';

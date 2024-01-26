@@ -7,7 +7,7 @@ import { findStructure } from '../../acquire/findStructure';
 import { CONTAINER } from '../../constants/drawDefinitionConstants';
 import { SUB_ORDER } from '../../constants/extensionConstants';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { TEAM } from '../../constants/matchUpTypes';
 import {

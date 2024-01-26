@@ -1,6 +1,7 @@
 import { isActiveDownstream } from '../drawDefinitions/matchUpGovernor/isActiveDownstream';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { positionTargets } from './drawPositions/positionTargets';
@@ -9,8 +10,10 @@ import { updateTieMatchUpScore } from './score/tieMatchUpScore';
 import { resetTieFormat } from '../tieFormat/resetTieFormat';
 import { findStructure } from '../../acquire/findStructure';
 import { isString } from '../../tools/objects';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
 
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+
+// constants and types
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
@@ -120,10 +123,17 @@ export function resetScorecard(params: ResetScoreCardArgs): ResultType {
     }
   }
 
+  const appliedPolicies = getAppliedPolicies({
+    tournamentRecord,
+    drawDefinition,
+    event,
+  })?.appliedPolicies;
+
   const result = updateTieMatchUpScore({
     event: params.event,
     removeScore: true,
     tournamentRecord,
+    appliedPolicies,
     drawDefinition,
     matchUpsMap,
     matchUpId,

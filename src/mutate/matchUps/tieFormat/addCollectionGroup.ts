@@ -1,4 +1,4 @@
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
 import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
 import { validateTieFormat } from '../../../validators/validateTieFormat';

@@ -1,6 +1,6 @@
 import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
 import { matchUpTimeModifiers } from '../../../query/matchUp/timeModifiers';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { mustBeAnArray } from '../../../tools/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';

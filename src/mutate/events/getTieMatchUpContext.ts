@@ -1,7 +1,7 @@
 import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
 import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
 import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
 

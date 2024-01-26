@@ -1,7 +1,7 @@
 import { validateTieFormat } from '../../validators/validateTieFormat';
 import { UUID } from '../../tools/UUID';
 
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { TieFormat } from '../../types/tournamentTypes';
 
 type CheckTieFormatArgs = {

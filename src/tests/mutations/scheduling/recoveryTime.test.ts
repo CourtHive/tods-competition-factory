@@ -1,4 +1,4 @@
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { getMatchUpIds } from '../../../functions/global/extractors';
 import { stringSort } from '../../../functions/sorters/stringSort';
 import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';

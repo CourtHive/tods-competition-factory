@@ -1,13 +1,14 @@
-import { getTournamentInfo } from '../tournaments/getTournamentInfo';
-import { getParticipants } from '../participants/getParticipants';
-import { getEventPublishStatus } from './getEventPublishStatus';
-import { getPublishState } from '../publishing/getPublishState';
-import { getDrawData } from '../drawDefinition/getDrawData';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { isConvertableInteger } from '../../tools/math';
-import { getVenueData } from '../venues/getVenueData';
-import { generateRange } from '../../tools/arrays';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getPublishState } from '@Query/publishing/getPublishState';
+import { getDrawData } from '@Query/drawDefinition/getDrawData';
+import { getVenueData } from '@Query/venues/getVenueData';
+import { isConvertableInteger } from '@Tools/math';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { generateRange } from '@Tools/arrays';
 
+// constants and types
 import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '../../types/factoryTypes';
 import { Event, Tournament } from '../../types/tournamentTypes';

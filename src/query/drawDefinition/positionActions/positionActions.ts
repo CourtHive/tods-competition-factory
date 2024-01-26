@@ -25,7 +25,7 @@ import {
 } from './actionPolicyUtils';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { PAIR } from '../../../constants/participantConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';

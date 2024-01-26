@@ -1,20 +1,20 @@
-import { generateAdHocMatchUps } from '../drawTypes/adHoc/generateAdHocMatchUps';
-import { findStructure } from '../../../../acquire/findStructure';
-import { isObject } from '../../../../tools/objects';
+import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
+import { findStructure } from '@Acquire/findStructure';
 import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
+import { isObject } from '@Tools/objects';
 
-import { ResultType } from '../../../../global/functions/decorateResult';
-import { TEAM } from '../../../../constants/participantConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { TEAM } from '../../../../../../constants/participantConstants';
+import { SUCCESS } from '../../../../../../constants/resultConstants';
+import { ResultType } from '../../../../../../types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_IDS,
   MISSING_STRUCTURE,
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '../../../../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   MatchUp,
@@ -22,7 +22,7 @@ import {
   EventTypeUnion,
   Event,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '../../../../../../types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;

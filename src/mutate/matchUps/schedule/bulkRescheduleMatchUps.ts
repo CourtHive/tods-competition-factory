@@ -3,7 +3,7 @@ import { resolveTournamentRecords } from '../../../parameters/resolveTournamentR
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 import { getTournamentInfo } from '../../../query/tournaments/getTournamentInfo';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { getMatchUpIds } from '../../../global/functions/extractors';
+import { getMatchUpIds } from '../../../functions/global/extractors';
 import { hasSchedule } from './scheduleMatchUps/hasSchedule';
 import { addMatchUpScheduledDate } from './scheduleItems';
 import { addMatchUpScheduledTime } from './scheduledTime';
@@ -15,7 +15,7 @@ import {
   timeStringMinutes,
 } from '../../../tools/dateTime';
 
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { Tournament } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';

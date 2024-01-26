@@ -1,10 +1,10 @@
 import { getTournamentPublishStatus } from '../../query/tournaments/getTournamentPublishStatus';
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
-import { getDrawId } from '../../global/functions/extractors';
+import { getDrawId } from '../../functions/global/extractors';
 
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { findEvent } from '../../acquire/findEvent';
 import { isString } from '../../tools/objects';

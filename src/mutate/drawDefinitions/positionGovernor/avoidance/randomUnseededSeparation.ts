@@ -3,7 +3,7 @@ import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDra
 import { assignDrawPosition } from '../../../matchUps/drawPositions/positionAssignment';
 import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import { decorateResult } from '../../../../functions/global/decorateResult';
 import { chunkArray, generateRange } from '../../../../tools/arrays';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';

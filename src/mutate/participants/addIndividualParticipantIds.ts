@@ -1,7 +1,7 @@
 import { addNotice, getTopics } from '../../global/state/globalState';
 import { updateTeamEventEntries } from './updateTeamEventEntries';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';

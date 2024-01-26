@@ -1,6 +1,6 @@
 import { removeParticipantsScaleItems } from '../participants/removeScaleItems';
-import { decorateResult } from '../../global/functions/decorateResult';
-import { getParticipantId } from '../../global/functions/extractors';
+import { decorateResult } from '../../functions/global/decorateResult';
+import { getParticipantId } from '../../functions/global/extractors';
 import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 

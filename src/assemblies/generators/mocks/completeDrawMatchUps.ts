@@ -7,7 +7,7 @@ import { getParticipants } from '../../../query/participants/getParticipants';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { generateLineUps } from '../participants/generateLineUps';
 import { generateOutcome } from './generateOutcome';
 

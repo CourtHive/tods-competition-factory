@@ -8,7 +8,7 @@ import { getDrawFormat } from '../getDrawFormat';
 
 import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
 import { ErrorType, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { GenerateDrawDefinitionArgs } from '../../../../types/factoryTypes';
 import { DrawDefinition, Entry } from '../../../../types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';

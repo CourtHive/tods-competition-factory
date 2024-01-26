@@ -1,6 +1,6 @@
 import mocksEngine from '../../../assemblies/engines/mock';
-import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
+import { instanceCount } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '../../../constants/statsConstants';

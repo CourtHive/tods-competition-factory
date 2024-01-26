@@ -1,7 +1,7 @@
 import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
 import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
 import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
 import { instanceCount, intersection } from '../../tools/arrays';

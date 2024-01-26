@@ -5,7 +5,7 @@ import { getExitWinningSide } from '../../drawDefinitions/matchUpGovernor/getExi
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { positionTargets } from './positionTargets';

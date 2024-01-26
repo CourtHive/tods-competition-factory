@@ -2,7 +2,7 @@ import { findExtension } from '../../acquire/findExtension';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { TournamentRecords } from '../../types/factoryTypes';
 
 export function getLinkedTournamentIds({

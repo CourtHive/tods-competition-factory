@@ -1,6 +1,6 @@
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { definedAttributes } from '../../../tools/definedAttributes';

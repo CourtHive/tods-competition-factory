@@ -7,7 +7,7 @@ import { isNumeric } from '../../../tools/math';
 import { UUID } from '../../../tools/UUID';
 
 import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { Court, Tournament } from '../../../types/tournamentTypes';
 import { VALIDATE } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

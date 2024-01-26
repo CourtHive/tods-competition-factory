@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
 import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
 import { isConvertableInteger } from '../../tools/math';
 import { numericSortValue } from '../../tools/arrays';

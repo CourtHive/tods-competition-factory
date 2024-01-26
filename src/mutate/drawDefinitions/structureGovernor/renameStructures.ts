@@ -1,6 +1,6 @@
 import { isObject } from '../../../tools/objects';
 
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_VALUE } from '../../../constants/errorConditionConstants';

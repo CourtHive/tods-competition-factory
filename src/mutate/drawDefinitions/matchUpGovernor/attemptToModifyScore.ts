@@ -1,27 +1,15 @@
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../global/functions/decorateResult';
-import { isDirectingMatchUpStatus } from './checkStatusType';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { isAdHoc } from '../../../query/drawDefinition/isAdHoc';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
-import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+// constants
 import { ABANDONED, CANCELLED, COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
 
 export function attemptToModifyScore(params) {
-  const {
-    dualWinningSideChange,
-    matchUpStatusCodes,
-    tournamentRecord,
-    drawDefinition,
-    matchUpFormat,
-    matchUpStatus,
-    winningSide,
-    matchUpId,
-    structure,
-    matchUp,
-    event,
-    score,
-  } = params;
+  const { dualWinningSideChange, matchUpStatusCodes, drawDefinition, matchUpStatus, structure, matchUp } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -41,17 +29,11 @@ export function attemptToModifyScore(params) {
   const removeScore = [WALKOVER].includes(matchUpStatus);
 
   const result = modifyMatchUpScore({
+    ...params,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
-    tournamentRecord,
-    drawDefinition,
-    matchUpFormat,
+    context: stack,
     removeScore,
-    winningSide,
-    matchUpId,
-    matchUp,
-    event,
-    score,
   });
   return decorateResult({ result, stack });
 }

@@ -1,6 +1,6 @@
 import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { addTimeItem } from '../timeItems/addTimeItem';
 import { xa } from '../../tools/objects';

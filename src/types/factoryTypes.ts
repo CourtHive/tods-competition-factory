@@ -491,6 +491,7 @@ export type GenerateDrawDefinitionArgs = {
 
 export type DrawMaticArgs = {
   adHocRatings?: { [key: string]: number };
+  restrictRoundsCount?: boolean;
   restrictEntryStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
@@ -512,4 +513,14 @@ export type DrawMaticArgs = {
 
   scaleAccessor?: string;
   scaleName?: string; // custom rating name to seed dynamic ratings
+};
+
+export type ResultType = {
+  context?: { [key: string]: any };
+  stack?: string | string[];
+  errors?: string[];
+  error?: ErrorType;
+  success?: boolean;
+  valid?: boolean;
+  info?: any;
 };

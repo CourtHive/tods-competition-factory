@@ -1,4 +1,4 @@
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import structureTemplate from '../../templates/structureTemplate';
 import { mustBeAnArray } from '../../../../tools/mustBeAnArray';

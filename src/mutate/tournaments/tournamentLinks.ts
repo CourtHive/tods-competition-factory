@@ -1,7 +1,7 @@
 import { removeExtension } from '../extensions/removeExtension';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { addTournamentExtension, removeTournamentExtension } from '../extensions/addRemoveExtensions';
 
 import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';

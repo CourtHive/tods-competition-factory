@@ -2,7 +2,7 @@ import { getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilit
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import { getDrawPosition } from '../../../../global/functions/extractors';
+import { getDrawPosition } from '../../../../functions/global/extractors';
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';

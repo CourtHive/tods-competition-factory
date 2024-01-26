@@ -1,7 +1,7 @@
 import { checkRequiredParameters } from '../../../parameters/checkRequiredParameters';
 import { timeToDate, extractTime, tidyTime } from '../../../tools/dateTime';
 
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { OBJECT } from '../../../constants/attributeConstants';
 
 type GenerateTimeSlotsArgs = {

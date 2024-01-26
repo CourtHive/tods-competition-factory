@@ -5,7 +5,7 @@ import structureTemplate from '../../templates/structureTemplate';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
 import { constantToString } from '../../../../tools/strings';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 
 import { MISSING_DRAW_SIZE } from '../../../../constants/errorConditionConstants';
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';

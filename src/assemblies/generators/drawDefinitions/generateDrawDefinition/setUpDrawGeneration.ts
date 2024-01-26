@@ -2,7 +2,7 @@ import { checkFormatScopeEquivalence } from './checkFormatScopeEquivalence';
 import { policyAttachment } from './drawDefinitionPolicyAttachment';
 import { newDrawDefinition } from '../newDrawDefinition';
 
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { DrawDefinition, DrawTypeUnion } from '../../../../types/tournamentTypes';
 import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 

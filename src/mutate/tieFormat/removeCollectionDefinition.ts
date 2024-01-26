@@ -1,35 +1,36 @@
 // all child matchUps need to be checked for collectionAssignments which need to be removed when collectionDefinition.collectionIds are removed
 
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { updateTieMatchUpScore } from '../matchUps/score/tieMatchUpScore';
-import { setMatchUpState } from '../matchUps/matchUpStatus/setMatchUpState';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { calculateWinCriteria } from '../../query/matchUp/calculateWinCriteria';
-import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
-import { tieFormatTelemetry } from '../matchUps/tieFormat/tieFormatTelemetry';
+import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
+import { tieFormatTelemetry } from '@Mutate/matchUps/tieFormat/tieFormatTelemetry';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
-import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
+import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
+// constants and types
+import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '../../types/tournamentTypes';
 import { COMPLETED, IN_PROGRESS } from '../../constants/matchUpStatusConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
+import { decorateResult } from '../../functions/global/decorateResult';
+import { SUCCESS } from '../../constants/resultConstants';
+import { HydratedMatchUp } from '../../types/hydrated';
+import { TEAM } from '../../constants/matchUpTypes';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { decorateResult } from '../../global/functions/decorateResult';
 
 /*
  * if an eventId is provided, will be removed from an event tieFormat
@@ -205,6 +206,8 @@ export function removeCollectionDefinition({
     }
   }
 
+  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
+
   const deletedMatchUpIds: string[] = [];
   for (const matchUp of targetMatchUps) {
     // remove any collectionAssignments from LineUps that include collectionId
@@ -232,6 +235,7 @@ export function removeCollectionDefinition({
         matchUpId: matchUp.matchUpId,
         exitWhenNoValues: true,
         tournamentRecord,
+        appliedPolicies,
         drawDefinition,
         event,
       });
@@ -278,7 +282,6 @@ export function removeCollectionDefinition({
 
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
-  const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
   if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
     const auditData = definedAttributes({
       drawId: drawDefinition?.drawId,

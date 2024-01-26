@@ -4,7 +4,7 @@ import { isConvertableInteger } from '../tools/math';
 import { unique } from '../tools/arrays';
 
 import type { Score } from '../types/tournamentTypes';
-import { ResultType } from '../global/functions/decorateResult';
+import { ResultType } from '../functions/global/decorateResult';
 import { INVALID_SCORE, INVALID_VALUES } from '../constants/errorConditionConstants';
 
 type validateScoreTypes = {

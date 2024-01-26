@@ -1,5 +1,5 @@
 import { MULTI_STRUCTURE_DRAWS, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
 import { DrawTypeUnion } from '../../../types/tournamentTypes';
 import { ensureInt } from '../../../tools/ensureInt';

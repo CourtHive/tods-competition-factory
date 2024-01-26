@@ -1,12 +1,12 @@
 import { getParticipants } from '../../../query/participants/getParticipants';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import { addNotice } from '../../../global/state/globalState';
 import { addExtension } from '../../extensions/addExtension';
 
 import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

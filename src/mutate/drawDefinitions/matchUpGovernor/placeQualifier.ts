@@ -7,7 +7,7 @@ import { randomMember } from '../../../tools/arrays';
 
 import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { DRAW } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 

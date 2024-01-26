@@ -1,7 +1,7 @@
 import { getStageDrawPositionsCount } from '../../../query/drawDefinition/getStageDrawPositions';
 import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
@@ -9,7 +9,7 @@ import { modifyDrawNotice } from '../../../mutate/notifications/drawNotification
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
 import { validateTieFormat } from '../../../validators/validateTieFormat';
 import { definedAttributes } from '../../../tools/definedAttributes';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
 import {

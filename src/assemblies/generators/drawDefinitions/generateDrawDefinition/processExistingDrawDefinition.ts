@@ -8,7 +8,7 @@ import {
 } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { ResultType } from '../../../../global/functions/decorateResult';
+import { ResultType } from '../../../../functions/global/decorateResult';
 
 export function processExistingDrawDefinition(params): ResultType & {
   structureId?: string;

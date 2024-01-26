@@ -9,7 +9,7 @@ import { getGroupValueGroups } from '../drawDefinitions/getGroupValueGroups';
 import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 
 import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { DrawDefinition, Event, Structure, TieFormat } from '../../../types/tournamentTypes';
 

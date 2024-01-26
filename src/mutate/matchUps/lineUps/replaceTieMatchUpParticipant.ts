@@ -10,7 +10,7 @@ import { addParticipant } from '../../participants/addParticipant';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { unique } from '../../../tools/arrays';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';

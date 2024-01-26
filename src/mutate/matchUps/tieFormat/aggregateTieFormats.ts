@@ -5,7 +5,7 @@ import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { UUID } from '../../../tools/UUID';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { Tournament } from '../../../types/tournamentTypes';

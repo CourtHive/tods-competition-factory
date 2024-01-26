@@ -6,7 +6,7 @@ import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getDrawStructures } from '../../acquire/findStructure';
 import { filterMatchUps } from '../filterMatchUps';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 
 import { GroupsMatchUpsResult } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';

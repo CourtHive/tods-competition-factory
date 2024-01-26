@@ -1,10 +1,13 @@
-import { generateAdHocMatchUps } from './generateAdHocMatchUps';
-import { generateRange } from '../../../../tools';
+import { ResultType, decorateResult } from '@Functions/global/decorateResult';
+import { generateRange } from '@Tools/arrays';
 
-import { ResultType, decorateResult } from '../../../../../global/functions/decorateResult';
+import { generateAdHocMatchUps } from './generateAdHocMatchUps';
+
+// types
 import { DrawDefinition, Event, MatchUp } from '../../../../../types/tournamentTypes';
 
 type GenerateAdHocRoundsArgs = {
+  restrictRoundsCoung?: boolean;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
   matchUpIds?: string[];

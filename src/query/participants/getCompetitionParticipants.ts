@@ -3,7 +3,7 @@ import { getParticipants as participantGetter } from './getParticipants';
 
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import { ParticipantMap } from '../../types/factoryTypes';
 import { MatchUp } from '../../types/tournamentTypes';

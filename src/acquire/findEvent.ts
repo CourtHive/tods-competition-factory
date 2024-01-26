@@ -1,9 +1,9 @@
-import { ResultType, decorateResult } from '../global/functions/decorateResult';
-import { getFlightProfile } from '../query/event/getFlightProfile';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { DrawDefinition, Tournament, Event } from '../types/tournamentTypes';
-import { TournamentRecords } from '../types/factoryTypes';
 import { DRAW_DEFINITION_NOT_FOUND, EVENT_NOT_FOUND } from '../constants/errorConditionConstants';
+import { DrawDefinition, Tournament, Event } from '../types/tournamentTypes';
+import { TournamentRecords, ResultType } from '../types/factoryTypes';
 
 type FindEventArgs = {
   tournamentRecords?: TournamentRecords;

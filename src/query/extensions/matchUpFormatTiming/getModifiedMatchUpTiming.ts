@@ -6,7 +6,7 @@ import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../c
 
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { Event, Tournament } from '../../../types/tournamentTypes';
 
 type GetModifiedMatchUpFormatTimingArgs = {

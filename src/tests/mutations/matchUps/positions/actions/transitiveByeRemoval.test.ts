@@ -1,4 +1,4 @@
-import { getDrawPosition } from '../../../../../global/functions/extractors';
+import { getDrawPosition } from '../../../../../functions/global/extractors';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';

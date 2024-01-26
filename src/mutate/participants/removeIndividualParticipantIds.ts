@@ -2,7 +2,7 @@ import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
 import { addExtension } from '../extensions/addExtension';
 import { getParticipants } from '../../query/participants/getParticipants';
 import { addEventEntries } from '../entries/addEventEntries';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { findExtension } from '../../acquire/findExtension';
 import { allDrawMatchUps } from '../../query/matchUps/getAllDrawMatchUps';
 import { addNotice } from '../../global/state/globalState';

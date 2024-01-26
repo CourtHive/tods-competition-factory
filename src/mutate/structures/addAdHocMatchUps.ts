@@ -1,12 +1,12 @@
 import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { getMatchUpId } from '../../global/functions/extractors';
+import { getMatchUpId } from '../../functions/global/extractors';
 import { validMatchUps } from '../../validators/validMatchUp';
 import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { overlap } from '../../tools/arrays';
 
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   INVALID_VALUES,

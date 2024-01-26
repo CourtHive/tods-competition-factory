@@ -4,7 +4,7 @@ import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 
 import { MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '../../constants/errorConditionConstants';
 import { MatchUpFilters, ScheduleVisibilityFilters } from '../../types/factoryTypes';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { Tournament } from '../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../types/hydrated';
 

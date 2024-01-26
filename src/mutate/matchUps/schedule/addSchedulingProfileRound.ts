@@ -1,5 +1,5 @@
 import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { isValidDateString, sameDay } from '../../../tools/dateTime';
 import { findExtension } from '../../../acquire/findExtension';
 import { setSchedulingProfile } from '../../tournaments/schedulingProfile';

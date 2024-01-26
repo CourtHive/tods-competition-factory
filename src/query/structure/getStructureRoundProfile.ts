@@ -1,4 +1,4 @@
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
 import { findStructure } from '../../acquire/findStructure';

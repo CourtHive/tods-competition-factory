@@ -1,10 +1,10 @@
 import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
 import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
 import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { ResultType, decorateResult } from '../../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../../functions/global/decorateResult';
 import { getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
 import { getScaledEntries } from '../../../../query/event/getScaledEntries';
-import { getParticipantId } from '../../../../global/functions/extractors';
+import { getParticipantId } from '../../../../functions/global/extractors';
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { findExtension } from '../../../../acquire/findExtension';
 

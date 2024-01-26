@@ -5,7 +5,7 @@ import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConsta
 import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
 import { TOURNAMENT_RECORD } from '../../constants/attributeConstants';
 import { SCHEDULE_LIMITS } from '../../constants/extensionConstants';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { Tournament } from '../../types/tournamentTypes';
 import { findPolicy } from '../../acquire/findPolicy';
 

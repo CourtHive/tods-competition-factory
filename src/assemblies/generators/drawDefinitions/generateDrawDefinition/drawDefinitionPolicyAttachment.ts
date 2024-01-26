@@ -1,4 +1,4 @@
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import { decorateResult } from '../../../../functions/global/decorateResult';
 import { attachPolicies } from '../../../governors/policyGovernor';
 
 import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '../../../../constants/policyConstants';

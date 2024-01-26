@@ -1,6 +1,6 @@
 import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
 import { coerceEven, isConvertableInteger } from '../../../../tools/math';
-import { decorateResult } from '../../../../global/functions/decorateResult';
+import { decorateResult } from '../../../../functions/global/decorateResult';
 import { addExtension } from '../../../../mutate/extensions/addExtension';
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import structureTemplate from '../../templates/structureTemplate';

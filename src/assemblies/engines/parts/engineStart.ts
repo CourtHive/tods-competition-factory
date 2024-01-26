@@ -5,7 +5,7 @@
  */
 
 import { newTournamentRecord } from '../../generators/tournamentRecords/newTournamentRecord';
-import { factoryVersion } from '../../../global/functions/factoryVersion';
+import { factoryVersion } from '../../../functions/global/factoryVersion';
 import { importMethods } from '../parts/importMethods';
 import { processResult } from '../parts/processResult';
 import {

@@ -1,6 +1,6 @@
 import { deleteNotices, setDevContext, setDeepCopy } from '../../../global/state/globalState';
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { factoryVersion } from '../../../global/functions/factoryVersion';
+import { factoryVersion } from '../../../functions/global/factoryVersion';
 import * as mocksGovernor from '../../governors/mocksGovernor';
 
 import { FactoryEngine } from '../../../types/factoryTypes';

@@ -4,7 +4,7 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';

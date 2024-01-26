@@ -1,7 +1,7 @@
 import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 import { chunkArray, generateRange, overlap } from '../../../tools/arrays';
 import { isConvertableInteger, nextPowerOf2 } from '../../../tools/math';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

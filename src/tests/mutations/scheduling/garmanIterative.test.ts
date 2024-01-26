@@ -1,7 +1,7 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
-import { getParticipantId } from '../../../global/functions/extractors';
+import { getParticipantId } from '../../../functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';

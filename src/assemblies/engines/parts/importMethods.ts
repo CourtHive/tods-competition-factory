@@ -2,7 +2,7 @@ import { getDevContext, handleCaughtError, setMethods } from '../../../global/st
 import { isFunction, isObject } from '../../../tools/objects';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../global/functions/decorateResult';
+import { ResultType } from '../../../functions/global/decorateResult';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 export function importMethods(engine, engineInvoke, submittedMethods, traverse, maxDepth?): ResultType {

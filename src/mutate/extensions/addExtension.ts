@@ -1,5 +1,5 @@
 import { isValidExtension } from '../../validators/isValidExtension';
-import { decorateResult } from '../../global/functions/decorateResult';
+import { decorateResult } from '../../functions/global/decorateResult';
 
 import { SUCCESS } from '../../constants/resultConstants';
 import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../constants/errorConditionConstants';

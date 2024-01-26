@@ -3,10 +3,10 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { pushGlobalLog } from '../../../global/functions/globalLog';
+import { pushGlobalLog } from '../../../functions/global/globalLog';
 import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '../../../tools/sorting';
 import { positionTargets } from './positionTargets';

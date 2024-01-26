@@ -11,7 +11,7 @@ import { getAllDrawMatchUps } from '../../query/matchUps/drawMatchUps';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findStructure } from '../../acquire/findStructure';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { getSeedPattern, getValidSeedBlocks } from '../../query/drawDefinition/seedGetter';
 import { MatchUpsMap, getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { disableNotifications, enableNotifications } from '../../global/state/globalState';

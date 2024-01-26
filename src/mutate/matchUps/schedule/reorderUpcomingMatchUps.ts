@@ -1,6 +1,6 @@
 import { addMatchUpScheduledTime } from './scheduledTime';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { decorateResult } from '../../../global/functions/decorateResult';
+import { decorateResult } from '../../../functions/global/decorateResult';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

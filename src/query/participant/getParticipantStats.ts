@@ -1,8 +1,8 @@
 import { Tally, countGames, countPoints, countSets } from '../matchUps/roundRobinTally/scoreCounters';
 import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
-import { ResultType, decorateResult } from '../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../functions/global/decorateResult';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
-import { getParticipantId } from '../../global/functions/extractors';
+import { getParticipantId } from '../../functions/global/extractors';
 import { getParticipants } from '../participants/getParticipants';
 import { intersection } from '../../tools/arrays';
 import { isObject } from '../../tools/objects';

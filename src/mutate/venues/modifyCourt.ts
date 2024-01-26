@@ -6,7 +6,7 @@ import { addNotice } from '../../global/state/globalState';
 import { findCourt } from './findCourt';
 
 import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { MODIFY_VENUE } from '../../constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';

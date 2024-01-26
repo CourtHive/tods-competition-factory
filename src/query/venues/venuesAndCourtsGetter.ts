@@ -5,7 +5,7 @@ import { getInContextCourt } from './getInContextCourt';
 
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
-import { ResultType } from '../../global/functions/decorateResult';
+import { ResultType } from '../../functions/global/decorateResult';
 import { Tournament, Venue } from '../../types/tournamentTypes';
 import { DISABLED } from '../../constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';

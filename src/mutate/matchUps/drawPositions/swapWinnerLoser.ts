@@ -89,5 +89,5 @@ export function swapWinnerLoser(params) {
   });
 
   // apply new winningSide and any score updates
-  return modifyMatchUpScore(params);
+  return modifyMatchUpScore({ ...params, context: stack });
 }

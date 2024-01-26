@@ -7,11 +7,11 @@ import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructure
 import { positionTargets } from '../../../mutate/matchUps/drawPositions/positionTargets';
 import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
 import { NamingEntry, generatePlayoffStructures } from './drawTypes/playoffStructures';
-import { ResultType, decorateResult } from '../../../global/functions/decorateResult';
+import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
 import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { getSourceRounds } from '../../../query/drawDefinition/getSourceRounds';
 import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpId } from '../../../global/functions/extractors';
+import { getMatchUpId } from '../../../functions/global/extractors';
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '../../../tools/ensureInt';
