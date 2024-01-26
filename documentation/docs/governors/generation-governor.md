@@ -21,6 +21,7 @@ Inspired by the work of the Constantine who runs spectacular D3 College Tennis e
 
 ```js
 const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.drawMatic({
+  restrictRoundsCount, // optional boolean defaults to true; set to false for unlimited roundsCount
   restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
   enableDoubleRobin, // optional - allows roundsCount <= (drawSize - 1) * 2
   generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
@@ -45,13 +46,45 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.
 Draws with `{ drawType: AD_HOC }` allow `matchUps` to be dynamically added. In this type of draw there is no automatic participant progression between rounds. Participant assignment to `matchUps` is done manually, or via **drawMatic**. The only restriction is that a participant may appear once per round.
 
 ```js
-const result = engine.generateAdHocMatchUps({
+const { matchUps } = engine.generateAdHocMatchUps({
+  restrictMatchUpsCount, // optional boolean defaults to true; set to false for unlimited matchUpsCount
   participantIdPairings, // optional - array of array of pairings [['id1', 'id2'], ['id3', 'id4']]
-  drawId, // required - drawId of drawDefinition in which target structure is found
-  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
+  matchUpsCount, // optional - number of matchUps to generate; defaults to calc from entries
   roundNumber, // optional - specify round for which matchUps will be generated
+  structureId, // required only if there is more than one structure
+  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
+  drawId, // required - drawId of drawDefinition in which target structure is found
 });
+```
+
+---
+
+## generateAdHocRounds
+
+```js
+const { matchUps } = engine.generateAdHocRounds({
+  restrictMatchUpsCount, // optional boolean defaults to true; set to false for unlimited matchUpsCount
+  restrictRoundsCount, // optional boolean defaults to true; set to false for unlimited roundsCount
+  enableDoubleRobin, // optional - allows roundsCount <= (drawSize - 1) * 2
+  matchUpsCount, // optional - number of matchUps to generate per round; defaults to calc from entries
+  roundNumber, // optional - specify round for which matchUps will be generated
+  structureId, // required only if there is more than one structure
+  roundsCount, // defaults to 1
+  matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
+  newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
+  drawId, // required - drawId of drawDefinition in which target structure is found
+};
+
+export function generateAdHocRounds(params: GenerateAdHocRoundsArgs): ResultType & { matchUps?: MatchUp[] } {
+  const matchUps: MatchUp[] = [];
+  const { roundsCount = 1, drawDefinition, matchUpsCount, structureId, idPrefix, isMock, event } = params;
+  let roundNumber;
+
+  const idsResult = getParticipantIds(params);
+  if (idsResult.error) return idsResult;
+
+})
 ```
 
 ---
