@@ -19,6 +19,7 @@ type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
   includePositionAssignments?: boolean;
   policyDefinitions?: PolicyDefinitions;
+  allParticipantResults?: boolean;
   sortConfig?: StructureSortConfig;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
@@ -113,6 +114,7 @@ export function getEventData(params: GetEventDataArgs): {
         structures,
       }))(
         getDrawData({
+          allParticipantResults: params.allParticipantResults,
           context: { eventId, tournamentId, endDate },
           includePositionAssignments,
           tournamentParticipants,

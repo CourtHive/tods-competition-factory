@@ -309,7 +309,10 @@ const {
     participantPlacements, // boolean - whether any participants have been placed in the draw
   },
   structures,
-} = engine.getDrawData({ drawDefinition });
+} = engine.getDrawData({
+  allParticipantResults, // optional boolean; include round statistics per structure even for elimination structures
+  drawDefinition,
+});
 ```
 
 ---
@@ -426,6 +429,7 @@ See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
 ```js
 const { eventData } = engine.getEventData({
+  allParticipantResults, // optional boolean; include round statistics per structure even for elimination structures
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   policyDefinitions, // optional
   usePublishState, // optional - filter out draws which are not published

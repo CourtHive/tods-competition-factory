@@ -1,5 +1,7 @@
+import { createSubOrderMap } from '@Mutate/drawDefinitions/matchUpGovernor/createSubOrderMap';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { tallyParticipantResults } from '@Assemblies/governors/queryGovernor';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
 import { structureSort } from '@Functions/sorters/structureSort';
@@ -123,7 +125,7 @@ export function getDrawData(params): {
           structure,
         });
 
-        const participantResults = positionAssignments
+        let participantResults = positionAssignments
           ?.filter(xa(PARTICIPANT_ID))
           .map((assignment) => {
             participantPlacements = true;
@@ -141,6 +143,29 @@ export function getDrawData(params): {
             );
           })
           .filter((f) => f?.participantResult);
+
+        if (!participantResults?.length && matchUps.length && params.allParticipantResults) {
+          const { subOrderMap } = createSubOrderMap({ positionAssignments });
+          const result = tallyParticipantResults({
+            matchUpFormat: structure.matchUpFormat,
+            policyDefinitions,
+            subOrderMap,
+            matchUps,
+          });
+          participantResults = positionAssignments
+            ?.map((assignment) => {
+              const { drawPosition, participantId } = assignment;
+              return (
+                participantId &&
+                result.participantResults?.[participantId] && {
+                  participantResult: result.participantResults[participantId],
+                  participantId,
+                  drawPosition,
+                }
+              );
+            })
+            .filter((f) => f?.participantResult);
+        }
 
         const structureInfo: any = structure
           ? (({ stageSequence, structureName, structureType, matchUpFormat, stage }) => ({
