@@ -1,12 +1,12 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { addExtension } from '../addExtension';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { addExtension } from '@Mutate/extensions/addExtension';
 
-import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';
+// constants and types
+import { PolicyDefinitions, TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../functions/global/decorateResult';
 import { isObject, isString } from '../../../tools/objects';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

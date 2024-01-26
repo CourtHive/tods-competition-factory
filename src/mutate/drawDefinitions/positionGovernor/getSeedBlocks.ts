@@ -1,10 +1,12 @@
-import { getValidGroupSizes } from '../../../assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
-import { chunkArray, generateRange, overlap } from '../../../tools/arrays';
-import { isConvertableInteger, nextPowerOf2 } from '../../../tools/math';
-import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
+import { getValidGroupSizes } from '@Assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
+import { chunkArray, generateRange, overlap } from '@Tools/arrays';
+import { isConvertableInteger, nextPowerOf2 } from '@Tools/math';
+import { decorateResult } from '@Functions/global/decorateResult';
 
+// constants and types
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 /**
  * Generates seedBlocks for USTA or ITF style seeding

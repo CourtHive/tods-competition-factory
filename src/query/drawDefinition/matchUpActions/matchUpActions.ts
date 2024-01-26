@@ -1,14 +1,15 @@
-import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { positionTargets } from '@Query/matchUp/positionTargets';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { getMatchUpsMap, MatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { collectionMatchUpActions } from './collectionMatchUpActions';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { adHocMatchUpActions } from './adHocMatchUpActions';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
@@ -22,12 +23,11 @@ import {
 
 // constants, fixtures and types
 import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import { MatchUpsMap, PolicyDefinitions, TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { BYE, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Participant, Tournament } from '../../../types/tournamentTypes';
 import { ADD_PENALTY, ADD_PENALTY_METHOD } from '../../../constants/positionActionConstants';
-import { decorateResult, ResultType } from '../../../functions/global/decorateResult';
-import { PolicyDefinitions, TournamentRecords } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_VALUES,

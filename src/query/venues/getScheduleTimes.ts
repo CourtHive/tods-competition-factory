@@ -1,21 +1,15 @@
-import { generateVirtualCourts } from '../../mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
-import { calculatePeriodLength } from '../../mutate/matchUps/schedule/schedulers/utils/calculatePeriodLength';
-import { courtGenerator } from '../../assemblies/generators/scheduling/courtGenerator';
+import { getUTCdateString, extractTime, extractDate, timeStringMinutes, dayMinutesToTimeString } from '@Tools/dateTime';
+import { generateVirtualCourts } from '@Mutate/matchUps/schedule/schedulers/utils/generateVirtualCourts';
+import { calculatePeriodLength } from '@Mutate/matchUps/schedule/schedulers/utils/calculatePeriodLength';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getCourtsAvailableAtPeriodStart } from './getCourtsAvailableAtPeriodStart';
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { courtGenerator } from '@Assemblies/generators/scheduling/courtGenerator';
 import { getFirstTimeSlotStartTime } from './getFirstTimeSlotStartTime';
-import { generateRange } from '../../tools/arrays';
-import { ensureInt } from '../../tools/ensureInt';
-import {
-  getUTCdateString,
-  extractTime,
-  extractDate,
-  timeStringMinutes,
-  dayMinutesToTimeString,
-} from '../../tools/dateTime';
+import { generateRange } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { ResultType } from '../../functions/global/decorateResult';
-import { ScheduleTimesResult } from '../../types/factoryTypes';
+// constants and types
+import { ScheduleTimesResult, ResultType } from '../../types/factoryTypes';
 import { ARRAY } from '../../constants/attributeConstants';
 
 export function getScheduleTimes(params): ResultType & {

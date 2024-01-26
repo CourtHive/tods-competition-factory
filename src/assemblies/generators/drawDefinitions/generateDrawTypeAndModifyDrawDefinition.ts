@@ -1,25 +1,26 @@
-import { getStageDrawPositionsCount } from '../../../query/drawDefinition/getStageDrawPositions';
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
-import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
-import { MatchUpsMap, getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPositions';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
-import { modifyDrawNotice } from '../../../mutate/notifications/drawNotifications';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { getMatchUpId } from '../../../functions/global/extractors';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
 import {
   setStageDrawSize,
   setStageQualifiersCount,
 } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
+// constants and types
+import { PolicyDefinitions, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import { SINGLES } from '../../../constants/matchUpTypes';

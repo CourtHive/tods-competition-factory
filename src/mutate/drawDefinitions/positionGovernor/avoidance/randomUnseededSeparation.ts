@@ -1,32 +1,29 @@
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDrawPositionBye';
-import { assignDrawPosition } from '../../../matchUps/drawPositions/positionAssignment';
-import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
+import { getPositionAssignments, structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getAttributeGroupings } from '@Query/participants/getAttributeGrouping';
 import { generatePositioningCandidate } from './generatePositioningCandidate';
-import { decorateResult } from '../../../../functions/global/decorateResult';
-import { chunkArray, generateRange } from '../../../../tools/arrays';
+import { deriveExponent, isPowerOf2, nearestPowerOf2 } from '@Tools/math';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { addParticipantGroupings } from './addParticipantGroupings';
-import { findStructure } from '../../../../acquire/findStructure';
-import { numericSort } from '../../../../tools/sorting';
-import {
-  getPositionAssignments,
-  structureAssignedDrawPositions,
-} from '../../../../query/drawDefinition/positionsGetter';
-import { deriveExponent, isPowerOf2, nearestPowerOf2 } from '../../../../tools/math';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { chunkArray, generateRange } from '@Tools/arrays';
+import { findStructure } from '@Acquire/findStructure';
+import { numericSort } from '@Tools/sorting';
 
+// constants and types
+import { DrawDefinition, Event, Tournament } from '../../../../types/tournamentTypes';
+import { HydratedMatchUp, HydratedParticipant } from '../../../../types/hydrated';
 import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
-import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
+import { IdCollections, MatchUpsMap } from '../../../../types/factoryTypes';
 import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../../constants/resultConstants';
-import { IdCollections } from '../../../../types/factoryTypes';
 import {
   INSUFFICIENT_DRAW_POSITIONS,
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
 } from '../../../../constants/errorConditionConstants';
-import { HydratedMatchUp, HydratedParticipant } from '../../../../types/hydrated';
-import { DrawDefinition, Event, Tournament } from '../../../../types/tournamentTypes';
 
 type RandomUnseededDistribution = {
   inContextDrawMatchUps?: HydratedMatchUp[];

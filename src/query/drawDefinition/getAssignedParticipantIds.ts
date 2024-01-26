@@ -1,11 +1,12 @@
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { getPositionAssignments } from './positionsGetter';
-import { unique } from '../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, StageTypeUnion } from '../../types/tournamentTypes';
-import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 // build up an array of participantIds which are assigned positions in structures
 // optionally filter to included only specified stages

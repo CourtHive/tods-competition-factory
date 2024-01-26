@@ -1,13 +1,14 @@
-import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
-import { getMatchUpId } from '../../functions/global/extractors';
-import { validMatchUps } from '../../validators/validMatchUp';
-import { mustBeAnArray } from '../../tools/mustBeAnArray';
-import { overlap } from '../../tools/arrays';
+import { addMatchUpsNotice, modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { overlap } from '@Tools/arrays';
 
+// constants and types
 import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
-import { ResultType } from '../../functions/global/decorateResult';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_VALUES,
   INVALID_STRUCTURE,

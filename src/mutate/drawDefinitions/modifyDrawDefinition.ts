@@ -8,8 +8,8 @@ import { isObject } from '@Tools/objects';
 // constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
+import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
 import { SUCCESS } from '../../constants/resultConstants';
 
 type ModifyDrawArgs = {

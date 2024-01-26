@@ -1,10 +1,11 @@
-import { ResultType, decorateResult } from '@Functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import { generateRange } from '@Tools/arrays';
 
 // types
 import { DrawDefinition, Event, MatchUp } from '../../../../../types/tournamentTypes';
 import { getParticipantIds } from './drawMatic/getParticipantIds';
+import { ResultType } from '../../../../../types/factoryTypes';
 
 type GenerateAdHocRoundsArgs = {
   restrictMatchUpsCount?: boolean;

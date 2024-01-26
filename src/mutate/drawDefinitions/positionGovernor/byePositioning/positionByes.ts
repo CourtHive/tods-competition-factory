@@ -1,16 +1,16 @@
-import { assignDrawPositionBye } from '../../../matchUps/drawPositions/assignDrawPositionBye';
-import { getByesData } from '../../../../query/drawDefinition/getByesData';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { getSeedOrderByePositions } from './getSeedOrderedByePositions';
-import { getDevContext } from '../../../../global/state/globalState';
 import { getUnseededByePositions } from './getUnseededByePositions';
-import { findStructure } from '../../../../acquire/findStructure';
-import { shuffleArray } from '../../../../tools/arrays';
+import { getByesData } from '@Query/drawDefinition/getByesData';
+import { getDevContext } from '@Global/state/globalState';
+import { findStructure } from '@Acquire/findStructure';
+import { shuffleArray } from '@Tools/arrays';
 
-import { MatchUpsMap } from '../../../../query/matchUps/getMatchUpsMap';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { CONTAINER, ITEM, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+// constants and types
 import { DrawDefinition, Event, Structure, Tournament } from '../../../../types/tournamentTypes';
-import { PolicyDefinitions, SeedingProfile } from '../../../../types/factoryTypes';
+import { PolicyDefinitions, SeedingProfile, MatchUpsMap } from '../../../../types/factoryTypes';
+import { CONTAINER, ITEM, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '../../../../constants/resultConstants';
 
 type PositionByesArgs = {
   appliedPolicies?: PolicyDefinitions;

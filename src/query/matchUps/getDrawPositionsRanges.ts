@@ -1,12 +1,13 @@
-import { MatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
+import { chunkArray, generateRange, groupConsecutiveNumbers, unique } from '@Tools/arrays';
+import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getRoundMatchUps } from './getRoundMatchUps';
-import { numericSort } from '../../tools/sorting';
 import { getRangeString } from './getRangeString';
-import { chunkArray, generateRange, groupConsecutiveNumbers, unique } from '../../tools/arrays';
+import { numericSort } from '@Tools/sorting';
 
-import { DrawDefinition } from '../../types/tournamentTypes';
-import { RoundProfile } from '../../types/factoryTypes';
+// constants and types
 import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { RoundProfile, MatchUpsMap } from '../../types/factoryTypes';
+import { DrawDefinition } from '../../types/tournamentTypes';
 
 type GetDrawPositionRangesArgs = {
   drawDefinition: DrawDefinition;

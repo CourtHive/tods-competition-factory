@@ -1,11 +1,9 @@
+import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import { getParticipantIds } from './getParticipantIds';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { generateRange } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
-
-// local
-import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
 
 // types and constants
 import { DrawMaticArgs, ScaleAttributes, ResultType } from '../../../../../../types/factoryTypes';

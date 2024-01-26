@@ -1,13 +1,14 @@
-import { findMatchupFormatAverageTimes, findMatchupFormatRecoveryTimes } from '../../../acquire/findMatchUpFormatTimes';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { findExtension } from '../../../acquire/findExtension';
-import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../constants/attributeConstants';
+import { findMatchupFormatAverageTimes, findMatchupFormatRecoveryTimes } from '@Acquire/findMatchUpFormatTimes';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
+import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../constants/attributeConstants';
 import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../functions/global/decorateResult';
 import { Event, Tournament } from '../../../types/tournamentTypes';
+import { ResultType } from '../../../types/factoryTypes';
 
 type GetModifiedMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;

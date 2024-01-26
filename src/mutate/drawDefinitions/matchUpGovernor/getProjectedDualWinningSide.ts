@@ -1,11 +1,13 @@
-import { generateTieMatchUpScore } from '../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+
+// constants types and fixtures
 import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
+import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 type GetProjectedDualWinningSideArgs = {
   drawDefinition?: DrawDefinition;

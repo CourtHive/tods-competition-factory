@@ -1,9 +1,11 @@
-import { isConvertableInteger } from '../../../tools/math';
-import { numericSortValue } from '../../../tools/arrays';
-import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isConvertableInteger } from '@Tools/math';
+import { numericSortValue } from '@Tools/arrays';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+// constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 export function setStructureOrder({ drawDefinition, orderMap }): ResultType {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

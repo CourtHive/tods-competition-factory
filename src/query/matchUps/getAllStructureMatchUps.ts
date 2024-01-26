@@ -1,31 +1,32 @@
-import { getMatchUpsMap, getMappedStructureMatchUps, MatchUpsMap } from './getMatchUpsMap';
-import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { getMatchUpCompetitiveProfile } from '../matchUp/getMatchUpCompetitiveProfile';
-import { getCheckedInParticipantIds } from '../matchUp/getCheckedInParticipantIds';
-import { structureAssignedDrawPositions } from '../drawDefinition/positionsGetter';
-import { getMatchUpScheduleDetails } from '../matchUp/getMatchUpScheduleDetails';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetitiveProfile';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getMatchUpScheduleDetails } from '@Query/matchUp/getMatchUpScheduleDetails';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
-import { resolveTieFormat } from '../hierarchical/tieFormats/resolveTieFormat';
+import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
-import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { getContextContent } from '../hierarchical/getContextContent';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getContextContent } from '@Query/hierarchical/getContextContent';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getCollectionAssignment } from './getCollectionAssignment';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
 import { getDrawPositionsRanges } from './getDrawPositionsRanges';
-import { attributeFilter } from '../../tools/attributeFilter';
 import { getRoundContextProfile } from './getRoundContextProfile';
-import { getExitProfiles } from '../drawDefinition/getExitProfile';
-import { findParticipant } from '../../acquire/findParticipant';
-import { isConvertableInteger } from '../../tools/math';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { getMatchUpType } from '../matchUp/getMatchUpType';
+import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { attributeFilter } from '@Tools/attributeFilter';
+import { findParticipant } from '@Acquire/findParticipant';
 import { getRoundMatchUps } from './getRoundMatchUps';
-import { filterMatchUps } from '../filterMatchUps';
-import { unique } from '../../tools/arrays';
+import { filterMatchUps } from '@Query/filterMatchUps';
+import { isConvertableInteger } from '@Tools/math';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { unique } from '@Tools/arrays';
 import { getSide } from './getSide';
 
+// constants and types
 import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '../../types/tournamentTypes';
 import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
 import { MISSING_STRUCTURE } from '../../constants/errorConditionConstants';
@@ -40,6 +41,7 @@ import {
   ContextProfile,
   ExitProfiles,
   MatchUpFilters,
+  MatchUpsMap,
   ParticipantMap,
   PolicyDefinitions,
   ScheduleTiming,

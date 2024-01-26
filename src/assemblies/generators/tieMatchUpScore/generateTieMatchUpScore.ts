@@ -9,9 +9,8 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure, TieFormat } from '../../../types/tournamentTypes';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { ResultType, MatchUpsMap } from '../../../types/factoryTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { ResultType } from '../../../types/factoryTypes';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`

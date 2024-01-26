@@ -1,7 +1,9 @@
-import { nextPowerOf2 } from '../../tools/math';
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { nextPowerOf2 } from '@Tools/math';
 
+// constants and types
 import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 type GetDrawSizeArgs = {
   participantsCount?: number;

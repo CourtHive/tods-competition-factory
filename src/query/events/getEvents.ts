@@ -1,19 +1,20 @@
-import { getAssignedParticipantIds } from '../drawDefinition/getAssignedParticipantIds';
-import { getDrawId, getParticipantId } from '../../functions/global/extractors';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { getParticipants } from '../participants/getParticipants';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { getFlightProfile } from '../event/getFlightProfile';
-import { intersection } from '../../tools/arrays';
-import { median } from '../../tools/math';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
+import { getDrawId, getParticipantId } from '@Functions/global/extractors';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { intersection } from '@Tools/arrays';
+import { median } from '@Tools/math';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
 import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
 import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { ResultType } from '../../functions/global/decorateResult';
 import { INDIVIDUAL } from '../../constants/participantConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 
 export type RankingStat = {
   median: number;

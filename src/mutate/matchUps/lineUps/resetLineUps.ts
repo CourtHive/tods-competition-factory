@@ -1,13 +1,14 @@
-import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getTargetMatchUps } from '../../drawDefinitions/positionGovernor/getTargetMatchUps';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
+import { getTargetMatchUps } from '@Query/matchUps/getTargetMatchUps';
 
+// constants and types
+import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 type ResetLineUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

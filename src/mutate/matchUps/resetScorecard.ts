@@ -1,11 +1,11 @@
-import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { positionTargets } from '../../query/matchUp/positionTargets';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { positionTargets } from '../../query/matchUp/positionTargets';
 import { setMatchUpState } from './matchUpStatus/setMatchUpState';
 import { resetTieFormat } from '@Mutate/tieFormat/resetTieFormat';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
@@ -16,7 +16,7 @@ import { isString } from '@Tools/objects';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { TEAM_EVENT } from '../../constants/eventConstants';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from 'src/types/factoryTypes';
+import { ResultType } from '../../types/factoryTypes';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,

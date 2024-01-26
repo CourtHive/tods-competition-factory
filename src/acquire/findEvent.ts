@@ -1,6 +1,7 @@
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 
+// constants and types
 import { DRAW_DEFINITION_NOT_FOUND, EVENT_NOT_FOUND } from '../constants/errorConditionConstants';
 import { DrawDefinition, Tournament, Event } from '../types/tournamentTypes';
 import { TournamentRecords, ResultType } from '../types/factoryTypes';

@@ -1,13 +1,15 @@
-import { addNotice, getTopics } from '../../global/state/globalState';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { updateTeamEventEntries } from './updateTeamEventEntries';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
 import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,

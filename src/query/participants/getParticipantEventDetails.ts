@@ -1,10 +1,10 @@
-import { overlap } from '../../tools/arrays';
+import { overlap } from '@Tools/arrays';
 
-import { PAIR, TEAM } from '../../constants/participantConstants';
+// constants and types
 import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-
+import { PAIR, TEAM } from '../../constants/participantConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../functions/global/decorateResult';
+import { ResultType } from '../../types/factoryTypes';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears

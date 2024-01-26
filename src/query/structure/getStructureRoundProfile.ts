@@ -1,10 +1,11 @@
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
-import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
-import { findStructure } from '../../acquire/findStructure';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findStructure } from '@Acquire/findStructure';
 
-import { MatchUpsMap } from '../matchUps/getMatchUpsMap';
+// constants and types
 import { RoundMatchUpsResult, getRoundMatchUps } from '../matchUps/getRoundMatchUps';
+import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
+import { MatchUpsMap } from '../../types/factoryTypes';
 
 type GetStructureRoundProfileArgs = {
   drawDefinition: DrawDefinition;

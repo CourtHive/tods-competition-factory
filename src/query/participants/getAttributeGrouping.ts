@@ -1,9 +1,9 @@
-import { processAccessors } from '../drawDefinition/processAccessors';
-import { unique } from '../../tools/arrays';
+import { processAccessors } from '@Query/drawDefinition/processAccessors';
+import { unique } from '@Tools/arrays';
 
-import { ResultType } from '../../functions/global/decorateResult';
+// constants and types
+import { IdCollections, ResultType } from '../../types/factoryTypes';
 import { HydratedParticipant } from '../../types/hydrated';
-import { IdCollections } from '../../types/factoryTypes';
 import {
   MISSING_PARTICIPANT,
   MISSING_PARTICIPANTS,

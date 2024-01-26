@@ -1,8 +1,8 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '@Generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { ensureInt } from '@Tools/ensureInt';
 import { generateAdHoc } from './generateAdHoc';
 import { prepareStage } from './prepareStage';
+import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
 import { AD_HOC, LUCKY_DRAW, MAIN } from '../../../../constants/drawDefinitionConstants';

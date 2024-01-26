@@ -1,23 +1,25 @@
-import { generateCollectionMatchUps } from '../../assemblies/generators/drawDefinitions/tieMatchUps';
-import { compareTieFormats } from '../../query/hierarchical/tieFormats/compareTieFormats';
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import { getTieFormat } from '../../query/hierarchical/tieFormats/getTieFormat';
-import { instanceCount, intersection } from '../../tools/arrays';
-import { xa } from '../../tools/objects';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { validUpdate } from '../../validators/validUpdate';
+import { generateCollectionMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { instanceCount, intersection } from '@Tools/arrays';
+import { validUpdate } from '@Validators/validUpdate';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { xa } from '@Tools/objects';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,
   modifyDrawNotice,
   modifyMatchUpNotice,
-} from '../notifications/drawNotifications';
+} from '@Mutate/notifications/drawNotifications';
 
+// constants and types
 import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
 import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import { TEAM } from '../../constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,

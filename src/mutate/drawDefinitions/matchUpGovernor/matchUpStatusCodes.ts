@@ -1,7 +1,8 @@
-import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { isString } from '../../../tools/objects';
+import { getPairedPreviousMatchUp } from '@Mutate/drawDefinitions/positionGovernor/getPairedPreviousMatchup';
+import { isString } from '@Tools/objects';
 
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+// types
+import { MatchUpsMap } from '../../../types/factoryTypes';
 import { MatchUp } from '../../../types/tournamentTypes';
 
 type UpdateMatchUpStatusCodesArgs = {

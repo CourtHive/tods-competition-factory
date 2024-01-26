@@ -1,8 +1,9 @@
-import { validateTieFormat } from '../../validators/validateTieFormat';
-import { UUID } from '../../tools/UUID';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { UUID } from '@Tools/UUID';
 
-import { ResultType } from '../../functions/global/decorateResult';
+// types
 import { TieFormat } from '../../types/tournamentTypes';
+import { ResultType } from '../../types/factoryTypes';
 
 type CheckTieFormatArgs = {
   tieFormat: TieFormat;

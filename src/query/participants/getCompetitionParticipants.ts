@@ -1,11 +1,10 @@
 import { getParticipants as participantGetter } from './getParticipants';
-// import { deepMerge } from '../../tools/deepMerge';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
 import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
-import { ResultType } from '../../functions/global/decorateResult';
+import { ParticipantMap, ResultType } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import { ParticipantMap } from '../../types/factoryTypes';
 import { MatchUp } from '../../types/tournamentTypes';
 
 export function getCompetitionParticipants(params): ResultType & {

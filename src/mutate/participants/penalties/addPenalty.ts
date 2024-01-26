@@ -1,13 +1,13 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
-import { addNotice } from '../../../global/state/globalState';
-import { addExtension } from '../../extensions/addExtension';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getParticipantId } from '@Functions/global/extractors';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { addNotice } from '@Global/state/globalState';
 
+// constants and types
 import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
+import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { ResultType } from '../../../functions/global/decorateResult';
-import { TournamentRecords } from '../../../types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_PENALTY_TYPE,

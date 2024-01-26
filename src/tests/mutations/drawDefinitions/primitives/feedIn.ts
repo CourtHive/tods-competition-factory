@@ -1,11 +1,12 @@
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 
+// constants and types
 import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { ResultType } from '../../../../functions/global/decorateResult';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
 import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { ResultType } from '../../../../types/factoryTypes';
 
 export function feedInChampionship(params): ResultType & {
   consolationStructure?: any;

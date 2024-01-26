@@ -5,7 +5,6 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
-import { MatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -18,6 +17,7 @@ import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpsMap } from '../../../types/factoryTypes';
 
 export function removeDirectedParticipants(params): {
   error?: ErrorType;

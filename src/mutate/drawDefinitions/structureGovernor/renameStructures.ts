@@ -1,9 +1,10 @@
-import { isObject } from '../../../tools/objects';
+import { isObject } from '@Tools/objects';
 
-import { ResultType } from '../../../functions/global/decorateResult';
+// constants and types
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { ResultType } from '../../../types/factoryTypes';
 
 type RenameStructuresArgs = {
   drawDefinition: DrawDefinition;

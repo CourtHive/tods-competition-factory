@@ -1,9 +1,10 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { MatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { intersection } from '../../../tools/arrays';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { intersection } from '@Tools/arrays';
 
-import { DrawDefinition, Structure } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+// types
+import { DrawDefinition, Structure } from '../../types/tournamentTypes';
+import { MatchUpsMap } from '../../types/factoryTypes';
+import { HydratedMatchUp } from '../../types/hydrated';
 
 type GetTargetMatchUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

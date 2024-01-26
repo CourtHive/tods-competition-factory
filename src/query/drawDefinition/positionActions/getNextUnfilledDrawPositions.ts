@@ -1,11 +1,11 @@
-import { structureAssignedDrawPositions } from '../positionsGetter';
-import { findStructure } from '../../../acquire/findStructure';
-import { getNextSeedBlock } from '../seedGetter';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getNextSeedBlock } from '@Query/drawDefinition/seedGetter';
+import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
+import { SeedingProfile, ResultType } from '../../../types/factoryTypes';
 import { DrawDefinition, Event } from '../../../types/tournamentTypes';
-import { ResultType } from '../../../functions/global/decorateResult';
-import { SeedingProfile } from '../../../types/factoryTypes';
 
 type GetNextUfilledDrawPositionsArgs = {
   provisionalPositioning?: boolean;

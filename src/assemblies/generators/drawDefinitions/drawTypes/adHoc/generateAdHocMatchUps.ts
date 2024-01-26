@@ -99,6 +99,10 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     return { error: INVALID_VALUES, info: 'matchUpsCount or pairings error' };
   }
 
+  if (matchUpsCount && matchUpsCount > 25) {
+    return { error: INVALID_VALUES, info: 'matchUpsCount must be less than 25' };
+  }
+
   // structure must not be a container of other structures
   // structure must not contain matchUps with roundPosition
   // structure must not determine finishingPosition by ROUND_OUTCOME

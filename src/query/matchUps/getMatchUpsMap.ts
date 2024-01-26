@@ -1,20 +1,8 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { HydratedMatchUp } from '../../types/hydrated';
+// constants and types
 import { DrawDefinition, MatchUp, Structure } from '../../types/tournamentTypes';
-
-export type MappedMatchUps = {
-  [key: string]: {
-    matchUps: HydratedMatchUp[] | MatchUp[] | undefined;
-    itemStructureIds: string[];
-    structureName?: string;
-  };
-};
-
-export type MatchUpsMap = {
-  mappedMatchUps: MappedMatchUps;
-  drawMatchUps: MatchUp[];
-};
+import { MappedMatchUps, MatchUpsMap } from '../../types/factoryTypes';
 
 type GetMatchUpsMapArgs = {
   drawDefinition?: DrawDefinition;

@@ -1,23 +1,24 @@
-import { removeCollectionAssignments } from '../../events/removeCollectionAssignments';
-import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { deleteParticipants } from '../../participants/deleteParticipants';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { modifyParticipant } from '../../participants/modifyParticipant';
-import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
-import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
-import { addParticipant } from '../../participants/addParticipant';
-import { getTeamLineUp } from '../../../query/drawDefinition/getTeamLineUp';
+import { removeCollectionAssignments } from '@Mutate/events/removeCollectionAssignments';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { deleteParticipants } from '@Mutate/participants/deleteParticipants';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { modifyParticipant } from '@Mutate/participants/modifyParticipant';
+import { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
+import { getTieMatchUpContext } from '@Mutate/events/getTieMatchUpContext';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { addParticipant } from '@Mutate/participants/addParticipant';
+import { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureSideLineUps } from './ensureSideLineUps';
-import { overlap } from '../../../tools/arrays';
+import { overlap } from '@Tools/arrays';
 
+// constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { LineUp, PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { LineUp, PolicyDefinitions } from '../../../types/factoryTypes';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { COMPETITOR } from '../../../constants/participantRoles';

@@ -1,27 +1,28 @@
-import { getAvailablePlayoffProfiles } from '../../../query/drawDefinition/getAvailablePlayoffProfiles';
-import { assignDrawPositionBye } from '../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { generateAndPopulateRRplayoffStructures } from './generateAndPopulateRRplayoffStructures';
-import { directParticipants } from '../../../mutate/matchUps/drawPositions/directParticipants';
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { positionTargets } from '../../../query/matchUp/positionTargets';
-import { checkMatchUpIsComplete } from '../../../query/matchUp/checkMatchUpIsComplete';
+import { getAvailablePlayoffProfiles } from '@Query/drawDefinition/getAvailablePlayoffProfiles';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { NamingEntry, generatePlayoffStructures } from './drawTypes/playoffStructures';
-import { ResultType, decorateResult } from '../../../functions/global/decorateResult';
-import { addGoesTo } from '../../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
-import { getSourceRounds } from '../../../query/drawDefinition/getSourceRounds';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpId } from '../../../functions/global/extractors';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../tools/ensureInt';
+import { directParticipants } from '@Mutate/matchUps/drawPositions/directParticipants';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
+import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { getSourceRounds } from '@Query/drawDefinition/getSourceRounds';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { findStructure } from '@Acquire/findStructure';
 import { generateTieMatchUps } from './tieMatchUps';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { ensureInt } from '@Tools/ensureInt';
 
+// constants and types
 import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../../types/tournamentTypes';
 import { CONTAINER, LOSER, PLAY_OFF, TOP_DOWN } from '../../../constants/drawDefinitionConstants';
+import { RoundProfile, ResultType } from '../../../types/factoryTypes';
 import { BYE } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { RoundProfile } from '../../../types/factoryTypes';
 import { TEAM } from '../../../constants/matchUpTypes';
 import {
   INVALID_VALUES,

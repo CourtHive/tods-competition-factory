@@ -1,17 +1,18 @@
-import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
-import { addUpcomingMatchUps } from '../../mutate/drawDefinitions/matchUpGovernor/addUpcomingMatchUps';
-import { getContextContent } from '../hierarchical/getContextContent';
-import { getExitProfiles } from '../drawDefinition/getExitProfile';
-import { MatchUpsMap, getMatchUpsMap } from './getMatchUpsMap';
-import { getStructureMatchUps } from '../structure/getStructureMatchUps';
-import { getDrawStructures } from '../../acquire/findStructure';
-import { filterMatchUps } from '../filterMatchUps';
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { addParticipantGroupings } from '@Mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
+import { addUpcomingMatchUps } from '@Mutate/drawDefinitions/matchUpGovernor/addUpcomingMatchUps';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { getContextContent } from '@Query/hierarchical/getContextContent';
+import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getDrawStructures } from '@Acquire/findStructure';
+import { filterMatchUps } from '@Query/filterMatchUps';
+import { getMatchUpsMap } from './getMatchUpsMap';
 
-import { GroupsMatchUpsResult } from '../../types/factoryTypes';
+// constants and types
+import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { GroupsMatchUpsResult, MatchUpsMap, ResultType } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state

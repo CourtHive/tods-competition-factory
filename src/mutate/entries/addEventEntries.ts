@@ -1,21 +1,24 @@
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { addDrawEntries } from '@Mutate/drawDefinitions/addDrawEntries';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { addExtension } from '../extensions/addExtension';
-import { isValidExtension } from '../../validators/isValidExtension';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { isUngrouped } from '../../query/entries/isUngrouped';
-import { addDrawEntries } from '../drawDefinitions/addDrawEntries';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { removeEventEntries } from './removeEventEntries';
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { isUngrouped } from '@Query/entries/isUngrouped';
 
+// constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
 import { ROUND_TARGET } from '../../constants/extensionConstants';
 import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
 import { MAIN } from '../../constants/drawDefinitionConstants';
 import { ANY, MIXED } from '../../constants/genderConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -24,7 +27,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
 import {
   DrawDefinition,
   EntryStatusUnion,
@@ -33,7 +35,6 @@ import {
   StageTypeUnion,
   Tournament,
 } from '../../types/tournamentTypes';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.

@@ -1,9 +1,10 @@
-import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { instanceCount } from '../../tools/arrays';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { instanceCount } from '@Tools/arrays';
 import { analyzeSet } from './analyzeSet';
 
+// constants and types
 import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../functions/global/decorateResult';
+import { ResultType } from '../../types/factoryTypes';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 

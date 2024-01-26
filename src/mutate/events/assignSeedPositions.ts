@@ -1,10 +1,11 @@
-import { getStructureSeedAssignments } from '../../query/structure/getStructureSeedAssignments';
-import { assignSeed } from '../drawDefinitions/entryGovernor/seedAssignment';
-import { uniqueValues } from '../../tools/arrays';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { uniqueValues } from '@Tools/arrays';
 
-import { ResultType } from '../../functions/global/decorateResult';
+// constants and types
+import { DrawDefinition, SeedAssignment, Tournament } from '../../types/tournamentTypes';
+import { SeedingProfile, ResultType } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
-import { SeedingProfile } from '../../types/factoryTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
@@ -12,7 +13,6 @@ import {
   NO_MODIFICATIONS_APPLIED,
   INVALID_PARTICIPANT_SEEDING,
 } from '../../constants/errorConditionConstants';
-import { DrawDefinition, SeedAssignment, Tournament } from '../../types/tournamentTypes';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated

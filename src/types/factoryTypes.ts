@@ -3,7 +3,6 @@ import { SignedInStatusUnion } from '../constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
 import { ErrorType } from '../constants/errorConditionConstants';
 import { ValidPolicyTypes } from '../constants/policyConstants';
-import { MatchUpsMap } from '../query/matchUps/getMatchUpsMap';
 import {
   Category,
   DrawDefinition,
@@ -24,6 +23,7 @@ import {
   DrawTypeUnion,
   TieFormat,
   Structure,
+  MatchUp,
 } from './tournamentTypes';
 
 export type FactoryEngine = {
@@ -523,4 +523,17 @@ export type ResultType = {
   success?: boolean;
   valid?: boolean;
   info?: any;
+};
+
+export type MappedMatchUps = {
+  [key: string]: {
+    matchUps: HydratedMatchUp[] | MatchUp[] | undefined;
+    itemStructureIds: string[];
+    structureName?: string;
+  };
+};
+
+export type MatchUpsMap = {
+  mappedMatchUps: MappedMatchUps;
+  drawMatchUps: MatchUp[];
 };

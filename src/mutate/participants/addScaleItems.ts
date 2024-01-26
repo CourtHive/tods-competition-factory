@@ -1,16 +1,16 @@
-import { addDrawDefinitionTimeItem } from '../drawDefinitions/addDrawDefinitionTimeItem';
-import { participantScaleItem } from '../../query/participant/participantScaleItem';
-import { addEventTimeItem, addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { findEvent } from '../../acquire/findEvent';
+import { addDrawDefinitionTimeItem } from '@Mutate/drawDefinitions/addDrawDefinitionTimeItem';
+import { addEventTimeItem, addTournamentTimeItem } from '@Mutate/timeItems/addTimeItem';
+import { participantScaleItem } from '@Query/participant/participantScaleItem';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { findEvent } from '@Acquire/findEvent';
 
+// constants and types
 import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../functions/global/decorateResult';
+import { ScaleItem, ResultType } from '../../types/factoryTypes';
 import { SUCCESS } from '../../constants/resultConstants';
 import { SCALE } from '../../constants/scaleConstants';
-import { ScaleItem } from '../../types/factoryTypes';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,

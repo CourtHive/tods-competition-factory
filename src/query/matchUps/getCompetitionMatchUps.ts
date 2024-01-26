@@ -1,13 +1,14 @@
 import { tournamentMatchUps } from './getTournamentMatchUps';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
-import { ResultType } from '../../functions/global/decorateResult';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   GroupInfo,
   MatchUpFilters,
   ParticipantsProfile,
   PolicyDefinitions,
+  ResultType,
   ScheduleVisibilityFilters,
   TournamentRecords,
 } from '../../types/factoryTypes';

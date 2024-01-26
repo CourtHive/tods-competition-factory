@@ -1,11 +1,12 @@
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
-import { addMinutes, timeToDate } from '../../tools/dateTime';
+import { addMinutes, timeToDate } from '@Tools/dateTime';
 import { getEnoughTime } from './getEnoughTime';
 
-import { ResultType } from '../../functions/global/decorateResult';
+// constants and types
 import { ARRAY } from '../../constants/attributeConstants';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import { Court } from '../../types/tournamentTypes';
 
 type GetCourtsAvailableAtPeriodStartArgs = {

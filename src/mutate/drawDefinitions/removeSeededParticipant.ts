@@ -1,7 +1,10 @@
-import { ResultType, decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 
+// constants and types
+import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 import { DrawDefinition, Tournament } from '../../types/tournamentTypes';
 import { SUCCESS } from '../../constants/resultConstants';
+import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
@@ -9,7 +12,6 @@ import {
   NOT_FOUND,
   STRUCTURE_NOT_FOUND,
 } from '../../constants/errorConditionConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
 
 type RemoveSeededParticipantArgs = {
   tournamentRecord: Tournament;
