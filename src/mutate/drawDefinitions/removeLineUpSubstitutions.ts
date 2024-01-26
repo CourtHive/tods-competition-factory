@@ -1,6 +1,7 @@
-import { getCollectionPositionAssignments } from '../events/getCollectionPositionAssignments';
-import { unique } from '../../tools/arrays';
+import { getCollectionPositionAssignments } from '@Query/hierarchical/tieFormats/getCollectionPositionAssignments';
+import { unique } from '@Tools/arrays';
 
+// types
 import { LineUp } from '../../types/factoryTypes';
 
 export function removeLineUpSubstitutions({ lineUp }: { lineUp: LineUp }) {

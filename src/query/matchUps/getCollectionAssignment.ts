@@ -1,7 +1,8 @@
-import { getCollectionPositionAssignments } from '../../mutate/events/getCollectionPositionAssignments';
-import { getPairedParticipant } from '../participant/getPairedParticipant';
-import { getTeamLineUp } from '../drawDefinition/getTeamLineUp';
+import { getCollectionPositionAssignments } from '@Query/hierarchical/tieFormats/getCollectionPositionAssignments';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 
+// constants and types
 import { DrawDefinition, Participant, PositionAssignment } from '../../types/tournamentTypes';
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';
 import { DOUBLES } from '../../constants/matchUpTypes';

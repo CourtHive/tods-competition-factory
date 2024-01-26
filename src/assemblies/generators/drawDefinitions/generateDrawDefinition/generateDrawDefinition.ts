@@ -1,13 +1,11 @@
 import { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
 import { validateAndDeriveDrawValues } from '@Generators/drawDefinitions/validateAndDeriveDrawValues';
+import { getDrawFormat } from '@Generators/drawDefinitions/getDrawFormat';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { generateOrGetExisting } from './generateOrGetExisting';
 import { qualifyingGeneration } from './qualifyingGeneration';
 import { constantToString } from '@Tools/strings';
-
-// relocate
-import { getDrawFormat } from '../getDrawFormat';
 
 // constants and types
 import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';

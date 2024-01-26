@@ -1,3 +1,5 @@
+import { getCollectionPositionAssignments } from '@Query/hierarchical/tieFormats/getCollectionPositionAssignments';
+import { getTieMatchUpContext } from '@Query/hierarchical/tieFormats/getTieMatchUpContext';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '@Mutate/participants/deleteParticipants';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
@@ -9,10 +11,6 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureSideLineUps } from './ensureSideLineUps';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { unique } from '@Tools/arrays';
-
-// relocate
-import { getCollectionPositionAssignments } from '../../events/getCollectionPositionAssignments';
-import { getTieMatchUpContext } from '../../events/getTieMatchUpContext';
 
 // constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';

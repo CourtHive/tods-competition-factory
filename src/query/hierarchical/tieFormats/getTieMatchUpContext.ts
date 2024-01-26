@@ -1,14 +1,15 @@
-import { resolveTieFormat } from '../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../functions/global/extractors';
-import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
-import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getParticipantId } from '@Functions/global/extractors';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { resolveTieFormat } from './resolveTieFormat';
 
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { TEAM } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+// constants and types
+import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { TEAM } from '../../../constants/participantConstants';
+import { SUCCESS } from '../../../constants/resultConstants';
+import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   EVENT_NOT_FOUND,
   ErrorType,
@@ -16,7 +17,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '../../../constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,
@@ -25,7 +26,7 @@ import {
   Structure,
   TieFormat,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '../../../types/tournamentTypes';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp

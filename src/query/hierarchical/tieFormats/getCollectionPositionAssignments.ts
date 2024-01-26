@@ -1,6 +1,9 @@
-import { Substitution } from '../../types/factoryTypes';
+import { Substitution } from '../../../types/factoryTypes';
 
-export function getCollectionPositionAssignments({ collectionPosition, collectionId, lineUp }) {
+export function getCollectionPositionAssignments({ collectionPosition, collectionId, lineUp }): {
+  assignedParticipantIds: string[];
+  substitutions: Substitution[];
+} {
   let assignedParticipantIds: string[] = [];
   const substitutions: Substitution[] = [];
 
