@@ -1,5 +1,5 @@
 import { xa } from '../../../tools/objects';
-import tournamentEngine from '../../../tests/engines/syncEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

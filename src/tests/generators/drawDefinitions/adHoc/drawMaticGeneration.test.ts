@@ -1,18 +1,15 @@
-import { getParticipantId } from '../../../../functions/global/extractors';
-import { generateRange, unique } from '../../../../tools/arrays';
-import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import { getParticipantId } from '@Functions/global/extractors';
+import { generateRange, unique } from '@Tools/arrays';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/eventConstants';
-import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
-import {
-  EXISTING_MATCHUP_ID,
-  INVALID_VALUES,
-  MISSING_PARTICIPANT_IDS,
-} from '../../../../constants/errorConditionConstants';
+import tournamentEngine from '@Engines/syncEngine';
+
+import { EXISTING_MATCHUP_ID, INVALID_VALUES, MISSING_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
 
 const getParticipantType = (eventType) => (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR);
 

@@ -1,9 +1,9 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../../tests/engines/syncEngine';
+import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import disableCalcTournamentRecord from './removeCollectionDisableAutoCalc.tods.json';
+import disableCalcTournamentRecord from '../../../mutate/matchUps/tieFormat/removeCollectionDisableAutoCalc.tods.json';
 import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConstants';
 import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
 import { MAIN } from '../../../constants/drawDefinitionConstants';
