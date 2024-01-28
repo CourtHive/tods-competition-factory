@@ -1,5 +1,9 @@
+/**
+ * NOTE: Vitest requires tsconfigPaths for source files and aliases for test files
+ */
+
 import { configDefaults, defineConfig } from 'vitest/config';
-import tsconfigPaths from 'vite-tsconfig-paths';
+import tsconfigPaths from 'vite-tsconfig-paths'; // necessary for vite to resolve tsconfig paths in factory source files
 
 export default defineConfig({
   plugins: [tsconfigPaths()],
@@ -28,6 +32,25 @@ export default defineConfig({
       branches: 50,
       lines: 30,
       all: true,
+    },
+  },
+  resolve: {
+    // necessary for vitest to resolve tsconfig paths in test.ts files
+    alias: {
+      '@Generators': './src/assemblies/generators',
+      '@Assemblies': './src/assemblies',
+      '@Engines': './src/tests/engines', // test engines
+      '@Validators': './src/validators',
+      '@Constants': './src/constants',
+      '@Functions': './src/functions',
+      '@Acquire': './src/acquire',
+      '@Helpers': './src/helpers',
+      '@Global': './src/global',
+      '@Mutate': './src/mutate',
+      '@Server': './src/server',
+      '@Query': './src/query',
+      '@Tools': './src/tools',
+      '@Types': './src/types',
     },
   },
 });

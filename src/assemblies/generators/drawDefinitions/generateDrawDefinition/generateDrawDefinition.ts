@@ -8,11 +8,11 @@ import { qualifyingGeneration } from './qualifyingGeneration';
 import { constantToString } from '@Tools/strings';
 
 // constants and types
-import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { ErrorType, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { GenerateDrawDefinitionArgs, ResultType } from '../../../../types/factoryTypes';
-import { DrawDefinition, Entry } from '../../../../types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { GenerateDrawDefinitionArgs, ResultType } from '@Types/factoryTypes';
+import { DrawDefinition, Entry } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
   existingDrawDefinition?: boolean;

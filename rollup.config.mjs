@@ -2,18 +2,26 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
-import esbuild from 'rollup-plugin-esbuild';
+// import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import dts from 'rollup-plugin-dts';
 import fs from 'fs-extra';
 import path from 'path';
 
+const tsConfig = JSON.parse(await fs.readFile(new URL('./tsConfig.base.json', import.meta.url)));
 const srcIndex = 'src/index.ts';
 
+/*
 const esmBundle = (config) => ({
   external: (id) => !/^[./]/.test(id),
-  plugins: [esbuild(), json(), terser()],
+  plugins: [
+    esbuild({
+      tsconfig: './tsconfig.base.json',
+    }),
+    json(),
+    terser(),
+  ],
   input: config.input,
   output: [
     {
@@ -27,6 +35,7 @@ const esmBundle = (config) => ({
 
 const esmProfile = [{ input: srcIndex, outputFile: 'dist/index.mjs' }];
 const esmExports = [...esmProfile.map(esmBundle)];
+*/
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -115,7 +124,14 @@ const forgeTypes = [
 const engineTypes = [
   {
     input: srcIndex,
-    plugins: [dts()],
+    plugins: [
+      dts({
+        compilerOptions: {
+          baseUrl: tsConfig.compilerOptions.baseUrl,
+          paths: tsConfig.compilerOptions.paths,
+        },
+      }),
+    ],
     output: {
       file: `${distPath}/tods-competition-factory.d.ts`,
       format: 'es',
@@ -123,4 +139,5 @@ const engineTypes = [
   },
 ];
 
-export default [...cjsExports, ...esmExports, ...engineTypes];
+// export default [...cjsExports, ...esmExports, ...engineTypes];
+export default [...cjsExports, ...engineTypes];
