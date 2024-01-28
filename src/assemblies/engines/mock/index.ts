@@ -1,10 +1,10 @@
-import { deleteNotices, setDevContext, setDeepCopy } from '../../../global/state/globalState';
-import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { factoryVersion } from '../../../functions/global/factoryVersion';
-import * as mocksGovernor from '../../governors/mocksGovernor';
+import { deleteNotices, setDevContext, setDeepCopy } from '@Global/state/globalState';
+import { notifySubscribers } from '@Global/state/notifySubscribers';
+import * as mocksGovernor from '@Assemblies/governors/mocksGovernor';
+import { factoryVersion } from '@Functions/global/factoryVersion';
 
-import { FactoryEngine } from '../../../types/factoryTypes';
-import { setState } from '../parts/stateMethods';
+import { setState } from '@Assemblies/engines/parts/stateMethods';
+import { FactoryEngine } from '@Types/factoryTypes';
 
 let devContextSet = false;
 

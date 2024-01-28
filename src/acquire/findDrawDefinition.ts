@@ -1,17 +1,17 @@
-import { decorateResult } from '../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
 import { findEvent } from './findEvent';
 
-import { DrawDefinition, Event, Tournament } from '../types/tournamentTypes';
-import { SUCCESS } from '../constants/resultConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetDrawDefinitionArgs = {
   tournamentRecords?: { [key: string]: Tournament };
