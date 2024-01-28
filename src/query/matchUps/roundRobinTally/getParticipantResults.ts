@@ -1,11 +1,11 @@
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
-import { intersection } from '../../../tools/arrays';
-import { ensureInt } from '../../../tools/ensureInt';
+import { intersection } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
