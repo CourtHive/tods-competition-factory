@@ -20,6 +20,7 @@ export { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccu
 export { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 export { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
 export { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
+export { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 export { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
 export { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';
