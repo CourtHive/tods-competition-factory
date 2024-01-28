@@ -194,9 +194,6 @@ devDependencies:
   rollup-plugin-dts:
     specifier: 6.1.0
     version: 6.1.0(rollup@4.9.6)(typescript@5.3.3)
-  rollup-plugin-esbuild:
-    specifier: 6.1.1
-    version: 6.1.1(esbuild@0.19.12)(rollup@4.9.6)
   rxjs:
     specifier: ^7.8.1
     version: 7.8.1
@@ -8764,23 +8761,6 @@ packages:
       typescript: 5.3.3
     optionalDependencies:
       '@babel/code-frame': 7.23.5
-    dev: true
-
-  /rollup-plugin-esbuild@6.1.1(esbuild@0.19.12)(rollup@4.9.6):
-    resolution: {integrity: sha512-CehMY9FAqJD5OUaE/Mi1r5z0kNeYxItmRO2zG4Qnv2qWKF09J2lTy5GUzjJR354ZPrLkCj4fiBN41lo8PzBUhw==}
-    engines: {node: '>=14.18.0'}
-    peerDependencies:
-      esbuild: '>=0.18.0'
-      rollup: ^1.20.0 || ^2.0.0 || ^3.0.0 || ^4.0.0
-    dependencies:
-      '@rollup/pluginutils': 5.1.0(rollup@4.9.6)
-      debug: 4.3.4
-      es-module-lexer: 1.4.1
-      esbuild: 0.19.12
-      get-tsconfig: 4.7.2
-      rollup: 4.9.6
-    transitivePeerDependencies:
-      - supports-color
     dev: true
 
   /rollup@3.29.4:

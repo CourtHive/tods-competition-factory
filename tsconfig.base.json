@@ -26,8 +26,10 @@
     "baseUrl": "./",
     "paths": {
       "@Generators/*": ["./src/assemblies/generators/*"],
+      "@Engines/*": ["./src/tests/engines/*"],
       "@Assemblies/*": ["./src/assemblies/*"],
       "@Validators/*": ["./src/validators/*"],
+      "@Constants/*": ["./src/constants/*"],
       "@Functions/*": ["./src/functions/*"],
       "@Acquire/*": ["./src/acquire/*"],
       "@Helpers/*": ["./src/helpers/*"],
@@ -35,7 +37,8 @@
       "@Mutate/*": ["./src/mutate/*"],
       "@Server/*": ["./src/server/*"],
       "@Query/*": ["./src/query/*"],
-      "@Tools/*": ["./src/tools/*"]
+      "@Tools/*": ["./src/tools/*"],
+      "@Types/*": ["./src/types/*"]
     },
 
     "emitDecoratorMetadata": true,
