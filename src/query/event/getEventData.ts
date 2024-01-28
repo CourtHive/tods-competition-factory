@@ -9,8 +9,8 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
 
 // constants and types
-import { ParticipantMap, ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
 import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';

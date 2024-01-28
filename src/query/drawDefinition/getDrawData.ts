@@ -11,11 +11,11 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { xa } from '@Tools/objects';
 
 // constants and types
-import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '../../constants/errorConditionConstants';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { PARTICIPANT_ID } from '../../constants/attributeConstants';
-import { TALLY } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '@Constants/errorConditionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { TALLY } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
   BYE,
