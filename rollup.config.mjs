@@ -2,7 +2,6 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 import commonjs from '@rollup/plugin-commonjs';
 import { babel } from '@rollup/plugin-babel';
-// import esbuild from 'rollup-plugin-esbuild';
 import terser from '@rollup/plugin-terser';
 import json from '@rollup/plugin-json';
 import dts from 'rollup-plugin-dts';
@@ -11,31 +10,6 @@ import path from 'path';
 
 const tsConfig = JSON.parse(await fs.readFile(new URL('./tsConfig.base.json', import.meta.url)));
 const srcIndex = 'src/index.ts';
-
-/*
-const esmBundle = (config) => ({
-  external: (id) => !/^[./]/.test(id),
-  plugins: [
-    esbuild({
-      tsconfig: './tsconfig.base.json',
-    }),
-    json(),
-    terser(),
-  ],
-  input: config.input,
-  output: [
-    {
-      name: config.outputName,
-      file: config.outputFile,
-      sourcemap: true,
-      format: 'es',
-    },
-  ],
-});
-
-const esmProfile = [{ input: srcIndex, outputFile: 'dist/index.mjs' }];
-const esmExports = [...esmProfile.map(esmBundle)];
-*/
 
 const basePath = fs.realpathSync(process.cwd());
 const distPath = path.resolve(basePath, 'dist');
@@ -110,17 +84,6 @@ function createExport({ input, folder, packageName, cjs, esm }) {
 
 const cjsExports = [{ input: srcIndex, cjs: true }].map(createExport);
 
-/*
-// NOTE: for posterity
-const forgeTypes = [
-  {
-    input: 'src/forge/query/index.ts',
-    output: [{ file: `${distPath}/forge/query.d.ts`, format: 'es' }],
-    plugins: [dts()],
-  },
-];
-*/
-
 const engineTypes = [
   {
     input: srcIndex,
@@ -139,5 +102,4 @@ const engineTypes = [
   },
 ];
 
-// export default [...cjsExports, ...esmExports, ...engineTypes];
 export default [...cjsExports, ...engineTypes];

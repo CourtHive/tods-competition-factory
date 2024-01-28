@@ -8,6 +8,7 @@ export { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally
 export { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
 export { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
 export { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+export { getParticipantResults } from '@Query/matchUps/roundRobinTally/getParticipantResults';
 export { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 export { matchUpActions } from '../../../query/drawDefinition/matchUpActions/matchUpActions';
 export { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
@@ -20,6 +21,7 @@ export { getPredictiveAccuracy } from '../../../query/matchUps/getPredictiveAccu
 export { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
 export { tournamentMatchUps } from '../../../query/matchUps/getTournamentMatchUps';
 export { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
+export { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 export { getMatchUpFormat } from '../../../query/hierarchical/getMatchUpFormat';
 export { validMatchUp, validMatchUps } from '../../../validators/validMatchUp';

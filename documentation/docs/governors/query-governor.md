@@ -144,6 +144,14 @@ const { tournamentInfo, eventsData, venuesData } = allEventData;
 
 ---
 
+## getAllStructureMatchUps
+
+```js
+const { matchUps } = engine.getAllStructureMatchUps({ drawId, structureId });
+```
+
+---
+
 ## getAllowedDrawTypes
 
 Returns an array of names of allowed Draw Types, if any applicable policies have been applied to the tournamentRecord.
@@ -721,6 +729,18 @@ const {
   [TEAM]: teamParticipantIds,
 } = engine.getParticipantMembership({
   participantId,
+});
+```
+
+---
+
+## getParticipantResults
+
+```js
+const { participantResults } = engine.getParticipantResuls({
+  participantIds, // optional array to filter results
+  tallyPolicy, // policyDefinition for tallying results
+  matcUps, // must be inContext matchUps
 });
 ```
 
