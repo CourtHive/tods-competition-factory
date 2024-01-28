@@ -79,18 +79,20 @@ test('ratings values should be present on tournamentParticipants in getEventData
 
   expect(mockedMatchUp.sides[0].participant.ratings).toBeUndefined();
 
-  let { eventData } = tournamentEngine.getEventData({ tournamentRecord, eventId });
+  let { eventData, participants } = tournamentEngine.getEventData({ tournamentRecord, eventId });
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).not.toBeUndefined();
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.timeItems).not.toBeUndefined();
+  expect(participants.every(({ person }) => !!person.addresses)).toEqual(true);
 
   // default privacy policy filters out timeItems and ratings
-  ({ eventData } = tournamentEngine.getEventData({
+  ({ eventData, participants } = tournamentEngine.getEventData({
     policyDefinitions: POLICY_PRIVACY_DEFAULT,
     tournamentRecord,
     eventId,
   }));
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).toBeUndefined();
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.timeItems).toBeUndefined();
+  expect(participants.every(({ person }) => !person.addresses)).toEqual(true);
 
   tournamentEngine.setState(tournamentRecord);
   const result = tournamentEngine.competitionScheduleMatchUps({

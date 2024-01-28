@@ -9,11 +9,12 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
 
 // constants and types
-import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '../../types/factoryTypes';
-import { Event, Tournament } from '../../types/tournamentTypes';
-import { PUBLIC } from '../../constants/timeItemConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ParticipantMap, ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
+import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { PUBLIC } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedParticipant } from '@Types/hydrated';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -28,6 +29,7 @@ type GetEventDataArgs = {
 };
 
 export function getEventData(params: GetEventDataArgs): {
+  participants?: HydratedParticipant[];
   error?: ErrorType;
   success?: boolean;
   eventData?: any;
@@ -58,6 +60,7 @@ export function getEventData(params: GetEventDataArgs): {
     withGroupings: true,
     withEvents: false,
     withDraws: false,
+    policyDefinitions, // necessary here for returning public participant data
     ...participantsProfile, // order is important!!
     tournamentRecord,
   });
@@ -195,5 +198,5 @@ export function getEventData(params: GetEventDataArgs): {
   eventData.eventInfo.publishState = publishState;
   eventData.eventInfo.publish = publishStatus;
 
-  return { ...SUCCESS, eventData };
+  return { ...SUCCESS, eventData, participants: tournamentParticipants };
 }
