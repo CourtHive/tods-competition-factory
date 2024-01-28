@@ -8,6 +8,7 @@ export { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally
 export { competitionScheduleMatchUps } from '../../../query/matchUps/competitionScheduleMatchUps';
 export { getMatchUpCompetitiveProfile } from '../../../query/matchUp/getMatchUpCompetitiveProfile';
 export { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+export { getParticipantResults } from '@Query/matchUps/roundRobinTally/getParticipantResults';
 export { getMatchUpScheduleDetails } from '../../../query/matchUp/getMatchUpScheduleDetails';
 export { matchUpActions } from '../../../query/drawDefinition/matchUpActions/matchUpActions';
 export { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
