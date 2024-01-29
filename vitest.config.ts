@@ -10,7 +10,6 @@ export default defineConfig({
   test: {
     onConsoleLog: () => {},
     environment: 'node',
-    useAtomics: true,
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
       reporter: ['html'],
@@ -26,11 +25,13 @@ export default defineConfig({
         'src/forge/**',
         '**/types/**',
       ],
-      statements: 30,
       provider: 'v8',
-      functions: 30,
-      branches: 50,
-      lines: 30,
+      thresholds: {
+        statements: 90,
+        functions: 90,
+        branches: 82,
+        lines: 90,
+      },
       all: true,
     },
   },
