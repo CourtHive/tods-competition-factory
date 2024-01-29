@@ -6,16 +6,17 @@ import { makeDeepCopy } from '../tools/makeDeepCopy';
 import { findDrawMatchUp } from './findDrawMatchUp';
 import { findEvent } from './findEvent';
 
-import { HydratedMatchUp } from '../types/hydrated';
-import { ContextContent, ContextProfile, ParticipantsProfile } from '../types/factoryTypes';
-import { DrawDefinition, Tournament, Event, Structure } from '../types/tournamentTypes';
+// constants and types
+import { ContextContent, ContextProfile, ParticipantsProfile } from '@Types/factoryTypes';
+import { DrawDefinition, Tournament, Event, Structure } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   ErrorType,
   MATCHUP_NOT_FOUND,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type FindMatchUpType = {
   participantsProfile?: ParticipantsProfile;

@@ -1,10 +1,12 @@
-import { replaceTieMatchUpParticipantId } from '../../matchUps/lineUps/replaceTieMatchUpParticipant';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { replaceTieMatchUpParticipantId } from '@Mutate/matchUps/lineUps/replaceTieMatchUpParticipant';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { getParticipantId } from '@Functions/global/extractors';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
+// constants and types
+import { HydratedSide } from '@Types/hydrated';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_ID,
@@ -12,8 +14,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
-} from '../../../constants/errorConditionConstants';
-import { HydratedSide } from '../../../types/hydrated';
+} from '@Constants/errorConditionConstants';
 
 export function substituteParticipant({
   substituteParticipantId,

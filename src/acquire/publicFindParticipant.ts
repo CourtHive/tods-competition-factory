@@ -1,10 +1,11 @@
 import { findParticipant } from './findParticipant';
 
-import { ErrorType, MISSING_VALUE } from '../constants/errorConditionConstants';
-import { HydratedParticipant } from '../types/hydrated';
-import { SUCCESS } from '../constants/resultConstants';
-import { Tournament } from '../types/tournamentTypes';
-import { ContextProfile, PolicyDefinitions, TournamentRecords } from '../types/factoryTypes';
+// constants and types
+import { ContextProfile, PolicyDefinitions, TournamentRecords } from '@Types/factoryTypes';
+import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { HydratedParticipant } from '@Types/hydrated';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 
 type PublicFindParticipantArgs = {
   tournamentRecords?: TournamentRecords;

@@ -13,11 +13,11 @@ import { isConvertableInteger } from '@Tools/math';
 import { intersection } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '../../../constants/errorConditionConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { genderConstants } from '../../../constants/genderConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '@Constants/errorConditionConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
+import { genderConstants } from '@Constants/genderConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   Category,
   CollectionValueProfile,
@@ -27,7 +27,7 @@ import {
   Tournament,
   EventTypeUnion,
   GenderUnion,
-} from '../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 // all child matchUps need to be checked for collectionAssignments / collectionPositions which need to be removed when collectionDefinition.collectionIds are removed
 type ModifyCollectionDefinitionArgs = {

@@ -2,7 +2,7 @@
 
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
-import { tieFormatTelemetry } from '@Mutate/matchUps/tieFormat/tieFormatTelemetry';
+import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
@@ -18,13 +18,13 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '../../types/tournamentTypes';
-import { COMPLETED, IN_PROGRESS } from '../../constants/matchUpStatusConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { TEAM } from '../../constants/matchUpTypes';
+import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,

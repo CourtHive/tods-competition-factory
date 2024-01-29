@@ -1,4 +1,4 @@
-import { modifyCollectionDefinition } from '@Mutate/matchUps/tieFormat/modifyCollectionDefinition';
+import { modifyCollectionDefinition } from '@Mutate/tieFormat/modifyCollectionDefinition';
 import { removeCollectionDefinition } from '@Mutate/tieFormat/removeCollectionDefinition';
 import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
 import { addCollectionDefinition } from '@Mutate/tieFormat/addCollectionDefinition';
@@ -10,9 +10,9 @@ import { numericSortValue } from '@Tools/arrays';
 import { xa } from '@Tools/objects';
 
 // constants and types
-import { DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
-import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DrawDefinition, Event, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type ModifyTieFormatArgs = {
   updateInProgressMatchUps?: boolean;

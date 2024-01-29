@@ -1,19 +1,20 @@
-import { assignMatchUpDrawPosition } from '../../matchUps/drawPositions/assignMatchUpDrawPosition';
+import { advanceDrawPosition, assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignMatchUpDrawPosition } from '@Mutate/matchUps/drawPositions/assignMatchUpDrawPosition';
 import { getPairedPreviousMatchUpIsDoubleExit } from './getPairedPreviousMatchUpIsDoubleExit';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../../query/matchUp/positionTargets';
-import { modifyMatchUpScore } from '../../matchUps/score/modifyMatchUpScore';
-import { getExitWinningSide } from '../matchUpGovernor/getExitWinningSide';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { findStructure } from '../../../acquire/findStructure';
-import { overlap } from '../../../tools/arrays';
-import { advanceDrawPosition, assignDrawPositionBye } from '../../matchUps/drawPositions/assignDrawPositionBye';
+import { getExitWinningSide } from '@Mutate/drawDefinitions/matchUpGovernor/getExitWinningSide';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { findStructure } from '@Acquire/findStructure';
+import { overlap } from '@Tools/arrays';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_POSITION_ASSIGNED, MISSING_MATCHUP, MISSING_STRUCTURE } from '../../../constants/errorConditionConstants';
-import { BYE, DEFAULTED, DOUBLE_DEFAULT, DOUBLE_WALKOVER, WALKOVER } from '../../../constants/matchUpStatusConstants';
+// constants
+import { DRAW_POSITION_ASSIGNED, MISSING_MATCHUP, MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
+import { BYE, DEFAULTED, DOUBLE_DEFAULT, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function doubleExitAdvancement(params) {
   const { tournamentRecord, appliedPolicies, drawDefinition, matchUpsMap, targetData, structure, event } = params;

@@ -12,18 +12,18 @@ import {
 } from '@Mutate/notifications/drawNotifications';
 
 // constants and types
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   DRAW_ID_EXISTS,
   INVALID_DRAW_DEFINITION,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_EVENT,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddDrawDefinitionArgs = {
   flight?: { flightNumber: number };

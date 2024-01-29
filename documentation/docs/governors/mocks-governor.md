@@ -227,7 +227,7 @@ const {
   venueProfiles, // optional - array of profiles for venues to be generated; each venue creates courts
   completeAllMatchUps, // optional - boolean (legacy support for scoreString to be applied to all matchUps)
   randomWinningSide, // optional - boolean; defaults to false which results in always { winningSide: 1 }
-  tournamentAttributes, // optionsl -object attributes will be applied to generated tournamentRecord
+  tournamentAttributes, // optional -object attributes will be applied to generated tournamentRecord
   tournamentExtensions, // optional - array of extensions to be attached to tournamentRecord
   uuids, // optional - array of uuids to be used in entity generators
 

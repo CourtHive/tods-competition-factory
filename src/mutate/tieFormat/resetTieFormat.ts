@@ -7,12 +7,12 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpId } from '@Functions/global/extractors';
 
 // constants and types
-import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '../../constants/attributeConstants';
-import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
-import { INVALID_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ERROR, MATCHUP, MATCHUP_ID, PARAM, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
+import { INVALID_MATCHUP, NOT_FOUND } from '@Constants/errorConditionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 /**
  * remove the tieFormat from a TEAM matchUp if there is a tieFormat further up the hierarchy

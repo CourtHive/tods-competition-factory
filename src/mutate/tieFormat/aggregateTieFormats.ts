@@ -5,11 +5,11 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../types/factoryTypes';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type AggreateTieFormatsArgs = {
   tournamentRecord: Tournament;

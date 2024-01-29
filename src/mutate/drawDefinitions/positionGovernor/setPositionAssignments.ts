@@ -1,19 +1,16 @@
-import { assignDrawPositionBye } from '../../matchUps/drawPositions/assignDrawPositionBye';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { assignDrawPosition } from '../../matchUps/drawPositions/positionAssignment';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
-import { findStructure } from '../../../acquire/findStructure';
-import { intersection } from '../../../tools/arrays';
-import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { findStructure } from '@Acquire/findStructure';
+import { intersection } from '@Tools/arrays';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+// constants
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function setPositionAssignments({
   structurePositionAssignments,

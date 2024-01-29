@@ -1,24 +1,25 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { setMatchUpMatchUpFormat } from '../../../mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../../query/structure/getStructureMatchUps';
-import { getDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { getDrawStructures } from '../../../acquire/findStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { setMatchUpMatchUpFormat } from '@Mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { SINGLES } from '../../../constants/matchUpTypes';
-import { MAIN, ROUND_ROBIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+// constants and types
+import { MAIN, ROUND_ROBIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

@@ -1,7 +1,7 @@
 import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { generateCollectionMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
 import { validateCollectionDefinition } from '@Validators/validateCollectionDefinition';
-import { tieFormatTelemetry } from '@Mutate/matchUps/tieFormat/tieFormatTelemetry';
+import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
@@ -14,16 +14,12 @@ import { validUpdate } from '@Validators/validUpdate';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { TIE_FORMAT_MODIFICATIONS } from '../../constants/extensionConstants';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
-import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
-import {
-  CANNOT_MODIFY_TIEFORMAT,
-  DUPLICATE_VALUE,
-  MISSING_DRAW_DEFINITION,
-} from '../../constants/errorConditionConstants';
+import { CANNOT_MODIFY_TIEFORMAT, DUPLICATE_VALUE, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   Category,
   CollectionDefinition,
@@ -33,7 +29,7 @@ import {
   MatchUp,
   TieFormat,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 /*
  * collectionDefinition will be added to an event tieFormat (if present)

@@ -4,7 +4,7 @@ import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 
 // constants
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function updateTargetTeamMatchUps({
   updateInProgressMatchUps,

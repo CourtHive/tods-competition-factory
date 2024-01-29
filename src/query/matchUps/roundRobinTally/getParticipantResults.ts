@@ -26,7 +26,7 @@ export function getParticipantResults({
 
   const excludeMatchUpStatuses = tallyPolicy?.excludeMatchUpStatuses || [];
 
-  const filteredMatchUps = matchUps.filter((matchUp) => {
+  const filteredMatchUps = matchUps?.filter((matchUp) => {
     return (
       // Do not filter out team matchUps based on matchUpStatus
       (matchUp.tieMatchUps || !excludeMatchUpStatuses.includes(matchUp.matchUpStatus)) &&
@@ -37,16 +37,16 @@ export function getParticipantResults({
     );
   });
 
-  const allSets = filteredMatchUps.flatMap(({ score, tieMatchUps }) =>
+  const allSets = filteredMatchUps?.flatMap(({ score, tieMatchUps }) =>
     tieMatchUps
       ? tieMatchUps
           .filter(({ matchUpStatus }) => !excludeMatchUpStatuses.includes(matchUpStatus))
           .flatMap(({ score }) => score?.sets?.length ?? 0)
       : score?.sets?.length ?? 0,
   );
-  const totalSets = allSets.reduce((a, b) => a + b, 0);
+  const totalSets = allSets?.reduce((a, b) => a + b, 0);
 
-  for (const matchUp of filteredMatchUps) {
+  for (const matchUp of filteredMatchUps ?? []) {
     const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } = matchUp;
 
     const manualGamesOverride =

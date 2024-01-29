@@ -1,16 +1,17 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { findDrawMatchUp } from '../../acquire/findDrawMatchUp';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { findStructure } from '../../acquire/findStructure';
-import { isConvertableInteger } from '../../tools/math';
-import { numericSortValue } from '../../tools/arrays';
-import { copyTieFormat } from '../../query/hierarchical/tieFormats/copyTieFormat';
-import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
+import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findStructure } from '@Acquire/findStructure';
+import { isConvertableInteger } from '@Tools/math';
+import { numericSortValue } from '@Tools/arrays';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
-import { INVALID_VALUES, MISSING_MATCHUP, NOT_FOUND } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, MatchUp, Tournament } from '../../types/tournamentTypes';
+// constants and types
+import { INVALID_VALUES, MISSING_MATCHUP, NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);

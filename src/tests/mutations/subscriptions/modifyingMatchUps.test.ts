@@ -1,17 +1,18 @@
-import { rgbColors } from '../../../functions/global/logColors';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
+import { setDevContext, setSubscriptions } from '@Global/state/globalState';
+import { rgbColors } from '@Functions/global/logColors';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import diff from 'variable-diff';
 import chalk from 'chalk';
-import { setDevContext, setSubscriptions } from '../../../global/state/globalState';
-import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '../../../functions/global/globalLog';
 
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
-import { FEED_IN_CHAMPIONSHIP, MAIN } from '../../../constants/drawDefinitionConstants';
+// constants
+import { FEED_IN_CHAMPIONSHIP, MAIN } from '@Constants/drawDefinitionConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
 
 const debug = false;
 const debugLog = debug ? console.log : () => {};

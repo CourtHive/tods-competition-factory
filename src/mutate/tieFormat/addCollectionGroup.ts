@@ -1,10 +1,11 @@
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { collectionGroupUpdate } from './collectionGroupUpdate';
-import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
 
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+// constants
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function addCollectionGroup({
   updateInProgressMatchUps = true,

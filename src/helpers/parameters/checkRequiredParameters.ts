@@ -2,7 +2,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isFunction, isObject } from '@Tools/objects';
 import { intersection } from '@Tools/arrays';
 
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -12,6 +12,7 @@ import {
   MISSING_EVENT,
   MISSING_MATCHUP,
   MISSING_MATCHUPS,
+  MISSING_MATCHUP_FORMAT,
   MISSING_MATCHUP_ID,
   MISSING_MATCHUP_IDS,
   MISSING_PARTICIPANT,
@@ -24,7 +25,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ARRAY,
   COURT_ID,
@@ -35,6 +36,7 @@ import {
   EVENT_ID,
   MATCHUP,
   MATCHUPS,
+  MATCHUP_FORMAT,
   MATCHUP_ID,
   MATCHUP_IDS,
   OBJECT,
@@ -50,7 +52,7 @@ import {
   TOURNAMENT_RECORDS,
   UUIDS,
   VENUE_IDS,
-} from '../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 type Params = { [key: string]: any };
 type RequiredParams = {
@@ -68,6 +70,7 @@ const errors = {
   [POLICY_DEFINITIONS]: MISSING_POLICY_DEFINITION,
   [DRAW_DEFINITION]: MISSING_DRAW_DEFINITION,
   [PARTICIPANT_ID]: MISSING_PARTICIPANT_ID,
+  [MATCHUP_FORMAT]: MISSING_MATCHUP_FORMAT,
   [TOURNAMENT_ID]: MISSING_TOURNAMENT_ID,
   [STRUCTURE_ID]: MISSING_STRUCTURE_ID,
   [MATCHUP_IDS]: MISSING_MATCHUP_IDS,

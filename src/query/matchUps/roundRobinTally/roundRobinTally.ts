@@ -7,11 +7,11 @@ import { getGroupOrder } from './getGroupOrder';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
-import { PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { INVALID_VALUES, MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 
 type TallyParticipantResultsArgs = {
   policyDefinitions?: PolicyDefinitions;

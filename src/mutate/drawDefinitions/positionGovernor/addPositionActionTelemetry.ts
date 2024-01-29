@@ -1,9 +1,10 @@
-import { addExtension } from '../../extensions/addExtension';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { findExtension } from '../../../acquire/findExtension';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { findExtension } from '@Acquire/findExtension';
 
-import { AUDIT_POSITION_ACTIONS } from '../../../constants/extensionConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+// constants
+import { AUDIT_POSITION_ACTIONS } from '@Constants/extensionConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
 // TODO: consider adding timestamp attribute to positionAction object

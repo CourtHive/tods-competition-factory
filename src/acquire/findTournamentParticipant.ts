@@ -1,6 +1,6 @@
-import { Participant, Tournament } from '../types/tournamentTypes';
-import { TournamentRecords } from '../types/factoryTypes';
-import { ErrorType, PARTICIPANT_NOT_FOUND } from '../constants/errorConditionConstants';
+import { ErrorType, PARTICIPANT_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { Participant, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 type FindTournamentParticipantArgs = {
   tournamentRecords?: TournamentRecords;

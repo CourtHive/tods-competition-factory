@@ -1,12 +1,12 @@
-import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
-import tournamentEngine from '../../../tests/engines/syncEngine';
-import { timeKeeper } from '../../../global/state/globalState';
-import mocksEngine from '../../../assemblies/engines/mock';
-import { generateRange } from '../../../tools/arrays';
+import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
+import { timeKeeper } from '@Global/state/globalState';
 import { participantHeadToHead } from '../headToHead';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '../../../constants/drawDefinitionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 const drawDefinitionsCount = 10;
 const drawSize = 32;
@@ -20,6 +20,7 @@ it('can generate H2H reports with Competitors In Common', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize, drawType: COMPASS }],
     completeAllMatchUps: true,
+    randomWinningSide: true,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -54,10 +55,16 @@ it('can generate H2H reports with Competitors In Common', () => {
 
   const mappedMatchUps = participantsResult.mappedMatchUps;
 
-  const { h2h } = participantHeadToHead({
+  let h2h = participantHeadToHead({
+    // @ts-expect-error invalid values
+    participants: [],
+    mappedMatchUps,
+  }).h2h;
+
+  h2h = participantHeadToHead({
     participants: twoParticipants,
     mappedMatchUps,
-  });
+  }).h2h;
   timeKeeper('stop');
   const time = timeKeeper('report');
   if (reportTime) console.log(time.elapsedTime);

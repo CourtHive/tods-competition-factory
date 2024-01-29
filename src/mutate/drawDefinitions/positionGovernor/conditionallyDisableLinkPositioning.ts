@@ -1,8 +1,9 @@
-import { addExtension } from '../../extensions/addExtension';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { addExtension } from '@Mutate/extensions/addExtension';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DISABLE_LINKS } from '../../../constants/extensionConstants';
+// constants
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { DISABLE_LINKS } from '@Constants/extensionConstants';
 
 export function conditionallyDisableLinkPositioning({ drawPositions, structure }) {
   if ([QUALIFYING, MAIN].includes(structure.stage) && structure.stageSequence === 1) {

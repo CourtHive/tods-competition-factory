@@ -1,13 +1,14 @@
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { updateTargetTeamMatchUps } from '../../tieFormat/updateTargetTeamMatchUps';
-import { getTargetTeamMatchUps } from '../../../query/hierarchical/tieFormats/getTargetTeamMatchUps';
-import { calculateWinCriteria } from '../../../query/matchUp/calculateWinCriteria';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
+import { getTargetTeamMatchUps } from '@Query/hierarchical/tieFormats/getTargetTeamMatchUps';
+import { updateTargetTeamMatchUps } from '@Mutate/tieFormat/updateTargetTeamMatchUps';
+import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../../types/tournamentTypes';
+// constants and types
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type CollectionGroupUpdateArgs = {
   updateInProgressMatchUps?: boolean;

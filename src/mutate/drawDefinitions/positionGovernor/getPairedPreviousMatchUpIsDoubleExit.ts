@@ -1,6 +1,7 @@
-import { getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
+import { getMappedStructureMatchUps } from '@Query/matchUps/getMatchUpsMap';
 
-import { DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
+// constants
+import { DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 
 export function getPairedPreviousMatchUpIsDoubleExit(params) {
   let { sourceMatchUp } = params;

@@ -1,7 +1,8 @@
-import { getAppliedPolicies } from '../query/extensions/getAppliedPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure, Tournament } from '../types/tournamentTypes';
+// constants and types
+import { ErrorType, MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 
 type FindPolicyArgs = {
   drawDefinition?: DrawDefinition;

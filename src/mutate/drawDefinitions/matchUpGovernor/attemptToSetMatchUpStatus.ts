@@ -7,7 +7,7 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
 
 // constants
-import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import {
   BYE,
   CANCELLED,

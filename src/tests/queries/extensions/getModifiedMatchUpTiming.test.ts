@@ -1,13 +1,15 @@
-import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getModifiedMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
 import {
   INVALID_VALUES,
+  MISSING_MATCHUP_FORMAT,
   MISSING_TOURNAMENT_RECORD,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can get modified matchUpTiming', () => {
   // @ts-expect-error no params
@@ -27,7 +29,7 @@ it('can get modified matchUpTiming', () => {
 
   // @ts-expect-error missing matchUpFormat
   result = getModifiedMatchUpFormatTiming({ tournamentRecord });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
 
   tournamentEngine.setState(tournamentRecord);
   const { event } = tournamentEngine.getEvent({ eventId });
@@ -37,7 +39,7 @@ it('can get modified matchUpTiming', () => {
     tournamentRecord,
     event,
   });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
   expect(result.info).toEqual({ param: 'matchUpFormat' });
 
   result = getModifiedMatchUpFormatTiming({

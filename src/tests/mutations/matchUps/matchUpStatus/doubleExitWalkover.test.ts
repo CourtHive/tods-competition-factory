@@ -147,9 +147,9 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
   // Enter DOUBLE_WALKOVER in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId: targetMatchUp.matchUpId,
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    matchUpId: targetMatchUp.matchUpId,
+    drawId,
   });
   expect(modifiedMatchUpLog).toEqual([
     [1, 3],

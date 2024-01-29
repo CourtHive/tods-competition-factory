@@ -1,4 +1,4 @@
-import { POLICY_TYPE_DRAWS } from '../../constants/policyConstants';
+import { POLICY_TYPE_DRAWS } from '@Constants/policyConstants';
 
 export const POLICY_DRAWS_DEFAULT = {
   [POLICY_TYPE_DRAWS]: {

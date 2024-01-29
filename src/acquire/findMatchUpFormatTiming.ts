@@ -1,9 +1,10 @@
-import { getMatchUpFormatTiming } from '../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { isValidMatchUpFormat } from '../validators/isValidMatchUpFormat';
+import { getMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { findEvent } from './findEvent';
 
-import { UNRECOGNIZED_MATCHUP_FORMAT } from '../constants/errorConditionConstants';
-import { Tournament, EventTypeUnion } from '../types/tournamentTypes';
+// constants and types
+import { UNRECOGNIZED_MATCHUP_FORMAT } from '@Constants/errorConditionConstants';
+import { Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 
 type FindMatchUpFormatTiming = {
   tournamentRecords: { [key: string]: Tournament };

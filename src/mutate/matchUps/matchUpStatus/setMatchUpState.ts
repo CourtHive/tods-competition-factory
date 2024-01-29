@@ -2,21 +2,21 @@ import { getProjectedDualWinningSide } from '@Mutate/drawDefinitions/matchUpGove
 import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGovernor/noDownstreamDependencies';
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
-import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems';
-import { positionTargets } from '@Query/matchUp/positionTargets';
 import { swapWinnerLoser } from '@Mutate/matchUps/drawPositions/swapWinnerLoser';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { ensureSideLineUps } from '@Mutate/matchUps/lineUps/ensureSideLineUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { validateScore } from '../../../validators/validateScore';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { pushGlobalLog } from '@Functions/global/globalLog';
@@ -24,12 +24,12 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { DrawDefinition, Event, MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
+import { POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { DISABLE_AUTO_CALC } from '@Constants/extensionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
   INCOMPATIBLE_MATCHUP_STATUS,
@@ -38,7 +38,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ABANDONED,
   AWAITING_RESULT,
@@ -52,7 +52,7 @@ import {
   TO_BE_PLAYED,
   validMatchUpStatuses,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 // NOTE: Internal method for setting matchUpStatus or score and winningSide, not to be confused with setMatchUpStatus
 

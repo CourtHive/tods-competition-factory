@@ -2,16 +2,16 @@ import { structureSort } from '@Functions/sorters/structureSort';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { StructureSortConfig, ResultType } from '../types/factoryTypes';
-import { ITEM, validStages } from '../constants/drawDefinitionConstants';
-import { DrawDefinition, Structure } from '../types/tournamentTypes';
-import { ROUND_TARGET } from '../constants/extensionConstants';
+import { StructureSortConfig, ResultType } from '@Types/factoryTypes';
+import { ITEM, validStages } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
 import {
   MISSING_STRUCTURES,
   STRUCTURE_NOT_FOUND,
   MISSING_STRUCTURE_ID,
   MISSING_DRAW_DEFINITION,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type FindStructureArgs = {
   drawDefinition?: DrawDefinition;
