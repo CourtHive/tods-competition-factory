@@ -738,7 +738,7 @@ const {
 
 ```js
 const { participantResults } = engine.getParticipantResuls({
-  participantIds, // optional array to filter results
+  participantIds, // optional array to filter results; used in ROUND_ROBIN for groups
   tallyPolicy, // policyDefinition for tallying results
   matcUps, // must be inContext matchUps
 });
@@ -789,7 +789,7 @@ const {
     withPotentialMatchUps, // optional boolean
     withRankingProfile, // optional boolean - include details necessary for point awards
     withScaleValues, // optional - include { ratings, rankings } attributes extracted from timeItems
-    withSeeding, // optionsl - add event seeding
+    withSeeding, // optional - add event seeding
     withScheduleItems, // optional boolean - include array of scheduled matchUp details
     withSignInStatus, // optional boolean
     withStatistics, // optional - adds events, matchUps and statistics, e.g. 'winRatio'
@@ -1463,6 +1463,17 @@ const {
   payload, // attributes to be passed to method
   // additional method-specific options for values to be added to payload when calling method
 } = validAction;
+```
+
+---
+
+## tallyParticipantResults
+
+```js
+const { participantResults } = tallyParticipantResults({
+  policyDefinitions: mockProfile.policyDefinitions,
+  matchUps,
+});
 ```
 
 ---
