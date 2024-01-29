@@ -9,6 +9,7 @@ it.each([syncEngine, asyncEngine])(
     for (const method of engineMethods) {
       if (
         [
+          'getParticipantResults',
           'generateEventWithDraw',
           'extractAttributes',
           'hasAttributeValues',
