@@ -37,20 +37,20 @@ export default defineConfig({
   resolve: {
     // necessary for vitest to resolve tsconfig paths in test.ts files
     alias: {
-      '@Generators': './src/assemblies/generators',
-      '@Assemblies': './src/assemblies',
-      '@Engines': './src/tests/engines', // test engines
-      '@Validators': './src/validators',
-      '@Constants': './src/constants',
-      '@Functions': './src/functions',
-      '@Acquire': './src/acquire',
-      '@Helpers': './src/helpers',
-      '@Global': './src/global',
-      '@Mutate': './src/mutate',
-      '@Server': './src/server',
-      '@Query': './src/query',
-      '@Tools': './src/tools',
-      '@Types': './src/types',
+      '@Generators': new URL('./src/assemblies/generators', import.meta.url).pathname,
+      '@Assemblies': new URL('./src/assemblies', import.meta.url).pathname,
+      '@Engines': new URL('./src/tests/engines', import.meta.url).pathname, // test engines
+      '@Validators': new URL('./src/validators', import.meta.url).pathname,
+      '@Constants': new URL('./src/constants', import.meta.url).pathname,
+      '@Functions': new URL('./src/functions', import.meta.url).pathname,
+      '@Acquire': new URL('./src/acquire', import.meta.url).pathname,
+      '@Helpers': new URL('./src/helpers', import.meta.url).pathname,
+      '@Global': new URL('./src/global', import.meta.url).pathname,
+      '@Mutate': new URL('./src/mutate', import.meta.url).pathname,
+      '@Server': new URL('./src/server', import.meta.url).pathname,
+      '@Query': new URL('./src/query', import.meta.url).pathname,
+      '@Tools': new URL('./src/tools', import.meta.url).pathname,
+      '@Types': new URL('./src/types', import.meta.url).pathname,
     },
   },
 });
