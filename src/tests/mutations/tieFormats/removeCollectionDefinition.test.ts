@@ -1,14 +1,15 @@
-import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import disableCalcTournamentRecord from '@Mutate/tieFormat/removeCollectionDisableAutoCalc.tods.json';
+import { setSubscriptions } from '@Global/state/globalState';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import disableCalcTournamentRecord from '../../../mutate/matchUps/tieFormat/removeCollectionDisableAutoCalc.tods.json';
-import { NO_MODIFICATIONS_APPLIED } from '../../../constants/errorConditionConstants';
-import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../constants/eventConstants';
-import { COLLEGE_D3, USTA_BREWER_CUP } from '../../../constants/tieFormatConstants';
+// constants
+import { COLLEGE_D3, USTA_BREWER_CUP } from '@Constants/tieFormatConstants';
+import { NO_MODIFICATIONS_APPLIED } from '@Constants/errorConditionConstants';
+import { DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
   const deletedMatchUpIds: string[] = [];
