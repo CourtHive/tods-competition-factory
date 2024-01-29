@@ -1,14 +1,17 @@
-import { resolveTournamentRecords } from '../../../helpers/parameters/resolveTournamentRecords';
-import { matchUpScore } from '../../../assemblies/generators/matchUps/matchUpScore';
-import { setMatchUpMatchUpFormat } from '../matchUpFormat/setMatchUpMatchUpFormat';
-import { findPolicy } from '../../../acquire/findPolicy';
-import { findEvent } from '../../../acquire/findEvent';
-import { setMatchUpState } from './setMatchUpState';
+import { setMatchUpMatchUpFormat } from '@Mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
+import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
+import { findPolicy } from '@Acquire/findPolicy';
+import { findEvent } from '@Acquire/findEvent';
 
-import { MISSING_DRAW_ID, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+// constants and types
+import { DRAW_DEFINITION, MATCHUP_ID } from '@Constants/attributeConstants';
+import { INVALID_WINNING_SIDE } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -35,6 +38,9 @@ type SetMatchUpStatusArgs = {
   outcome?: any;
 };
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
+  const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {
     const tournamentRecord = params.tournamentRecord ?? (params.tournamentId && tournamentRecords[params.tournamentId]);
@@ -64,9 +70,6 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     notes,
   } = params;
 
-  if (!drawDefinition) return { error: MISSING_DRAW_ID };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCORING,
     tournamentRecord,
@@ -80,6 +83,10 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     undefined;
 
   const { outcome } = params;
+
+  if (outcome?.winningSide && ![1, 2].includes(outcome.winningSide)) {
+    return { error: INVALID_WINNING_SIDE };
+  }
 
   if (matchUpFormat) {
     const result = setMatchUpMatchUpFormat({

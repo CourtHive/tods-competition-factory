@@ -4,11 +4,11 @@ import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '../../../constants/attributeConstants';
-import { UNRECOGNIZED_MATCHUP_FORMAT } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { ResultType } from '../../../types/factoryTypes';
+import { INVALID, MATCHUP_FORMAT, TOURNAMENT_RECORD, VALIDATE } from '@Constants/attributeConstants';
+import { UNRECOGNIZED_MATCHUP_FORMAT } from '@Constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type GetModifiedMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;

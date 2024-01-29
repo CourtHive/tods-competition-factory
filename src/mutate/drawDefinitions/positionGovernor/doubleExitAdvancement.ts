@@ -64,7 +64,6 @@ export function doubleExitAdvancement(params) {
     if (result.error) return decorateResult({ result, stack });
   }
 
-  console.log({ stack });
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
 

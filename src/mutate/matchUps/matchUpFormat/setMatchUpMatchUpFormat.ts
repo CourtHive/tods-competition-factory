@@ -1,21 +1,22 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { findStructure } from '../../../acquire/findStructure';
-import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findStructure } from '@Acquire/findStructure';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/eventConstants';
+// constants and types
+import { DRAW_DEFINITION, MATCHUP_FORMAT } from '@Constants/attributeConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/eventConstants';
 import {
-  MISSING_MATCHUP_FORMAT,
-  MISSING_DRAW_DEFINITION,
   UNRECOGNIZED_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_MATCHUP,
   ErrorType,
   MATCHUP_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
 
 type SetMatchUpMatchUpFormatArgs = {
   tournamentRecord?: Tournament;
@@ -37,8 +38,9 @@ export function setMatchUpMatchUpFormat(params: SetMatchUpMatchUpFormatArgs): {
   let structureIds = params.structureIds;
   const { tournamentRecord, drawDefinition, matchUpFormat, structureId, matchUpId, event } = params;
 
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
+  const paramsCheck = checkRequiredParameters(params, [{ [DRAW_DEFINITION]: true, [MATCHUP_FORMAT]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
   if (!isValidMatchUpFormat({ matchUpFormat })) return { error: UNRECOGNIZED_MATCHUP_FORMAT };
   const stack = 'setMatchUpFormat';
 

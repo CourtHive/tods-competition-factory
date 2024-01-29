@@ -5,7 +5,7 @@ import {
   tournamentEngineAsync,
   competitionEngineAsync,
   mocksEngine,
-} from '../../global/state/globalState';
+} from '@Global/state/globalState';
 
 /**
  * Example of how to use asyncGlobalState
@@ -121,16 +121,16 @@ it.skip('can setStateProvier', async () => {
   });
 
   result = await tournamentEngineAsync.setMatchUpStatus({
-    drawId,
     matchUpId: allMatchUps[0].matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
   expect(modifiedMatchUps.length).toEqual(2);
 
   result = await tournamentEngineAsync.deleteDrawDefinitions({
-    eventId,
     drawIds: [drawId],
+    eventId,
   });
   expect(result.success).toEqual(true);
   expect(auditNotices.length).toEqual(1);

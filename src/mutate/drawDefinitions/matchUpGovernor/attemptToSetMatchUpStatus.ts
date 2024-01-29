@@ -7,7 +7,7 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
 
 // constants
-import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import {
   BYE,
   CANCELLED,
@@ -40,7 +40,6 @@ export function attemptToSetMatchUpStatus(params) {
   const onlyModifyScore = params.matchUpTieId || (existingWinningSide && directing && !isDoubleExit);
 
   const changeCompletedToDoubleExit = existingWinningSide && isDoubleExit;
-  console.log({ isDoubleExit, changeCompletedToDoubleExit });
 
   const clearScore = () =>
     modifyMatchUpScore({
@@ -80,7 +79,6 @@ function removeWinningSideAndSetDoubleExit(params) {
 
 function modifyScoreAndAdvanceDoubleExit(params) {
   const result = scoreModification({ ...params, removeScore: true });
-  console.log({ result });
   if (result.error) return result;
   return doubleExitAdvancement(params);
 }
