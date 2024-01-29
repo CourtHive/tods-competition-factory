@@ -125,24 +125,20 @@ export function getDrawData(params): {
           structure,
         });
 
-        let participantResults = positionAssignments
-          ?.filter(xa(PARTICIPANT_ID))
-          .map((assignment) => {
-            participantPlacements = true;
-            const { drawPosition, participantId } = assignment;
-            const { extension } = findExtension({
-              element: assignment,
-              name: TALLY,
-            });
-            return (
-              extension && {
-                drawPosition,
-                participantId,
-                participantResult: extension.value,
-              }
-            );
-          })
-          .filter((f) => f?.participantResult);
+        let participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
+          const { drawPosition, participantId } = assignment;
+          const { extension } = findExtension({
+            element: assignment,
+            name: TALLY,
+          });
+          participantPlacements = true;
+
+          return {
+            participantResult: extension?.value,
+            participantId,
+            drawPosition,
+          };
+        });
 
         if (!participantResults?.length && matchUps.length && params.allParticipantResults) {
           const { subOrderMap } = createSubOrderMap({ positionAssignments });
@@ -152,19 +148,16 @@ export function getDrawData(params): {
             subOrderMap,
             matchUps,
           });
-          participantResults = positionAssignments
-            ?.map((assignment) => {
-              const { drawPosition, participantId } = assignment;
-              return (
-                participantId &&
-                result.participantResults?.[participantId] && {
-                  participantResult: result.participantResults[participantId],
-                  participantId,
-                  drawPosition,
-                }
-              );
-            })
-            .filter((f) => f?.participantResult);
+          participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
+            const { drawPosition, participantId } = assignment;
+            participantPlacements = true;
+
+            return {
+              participantResult: participantId && result.participantResults[participantId],
+              participantId,
+              drawPosition,
+            };
+          });
         }
 
         const structureInfo: any = structure
