@@ -1,15 +1,17 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { INVALID_DRAW_SIZE } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
+// constants
+import POLICY_DRAWS_DEFAULT from '@Fixtures/policies/POLICY_DRAWS_DEFAULT';
+import { INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_DRAWS } from '@Constants/policyConstants';
 import {
   AD_HOC,
   CURTIS_CONSOLATION,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can be configured to not enforce minimum drawSize for multi-structure draws', () => {
   const result = mocksEngine.generateTournamentRecord({
@@ -43,19 +45,19 @@ it('can be configured to not enforce minimum drawSize for multi-structure draws'
 
 const scenarios: any[] = [
   {
+    expectation: { drawType: AD_HOC, success: true },
     drawProfile: { drawType: AD_HOC, drawSize: 2 },
     drawTypeCoercion: { AD_HOC: false },
-    expectation: { drawType: AD_HOC, success: true },
   },
   {
+    drawTypeCoercion: { AD_HOC: true, success: true },
     drawProfile: { drawType: AD_HOC, drawSize: 2 },
     expectation: { drawType: SINGLE_ELIMINATION },
-    drawTypeCoercion: { AD_HOC: true, success: true },
   },
   {
+    expectation: { drawType: ROUND_ROBIN_WITH_PLAYOFF, success: true },
     drawProfile: { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 4 },
     drawTypeCoercion: { ROUND_ROBIN_WITH_PLAYOFF: false },
-    expectation: { drawType: ROUND_ROBIN_WITH_PLAYOFF, success: true },
   },
   {
     drawProfile: { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 3 },
@@ -64,8 +66,8 @@ const scenarios: any[] = [
   },
   {
     drawProfile: { drawType: ROUND_ROBIN_WITH_PLAYOFF, drawSize: 4 },
-    drawTypeCoercion: { ROUND_ROBIN_WITH_PLAYOFF: 5 },
     expectation: { drawType: SINGLE_ELIMINATION, success: true },
+    drawTypeCoercion: { ROUND_ROBIN_WITH_PLAYOFF: 5 },
   },
 ];
 
@@ -82,4 +84,14 @@ test.each(scenarios)('drawTypeCoercion can be configured to coerce all drawTypes
   } else if (scenario.expectation.error) {
     expect(result.error).toEqual(scenario.expectation.error);
   }
+});
+
+test('drawTypeCoercion can be configured via Draws Policy', () => {
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: AD_HOC, drawSize: 2, drawId: 'drawId' }],
+    policyDefinitions: POLICY_DRAWS_DEFAULT,
+    setState: true,
+  });
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId: 'drawId' });
+  expect(drawDefinition.drawType).toEqual(AD_HOC);
 });
