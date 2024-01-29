@@ -1,7 +1,7 @@
 import { getParticipantResults } from './getParticipantResults';
-import { instanceCount } from '../../../tools/arrays';
 import { getGroups, getResultsArray } from './getGroups';
-import { isNumeric } from '../../../tools/math';
+import { instanceCount } from '@Tools/arrays';
+import { isNumeric } from '@Tools/math';
 
 /*
 Round Robin group tally logic by default implements the following guidelines:

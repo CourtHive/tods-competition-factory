@@ -1,19 +1,20 @@
-import { updateAssignmentParticipantResults } from '../drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
-import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { getMissingSequenceNumbers, unique } from '../../tools/arrays';
-import { getMatchUpId } from '../../functions/global/extractors';
-import { xa } from '../../tools/objects';
+import { updateAssignmentParticipantResults } from '@Mutate/drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
+import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { xa } from '@Tools/objects';
 
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_STRUCTURE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
@@ -97,12 +98,19 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
 
       const matchUpFormat = structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
 
+      const { matchUps } = getAllStructureMatchUps({
+        afterRecoveryTimes: false,
+        inContext: true,
+        structure,
+        event,
+      });
+
       const result = updateAssignmentParticipantResults({
         positionAssignments: structure.positionAssignments,
-        matchUps: structure.matchUps,
         tournamentRecord,
         drawDefinition,
         matchUpFormat,
+        matchUps,
         event,
       });
       if (result.error) console.log(result);
