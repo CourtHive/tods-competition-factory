@@ -31,6 +31,7 @@
       "@Validators/*": ["./src/validators/*"],
       "@Constants/*": ["./src/constants/*"],
       "@Functions/*": ["./src/functions/*"],
+      "@Fixtures/*": ["./src/fixtures/*"],
       "@Acquire/*": ["./src/acquire/*"],
       "@Helpers/*": ["./src/helpers/*"],
       "@Global/*": ["./src/global/*"],

@@ -88,6 +88,7 @@
     "tuic": "vitest --ui --coverage.enabled",
     "tui": "vitest --ui",
     "coverage": "vitest run --coverage",
+    "cov": "vitest run --coverage --config ./src/tests/vitest.noThreshold.config.ts",
     "format": "prettier --write src",
     "lint:staged": "TZ=UTC lint-staged",
     "lint:tsc": "tsc --project tsconfig.json",
