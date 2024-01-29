@@ -1,11 +1,8 @@
-import { addDrawNotice } from '../notifications/drawNotifications';
+import { addDrawNotice } from '@Mutate/notifications/drawNotifications';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  INVALID_TIME_ITEM,
-  MISSING_TIME_ITEM,
-} from '../../constants/errorConditionConstants';
+// constants
+import { DRAW_DEFINITION_NOT_FOUND, INVALID_TIME_ITEM, MISSING_TIME_ITEM } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function addDrawDefinitionTimeItem({ drawDefinition, timeItem }) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };

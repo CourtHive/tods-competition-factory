@@ -1,15 +1,16 @@
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { collectionGroupUpdate } from './collectionGroupUpdate';
-import { getTieFormat } from '../../../query/hierarchical/tieFormats/getTieFormat';
-import { tieFormatTelemetry } from './tieFormatTelemetry';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { collectionGroupUpdate } from '@Mutate/tieFormat/collectionGroupUpdate';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
+import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, MatchUp, Tournament } from '../../../types/tournamentTypes';
+// constants and types
+import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 
 type RemoveCollectionGroupArgs = {
   updateInProgressMatchUps?: boolean;

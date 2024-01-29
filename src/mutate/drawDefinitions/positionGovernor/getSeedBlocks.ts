@@ -4,9 +4,9 @@ import { isConvertableInteger, nextPowerOf2 } from '@Tools/math';
 import { decorateResult } from '@Functions/global/decorateResult';
 
 // constants and types
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 /**
  * Generates seedBlocks for USTA or ITF style seeding

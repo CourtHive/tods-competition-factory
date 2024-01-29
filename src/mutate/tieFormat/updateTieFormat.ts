@@ -16,11 +16,11 @@ import {
 } from '@Mutate/notifications/drawNotifications';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
-import { TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
-import { TEAM } from '../../constants/matchUpTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   CANNOT_MODIFY_TIEFORMAT,
   ErrorType,
@@ -28,7 +28,7 @@ import {
   INVALID_TIE_FORMAT,
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // used to determine that all collections have the same collectionIds
 function checkStructureMatchUpCounts({ from, to }) {

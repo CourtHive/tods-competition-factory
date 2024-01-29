@@ -4,8 +4,10 @@ import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { getDrawStructures } from './findStructure';
 
-import { ContextContent, ContextProfile, MatchUpsMap } from '../types/factoryTypes';
-import { HydratedMatchUp } from '../types/hydrated';
+// constants and types
+import { DrawDefinition, Event, Participant, Structure } from '@Types/tournamentTypes';
+import { ContextContent, ContextProfile, MatchUpsMap } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   ErrorType,
   INVALID_VALUES,
@@ -13,7 +15,6 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../constants/errorConditionConstants';
-import { DrawDefinition, Event, Participant, Structure } from '../types/tournamentTypes';
 
 /*
   public version of findMatchUp

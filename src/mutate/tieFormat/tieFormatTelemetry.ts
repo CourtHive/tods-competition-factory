@@ -1,7 +1,8 @@
-import { addExtension } from '../../extensions/addExtension';
-import { findExtension } from '../../../acquire/findExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { findExtension } from '@Acquire/findExtension';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
+// constants
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 
 export function tieFormatTelemetry({ drawDefinition, auditData }) {
   const { extension } = findExtension({

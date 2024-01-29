@@ -1,4 +1,4 @@
-import { getMappedStructureMatchUps } from '../../../query/matchUps/getMatchUpsMap';
+import { getMappedStructureMatchUps } from '@Query/matchUps/getMatchUpsMap';
 
 export function getPairedPreviousMatchUp({ structureId, matchUpsMap, matchUp }) {
   const sourceRoundPosition = matchUp?.roundPosition;

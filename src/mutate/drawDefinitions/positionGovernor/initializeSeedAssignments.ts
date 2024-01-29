@@ -1,14 +1,15 @@
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { isConvertableInteger } from '../../../tools/math';
-import { findStructure } from '../../../acquire/findStructure';
-import { generateRange } from '../../../tools/arrays';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
+import { findStructure } from '@Acquire/findStructure';
+import { isConvertableInteger } from '@Tools/math';
 import { getSeedGroups } from './getSeedBlocks';
+import { generateRange } from '@Tools/arrays';
 
-import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
+// constants and types
+import { PolicyDefinitions, SeedingProfile } from '@Types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,
