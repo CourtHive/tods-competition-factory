@@ -1,7 +1,7 @@
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { positionTargets } from '@Query/matchUp/positionTargets';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';

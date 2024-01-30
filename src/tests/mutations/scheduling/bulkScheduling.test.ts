@@ -1,8 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

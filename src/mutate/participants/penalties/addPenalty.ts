@@ -5,7 +5,7 @@ import { addNotice } from '@Global/state/globalState';
 
 // constants and types
 import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '@Types/tournamentTypes';
-import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
+import penaltyTemplate from '@Assemblies/generators/templates/penaltyTemplate';
 import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';

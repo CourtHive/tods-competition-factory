@@ -4,8 +4,8 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { findExtension } from '../../../acquire/findExtension';
-import { findStructure } from '../../../acquire/findStructure';
+import { findExtension } from '@Acquire/findExtension';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '@Tools/arrays';
 

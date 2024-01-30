@@ -1,5 +1,5 @@
-import { getStructureGroups } from '../../../query/structure/getStructureGroups';
-import { getDrawData } from '../../../query/drawDefinition/getDrawData';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { getDrawData } from '@Query/drawDefinition/getDrawData';
 import eliminationEvent from './eliminationMock.json';
 import roundRobinEvent from './roundRobinMock.json';
 import { expect, it } from 'vitest';

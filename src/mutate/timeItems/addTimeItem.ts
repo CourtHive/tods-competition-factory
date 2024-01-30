@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { getTimeItem } from '@Query/base/timeItems';
 
 import { TimeItem, Tournament } from '@Types/tournamentTypes';

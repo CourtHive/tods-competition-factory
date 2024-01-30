@@ -1,4 +1,4 @@
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';

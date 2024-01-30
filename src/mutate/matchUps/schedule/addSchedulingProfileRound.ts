@@ -1,7 +1,7 @@
 import { getCompetitionDateRange } from '@Query/tournaments/getCompetitionDateRange';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isValidDateString, sameDay } from '@Tools/dateTime';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { setSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { isObject } from '@Tools/objects';
 

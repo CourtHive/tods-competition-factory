@@ -1,7 +1,7 @@
 import { getAccessorValue } from '@Tools/getAccessorValue';
 import { addNotice } from '@Global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { UUID } from '@Tools/UUID';
 
 import { GROUPING_ATTRIBUTE } from '@Constants/extensionConstants';

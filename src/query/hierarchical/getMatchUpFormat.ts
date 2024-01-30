@@ -1,6 +1,6 @@
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../helpers/parameters/resolveFromParameters';
-import { findStructure } from '../../acquire/findStructure';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
+import { findStructure } from '@Acquire/findStructure';
 
 import { MISSING_DRAW_ID, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';

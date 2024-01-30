@@ -1,6 +1,6 @@
-import { generateScoreString } from '../../../../assemblies/generators/matchUps/generateScoreString';
-import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
-import { parse } from '../../../../assemblies/generators/matchUpFormatCode/parse';
+import { generateScoreString } from '@Assemblies/generators/matchUps/generateScoreString';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 import { isConvertableInteger } from '@Tools/math';
 import { getHistory } from './getHistory';
 

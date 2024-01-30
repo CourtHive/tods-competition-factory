@@ -1,8 +1,8 @@
 import { resolveTieFormat } from './tieFormats/resolveTieFormat';
 import { copyTieFormat } from './tieFormats/copyTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { publicFindMatchUp } from '../../acquire/findMatchUp';
-import { findStructure } from '../../acquire/findStructure';
+import { publicFindMatchUp } from '@Acquire/findMatchUp';
+import { findStructure } from '@Acquire/findStructure';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import {

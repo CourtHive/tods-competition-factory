@@ -1,8 +1,8 @@
-import { generateTieMatchUpScore } from '../../../../assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { findExtension } from '../../../../acquire/findExtension';
+import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
+import { findExtension } from '@Acquire/findExtension';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

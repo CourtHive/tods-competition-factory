@@ -1,7 +1,7 @@
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { getParticipantId } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../../../global/state/globalState';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

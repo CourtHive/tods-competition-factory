@@ -2,7 +2,7 @@ import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieForma
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { addParticipant } from '../../participants/addParticipant';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { instanceCount } from '@Tools/arrays';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';

@@ -4,7 +4,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 

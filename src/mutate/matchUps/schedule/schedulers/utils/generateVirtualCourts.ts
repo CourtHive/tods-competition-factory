@@ -1,4 +1,4 @@
-import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { isValidDateString, timeStringMinutes } from '@Tools/dateTime';

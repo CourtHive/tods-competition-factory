@@ -1,7 +1,7 @@
 import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
 import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { convertTime, extractDate, validTimeValue } from '@Tools/dateTime';

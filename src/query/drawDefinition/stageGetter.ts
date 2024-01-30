@@ -1,6 +1,6 @@
 import { modifyEntryProfile } from '@Mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
-import { findExtension } from '../../acquire/findExtension';
-import { findStructure } from '../../acquire/findStructure';
+import { findExtension } from '@Acquire/findExtension';
+import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 import { getEntryProfile } from './getEntryProfile';
 

@@ -1,5 +1,5 @@
-import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getEliminationDrawSize } from '@Query/participants/getEliminationDrawSize';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

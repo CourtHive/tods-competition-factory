@@ -1,4 +1,4 @@
-import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
+import { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { instanceCount } from '@Tools/arrays';
 

@@ -10,13 +10,13 @@ import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { getDrawStructures } from '../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { addNotice } from '@Global/state/globalState';
 import { publishEvent } from '../publishing/publishEvent';
 import { addExtension } from '../extensions/addExtension';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
 import { MISSING_TOURNAMENT_RECORD, SCORES_PRESENT } from '@Constants/errorConditionConstants';
 import { DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';

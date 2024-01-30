@@ -1,8 +1,8 @@
 import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 
 import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

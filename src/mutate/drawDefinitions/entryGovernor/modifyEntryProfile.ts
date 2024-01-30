@@ -1,5 +1,5 @@
 import { addDrawDefinitionExtension } from '../../extensions/addRemoveExtensions';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { ENTRY_PROFILE } from '@Constants/extensionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';

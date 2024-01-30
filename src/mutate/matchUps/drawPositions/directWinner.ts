@@ -5,7 +5,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

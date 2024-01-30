@@ -7,7 +7,7 @@ import { getDrawId } from '@Functions/global/extractors';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 import { isString } from '@Tools/objects';
 import {
   DRAW_DEFINITION_NOT_FOUND,

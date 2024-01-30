@@ -1,4 +1,4 @@
-import { getSeedBlockPattern } from '../../../query/drawDefinition/seedGetter';
+import { getSeedBlockPattern } from '@Query/drawDefinition/seedGetter';
 import { chunkArray, generateRange } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 

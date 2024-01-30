@@ -1,11 +1,11 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
 import { TEAM } from '@Constants/eventConstants';
-import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 

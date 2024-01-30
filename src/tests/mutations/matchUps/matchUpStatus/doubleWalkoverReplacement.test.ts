@@ -1,5 +1,5 @@
 // import { getDevContext, setSubscriptions } from '../../../global/state/globalState';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 

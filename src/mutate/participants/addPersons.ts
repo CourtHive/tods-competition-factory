@@ -1,7 +1,7 @@
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getParticipantId } from '@Functions/global/extractors';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { findParticipant } from '../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 import { addParticipants } from './addParticipants';
 import { UUID } from '@Tools/UUID';
 

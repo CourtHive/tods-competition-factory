@@ -1,7 +1,7 @@
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 

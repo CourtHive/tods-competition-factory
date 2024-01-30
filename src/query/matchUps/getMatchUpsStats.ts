@@ -1,6 +1,6 @@
 import { validMatchUps } from '@Validators/validMatchUp';
 import { getBand, getScoreComponents, pctSpread } from '../matchUp/scoreComponents';
-import { findPolicy } from '../../acquire/findPolicy';
+import { findPolicy } from '@Acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '@Fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '@Constants/policyConstants';

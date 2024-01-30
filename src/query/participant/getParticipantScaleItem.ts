@@ -1,4 +1,4 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { participantScaleItem } from './participantScaleItem';
 
 import { Tournament } from '@Types/tournamentTypes';

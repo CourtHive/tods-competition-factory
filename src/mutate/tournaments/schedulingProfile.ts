@@ -4,7 +4,7 @@ import { getCompetitionVenues } from '@Query/venues/venuesAndCourtsGetter';
 import { removeExtension } from '../extensions/removeExtension';
 import { getEventIdsAndDrawIds } from '@Query/tournaments/getEventIdsAndDrawIds';
 import { addExtension } from '../extensions/addExtension';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { SCHEDULING_PROFILE } from '@Constants/extensionConstants';
 import { TournamentRecords } from '@Types/factoryTypes';

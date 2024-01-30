@@ -1,4 +1,4 @@
-import { reverseScore } from '../../../assemblies/generators/score/reverseScore';
+import { reverseScore } from '@Assemblies/generators/score/reverseScore';
 import { expect, it } from 'vitest';
 
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';

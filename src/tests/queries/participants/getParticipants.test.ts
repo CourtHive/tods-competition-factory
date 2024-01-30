@@ -1,6 +1,6 @@
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import * as tools from '../../../assemblies/tools';
+import * as tools from '@Assemblies/tools';
 import { expect, it, test } from 'vitest';
 
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';

@@ -1,5 +1,5 @@
 import { removeExtension } from '../../extensions/removeExtension';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '@Constants/extensionConstants';
 import { MATCHUP_NOT_FOUND, MISSING_DRAW_DEFINITION, MISSING_MATCHUP_ID } from '@Constants/errorConditionConstants';

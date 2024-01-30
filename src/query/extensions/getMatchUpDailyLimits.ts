@@ -8,7 +8,7 @@ import { TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { SCHEDULE_LIMITS } from '@Constants/extensionConstants';
 import { Tournament } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
-import { findPolicy } from '../../acquire/findPolicy';
+import { findPolicy } from '@Acquire/findPolicy';
 
 type GetMatchUpDailyLimitsArgs = {
   tournamentRecords: { [key: string]: Tournament };

@@ -1,6 +1,6 @@
-import { checkRequiredParameters } from '../../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../../../../extensions/addExtension';
-import { findParticipant } from '../../../../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 
 import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';

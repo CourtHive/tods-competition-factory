@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps'
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
 import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
 import { getParticipantId } from '@Functions/global/extractors';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 
 import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';
 import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';

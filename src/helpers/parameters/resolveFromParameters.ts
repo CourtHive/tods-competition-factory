@@ -1,8 +1,8 @@
-import { findMatchUp } from '../../acquire/findMatchUp';
 import { isObject, isString } from '@Tools/objects';
+import { findMatchUp } from '@Acquire/findMatchUp';
 
-import { MATCHUP, STRUCTURE } from '@Constants/attributeConstants';
 import { ErrorType, INVALID_VALUES, NOT_FOUND } from '@Constants/errorConditionConstants';
+import { MATCHUP, STRUCTURE } from '@Constants/attributeConstants';
 
 type Params = { [key: string]: any };
 type ParamsToResolve = {

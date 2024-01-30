@@ -1,5 +1,5 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

@@ -1,4 +1,4 @@
-import { findParticipant } from '../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 import { removeExtension } from './removeExtension';
 import { addExtension } from './addExtension';
 

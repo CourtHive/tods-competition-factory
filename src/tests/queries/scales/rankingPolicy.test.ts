@@ -1,5 +1,5 @@
 import { finishingPositionSort, getFpMap } from './awardTestUtils';
-import { getAwardProfile } from '../../../query/scales/getAwardProfile';
+import { getAwardProfile } from '@Query/scales/getAwardProfile';
 import tournamentEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';

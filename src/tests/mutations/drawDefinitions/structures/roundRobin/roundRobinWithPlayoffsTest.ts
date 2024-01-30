@@ -1,20 +1,14 @@
-import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { allPlayoffPositionsFilled } from '../../../../../query/drawDefinition/structureActions';
-import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import { generateRange } from '../../../../../tools/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { allPlayoffPositionsFilled } from '@Query/drawDefinition/structureActions';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import { generateRange } from '@Tools/arrays';
 import { expect } from 'vitest';
 
+import { MAIN, PLAY_OFF, POSITION, WATERFALL, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
-import {
-  MAIN,
-  PLAY_OFF,
-  POSITION,
-  WATERFALL,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../../../constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 
 export function roundRobinWithPlayoffsTest(params) {
   let groupsCount = params.groupsCount;

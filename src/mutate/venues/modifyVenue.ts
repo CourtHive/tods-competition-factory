@@ -1,7 +1,7 @@
 import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';

@@ -1,4 +1,4 @@
-import { findExtension } from '../../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

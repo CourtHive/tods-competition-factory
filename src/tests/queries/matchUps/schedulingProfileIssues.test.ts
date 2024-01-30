@@ -1,5 +1,5 @@
-import { getSchedulingProfileIssues } from '../../../query/matchUps/scheduling/getSchedulingProfileIssues';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getSchedulingProfileIssues } from '@Query/matchUps/scheduling/getSchedulingProfileIssues';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 

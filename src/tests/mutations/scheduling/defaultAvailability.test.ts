@@ -1,4 +1,4 @@
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { UUID } from '../../../tools/UUID';

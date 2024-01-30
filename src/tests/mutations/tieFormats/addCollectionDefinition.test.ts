@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FIRST_ROUND_LOSER_CONSOLATION, MAIN, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';

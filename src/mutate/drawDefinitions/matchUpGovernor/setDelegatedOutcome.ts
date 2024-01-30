@@ -1,5 +1,5 @@
 import { addExtension } from '../../extensions/addExtension';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '@Constants/extensionConstants';
 import {

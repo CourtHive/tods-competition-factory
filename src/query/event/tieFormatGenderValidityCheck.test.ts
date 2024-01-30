@@ -3,7 +3,7 @@ import {
   anyMixedError,
   tieFormatGenderValidityCheck,
   mixedGenderError,
-} from '../../validators/tieFormatGenderValidityCheck';
+} from '@Validators/tieFormatGenderValidityCheck';
 
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';

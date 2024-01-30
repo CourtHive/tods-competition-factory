@@ -1,6 +1,6 @@
 import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { findParticipant } from '../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { removeExtension } from '../extensions/removeExtension';
 import { decorateResult } from '@Functions/global/decorateResult';

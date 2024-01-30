@@ -1,5 +1,5 @@
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

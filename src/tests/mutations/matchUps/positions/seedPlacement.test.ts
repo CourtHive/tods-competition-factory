@@ -1,17 +1,17 @@
-import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { modifySeedAssignment } from '../../../../mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
-import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
-import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
-import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { initializeStructureSeedAssignments } from '@Mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
+import { modifySeedAssignment } from '@Mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
+import { clearDrawPosition } from '@Mutate/matchUps/drawPositions/positionClear';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { numericSort } from '../../../../tools/sorting';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
-import { getNextSeedBlock, getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
-import { findStructure, getDrawStructures } from '../../../../acquire/findStructure';
+import { getNextSeedBlock, getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
+import { findStructure, getDrawStructures } from '@Acquire/findStructure';
 
 import SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';

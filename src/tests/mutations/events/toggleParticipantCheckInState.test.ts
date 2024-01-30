@@ -1,5 +1,5 @@
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

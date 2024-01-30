@@ -2,8 +2,8 @@ import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { chunkArray, generateRange } from '@Tools/arrays';
 import { getDevContext } from '@Global/state/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
-import { findExtension } from '../../acquire/findExtension';
-import { findStructure } from '../../acquire/findStructure';
+import { findExtension } from '@Acquire/findExtension';
+import { findStructure } from '@Acquire/findStructure';
 
 import { DISABLE_LINKS } from '@Constants/extensionConstants';
 import { MISSING_TARGET_LINK, NOT_IMPLEMENTED } from '@Constants/errorConditionConstants';

@@ -1,6 +1,6 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { COMPASS, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';

@@ -5,7 +5,7 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { decorateResult } from '@Functions/global/decorateResult';
 import { participantInEntries } from '@Query/drawDefinition/entryGetter';
 import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { SeedingProfile } from '@Types/factoryTypes';

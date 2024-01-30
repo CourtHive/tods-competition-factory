@@ -6,7 +6,7 @@ import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { numericSort } from '@Tools/sorting';
 

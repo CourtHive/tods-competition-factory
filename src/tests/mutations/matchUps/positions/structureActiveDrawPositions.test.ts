@@ -1,5 +1,5 @@
-import { getStructureDrawPositionProfiles } from '../../../../query/structure/getStructureDrawPositionProfiles';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
+import mocksEngine from '@Assemblies/engines/mock';
 import { numericSort } from '../../../../tools/sorting';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';

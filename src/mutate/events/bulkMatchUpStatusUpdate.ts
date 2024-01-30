@@ -1,5 +1,5 @@
 import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
 import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

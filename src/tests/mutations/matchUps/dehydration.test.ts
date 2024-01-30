@@ -1,7 +1,7 @@
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
-import * as tools from '../../../assemblies/tools';
+import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';

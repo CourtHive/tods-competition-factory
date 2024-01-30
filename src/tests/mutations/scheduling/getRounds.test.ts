@@ -1,4 +1,4 @@
-import { mocksEngine } from '../../../assemblies/engines/mock';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { addDays } from '../../../tools/dateTime';
 import { expect, it } from 'vitest';

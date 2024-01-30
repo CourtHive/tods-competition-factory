@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import { findExtension } from '../../../acquire/findExtension';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

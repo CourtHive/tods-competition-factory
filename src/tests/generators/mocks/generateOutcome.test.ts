@@ -1,4 +1,4 @@
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import { it, test, expect } from 'vitest';
 

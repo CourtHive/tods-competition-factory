@@ -1,5 +1,5 @@
-import matchUpEngineSync from '../../../assemblies/engines/matchUp';
-import { getHistory } from '../../../mutate/matchUps/score/history/getHistory';
+import matchUpEngineSync from '@Assemblies/engines/matchUp';
+import { getHistory } from '@Mutate/matchUps/score/history/getHistory';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

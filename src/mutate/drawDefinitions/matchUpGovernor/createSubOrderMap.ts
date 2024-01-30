@@ -1,5 +1,5 @@
 import { xa } from '@Tools/objects';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { instanceCount } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
 

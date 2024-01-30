@@ -1,2 +1,2 @@
-export { anonymizeTournamentRecord } from '../../generators/tournamentRecords/anonymizeTournamentRecord';
-export { modifyTournamentRecord } from '../../generators/mocks/modifyTournamentRecord';
+export { anonymizeTournamentRecord } from '@Generators/tournamentRecords/anonymizeTournamentRecord';
+export { modifyTournamentRecord } from '@Generators/mocks/modifyTournamentRecord';

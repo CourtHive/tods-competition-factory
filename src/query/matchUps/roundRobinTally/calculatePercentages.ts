@@ -1,4 +1,4 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 
 export function calculatePercentages({ participantResults, matchUpFormat, tallyPolicy, perPlayer, totalSets }) {
   const parsedGroupMatchUpFormat = (matchUpFormat && parse(matchUpFormat)) || {};

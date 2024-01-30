@@ -1,7 +1,7 @@
 import tournamentEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';
-import { getAwardProfile } from '../../../query/scales/getAwardProfile';
+import { getAwardProfile } from '@Query/scales/getAwardProfile';
 import { expect, it } from 'vitest';
 
 import { MISSING_POLICY_DEFINITION } from '@Constants/errorConditionConstants';

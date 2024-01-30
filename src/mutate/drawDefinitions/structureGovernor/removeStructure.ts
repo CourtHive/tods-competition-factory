@@ -5,9 +5,10 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { xa } from '@Tools/objects';
 import { resequenceStructures } from './resequenceStructures';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';
 
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -19,7 +20,6 @@ import {
   SCORES_PRESENT,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type RemoveStructureArgs = {
   tournamentRecord: Tournament;

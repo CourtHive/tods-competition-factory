@@ -1,7 +1,7 @@
-import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
-import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
+import { getMatchUpContextIds } from '@Query/matchUp/getMatchUpContextIds';
+import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
 import tournamentEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';

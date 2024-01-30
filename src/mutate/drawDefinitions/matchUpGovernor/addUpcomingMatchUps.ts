@@ -2,7 +2,7 @@ import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getParticipantIds } from '@Functions/global/extractors';
 import { timeStringMinutes } from '@Tools/dateTime';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 import { ensureInt } from '@Tools/ensureInt';
 

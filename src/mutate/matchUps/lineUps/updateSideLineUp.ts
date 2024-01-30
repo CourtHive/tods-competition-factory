@@ -1,6 +1,6 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { LINEUPS } from '@Constants/extensionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';

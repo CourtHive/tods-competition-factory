@@ -1,4 +1,4 @@
-import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
+import { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';

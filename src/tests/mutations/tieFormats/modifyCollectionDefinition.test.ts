@@ -1,6 +1,6 @@
 import { xa } from '../../../tools/objects';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';

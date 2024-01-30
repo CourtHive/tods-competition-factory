@@ -1,7 +1,7 @@
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
-import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
-import { getDrawStructures } from '../../../../../acquire/findStructure';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getDrawStructures } from '@Acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { unique } from '../../../../../tools/arrays';
 import { mocksEngine } from '../../../../..';

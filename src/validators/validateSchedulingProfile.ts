@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { getDrawStructures } from '../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
 import { isValidDateString } from '@Tools/dateTime';
 

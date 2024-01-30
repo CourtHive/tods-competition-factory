@@ -1,8 +1,8 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../mutations/drawDefinitions/primitives/feedIn';
-import { findStructure, getDrawStructures } from '../../../acquire/findStructure';
+import { findStructure, getDrawStructures } from '@Acquire/findStructure';
 import { constantToString } from '../../../tools/strings';
 import { expect, it } from 'vitest';
 

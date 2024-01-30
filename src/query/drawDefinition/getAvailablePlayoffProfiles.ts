@@ -1,7 +1,7 @@
 import { chunkArray, generateRange } from '@Tools/arrays';
 import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { getDrawStructures } from '../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { getPositionAssignments } from './positionsGetter';
 import { numericSort } from '@Tools/sorting';
 import { getSourceRounds } from './getSourceRounds';

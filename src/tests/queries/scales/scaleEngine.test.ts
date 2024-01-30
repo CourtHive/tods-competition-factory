@@ -1,4 +1,4 @@
-import { mocksEngine } from '../../../assemblies/engines/mock/index';
+import { mocksEngine } from '@Assemblies/engines/mock/index';
 import competitionEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { expect, test } from 'vitest';

@@ -7,7 +7,7 @@ import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { resetLineUps } from '../lineUps/resetLineUps';
 import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';

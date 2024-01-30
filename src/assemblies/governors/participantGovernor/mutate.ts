@@ -8,7 +8,7 @@ export { modifyParticipantsSignInStatus } from '@Mutate/participants/modifyParti
 export { addIndividualParticipantIds } from '@Mutate/participants/addIndividualParticipantIds';
 export { modifyParticipantOtherName } from '@Mutate/participants/modifyParticipantOtherName';
 export { regenerateParticipantNames } from '@Mutate/participants/regenerateParticipantNames';
-export { publicFindParticipant as findParticipant } from '../../../acquire/publicFindParticipant';
+export { publicFindParticipant as findParticipant } from '@Acquire/publicFindParticipant';
 export { createGroupParticipant } from '@Mutate/participants/createGroupParticipant';
 export { modifyParticipantName } from '@Mutate/participants/modifyParticipantName';
 export { scaledTeamAssignment } from '@Mutate/participants/scaledTeamAssignment';

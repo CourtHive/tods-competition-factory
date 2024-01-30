@@ -1,8 +1,8 @@
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { findExtension } from '../../../../acquire/findExtension';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';

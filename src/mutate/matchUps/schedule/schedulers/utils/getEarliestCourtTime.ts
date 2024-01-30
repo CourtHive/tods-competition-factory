@@ -1,5 +1,5 @@
 import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
-import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
 

@@ -1,6 +1,6 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
 import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { TournamentRecords } from '@Types/factoryTypes';

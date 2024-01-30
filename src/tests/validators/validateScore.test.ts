@@ -1,5 +1,5 @@
-import { validateScore } from '../../validators/validateScore';
-import { analyzeScore } from '../../query/matchUp/analyzeScore';
+import { validateScore } from '@Validators/validateScore';
+import { analyzeScore } from '@Query/matchUp/analyzeScore';
 import mocksEngine from '../../assemblies/engines/mock';
 import { it, test, expect } from 'vitest';
 

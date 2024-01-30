@@ -1,6 +1,6 @@
-import { getStructureSeedAssignments } from '../../../../../query/structure/getStructureSeedAssignments';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { chunkArray, unique } from '../../../../../tools/arrays';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 

@@ -1,6 +1,6 @@
-import { getAttributeGroupings } from '../../../../query/participants/getAttributeGrouping';
+import { getAttributeGroupings } from '@Query/participants/getAttributeGrouping';
 import { fixtures, participantTypes } from '../../../..';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 const { PAIR } = participantTypes;

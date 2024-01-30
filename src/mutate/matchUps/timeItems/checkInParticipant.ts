@@ -1,6 +1,6 @@
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../../helpers/parameters/resolveFromParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { INVALID_PARTICIPANT_ID } from '@Constants/errorConditionConstants';

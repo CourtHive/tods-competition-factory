@@ -25,9 +25,9 @@ export { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt
 export { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
 export { validateSchedulingProfile } from '@Validators/validateSchedulingProfile';
 export { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
-export { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
+export { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
 export { getProfileRounds } from '@Mutate/matchUps/schedule/profileRounds';
-export { courtGridRows } from '../../generators/scheduling/courtGridRows';
+export { courtGridRows } from '@Generators/scheduling/courtGridRows';
 export { publicFindCourt } from '@Mutate/venues/findCourt';
 export { findVenue } from '@Mutate/venues/findVenue';
 export {

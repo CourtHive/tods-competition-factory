@@ -1,4 +1,4 @@
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
+import { validateLineUp } from '@Validators/validateTeamLineUp';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

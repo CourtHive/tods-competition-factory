@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';

@@ -1,6 +1,6 @@
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 
 import { PUBLISH, STATUS } from '@Constants/timeItemConstants';
 

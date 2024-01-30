@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
 
 import { DISABLED } from '@Constants/extensionConstants';

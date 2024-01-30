@@ -1,8 +1,8 @@
-import { findExtension } from '../../../acquire/findExtension';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
-import * as tools from '../../../assemblies/tools';
+import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 

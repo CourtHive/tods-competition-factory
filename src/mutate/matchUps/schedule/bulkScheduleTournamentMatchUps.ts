@@ -1,6 +1,6 @@
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from './scheduleItems';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 

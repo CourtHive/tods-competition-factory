@@ -1,4 +1,4 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 import { analyzeSet } from '@Query/matchUp/analyzeSet';
 

@@ -1,5 +1,5 @@
-import { findExtension } from '../../../acquire/findExtension';
-import { findPolicy } from '../../../acquire/findPolicy';
+import { findExtension } from '@Acquire/findExtension';
+import { findPolicy } from '@Acquire/findPolicy';
 
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { SCHEDULE_TIMING } from '@Constants/extensionConstants';

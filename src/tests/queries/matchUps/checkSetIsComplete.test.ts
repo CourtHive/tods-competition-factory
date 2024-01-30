@@ -1,4 +1,4 @@
-import { checkSetIsComplete } from '../../../query/matchUp/checkSetIsComplete';
+import { checkSetIsComplete } from '@Query/matchUp/checkSetIsComplete';
 import { expect, it } from 'vitest';
 
 it('properly determines when sets are complete', () => {

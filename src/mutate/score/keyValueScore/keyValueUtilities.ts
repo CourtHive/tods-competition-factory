@@ -1,4 +1,4 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 import { arrayIndices } from '@Tools/arrays';
 
 import {

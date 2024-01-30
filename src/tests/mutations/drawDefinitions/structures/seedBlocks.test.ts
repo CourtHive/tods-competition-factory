@@ -3,7 +3,7 @@ import {
   getSeedBlocks,
   getSeedGroups,
   getSeedingThresholds,
-} from '../../../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+} from '@Mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 
 it('can generate seedBlocks, seedGroups and seedingThresholds', () => {
   const roundRobinGroupsCount = 8;

@@ -1,6 +1,6 @@
 import { addTimeItem } from '../../timeItems/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

@@ -2,9 +2,10 @@ import { resequenceStructures } from './structureGovernor/resequenceStructures';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { findStructure } from '../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
+import { DrawDefinition, DrawLink, Structure } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
@@ -12,7 +13,6 @@ import {
   MISSING_TARGET_LINK,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, DrawLink, Structure } from '@Types/tournamentTypes';
 
 export function attachQualifyingStructure({ tournamentRecord, drawDefinition, structure, link }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

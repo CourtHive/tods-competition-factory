@@ -1,4 +1,4 @@
-import { countPoints } from '../../../../query/matchUps/roundRobinTally/scoreCounters';
+import { countPoints } from '@Query/matchUps/roundRobinTally/scoreCounters';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

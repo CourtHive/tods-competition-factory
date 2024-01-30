@@ -1,5 +1,5 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { analyzeSet } from '../../../query/matchUp/analyzeSet';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { analyzeSet } from '@Query/matchUp/analyzeSet';
 import { expect, test } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

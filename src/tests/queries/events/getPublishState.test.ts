@@ -1,5 +1,5 @@
 import { DRAW_DEFINITION_NOT_FOUND, EVENT_NOT_FOUND, MISSING_EVENT } from '@Constants/errorConditionConstants';
-import { mocksEngine } from '../../../assemblies/engines/mock';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { tournamentEngine } from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

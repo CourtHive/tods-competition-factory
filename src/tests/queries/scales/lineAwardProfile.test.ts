@@ -1,4 +1,4 @@
-import { getAwardProfile } from '../../../query/scales/getAwardProfile';
+import { getAwardProfile } from '@Query/scales/getAwardProfile';
 import { awardProfileLevelLines } from './awardProfileExamples';
 import tournamentEngine from '../../engines/syncEngine';
 import { finishingPositionSort } from './awardTestUtils';

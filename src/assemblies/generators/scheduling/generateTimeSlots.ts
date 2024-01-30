@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { timeToDate, extractTime, tidyTime } from '@Tools/dateTime';
 
 import { OBJECT } from '@Constants/attributeConstants';

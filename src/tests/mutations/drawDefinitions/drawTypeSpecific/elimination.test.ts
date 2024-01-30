@@ -1,6 +1,6 @@
-import { getParticipantIdMatchUps } from '../../../../query/drawDefinition/participantIdMatchUps';
+import { getParticipantIdMatchUps } from '@Query/drawDefinition/participantIdMatchUps';
 import { verifyStructure } from '../primitives/verifyStructure';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import { verifyMatchUps, verifySideNumbers } from '../primitives/verifyMatchUps';

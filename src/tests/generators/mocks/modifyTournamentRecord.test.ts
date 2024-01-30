@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine, competitionEngine } from '../../..';
 import { expect, test } from 'vitest';

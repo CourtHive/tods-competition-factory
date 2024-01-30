@@ -1,6 +1,6 @@
 import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import tournamentEngine from '../engines/syncEngine';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test, it } from 'vitest';

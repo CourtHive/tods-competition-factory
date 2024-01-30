@@ -1,6 +1,6 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeEventExtension } from '../../extensions/addRemoveExtensions';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
 import { EVENT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { EVENT_NOT_FOUND } from '@Constants/errorConditionConstants';

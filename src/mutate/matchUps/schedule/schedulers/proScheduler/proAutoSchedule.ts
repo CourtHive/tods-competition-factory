@@ -1,7 +1,7 @@
 import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
-import { validMatchUps } from '../../../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { isObject } from '@Tools/objects';
 

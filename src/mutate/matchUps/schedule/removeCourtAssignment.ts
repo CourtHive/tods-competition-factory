@@ -1,8 +1,8 @@
 import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import {

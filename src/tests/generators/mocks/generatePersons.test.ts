@@ -1,6 +1,6 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import { generatePersons } from '../../../assemblies/generators/mocks/generatePersons';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
+import { generatePersons } from '@Assemblies/generators/mocks/generatePersons';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import namesData from '@Fixtures/data/names.json';
 import tournamentEngine from '../../engines/syncEngine';

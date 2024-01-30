@@ -1,10 +1,10 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
-import { checkRequiredParameters } from '../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
-import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';

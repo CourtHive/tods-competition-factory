@@ -2,7 +2,7 @@
  * Tests for the `checkRequiredParameters` method.
  * Verifies that the function correctly checks for required parameters and returns the expected results.
  */
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { expect, it } from 'vitest';
 
 import {

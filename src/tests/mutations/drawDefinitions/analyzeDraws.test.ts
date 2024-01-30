@@ -1,5 +1,5 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getDrawStructures } from '../../../acquire/findStructure';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { globalState, mocksEngine } from '../../..';

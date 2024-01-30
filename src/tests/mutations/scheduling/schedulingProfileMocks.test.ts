@@ -1,4 +1,4 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
 import { intersection, unique } from '../../../tools/arrays';
 import { xa } from '../../../tools/objects';
 import { constantToString } from '../../../tools/strings';

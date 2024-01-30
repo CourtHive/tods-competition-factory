@@ -1,12 +1,12 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { addDrawEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { initializeStructureSeedAssignments } from '@Mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '../../../../tools/arrays';
 
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';

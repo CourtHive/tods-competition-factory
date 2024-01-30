@@ -1,5 +1,5 @@
 import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
-import { checkRequiredParameters } from '../../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { mergePersonRequests } from './mergePersonRequests';
 import { savePersonRequests } from './savePersonRequests';
 

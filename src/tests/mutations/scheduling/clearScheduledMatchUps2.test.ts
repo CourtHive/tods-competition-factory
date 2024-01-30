@@ -1,6 +1,6 @@
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
+import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
 import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { eventConstants } from '@Constants/eventConstants';

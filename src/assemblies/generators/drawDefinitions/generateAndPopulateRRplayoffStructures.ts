@@ -5,7 +5,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { generateTieMatchUps } from './tieMatchUps';
 
 import { INCOMPLETE_SOURCE_STRUCTURE, MISSING_VALUE } from '@Constants/errorConditionConstants';

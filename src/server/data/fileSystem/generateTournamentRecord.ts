@@ -1,5 +1,5 @@
 import { saveTournamentRecords } from './saveTournamentRecords';
-import * as governors from '../../../assemblies/governors';
+import * as governors from '@Assemblies/governors';
 
 import { TournamentRecords } from '@Types/factoryTypes';
 import { Tournament } from '@Types/tournamentTypes';

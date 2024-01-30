@@ -1,10 +1,10 @@
-import { setMatchUpState } from '../../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
-import { getDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
-import { publicFindDrawMatchUp } from '../../../../../acquire/findDrawMatchUp';
+import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { publicFindDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { verifyStructure } from '../../primitives/verifyStructure';
-import { getDrawStructures } from '../../../../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { expect, it } from 'vitest';
 
 import { MAIN, CONSOLATION } from '../../../../../constants/drawDefinitionConstants';

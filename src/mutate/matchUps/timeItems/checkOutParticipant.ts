@@ -1,7 +1,7 @@
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { resolveFromParameters } from '../../../helpers/parameters/resolveFromParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 

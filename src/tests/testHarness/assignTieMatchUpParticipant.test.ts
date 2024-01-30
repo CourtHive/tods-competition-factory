@@ -1,5 +1,5 @@
 import { xa } from '../../tools/objects';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 

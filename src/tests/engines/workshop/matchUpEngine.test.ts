@@ -1,4 +1,4 @@
-import matchUpEngineSync from '../../../assemblies/engines/matchUp';
+import matchUpEngineSync from '@Assemblies/engines/matchUp';
 import { expect, it } from 'vitest';
 
 import { INVALID_OBJECT, MISSING_VALUE } from '@Constants/errorConditionConstants';

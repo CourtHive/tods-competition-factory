@@ -1,6 +1,6 @@
 import { addNotice } from '@Global/state/globalState';
 
-import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
+import penaltyTemplate from '@Assemblies/generators/templates/penaltyTemplate';
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

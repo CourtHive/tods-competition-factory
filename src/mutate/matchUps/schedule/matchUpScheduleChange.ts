@@ -1,6 +1,6 @@
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 

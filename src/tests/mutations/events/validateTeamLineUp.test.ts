@@ -1,5 +1,5 @@
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
-import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
+import { validateLineUp } from '@Validators/validateTeamLineUp';
+import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';

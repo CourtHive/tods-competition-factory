@@ -1,6 +1,6 @@
 import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { validMatchUps } from '../../../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import { addMinutesToTimeString, extractTime } from '@Tools/dateTime';

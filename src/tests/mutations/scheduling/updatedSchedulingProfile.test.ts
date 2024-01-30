@@ -1,6 +1,6 @@
-import { getUpdatedSchedulingProfile } from '../../../query/matchUps/scheduling/getUpdatedSchedulingProfile';
-import { checkAndUpdateSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getUpdatedSchedulingProfile } from '@Query/matchUps/scheduling/getUpdatedSchedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

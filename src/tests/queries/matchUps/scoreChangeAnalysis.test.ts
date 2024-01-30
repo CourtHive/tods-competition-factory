@@ -1,4 +1,4 @@
-import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
+import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 import { expect, test } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

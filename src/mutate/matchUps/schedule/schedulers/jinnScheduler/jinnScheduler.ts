@@ -1,7 +1,7 @@
 import { addMatchUpScheduledTime } from '../../scheduledTime';
 import { assignMatchUpVenue } from '../../assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';

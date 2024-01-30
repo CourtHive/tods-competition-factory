@@ -1,5 +1,5 @@
-import { getStructureGroups } from '../../../../../query/structure/getStructureGroups';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';

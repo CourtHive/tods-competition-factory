@@ -1,5 +1,5 @@
 import { addDays, generateDateRange } from '../../../tools/dateTime';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { chunkArray } from '../../../tools/arrays';
 import { expect, test } from 'vitest';

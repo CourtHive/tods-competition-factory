@@ -5,7 +5,7 @@ import { chunkArray, generateRange, shuffleArray } from '@Tools/arrays';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getNumericSeedValue } from './getNumericSeedValue';
-import { findStructure } from '../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { isLucky } from './isLucky';
 
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';

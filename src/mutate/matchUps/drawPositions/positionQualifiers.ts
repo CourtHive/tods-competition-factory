@@ -4,7 +4,7 @@ import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { generateRange, randomPop } from '@Tools/arrays';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { ensureInt } from '@Tools/ensureInt';
 
 import { CONSOLATION } from '@Constants/drawDefinitionConstants';

@@ -1,7 +1,7 @@
 import { chunkArray, generateRange } from '@Tools/arrays';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
-import { findStructure } from '../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { getRangeString } from './getRangeString';
 

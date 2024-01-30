@@ -1,6 +1,6 @@
-import { generateTournamentRecord } from '../../../assemblies/generators/mocks/generateTournamentRecord';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

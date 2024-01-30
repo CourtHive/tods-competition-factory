@@ -1,4 +1,4 @@
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { feedInChampionship } from '../primitives/feedIn';
 import { it, expect } from 'vitest';
 

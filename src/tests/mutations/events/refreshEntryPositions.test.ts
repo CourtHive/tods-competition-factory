@@ -1,4 +1,4 @@
-import { refreshEntryPositions } from '../../../mutate/entries/refreshEntryPositions';
+import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
 import { expect, it } from 'vitest';
 
 import { CONSOLATION, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';

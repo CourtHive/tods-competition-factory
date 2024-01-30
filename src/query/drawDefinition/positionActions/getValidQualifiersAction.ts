@@ -1,5 +1,5 @@
 import { getSourceStructureIdsAndRelevantLinks } from '../../structure/getSourceStructureIdsAndRelevantLinks';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../positionsGetter';
 import { definedAttributes } from '@Tools/definedAttributes';

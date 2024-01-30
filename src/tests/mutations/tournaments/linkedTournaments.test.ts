@@ -1,6 +1,6 @@
-import { unlinkTournament } from '../../../mutate/tournaments/tournamentLinks';
+import { unlinkTournament } from '@Mutate/tournaments/tournamentLinks';
 import competitionEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 

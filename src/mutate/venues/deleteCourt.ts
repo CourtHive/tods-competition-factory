@@ -1,8 +1,8 @@
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
 import { getScheduledCourtMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { addNotice } from '@Global/state/globalState';
 import { findCourt } from './findCourt';

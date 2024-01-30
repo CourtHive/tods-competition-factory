@@ -1,5 +1,5 @@
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
 
 import { DISABLED } from '@Constants/extensionConstants';

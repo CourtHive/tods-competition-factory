@@ -22,7 +22,7 @@ export { addQualifyingStructure } from '@Mutate/drawDefinitions/addQualifyingStr
 export { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
 export { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
 export { modifyDrawDefinition } from '@Mutate/drawDefinitions/modifyDrawDefinition';
-export { addFinishingRounds } from '../../generators/drawDefinitions/addFinishingRounds';
+export { addFinishingRounds } from '@Generators/drawDefinitions/addFinishingRounds';
 export { resetDrawDefinition } from '@Mutate/drawDefinitions/resetDrawDefinition';
 export { pruneDrawDefinition } from '@Mutate/drawDefinitions/pruneDrawDefinition';
 export { assignDrawPosition } from '@Mutate/drawDefinitions/assignDrawPosition';

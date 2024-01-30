@@ -1,15 +1,15 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { initializeStructureSeedAssignments } from '../../../../mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { addDrawEntries } from '../../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { assignSeed } from '../../../../mutate/drawDefinitions/entryGovernor/seedAssignment';
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { clearDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionClear';
-import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { attachPolicies } from '../../../../mutate/extensions/policies/attachPolicies';
-import { drawMatchUps } from '../../../../query/matchUps/getDrawMatchUps';
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { initializeStructureSeedAssignments } from '@Mutate/drawDefinitions/positionGovernor/initializeSeedAssignments';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { addDrawEntries } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
+import { clearDrawPosition } from '@Mutate/matchUps/drawPositions/positionClear';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { drawMatchUps } from '@Query/matchUps/getDrawMatchUps';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 

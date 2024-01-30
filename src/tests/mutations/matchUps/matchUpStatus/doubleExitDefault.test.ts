@@ -1,10 +1,10 @@
 import { getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 

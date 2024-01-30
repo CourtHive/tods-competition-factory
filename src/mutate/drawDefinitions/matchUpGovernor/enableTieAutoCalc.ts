@@ -1,4 +1,4 @@
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { setMatchUpState } from '../../matchUps/matchUpStatus/setMatchUpState';
 
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';

@@ -1,10 +1,10 @@
-import { generateTournamentRecord } from '../../../assemblies/generators/mocks/generateTournamentRecord';
-import { removeExtension } from '../../../mutate/extensions/removeExtension';
-import { addExtension } from '../../../mutate/extensions/addExtension';
+import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import { addParticipantExtension, removeParticipantExtension } from '../../../mutate/extensions/addRemoveExtensions';
-import { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
+import { addParticipantExtension, removeParticipantExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';
 
 import {
   EVENT_NOT_FOUND,

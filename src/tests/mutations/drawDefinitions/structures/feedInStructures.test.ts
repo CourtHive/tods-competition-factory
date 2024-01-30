@@ -1,9 +1,9 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { feedInMatchUps } from '../../../../assemblies/generators/drawDefinitions/feedInMatchUps';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { getDrawData } from '../../../../query/drawDefinition/getDrawData';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { feedInMatchUps } from '@Assemblies/generators/drawDefinitions/feedInMatchUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getDrawData } from '@Query/drawDefinition/getDrawData';
 import { generateRange } from '../../../../tools/arrays';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';

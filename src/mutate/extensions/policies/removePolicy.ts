@@ -1,4 +1,4 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';

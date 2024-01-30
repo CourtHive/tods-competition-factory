@@ -4,9 +4,9 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { validateTieFormat } from '../../../../validators/validateTieFormat';
+import { validateTieFormat } from '@Validators/validateTieFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { constantToString } from '@Tools/strings';
 import { nextPowerOf2 } from '@Tools/math';

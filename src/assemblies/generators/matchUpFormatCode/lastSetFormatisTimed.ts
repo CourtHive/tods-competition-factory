@@ -1,4 +1,4 @@
-import { parse } from '../../generators/matchUpFormatCode/parse';
+import { parse } from '@Generators/matchUpFormatCode/parse';
 import { MatchUp } from '@Types/tournamentTypes';
 
 type MatchUpArg = {

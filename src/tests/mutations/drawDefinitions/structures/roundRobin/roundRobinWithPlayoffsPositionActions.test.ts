@@ -1,26 +1,20 @@
-import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
-import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import { intersection } from '../../../../../tools/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { setsValues } from './roundRobinSetsValues';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import { intersection } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+import { MAIN, PLAY_OFF, POSITION, WATERFALL, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { ASSIGN_BYE, ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '@Constants/positionActionConstants';
 import POLICY_SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
 import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { LUCKY_LOSER } from '../../../../../constants/entryStatusConstants';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import {
-  MAIN,
-  PLAY_OFF,
-  POSITION,
-  WATERFALL,
-  ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../../../constants/drawDefinitionConstants';
-import { ASSIGN_BYE, ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
+import { LUCKY_LOSER } from '@Constants/entryStatusConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 const goldFlight = 'Gold Flight';
 

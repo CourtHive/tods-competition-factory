@@ -1,6 +1,6 @@
 import { postalCodeMocks, stateMocks, cityMocks } from '../mocks/address';
 import { extractDate, formatDate } from '@Tools/dateTime';
-import { findExtension } from '../../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import { generatePersons } from '../mocks/generatePersons';
 import { generateAddress } from '../mocks/generateAddress';
 import { nameMocks } from '../mocks/nameMocks';

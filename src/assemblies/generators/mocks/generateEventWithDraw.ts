@@ -1,6 +1,6 @@
 import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
 import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';

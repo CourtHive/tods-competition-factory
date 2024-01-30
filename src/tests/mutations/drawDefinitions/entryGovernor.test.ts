@@ -1,7 +1,7 @@
-import { addDrawEntries, addDrawEntry } from '../../../mutate/drawDefinitions/entryGovernor/addDrawEntries';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { removeEntry } from '../../../mutate/drawDefinitions/entryGovernor/removeEntry';
+import { addDrawEntries, addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { removeEntry } from '@Mutate/drawDefinitions/entryGovernor/removeEntry';
 import { expect, it } from 'vitest';
 
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';

@@ -10,7 +10,7 @@ import { matchUpAssignedVenueId } from './venueAssignment';
 import { getVenueData } from '../venues/getVenueData';
 import { matchUpTimeModifiers } from './timeModifiers';
 import { matchUpDuration } from './matchUpDuration';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
 import { matchUpEndTime } from './endTime';

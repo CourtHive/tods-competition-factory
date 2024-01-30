@@ -1,8 +1,8 @@
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
-import { findExtension } from '../../../acquire/findExtension';
-import { findPolicy } from '../../../acquire/findPolicy';
+import { findExtension } from '@Acquire/findExtension';
+import { findPolicy } from '@Acquire/findPolicy';
 import { unique } from '@Tools/arrays';
 
 import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '@Constants/policyConstants';

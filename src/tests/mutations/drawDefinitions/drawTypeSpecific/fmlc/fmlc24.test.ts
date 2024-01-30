@@ -1,8 +1,8 @@
-import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../../acquire/findStructure';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { instanceCount } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 

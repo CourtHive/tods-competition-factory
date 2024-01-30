@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
 import { getMatchUpId } from '@Functions/global/extractors';
 

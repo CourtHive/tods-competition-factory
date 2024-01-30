@@ -1,11 +1,11 @@
 import { getContainedStructures } from '../../drawDefinition/getContainedStructures';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
-import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
+import { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
 import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 import { filterMatchUps } from '../../filterMatchUps';
 
 import { Tournament } from '@Types/tournamentTypes';

@@ -1,4 +1,4 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { extractTime } from '../../../tools/dateTime';
 import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 

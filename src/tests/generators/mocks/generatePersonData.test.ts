@@ -1,4 +1,4 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import { instanceCount, unique } from '../../../tools/arrays';
 import { numericSort } from '../../../tools/sorting';
 import namesData from '@Fixtures/data/names.json';

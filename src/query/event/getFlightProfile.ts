@@ -1,5 +1,5 @@
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { FLIGHT_PROFILE } from '@Constants/extensionConstants';

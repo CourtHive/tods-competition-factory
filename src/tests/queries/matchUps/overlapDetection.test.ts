@@ -1,4 +1,4 @@
-import { analyzeScheduleOverlap } from '../../../mutate/matchUps/schedule/scheduleMatchUps/analyzeScheduleOverlap';
+import { analyzeScheduleOverlap } from '@Mutate/matchUps/schedule/scheduleMatchUps/analyzeScheduleOverlap';
 import { expect, it } from 'vitest';
 
 const scenarios = [

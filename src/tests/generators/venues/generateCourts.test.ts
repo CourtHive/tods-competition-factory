@@ -1,4 +1,4 @@
-import { generateCourts } from '../../../assemblies/generators/venues/generateCourts';
+import { generateCourts } from '@Assemblies/generators/venues/generateCourts';
 import { xa } from '../../../tools/objects';
 import { expect, it } from 'vitest';
 

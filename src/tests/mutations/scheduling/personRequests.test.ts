@@ -1,7 +1,7 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
 import { getMatchUpId } from '@Functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 

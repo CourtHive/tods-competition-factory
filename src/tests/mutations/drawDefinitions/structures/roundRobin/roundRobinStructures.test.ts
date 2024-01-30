@@ -1,6 +1,6 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';

@@ -1,8 +1,8 @@
-import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/removeLineUpSubstitutions';
+import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpSubstitutions';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { validateLineUp } from '@Validators/validateTeamLineUp';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';

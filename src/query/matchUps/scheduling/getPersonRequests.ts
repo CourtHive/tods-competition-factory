@@ -1,5 +1,5 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { findExtension } from '../../../acquire/findExtension';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { findExtension } from '@Acquire/findExtension';
 
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { PERSON_REQUESTS } from '@Constants/extensionConstants';
