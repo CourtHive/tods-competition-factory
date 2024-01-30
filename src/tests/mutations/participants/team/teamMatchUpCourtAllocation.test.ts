@@ -1,5 +1,5 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import queryEngine from '../../../engines/queryEngine';
+import tournamentEngine from '@Engines/syncEngine';
+import queryEngine from '@Engines/queryEngine';
 import { unique } from '../../../../tools/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';

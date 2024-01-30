@@ -1,7 +1,7 @@
 import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import { addParticipantExtension, removeParticipantExtension } from '@Mutate/extensions/addRemoveExtensions';
 import { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';

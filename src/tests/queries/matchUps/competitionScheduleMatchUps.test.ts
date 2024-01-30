@@ -4,7 +4,7 @@ import { getMatchUpIds } from '@Functions/global/extractors';
 import { xa } from '../../../tools/objects';
 import { instanceCount, unique } from '../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

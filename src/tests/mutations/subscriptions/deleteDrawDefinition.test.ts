@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DRAW_DEFINITION_NOT_FOUND } from '@Constants/errorConditionConstants';

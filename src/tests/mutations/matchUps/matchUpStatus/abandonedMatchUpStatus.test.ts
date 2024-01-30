@@ -1,6 +1,6 @@
 import { getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ABANDONED, COMPLETED } from '../../../../constants/matchUpStatusConstants';

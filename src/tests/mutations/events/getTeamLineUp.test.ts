@@ -1,5 +1,5 @@
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';

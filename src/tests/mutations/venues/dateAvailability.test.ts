@@ -1,7 +1,7 @@
 import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { Availability } from '@Types/tournamentTypes';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import {

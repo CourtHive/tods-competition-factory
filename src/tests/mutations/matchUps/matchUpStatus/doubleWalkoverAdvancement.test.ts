@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { CONSOLATION } from '../../../../constants/drawDefinitionConstants';

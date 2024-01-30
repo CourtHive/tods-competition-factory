@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { COMPASS, FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';

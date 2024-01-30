@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { eventConstants } from '@Constants/eventConstants';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';

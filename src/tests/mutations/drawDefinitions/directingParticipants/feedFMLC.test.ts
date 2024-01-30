@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';

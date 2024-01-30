@@ -2,7 +2,7 @@ import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSched
 import { constantToString } from '../../../tools/strings';
 import mocksEngine from '@Assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 

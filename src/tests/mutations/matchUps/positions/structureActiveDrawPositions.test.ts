@@ -1,7 +1,7 @@
 import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
 import mocksEngine from '@Assemblies/engines/mock';
 import { numericSort } from '../../../../tools/sorting';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { BYE, COMPLETED } from '../../../../constants/matchUpStatusConstants';

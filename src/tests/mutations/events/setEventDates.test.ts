@@ -2,7 +2,7 @@ import { dateStringDaysChange } from '../../../tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import tournamentEngineSync from '../../engines/syncEngine';
+import tournamentEngineSync from '@Engines/syncEngine';
 import { INVALID_DATE, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 test.each([tournamentEngineSync])('can modify event.startDate and event.endDate', async (tournamentEngine) => {

@@ -1,7 +1,7 @@
 import { getParticipantIdMatchUps } from '@Query/drawDefinition/participantIdMatchUps';
 import { verifyStructure } from '../primitives/verifyStructure';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { verifyMatchUps, verifySideNumbers } from '../primitives/verifyMatchUps';
 import { generateRange, instanceCount, unique } from '../../../../tools/arrays';

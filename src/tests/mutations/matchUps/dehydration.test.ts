@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 

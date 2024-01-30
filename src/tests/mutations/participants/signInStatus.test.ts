@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
-import queryEngine from '../../engines/queryEngine';
+import tournamentEngine from '@Engines/syncEngine';
+import queryEngine from '@Engines/queryEngine';
 import { expect, it } from 'vitest';
 
 import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '@Constants/participantConstants';

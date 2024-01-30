@@ -3,7 +3,7 @@ import { generatePersons } from '@Assemblies/generators/mocks/generatePersons';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import namesData from '@Fixtures/data/names.json';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 

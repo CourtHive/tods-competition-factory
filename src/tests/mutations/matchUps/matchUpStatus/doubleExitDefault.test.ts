@@ -5,7 +5,7 @@ import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';

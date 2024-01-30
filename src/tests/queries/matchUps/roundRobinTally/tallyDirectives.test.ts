@@ -1,6 +1,6 @@
 import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
 import { xa } from '../../../../tools/objects';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';

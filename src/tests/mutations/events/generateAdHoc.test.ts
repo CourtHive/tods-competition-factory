@@ -1,7 +1,7 @@
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { generateRange, randomPop } from '../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';

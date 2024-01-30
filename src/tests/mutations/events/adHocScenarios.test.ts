@@ -2,7 +2,7 @@ import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawM
 import { validMatchUp, validMatchUps } from '@Validators/validMatchUp';
 import { intersection, unique } from '../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { xa } from '../../../tools/objects';
 import { expect, it, test } from 'vitest';
 

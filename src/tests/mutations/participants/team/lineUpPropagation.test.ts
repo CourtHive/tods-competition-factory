@@ -3,7 +3,7 @@ import { setSubscriptions } from '../../../../global/state/globalState';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { findExtension } from '@Acquire/findExtension';
 import { intersection } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MODIFY_DRAW_DEFINITION } from '../../../../constants/topicConstants';

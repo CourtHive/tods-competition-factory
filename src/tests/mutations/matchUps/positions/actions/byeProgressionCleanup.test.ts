@@ -1,6 +1,6 @@
 import { replaceWithBye, assignDrawPosition } from '../../../drawDefinitions/testingUtilities';
 import { setSubscriptions } from '../../../../../global/state/globalState';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

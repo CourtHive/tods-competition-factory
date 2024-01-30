@@ -1,6 +1,6 @@
 import { xa } from '../../../tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { chunkArray } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 

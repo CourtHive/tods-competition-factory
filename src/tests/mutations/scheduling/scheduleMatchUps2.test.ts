@@ -3,7 +3,7 @@ import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DELETE_VENUE, MODIFY_VENUE } from '@Constants/topicConstants';

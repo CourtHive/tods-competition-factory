@@ -1,6 +1,6 @@
 import { getMatchUpId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';

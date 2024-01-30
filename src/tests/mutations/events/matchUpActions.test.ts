@@ -1,7 +1,7 @@
 import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/generateOutcomeFromScoreString';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ELIMINATION } from '@Constants/drawDefinitionConstants';

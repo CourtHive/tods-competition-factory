@@ -1,7 +1,7 @@
 import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '@Constants/errorConditionConstants';

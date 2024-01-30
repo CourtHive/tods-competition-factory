@@ -1,5 +1,5 @@
 import { mocksEngine, globalState } from '../../../../..';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';

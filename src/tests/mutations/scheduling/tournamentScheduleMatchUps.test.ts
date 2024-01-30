@@ -1,6 +1,6 @@
 import { getMatchUpIds } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('auto schedules venue if only one venue provided', () => {

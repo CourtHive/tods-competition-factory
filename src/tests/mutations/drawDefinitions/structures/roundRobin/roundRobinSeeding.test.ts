@@ -1,7 +1,7 @@
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { chunkArray, unique } from '../../../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
 import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';

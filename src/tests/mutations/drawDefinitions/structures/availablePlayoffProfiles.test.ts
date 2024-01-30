@@ -4,7 +4,7 @@ import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDra
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { constantToString } from '../../../../tools/strings';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { globalState } from '../../../..';
 import { expect, it } from 'vitest';

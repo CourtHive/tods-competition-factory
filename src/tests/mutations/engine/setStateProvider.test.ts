@@ -1,6 +1,6 @@
 import syncGlobalState from '../../../global/state/syncGlobalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import { setStateProvider, setSubscriptions } from '../../../global/state/globalState';
 

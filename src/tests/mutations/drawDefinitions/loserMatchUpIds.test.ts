@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngineAsync from '../../engines/asyncEngine';
-import tournamentEngineSync from '../../engines/syncEngine';
+import tournamentEngineAsync from '@Engines/asyncEngine';
+import tournamentEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import { expect, test } from 'vitest';

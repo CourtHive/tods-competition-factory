@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
 import { getEntryStatus, getParticipantId, getParticipantIds } from '@Functions/global/extractors';

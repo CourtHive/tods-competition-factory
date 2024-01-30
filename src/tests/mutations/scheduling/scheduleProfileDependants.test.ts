@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';

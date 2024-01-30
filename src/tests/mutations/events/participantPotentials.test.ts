@@ -1,7 +1,7 @@
 import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES_EVENT } from '@Constants/eventConstants';

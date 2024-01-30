@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';

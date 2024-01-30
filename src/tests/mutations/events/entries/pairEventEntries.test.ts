@@ -1,6 +1,6 @@
 import { isUngrouped } from '@Query/entries/isUngrouped';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { WITHDRAWN } from '../../../../constants/entryStatusConstants';

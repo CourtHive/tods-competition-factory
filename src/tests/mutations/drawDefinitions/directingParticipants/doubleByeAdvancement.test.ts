@@ -1,7 +1,7 @@
 import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/generateOutcomeFromScoreString';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';

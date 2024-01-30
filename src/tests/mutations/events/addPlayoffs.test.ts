@@ -2,7 +2,7 @@ import { constantToString } from '../../../tools/strings';
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import { deriveExponent } from '../../../tools/math';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { globalState } from '../../..';
 import { expect, it } from 'vitest';
 

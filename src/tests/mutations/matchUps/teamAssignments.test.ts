@@ -1,6 +1,6 @@
 import { validateLineUp } from '@Validators/validateTeamLineUp';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';

@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { globalState, mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 

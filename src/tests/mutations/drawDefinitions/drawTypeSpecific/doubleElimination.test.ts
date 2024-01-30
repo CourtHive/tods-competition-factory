@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import * as tools from '@Assemblies/tools';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';

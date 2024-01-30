@@ -1,7 +1,7 @@
 import { isUngrouped } from '@Query/entries/isUngrouped';
 import { chunkArray, unique } from '../../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';

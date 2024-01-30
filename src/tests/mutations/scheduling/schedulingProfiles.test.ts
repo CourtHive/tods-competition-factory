@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { INVALID_DATE, INVALID_VALUES, VENUE_NOT_FOUND } from '@Constants/errorConditionConstants';

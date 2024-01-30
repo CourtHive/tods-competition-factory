@@ -1,5 +1,5 @@
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

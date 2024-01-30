@@ -4,7 +4,7 @@ import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { intersection, overlap, unique } from '../../../../../tools/arrays';
 import { structureSort } from '@Functions/sorters/structureSort';
 import { xa } from '../../../../../tools/objects';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 

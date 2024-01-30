@@ -1,6 +1,6 @@
 import { DRAW_DEFINITION_NOT_FOUND, EVENT_NOT_FOUND, MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { mocksEngine } from '@Assemblies/engines/mock';
-import { tournamentEngine } from '../../engines/syncEngine';
+import { tournamentEngine } from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 it('should return the publish state of all events', () => {

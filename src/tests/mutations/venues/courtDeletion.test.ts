@@ -1,7 +1,7 @@
 import { xa } from '../../../tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '@Constants/eventConstants';

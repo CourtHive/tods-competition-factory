@@ -2,7 +2,7 @@ import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES, TEAM } from '../../../../constants/matchUpTypes';

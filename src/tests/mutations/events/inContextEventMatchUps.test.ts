@@ -1,5 +1,5 @@
 import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';

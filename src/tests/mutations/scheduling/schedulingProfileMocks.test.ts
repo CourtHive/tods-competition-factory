@@ -2,7 +2,7 @@ import { getContainedStructures } from '@Query/drawDefinition/getContainedStruct
 import { intersection, unique } from '../../../tools/arrays';
 import { xa } from '../../../tools/objects';
 import { constantToString } from '../../../tools/strings';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 

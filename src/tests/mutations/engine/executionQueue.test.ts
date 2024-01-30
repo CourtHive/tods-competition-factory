@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import asyncEngine from '../../engines/asyncEngine';
-import syncEngine from '../../engines/syncEngine';
+import asyncEngine from '@Engines/asyncEngine';
+import syncEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';

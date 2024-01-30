@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

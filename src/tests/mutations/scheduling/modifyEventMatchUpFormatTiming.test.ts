@@ -1,6 +1,6 @@
 import { removeEventMatchUpFormatTiming } from '@Mutate/events/extensions/removeEventMatchUpFormatTiming';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';

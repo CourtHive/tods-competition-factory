@@ -2,7 +2,7 @@ import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAs
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../constants/eventConstants';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_ASSIGNMENTS } from '../../../../constants/errorConditionConstants';

@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import { formatDate } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { DOUBLES, TEAM } from '@Constants/eventConstants';

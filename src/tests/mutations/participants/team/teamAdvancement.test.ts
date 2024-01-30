@@ -3,7 +3,7 @@ import { findExtension } from '@Acquire/findExtension';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '../../../../global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import { SWAP_PARTICIPANTS } from '../../../../constants/positionActionConstants';

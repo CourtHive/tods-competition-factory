@@ -1,7 +1,7 @@
 import { setSubscriptions } from '../../../global/state/globalState';
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DELETE_DRAW_DEFINITIONS } from '@Constants/auditConstants';

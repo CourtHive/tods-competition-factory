@@ -4,7 +4,7 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { validateLineUp } from '@Validators/validateTeamLineUp';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';

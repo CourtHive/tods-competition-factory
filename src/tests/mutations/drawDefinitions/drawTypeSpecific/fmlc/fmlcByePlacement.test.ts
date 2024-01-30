@@ -3,7 +3,7 @@ import { getDrawStructures } from '@Acquire/findStructure';
 import { completeMatchUp } from '../../primitives/verifyMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../../../tools/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';

@@ -1,7 +1,7 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import { instanceCount, unique } from '../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { LINEUPS } from '@Constants/extensionConstants';

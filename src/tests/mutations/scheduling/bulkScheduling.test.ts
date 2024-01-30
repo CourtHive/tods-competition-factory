@@ -3,7 +3,7 @@ import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProf
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';

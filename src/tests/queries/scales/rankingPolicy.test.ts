@@ -1,7 +1,7 @@
 import { finishingPositionSort, getFpMap } from './awardTestUtils';
 import { getAwardProfile } from '@Query/scales/getAwardProfile';
-import tournamentEngine from '../../engines/syncEngine';
-import scaleEngine from '../../engines/scaleEngine';
+import tournamentEngine from '@Engines/syncEngine';
+import scaleEngine from '@Engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import { awardProfileExpandedLevels, awardProfileLevels, awardProfileThresholds } from './awardProfileExamples';

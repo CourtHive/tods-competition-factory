@@ -1,6 +1,6 @@
 import { getEliminationDrawSize } from '@Query/participants/getEliminationDrawSize';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_AVOIDANCE_COUNTRY from '@Fixtures/policies/POLICY_AVOIDANCE_COUNTRY';

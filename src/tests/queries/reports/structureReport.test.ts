@@ -1,7 +1,7 @@
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';

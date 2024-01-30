@@ -1,5 +1,5 @@
 import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 

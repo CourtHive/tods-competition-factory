@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import { APPLIED_POLICIES, ENTRY_PROFILE, FLIGHT_PROFILE } from '@Constants/extensionConstants';

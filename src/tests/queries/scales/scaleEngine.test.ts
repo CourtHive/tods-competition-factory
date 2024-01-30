@@ -1,6 +1,6 @@
 import { mocksEngine } from '@Assemblies/engines/mock/index';
-import competitionEngine from '../../engines/syncEngine';
-import scaleEngine from '../../engines/scaleEngine';
+import competitionEngine from '@Engines/syncEngine';
+import scaleEngine from '@Engines/scaleEngine';
 import { expect, test } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

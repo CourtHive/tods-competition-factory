@@ -1,6 +1,6 @@
 import { ensureInt } from '../../../tools/ensureInt';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';

@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import { extractDate } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 

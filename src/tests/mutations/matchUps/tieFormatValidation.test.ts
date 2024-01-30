@@ -1,6 +1,6 @@
 import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
 import { validateTieFormat } from '@Validators/validateTieFormat';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { fixtures, mocksEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 

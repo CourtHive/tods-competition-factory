@@ -13,8 +13,7 @@ export const collectionDefinition = {
   matchUpValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   scoreValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   setValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
-  winCriteria:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"winCriteria\\",\\"required\\":\\"true\\"}',
+  winCriteria: '{\\"type\\":\\"object\\",\\"object\\":\\"winCriteria\\",\\"required\\":\\"true\\"}',
 };
 
 export default collectionDefinition;

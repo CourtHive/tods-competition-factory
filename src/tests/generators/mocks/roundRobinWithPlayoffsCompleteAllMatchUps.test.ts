@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

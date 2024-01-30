@@ -1,6 +1,6 @@
 import { shuffleArray, unique } from '../../../tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { SINGLES } from '@Constants/eventConstants';

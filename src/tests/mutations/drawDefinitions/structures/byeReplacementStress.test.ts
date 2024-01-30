@@ -1,6 +1,6 @@
 import { generateRange } from '../../../../tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';

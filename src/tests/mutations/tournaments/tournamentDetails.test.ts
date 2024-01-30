@@ -1,6 +1,6 @@
 import { dateStringDaysChange } from '../../../tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { IN_PROGRESS } from '@Constants/tournamentConstants';

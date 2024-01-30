@@ -4,7 +4,7 @@ import { getDrawPosition } from '@Functions/global/extractors';
 import { xa } from '../../../../tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import { shuffleArray } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { findEvent } from '@Acquire/findEvent';
 import { randomInt } from '../../../../tools/math';
 import { expect } from 'vitest';

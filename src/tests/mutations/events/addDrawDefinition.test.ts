@@ -1,6 +1,6 @@
 import { getMatchUpContextIds } from '@Query/matchUp/getMatchUpContextIds';
 import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
-import tournamentEngineSync from '../../engines/syncEngine';
+import tournamentEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 

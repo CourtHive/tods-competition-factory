@@ -1,5 +1,5 @@
 import { verifyStructure } from '../primitives/verifyStructure';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

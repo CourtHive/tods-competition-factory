@@ -1,4 +1,4 @@
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { CANNOT_REMOVE_PARTICIPANTS } from '../../../../constants/errorConditionConstants';

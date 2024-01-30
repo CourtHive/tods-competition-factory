@@ -1,6 +1,6 @@
 import { generateDateRange } from '../../../../tools/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
-import { queryEngine } from '../../../engines/queryEngine';
+import { queryEngine } from '@Engines/queryEngine';
 import { hav } from '../../../../tools/objects';
 import { expect, it } from 'vitest';
 

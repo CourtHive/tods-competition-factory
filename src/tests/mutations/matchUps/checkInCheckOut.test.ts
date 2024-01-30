@@ -1,7 +1,7 @@
 import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 

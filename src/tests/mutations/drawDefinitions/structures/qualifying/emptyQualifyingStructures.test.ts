@@ -1,7 +1,7 @@
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../../../tools/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';

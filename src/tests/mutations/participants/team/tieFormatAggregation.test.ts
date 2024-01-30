@@ -1,6 +1,6 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { COLLEGE_JUCO, USTA_BREWER_CUP, USTA_COLLEGE, USTA_TOC } from '../../../../constants/tieFormatConstants';

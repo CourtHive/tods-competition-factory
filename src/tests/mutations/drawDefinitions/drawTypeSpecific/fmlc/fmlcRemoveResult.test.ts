@@ -4,7 +4,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '@Acquire/findStructure';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
