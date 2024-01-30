@@ -8,9 +8,9 @@ import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
 
 // constants
-import { MISSING_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function directParticipants(params) {
   const result = attemptToModifyScore(params);
@@ -39,7 +39,7 @@ export function directParticipants(params) {
 
   const stack = 'directParticipants';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
-  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
+  const isAdHocMatchUp = isAdHoc({ structure });
   let drawPositions = matchUp.drawPositions;
 
   let annotate;

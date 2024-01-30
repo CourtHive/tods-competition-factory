@@ -6,16 +6,16 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants and types
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RemoveRoundMatchUpsArgs = {
   removeCompletedMatchUps?: boolean;
@@ -51,7 +51,7 @@ export function removeRoundMatchUps({
   // cannot be a round robin structure
   if (structure?.structures) return { error: INVALID_STRUCTURE };
 
-  const isAdHocStructure = isAdHoc({ drawDefinition, structure });
+  const isAdHocStructure = isAdHoc({ structure });
 
   if (isAdHocStructure) {
     return removeAdHocRound({

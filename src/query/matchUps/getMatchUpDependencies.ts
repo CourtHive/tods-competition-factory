@@ -3,25 +3,21 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
-import { getIndividualParticipantIds } from '../../mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { addGoesTo } from '../../mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { getIndividualParticipantIds } from '@Mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
-import { matchUpSort } from '../../functions/sorters/matchUpSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { allDrawMatchUps } from './getAllDrawMatchUps';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
-import { POSITION } from '../../constants/drawDefinitionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import {
-  ErrorType,
-  MISSING_DRAW_ID,
-  MISSING_MATCHUPS,
-  MISSING_MATCHUP_IDS,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, DrawLink, Tournament } from '../../types/tournamentTypes';
+// constants and types
+import { ErrorType, MISSING_DRAW_ID, MISSING_MATCHUPS, MISSING_MATCHUP_IDS } from '@Constants/errorConditionConstants';
+import { DrawDefinition, DrawLink, Tournament } from '@Types/tournamentTypes';
+import { POSITION } from '@Constants/drawDefinitionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetMatchUpDependenciesArgs = {
   includeParticipantDependencies?: boolean;

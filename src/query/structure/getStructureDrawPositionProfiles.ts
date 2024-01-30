@@ -37,7 +37,7 @@ export function getStructureDrawPositionProfiles(params: GetStructureDrawPositio
     structure = findContainer ? result.containingStructure ?? result.structure : result.structure;
   }
 
-  if (isAdHoc({ drawDefinition, structure })) {
+  if (isAdHoc({ structure })) {
     return { structure, isAdHoc: true, error: INVALID_DRAW_POSITION };
   }
 

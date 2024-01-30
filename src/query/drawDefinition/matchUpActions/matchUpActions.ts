@@ -19,32 +19,25 @@ import {
   getPolicyActions,
   isAvailableAction,
   MATCHUP_ACTION,
-} from '../positionActions/actionPolicyUtils';
+} from '@Query/drawDefinition/positionActions/actionPolicyUtils';
 
 // constants, fixtures and types
-import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
-import { MatchUpsMap, PolicyDefinitions, TournamentRecords, ResultType } from '../../../types/factoryTypes';
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { BYE, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Participant, Tournament } from '../../../types/tournamentTypes';
-import { ADD_PENALTY, ADD_PENALTY_METHOD } from '../../../constants/positionActionConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { END, REFEREE, SCHEDULE, SCHEDULE_METHOD, SCORE, START, STATUS } from '@Constants/matchUpActionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { MatchUpsMap, PolicyDefinitions, TournamentRecords, ResultType } from '@Types/factoryTypes';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { BYE, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Participant, Tournament } from '@Types/tournamentTypes';
+import { ADD_PENALTY, ADD_PENALTY_METHOD } from '@Constants/positionActionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import {
-  END,
-  REFEREE,
-  SCHEDULE,
-  SCHEDULE_METHOD,
-  SCORE,
-  START,
-  STATUS,
-} from '../../../constants/matchUpActionConstants';
+} from '@Constants/errorConditionConstants';
 
 type MatchUpActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -71,7 +64,7 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
   validActions?: any[];
 } {
   if (!params) return { error: INVALID_VALUES };
-  let drawDefinition, event;
+  let { drawDefinition, event } = params;
   const {
     restrictAdHocRoundParticipants = true, // disallow the same participant being in the same round multiple times
     policyDefinitions: specifiedPolicyDefinitions,
@@ -99,14 +92,17 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
     const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps ?? [];
     const matchUp = matchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
     event = (tournamentRecord?.events ?? []).find((event) => event.eventId === matchUp?.eventId);
-    drawDefinition = (event?.drawDefinitions ?? []).find((drawDefinition) => drawDefinition.drawId === matchUp?.drawId);
+    const foundDrawDefinition = (event?.drawDefinitions ?? []).find(
+      (drawDefinition) => drawDefinition.drawId === matchUp?.drawId,
+    );
+    if (foundDrawDefinition) drawDefinition = foundDrawDefinition;
   }
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const tournamentParticipants = getParticipants({
-    tournamentRecord,
     withIndividualParticipants: true,
+    tournamentRecord,
   }).participants;
 
   const { drawId } = drawDefinition;
@@ -173,7 +169,7 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
   const validActions: any[] = [];
   if (!structureId) return { validActions };
 
-  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
+  const isAdHocMatchUp = isAdHoc({ structure });
   const isCollectionMatchUp = matchUp.collectionId;
 
   if (isAdHocMatchUp && !isCollectionMatchUp) {
@@ -341,5 +337,6 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
     structureIsComplete,
     validActions,
     isDoubleExit,
+    ...SUCCESS,
   };
 }

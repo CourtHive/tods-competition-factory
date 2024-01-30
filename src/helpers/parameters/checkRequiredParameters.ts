@@ -107,8 +107,8 @@ const paramTypes = {
 };
 
 export function checkRequiredParameters(
-  params: Params,
-  requiredParams: RequiredParams,
+  params?: Params,
+  requiredParams?: RequiredParams,
   stack?: string,
 ): ResultType & {
   valid?: boolean;
@@ -122,7 +122,7 @@ export function checkRequiredParameters(
   if (!paramError) return { valid: true };
 
   const error =
-    params[errorParam] === undefined
+    params?.[errorParam] === undefined
       ? errors[errorParam] || INVALID_VALUES
       : (paramError.validate && paramError.invalid) || INVALID_VALUES;
 

@@ -1,16 +1,20 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { hydrateParticipants } from '@Query/participants/hydrateParticipants';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getContextContent } from '@Query/hierarchical/getContextContent';
 import { allEventMatchUps } from './getAllEventMatchUps';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { GetMatchUpsArgs, ResultType } from '../../types/factoryTypes';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { GetMatchUpsArgs, ResultType } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
   matchUps?: HydratedMatchUp[];
 } {
+  const paramsCheck = checkRequiredParameters(params, [{ tournamentRecord: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
   if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   let { participantMap, participants } = params;
   const {

@@ -4,11 +4,13 @@ import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAs
 import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
 import { getValidAlternatesAction } from './getValidAlternatesAction';
 import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
+import { getParticipants } from '@Query/participants/getParticipants';
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
@@ -24,18 +26,14 @@ import {
 } from './actionPolicyUtils';
 
 // constants and types
-import { PolicyDefinitions, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  INVALID_DRAW_POSITION,
-  MISSING_DRAW_DEFINITION,
-  MISSING_DRAW_POSITION,
-  MISSING_EVENT,
-  MISSING_STRUCTURE_ID,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_DRAW_POSITION, MISSING_DRAW_POSITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { CONSOLATION, MAIN, POSITION, QUALIFYING, WIN_RATIO } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition, Event, Participant, Tournament } from '@Types/tournamentTypes';
+import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';
+import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   ADD_NICKNAME_METHOD,
   ADD_NICKNAME,
@@ -56,10 +54,7 @@ import {
   MODIFY_PAIR_ASSIGNMENT,
   REMOVE_SEED,
   REMOVE_SEED_METHOD,
-} from '../../../constants/positionActionConstants';
-import { CONSOLATION, MAIN, POSITION, QUALIFYING, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition, Event, Participant, Tournament } from '../../../types/tournamentTypes';
-import { getParticipants } from '../../participants/getParticipants';
+} from '@Constants/positionActionConstants';
 
 type PositionActionsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -79,9 +74,6 @@ type PositionActionsArgs = {
 
 /**
  * Calculates the valid actions for a draw position based on the provided parameters.
- *
- * @param params - The parameters for calculating the position actions.
- * @returns An object containing the valid actions for the draw position.
  */
 export function positionActions(params: PositionActionsArgs): ResultType & {
   isActiveDrawPosition?: boolean;
@@ -90,6 +82,9 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   isByePosition?: boolean;
   validActions?: any[];
 } {
+  const paramsCheck = checkRequiredParameters(params, [{ event: true, drawDefinition: true, structureId: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
   const {
     policyDefinitions: specifiedPolicyDefinitions,
     returnParticipants = true,
@@ -99,10 +94,6 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     drawPosition,
     event,
   } = params;
-
-  if (!event) return { error: MISSING_EVENT };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!params.structureId) return { error: MISSING_STRUCTURE_ID };
 
   const tournamentParticipants =
     params.tournamentParticipants ??
@@ -501,5 +492,6 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     isDrawPosition: true,
     isByePosition,
     validActions,
+    ...SUCCESS,
   };
 }

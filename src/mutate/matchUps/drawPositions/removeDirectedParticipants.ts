@@ -11,13 +11,13 @@ import { clearDrawPosition } from './positionClear';
 import { instanceCount } from '@Tools/arrays';
 
 // constants and types
-import { ErrorType, MISSING_DRAW_POSITIONS, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, DrawLink, Event, Tournament } from '../../../types/tournamentTypes';
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { ErrorType, MISSING_DRAW_POSITIONS, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, DrawLink, Event, Tournament } from '@Types/tournamentTypes';
+import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 export function removeDirectedParticipants(params): {
   error?: ErrorType;
@@ -39,7 +39,7 @@ export function removeDirectedParticipants(params): {
   } = params;
 
   const isCollectionMatchUp = Boolean(params.matchUp.collectionId);
-  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
+  const isAdHocMatchUp = isAdHoc({ structure });
 
   // targetData will have team matchUp when params.matchUp is a collectionMatchUp
   const { drawPositions, winningSide } = targetData.matchUp || {};
