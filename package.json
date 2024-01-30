@@ -117,7 +117,7 @@
     "@commitlint/config-conventional": "18.6.0",
     "@nestjs/class-transformer": "0.4.0",
     "@nestjs/class-validator": "0.13.4",
-    "@nestjs/cli": "10.0.1",
+    "@nestjs/cli": "10.3.0",
     "@nestjs/common": "10.3.1",
     "@nestjs/config": "3.1.1",
     "@nestjs/core": "10.3.1",
