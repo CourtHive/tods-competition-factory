@@ -1,5 +1,5 @@
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { INVALID_VALUES, MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

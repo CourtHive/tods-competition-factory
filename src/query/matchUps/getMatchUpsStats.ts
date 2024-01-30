@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { getBand, getScoreComponents, pctSpread } from '../matchUp/scoreComponents';
 import { findPolicy } from '../../acquire/findPolicy';
 

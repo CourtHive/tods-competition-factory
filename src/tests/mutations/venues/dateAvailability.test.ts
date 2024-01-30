@@ -1,5 +1,5 @@
 import { validDateAvailability } from '../../../validators/validateDateAvailability';
-import { Availability } from '../../../types/tournamentTypes';
+import { Availability } from '@Types/tournamentTypes';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
@@ -9,7 +9,7 @@ import {
   INVALID_DATE,
   INVALID_DATE_AVAILABILITY,
   INVALID_TIME,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const invalidTime = 'Invalid Time';
 const d210102 = '2021-01-02';

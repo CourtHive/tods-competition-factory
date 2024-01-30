@@ -1,5 +1,5 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { isConvertableInteger } from '@Tools/math';
 import { generateRange } from '@Tools/arrays';

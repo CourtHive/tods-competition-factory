@@ -5,10 +5,10 @@ import { addParticipant } from '../../participants/addParticipant';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { instanceCount } from '@Tools/arrays';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_MATCHUP,
@@ -19,7 +19,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, lineUps, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

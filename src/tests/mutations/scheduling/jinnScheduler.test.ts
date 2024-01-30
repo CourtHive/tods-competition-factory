@@ -6,10 +6,10 @@ import tournamentEngine from '../../engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '@Constants/drawDefinitionConstants';
 
 it.each([
   {

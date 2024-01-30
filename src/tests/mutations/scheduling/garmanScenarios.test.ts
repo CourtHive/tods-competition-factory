@@ -1,5 +1,5 @@
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { intersection, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';
@@ -7,8 +7,8 @@ import tournamentEngine from '../../engines/syncEngine';
 import garman from '../../../assemblies/generators/scheduling/garman/garman';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 const date = new Date().toISOString().split('T')[0];
 

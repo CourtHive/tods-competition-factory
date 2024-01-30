@@ -1,7 +1,7 @@
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { structureSort } from '../../../functions/sorters/structureSort';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
@@ -10,11 +10,11 @@ import { ensureInt } from '@Tools/ensureInt';
 import { isPowerOf2 } from '@Tools/math';
 import { getGenerators } from './getGenerators';
 
-import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
+import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Structure, TieFormat } from '@Types/tournamentTypes';
 import { PlayoffAttributes, PolicyDefinitions } from '@Types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   MAIN,
   AD_HOC,
@@ -25,7 +25,7 @@ import {
   QUALIFYING,
   WINNER,
   POSITION,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 type GenerateDrawStructuresAndLinksArgs = {
   playoffAttributes?: PlayoffAttributes;

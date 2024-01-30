@@ -6,9 +6,9 @@ import { expect, it } from 'vitest';
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
 
 import tournamentRecord from './dominantDuo.tods.json';
-import { POLICY_ROUND_ROBIN_TALLY_DEFAULT } from '../../../../fixtures/policies/POLICY_ROUND_ROBIN_TALLY_DEFAULT';
-import { POLICY_ROUND_ROBIN_TALLY_JTT } from '../../../../fixtures/policies/POLICY_ROUND_ROBIN_TALLY_JTT';
-import { POLICY_ROUND_ROBIN_TALLY_TOC } from '../../../../fixtures/policies/POLICY_ROUND_ROBIN_TALLY_TOC';
+import { POLICY_ROUND_ROBIN_TALLY_DEFAULT } from '@Fixtures/policies/POLICY_ROUND_ROBIN_TALLY_DEFAULT';
+import { POLICY_ROUND_ROBIN_TALLY_JTT } from '@Fixtures/policies/POLICY_ROUND_ROBIN_TALLY_JTT';
+import { POLICY_ROUND_ROBIN_TALLY_TOC } from '@Fixtures/policies/POLICY_ROUND_ROBIN_TALLY_TOC';
 
 it('supports multiple policy configurations', () => {
   const result = tournamentEngine.setState(tournamentRecord);

@@ -1,14 +1,14 @@
-import { getMatchUpIds } from '../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { AGE, DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { CLAY, HARD } from '../../../constants/surfaceConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { AGE, DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { CLAY, HARD } from '@Constants/surfaceConstants';
 import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
@@ -16,7 +16,7 @@ import {
   PLAY_OFF,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

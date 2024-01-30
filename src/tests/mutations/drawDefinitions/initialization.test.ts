@@ -1,7 +1,7 @@
 import { it, expect } from 'vitest';
 
-import { ERROR, SUCCESS } from '../../../constants/resultConstants';
-import { MAIN, QUALIFYING, CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { ERROR, SUCCESS } from '@Constants/resultConstants';
+import { MAIN, QUALIFYING, CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import {
   setStageAlternatesCount,
@@ -9,7 +9,7 @@ import {
   setStageQualifiersCount,
   setStageWildcardsCount,
 } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 let result;
 

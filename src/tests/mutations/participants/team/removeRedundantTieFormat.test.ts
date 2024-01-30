@@ -1,9 +1,9 @@
-import { getMatchUpId } from '../../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { TEAM } from '../../../../constants/matchUpTypes';
 import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';

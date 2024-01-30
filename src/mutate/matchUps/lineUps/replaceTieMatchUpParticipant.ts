@@ -16,12 +16,12 @@ import { unique } from '@Tools/arrays';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { PAIR } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 import {
   EXISTING_PARTICIPANT,
   INVALID_PARTICIPANT,
@@ -29,7 +29,7 @@ import {
   MISSING_PARTICIPANT_ID,
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ReplaceTieMatchUpParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;

@@ -1,11 +1,11 @@
-import { getParticipantId } from '../../../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { xa } from '../../../../../tools/objects';
 import { expect, it } from 'vitest';
 
 import { MAIN, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { RANKING, RATING } from '../../../../../constants/scaleConstants';
 import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
 import { WTN } from '../../../../../constants/ratingConstants';

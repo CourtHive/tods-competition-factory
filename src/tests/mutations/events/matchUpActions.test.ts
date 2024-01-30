@@ -4,12 +4,12 @@ import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { FEMALE } from '../../../constants/genderConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { END, PENALTY, REFEREE, SCHEDULE, SCORE, START, STATUS } from '../../../constants/matchUpActionConstants';
+import { ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { FEMALE } from '@Constants/genderConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { END, PENALTY, REFEREE, SCHEDULE, SCORE, START, STATUS } from '@Constants/matchUpActionConstants';
 
 it('can return valid actions for matchUps', () => {
   const participantsProfile = {

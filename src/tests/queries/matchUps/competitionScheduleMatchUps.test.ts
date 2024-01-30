@@ -1,15 +1,15 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { getMatchUpIds } from '../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { xa } from '../../../tools/objects';
 import { instanceCount, unique } from '../../../tools/arrays';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { MISSING_EVENT, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 const sst = 'schedule.scheduledTime';
 const d210505 = '2021-05-05';

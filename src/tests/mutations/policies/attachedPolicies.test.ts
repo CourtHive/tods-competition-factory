@@ -2,11 +2,11 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { APPLIED_POLICIES, ENTRY_PROFILE, FLIGHT_PROFILE } from '../../../constants/extensionConstants';
-import { POLICY_TYPE_ROUND_NAMING, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import POLICY_SEEDING_BYES from '../../../fixtures/policies/POLICY_SEEDING_BYES';
-import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import POLICY_SEEDING_ITF from '../../../fixtures/policies/POLICY_SEEDING_ITF';
+import { APPLIED_POLICIES, ENTRY_PROFILE, FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { POLICY_TYPE_ROUND_NAMING, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
+import POLICY_SEEDING_BYES from '@Fixtures/policies/POLICY_SEEDING_BYES';
+import { AD_HOC, WIN_RATIO } from '@Constants/drawDefinitionConstants';
+import POLICY_SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import ROUND_NAMING_POLICY from '../publishing/roundNamingPolicy';
 
 it('generateDrawDefinition will find seeding policy attached to tournamentRecord', () => {

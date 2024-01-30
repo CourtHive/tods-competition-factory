@@ -14,7 +14,7 @@ import {
 } from '../primitives/verifyMatchUps';
 
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { EntryStatusUnion, StageTypeUnion } from '../../../../types/tournamentTypes';
+import { EntryStatusUnion, StageTypeUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,

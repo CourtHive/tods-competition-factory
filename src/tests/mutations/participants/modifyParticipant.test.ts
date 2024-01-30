@@ -4,9 +4,9 @@ import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '../../../constants/errorConditionConstants';
-import { MALE } from '../../../constants/genderConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
+import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '@Constants/errorConditionConstants';
+import { MALE } from '@Constants/genderConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 tournamentEngine.devContext(true);
 

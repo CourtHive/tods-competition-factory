@@ -6,16 +6,11 @@ import { generateAddress } from '../mocks/generateAddress';
 import { nameMocks } from '../mocks/nameMocks';
 import { UUID } from '@Tools/UUID';
 
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { FEMALE, MALE, OTHER } from '../../../constants/genderConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  FLIGHT_PROFILE,
-  internalExtensions,
-  PERSON_REQUESTS,
-  SCHEDULING_PROFILE,
-} from '../../../constants/extensionConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { FEMALE, MALE, OTHER } from '@Constants/genderConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { FLIGHT_PROFILE, internalExtensions, PERSON_REQUESTS, SCHEDULING_PROFILE } from '@Constants/extensionConstants';
 
 export function anonymizeTournamentRecord({
   keepExtensions = [], // e.g. ['level']

@@ -3,9 +3,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 const startDate = '2022-01-01';
 const endDate = '2022-01-07';

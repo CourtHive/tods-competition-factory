@@ -2,8 +2,8 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 
 it('can generate an event with draw independent of a tournamentRecord', () => {
   const drawSize = 32;

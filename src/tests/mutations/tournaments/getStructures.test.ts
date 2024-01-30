@@ -12,7 +12,7 @@ import {
   PLAY_OFF,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can extract and collate event and tournament structures', () => {
   const eventProfiles = [

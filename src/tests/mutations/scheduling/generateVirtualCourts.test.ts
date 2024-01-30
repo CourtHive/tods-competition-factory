@@ -5,7 +5,7 @@ import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/
 import { mocksEngine, competitionEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
 const showGlobalLog = false;
 

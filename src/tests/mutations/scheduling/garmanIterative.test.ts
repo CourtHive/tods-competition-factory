@@ -1,14 +1,14 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 
 const showGlobalLog = false;
 

@@ -1,10 +1,10 @@
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE } from '../../constants/policyConstants';
-import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 import tournamentRecord from './avoidanceIssue.tods.json';
 

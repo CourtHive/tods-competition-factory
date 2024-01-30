@@ -4,8 +4,8 @@ import { generateRange } from '../../../tools/arrays';
 import { UUID } from '../../../tools/UUID';
 import { expect, it, test } from 'vitest';
 
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { PAIR } from '../../../constants/participantConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { PAIR } from '@Constants/participantConstants';
 
 it('can generate unique participants', () => {
   const defaultPersonData = generatePersonData().personData;

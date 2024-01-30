@@ -1,5 +1,5 @@
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
-import { MAIN, PLAY_OFF, CONSOLATION, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { MAIN, PLAY_OFF, CONSOLATION, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export const ROUND_NAMING_POLICY = {
   [POLICY_TYPE_ROUND_NAMING]: {

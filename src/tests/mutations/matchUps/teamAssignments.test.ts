@@ -3,9 +3,9 @@ import { generateTeamTournament } from '../participants/team/generateTestTeamTou
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { LINEUPS } from '../../../constants/extensionConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { LINEUPS } from '@Constants/extensionConstants';
 import {
   END,
   PENALTY,
@@ -17,7 +17,7 @@ import {
   START,
   STATUS,
   SUBSTITUTION,
-} from '../../../constants/matchUpActionConstants';
+} from '@Constants/matchUpActionConstants';
 
 const scenario = {
   singlesCount: 3,

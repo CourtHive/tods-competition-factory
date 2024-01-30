@@ -1,7 +1,7 @@
 import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 
-import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
+import { WIN_RATIO } from '@Constants/drawDefinitionConstants';
 
 /**
  * check effect of winningSide change in a structure where progression is based on WIN_RATIO

@@ -1,4 +1,4 @@
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { intersection } from '@Tools/arrays';
 

@@ -6,9 +6,9 @@ import { findStructure, getDrawStructures } from '../../../acquire/findStructure
 import { constantToString } from '../../../tools/strings';
 import { expect, it } from 'vitest';
 
-import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { ERROR } from '../../../constants/resultConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { ERROR } from '@Constants/resultConstants';
 
 it('can find structures by structureId', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

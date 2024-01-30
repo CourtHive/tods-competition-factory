@@ -4,7 +4,7 @@ import { generateRange } from '../../../../tools/arrays';
 import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
-import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 export function generateTeamTournament(params?) {
   const {

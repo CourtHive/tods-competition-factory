@@ -1,4 +1,4 @@
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../primitives/verifyStructure';
 import { verifyMatchUps } from '../../primitives/verifyMatchUps';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';

@@ -1,11 +1,11 @@
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { eventConstants } from '../../../constants/eventConstants';
+import { eventConstants } from '@Constants/eventConstants';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { INDIVIDUAL } from '@Constants/participantConstants';
 
 const { SINGLES, DOUBLES } = eventConstants;
 

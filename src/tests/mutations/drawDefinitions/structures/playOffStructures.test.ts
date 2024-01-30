@@ -5,7 +5,7 @@ import { instanceCount } from '../../../../tools/arrays';
 import { numericSort } from '../../../../tools/sorting';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '../../../../constants/resultConstants';
 import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '../../../../constants/drawDefinitionConstants';
 

@@ -1,5 +1,5 @@
 import { getUpdatedSchedulingProfile } from '@Query/matchUps/scheduling/getUpdatedSchedulingProfile';
-import { validateSchedulingProfile } from '../../validators/validateSchedulingProfile';
+import { validateSchedulingProfile } from '@Validators/validateSchedulingProfile';
 import { getCompetitionVenues } from '@Query/venues/venuesAndCourtsGetter';
 import { removeExtension } from '../extensions/removeExtension';
 import { getEventIdsAndDrawIds } from '@Query/tournaments/getEventIdsAndDrawIds';

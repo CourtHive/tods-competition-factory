@@ -1,10 +1,10 @@
-import { matchUpSort } from '../../functions/sorters/matchUpSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import mocksEngine from '../../assemblies/engines/mock';
 import queryEngine from '../engines/queryEngine';
 import { shuffleArray } from '../../tools/arrays';
 import { it, expect } from 'vitest';
 
-import { COMPASS, CURTIS_CONSOLATION, stageOrder } from '../../constants/drawDefinitionConstants';
+import { COMPASS, CURTIS_CONSOLATION, stageOrder } from '@Constants/drawDefinitionConstants';
 
 it.each([COMPASS, CURTIS_CONSOLATION])('can accurately sort matchUps by stage and then stageSequence', (drawType) => {
   const drawSize = 32;

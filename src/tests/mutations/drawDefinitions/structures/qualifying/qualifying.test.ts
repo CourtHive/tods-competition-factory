@@ -7,7 +7,7 @@ import { unique } from '../../../../../tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../../constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '../../../../../constants/entryStatusConstants';
 import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';

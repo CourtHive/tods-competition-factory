@@ -4,7 +4,7 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 
 import { DrawDefinition, MatchUp } from '@Types/tournamentTypes';
-import { LINEUPS } from '../../../constants/extensionConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 
 type EnsureSideLineUpsArgs = {

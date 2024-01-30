@@ -13,10 +13,10 @@ import { expect, it } from 'vitest';
 import { getNextSeedBlock, getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
 import { findStructure, getDrawStructures } from '../../../../acquire/findStructure';
 
-import SEEDING_NATIONAL from '../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { EntryStatusUnion } from '../../../../types/tournamentTypes';
+import SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
 import { ERROR } from '../../../../constants/resultConstants';
 import {

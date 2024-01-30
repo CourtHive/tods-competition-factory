@@ -14,7 +14,7 @@ import { generateRange } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';
-import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {

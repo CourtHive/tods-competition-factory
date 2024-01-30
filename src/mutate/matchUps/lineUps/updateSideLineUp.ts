@@ -2,7 +2,7 @@ import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findExtension } from '../../../acquire/findExtension';
 
-import { LINEUPS } from '../../../constants/extensionConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
 

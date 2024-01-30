@@ -3,12 +3,12 @@ import tournamentEngine from '../../engines/syncEngine';
 import * as tools from '../../../assemblies/tools';
 import { expect, it, test } from 'vitest';
 
-import { POLICY_TYPE_PARTICIPANT } from '../../../constants/policyConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { countries } from '../../../fixtures/countryData';
+import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { countries } from '@Fixtures/countryData';
 
 const privacyPolicy = {
   [POLICY_TYPE_PARTICIPANT]: {

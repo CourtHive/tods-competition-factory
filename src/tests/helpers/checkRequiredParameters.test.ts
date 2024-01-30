@@ -21,7 +21,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ANY_OF,
   BYPASS_PARAM_CHECK,
@@ -40,7 +40,7 @@ import {
   STRUCTURE_ID,
   TOURNAMENT_ID,
   TOURNAMENT_RECORD,
-} from '../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 it('can check required parameters', () => {
   // @ts-expect-error missing param

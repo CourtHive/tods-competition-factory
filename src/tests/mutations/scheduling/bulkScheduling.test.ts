@@ -1,21 +1,21 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
 import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getMatchUpIds } from '../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 import {
   INVALID_DATE,
   INVALID_TIME,
   MISSING_MATCHUP_IDS,
   MISSING_SCHEDULE,
   VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can bulk schedule matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

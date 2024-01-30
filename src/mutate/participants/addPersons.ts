@@ -1,5 +1,5 @@
 import { getParticipants } from '@Query/participants/getParticipants';
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { findParticipant } from '../../acquire/findParticipant';
 import { addParticipants } from './addParticipants';

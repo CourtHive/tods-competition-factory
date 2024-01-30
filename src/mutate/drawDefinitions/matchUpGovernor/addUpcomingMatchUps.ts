@@ -1,6 +1,6 @@
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { getParticipantIds } from '../../../functions/global/extractors';
+import { getParticipantIds } from '@Functions/global/extractors';
 import { timeStringMinutes } from '@Tools/dateTime';
 import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '@Tools/sorting';

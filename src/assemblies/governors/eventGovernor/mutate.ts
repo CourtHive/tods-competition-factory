@@ -12,7 +12,7 @@ export { assignSeedPositions } from '@Mutate/events/assignSeedPositions';
 export { attachFlightProfile } from '@Mutate/events/attachFlightProfile';
 export { removeScaleValues } from '@Mutate/entries/removeScaleValues';
 export { setEventDisplay } from '@Mutate/events/setEventDisplay';
-export { validateCategory } from '../../../validators/validateCategory';
+export { validateCategory } from '@Validators/validateCategory';
 export { removeSeeding } from '@Mutate/entries/removeSeeding';
 export { deleteEvents } from '@Mutate/events/deleteEvent';
 export { modifyEvent } from '@Mutate/events/modifyEvent';

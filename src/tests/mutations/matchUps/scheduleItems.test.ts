@@ -14,8 +14,8 @@ import {
   addMatchUpStopTime,
 } from '../../../mutate/matchUps/schedule/scheduleItems';
 
-import { DOUBLES } from '../../../constants/eventConstants';
-import { ERROR } from '../../../constants/resultConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { ERROR } from '@Constants/resultConstants';
 
 const t200101_10 = '2020-01-01T10:00:00Z';
 const t200101_9 = '2020-01-01T09:00:00Z';

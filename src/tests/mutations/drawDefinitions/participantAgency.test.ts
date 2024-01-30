@@ -1,5 +1,5 @@
 import { resolveDrawPositions } from '../../../assemblies/generators/drawDefinitions/drawPositionsResolver';
-import { getDrawPosition, getParticipantId } from '../../../functions/global/extractors';
+import { getDrawPosition, getParticipantId } from '@Functions/global/extractors';
 import { generateRange, randomPop, unique } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';

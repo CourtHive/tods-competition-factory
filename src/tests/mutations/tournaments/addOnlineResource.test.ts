@@ -9,7 +9,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('supports adding onlineResources', () => {
   const participantsProfile = { participantsCount: 2 };

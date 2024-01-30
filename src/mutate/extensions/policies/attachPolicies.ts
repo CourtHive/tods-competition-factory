@@ -6,22 +6,22 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 // constants and types
 import { PolicyDefinitions, TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
 import { isObject, isString } from '@Tools/objects';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,
   INVALID_VALUES,
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DRAW_DEFINITION,
   EVENT,
   POLICY_DEFINITIONS,
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
-} from '../../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 type AttachPoliciesArgs = {
   tournamentRecords?: TournamentRecords;

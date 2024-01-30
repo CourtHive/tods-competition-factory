@@ -1,8 +1,8 @@
 import { addNotice } from '@Global/state/globalState';
 
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   PENALTY_NOT_FOUND,
   MISSING_PENALTY_ID,
@@ -11,7 +11,7 @@ import {
   INVALID_VALUES,
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { Participant, Penalty, Tournament } from '@Types/tournamentTypes';
 
 export function modifyPenalty(params) {

@@ -1,7 +1,7 @@
 import { resequenceStructures } from './structureGovernor/resequenceStructures';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
 import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 

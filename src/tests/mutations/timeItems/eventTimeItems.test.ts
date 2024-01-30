@@ -2,9 +2,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { SINGLES } from '../../../constants/eventConstants';
-import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { RETRIEVAL } from '../../../constants/timeItemConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '@Constants/errorConditionConstants';
+import { RETRIEVAL } from '@Constants/timeItemConstants';
 
 it('can add and read timeItems from events', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

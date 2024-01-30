@@ -1,11 +1,11 @@
-import { stringSort } from '../../../functions/sorters/stringSort';
+import { stringSort } from '@Functions/sorters/stringSort';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
+import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 
 it('supports modifying event gender, name and eventType', () => {
   const drawSize = 16;

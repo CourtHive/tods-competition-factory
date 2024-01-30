@@ -8,7 +8,7 @@ import { feedInChampionship } from '../../drawDefinitions/primitives/feedIn';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '../../../../constants/resultConstants';
 import {
   MAIN,

@@ -1,5 +1,5 @@
 import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getParticipantId } from '../../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import tournamentEngine from '../../../engines/syncEngine';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';

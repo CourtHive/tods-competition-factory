@@ -14,7 +14,7 @@ import {
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const ajv = new Ajv({ allowUnionTypes: true, verbose: true, allErrors: true });
 ajv.addFormat('date-time', (dateTime: any) => {

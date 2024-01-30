@@ -2,9 +2,9 @@ import { afterAll, describe, it, expect, vi } from 'vitest';
 import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
-import { RATING } from '../../../constants/scaleConstants';
-import { ELO } from '../../../constants/ratingConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { RATING } from '@Constants/scaleConstants';
+import { ELO } from '@Constants/ratingConstants';
 
 describe('should mock console.log', () => {
   const consoleMock = vi.spyOn(console, 'log').mockImplementation(() => undefined);

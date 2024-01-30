@@ -8,7 +8,7 @@ import {
   MISSING_MATCHUP,
   MISSING_MATCHUP_ID,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('attached delegated outcomes to matchUps', () => {
   const drawSize = 8;

@@ -2,8 +2,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 
 it('can publish only specific rounds of AD_HOC structures', () => {
   const {

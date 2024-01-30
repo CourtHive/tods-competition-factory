@@ -10,7 +10,7 @@ import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
 import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
-import { EntryStatusUnion } from '../../../../types/tournamentTypes';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { MAIN, ROUND_ROBIN, CONTAINER } from '../../../../constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
 

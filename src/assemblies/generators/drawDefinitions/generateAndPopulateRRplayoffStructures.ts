@@ -2,16 +2,16 @@ import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPl
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { findExtension } from '../../../acquire/findExtension';
 import { generateTieMatchUps } from './tieMatchUps';
 
-import { INCOMPLETE_SOURCE_STRUCTURE, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { TALLY } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INCOMPLETE_SOURCE_STRUCTURE, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TALLY } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateAndPopulateRRplayoffStructures(params) {
   const stack = 'generateAndPopulateRRplayoffStructures';

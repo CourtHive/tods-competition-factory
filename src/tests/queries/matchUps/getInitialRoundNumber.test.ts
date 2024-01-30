@@ -4,7 +4,7 @@ import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can accurately determine initialRoundNumber', () => {
   const drawProfiles = [

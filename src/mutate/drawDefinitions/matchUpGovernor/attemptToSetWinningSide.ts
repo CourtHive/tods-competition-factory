@@ -1,5 +1,5 @@
 import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToModifyScore } from './attemptToModifyScore';

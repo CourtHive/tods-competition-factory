@@ -1,4 +1,4 @@
-import { validTimeString } from '../../validators/regex';
+import { validTimeString } from '@Validators/regex';
 import { getUTCdateString } from '@Tools/dateTime';
 
 import { MISSING_MATCHUP, MISSING_TIME_ITEMS } from '@Constants/errorConditionConstants';

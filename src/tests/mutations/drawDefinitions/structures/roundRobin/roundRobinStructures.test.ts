@@ -3,7 +3,7 @@ import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGov
 import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { ITEM, CONTAINER, WIN_RATIO, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {

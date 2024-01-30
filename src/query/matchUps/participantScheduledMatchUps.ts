@@ -1,5 +1,5 @@
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { validMatchUps } from '../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { extractDate, extractTime, timeSort } from '@Tools/dateTime';
 
 import { SUCCESS } from '@Constants/resultConstants';

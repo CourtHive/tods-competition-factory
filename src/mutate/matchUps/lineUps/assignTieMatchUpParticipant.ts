@@ -17,12 +17,12 @@ import { overlap } from '@Tools/arrays';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
@@ -32,7 +32,7 @@ import {
   MISSING_TIE_FORMAT,
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;

@@ -6,11 +6,11 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import POLICY_SEEDING_NATIONAL from '../../../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
-import POLICY_SEEDING_DEFAULT from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
+import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { LUCKY_LOSER } from '../../../../../constants/entryStatusConstants';
 import { SINGLES } from '../../../../../constants/eventConstants';
 import {

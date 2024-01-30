@@ -1,5 +1,5 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 

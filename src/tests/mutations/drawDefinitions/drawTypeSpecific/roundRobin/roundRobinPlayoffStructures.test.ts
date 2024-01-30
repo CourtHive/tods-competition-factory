@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStr
 import { isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 import { allDrawMatchUps } from '../../../../../query/matchUps/getAllDrawMatchUps';
 import { intersection, overlap, unique } from '../../../../../tools/arrays';
-import { structureSort } from '../../../../../functions/sorters/structureSort';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { xa } from '../../../../../tools/objects';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { mocksEngine } from '../../../../..';

@@ -1,5 +1,5 @@
 import { eligibleEntryStage } from '../positionActions/getValidAlternatesAction';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 
 import { ALTERNATE } from '@Constants/entryStatusConstants';
 

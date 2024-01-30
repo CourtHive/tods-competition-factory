@@ -1,7 +1,7 @@
 import { keyValueMatchUpScore } from '../keyValueScore';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from '@Fixtures/scoring/matchUpFormats';
 
 function scoreMatchUp(params) {
   const { lowSide, value } = params;

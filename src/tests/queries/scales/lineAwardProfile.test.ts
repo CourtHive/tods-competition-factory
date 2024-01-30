@@ -6,9 +6,9 @@ import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
-import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
+import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 it('generates points for lines in team matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

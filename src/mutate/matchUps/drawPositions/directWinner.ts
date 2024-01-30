@@ -2,7 +2,7 @@ import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSub
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { findStructure } from '../../../acquire/findStructure';

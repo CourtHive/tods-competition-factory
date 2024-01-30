@@ -1,8 +1,8 @@
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { UUID } from '@Tools/UUID';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { FEMALE, MIXED, OTHER, MALE, ANY } from '../../../constants/genderConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { FEMALE, MIXED, OTHER, MALE, ANY } from '@Constants/genderConstants';
 
 export function processTieFormat({ alternatesCount = 0, tieFormatName, tieFormat, drawSize }) {
   let maxDoublesCount = 0,

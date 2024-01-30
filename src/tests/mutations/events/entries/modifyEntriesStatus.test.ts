@@ -2,7 +2,7 @@ import mocksEngine from '../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../engines/syncEngine';
 import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
-import { getEntryStatus, getParticipantId, getParticipantIds } from '../../../../functions/global/extractors';
+import { getEntryStatus, getParticipantId, getParticipantIds } from '@Functions/global/extractors';
 import { instanceCount, intersection, unique } from '../../../../tools/arrays';
 
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';

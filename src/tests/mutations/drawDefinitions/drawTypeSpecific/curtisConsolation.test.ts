@@ -12,7 +12,7 @@ import { verifyStructure } from '../primitives/verifyStructure';
 import { generateRange } from '../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { MAIN, CONSOLATION, CURTIS, PLAY_OFF } from '../../../../constants/drawDefinitionConstants';
 
 it('can generate and verify curtis structures', () => {

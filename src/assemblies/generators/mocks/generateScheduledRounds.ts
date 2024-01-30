@@ -4,7 +4,7 @@ import { addSchedulingProfileRound } from '@Mutate/matchUps/schedule/addScheduli
 import { intersection, unique } from '@Tools/arrays';
 
 import { Tournament } from '@Types/tournamentTypes';
-import { ErrorType, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 type GenerateSchedulingProfileArgs = {
   tournamentRecord: Tournament;

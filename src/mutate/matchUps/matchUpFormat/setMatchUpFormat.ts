@@ -1,14 +1,14 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
 import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import {
   INVALID_EVENT_TYPE,
@@ -18,7 +18,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // external use; set matchUpFormat for a events, draws, structures or matchUp
 

@@ -8,8 +8,8 @@ import {
   MISSING_MATCHUP_FORMAT,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
-import { FORMAT_FAST4, FORMAT_SHORT_SETS, FORMAT_STANDARD, TIMED20 } from '../../../fixtures/scoring/matchUpFormats';
+} from '@Constants/errorConditionConstants';
+import { FORMAT_FAST4, FORMAT_SHORT_SETS, FORMAT_STANDARD, TIMED20 } from '@Fixtures/scoring/matchUpFormats';
 
 it('can set and return matchUpFormat codes', () => {
   const matchUpFormat = FORMAT_STANDARD;

@@ -3,7 +3,7 @@ import tournamentEngine from '../../../../engines/syncEngine';
 import { generateRange, unique } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import POLICY_SEEDING_BYES from '../../../../../fixtures/policies/POLICY_SEEDING_BYES';
+import POLICY_SEEDING_BYES from '@Fixtures/policies/POLICY_SEEDING_BYES';
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { SEEDING } from '../../../../../constants/scaleConstants';

@@ -1,7 +1,7 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
 import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';

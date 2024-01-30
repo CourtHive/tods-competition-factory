@@ -1,5 +1,5 @@
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
-import { getMinFinishingPositionRange } from '../../functions/sorters/structureSort';
+import { getMinFinishingPositionRange } from '@Functions/sorters/structureSort';
 import { getPlayoffStructures } from '@Query/structure/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 

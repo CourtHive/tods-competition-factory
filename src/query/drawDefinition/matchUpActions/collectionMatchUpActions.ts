@@ -1,5 +1,5 @@
 import { isAvailableAction } from '../positionActions/actionPolicyUtils';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';

@@ -1,7 +1,7 @@
 import { clearScheduledMatchUps } from '../matchUps/schedule/clearScheduledMatchUps';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '../venues/updateCourtAvailability';
-import { dateValidation } from '../../validators/regex';
+import { dateValidation } from '@Validators/regex';
 import { addNotice } from '@Global/state/globalState';
 
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';

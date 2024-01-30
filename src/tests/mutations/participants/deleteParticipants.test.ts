@@ -1,14 +1,14 @@
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '../../../constants/errorConditionConstants';
-import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
-import { UNGROUPED } from '../../../constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, TEAM } from '../../../constants/eventConstants';
+import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '@Constants/errorConditionConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, TEAM } from '@Constants/eventConstants';
 
 it('can delete participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

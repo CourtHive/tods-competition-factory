@@ -5,7 +5,7 @@ import { checkRequiredParameters } from '../../../../helpers/parameters/checkReq
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
 import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
-import { getMatchUpIds } from '../../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
 import { checkRequestConflicts } from './checkRequestConflicts';

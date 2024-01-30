@@ -1,12 +1,12 @@
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 
-import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { Tournament } from '@Types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };

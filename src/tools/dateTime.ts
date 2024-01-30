@@ -1,4 +1,4 @@
-import { dateValidation, timeValidation, validDateString } from '../validators/regex';
+import { dateValidation, timeValidation, validDateString } from '@Validators/regex';
 
 export function getIsoDateString(schedule) {
   let { scheduledDate } = schedule;

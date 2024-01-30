@@ -8,7 +8,7 @@ import { generateRange } from '../../../../tools/arrays';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import {
   TOP_DOWN,
   BOTTOM_UP,

@@ -1,11 +1,11 @@
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
-import { getParticipantId } from '../../../../../functions/global/extractors';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { getParticipantId } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../../../global/state/globalState';
 import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { QUALIFYING_PARTICIPANT } from '../../../../../constants/positionActionConstants';
 import { MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
 import { POLICY_TYPE_PROGRESSION } from '../../../../../constants/policyConstants';

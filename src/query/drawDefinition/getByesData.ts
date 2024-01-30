@@ -1,8 +1,9 @@
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { structureAssignedDrawPositions } from './positionsGetter';
 import { getQualifiersCount } from './getQualifiersCount';
 import { getStageEntries } from './stageGetter';
 
+// constants
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { CONSOLATION, CONTAINER } from '@Constants/drawDefinitionConstants';
 

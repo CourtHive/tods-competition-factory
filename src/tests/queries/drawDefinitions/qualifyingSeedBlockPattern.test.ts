@@ -2,8 +2,8 @@ import { getSeedBlockPattern } from '../../../query/drawDefinition/seedGetter';
 import { chunkArray, generateRange } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { CLUSTER, SEPARATE } from '../../../constants/drawDefinitionConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
+import { CLUSTER, SEPARATE } from '@Constants/drawDefinitionConstants';
+import { SeedingProfile } from '@Types/factoryTypes';
 
 type Scenrio = {
   seedingProfile: SeedingProfile;

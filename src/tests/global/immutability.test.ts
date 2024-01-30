@@ -3,7 +3,7 @@ import tournamentEngine from '../engines/syncEngine';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { FACTORY } from '../../constants/extensionConstants';
+import { FACTORY } from '@Constants/extensionConstants';
 
 test('setting deepCopy option to false will allow source objects to be modified', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

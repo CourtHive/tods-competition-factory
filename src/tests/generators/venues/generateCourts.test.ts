@@ -2,7 +2,7 @@ import { generateCourts } from '../../../assemblies/generators/venues/generateCo
 import { xa } from '../../../tools/objects';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 it('can generate courts', () => {
   // @ts-expect-error no params

@@ -2,7 +2,7 @@ import { validateLineUp } from '../../../validators/validateTeamLineUp';
 import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 const tieFormat = tieFormatDefaults();
 const collectionId = tieFormat.collectionDefinitions[0].collectionId;

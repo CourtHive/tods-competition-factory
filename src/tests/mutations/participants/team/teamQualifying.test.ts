@@ -1,11 +1,11 @@
-import { getParticipantId } from '../../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { instanceCount } from '../../../../tools/arrays';
 import tournamentEngine from '../../../engines/syncEngine';
 import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '../../../../constants/eventConstants';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../../constants/matchUpTypes';

@@ -1,17 +1,13 @@
 import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { isConvertableInteger } from '@Tools/math';
 import { uniqueValues } from '@Tools/arrays';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  INVALID_MATCHUP_STATUS,
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-} from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_MATCHUP_STATUS, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 
 /**

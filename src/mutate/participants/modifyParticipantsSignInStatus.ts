@@ -1,6 +1,6 @@
 import { addParticipantTimeItem } from '../timeItems/addTimeItem';
 import { addNotice, getTopics } from '@Global/state/globalState';
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { Participant } from '@Types/tournamentTypes';

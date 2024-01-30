@@ -1,8 +1,8 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
 import { definedAttributes } from '@Tools/definedAttributes';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function reverseScore(params?): {
   reversedScore?: any;

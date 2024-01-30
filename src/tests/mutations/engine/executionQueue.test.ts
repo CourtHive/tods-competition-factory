@@ -3,9 +3,9 @@ import asyncEngine from '../../engines/asyncEngine';
 import syncEngine from '../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { METHOD_NOT_FOUND, MISSING_EVENT, MISSING_PARTICIPANT_ID } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { METHOD_NOT_FOUND, MISSING_EVENT, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 
 it.each([syncEngine, asyncEngine])('supports rollbackOnError', async (tournamentEngine) => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

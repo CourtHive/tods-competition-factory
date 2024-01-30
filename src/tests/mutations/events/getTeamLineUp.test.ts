@@ -2,8 +2,8 @@ import { generateTeamTournament } from '../participants/team/generateTestTeamTou
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MISSING_PARTICIPANT_ID } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, TEAM } from '../../../constants/participantConstants';
+import { MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
 
 it('can retrieve team lineUps', () => {
   const { tournamentRecord, drawId } = generateTeamTournament();

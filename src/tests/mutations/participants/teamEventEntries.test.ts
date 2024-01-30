@@ -1,12 +1,12 @@
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import { INVALID_PARTICIPANT_IDS } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { TEAM } from '../../../constants/eventConstants';
-import { DIRECT_ACCEPTANCE, UNGROUPED } from '../../../constants/entryStatusConstants';
+import { INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { TEAM } from '@Constants/eventConstants';
+import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 
 test('adding individualParticipantIds to TEAM participants removes them from team event entries', () => {
   const eventProfiles = [

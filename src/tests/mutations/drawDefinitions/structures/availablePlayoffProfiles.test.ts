@@ -11,7 +11,7 @@ import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
 import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import {
   CONSOLATION,
   FEED_IN,

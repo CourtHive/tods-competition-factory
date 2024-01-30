@@ -3,14 +3,14 @@ import { formatDate } from '../../../tools/dateTime';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { DOUBLES, TEAM } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { DOUBLES, TEAM } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const U18rankingsRetrieval = 'RETRIEVAL.RANKING.SINGLES.U18';
 const cpsCourt1 = 'cps-court-1';

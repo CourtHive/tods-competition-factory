@@ -1,8 +1,8 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_DRAW_TYPE,
   INVALID_VALUES,
@@ -11,7 +11,7 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function removeMatchUpSideParticipant({ tournamentRecord, drawDefinition, sideNumber, matchUpId, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

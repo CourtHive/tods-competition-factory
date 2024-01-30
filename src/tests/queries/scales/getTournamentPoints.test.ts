@@ -4,10 +4,10 @@ import { mocksEngine } from '../../..';
 import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 import { expect, it } from 'vitest';
 
-import { MISSING_POLICY_DEFINITION } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { CURTIS_CONSOLATION, MAIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { MISSING_POLICY_DEFINITION } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { CURTIS_CONSOLATION, MAIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 const awardProfiles = [
   // TODO: requireWinDefault - to get points for a default there must be at least one win

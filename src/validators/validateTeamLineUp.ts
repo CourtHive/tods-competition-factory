@@ -1,4 +1,4 @@
-import { getParticipantId } from '../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { unique } from '@Tools/arrays';
 

@@ -2,8 +2,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 // categoryTypes
 const JUNIOR = 'JUNIOR';

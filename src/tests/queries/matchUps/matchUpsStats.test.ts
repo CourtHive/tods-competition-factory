@@ -3,7 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { instanceCount } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { COMPETITIVE, DECISIVE, ROUTINE } from '../../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';
 
 it('can generate competitive statistics for matchUps and add competitiveness', () => {
   const mocksProfile = {

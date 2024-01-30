@@ -2,7 +2,7 @@ import { generateTournamentRecord } from '../../../assemblies/generators/mocks/g
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
+import { FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 it('can return event matchUps with context and upcoming matchUps', () => {
   const drawProfiles = [

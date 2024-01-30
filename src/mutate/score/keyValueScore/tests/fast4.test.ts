@@ -3,7 +3,7 @@ import { stressTests } from './standardStress';
 import { expect, it } from 'vitest';
 
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
-import { FORMAT_FAST4 } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_FAST4 } from '@Fixtures/scoring/matchUpFormats';
 
 /*
   NOTE:

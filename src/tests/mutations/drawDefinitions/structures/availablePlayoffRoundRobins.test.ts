@@ -7,7 +7,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { INVALID_VALUES, MISSING_VALUE } from '../../../../constants/errorConditionConstants';
 import {
   COMPASS,

@@ -3,7 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { COMPASS, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { COMPASS, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 it.each([
   { drawSize: 4, dependencyMap: { 1: 0, 2: 2 } },

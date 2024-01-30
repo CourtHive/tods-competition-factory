@@ -1,5 +1,5 @@
 import { addDrawDefinitionExtension } from '../extensions/addRemoveExtensions';
-import { getParticipantIds } from '../../functions/global/extractors';
+import { getParticipantIds } from '@Functions/global/extractors';
 import { intersection } from '@Tools/arrays';
 
 import { PARTICIPANT_REPRESENTATIVES } from '@Constants/extensionConstants';

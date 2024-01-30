@@ -3,7 +3,7 @@ import competitionEngineSync from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 test.each([competitionEngineSync])(
   'can add and remove extensions from tournamentRecords loaded into competitionEngine',

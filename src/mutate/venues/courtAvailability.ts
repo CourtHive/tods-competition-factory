@@ -1,9 +1,9 @@
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getScheduledCourtMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { minutesDifference, timeToDate } from '@Tools/dateTime';
-import { startTimeSort } from '../../validators/time';
+import { startTimeSort } from '@Validators/time';
 import { addNotice } from '@Global/state/globalState';
-import { validDateAvailability } from '../../validators/validateDateAvailability';
+import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { findCourt } from './findCourt';
 
 import { Availability, Tournament } from '@Types/tournamentTypes';

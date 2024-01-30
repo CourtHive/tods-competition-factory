@@ -6,7 +6,7 @@ import request from 'supertest';
 import { mocksEngine } from '@Assemblies/engines/mock';
 
 import { TEST_EMAIL, TEST_PASSWORD } from '../../common/constants/test';
-import { SINGLES } from '../../../constants/eventConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 describe('AppService', () => {
   let app: INestApplication;

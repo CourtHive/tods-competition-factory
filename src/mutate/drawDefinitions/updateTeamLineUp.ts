@@ -1,5 +1,5 @@
 import { removeLineUpSubstitutions } from './removeLineUpSubstitutions';
-import { validateLineUp } from '../../validators/validateTeamLineUp';
+import { validateLineUp } from '@Validators/validateTeamLineUp';
 import { addDrawNotice } from '../notifications/drawNotifications';
 import { findExtension } from '../../acquire/findExtension';
 import { addExtension } from '../extensions/addExtension';

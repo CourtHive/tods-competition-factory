@@ -3,14 +3,14 @@ import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
-import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import {
   INVALID_MATCHUP,
   INVALID_VALUES,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // allocate courts for a TEAM matchUp
 type AllocateTeamMatchUpCourtsArgs = {

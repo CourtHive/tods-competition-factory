@@ -4,7 +4,7 @@ import { UUID } from '../../../../tools/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
 
 it('can generate draws in TEAM events with tieFormat and assign participants to collectionPositions', () => {

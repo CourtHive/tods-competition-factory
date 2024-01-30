@@ -5,22 +5,22 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { structureSort } from '../../../functions/sorters/structureSort';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { structureSort } from '@Functions/sorters/structureSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { generateLineUps } from '../participants/generateLineUps';
 import { generateOutcome } from './generateOutcome';
 
-import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { ErrorType, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { addParticipants } from '@Mutate/participants/addParticipants';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { LINEUPS } from '../../../constants/extensionConstants';
-import { ASCENDING } from '../../../constants/sortingConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { RANKING } from '../../../constants/scaleConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { ASCENDING } from '@Constants/sortingConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { RANKING } from '@Constants/scaleConstants';
 
 export function completeDrawMatchUps(params): {
   completedCount?: number;

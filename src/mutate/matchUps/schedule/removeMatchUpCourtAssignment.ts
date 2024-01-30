@@ -5,10 +5,10 @@ import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 
-import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 
 export function removeMatchUpCourtAssignment(params) {
   const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORDS]: true }]);

@@ -3,11 +3,11 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { FIRST_ROUND_LOSER_CONSOLATION, MAIN, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { INVALID_CATEGORY } from '../../../constants/errorConditionConstants';
-import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { FIRST_ROUND_LOSER_CONSOLATION, MAIN, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES, TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { INVALID_CATEGORY } from '@Constants/errorConditionConstants';
+import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 const MIXED_DOUBLES = 'Mixed Doubles';
 const PRO_SET = 'SET1-S:8/TB7@7';

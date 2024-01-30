@@ -1,7 +1,7 @@
 import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
 import { categoryCanContain } from '@Query/event/categoryCanContain';
-import { decorateResult } from '../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { isConvertableInteger } from '@Tools/math';
 

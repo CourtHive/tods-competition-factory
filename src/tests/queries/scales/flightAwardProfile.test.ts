@@ -5,7 +5,7 @@ import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import { awardProfileFlights, awardProfilePercentageFlights } from './awardProfileExamples';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
 import { getAwardProfile } from '../../../query/scales/getAwardProfile';
 
 it('can award points for flights', () => {

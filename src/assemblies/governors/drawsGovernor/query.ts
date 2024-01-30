@@ -15,6 +15,6 @@ export { getPositionAssignments } from '@Query/structure/getPositionAssignments'
 export { isValidForQualifying } from '@Query/drawDefinition/isValidForQualifying';
 export { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 export { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
-export { checkValidEntries } from '../../../validators/checkValidEntries';
+export { checkValidEntries } from '@Validators/checkValidEntries';
 export { getDrawDefinitionTimeItem } from '@Query/base/timeItems';
 export { isAdHoc } from '@Query/drawDefinition/isAdHoc';

@@ -2,9 +2,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 
 // categoryTypes
 const ADULT = 'ADULT';

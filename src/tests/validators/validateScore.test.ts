@@ -3,8 +3,8 @@ import { analyzeScore } from '../../query/matchUp/analyzeScore';
 import mocksEngine from '../../assemblies/engines/mock';
 import { it, test, expect } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
-import { Score } from '../../types/tournamentTypes';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { Score } from '@Types/tournamentTypes';
 
 // prettier-ignore
 const scenarios = [

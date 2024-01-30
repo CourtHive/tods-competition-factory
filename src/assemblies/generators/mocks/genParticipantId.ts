@@ -1,4 +1,4 @@
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { UUID } from '@Tools/UUID';
 
 export function genParticipantId({ idPrefix, participantType, index, uuids }) {

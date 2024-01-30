@@ -5,9 +5,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SEEDING_NATIONAL from '../../../fixtures/policies/POLICY_SEEDING_NATIONAL';
-import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
-import { eventConstants } from '../../../constants/eventConstants';
+import POLICY_SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
+import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
+import { eventConstants } from '@Constants/eventConstants';
 
 const { SINGLES } = eventConstants;
 

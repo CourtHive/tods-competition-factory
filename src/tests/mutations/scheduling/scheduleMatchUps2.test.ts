@@ -1,13 +1,13 @@
 import { removeCourtAssignment } from '../../../mutate/matchUps/schedule/removeCourtAssignment';
 import { getScheduleTimes } from '../../../query/venues/getScheduleTimes';
-import { getMatchUpIds } from '../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { setSubscriptions } from '../../../global/state/globalState';
 import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DELETE_VENUE, MODIFY_VENUE } from '../../../constants/topicConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { DELETE_VENUE, MODIFY_VENUE } from '@Constants/topicConstants';
+import { SINGLES } from '@Constants/eventConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_COURT_ID,
@@ -15,14 +15,8 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
-import {
-  ASSIGN_COURT,
-  SCHEDULED_DATE,
-  SCHEDULED_TIME,
-  ASSIGN_VENUE,
-  START_TIME,
-} from '../../../constants/timeItemConstants';
+} from '@Constants/errorConditionConstants';
+import { ASSIGN_COURT, SCHEDULED_DATE, SCHEDULED_TIME, ASSIGN_VENUE, START_TIME } from '@Constants/timeItemConstants';
 
 tournamentEngine.devContext({ addVenue: true });
 

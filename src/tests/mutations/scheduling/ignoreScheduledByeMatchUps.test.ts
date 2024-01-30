@@ -5,7 +5,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 it('supports pro-scheduling', () => {
   const startDate = '2023-11-28';

@@ -1,6 +1,6 @@
 import { modifyParticipantMatchUpsCount } from '../../scheduleMatchUps/modifyParticipantMatchUpsCount';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
-import { getMatchUpId } from '../../../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 
 import { BYE } from '@Constants/matchUpStatusConstants';

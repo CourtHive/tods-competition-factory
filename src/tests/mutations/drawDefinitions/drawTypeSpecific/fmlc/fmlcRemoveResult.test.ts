@@ -1,7 +1,7 @@
 import { setMatchUpState } from '../../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '../../../../../acquire/findStructure';
 import tournamentEngine from '../../../../engines/syncEngine';

@@ -11,7 +11,7 @@ import {
   FIRST_ROUND_LOSER_CONSOLATION,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can customize naming of COMPASS draw structures', () => {
   const playoffAttributes = {

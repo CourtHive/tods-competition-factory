@@ -9,7 +9,7 @@ import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../../constants/eventConstants';
 import {
   MAIN,

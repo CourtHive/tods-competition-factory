@@ -5,8 +5,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
 
 const u16MS = 'U16 Male Singles';
 const showGlobalLog = false;

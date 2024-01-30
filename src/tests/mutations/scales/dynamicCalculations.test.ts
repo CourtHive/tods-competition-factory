@@ -3,9 +3,9 @@ import scaleEngine from '../../engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import ratingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { NTRP, UTR, WTN } from '../../../constants/ratingConstants';
-import { DYNAMIC } from '../../../constants/scaleConstants';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { NTRP, UTR, WTN } from '@Constants/ratingConstants';
+import { DYNAMIC } from '@Constants/scaleConstants';
 
 const scenarios = [
   {},

@@ -3,9 +3,9 @@ import tournamentEngine from '../../engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { it, expect } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_WARNING } from '../../../constants/scheduleConstants';
-import { FOLLOWED_BY, NEXT_AVAILABLE } from '../../../constants/timeItemConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { SCHEDULE_WARNING } from '@Constants/scheduleConstants';
+import { FOLLOWED_BY, NEXT_AVAILABLE } from '@Constants/timeItemConstants';
 
 const startDate = '2023-06-16';
 const venueId = 'cc-venue-id';

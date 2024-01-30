@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { MODIFY_MATCHUP, UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
+import { MODIFY_MATCHUP, UPDATE_INCONTEXT_MATCHUP } from '@Constants/topicConstants';
 
 it('supports subscriptions to fully hydrated matchUps', () => {
   const inContextMatchUpNotifications: any[] = [];

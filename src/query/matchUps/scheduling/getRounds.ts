@@ -2,7 +2,7 @@ import { getFinishingPositionDetails, getRoundId, getRoundProfile, getRoundTimin
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { getProfileRounds } from '@Mutate/matchUps/schedule/profileRounds';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { roundSort } from '../../../functions/sorters/roundSort';
+import { roundSort } from '@Functions/sorters/roundSort';
 import { extractDate } from '@Tools/dateTime';
 import { chunkArray } from '@Tools/arrays';
 

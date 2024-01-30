@@ -10,13 +10,13 @@ import { UUID } from '@Tools/UUID';
 import { nameMocks } from './nameMocks';
 
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
-import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
+import { RANKING, RATING, SCALE } from '@Constants/scaleConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
+import { DOUBLES_MATCHUP } from '@Constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
 
 export function generateParticipants(params): {

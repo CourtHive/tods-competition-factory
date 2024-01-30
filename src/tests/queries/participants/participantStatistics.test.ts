@@ -2,8 +2,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { WIN_RATIO } from '../../../constants/statsConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { WIN_RATIO } from '@Constants/statsConstants';
+import { HydratedParticipant } from '@Types/hydrated';
 
 const scenarios = [{ drawProfiles: [{ drawSize: 8 }], matchUpsCount: 7 }];
 

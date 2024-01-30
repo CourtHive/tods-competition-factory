@@ -3,10 +3,10 @@ import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { INVALID_MATCHUP_STATUS, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { INVALID_MATCHUP_STATUS, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
   const { tournamentRecord, drawId } = generateTeamTournament({

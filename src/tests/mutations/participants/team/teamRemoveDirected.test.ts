@@ -1,4 +1,4 @@
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setDevContext } from '../../../../global/state/globalState';
 import mocksEngine from '../../../../assemblies/engines/mock';

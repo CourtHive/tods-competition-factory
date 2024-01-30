@@ -1,5 +1,5 @@
 import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
-import { validMatchUps } from '../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { isConvertableInteger } from '@Tools/math';
 import { allEventMatchUps } from './getAllEventMatchUps';

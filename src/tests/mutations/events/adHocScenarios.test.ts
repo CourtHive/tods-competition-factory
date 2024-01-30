@@ -6,15 +6,15 @@ import tournamentEngine from '../../engines/syncEngine';
 import { xa } from '../../../tools/objects';
 import { expect, it, test } from 'vitest';
 
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
-import { REMOVE_PARTICIPANT } from '../../../constants/matchUpActionConstants';
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
+import { REMOVE_PARTICIPANT } from '@Constants/matchUpActionConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;

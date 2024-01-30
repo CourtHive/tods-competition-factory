@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 import { verifyMatchUps, verifySideNumbers } from '../primitives/verifyMatchUps';
 import { generateRange, instanceCount, unique } from '../../../../tools/arrays';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 /*
  * this test is no longer relevant given that byes must be distributed equally and seedNumbers with lower seedValues

@@ -2,8 +2,8 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/
 import { treeMatchUps } from '../../../../assemblies/generators/drawDefinitions/drawTypes/eliminationTree';
 import { validDrawPositions } from '../../../../validators/validDrawPositions';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
-import { structureSort } from '../../../../functions/sorters/structureSort';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 

@@ -3,11 +3,11 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { RANKING, RATING } from '../../../constants/scaleConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { SPLIT_LEVEL_BASED, SPLIT_SHUTTLE, SPLIT_WATERFALL } from '../../../constants/flightConstants';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { RANKING, RATING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { SPLIT_LEVEL_BASED, SPLIT_SHUTTLE, SPLIT_WATERFALL } from '@Constants/flightConstants';
 
 // turn on devContext to enable checking splitEntries value
 tournamentEngine.devContext(true);

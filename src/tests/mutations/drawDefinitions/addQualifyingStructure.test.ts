@@ -3,8 +3,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MAIN, QUALIFYING, ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
+import { MAIN, QUALIFYING, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
 
 it.each([2, 3, 4, 5, 6, 7, 8, 31, 32])(
   'can specify qualifiersCount when no qualifying draws are generated',

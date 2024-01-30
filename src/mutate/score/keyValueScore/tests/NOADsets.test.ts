@@ -1,7 +1,7 @@
 import { enterValues, scoreMatchUp } from './primitives';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD_NOAD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD_NOAD } from '@Fixtures/scoring/matchUpFormats';
 
 it('handles set scoring with NoAD', () => {
   const matchUpFormat = FORMAT_STANDARD_NOAD;

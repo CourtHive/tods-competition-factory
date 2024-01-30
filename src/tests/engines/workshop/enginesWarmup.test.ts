@@ -13,13 +13,13 @@ import syncEngine from '../../../assemblies/engines/sync';
 import askEngine from '../../../assemblies/engines/ask';
 import { expect, test } from 'vitest';
 
-import { MUTATE } from '../../../constants/methodConstants';
+import { MUTATE } from '@Constants/methodConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
   MISSING_ASYNC_STATE_PROVIDER,
   SCORES_PRESENT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 test('sync syncEngine can set state and execute methods', () => {
   const {

@@ -4,7 +4,7 @@ import { expect, test } from 'vitest';
 
 import { COMPASS } from '../../../../constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { tieFormats } from '../../../../fixtures/scoring/tieFormats';
+import { tieFormats } from '@Fixtures/scoring/tieFormats';
 import { TEAM } from '../../../../constants/eventConstants';
 import { COLLEGE_JUCO, DOMINANT_DUO, LAVER_CUP } from '../../../../constants/tieFormatConstants';
 

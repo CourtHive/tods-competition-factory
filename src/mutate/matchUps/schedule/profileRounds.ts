@@ -1,10 +1,10 @@
-import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
+import { validateSchedulingProfile } from '@Validators/validateSchedulingProfile';
 import { getRoundId } from '@Query/matchUps/scheduling/schedulingUtils';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { definedAttributes } from '@Tools/definedAttributes';
 
 import { Tournament } from '@Types/tournamentTypes';
-import { ErrorType, INVALID_TOURNAMENT_RECORD, NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { ErrorType, INVALID_TOURNAMENT_RECORD, NOT_FOUND } from '@Constants/errorConditionConstants';
 
 type GetProfileRoundsArgs = {
   tournamentRecords?: { [key: string]: Tournament };

@@ -4,7 +4,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import * as tools from '../../../assemblies/tools';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can dehydrate matchUps in tournamentRecords', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

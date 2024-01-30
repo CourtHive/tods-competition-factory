@@ -1,4 +1,4 @@
-import { validMatchUps } from '../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 

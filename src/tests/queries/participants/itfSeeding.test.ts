@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { CLUSTER, MAIN } from '../../../constants/drawDefinitionConstants';
+import { CLUSTER, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can generate draw with appropriate ITF seeding', () => {
   const seeding = {

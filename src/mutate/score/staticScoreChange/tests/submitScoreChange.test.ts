@@ -1,7 +1,7 @@
 import { submitScoreChange } from '../submitScoreChange';
 import { expect, test } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import {
   MISSING_VALUE,
   MISSING_MATCHUP,

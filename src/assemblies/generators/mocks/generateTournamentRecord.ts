@@ -3,7 +3,7 @@ import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
 import { formatDate, isValidDateString } from '@Tools/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
-import { isValidExtension } from '../../../validators/isValidExtension';
+import { isValidExtension } from '@Validators/isValidExtension';
 import { cycleMutationStatus } from '@Global/state/globalState';
 import { generateVenues } from '@Mutate/venues/generateVenues';
 import { generateEventWithFlights } from './generateEventWithFlights';
@@ -14,9 +14,9 @@ import { Extension } from '@Types/tournamentTypes';
 import { addEvent } from '@Mutate/events/addEvent';
 import { randomPop } from '@Tools/arrays';
 
-import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 const mockTournamentNames = [
   'Mock Tournament',

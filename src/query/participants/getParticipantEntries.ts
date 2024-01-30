@@ -1,14 +1,14 @@
-import { getDrawId, getParticipantId } from '../../functions/global/extractors';
+import { getDrawId, getParticipantId } from '@Functions/global/extractors';
 import { addScheduleItem } from '@Mutate/participants/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { structureSort } from '../../functions/sorters/structureSort';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { processEventEntry } from '../participant/processEventEntry';
 import { timeSort, timeStringMinutes } from '@Tools/dateTime';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 import { extensionsToAttributes } from '@Tools/makeDeepCopy';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { stringSort } from '../../functions/sorters/stringSort';
+import { stringSort } from '@Functions/sorters/stringSort';
 import { getPublishState } from '../publishing/getPublishState';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';

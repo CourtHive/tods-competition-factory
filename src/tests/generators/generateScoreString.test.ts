@@ -1,7 +1,7 @@
 import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
 import { expect, it, test } from 'vitest';
 
-import { RETIRED } from '../../constants/matchUpStatusConstants';
+import { RETIRED } from '@Constants/matchUpStatusConstants';
 
 test('can generate matchUp tiebreak string scores', () => {
   const sets = [

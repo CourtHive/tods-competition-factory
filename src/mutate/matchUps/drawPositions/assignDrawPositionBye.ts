@@ -15,9 +15,9 @@ import { numericSort } from '@Tools/sorting';
 
 // constants and types
 import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '@Types/tournamentTypes';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { MatchUpsMap } from '@Types/factoryTypes';
 import {
@@ -26,7 +26,7 @@ import {
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /*
   assignDrawPositionBye

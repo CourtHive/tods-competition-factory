@@ -2,8 +2,8 @@ import matchUpEngineSync from '../../../assemblies/engines/matchUp';
 import { getHistory } from '../../../mutate/matchUps/score/history/getHistory';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { MATCHUP_HISTORY } from '../../../constants/extensionConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
 
 const TIEBREAK_SET = 'SET1-S:TB10';
 

@@ -1,6 +1,6 @@
 import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
-import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { isObject } from '@Tools/objects';

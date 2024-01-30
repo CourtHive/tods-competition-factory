@@ -12,8 +12,8 @@ import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
 
 // constants
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
   CANCELLED,
@@ -21,7 +21,7 @@ import {
   DOUBLE_WALKOVER,
   INCOMPLETE,
   TO_BE_PLAYED,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;

@@ -2,7 +2,7 @@ import { generateTournamentRecord } from '../../../data/fileSystem/generateTourn
 import { removeTournamentRecords } from '../../../data/fileSystem/removeTournamentRecords';
 import { executionQueue } from './executionQueue';
 
-import { errorConditionConstants } from '@Constants';
+import { errorConditionConstants } from '@Constants/errorConditionConstants';
 import { TEST } from '../../../common/constants/test';
 
 describe('executionQueue', () => {

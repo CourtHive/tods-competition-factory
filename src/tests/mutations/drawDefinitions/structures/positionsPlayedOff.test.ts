@@ -5,7 +5,7 @@ import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinit
 import { expect, it } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

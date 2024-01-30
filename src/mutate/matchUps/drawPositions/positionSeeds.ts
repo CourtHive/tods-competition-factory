@@ -6,10 +6,10 @@ import { generateRange } from '@Tools/arrays';
 
 // constants and types
 import { PolicyDefinitions, SeedBlock, SeedingProfile, MatchUpsMap } from '@Types/factoryTypes';
-import { ErrorType, MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DRAW_POSITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type PositionSeedBlocksArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

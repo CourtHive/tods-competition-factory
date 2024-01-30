@@ -3,7 +3,7 @@ import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { removeExtension } from '../../extensions/removeExtension';
 import { addExtension } from '../../extensions/addExtension';
-import { validMatchUps } from '../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { createSubOrderMap } from './createSubOrderMap';
 
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';

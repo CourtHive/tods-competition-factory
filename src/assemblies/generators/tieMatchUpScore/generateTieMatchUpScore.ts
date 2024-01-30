@@ -6,9 +6,9 @@ import { validateTieFormat } from '@Validators/validateTieFormat';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 // constants and types
-import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Structure, TieFormat } from '@Types/tournamentTypes';
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { ResultType, MatchUpsMap } from '@Types/factoryTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
 

@@ -6,10 +6,10 @@ import { expect, it } from 'vitest';
 
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
 import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
-import SEEDING_USTA from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
 import { SINGLES_EVENT } from '../../../../constants/eventConstants';
-import { ScaleAttributes } from '../../../../types/factoryTypes';
+import { ScaleAttributes } from '@Types/factoryTypes';
 
 it('can autoSeed by Rankings', () => {
   const eventId = 'seededEventId';

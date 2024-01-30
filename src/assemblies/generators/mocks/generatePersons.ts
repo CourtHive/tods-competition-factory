@@ -6,8 +6,8 @@ import { countries } from '@Fixtures/countryData';
 import { ensureInt } from '@Tools/ensureInt';
 import { generateRange, randomMember, randomPop, shuffleArray } from '@Tools/arrays';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { MALE, FEMALE } from '../../../constants/genderConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { MALE, FEMALE } from '@Constants/genderConstants';
 
 /**
  * @param {integer} count - number of persons to generate

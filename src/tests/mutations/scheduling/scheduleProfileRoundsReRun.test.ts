@@ -3,8 +3,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { AUTO_SCHEDULING_AUDIT } from '../../../constants/auditConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { AUTO_SCHEDULING_AUDIT } from '@Constants/auditConstants';
 
 it('can auto schedule Round Robin draws respecting daily limits', () => {
   const venueProfiles = [

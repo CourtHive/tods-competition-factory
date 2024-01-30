@@ -4,7 +4,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
-// import { MODIFY_MATCHUP } from '../../../constants/topicConstants';
+// import { MODIFY_MATCHUP } from '@Constants/topicConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);

@@ -2,9 +2,9 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { SINGLES } from '../../../constants/eventConstants';
-import { MALE } from '../../../constants/genderConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '../../../constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { MALE } from '@Constants/genderConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('accurately determines winnerMatchUpId and loserMatchUpId for FIC matchUps', () => {
   const participantsProfile = {

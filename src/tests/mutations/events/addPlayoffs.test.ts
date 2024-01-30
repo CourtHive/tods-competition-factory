@@ -6,8 +6,8 @@ import tournamentEngine from '../../engines/syncEngine';
 import { globalState } from '../../..';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAY_OFF } from '../../../constants/drawDefinitionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 
 it('errors if attempting generation of existing playoff structure', () => {
   const {

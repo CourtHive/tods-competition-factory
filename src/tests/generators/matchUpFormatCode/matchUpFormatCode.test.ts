@@ -2,7 +2,7 @@ import * as matchUpFormatCode from '../../../assemblies/governors/matchUpFormatG
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 const standard = FORMAT_STANDARD;
 const validFormats = [

@@ -9,8 +9,8 @@ import { addParticipants } from '@Mutate/participants/addParticipants';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '@Mutate/entries/addEventEntries';
 import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
-import { isValidExtension } from '../../../validators/isValidExtension';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { getParticipantId } from '@Functions/global/extractors';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
 import { generateRange, intersection } from '@Tools/arrays';
@@ -23,24 +23,19 @@ import { processTieFormat } from './processTieFormat';
 import { coerceEven } from '@Tools/math';
 import { UUID } from '@Tools/UUID';
 
-import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
+import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SINGLES, DOUBLES } from '../../../constants/eventConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SEEDING } from '../../../constants/timeItemConstants';
-import { OBJECT } from '../../../constants/attributeConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { SINGLES, DOUBLES } from '@Constants/eventConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SEEDING } from '@Constants/timeItemConstants';
+import { OBJECT } from '@Constants/attributeConstants';
 import { Participant } from '@Types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  MAIN,
-  QUALIFYING,
-  ROUND_ROBIN_WITH_PLAYOFF,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, QUALIFYING, ROUND_ROBIN_WITH_PLAYOFF, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 export function generateEventWithDraw(params) {
   const paramsCheck = checkRequiredParameters(params, [{ drawProfile: true, _ofType: OBJECT }]);

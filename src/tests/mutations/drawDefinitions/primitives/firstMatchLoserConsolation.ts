@@ -9,7 +9,7 @@ import { attachPolicies } from '../../../../mutate/extensions/policies/attachPol
 import { getDrawStructures } from '../../../../acquire/findStructure';
 import { generateRange } from '../../../../tools/arrays';
 
-import SEEDING_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { MAIN, FIRST_MATCH_LOSER_CONSOLATION, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
 
 // NOTE: replace all other occurrences of this function with this one

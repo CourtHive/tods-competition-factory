@@ -3,7 +3,7 @@ import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { parseScoreString } from '@Tools/parseScoreString';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 /**
  *

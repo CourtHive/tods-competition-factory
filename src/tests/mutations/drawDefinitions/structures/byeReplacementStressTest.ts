@@ -1,6 +1,6 @@
 import { completeDrawMatchUps } from '../../../../assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { getDrawPosition } from '../../../../functions/global/extractors';
+import { getDrawPosition } from '@Functions/global/extractors';
 import { xa } from '../../../../tools/objects';
 import mocksEngine from '../../../../assemblies/engines/mock';
 import { shuffleArray } from '../../../../tools/arrays';

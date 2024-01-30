@@ -12,9 +12,9 @@ import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLES } from '../../../../../constants/eventConstants';
-import { DrawDefinition } from '../../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import {
   DRAW,
   MAIN,

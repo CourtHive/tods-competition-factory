@@ -1,7 +1,7 @@
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addDrawNotice, addMatchUpsNotice } from '../notifications/drawNotifications';
 import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
-import { validateTieFormat } from '../../validators/validateTieFormat';
+import { validateTieFormat } from '@Validators/validateTieFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getTopics } from '@Global/state/globalState';
 import { UUID } from '@Tools/UUID';

@@ -10,7 +10,7 @@ import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { validateTieFormat } from '../../validators/validateTieFormat';
+import { validateTieFormat } from '@Validators/validateTieFormat';
 import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';

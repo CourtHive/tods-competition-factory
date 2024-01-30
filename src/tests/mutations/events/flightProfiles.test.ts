@@ -2,8 +2,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { DRAW_ID_EXISTS, EXISTING_PROFILE } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { DRAW_ID_EXISTS, EXISTING_PROFILE } from '@Constants/errorConditionConstants';
 
 it('can create and return flighProfiles', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

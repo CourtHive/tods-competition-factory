@@ -3,10 +3,10 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCORING_DEFAULT from '../../../fixtures/policies/POLICY_SCORING_DEFAULT';
-import { SCORES_PRESENT } from '../../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
+import POLICY_SCORING_DEFAULT from '@Fixtures/policies/POLICY_SCORING_DEFAULT';
+import { SCORES_PRESENT } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
 
 it('will not delete draws when scores are present', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

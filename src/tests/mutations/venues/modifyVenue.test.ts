@@ -12,7 +12,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const court1 = {
   courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',

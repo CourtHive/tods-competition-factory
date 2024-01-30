@@ -1,4 +1,4 @@
-import penaltyConstants from '../../../constants/penaltyConstants';
+import penaltyConstants from '@Constants/penaltyConstants';
 import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';

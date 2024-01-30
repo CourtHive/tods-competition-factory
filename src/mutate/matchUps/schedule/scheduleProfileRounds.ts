@@ -11,12 +11,12 @@ import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests'
 import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 
-import { NO_VALID_DATES } from '../../../constants/errorConditionConstants';
-import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { NO_VALID_DATES } from '@Constants/errorConditionConstants';
+import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TournamentRecords } from '@Types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ARRAY, OF_TYPE, SCHEDULE_DATES, TOURNAMENT_RECORDS, VALIDATE } from '../../../constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ARRAY, OF_TYPE, SCHEDULE_DATES, TOURNAMENT_RECORDS, VALIDATE } from '@Constants/attributeConstants';
 
 type ScheduleProfileRoundsArgs = {
   checkPotentialRequestConflicts?: boolean;

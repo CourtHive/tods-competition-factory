@@ -5,9 +5,9 @@ import tournamentEngine from '../../engines/syncEngine';
 import { globalState, mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../../constants/entryStatusConstants';
-import { DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 const range = generateRange(0, 1);
 test.each(range)('draw analysis can determine when draws are able to be pruned', () => {

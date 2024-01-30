@@ -9,8 +9,8 @@ import { expect, it } from 'vitest';
 import { BYE } from '../../../../../constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
 
-import SEEDING_USTA from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import SEEDING_ITF from '../../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
 
 it('can direct winners and losers with ITF SEEDING POLICY; all participants with BYEs win first matchUp', () => {
   const participantsCount = 24;

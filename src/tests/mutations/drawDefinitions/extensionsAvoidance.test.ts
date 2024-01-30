@@ -4,7 +4,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { chunkArray } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
 
 test.each([2, 4, 8, 16])('avoidance policies based on extension values', (cohortsCount) => {
   const mockProfile = { drawProfiles: [{ generate: false, drawSize: 32 }] };

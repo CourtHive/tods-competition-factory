@@ -3,10 +3,10 @@ import { intersection } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { PAIR } from '../../../constants/participantConstants';
-import { MALE } from '../../../constants/genderConstants';
-import { AGE } from '../../../constants/eventConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { PAIR } from '@Constants/participantConstants';
+import { MALE } from '@Constants/genderConstants';
+import { AGE } from '@Constants/eventConstants';
 
 it('can add statistics to tournament participants', () => {
   const participantsProfile = {

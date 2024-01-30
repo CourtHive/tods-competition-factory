@@ -13,7 +13,7 @@ import {
   MISSING_VALUE,
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can add and remove extensions from tournamentRecords', () => {
   const drawProfiles = [{ drawSize: 32 }];

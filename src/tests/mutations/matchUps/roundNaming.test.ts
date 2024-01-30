@@ -9,15 +9,15 @@ import { constantToString } from '../../../tools/strings';
 import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { POLICY_ROUND_NAMING_DEFAULT } from '../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { POLICY_ROUND_NAMING_DEFAULT } from '@Fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import {
   SINGLE_ELIMINATION,
   FEED_IN,
   FIRST_MATCH_LOSER_CONSOLATION,
   MAIN,
   OLYMPIC,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can return matchUps with roundNames from an SINGLE_ELIMINATION structure', () => {
   const drawDefinition = newDrawDefinition();

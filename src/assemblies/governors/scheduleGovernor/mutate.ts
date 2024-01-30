@@ -23,7 +23,7 @@ export { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime
 export { setMatchUpDailyLimits } from '@Mutate/tournaments/setMatchUpDailyLimits';
 export { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
 export { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
-export { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
+export { validateSchedulingProfile } from '@Validators/validateSchedulingProfile';
 export { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 export { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
 export { getProfileRounds } from '@Mutate/matchUps/schedule/profileRounds';

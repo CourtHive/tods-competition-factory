@@ -3,10 +3,10 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DRAW_DEFINITION_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { AUDIT, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
-import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
+import { DRAW_DEFINITION_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { AUDIT, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { DRAW_DELETIONS } from '@Constants/extensionConstants';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [

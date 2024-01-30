@@ -2,10 +2,10 @@ import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 import mocksEngine from '../../../assemblies/engines/mock';
 
-import { TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { TEAM_DOUBLES_3_AGGREGATION } from '@Constants/tieFormatConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 const oneElevenOhOne = '1111-01-01';
 const two2222 = '2222-02-02';

@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
+import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 test('participants can be merged', () => {
   let participantAddEventsCounter = 0;

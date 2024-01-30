@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DISABLED } from '../../../constants/extensionConstants';
+import { DISABLED } from '@Constants/extensionConstants';
 
 it('can disable and enable courts and venues', () => {
   const startDate = '2022-09-24';

@@ -3,7 +3,7 @@ import tournamentEngine from '../../engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can determine containedStructures for tournamentRecords, events, and drawDefinitions', () => {
   const drawProfiles = [

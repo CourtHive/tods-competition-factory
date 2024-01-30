@@ -1,7 +1,7 @@
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
-import { getParticipantId } from '../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { addParticipants } from '../participants/addParticipants';
-import { stringSort } from '../../functions/sorters/stringSort';
+import { stringSort } from '@Functions/sorters/stringSort';
 import { addNotice } from '@Global/state/globalState';
 import { intersection } from '@Tools/arrays';
 import { addEventEntries } from './addEventEntries';

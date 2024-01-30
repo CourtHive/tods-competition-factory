@@ -17,9 +17,9 @@ import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, va
 
 // constants and types
 import { AddScheduleAttributeArgs, ResultType } from '@Types/factoryTypes';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { OFFICIAL } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { OFFICIAL } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import {
   MISSING_MATCHUP_ID,
@@ -37,7 +37,7 @@ import {
   ErrorType,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   START_TIME,
   STOP_TIME,
@@ -45,7 +45,7 @@ import {
   END_TIME,
   SCHEDULED_DATE,
   COURT_ORDER,
-} from '../../../constants/timeItemConstants';
+} from '@Constants/timeItemConstants';
 import { DrawDefinition, Event, TimeItem } from '@Types/tournamentTypes';
 
 function timeDate(value, scheduledDate) {

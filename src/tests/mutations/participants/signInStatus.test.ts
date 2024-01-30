@@ -3,13 +3,13 @@ import tournamentEngine from '../../engines/syncEngine';
 import queryEngine from '../../engines/queryEngine';
 import { expect, it } from 'vitest';
 
-import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '../../../constants/participantConstants';
+import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '@Constants/participantConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANT_ID,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can sign participants in and out', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

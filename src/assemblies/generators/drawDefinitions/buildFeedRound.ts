@@ -1,7 +1,7 @@
 import { generateRange } from '@Tools/arrays';
 import { generateMatchUpId } from './generateMatchUpId';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { MatchUp } from '@Types/tournamentTypes';
 
 type BuildFeedRoundArgs = {

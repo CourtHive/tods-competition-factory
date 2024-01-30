@@ -1,17 +1,17 @@
 import { participantScaleItem } from '../../../query/participant/participantScaleItem';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { SINGLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
-import { UNGROUPED } from '../../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { ScaleAttributes } from '../../../types/factoryTypes';
-import { RANKING } from '../../../constants/scaleConstants';
-import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { ScaleAttributes } from '@Types/factoryTypes';
+import { RANKING } from '@Constants/scaleConstants';
+import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 const EVENT_NAME = 'Team Event';
 

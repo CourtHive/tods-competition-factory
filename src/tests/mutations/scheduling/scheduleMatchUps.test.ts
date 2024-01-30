@@ -3,8 +3,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { OFFICIAL } from '../../../constants/participantRoles';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { OFFICIAL } from '@Constants/participantRoles';
 import {
   COURT_NOT_FOUND,
   INVALID_END_TIME,
@@ -18,8 +18,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { ASSIGN_COURT, END_TIME, RESUME_TIME, START_TIME, STOP_TIME } from '../../../constants/timeItemConstants';
+} from '@Constants/errorConditionConstants';
+import { ASSIGN_COURT, END_TIME, RESUME_TIME, START_TIME, STOP_TIME } from '@Constants/timeItemConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
   let startDate = '2020-01-01';

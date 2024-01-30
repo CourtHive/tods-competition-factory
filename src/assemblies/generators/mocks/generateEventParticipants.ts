@@ -1,11 +1,11 @@
 import { addParticipants } from '@Mutate/participants/addParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 import { Participant } from '@Types/tournamentTypes';
 
 export function generateEventParticipants(params) {

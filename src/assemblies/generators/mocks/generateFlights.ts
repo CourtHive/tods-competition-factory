@@ -1,7 +1,7 @@
 import { generateFlight } from './generateFlight';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateFlights({
   uniqueDrawParticipants,

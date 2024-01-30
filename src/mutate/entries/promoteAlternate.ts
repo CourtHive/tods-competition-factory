@@ -1,4 +1,4 @@
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureInt } from '@Tools/ensureInt';
 
 import { MAIN } from '@Constants/drawDefinitionConstants';

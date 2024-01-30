@@ -1,15 +1,15 @@
 import { createTeamsFromParticipantAttributes } from '@Mutate/participants/createTeamsFromAttributes';
 import { addParticipants } from '@Mutate/participants/addParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange } from '@Tools/arrays';
 
 import { Participant, Tournament } from '@Types/tournamentTypes';
-import { INDIVIDUAL, TEAM } from '../../../constants/participantConstants';
+import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
 import { ParticipantsProfile } from '@Types/factoryTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
 
 type AddTournamentParticipantsArgs = {

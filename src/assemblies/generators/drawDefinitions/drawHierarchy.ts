@@ -1,13 +1,13 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { generateRange, unique } from '@Tools/arrays';
-import { validMatchUps } from '../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { ensureInt } from '@Tools/ensureInt';
 import { UUID } from '@Tools/UUID';
 
-import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 /*
   constructs an elimination hierarchy from an array of matchUps

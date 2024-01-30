@@ -4,7 +4,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../../constants/errorConditionConstants';
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { REFEREE, SCORE } from '../../../../constants/matchUpActionConstants';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';

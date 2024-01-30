@@ -16,11 +16,11 @@ import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitio
 
 // constants and types
 import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   DrawDefinition,
   DrawLink,

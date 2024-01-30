@@ -1,4 +1,4 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findExtension } from '../../../acquire/findExtension';

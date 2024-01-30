@@ -5,8 +5,8 @@ import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/
 import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
-import { ResultType } from '../../../../types/factoryTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function feedInChampionship(params): ResultType & {
   consolationStructure?: any;

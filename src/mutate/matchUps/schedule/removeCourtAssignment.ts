@@ -4,14 +4,14 @@ import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { findEvent } from '../../../acquire/findEvent';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import { ALLOCATE_COURTS, ASSIGN_COURT } from '../../../constants/timeItemConstants';
+} from '@Constants/errorConditionConstants';
+import { ALLOCATE_COURTS, ASSIGN_COURT } from '@Constants/timeItemConstants';
 
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 

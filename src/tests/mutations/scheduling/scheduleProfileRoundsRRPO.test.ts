@@ -3,8 +3,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import competitionEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { SINGLES } from '../../../constants/eventConstants';
-import { PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('will not schedule RR PLAY_OFF rounds before MAIN rounds', () => {
   const venueProfiles = [

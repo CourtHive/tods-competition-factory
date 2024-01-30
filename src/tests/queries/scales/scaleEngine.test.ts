@@ -3,7 +3,7 @@ import competitionEngine from '../../engines/syncEngine';
 import scaleEngine from '../../engines/scaleEngine';
 import { expect, test } from 'vitest';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 test('basic engine methods', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

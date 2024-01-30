@@ -1,5 +1,5 @@
 import { definedAttributes } from '@Tools/definedAttributes';
-import { validateCategory } from '../../validators/validateCategory';
+import { validateCategory } from '@Validators/validateCategory';
 
 import { Category } from '@Types/tournamentTypes';
 

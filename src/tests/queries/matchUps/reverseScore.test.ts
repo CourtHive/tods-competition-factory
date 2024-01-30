@@ -1,7 +1,7 @@
 import { reverseScore } from '../../../assemblies/generators/score/reverseScore';
 import { expect, it } from 'vitest';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 it('can reverse score objects and regenerate scoreStrings', () => {
   const { error } = reverseScore();

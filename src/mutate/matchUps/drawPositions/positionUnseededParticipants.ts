@@ -3,7 +3,7 @@ import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAs
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
@@ -14,7 +14,7 @@ import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   provisionalPositioning,

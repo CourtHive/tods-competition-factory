@@ -2,14 +2,14 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { generateRange, randomPop } from '@Tools/arrays';
 import { findStructure } from '../../../acquire/findStructure';
 import { ensureInt } from '@Tools/ensureInt';
 
-import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_STAGE, NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } from '../../../constants/errorConditionConstants';
+import { CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_STAGE, NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } from '@Constants/errorConditionConstants';
 
 export function positionQualifiers(params) {
   const structure = params.structure ?? findStructure(params).structure;

@@ -2,8 +2,8 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { RETRIEVAL } from '../../../constants/timeItemConstants';
-import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { RETRIEVAL } from '@Constants/timeItemConstants';
+import { INVALID_TIME_ITEM, MISSING_TIME_ITEM, NOT_FOUND } from '@Constants/errorConditionConstants';
 
 it('can add and read timeItems from participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

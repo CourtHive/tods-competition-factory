@@ -1,7 +1,7 @@
 import { unique } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
-import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
+import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
 import { MatchUp, SeedAssignment, Structure } from '@Types/tournamentTypes';
 

@@ -1,6 +1,6 @@
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { validMatchUps } from '../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { numericSort } from '@Tools/sorting';
 import { ensureInt } from '@Tools/ensureInt';
 import { isPowerOf2 } from '@Tools/math';

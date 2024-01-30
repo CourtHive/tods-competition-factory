@@ -10,7 +10,7 @@ import { getScoreAnalysis } from './scoreAnalysis';
 import { processOutcome } from './processOutcome';
 import { getWinningSide } from './winningSide';
 
-import { INCOMPLETE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { INCOMPLETE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import {
   SET_TIEBREAK_BRACKETS,
   MATCH_TIEBREAK_BRACKETS,

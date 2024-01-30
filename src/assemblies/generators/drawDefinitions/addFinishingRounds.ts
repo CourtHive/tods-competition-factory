@@ -1,6 +1,6 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDevContext } from '@Global/state/globalState';
-import { validMatchUps } from '../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { xa } from '@Tools/objects';
 import { generateRange } from '@Tools/arrays';
 

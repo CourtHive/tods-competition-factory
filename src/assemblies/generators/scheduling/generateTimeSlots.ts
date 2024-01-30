@@ -1,7 +1,7 @@
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { timeToDate, extractTime, tidyTime } from '@Tools/dateTime';
 
-import { OBJECT } from '../../../constants/attributeConstants';
+import { OBJECT } from '@Constants/attributeConstants';
 import { ResultType } from '@Types/factoryTypes';
 
 type GenerateTimeSlotsArgs = {

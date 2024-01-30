@@ -1,6 +1,6 @@
 import { isConvertableInteger } from '@Tools/math';
 
-import { COMPLETED, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { COMPLETED, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 export function evaluateCollectionResult({
   collectionDefinition,

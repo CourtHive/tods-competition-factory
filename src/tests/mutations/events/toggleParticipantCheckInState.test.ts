@@ -3,7 +3,7 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 it('can toggle participant check-in state', () => {
   const drawProfiles = [

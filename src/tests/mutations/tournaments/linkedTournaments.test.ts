@@ -4,14 +4,14 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
+import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';
+import { FactoryEngine } from '@Types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 test('unlinkTournament coverage', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

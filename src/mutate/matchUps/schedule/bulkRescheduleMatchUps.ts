@@ -15,15 +15,11 @@ import {
 } from '@Tools/dateTime';
 
 // constants and types
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { TournamentRecords, ResultType } from '@Types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '@Types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUP_IDS,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_MATCHUP_IDS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type BulkRescheduleMatchUpsArgs = {
   tournamentRecords: TournamentRecords;

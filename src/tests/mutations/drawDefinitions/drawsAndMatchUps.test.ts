@@ -3,16 +3,16 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { ADD_MATCHUPS } from '../../../constants/topicConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import POLICY_SCORING_USTA from '@Fixtures/policies/POLICY_SCORING_USTA';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { ADD_MATCHUPS } from '@Constants/topicConstants';
 import {
   ANACHRONISM,
   EVENT_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 const matchUpAddNotices: number[] = [];

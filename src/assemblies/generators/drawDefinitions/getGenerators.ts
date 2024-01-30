@@ -12,9 +12,9 @@ import { treeMatchUps } from './drawTypes/eliminationTree';
 import { feedInMatchUps } from './feedInMatchUps';
 import { luckyDraw } from './drawTypes/luckyDraw';
 
-import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 // prettier-ignore
 import {
   MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
@@ -27,7 +27,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   WIN_RATIO,
   LUCKY_DRAW,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const { playoffAttributes, stageSequence = 1, stage = MAIN, matchUpType, drawSize, uuids } = params;

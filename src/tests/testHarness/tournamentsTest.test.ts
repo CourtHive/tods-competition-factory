@@ -1,8 +1,8 @@
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../constants/matchUpStatusConstants';
+import { CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 import tournamentOne from './tournamentOne.tods.json';
 import tournamentTwo from './tournamentTwo.tods.json';

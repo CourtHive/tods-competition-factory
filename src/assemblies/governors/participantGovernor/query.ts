@@ -9,5 +9,5 @@ export { getParticipantSignInStatus } from '@Query/participant/signInStatus';
 export { filterParticipants } from '@Query/participants/filterParticipants';
 export { getParticipants } from '@Query/participants/getParticipants';
 export { getScaleValues } from '@Query/participant/getScaleValues';
-export { validateLineUp } from '../../../validators/validateTeamLineUp';
+export { validateLineUp } from '@Validators/validateTeamLineUp';
 export { getParticipantTimeItem } from '@Query/base/timeItems';

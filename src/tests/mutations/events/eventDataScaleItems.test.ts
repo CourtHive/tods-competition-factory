@@ -2,9 +2,9 @@ import mocksEngine from '../../../assemblies/engines/mock';
 import tournamentEngine from '../../engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
-import { SINGLES } from '../../../constants/matchUpTypes';
-import { WTN } from '../../../constants/ratingConstants';
+import POLICY_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { WTN } from '@Constants/ratingConstants';
 
 test('ratings values should be present on tournamentParticipants in getEventData', () => {
   const startDate = '2022-02-02';

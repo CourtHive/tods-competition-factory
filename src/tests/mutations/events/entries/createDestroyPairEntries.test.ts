@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { FEMALE, MALE, MIXED } from '../../../../constants/genderConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';

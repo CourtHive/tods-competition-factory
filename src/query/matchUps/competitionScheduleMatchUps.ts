@@ -1,5 +1,5 @@
 import { getCompetitionPublishedDrawDetails } from './getCompetitionPublishedDrawDetails';
-import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
+import { scheduledSortedMatchUps } from '@Functions/sorters/scheduledSortedMatchUps';
 import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
 import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';

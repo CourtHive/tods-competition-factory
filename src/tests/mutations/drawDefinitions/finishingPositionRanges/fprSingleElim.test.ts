@@ -6,7 +6,7 @@ import tournamentEngine from '../../../engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_ASSIGNMENTS } from '../../../../constants/errorConditionConstants';
-import SEEDING_ITF_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 

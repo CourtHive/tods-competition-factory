@@ -1,6 +1,7 @@
-import statesData from '@Fixtures/data/territories.json';
-import citiesData from '@Fixtures/data/cities.json';
+import statesData from '../../../fixtures/data/territories.json';
+import citiesData from '../../../fixtures/data/cities.json';
 import { randomInt } from '@Tools/math';
+
 import { generateRange, randomMember, shuffleArray } from '@Tools/arrays';
 
 export function address() {

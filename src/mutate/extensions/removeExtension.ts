@@ -1,4 +1,4 @@
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 
 import { ErrorType, INVALID_VALUES, MISSING_VALUE, NOT_FOUND } from '@Constants/errorConditionConstants';
 import { ELEMENT_REQUIRED, MISSING_NAME } from '@Constants/infoConstants';

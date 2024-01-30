@@ -6,9 +6,9 @@ import * as tools from '../../../assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { DOUBLES_EVENT } from '../../../constants/eventConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { DOUBLES_EVENT } from '@Constants/eventConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 
 const sourcePath = './src/global/testHarness/structureReport';
 const filenames = [];

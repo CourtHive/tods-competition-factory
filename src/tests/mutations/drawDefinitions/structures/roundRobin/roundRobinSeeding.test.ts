@@ -4,7 +4,7 @@ import mocksEngine from '../../../../../assemblies/engines/mock';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import POLICY_SEEDING_DEFAULT from '../../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
 
 const scenarios = [

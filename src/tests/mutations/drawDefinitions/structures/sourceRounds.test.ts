@@ -5,7 +5,7 @@ import { getSourceRounds } from '../../../../query/drawDefinition/getSourceRound
 import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

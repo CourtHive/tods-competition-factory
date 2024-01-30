@@ -1,5 +1,5 @@
 import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 

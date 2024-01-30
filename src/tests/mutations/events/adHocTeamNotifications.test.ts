@@ -1,12 +1,12 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { mocksEngine, tournamentEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
-import { COLLEGE_DEFAULT, DOMINANT_DUO } from '../../../constants/tieFormatConstants';
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { COLLEGE_DEFAULT, DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 // testing for generation of addMatchUps notifications for tieMatchUps in AD_HOC TEAM events
 // each scenario generates a different number of matchUps due to different tieFormats having different collectionDefinitions

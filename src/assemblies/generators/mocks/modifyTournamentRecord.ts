@@ -12,11 +12,11 @@ import { generateEventWithDraw } from './generateEventWithDraw';
 import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function modifyTournamentRecord(params) {
   const {

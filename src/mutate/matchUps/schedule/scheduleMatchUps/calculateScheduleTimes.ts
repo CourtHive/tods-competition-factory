@@ -3,7 +3,7 @@ import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getSche
 import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
 import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
-import { getMatchUpId } from '../../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
 import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '@Tools/dateTime';
 

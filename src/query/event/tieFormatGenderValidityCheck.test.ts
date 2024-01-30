@@ -5,10 +5,10 @@ import {
   mixedGenderError,
 } from '../../validators/tieFormatGenderValidityCheck';
 
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
-import { ANY, FEMALE, MALE, MIXED } from '../../constants/genderConstants';
-import { INVALID_GENDER } from '../../constants/errorConditionConstants';
-import { TEAM_EVENT } from '../../constants/eventConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { INVALID_GENDER } from '@Constants/errorConditionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 const referenceEvent = { eventType: TEAM_EVENT, eventId: 'eventId' };
 

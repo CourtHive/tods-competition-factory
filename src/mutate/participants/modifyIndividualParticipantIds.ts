@@ -1,5 +1,5 @@
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
 import { addNotice, getTopics } from '@Global/state/globalState';
 

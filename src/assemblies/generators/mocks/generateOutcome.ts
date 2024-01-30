@@ -1,4 +1,4 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { generateRange, randomPop } from '@Tools/arrays';
 import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 import { randomInt, weightedRandom } from '@Tools/math';
@@ -8,7 +8,7 @@ import { parse } from '../matchUpFormatCode/parse';
 import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import {
   COMPLETED,
   DEFAULTED,
@@ -20,7 +20,7 @@ import {
   matchUpStatusConstants,
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {

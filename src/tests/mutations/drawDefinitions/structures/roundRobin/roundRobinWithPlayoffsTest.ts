@@ -6,7 +6,7 @@ import { generateRange } from '../../../../../tools/arrays';
 import tournamentEngine from '../../../../engines/syncEngine';
 import { expect } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
 import {
   MAIN,

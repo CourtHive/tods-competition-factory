@@ -6,8 +6,8 @@ import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { DRAW } from '../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { DRAW } from '@Constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { ResultType } from '@Types/factoryTypes';
 

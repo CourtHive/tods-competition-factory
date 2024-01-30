@@ -4,10 +4,10 @@ import mocksEngine from '../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 import { UUID } from '../../tools/UUID';
 
-import { APPLIED_POLICIES } from '../../constants/extensionConstants';
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { MALE } from '../../constants/genderConstants';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { MALE } from '@Constants/genderConstants';
 
 it('can convert extensions during deepCopy', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord();

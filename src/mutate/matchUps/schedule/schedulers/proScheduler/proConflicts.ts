@@ -1,6 +1,6 @@
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { generateRange, instanceCount, unique } from '@Tools/arrays';
-import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { ensureInt } from '@Tools/ensureInt';
 

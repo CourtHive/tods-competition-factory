@@ -7,7 +7,7 @@ import { findStructure } from '@Acquire/findStructure';
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 
-import { pushGlobalLog } from '../../../functions/global/globalLog';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import {

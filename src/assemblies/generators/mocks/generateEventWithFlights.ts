@@ -5,17 +5,17 @@ import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
 import { addEventEntries } from '@Mutate/entries/addEventEntries';
 import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { generateEventParticipants } from './generateEventParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
-import { isValidExtension } from '../../../validators/isValidExtension';
+import { getParticipantId } from '@Functions/global/extractors';
+import { isValidExtension } from '@Validators/isValidExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 import { UUID } from '@Tools/UUID';
 
-import { SINGLES, DOUBLES, TEAM } from '../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+import { SINGLES, DOUBLES, TEAM } from '@Constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 export function generateEventWithFlights(params) {
   const {

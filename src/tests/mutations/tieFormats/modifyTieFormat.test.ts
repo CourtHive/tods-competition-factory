@@ -3,11 +3,11 @@ import tournamentEngine from '../../engines/syncEngine';
 import mocksEngine from '../../../assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
 import { copyTieFormat } from '../../../query/hierarchical/tieFormats/copyTieFormat';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 
 it('can add collectionDefinitions to tieFormat in a structure', () => {
   const drawSize = 4;

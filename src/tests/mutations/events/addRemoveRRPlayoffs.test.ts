@@ -13,8 +13,8 @@ import {
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
-import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
+} from '@Constants/drawDefinitionConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {
