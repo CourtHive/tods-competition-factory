@@ -1,18 +1,19 @@
-import { addDrawEntries as addEntries } from './entryGovernor/addDrawEntries';
-import { refreshEntryPositions } from '../entries/refreshEntryPositions';
-import { getParticipantId } from '../../functions/global/extractors';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { addDrawEntries as addEntries } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
+import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
+import { getParticipantId } from '@Functions/global/extractors';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { LUCKY_LOSER } from '../../constants/entryStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+// constants
+import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { EntryStatusUnion } from '../../types/tournamentTypes';
+import { LUCKY_LOSER } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_ENTRIES,
   MISSING_PARTICIPANT_IDS,
-} from '../../constants/errorConditionConstants';
-import { EntryStatusUnion } from '../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
 
 export function addDrawEntries({
   autoEntryPositions = true,

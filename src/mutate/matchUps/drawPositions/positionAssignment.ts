@@ -1,7 +1,7 @@
 import { modifyRoundRobinMatchUpsStatus } from '@Mutate/matchUps/matchUpStatus/modifyRoundRobinMatchUpsStatus';
 import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureDrawPositionProfiles';
-import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
@@ -22,11 +22,12 @@ import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
 
 // constants and types
-import { CONSOLATION, CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SeedingProfile, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { DrawDefinition, Event, MatchUpStatusUnion, PositionAssignment, Tournament } from '@Types/tournamentTypes';
+import { CONSOLATION, CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SeedingProfile, MatchUpsMap, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   INVALID_DRAW_POSITION,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
@@ -36,14 +37,7 @@ import {
   INVALID_MATCHUP,
   ErrorType,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUpStatusUnion,
-  PositionAssignment,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
 
 type AssignDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
@@ -99,7 +93,7 @@ export function assignDrawPosition({
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // there are no drawPositions assigned for ADHOC structures
-  if (isAdHoc({ drawDefinition, structure })) return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
+  if (isAdHoc({ structure })) return decorateResult({ result: { error: INVALID_MATCHUP }, stack });
 
   const { seedAssignments } = getStructureSeedAssignments({
     provisionalPositioning,

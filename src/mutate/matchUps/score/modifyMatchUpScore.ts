@@ -14,15 +14,15 @@ import { getTopics } from '@Global/state/globalState';
 import { unique } from '@Tools/arrays';
 
 // types, constants and fixtures
-import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { UPDATE_INCONTEXT_MATCHUP } from '../../../constants/topicConstants';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PolicyDefinitions } from 'src/types/factoryTypes';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { UPDATE_INCONTEXT_MATCHUP } from '@Constants/topicConstants';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   AWAITING_RESULT,
   completedMatchUpStatuses,
@@ -31,7 +31,7 @@ import {
   DEFAULTED,
   WALKOVER,
   IN_PROGRESS,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 /**
  *
@@ -150,7 +150,7 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
 
   if (!matchUp.collectionId) {
     const isRoundRobin = structure?.structureType === CONTAINER;
-    const isAdHocStructure = isAdHoc({ drawDefinition, structure });
+    const isAdHocStructure = isAdHoc({ structure });
     if (isLucky({ drawDefinition, structure }) || isAdHocStructure || isRoundRobin) {
       const updateTally = (structure) => {
         // matchUpFormat set here is only used in updateAssignmentParticipantResults

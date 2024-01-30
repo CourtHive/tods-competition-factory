@@ -5,11 +5,11 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
 // constants
-import { ABANDONED, CANCELLED, COMPLETED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { MISSING_ASSIGNMENTS } from '../../../constants/errorConditionConstants';
+import { ABANDONED, CANCELLED, COMPLETED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 
 export function attemptToModifyScore(params) {
-  const { dualWinningSideChange, matchUpStatusCodes, drawDefinition, matchUpStatus, structure, matchUp } = params;
+  const { dualWinningSideChange, matchUpStatusCodes, matchUpStatus, structure, matchUp } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -18,7 +18,7 @@ export function attemptToModifyScore(params) {
 
   const stack = 'attemptToModifyScore';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
-  const isAdHocMatchUp = isAdHoc({ drawDefinition, structure });
+  const isAdHocMatchUp = isAdHoc({ structure });
   const validToScore =
     isCollectionMatchUp || isAdHocMatchUp || drawPositionsAssignedParticipantIds({ structure, matchUp });
 

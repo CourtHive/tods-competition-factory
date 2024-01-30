@@ -1,21 +1,23 @@
-import { getParticipantIds } from '../../../../../functions/global/extractors';
-import tournamentEngine from '../../../../engines/syncEngine';
-import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import { getParticipantIds } from '@Functions/global/extractors';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import POLICY_POSITION_ACTIONS_NO_MOVEMENT from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_NO_MOVEMENT';
-import POLICY_POSITION_ACTIONS_DISABLED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../../constants/policyConstants';
+// constants, fixtures and types
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_NO_MOVEMENT from '@Fixtures/policies/POLICY_POSITION_ACTIONS_NO_MOVEMENT';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
+import POLICY_POSITION_ACTIONS_DISABLED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import {
+  EVENT_NOT_FOUND,
   EXISTING_POLICY_TYPE,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
-  MISSING_EVENT,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ADD_NICKNAME,
   ADD_PENALTY,
@@ -26,8 +28,7 @@ import {
   SEED_VALUE,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
+} from '@Constants/positionActionConstants';
 
 // demonstrates that policyDefinitions can be used to change the behavior of positionActions
 it('supports policyDefinitions in positionActions', () => {
@@ -243,7 +244,7 @@ it('can disable actions for a specified structure', () => {
     structureId: mainStructure.structureId,
     drawPosition,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,

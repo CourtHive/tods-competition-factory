@@ -6,17 +6,13 @@ import { generateRange } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
 
 // types and constants
-import { DrawMaticArgs, ScaleAttributes, ResultType } from '../../../../../../types/factoryTypes';
-import { Structure, EventTypeUnion, MatchUp } from '../../../../../../types/tournamentTypes';
-import { AD_HOC, stageOrder } from '../../../../../../constants/drawDefinitionConstants';
-import { DYNAMIC, RATING } from '../../../../../../constants/scaleConstants';
-import { SINGLES_EVENT } from '../../../../../../constants/eventConstants';
-import { SUCCESS } from '../../../../../../constants/resultConstants';
-import {
-  INVALID_DRAW_DEFINITION,
-  INVALID_VALUES,
-  STRUCTURE_NOT_FOUND,
-} from '../../../../../../constants/errorConditionConstants';
+import { INVALID_DRAW_DEFINITION, INVALID_VALUES, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawMaticArgs, ScaleAttributes, ResultType } from '@Types/factoryTypes';
+import { Structure, EventTypeUnion, MatchUp } from '@Types/tournamentTypes';
+import { AD_HOC, stageOrder } from '@Constants/drawDefinitionConstants';
+import { DYNAMIC, RATING } from '@Constants/scaleConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function drawMatic(
   params: DrawMaticArgs,
@@ -129,7 +125,7 @@ function getStructure(params): ResultType & { structure?: Structure } {
     ?.filter((structure) => structure.stageSequence === 1)
     ?.reduce((targetStructure: any, structure: any) => {
       const orderNumber = structure.stage && stageOrder[structure.stage];
-      const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
+      const structureIsAdHoc = isAdHoc({ structure });
 
       return structureIsAdHoc && orderNumber > (stageOrder[targetStructure?.stage] || 1) ? structure : targetStructure;
     }, undefined);
@@ -140,7 +136,7 @@ function getStructure(params): ResultType & { structure?: Structure } {
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
   // an AD_HOC structure is one that has no child structures and in which no matchUps have roundPosition
-  const structureIsAdHoc = isAdHoc({ drawDefinition, structure });
+  const structureIsAdHoc = isAdHoc({ structure });
   if (!structureIsAdHoc) return { error: INVALID_DRAW_DEFINITION };
 
   return { structure };
