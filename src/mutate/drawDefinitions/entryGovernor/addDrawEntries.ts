@@ -1,15 +1,18 @@
-import { refreshEntryPositions } from '../../entries/refreshEntryPositions';
-import { addExtension } from '../../extensions/addExtension';
-import { isValidExtension } from '../../../validators/isValidExtension';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
-import { getValidStage } from '../../../query/drawDefinition/getValidStage';
-import { getStageSpace } from '../../../query/drawDefinition/getStageSpace';
+import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { participantInEntries } from '@Query/drawDefinition/entryGetter';
+import { getValidStage } from '@Query/drawDefinition/getValidStage';
+import { getStageSpace } from '@Query/drawDefinition/getStageSpace';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { ROUND_TARGET } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+// constants and types
+import { AD_HOC, MAIN, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE, LUCKY_LOSER } from '@Constants/entryStatusConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_STAGE,
   MISSING_STAGE,
@@ -19,8 +22,7 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
-import { AD_HOC, MAIN, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   Entry,
@@ -28,8 +30,7 @@ import {
   Extension,
   Participant,
   StageTypeUnion,
-} from '../../../types/tournamentTypes';
-import { DIRECT_ACCEPTANCE, LUCKY_LOSER } from '../../../constants/entryStatusConstants';
+} from '@Types/tournamentTypes';
 
 type AddDrawEntryArgs = {
   entryStatus?: EntryStatusUnion;
@@ -73,7 +74,8 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     drawDefinition,
     entryStatus,
   });
-  if (!ignoreStageSpace && !spaceAvailable.success) {
+
+  if (!ignoreStageSpace && !spaceAvailable.success && (!drawType || drawType !== AD_HOC)) {
     return { error: spaceAvailable.error };
   }
 

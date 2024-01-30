@@ -9,8 +9,8 @@ import { numericSort } from '@Tools/sorting';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_DRAW_POSITION } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure } from '../../types/tournamentTypes';
+import { INVALID_DRAW_POSITION } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Structure } from '@Types/tournamentTypes';
 
 // active drawPositions occur in activeMatchUps...
 // ...which have a winningSide, a scoreString, or a completed matchUpStatus

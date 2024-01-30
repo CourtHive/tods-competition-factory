@@ -1,15 +1,16 @@
-import { getStageDrawPositionsAvailable } from './getStageDrawPositions';
 import { getStageEntryTypeCount, getStageWildcardsCount, stageAlternatesCount } from './stageGetter';
+import { getStageDrawPositionsAvailable } from './getStageDrawPositions';
 
-import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+// constants and types
+import { ALTERNATE, DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
+import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,
   ErrorType,
   NO_STAGE_SPACE_AVAILABLE_FOR_ENTRY_STATUS,
-} from '../../constants/errorConditionConstants';
-import { ALTERNATE, DIRECT_ACCEPTANCE, WILDCARD } from '../../constants/entryStatusConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetStageSpaceArgs = {
   drawDefinition: DrawDefinition;

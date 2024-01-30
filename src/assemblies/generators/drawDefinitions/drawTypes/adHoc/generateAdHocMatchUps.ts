@@ -7,12 +7,12 @@ import { generateRange } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '../../../../../types/tournamentTypes';
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../../constants/entryStatusConstants';
-import { ROUND_OUTCOME } from '../../../../../constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../../../constants/resultConstants';
-import { TEAM } from '../../../../../constants/matchUpTypes';
+import { DrawDefinition, EntryStatusUnion, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   INVALID_VALUES,
   INVALID_STRUCTURE,
@@ -20,7 +20,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
   ErrorType,
-} from '../../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GenerateAdHocMatchUpsArgs = {
   participantIdPairings?: {
