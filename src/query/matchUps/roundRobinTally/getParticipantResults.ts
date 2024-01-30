@@ -1,8 +1,10 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
 
+// constants and types
 import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -84,10 +86,10 @@ export function getParticipantResults({
               participantResults[tieWinningParticipantId].tieMatchUpsWon += 1;
               participantResults[tieLosingParticipantId].tieMatchUpsLost += 1;
 
-              if (tieMatchUp.matchUpType === SINGLES) {
+              if (isMatchUpEventType(SINGLES)(tieMatchUp.matchUpType)) {
                 participantResults[tieWinningParticipantId].tieSinglesWon += 1;
                 participantResults[tieLosingParticipantId].tieSinglesLost += 1;
-              } else if (tieMatchUp.matchUpType === DOUBLES) {
+              } else if (isMatchUpEventType(DOUBLES)(tieMatchUp.matchUpType)) {
                 participantResults[tieWinningParticipantId].tieDoublesWon += 1;
                 participantResults[tieLosingParticipantId].tieDoublesLost += 1;
               }
@@ -118,8 +120,8 @@ export function getParticipantResults({
 
         for (const tieMatchUp of tieMatchUps) {
           const { matchUpType } = tieMatchUp;
-          const isDoubles = matchUpType === DOUBLES;
-          const isSingles = matchUpType === SINGLES;
+          const isDoubles = isMatchUpEventType(DOUBLES)(matchUpType);
+          const isSingles = isMatchUpEventType(SINGLES)(matchUpType);
 
           if (tieMatchUp.winningSide) {
             // logic ensures that losing TEAM participant gets credit for tieMatchUps won & etc.

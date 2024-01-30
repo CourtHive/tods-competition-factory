@@ -1,10 +1,11 @@
 import { getStageParticipantsCount } from '@Query/drawDefinition/getStageParticipantsCount';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getStageParticipants } from '@Query/drawDefinition/getStageParticipants';
-import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { generateEventParticipants } from './generateEventParticipants';
 import { addEventEntries } from '@Mutate/entries/addEventEntries';
 import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
-import { generateEventParticipants } from './generateEventParticipants';
 import { getParticipantId } from '@Functions/global/extractors';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
@@ -13,6 +14,7 @@ import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 import { UUID } from '@Tools/UUID';
 
+// constants
 import { SINGLES, DOUBLES, TEAM } from '@Constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
@@ -76,7 +78,10 @@ export function generateEventWithFlights(params) {
     gender,
   });
 
-  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
+  const eventParticipantType =
+    (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+    (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+    eventType;
 
   const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
     ? generateEventParticipants({

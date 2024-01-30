@@ -1,28 +1,31 @@
-import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
-import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
-import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
-import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
-import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
+import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { addParticipants } from '@Mutate/participants/addParticipants';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { addEventEntries } from '@Mutate/entries/addEventEntries';
 import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { getParticipantId } from '@Functions/global/extractors';
+import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
 import { generateRange, intersection } from '@Tools/arrays';
 import { definedAttributes } from '@Tools/definedAttributes';
-import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateParticipants } from './generateParticipants';
-import { addFlight } from '@Mutate/events/addFlight';
 import { processTieFormat } from './processTieFormat';
+import { addFlight } from '@Mutate/events/addFlight';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { coerceEven } from '@Tools/math';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
+import { MAIN, QUALIFYING, ROUND_ROBIN_WITH_PLAYOFF, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
@@ -35,7 +38,6 @@ import { SEEDING } from '@Constants/timeItemConstants';
 import { OBJECT } from '@Constants/attributeConstants';
 import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MAIN, QUALIFYING, ROUND_ROBIN_WITH_PLAYOFF, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 export function generateEventWithDraw(params) {
   const paramsCheck = checkRequiredParameters(params, [{ drawProfile: true, _ofType: OBJECT }]);
@@ -246,8 +248,8 @@ export function generateEventWithDraw(params) {
 
   const isEventParticipantType = (participant) => {
     const { participantType } = participant;
-    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
-    if (eventType === DOUBLES && participantType === PAIR) return true;
+    if (isMatchUpEventType(SINGLES)(eventType) && participantType === INDIVIDUAL) return true;
+    if (isMatchUpEventType(DOUBLES)(eventType) && participantType === PAIR) return true;
     return eventType === TEAM && participantType === TEAM;
   };
 

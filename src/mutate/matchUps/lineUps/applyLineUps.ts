@@ -1,10 +1,12 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { addParticipant } from '../../participants/addParticipant';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { addParticipant } from '@Mutate/participants/addParticipant';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { instanceCount } from '@Tools/arrays';
 
+// constants
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
@@ -98,7 +100,7 @@ export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, line
         const participantsCount = collectionParticipantIds[aggregator].length;
 
         if (
-          (collectionDefinition.matchUpType === SINGLES && participantsCount) ||
+          (isMatchUpEventType(SINGLES)(collectionDefinition.matchUpType) && participantsCount) ||
           (collectionDefinition.matchUpType === DOUBLES && participantsCount > 1)
         ) {
           // cannot have more than one assignment for singles or two for doubles

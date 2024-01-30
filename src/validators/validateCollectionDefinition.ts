@@ -1,10 +1,12 @@
-import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
-import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
+import { validateCollectionValueProfiles } from '@Validators/validateCollectionValueProfiles';
+import { tieFormatGenderValidityCheck } from '@Validators/tieFormatGenderValidityCheck';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { categoryCanContain } from '@Query/event/categoryCanContain';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { isConvertableInteger } from '@Tools/math';
 
+// constants and types
 import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '@Constants/errorConditionConstants';
 import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '@Types/tournamentTypes';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
@@ -58,7 +60,7 @@ export function validateCollectionDefinition({
   if (typeof matchUpCount !== 'number') {
     errors.push(`matchUpCount is not type number: ${matchUpCount}`);
   }
-  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType)) {
+  if (matchUpType && !includesMatchUpEventType([SINGLES, DOUBLES], matchUpType)) {
     errors.push(`matchUpType must be SINGLES or DOUBLES: ${matchUpType}`);
   }
 

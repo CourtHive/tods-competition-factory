@@ -1,7 +1,9 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { isAvailableAction } from '../positionActions/actionPolicyUtils';
-import { getParticipantId } from '@Functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
+import { getParticipantId } from '@Functions/global/extractors';
 
+// constants and types
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
@@ -107,11 +109,11 @@ export function collectionMatchUpActions({
 
   const assignmentAvailable =
     (sideNumber &&
-      ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds?.length) ||
-        (matchUpType === DOUBLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 2))) ||
+      ((isMatchUpEventType(SINGLES_MATCHUP)(matchUpType) && !existingParticipantIds?.length) ||
+        (isMatchUpEventType(DOUBLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 2))) ||
     (!sideNumber &&
-      ((matchUpType === SINGLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 2) ||
-        (matchUpType === DOUBLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 4)));
+      ((isMatchUpEventType(SINGLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 2) ||
+        (isMatchUpEventType(DOUBLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 4)));
 
   // extra step to avoid edge case where individual participant is part of both teams
   const availableIds = availableParticipantIds?.filter((id) => !allParticipantIds?.includes(id));

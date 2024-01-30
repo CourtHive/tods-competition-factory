@@ -1,3 +1,4 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { getParticipants } from '@Query/participants/getParticipants';
@@ -125,7 +126,7 @@ export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
     for (const collectionDefinition of collectionDefinitions) {
       const collectionParticipantIds: string[] = [];
       const { collectionId, matchUpCount, matchUpType, gender } = collectionDefinition;
-      const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
+      const singlesMatchUp = isMatchUpEventType(SINGLES_MATCHUP)(matchUpType);
 
       generateRange(0, matchUpCount).forEach((i) => {
         const typeSort = singlesMatchUp ? singlesSort : doublesSort ?? [];

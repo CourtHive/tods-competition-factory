@@ -1,3 +1,4 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '@Functions/global/extractors';
 import { getAccessorValue } from '@Tools/getAccessorValue';
@@ -5,12 +6,12 @@ import { getFlightProfile } from '../event/getFlightProfile';
 import { getTimeItem } from '../base/timeItems';
 import { unique } from '@Tools/arrays';
 
+// constants and types
 import { SIGN_IN_STATUS } from '@Constants/participantConstants';
-import { SINGLES } from '@Constants/eventConstants';
-
-import type { Tournament } from '@Types/tournamentTypes';
 import { ParticipantFilters } from '@Types/factoryTypes';
+import type { Tournament } from '@Types/tournamentTypes';
 import { HydratedParticipant } from '@Types/hydrated';
+import { SINGLES } from '@Constants/eventConstants';
 
 type FilterParticipantsArgs = {
   participantFilters: ParticipantFilters;
@@ -141,7 +142,7 @@ export function filterParticipants({
       .filter((event) => eventIds.includes(event.eventId))
       .map((event) => {
         const enteredParticipantIds = (event.entries || []).map((entry) => entry.participantId);
-        if (event.eventType === SINGLES) return enteredParticipantIds;
+        if (isMatchUpEventType(SINGLES)(event.eventType)) return enteredParticipantIds;
         const individualParticipantIds = (tournamentRecord?.participants ?? [])
           .filter((participant) => enteredParticipantIds.includes(participant.participantId))
           .map((participant) => participant.individualParticipantIds)

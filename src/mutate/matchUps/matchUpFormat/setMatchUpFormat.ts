@@ -1,10 +1,12 @@
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
+import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
-import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
@@ -72,7 +74,7 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
       result: { error: INVALID_VALUES, scheduledDates },
       stack,
     });
-  if (eventType && ![SINGLES, DOUBLES].includes(eventType))
+  if (eventType && !includesMatchUpEventType([SINGLES, DOUBLES], eventType))
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
 
   let modificationsCount = 0;

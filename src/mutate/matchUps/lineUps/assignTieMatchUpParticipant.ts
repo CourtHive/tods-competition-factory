@@ -1,5 +1,6 @@
 import { getTieMatchUpContext } from '@Query/hierarchical/tieFormats/getTieMatchUpContext';
 import { removeCollectionAssignments } from '@Mutate/events/removeCollectionAssignments';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '@Mutate/participants/deleteParticipants';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
@@ -123,7 +124,7 @@ export function assignTieMatchUpParticipantId(
   const { individualParticipantIds, participantType } = participantToAssign;
 
   // check that the participantToAssign is the correct participantType for tieMatchUp.matchUpType
-  if (matchUpType === SINGLES && participantType !== INDIVIDUAL) {
+  if (isMatchUpEventType(SINGLES)(matchUpType) && participantType !== INDIVIDUAL) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 

@@ -1,3 +1,4 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { addDrawEntries } from '@Mutate/drawDefinitions/addDrawEntries';
 import { decorateResult } from '@Functions/global/decorateResult';
@@ -9,6 +10,7 @@ import { removeEventEntries } from './removeEventEntries';
 import { isUngrouped } from '@Query/entries/isUngrouped';
 
 // constants and types
+import { DrawDefinition, EntryStatusUnion, Event, Extension, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
@@ -27,7 +29,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, EntryStatusUnion, Event, Extension, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -116,7 +117,9 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
         if (!participantIds.includes(participant.participantId)) return false;
 
         const validSingles =
-          event.eventType === SINGLES && participant.participantType === INDIVIDUAL && !isUngrouped(entryStatus);
+          isMatchUpEventType(SINGLES)(event.eventType) &&
+          participant.participantType === INDIVIDUAL &&
+          !isUngrouped(entryStatus);
 
         const validDoubles = event.eventType === DOUBLES && participant.participantType === PAIR;
 

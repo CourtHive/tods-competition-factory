@@ -3,6 +3,7 @@ import { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetiti
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getMatchUpScheduleDetails } from '@Query/matchUp/getMatchUpScheduleDetails';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
@@ -622,7 +623,7 @@ export function getAllStructureMatchUps({
 
       if (inferGender) {
         const sideGenders = matchUpWithContext.sides.map((side) => {
-          if (matchUpWithContext.matchUpType === SINGLES) return side.participant?.person?.sex;
+          if (isMatchUpEventType(SINGLES)(matchUpWithContext.matchUpType)) return side.participant?.person?.sex;
 
           if (side.participant?.individualParticipants?.length === 2) {
             const pairGenders = unique(

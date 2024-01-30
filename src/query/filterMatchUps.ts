@@ -1,3 +1,4 @@
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { scheduledMatchUpTime } from './matchUp/scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './matchUp/scheduledMatchUpDate';
@@ -140,7 +141,10 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
     if (targetMatchUpIds.length && !targetMatchUpIds.includes(matchUp.matchUpId)) {
       return false;
     }
-    if (targetMatchUpTypes.length && (!matchUp.matchUpType || !targetMatchUpTypes.includes(matchUp.matchUpType))) {
+    if (
+      targetMatchUpTypes.length &&
+      (!matchUp.matchUpType || !includesMatchUpEventType(targetMatchUpTypes, matchUp.matchUpType))
+    ) {
       return false;
     }
     if (
