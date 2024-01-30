@@ -11,11 +11,9 @@ export function isAdHoc({ structure }: IsAdHocArgs): boolean {
   const hasRoundPosition = !!matchUps?.find((matchUp) => matchUp?.roundPosition);
   const hasDrawPosition = !!matchUps?.find((matchUp) => matchUp?.drawPositions?.length);
 
-  const adHoc =
+  return (
     !structure?.structures &&
     structure?.stage !== VOLUNTARY_CONSOLATION &&
-    // !(drawDefinition?.drawType && drawDefinition.drawType !== AD_HOC) &&
-    (!matchUps.length || (!hasRoundPosition && !hasDrawPosition));
-
-  return adHoc;
+    (!matchUps.length || (!hasRoundPosition && !hasDrawPosition))
+  );
 }
