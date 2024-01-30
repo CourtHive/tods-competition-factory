@@ -1,3 +1,4 @@
+import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPositions';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
@@ -12,7 +13,6 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
-import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 // constants and types
 import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';

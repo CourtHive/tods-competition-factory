@@ -1,7 +1,9 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { addParticipants } from '@Mutate/participants/addParticipants';
 import { getParticipantId } from '@Functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 
+// constants and types
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
@@ -22,7 +24,10 @@ export function generateEventParticipants(params) {
 
   const { category, gender, eventType } = event;
 
-  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
+  const eventParticipantType =
+    (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+    (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+    eventType;
 
   const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;

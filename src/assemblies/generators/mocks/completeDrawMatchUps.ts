@@ -1,16 +1,18 @@
+import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/generateOutcomeFromScoreString';
 import { assignTieMatchUpParticipantId } from '@Mutate/matchUps/lineUps/assignTieMatchUpParticipant';
+import { generateLineUps } from '@Assemblies/generators/participants/generateLineUps';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
-import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { structureSort } from '@Functions/sorters/structureSort';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { generateLineUps } from '../participants/generateLineUps';
 import { generateOutcome } from './generateOutcome';
 
+// constants and types
 import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { addParticipants } from '@Mutate/participants/addParticipants';
@@ -90,8 +92,8 @@ export function completeDrawMatchUps(params): {
           tournamentRecord,
         });
         const assignParticipants = (dualMatchUp) => {
-          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
-          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES);
+          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(isMatchUpEventType(SINGLES));
+          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(isMatchUpEventType(DOUBLES));
 
           singlesMatchUps.forEach((singlesMatchUp, i) => {
             const tieMatchUpId = singlesMatchUp.matchUpId;
