@@ -4,7 +4,7 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { DrawDefinition, Event, OnlineResource, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import {
   COURT_NOT_FOUND,
@@ -15,7 +15,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddOnlineResourceArgs = {
   onlineResource: OnlineResource;

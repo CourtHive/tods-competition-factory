@@ -4,12 +4,12 @@ import { findExtension } from '@Acquire/findExtension';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { TournamentRecords, ResultType } from '../../types/factoryTypes';
 import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
 import { Tournament, Venue } from '../../types/tournamentTypes';
-import { DISABLED } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DISABLED } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type GetVenuesAndCourtsArgs = {
   tournamentRecords?: TournamentRecords;

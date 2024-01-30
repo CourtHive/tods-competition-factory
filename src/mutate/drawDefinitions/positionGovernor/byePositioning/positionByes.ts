@@ -9,8 +9,8 @@ import { shuffleArray } from '@Tools/arrays';
 // constants and types
 import { DrawDefinition, Event, Structure, Tournament } from '../../../../types/tournamentTypes';
 import { PolicyDefinitions, SeedingProfile, MatchUpsMap } from '../../../../types/factoryTypes';
-import { CONTAINER, ITEM, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { CONTAINER, ITEM, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type PositionByesArgs = {
   appliedPolicies?: PolicyDefinitions;

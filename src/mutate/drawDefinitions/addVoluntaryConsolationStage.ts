@@ -1,9 +1,9 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { setStageDrawSize } from './entryGovernor/stageEntryCounts';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function addVoluntaryConsolationStage({ drawDefinition, drawSize }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

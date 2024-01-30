@@ -3,7 +3,7 @@ import { getNextSeedBlock } from '@Query/drawDefinition/seedGetter';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
 import { SeedingProfile, ResultType } from '../../../types/factoryTypes';
 import { DrawDefinition, Event } from '../../../types/tournamentTypes';
 

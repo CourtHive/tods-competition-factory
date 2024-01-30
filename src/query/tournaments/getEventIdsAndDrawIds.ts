@@ -1,7 +1,7 @@
 import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 
-import { TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
-import { ErrorType } from '../../constants/errorConditionConstants';
+import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 
 type Aggregator = {

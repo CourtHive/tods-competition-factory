@@ -1,7 +1,7 @@
 import { definedAttributes } from '@Tools/definedAttributes';
 
 // constants
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 type DecorateResultArgs = {

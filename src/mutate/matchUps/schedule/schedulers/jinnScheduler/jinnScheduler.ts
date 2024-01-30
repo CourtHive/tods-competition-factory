@@ -14,8 +14,8 @@ import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import { extractDate, sameDay, timeStringMinutes, zeroPad } from '../../../../../tools/dateTime';
 
-import { SUCCESS } from '../../../../../constants/resultConstants';
-import { TOTAL } from '../../../../../constants/scheduleConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
 
 export function jinnScheduler({
   schedulingProfileModifications,

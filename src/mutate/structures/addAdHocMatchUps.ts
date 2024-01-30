@@ -6,8 +6,8 @@ import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import { ROUND_OUTCOME } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_VALUES,
@@ -16,7 +16,7 @@ import {
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
   EXISTING_MATCHUP_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddAdHocMatchUpsParams = {
   suppressNotifications?: boolean; // internal - avoid duplicate notifications from mocksEngine

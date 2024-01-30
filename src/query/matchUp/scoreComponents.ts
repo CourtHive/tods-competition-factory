@@ -1,4 +1,4 @@
-import { COMPETITIVE, DECISIVE, ROUTINE, WALKOVER } from '../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE, WALKOVER } from '@Constants/statsConstants';
 
 const add = (a, b) => (a || 0) + (b || 0);
 

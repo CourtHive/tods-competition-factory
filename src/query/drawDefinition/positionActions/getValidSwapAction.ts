@@ -4,7 +4,7 @@ import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { overlap } from '../../../tools/arrays';
 
 import { HydratedParticipant } from '../../../types/hydrated';
-import { SWAP_PARTICIPANTS, SWAP_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
+import { SWAP_PARTICIPANTS, SWAP_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { DrawDefinition, Event, PositionAssignment, Structure } from '../../../types/tournamentTypes';
 
 type GetValidSwapActionArgs = {

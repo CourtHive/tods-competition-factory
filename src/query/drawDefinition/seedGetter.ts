@@ -9,8 +9,8 @@ import { findStructure } from '../../acquire/findStructure';
 import { isLucky } from './isLucky';
 
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
-import { CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '../../constants/drawDefinitionConstants';
-import { INVALID_SEED_POSITION, MISSING_STRUCTURE } from '../../constants/errorConditionConstants';
+import { CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '@Constants/drawDefinitionConstants';
+import { INVALID_SEED_POSITION, MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
 import { PolicyDefinitions, SeedBlock, SeedingProfile } from '../../types/factoryTypes';
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
 

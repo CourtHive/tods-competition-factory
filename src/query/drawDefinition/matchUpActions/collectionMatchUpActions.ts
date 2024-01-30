@@ -2,13 +2,13 @@ import { isAvailableAction } from '../positionActions/actionPolicyUtils';
 import { getParticipantId } from '../../../functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
-import { ANY, MIXED } from '../../../constants/genderConstants';
+import { ANY, MIXED } from '@Constants/genderConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
 import { MatchUp } from '../../../types/tournamentTypes';
 import {
@@ -20,7 +20,7 @@ import {
   REPLACE_TEAM_POSITION_METHOD,
   SUBSTITUTION,
   SUBSTITUTION_METHOD,
-} from '../../../constants/matchUpActionConstants';
+} from '@Constants/matchUpActionConstants';
 
 export function collectionMatchUpActions({
   specifiedPolicyDefinitions,

@@ -1,14 +1,15 @@
-import { deleteNotices, getTournamentRecords } from '../../../global/state/globalState';
-import { notifySubscribersAsync } from '../../../global/state/notifySubscribers';
-import { isFunction, isObject, isString } from '../../../tools/objects';
-import { getMethods } from '../../../global/state/syncGlobalState';
-import { getMutationStatus } from '../parts/getMutationStatus';
-import { logMethodNotFound } from '../parts/logMethodNotFound';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { executeFunction } from '../parts/executeMethod';
-import { setState } from '../parts/stateMethods';
+import { deleteNotices, getTournamentRecords } from '@Global/state/globalState';
+import { getMutationStatus } from '@Assemblies/engines/parts/getMutationStatus';
+import { logMethodNotFound } from '@Assemblies/engines/parts/logMethodNotFound';
+import { executeFunction } from '@Assemblies/engines/parts/executeMethod';
+import { notifySubscribersAsync } from '@Global/state/notifySubscribers';
+import { setState } from '@Assemblies/engines/parts/stateMethods';
+import { isFunction, isObject, isString } from '@Tools/objects';
+import { getMethods } from '@Global/state/syncGlobalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { INVALID_VALUES, METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
+// constants
+import { INVALID_VALUES, METHOD_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export async function asyncEngineInvoke(engine: { [key: string]: any }, args: any) {
   if (!isObject(args)) return { error: INVALID_VALUES, message: 'args must be an object' };

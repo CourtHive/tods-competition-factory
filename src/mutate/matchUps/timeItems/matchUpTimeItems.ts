@@ -2,8 +2,8 @@ import { addTimeItem } from '../../timeItems/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { DrawDefinition, Event, TimeItem, Tournament } from '../../../types/tournamentTypes';
 
 /*

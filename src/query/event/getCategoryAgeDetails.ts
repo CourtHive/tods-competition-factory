@@ -3,7 +3,7 @@ import { isNumeric } from '../../tools/math';
 import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '../../tools/dateTime';
 
 import { Category } from '../../types/tournamentTypes';
-import { INVALID_CATEGORY, INVALID_DATE } from '../../constants/errorConditionConstants';
+import { INVALID_CATEGORY, INVALID_DATE } from '@Constants/errorConditionConstants';
 
 const typeMatch = (arr, type) => arr.filter(Boolean).every((i) => typeof i === type);
 const allNumeric = (arr) => arr.filter(Boolean).every(isNumeric);

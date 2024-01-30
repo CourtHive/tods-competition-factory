@@ -10,9 +10,9 @@ import {
 } from '@Global/state/globalState';
 
 // constants and types
-import { INVALID_OBJECT, INVALID_RECORDS, INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { LINKED_TOURNAMENTS } from '../../../constants/extensionConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { INVALID_OBJECT, INVALID_RECORDS, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type GetStateArgs = {
   convertExtensions?: boolean;

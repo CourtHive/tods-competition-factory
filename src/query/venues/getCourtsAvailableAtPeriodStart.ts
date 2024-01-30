@@ -4,8 +4,8 @@ import { addMinutes, timeToDate } from '@Tools/dateTime';
 import { getEnoughTime } from './getEnoughTime';
 
 // constants and types
-import { ARRAY } from '../../constants/attributeConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ARRAY } from '@Constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import { Court } from '../../types/tournamentTypes';
 

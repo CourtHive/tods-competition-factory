@@ -6,9 +6,9 @@ import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import { addMinutesToTimeString, extractTime } from '../../../../../tools/dateTime';
 
 import { Tournament } from '../../../../../types/tournamentTypes';
-import { BYE } from '../../../../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
+import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GenerateBookingsArgs = {
   tournamentRecords: { [key: string]: Tournament };

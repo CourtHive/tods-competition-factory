@@ -12,7 +12,7 @@ import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetSourceRoundsArgs = {
   excludeRoundNumbers?: number[];

@@ -2,7 +2,7 @@ import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
 
 import { ParticipantsProfile } from '../../../../types/factoryTypes';
 import { Participant } from '../../../../types/tournamentTypes';
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 type AddParticipantGroupingsArgs = {
   participantsProfile?: ParticipantsProfile;

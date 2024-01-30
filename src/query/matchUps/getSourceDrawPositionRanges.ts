@@ -5,8 +5,8 @@ import { findStructure } from '../../acquire/findStructure';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { getRangeString } from './getRangeString';
 
-import { BOTTOM_UP, CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { INVALID_STAGE, MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '../../constants/errorConditionConstants';
+import { BOTTOM_UP, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { INVALID_STAGE, MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
 
 export function getSourceDrawPositionRanges({ drawDefinition, structureId, matchUpsMap }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

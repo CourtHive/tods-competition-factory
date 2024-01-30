@@ -1,7 +1,7 @@
 import { xa } from '../../tools/objects';
 import { chunkArray } from '../../tools/arrays';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 
 export function getSeededDrawPositions({ drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

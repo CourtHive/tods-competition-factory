@@ -1,4 +1,4 @@
-import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../constants/policyConstants';
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 
 export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
   [POLICY_TYPE_ROUND_ROBIN_TALLY]: {

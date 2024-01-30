@@ -14,8 +14,8 @@ import { isString } from '@Tools/objects';
 
 // constants and types
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { TEAM_EVENT } from '../../constants/eventConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import {
   MATCHUP_NOT_FOUND,
@@ -24,7 +24,7 @@ import {
   CANNOT_CHANGE_WINNING_SIDE,
   MISSING_MATCHUP_ID,
   INVALID_MATCHUP,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ResetScoreCardArgs = {
   score?: { sets: { side1Score: number; side2Score: number }[] };

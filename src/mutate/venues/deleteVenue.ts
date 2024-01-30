@@ -5,17 +5,17 @@ import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfil
 import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
 import { addNotice } from '../../global/state/globalState';
 
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { Tournament, Venue } from '../../types/tournamentTypes';
-import { DELETE_VENUE } from '../../constants/topicConstants';
+import { DELETE_VENUE } from '@Constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type DeleteVenueArgs = {
   tournamentRecords?: TournamentRecords;

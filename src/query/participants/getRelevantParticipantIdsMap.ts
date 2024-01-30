@@ -1,5 +1,5 @@
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../constants/participantConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
 import { Tournament } from '../../types/tournamentTypes';
 
 /**

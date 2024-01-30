@@ -7,8 +7,8 @@ import { numericSort } from '../../tools/sorting';
 import { getSourceRounds } from './getSourceRounds';
 import { getStructureLinks } from './linkGetter';
 
-import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
 
 type GetAvailablePlayoffProfileArgs = {

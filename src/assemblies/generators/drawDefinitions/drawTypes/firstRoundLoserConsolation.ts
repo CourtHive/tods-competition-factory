@@ -4,8 +4,8 @@ import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
 import { DrawLink, Structure } from '../../../../types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MAIN, CONSOLATION, LOSER, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, CONSOLATION, LOSER, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 export function firstRoundLoserConsolation(params) {
   const {

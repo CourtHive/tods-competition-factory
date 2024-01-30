@@ -9,7 +9,7 @@ import { positionTargets } from '../../../query/matchUp/positionTargets';
 
 import { pushGlobalLog } from '../../../functions/global/globalLog';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   BYE,
   completedMatchUpStatuses,
@@ -18,7 +18,7 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 const keyColors = {
   drawPositionToRemove: 'green',

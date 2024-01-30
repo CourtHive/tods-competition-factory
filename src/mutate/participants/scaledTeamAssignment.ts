@@ -6,10 +6,10 @@ import { generateRange } from '../../tools/arrays';
 import { addParticipants } from './addParticipants';
 
 import { Event, Participant, Tournament } from '../../types/tournamentTypes';
-import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { TEAM_EVENT } from '../../constants/eventConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_TYPE,
@@ -19,8 +19,8 @@ import {
   NO_CANDIDATES,
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import { INDIVIDUAL, TEAM_PARTICIPANT } from '../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 
 /*
 scaledParticipants are equivalent to scaledEntries

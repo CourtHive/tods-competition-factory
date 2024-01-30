@@ -2,7 +2,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { nextPowerOf2 } from '@Tools/math';
 
 // constants and types
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 type GetDrawSizeArgs = {

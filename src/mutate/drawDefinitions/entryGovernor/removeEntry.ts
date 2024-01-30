@@ -3,12 +3,12 @@ import { getAssignedParticipantIds } from '../../../query/drawDefinition/getAssi
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 
 import { DrawDefinition, StageTypeUnion } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_ID,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RemoveEntryArgs = {
   autoEntryPositions?: boolean;

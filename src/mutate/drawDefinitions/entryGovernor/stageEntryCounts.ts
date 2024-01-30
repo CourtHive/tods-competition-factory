@@ -8,10 +8,10 @@ import {
   getStageWildcardEntriesCount,
 } from '../../../query/drawDefinition/stageGetter';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_SIZE_MISMATCH, INVALID_STAGE, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DRAW_SIZE_MISMATCH, INVALID_STAGE, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 
 export function setStageDrawSize({ stageSequence = 1, drawDefinition, drawSize, stage }) {

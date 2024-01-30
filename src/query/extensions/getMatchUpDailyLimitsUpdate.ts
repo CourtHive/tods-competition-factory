@@ -1,6 +1,6 @@
 import { getExtensionUpdate } from './getExtensionUpdate';
 
-import { SCHEDULE_LIMITS } from '../../constants/extensionConstants';
+import { SCHEDULE_LIMITS } from '@Constants/extensionConstants';
 
 export function getMatchUpDailyLimitsUpdate({ tournamentRecords }) {
   return getExtensionUpdate({

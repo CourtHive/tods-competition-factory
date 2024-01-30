@@ -3,15 +3,15 @@ import { getAllPositionedParticipantIds } from '../positionsGetter';
 import { getFlightProfile } from '../../event/getFlightProfile';
 import { unique } from '../../../tools/arrays';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
   ASSIGN_PARTICIPANT,
-} from '../../../constants/positionActionConstants';
-import { ALTERNATE, UNGROUPED, UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
+} from '@Constants/positionActionConstants';
+import { ALTERNATE, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 import {
   DrawDefinition,
   Entry,

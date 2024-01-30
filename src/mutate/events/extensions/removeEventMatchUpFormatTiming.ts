@@ -2,9 +2,9 @@ import { checkRequiredParameters } from '../../../helpers/parameters/checkRequir
 import { removeEventExtension } from '../../extensions/addRemoveExtensions';
 import { findEvent } from '../../../acquire/findEvent';
 
-import { EVENT_ID, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { EVENT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { EVENT_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
 import { TournamentRecords } from '../../../types/factoryTypes';
 

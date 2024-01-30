@@ -3,10 +3,10 @@ import { getMatchUpFormatAverageTimes } from './getMatchUpFormatAverageTimes';
 import { getScheduleTiming } from './getScheduleTiming';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { DOUBLES_SINGLES, SINGLES_DOUBLES } from '../../../constants/scheduleConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { DOUBLES_SINGLES, SINGLES_DOUBLES } from '@Constants/scheduleConstants';
 import { Event, Tournament, EventTypeUnion } from '../../../types/tournamentTypes';
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 import { ResultType } from '../../../types/factoryTypes';
 
 type GetMatchUpFormatTimingArgs = {

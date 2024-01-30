@@ -1,5 +1,5 @@
-import { POLICY_TYPE_SCORING } from '../../constants/policyConstants';
-import { MAIN } from '../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 
 export const POLICY_SCORING_USTA = {

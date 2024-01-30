@@ -4,8 +4,8 @@ import { numericSort } from '@Tools/sorting';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
 import { MatchUpsMap } from '../../types/factoryTypes';
 

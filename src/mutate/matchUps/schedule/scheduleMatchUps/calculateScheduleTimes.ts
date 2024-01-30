@@ -8,7 +8,7 @@ import { getScheduleTimes } from '../../../../query/venues/getScheduleTimes';
 import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '../../../../tools/dateTime';
 
 import { Tournament } from '../../../../types/tournamentTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type CalculateScheduleTimesArgs = {
   tournamentRecords: { [key: string]: Tournament };

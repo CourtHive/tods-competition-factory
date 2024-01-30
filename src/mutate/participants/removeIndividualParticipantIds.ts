@@ -10,14 +10,14 @@ import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
 import { Participant, ParticipantRoleUnion, Tournament } from '../../types/tournamentTypes';
-import { GROUP, TEAM, TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
-import { UNGROUPED } from '../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { LINEUPS } from '../../constants/extensionConstants';
+import { GROUP, TEAM, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { LINEUPS } from '@Constants/extensionConstants';
 import { HydratedParticipant } from '../../types/hydrated';
 import { MappedMatchUps } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   ErrorType,
@@ -26,7 +26,7 @@ import {
   MISSING_VALUE,
   NO_PARTICIPANT_REMOVED,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RemoveIndividualParticipantIdsArgs = {
   addIndividualParticipantsToEvents?: boolean;

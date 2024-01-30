@@ -1,6 +1,6 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
-import { SCHEDULED_DATE } from '../../constants/timeItemConstants';
+import { SCHEDULED_DATE } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
 
 export function scheduledMatchUpDate({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {

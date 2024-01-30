@@ -7,7 +7,7 @@ import {
   INVALID_VALUES,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export type Notice = {
   topic: string;

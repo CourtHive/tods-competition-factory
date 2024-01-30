@@ -1,4 +1,4 @@
-import { DOUBLES } from '../../../../constants/matchUpTypes';
+import { DOUBLES } from '@Constants/matchUpTypes';
 
 export function getIndividualParticipantIds(matchUp) {
   const { sides, matchUpType } = matchUp || {};

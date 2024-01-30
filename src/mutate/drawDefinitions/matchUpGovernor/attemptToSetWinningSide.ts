@@ -7,8 +7,8 @@ import { directParticipants } from '../../matchUps/drawPositions/directParticipa
 import { replaceQualifier } from './replaceQualifier';
 import { placeQualifier } from './placeQualifier';
 
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';

@@ -1,5 +1,5 @@
 import { getSuper, isDiffOne } from './helpers';
-import { isNumeric } from '../../tools/math';
+import { isNumeric } from '@Tools/math';
 
 export function properTiebreak({ score, matchUpStatus }) {
   let parts = score?.split(' ');

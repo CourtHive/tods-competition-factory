@@ -5,7 +5,7 @@ import { getDrawId } from '@Functions/global/extractors';
 
 // constants and types
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import { findEvent } from '../../acquire/findEvent';
 import { isString } from '../../tools/objects';
@@ -14,7 +14,7 @@ import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetPublishStateArgs = {
   tournamentRecord?: Tournament;

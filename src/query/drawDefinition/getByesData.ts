@@ -3,8 +3,8 @@ import { structureAssignedDrawPositions } from './positionsGetter';
 import { getQualifiersCount } from './getQualifiersCount';
 import { getStageEntries } from './stageGetter';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { CONSOLATION, CONTAINER } from '../../constants/drawDefinitionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { CONSOLATION, CONTAINER } from '@Constants/drawDefinitionConstants';
 
 export function getByesData({ provisionalPositioning, drawDefinition, matchUpsMap, structure, event }) {
   const matchUpFilters = { isCollectionMatchUp: false };

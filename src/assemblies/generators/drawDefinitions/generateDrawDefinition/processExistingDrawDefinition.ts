@@ -5,7 +5,7 @@ import { addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntri
 import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 
 // constants and types
-import { MAIN, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { ResultType } from '../../../../types/factoryTypes';
 
 export function processExistingDrawDefinition(params): ResultType & {

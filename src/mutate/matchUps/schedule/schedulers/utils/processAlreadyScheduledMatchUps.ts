@@ -3,7 +3,7 @@ import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterR
 import { getMatchUpId } from '../../../../../functions/global/extractors';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 
-import { BYE } from '../../../../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 
 type ProcessAlreadyScheduledMatchUpsArgs = {

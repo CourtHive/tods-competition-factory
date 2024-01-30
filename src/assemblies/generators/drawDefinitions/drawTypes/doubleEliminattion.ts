@@ -4,8 +4,8 @@ import { constantToString } from '../../../../tools/strings';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import { MAIN, BACKDRAW, DECIDER, CONSOLATION, PLAY_OFF } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { MAIN, BACKDRAW, DECIDER, CONSOLATION, PLAY_OFF } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Structure } from '../../../../types/tournamentTypes';
 
 export function generateDoubleElimination({ structureName, matchUpType, idPrefix, drawSize, isMock, uuids }) {

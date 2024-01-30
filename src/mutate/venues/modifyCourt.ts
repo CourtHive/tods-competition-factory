@@ -8,8 +8,8 @@ import { findCourt } from './findCourt';
 // constants and types
 import { TournamentRecords, ResultType } from '../../types/factoryTypes';
 import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
 import {
   INVALID_OBJECT,
@@ -17,7 +17,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ModifyCourtArgs = {
   tournamentRecords?: TournamentRecords;

@@ -5,14 +5,10 @@ import { resolveFromParameters } from '../../../helpers/parameters/resolveFromPa
 import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
-import { activeMatchUpStatuses, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { activeMatchUpStatuses, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { CheckInOutParticipantArgs } from '../../../types/factoryTypes';
-import { CHECK_OUT } from '../../../constants/timeItemConstants';
-import {
-  INVALID_ACTION,
-  INVALID_PARTICIPANT_ID,
-  PARTICIPANT_NOT_CHECKED_IN,
-} from '../../../constants/errorConditionConstants';
+import { CHECK_OUT } from '@Constants/timeItemConstants';
+import { INVALID_ACTION, INVALID_PARTICIPANT_ID, PARTICIPANT_NOT_CHECKED_IN } from '@Constants/errorConditionConstants';
 import {
   DRAW_DEFINITION,
   IN_CONTEXT,
@@ -21,7 +17,7 @@ import {
   PARAM,
   PARTICIPANT_ID,
   TOURNAMENT_RECORD,
-} from '../../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 export function checkOutParticipant(params: CheckInOutParticipantArgs) {
   const requiredParams = [

@@ -10,23 +10,23 @@ import { isUngrouped } from '@Query/entries/isUngrouped';
 
 // constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { INDIVIDUAL, PAIR, TEAM } from '../../constants/participantConstants';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
-import { DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
-import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { ANY, MIXED } from '../../constants/genderConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { ANY, MIXED } from '@Constants/genderConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   EntryStatusUnion,

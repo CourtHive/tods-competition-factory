@@ -1,7 +1,7 @@
 import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 
 import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { LUCKY_DRAW } from '../../constants/drawDefinitionConstants';
+import { LUCKY_DRAW } from '@Constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 
 type IsLuckyArgs = {

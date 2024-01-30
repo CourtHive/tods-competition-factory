@@ -3,14 +3,14 @@ import { getMinFinishingPositionRange } from '../../functions/sorters/structureS
 import { getPlayoffStructures } from '../../query/structure/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { SeedingProfile } from '../../types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   ErrorType,
   INCOMPLETE_SOURCE_STRUCTURE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
 
 type StructurePositionAssignmentType = {

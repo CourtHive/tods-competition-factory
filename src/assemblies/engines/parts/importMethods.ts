@@ -1,9 +1,10 @@
 import { getDevContext, handleCaughtError, setMethods } from '@Global/state/globalState';
 import { isFunction, isObject } from '@Tools/objects';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+// constants and types
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function importMethods(engine, engineInvoke, submittedMethods, traverse, maxDepth?): ResultType {
   if (!isObject(submittedMethods)) return { error: INVALID_VALUES };

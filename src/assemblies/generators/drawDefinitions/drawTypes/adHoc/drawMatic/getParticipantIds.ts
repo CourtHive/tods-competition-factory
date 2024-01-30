@@ -2,8 +2,8 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { getParticipantId } from '@Functions/global/extractors';
 
 // types and constants
-import { INVALID_PARTICIPANT_ID, INVALID_VALUES } from '../../../../../../constants/errorConditionConstants';
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../../../constants/entryStatusConstants';
+import { INVALID_PARTICIPANT_ID, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { EntryStatusUnion } from '../../../../../../types/tournamentTypes';
 import { ResultType } from '../../../../../../types/factoryTypes';
 

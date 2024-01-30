@@ -6,8 +6,8 @@ import { findStructure } from '../../../acquire/findStructure';
 import { numericSort } from '../../../tools/sorting';
 import { ensureInt } from '../../../tools/ensureInt';
 
-import { FIRST_MATCHUP, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { FIRST_MATCHUP, WIN_RATIO } from '@Constants/drawDefinitionConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   const scheduleConflictMatchUpIds = {};

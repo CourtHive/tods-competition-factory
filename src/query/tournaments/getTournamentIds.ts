@@ -1,4 +1,4 @@
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { isObject } from '../../tools/objects';
 
 export function getTournamentIds({ tournamentRecords }) {

@@ -1,4 +1,4 @@
-import { POLICY_TYPE_PARTICIPANT } from '../../constants/policyConstants';
+import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
 
 export const POLICY_PRIVACY_DEFAULT = {
   [POLICY_TYPE_PARTICIPANT]: {

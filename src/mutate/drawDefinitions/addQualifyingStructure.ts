@@ -9,7 +9,7 @@ import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddQualifyingstructureArgs = {
   qualifyingRoundNumber: number;

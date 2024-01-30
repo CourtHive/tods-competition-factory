@@ -10,10 +10,10 @@ import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { numericSort } from '../../../tools/sorting';
 
-import { DEFAULTED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_DRAW_POSITION, MISSING_PARTICIPANT_ID } from '../../../constants/errorConditionConstants';
+import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_DRAW_POSITION, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 

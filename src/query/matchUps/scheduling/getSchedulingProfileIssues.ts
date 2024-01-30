@@ -6,8 +6,8 @@ import { intersection, unique } from '../../../tools/arrays';
 import { isValidDateString } from '../../../tools/dateTime';
 
 import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 type GetSchedulingProfileIssuesArgs = {
   tournamentRecords: TournamentRecords;

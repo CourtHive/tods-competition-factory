@@ -9,8 +9,8 @@ import { sensibleSets } from './sensibleSets';
 import { superSquare } from './superSquare';
 import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
+import { isNumeric } from '@Tools/math';
 import { getSuper } from './helpers';
-import { isNumeric } from '../../tools/math';
 
 export function stringScore({ score }) {
   score = score?.toString().toLowerCase() || '';

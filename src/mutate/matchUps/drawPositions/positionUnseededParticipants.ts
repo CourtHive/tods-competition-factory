@@ -9,11 +9,11 @@ import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '../../../tools/arrays';
 
-import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
-import { ROUND_TARGET } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { INSUFFICIENT_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({

@@ -1,5 +1,5 @@
-import { INVALID_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { CONSOLATION, PLAY_OFF } from '../../constants/drawDefinitionConstants';
+import { INVALID_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { CONSOLATION, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 
 export function getExitProfiles({ drawDefinition }) {
   if (typeof drawDefinition !== 'object') return { error: INVALID_DRAW_DEFINITION };

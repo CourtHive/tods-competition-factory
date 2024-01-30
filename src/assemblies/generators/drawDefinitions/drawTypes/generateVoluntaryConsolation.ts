@@ -14,8 +14,8 @@ import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 
 import { PlayoffAttributes, SeedingProfile } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { SINGLES } from '../../../../constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   EXISTING_STRUCTURE,
   ErrorType,
@@ -23,7 +23,7 @@ import {
   MISSING_DRAW_DEFINITION,
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DOUBLE_ELIMINATION,
   FEED_IN,
@@ -31,7 +31,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
   VOLUNTARY_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   DrawLink,

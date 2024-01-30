@@ -1,5 +1,5 @@
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 
 // categoryTypes

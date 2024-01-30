@@ -1,4 +1,4 @@
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
 
 type ParticipantInEntriesArgs = {

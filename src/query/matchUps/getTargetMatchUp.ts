@@ -5,9 +5,9 @@ import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findExtension } from '../../acquire/findExtension';
 import { findStructure } from '../../acquire/findStructure';
 
-import { DISABLE_LINKS } from '../../constants/extensionConstants';
-import { MISSING_TARGET_LINK, NOT_IMPLEMENTED } from '../../constants/errorConditionConstants';
-import { DRAW, BOTTOM_UP, RANDOM, TOP_DOWN } from '../../constants/drawDefinitionConstants';
+import { DISABLE_LINKS } from '@Constants/extensionConstants';
+import { MISSING_TARGET_LINK, NOT_IMPLEMENTED } from '@Constants/errorConditionConstants';
+import { DRAW, BOTTOM_UP, RANDOM, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 export function getTargetMatchUp({
   sourceRoundMatchUpCount,

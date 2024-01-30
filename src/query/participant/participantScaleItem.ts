@@ -1,11 +1,11 @@
 import { getAccessorValue } from '@Tools/getAccessorValue';
 
 // constants and types
-import { INVALID_SCALE_ITEM, INVALID_VALUES, MISSING_PARTICIPANT } from '../../constants/errorConditionConstants';
+import { INVALID_SCALE_ITEM, INVALID_VALUES, MISSING_PARTICIPANT } from '@Constants/errorConditionConstants';
 import { ScaleAttributes, ScaleItem, ResultType } from '../../types/factoryTypes';
 import type { Participant, EventTypeUnion } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { SCALE } from '../../constants/scaleConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SCALE } from '@Constants/scaleConstants';
 import { isObject } from '../../tools/objects';
 
 export interface ParticipantScaleItemArgs {

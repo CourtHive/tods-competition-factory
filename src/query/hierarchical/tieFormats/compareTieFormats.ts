@@ -4,7 +4,7 @@ import { isConvertableInteger } from '../../../tools/math';
 import { difference, unique } from '../../../tools/arrays';
 
 import { TieFormat } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type CompareTieFormatsArgs = {
   considerations?: any;

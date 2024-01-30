@@ -7,11 +7,11 @@ import { getCompetitionMatchUps } from './getCompetitionMatchUps';
 import { getTournamentId } from '../../global/state/globalState';
 import { getTournamentTimeItem } from '../base/timeItems';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { MatchUpFilters, TournamentRecords } from '../../types/factoryTypes';
-import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { Venue } from '../../types/tournamentTypes';
 

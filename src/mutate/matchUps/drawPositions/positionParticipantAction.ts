@@ -8,8 +8,8 @@ import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function positionParticipantAction(params) {
   const {

@@ -1,5 +1,5 @@
-import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
-import { ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF, SEPARATE, WATERFALL } from '../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
+import { ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF, SEPARATE, WATERFALL } from '@Constants/drawDefinitionConstants';
 
 export const POLICY_SEEDING_DEFAULT = {
   [POLICY_TYPE_SEEDING]: {

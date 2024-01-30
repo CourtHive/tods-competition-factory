@@ -6,9 +6,9 @@ import { addGoesTo } from './matchUpGovernor/addGoesTo';
 import { xa } from '@Tools/objects';
 
 // constants and types
-import { EXISTING_STRUCTURE, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { EXISTING_STRUCTURE, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 export function attachConsolationStructures(params) {

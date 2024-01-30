@@ -10,7 +10,7 @@ import {
   TOP_DOWN,
   VOLUNTARY_CONSOLATION,
   WATERFALL,
-} from '../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 /**
  * return an array of arrays of grouped structureIds => structureGroups

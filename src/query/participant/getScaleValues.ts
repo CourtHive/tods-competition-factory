@@ -2,10 +2,10 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
-import { RANKING, RATING, SCALE, SEEDING } from '../../constants/scaleConstants';
-import { PARTICIPANT } from '../../constants/attributeConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { RANKING, RATING, SCALE, SEEDING } from '@Constants/scaleConstants';
+import { PARTICIPANT } from '@Constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 type ScaleType = {

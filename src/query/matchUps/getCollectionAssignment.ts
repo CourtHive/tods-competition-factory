@@ -5,7 +5,7 @@ import { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 // constants and types
 import { DrawDefinition, Participant, PositionAssignment } from '../../types/tournamentTypes';
 import { ParticipantMap, Substitution } from '../../types/factoryTypes';
-import { DOUBLES } from '../../constants/matchUpTypes';
+import { DOUBLES } from '@Constants/matchUpTypes';
 
 type GetDrawPositionCollectionAssignmentArgs = {
   positionAssignments: PositionAssignment[];

@@ -9,7 +9,7 @@ import {
   INVALID_SIDE_NUMBER,
   MISSING_VALUE,
   INVALID_SET_NUMBER,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  * Work in progress: utility for scoring dialogs to submit score change

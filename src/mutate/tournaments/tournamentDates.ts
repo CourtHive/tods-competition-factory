@@ -4,16 +4,16 @@ import { updateCourtAvailability } from '../venues/updateCourtAvailability';
 import { dateValidation } from '../../validators/regex';
 import { addNotice } from '../../global/state/globalState';
 
-import { MODIFY_TOURNAMENT_DETAIL } from '../../constants/topicConstants';
+import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_DATE,
   MISSING_TOURNAMENT_RECORD,
   SCHEDULE_NOT_CLEARED,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;

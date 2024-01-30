@@ -3,7 +3,7 @@ import { dateValidation } from '@Validators/regex';
 import { extractDate } from '@Tools/dateTime';
 
 // constants and types
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 import {
   INVALID_DATE,
@@ -12,7 +12,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function setEventStartDate({ tournamentRecord, event, startDate }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

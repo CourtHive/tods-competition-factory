@@ -3,10 +3,10 @@ import { getBand, getScoreComponents, pctSpread } from '../matchUp/scoreComponen
 import { findPolicy } from '../../acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
-import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
-import { MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { COMPETITIVE, DECISIVE, RETIRED, ROUTINE, WALKOVER } from '../../constants/statsConstants';
+import { POLICY_TYPE_COMPETITIVE_BANDS } from '@Constants/policyConstants';
+import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { COMPETITIVE, DECISIVE, RETIRED, ROUTINE, WALKOVER } from '@Constants/statsConstants';
 
 export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };

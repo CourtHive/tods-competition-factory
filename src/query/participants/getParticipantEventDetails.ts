@@ -1,8 +1,8 @@
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { PAIR, TEAM } from '../../constants/participantConstants';
+import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { PAIR, TEAM } from '@Constants/participantConstants';
 import { Tournament } from '../../types/tournamentTypes';
 import { ResultType } from '../../types/factoryTypes';
 

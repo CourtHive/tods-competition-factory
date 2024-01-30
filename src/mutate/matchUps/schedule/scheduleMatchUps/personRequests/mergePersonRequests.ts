@@ -1,7 +1,7 @@
 import { extractDate, extractTime } from '../../../../../tools/dateTime';
 import { generateTimeCode } from '../../../../../tools/timeCode';
 
-import { DO_NOT_SCHEDULE } from '../../../../../constants/requestConstants';
+import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
 
 // check whether there is a request for the date with overlapping times
 // extend startTime/endTime rather than creating multiple

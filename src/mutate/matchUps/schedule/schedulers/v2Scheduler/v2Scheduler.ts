@@ -25,8 +25,8 @@ import {
 } from '../../../../../tools/dateTime';
 
 import { HydratedCourt, HydratedMatchUp } from '../../../../../types/hydrated';
-import { SUCCESS } from '../../../../../constants/resultConstants';
-import { TOTAL } from '../../../../../constants/scheduleConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
 import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
 
 // NOTE: non-Garman scheduling

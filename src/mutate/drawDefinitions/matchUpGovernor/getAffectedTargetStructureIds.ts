@@ -4,7 +4,7 @@ import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
 import { findExtension } from '../../../acquire/findExtension';
 import { overlap } from '../../../tools/arrays';
 
-import { TALLY } from '../../../constants/extensionConstants';
+import { TALLY } from '@Constants/extensionConstants';
 import { DrawDefinition, MatchUp, Structure } from '../../../types/tournamentTypes';
 
 /**

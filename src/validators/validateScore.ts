@@ -4,7 +4,7 @@ import { isConvertableInteger } from '@Tools/math';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_SCORE, INVALID_VALUES } from '../constants/errorConditionConstants';
+import { INVALID_SCORE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import type { Score } from '../types/tournamentTypes';
 import { ResultType } from '../types/factoryTypes';
 

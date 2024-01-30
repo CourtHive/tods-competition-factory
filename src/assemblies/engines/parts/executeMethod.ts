@@ -1,14 +1,16 @@
-import { engineLogging } from '../../../global/state/engineLogging';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { FactoryEngine } from '../../../types/factoryTypes';
+import { engineLogging } from '@Global/state/engineLogging';
 import { paramsMiddleware } from './paramsMiddleware';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import {
   getDevContext,
   getTournamentId,
   getTournamentRecord,
   getTournamentRecords,
   handleCaughtError,
-} from '../../../global/state/globalState';
+} from '@Global/state/globalState';
+
+// types
+import { FactoryEngine } from '@Types/factoryTypes';
 
 /**
  * Executes a function within a FactoryEngine.

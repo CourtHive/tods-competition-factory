@@ -2,8 +2,8 @@ import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findCourt } from '../../mutate/venues/findCourt';
 
 import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type GetCourtInfoArgs = {
   tournamentRecord: Tournament;

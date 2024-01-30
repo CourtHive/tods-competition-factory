@@ -4,7 +4,7 @@ import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_TIE_FORMAT } from '../constants/errorConditionConstants';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 import { Category, Event, GenderUnion } from '../types/tournamentTypes';
 import { ResultType } from '../types/factoryTypes';
 

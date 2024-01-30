@@ -1,6 +1,6 @@
 import { getDevContext } from '../global/state/globalState';
 
-import { MISSING_MATCHUPS } from '../constants/errorConditionConstants';
+import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 
 export function validDrawPositions({ matchUps }) {
   if (!matchUps) return { error: MISSING_MATCHUPS };

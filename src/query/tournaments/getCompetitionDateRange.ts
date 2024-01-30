@@ -2,7 +2,7 @@ import { getTournamentInfo } from './getTournamentInfo';
 import { extractDate } from '../../tools/dateTime';
 
 import { TournamentRecords } from '../../types/factoryTypes';
-import { ErrorType, MISSING_DATE, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DATE, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { isObject } from '../../tools/objects';
 
 export function getCompetitionDateRange({ tournamentRecords }: { tournamentRecords: TournamentRecords }): {

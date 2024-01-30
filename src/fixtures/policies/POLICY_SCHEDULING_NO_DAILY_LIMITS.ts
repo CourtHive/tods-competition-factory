@@ -1,5 +1,5 @@
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { DOUBLES } from '../../constants/matchUpTypes';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 
 /**
  *

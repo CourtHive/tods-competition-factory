@@ -2,10 +2,10 @@ import { resolveTournamentRecords } from '../../helpers/parameters/resolveTourna
 import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
 
-import { DISABLED } from '../../constants/extensionConstants';
+import { DISABLED } from '@Constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TOURNAMENT_RECORDS, VENUE_IDS } from '../../constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 
 type EnableVenuesArgs = {
   tournamentRecords: TournamentRecords;

@@ -8,13 +8,13 @@ import { isString } from '../../tools/objects';
 
 import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
 import { HydratedParticipant } from '../../types/hydrated';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
   INVALID_PARTICIPANT_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];

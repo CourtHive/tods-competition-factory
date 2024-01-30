@@ -10,7 +10,7 @@ import {
 } from '../../tools/dateTime';
 
 import { TournamentRecords } from '../../types/factoryTypes';
-import { INVALID_DATE, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GetVenueReportArgs = {
   tournamentRecords: TournamentRecords;

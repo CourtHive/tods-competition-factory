@@ -2,8 +2,8 @@ import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from '../../acquire/findStructure';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { CONTAINER, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../types/tournamentTypes';
 
 type GetQualifiersCountArgs = {

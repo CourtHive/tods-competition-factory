@@ -4,19 +4,19 @@ import { unique } from '../tools/arrays';
 
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { Entry, Event, Participant, Tournament } from '../types/tournamentTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../constants/policyConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../constants/participantConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { ParticipantMap, PolicyDefinitions } from '../types/factoryTypes';
-import { ANY, FEMALE, MALE, MIXED } from '../constants/genderConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
-import { WITHDRAWN } from '../constants/entryStatusConstants';
-import { SUCCESS } from '../constants/resultConstants';
+import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { WITHDRAWN } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_ENTRIES,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;

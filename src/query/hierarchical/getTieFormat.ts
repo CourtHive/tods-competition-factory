@@ -4,13 +4,13 @@ import { decorateResult } from '../../functions/global/decorateResult';
 import { publicFindMatchUp } from '../../acquire/findMatchUp';
 import { findStructure } from '../../acquire/findStructure';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
 
 // NOTE: method exclusively for external use

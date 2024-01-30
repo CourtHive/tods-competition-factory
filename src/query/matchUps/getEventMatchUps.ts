@@ -1,11 +1,11 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { definedAttributes } from '../../tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
-import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getDrawMatchUps } from './drawMatchUps';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { GetMatchUpsArgs, GroupsMatchUpsResult } from '../../types/factoryTypes';
 
 export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {

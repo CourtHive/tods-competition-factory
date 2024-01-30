@@ -1,4 +1,4 @@
-import { stageOrder } from '../../constants/drawDefinitionConstants';
+import { stageOrder } from '@Constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 
 /**

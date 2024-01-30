@@ -3,14 +3,14 @@ import { getStageEntries } from './stageGetter';
 import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
 
-import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '../../constants/policyConstants';
-import { MAIN, PLAY_OFF, QUALIFYING, VOLUNTARY_CONSOLATION } from '../../constants/drawDefinitionConstants';
-import { UNGROUPED, WITHDRAWN } from '../../constants/entryStatusConstants';
-import { DOUBLE_WALKOVER } from '../../constants/matchUpStatusConstants';
+import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '@Constants/policyConstants';
+import { MAIN, PLAY_OFF, QUALIFYING, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { UNGROUPED, WITHDRAWN } from '@Constants/entryStatusConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedSide } from '../../types/hydrated';
-import { ErrorType, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,

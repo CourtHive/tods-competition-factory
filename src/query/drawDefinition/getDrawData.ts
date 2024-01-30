@@ -27,7 +27,7 @@ import {
   IN_PROGRESS,
   RETIRED,
   WALKOVER,
-} from '../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 export function getDrawData(params): {
   structures?: any[];

@@ -6,11 +6,11 @@ import { modifyDrawName } from './modifyDrawName';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type ModifyDrawArgs = {
   drawUpdates: { drawName: string; policyDefinitions: PolicyDefinitions };

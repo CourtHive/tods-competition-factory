@@ -1,12 +1,8 @@
 import { refreshEntryPositions } from './refreshEntryPositions';
 import { decorateResult } from '../../functions/global/decorateResult';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_VALUES, MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function setEntryPosition({
   tournamentRecord,

@@ -1,4 +1,4 @@
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
+import { DOUBLES_MATCHUP } from '@Constants/matchUpTypes';
 
 export function getTieFormatDesc(tieFormat) {
   if (!tieFormat) return {};

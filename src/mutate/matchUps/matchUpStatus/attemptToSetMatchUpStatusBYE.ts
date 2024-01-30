@@ -2,9 +2,9 @@ import { structureAssignedDrawPositions } from '../../../query/drawDefinition/po
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '../../../functions/global/decorateResult';
 
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_MATCHUP_STATUS, INVALID_MATCHUP_STATUS_BYE } from '../../../constants/errorConditionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_MATCHUP_STATUS, INVALID_MATCHUP_STATUS_BYE } from '@Constants/errorConditionConstants';
 
 export function attemptToSetMatchUpStatusBYE({ tournamentRecord, drawDefinition, structure, matchUp }) {
   const stack = 'attemptToSetMatchUpStatusBYE';

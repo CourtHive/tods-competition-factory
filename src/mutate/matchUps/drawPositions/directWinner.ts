@@ -7,8 +7,8 @@ import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
 import { findStructure } from '../../../acquire/findStructure';
 
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,

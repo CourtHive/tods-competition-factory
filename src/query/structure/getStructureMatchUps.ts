@@ -5,9 +5,9 @@ import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
 import { DrawDefinition, Event, Participant, Structure, Tournament } from '../../types/tournamentTypes';
-import { ABANDONED, upcomingMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { ABANDONED, upcomingMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { TEAM } from '../../constants/matchUpTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   ContextContent,
   ContextProfile,

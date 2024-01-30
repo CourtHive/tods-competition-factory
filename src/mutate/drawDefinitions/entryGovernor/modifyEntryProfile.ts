@@ -1,7 +1,7 @@
 import { addDrawDefinitionExtension } from '../../extensions/addRemoveExtensions';
 import { findExtension } from '../../../acquire/findExtension';
 
-import { ENTRY_PROFILE } from '../../../constants/extensionConstants';
+import { ENTRY_PROFILE } from '@Constants/extensionConstants';
 import { DrawDefinition } from '../../../types/tournamentTypes';
 
 type ModifyEntryProfileArgs = {

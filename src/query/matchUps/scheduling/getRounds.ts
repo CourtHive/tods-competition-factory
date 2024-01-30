@@ -7,14 +7,14 @@ import { extractDate } from '../../../tools/dateTime';
 import { chunkArray } from '../../../tools/arrays';
 
 import { MatchUpFilters } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetRoundsArgs = {
   tournamentRecords?: { [key: string]: Tournament };

@@ -1,6 +1,6 @@
 import { getTournamentPenalties } from './getTournamentPenalties';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
 import { Penalty } from '../../types/tournamentTypes';
 

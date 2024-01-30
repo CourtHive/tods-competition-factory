@@ -1,4 +1,4 @@
-import { TEAM } from '../../constants/participantConstants';
+import { TEAM } from '@Constants/participantConstants';
 
 export function checkIsDual(tournamentRecord) {
   const teamParticipants = tournamentRecord.participants?.filter(({ participantType }) => participantType === TEAM);

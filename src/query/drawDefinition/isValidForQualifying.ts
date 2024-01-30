@@ -2,9 +2,9 @@ import { intersection } from '../../tools/arrays';
 import { isString } from '../../tools/objects';
 import { getStructureLinks } from './linkGetter';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { BOTTOM_UP, RANDOM, TOP_DOWN, WATERFALL } from '../../constants/drawDefinitionConstants';
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { BOTTOM_UP, RANDOM, TOP_DOWN, WATERFALL } from '@Constants/drawDefinitionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 
 export function isValidForQualifying({ structureId, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

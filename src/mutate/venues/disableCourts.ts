@@ -2,9 +2,9 @@ import { resolveTournamentRecords } from '../../helpers/parameters/resolveTourna
 import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
 
-import { DISABLED } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { COURT_IDS, TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
+import { DISABLED } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { COURT_IDS, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 type DisableCourtsArgs = {
   tournamentRecords: any;

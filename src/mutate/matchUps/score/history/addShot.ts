@@ -1,7 +1,7 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function addShot({ matchUp, shot }) {
   // TODO: check game validity

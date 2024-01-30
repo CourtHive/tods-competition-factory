@@ -1,8 +1,8 @@
 import { decorateResult } from '../../functions/global/decorateResult';
 import { overlap } from '../../tools/arrays';
 
-import { LOSER, WINNER } from '../../constants/drawDefinitionConstants';
-import { MISSING_STRUCTURE_ID, MISSING_DRAW_DEFINITION, INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { LOSER, WINNER } from '@Constants/drawDefinitionConstants';
+import { MISSING_STRUCTURE_ID, MISSING_DRAW_DEFINITION, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 type GetRoundLinksArgs = {
   roundNumber?: number;

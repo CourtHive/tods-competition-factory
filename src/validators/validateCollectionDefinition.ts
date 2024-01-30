@@ -5,9 +5,9 @@ import { decorateResult } from '../functions/global/decorateResult';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
 import { isConvertableInteger } from '../tools/math';
 
-import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '../constants/errorConditionConstants';
+import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '@Constants/errorConditionConstants';
 import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '../types/tournamentTypes';
-import { DOUBLES, SINGLES } from '../constants/matchUpTypes';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 type ValidateCollectionDefinitionArgs = {
   collectionDefinition: CollectionDefinition;

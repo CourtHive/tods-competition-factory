@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   MatchUpFilters,

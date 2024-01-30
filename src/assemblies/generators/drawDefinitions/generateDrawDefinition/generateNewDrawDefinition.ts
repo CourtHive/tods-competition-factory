@@ -5,7 +5,7 @@ import { prepareStage } from './prepareStage';
 import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
-import { AD_HOC, LUCKY_DRAW, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { AD_HOC, LUCKY_DRAW, MAIN } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '../../../../types/tournamentTypes';
 import { ResultType } from '../../../../types/factoryTypes';
 

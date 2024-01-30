@@ -1,6 +1,6 @@
 import { filterParticipants } from '../participants/filterParticipants';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function getTournamentPersons({ tournamentRecord, participantFilters }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

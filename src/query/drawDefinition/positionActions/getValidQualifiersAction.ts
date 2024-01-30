@@ -5,12 +5,12 @@ import { getPositionAssignments } from '../positionsGetter';
 import { definedAttributes } from '../../../tools/definedAttributes';
 import { isCompletedStructure } from '../structureActions';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { TALLY } from '../../../constants/extensionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { TALLY } from '@Constants/extensionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
-import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
-import { POSITION, QUALIFYING, WINNER } from '../../../constants/drawDefinitionConstants';
+import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
+import { POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
 
 export function getValidQualifiersAction({
   /*

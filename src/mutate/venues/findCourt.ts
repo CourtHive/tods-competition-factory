@@ -4,13 +4,13 @@ import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
 import { Court, Tournament, Venue } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type FindCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };

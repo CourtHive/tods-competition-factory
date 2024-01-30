@@ -2,8 +2,8 @@ import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 
 import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { INVALID_OBJECT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_OBJECT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type GetParticipantSchedulesArgs = {
   tournamentRecord: Tournament;

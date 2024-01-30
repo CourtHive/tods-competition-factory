@@ -5,7 +5,7 @@ import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
 import { Tournament } from '../../../../../types/tournamentTypes';

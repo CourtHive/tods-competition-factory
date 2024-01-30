@@ -4,7 +4,7 @@ import { getParticipantId } from '../../functions/global/extractors';
 import { mustBeAnArray } from '../../tools/mustBeAnArray';
 import { getFlightProfile } from '../../query/event/getFlightProfile';
 
-import { INVALID_VALUES, MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 /**
  *

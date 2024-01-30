@@ -3,8 +3,8 @@ import { findVenue } from '../../mutate/venues/findVenue';
 import { getCourtInfo } from './getCourtInfo';
 
 import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
 
 // The only difference from finding a venue is that information is filtered from both venue and courts
 // e.g. dataAvailability objects are not returned.

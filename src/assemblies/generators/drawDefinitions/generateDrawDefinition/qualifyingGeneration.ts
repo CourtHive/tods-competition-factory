@@ -6,8 +6,8 @@ import { constantToString } from '@Tools/strings';
 import { prepareStage } from './prepareStage';
 
 // constants and types
-import { POSITION, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { POSITION, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ResultType } from '../../../../types/factoryTypes';
 
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {

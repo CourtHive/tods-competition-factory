@@ -20,7 +20,7 @@ import {
   UNPUBLISH_ORDER_OF_PLAY,
   MUTATIONS,
   UPDATE_INCONTEXT_MATCHUP,
-} from '../../constants/topicConstants';
+} from '@Constants/topicConstants';
 
 type NotifySubscribersArgs = {
   mutationStatus?: any;

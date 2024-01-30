@@ -7,7 +7,7 @@ import {
   INVALID_BOOKINGS,
   INVALID_DATE_AVAILABILITY,
   MISSING_DATE_AVAILABILITY,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function validDateAvailability({ dateAvailability }) {
   if (!dateAvailability) return { error: MISSING_DATE_AVAILABILITY };

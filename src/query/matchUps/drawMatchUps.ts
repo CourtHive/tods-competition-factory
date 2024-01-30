@@ -9,9 +9,9 @@ import { filterMatchUps } from '@Query/filterMatchUps';
 import { getMatchUpsMap } from './getMatchUpsMap';
 
 // constants and types
-import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { GroupsMatchUpsResult, MatchUpsMap, ResultType } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 
 /*

@@ -10,7 +10,7 @@ import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
 import { ScheduleTimesResult, ResultType } from '../../types/factoryTypes';
-import { ARRAY } from '../../constants/attributeConstants';
+import { ARRAY } from '@Constants/attributeConstants';
 
 export function getScheduleTimes(params): ResultType & {
   scheduleTimes?: ScheduleTimesResult[];

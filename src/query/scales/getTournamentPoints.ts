@@ -6,14 +6,14 @@ import { getAwardProfile } from './getAwardProfile';
 import { getAwardPoints } from './getAwardPoints';
 import { unique } from '../../tools/arrays';
 
-import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { POLICY_TYPE_RANKING_POINTS } from '../../constants/policyConstants';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { RANKING_POINTS } from '../../constants/extensionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { RANKING_POINTS } from '@Constants/extensionConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { TEAM_EVENT } from '../../constants/eventConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_POLICY_DEFINITION, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MISSING_POLICY_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { ParticipantFilters, PolicyDefinitions } from '../../types/factoryTypes';
 
 type GetTournamentPointsArgs = {

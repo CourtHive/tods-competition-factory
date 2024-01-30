@@ -3,9 +3,9 @@ import { getPositionAssignments } from './positionsGetter';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, StageTypeUnion } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 // build up an array of participantIds which are assigned positions in structures

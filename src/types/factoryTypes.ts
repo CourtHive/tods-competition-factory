@@ -1,8 +1,8 @@
-import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '../constants/eventConstants';
-import { SignedInStatusUnion } from '../constants/participantConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { SignedInStatusUnion } from '@Constants/participantConstants';
 import { HydratedMatchUp, HydratedParticipant } from './hydrated';
-import { ErrorType } from '../constants/errorConditionConstants';
-import { ValidPolicyTypes } from '../constants/policyConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
+import { ValidPolicyTypes } from '@Constants/policyConstants';
 import {
   Category,
   DrawDefinition,

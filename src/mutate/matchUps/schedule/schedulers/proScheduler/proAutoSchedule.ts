@@ -7,8 +7,8 @@ import { isObject } from '../../../../../tools/objects';
 
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
-import { INVALID_VALUES, MISSING_CONTEXT } from '../../../../../constants/errorConditionConstants';
-import { BYE, completedMatchUpStatuses } from '../../../../../constants/matchUpStatusConstants';
+import { INVALID_VALUES, MISSING_CONTEXT } from '@Constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 

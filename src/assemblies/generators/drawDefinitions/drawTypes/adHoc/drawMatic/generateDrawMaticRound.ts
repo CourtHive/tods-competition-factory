@@ -6,8 +6,8 @@ import { getPairings } from './getPairings';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { TEAM } from '../../../../../../constants/participantConstants';
-import { SUCCESS } from '../../../../../../constants/resultConstants';
+import { TEAM } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../../../../../types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
@@ -15,7 +15,7 @@ import {
   MISSING_STRUCTURE,
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
-} from '../../../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   MatchUp,

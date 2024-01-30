@@ -17,11 +17,11 @@ import { checkDailyLimits } from './checkDailyLimits';
 import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
 import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../tools/dateTime';
 
-import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TOTAL } from '../../../../constants/scheduleConstants';
-import { INVALID_DATE, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { BYE, ABANDONED, DEFAULTED, RETIRED, WALKOVER, COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
+import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { BYE, ABANDONED, DEFAULTED, RETIRED, WALKOVER, COMPLETED } from '@Constants/matchUpStatusConstants';
 import {
   AVERAGE_MATCHUP_MINUTES,
   INVALID,
@@ -31,7 +31,7 @@ import {
   SCHEDULE_DATE,
   TOURNAMENT_RECORDS,
   VALIDATE,
-} from '../../../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 /**
  *

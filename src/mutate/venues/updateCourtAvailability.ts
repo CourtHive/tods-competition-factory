@@ -1,7 +1,7 @@
 import { generateDateRange, timeStringMinutes } from '../../tools/dateTime';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Court } from '../../types/tournamentTypes';
 
 // bulk update when tournament dates change

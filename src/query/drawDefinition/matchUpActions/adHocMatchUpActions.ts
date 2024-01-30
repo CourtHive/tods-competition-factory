@@ -5,16 +5,10 @@ import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { getFlightProfile } from '../../event/getFlightProfile';
 import { unique } from '../../../tools/arrays';
 
-import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '../../../constants/matchUpActionConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
+import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '@Constants/matchUpActionConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
-import {
-  ALTERNATE,
-  DIRECT_ENTRY_STATUSES,
-  UNGROUPED,
-  UNPAIRED,
-  WITHDRAWN,
-} from '../../../constants/entryStatusConstants';
+import { ALTERNATE, DIRECT_ENTRY_STATUSES, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 
 export function adHocMatchUpActions({
   restrictAdHocRoundParticipants,

@@ -1,6 +1,8 @@
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { MatchUp } from '../../../types/tournamentTypes';
-import { INVALID_OBJECT, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+
+// constants and types
+import { INVALID_OBJECT, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type MatchUpArg = {
   [key: string | number | symbol]: unknown;

@@ -1,4 +1,4 @@
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 
 export const POLICY_POSITION_ACTIONS_DISABLED = {
   [POLICY_TYPE_POSITION_ACTIONS]: {

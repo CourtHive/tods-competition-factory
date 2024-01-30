@@ -1,5 +1,5 @@
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../constants/policyConstants';
-import { ADD_NICKNAME, ADD_PENALTY, SEED_VALUE } from '../../constants/positionActionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { ADD_NICKNAME, ADD_PENALTY, SEED_VALUE } from '@Constants/positionActionConstants';
 
 export const POLICY_POSITION_ACTIONS_NO_MOVEMENT = {
   [POLICY_TYPE_POSITION_ACTIONS]: {

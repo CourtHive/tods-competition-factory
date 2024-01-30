@@ -1,12 +1,8 @@
 import { removeExtension } from '../../extensions/removeExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
-import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
-import {
-  MATCHUP_NOT_FOUND,
-  MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP_ID,
-} from '../../../constants/errorConditionConstants';
+import { DELEGATED_OUTCOME } from '@Constants/extensionConstants';
+import { MATCHUP_NOT_FOUND, MISSING_DRAW_DEFINITION, MISSING_MATCHUP_ID } from '@Constants/errorConditionConstants';
 
 export function removeDelegatedOutcome({ drawDefinition, event, matchUpId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

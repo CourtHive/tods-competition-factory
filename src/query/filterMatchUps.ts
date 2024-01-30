@@ -5,7 +5,7 @@ import { matchUpAssignedCourtId } from './matchUp/courtAssignment';
 import { matchUpAssignedVenueId } from './matchUp/venueAssignment';
 import { extractDate, sameDay } from '../tools/dateTime';
 
-import { TEAM_MATCHUP } from '../constants/matchUpTypes';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { MatchUpFilters } from '../types/factoryTypes';
 import { HydratedMatchUp } from '../types/hydrated';
 

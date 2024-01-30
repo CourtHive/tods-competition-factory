@@ -6,13 +6,13 @@ import { allEventMatchUps } from './getAllEventMatchUps';
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 import { allDrawMatchUps } from './getAllDrawMatchUps';
 
-import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { DrawDefinition, Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
-import { ABANDONED, DEAD_RUBBER, DEFAULTED, RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { ABANDONED, DEAD_RUBBER, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type getPredictiveAccuracyArgs = {
   exclusionRule?: { valueAccessor: string; range: [number, number] };

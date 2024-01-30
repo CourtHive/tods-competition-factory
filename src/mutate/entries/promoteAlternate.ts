@@ -1,8 +1,8 @@
 import { decorateResult } from '../../functions/global/decorateResult';
 import { ensureInt } from '../../tools/ensureInt';
 
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_EVENT,
   INVALID_ENTRY_STATUS,
@@ -11,8 +11,8 @@ import {
   PARTICIPANT_NOT_FOUND_IN_STAGE,
   PARTICIPANT_NOT_ENTERED_IN_STAGE,
   INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
-import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../constants/entryStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 export function promoteAlternate(params) {
   const { participantId } = params;

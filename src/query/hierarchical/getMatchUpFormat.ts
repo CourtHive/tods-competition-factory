@@ -2,7 +2,7 @@ import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredP
 import { resolveFromParameters } from '../../helpers/parameters/resolveFromParameters';
 import { findStructure } from '../../acquire/findStructure';
 
-import { MISSING_DRAW_ID, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_ID, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
 import {
   ANY_OF,
@@ -14,7 +14,7 @@ import {
   PARAM,
   STRUCTURE_ID,
   TOURNAMENT_RECORD,
-} from '../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 type GetMatchUpFormatArgs = {
   tournamentRecord: Tournament;

@@ -7,13 +7,9 @@ import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
 import { TournamentRecords, ResultType } from '../../types/factoryTypes';
-import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_TOURNAMENT_ID,
-  MISSING_TOURNAMENT_RECORDS,
-} from '../../constants/errorConditionConstants';
+import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_VALUES, MISSING_TOURNAMENT_ID, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 /**
  * Links all tournaments which are currently loaded into competitionEngine state

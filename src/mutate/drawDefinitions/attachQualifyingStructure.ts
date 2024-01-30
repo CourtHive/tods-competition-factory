@@ -5,13 +5,13 @@ import { decorateResult } from '../../functions/global/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
 import { addMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE,
   MISSING_TARGET_LINK,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { DrawDefinition, DrawLink, Structure } from '../../types/tournamentTypes';
 
 export function attachQualifyingStructure({ tournamentRecord, drawDefinition, structure, link }) {

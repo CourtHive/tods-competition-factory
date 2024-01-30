@@ -1,4 +1,4 @@
-import { START_TIME } from '../../constants/timeItemConstants';
+import { START_TIME } from '@Constants/timeItemConstants';
 
 export function matchUpStartTime({ matchUp }) {
   const timeItems = matchUp?.timeItems || [];

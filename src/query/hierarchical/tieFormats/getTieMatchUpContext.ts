@@ -6,9 +6,9 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { resolveTieFormat } from './resolveTieFormat';
 
 // constants and types
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
 import {
   EVENT_NOT_FOUND,
@@ -17,7 +17,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,

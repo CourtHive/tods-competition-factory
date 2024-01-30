@@ -3,7 +3,7 @@ import { isConvertableInteger } from '@Tools/math';
 
 // constants and types
 import { CollectionDefinition } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 type CalculateWinCriteriaArgs = {

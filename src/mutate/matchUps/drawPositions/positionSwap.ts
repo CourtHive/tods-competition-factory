@@ -12,16 +12,16 @@ import { assignDrawPosition } from './positionAssignment';
 import { resetLineUps } from '../lineUps/resetLineUps';
 import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
 
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, drawPositions, structureId, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

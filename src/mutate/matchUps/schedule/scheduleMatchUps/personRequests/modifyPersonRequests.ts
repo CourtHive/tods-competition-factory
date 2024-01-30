@@ -3,8 +3,8 @@ import { checkRequiredParameters } from '../../../../../helpers/parameters/check
 import { mergePersonRequests } from './mergePersonRequests';
 import { savePersonRequests } from './savePersonRequests';
 
-import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
-import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 // can be used to both add and remove requests
 // requests which don't have existing requestId will be added

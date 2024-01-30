@@ -3,9 +3,9 @@ import { analyzeDraws } from '../../query/tournaments/analyzeDraws';
 import { getMatchUpId } from '../../functions/global/extractors';
 import { getDrawStructures } from '../../acquire/findStructure';
 
-import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { MatchUp } from '../../types/tournamentTypes';
 
 export function pruneDrawDefinition({

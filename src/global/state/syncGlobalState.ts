@@ -1,5 +1,5 @@
 import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   CallListenerArgs,
   DeleteNoticeArgs,
@@ -13,7 +13,7 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const syncGlobalState: ImplemtationGlobalStateTypes = {
   disableNotifications: false,

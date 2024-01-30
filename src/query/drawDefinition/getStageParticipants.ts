@@ -1,4 +1,4 @@
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function getStageParticipants({
   allUniqueParticipantIds,

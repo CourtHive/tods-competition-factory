@@ -4,17 +4,10 @@ import { resolveFromParameters } from '../../../helpers/parameters/resolveFromPa
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';
 
-import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
 import { TournamentRecords } from '../../../types/factoryTypes';
-import {
-  DRAW_DEFINITION,
-  ERROR,
-  MATCHUP,
-  MATCHUP_ID,
-  PARAM,
-  PARTICIPANT_ID,
-} from '../../../constants/attributeConstants';
+import { DRAW_DEFINITION, ERROR, MATCHUP, MATCHUP_ID, PARAM, PARTICIPANT_ID } from '@Constants/attributeConstants';
 
 type ToggleParticipantCheckInStateArgs = {
   tournamentRecords?: TournamentRecords;

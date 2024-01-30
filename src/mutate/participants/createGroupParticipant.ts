@@ -5,18 +5,18 @@ import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { addParticipant } from './addParticipant';
 import { UUID } from '../../tools/UUID';
 
-import { GROUP, INDIVIDUAL } from '../../constants/participantConstants';
+import { GROUP, INDIVIDUAL } from '@Constants/participantConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
-import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { OTHER } from '../../constants/participantRoles';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { OTHER } from '@Constants/participantRoles';
 import {
   ErrorType,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type CreateGroupParticipantType = {
   participantRoleResponsibilities?: string[];

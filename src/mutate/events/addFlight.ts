@@ -6,8 +6,8 @@ import { intersection } from '../../tools/arrays';
 import { ensureInt } from '../../tools/ensureInt';
 import { UUID } from '../../tools/UUID';
 
-import { EXISTING_FLIGHT, INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { EXISTING_FLIGHT, INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { Entry, Event } from '../../types/tournamentTypes';
 
 type AddFlightArgs = {

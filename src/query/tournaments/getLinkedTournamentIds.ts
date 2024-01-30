@@ -1,9 +1,9 @@
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { TournamentRecords, ResultType } from '../../types/factoryTypes';
-import { LINKED_TOURNAMENTS } from '../../constants/extensionConstants';
+import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';
 
 export function getLinkedTournamentIds({
   tournamentRecords,

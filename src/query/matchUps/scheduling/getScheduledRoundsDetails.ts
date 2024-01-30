@@ -9,10 +9,10 @@ import { findEvent } from '../../../acquire/findEvent';
 import { filterMatchUps } from '../../filterMatchUps';
 
 import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../../types/hydrated';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 /**
  *

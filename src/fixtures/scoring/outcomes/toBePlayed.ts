@@ -1,4 +1,4 @@
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 export const toBePlayed = {
   matchUpStatus: TO_BE_PLAYED,

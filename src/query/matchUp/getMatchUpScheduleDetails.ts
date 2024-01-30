@@ -1,5 +1,5 @@
 import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { definedAttributes } from '../../tools/definedAttributes';
 import { attributeFilter } from '../../tools/attributeFilter';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
@@ -17,9 +17,9 @@ import { matchUpEndTime } from './endTime';
 import { addMinutesToTimeString, extractDate, extractTime, getIsoDateString } from '../../tools/dateTime';
 
 import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
-import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
+import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { TEAM } from '../../constants/eventConstants';
+import { TEAM } from '@Constants/eventConstants';
 import { ScheduleTiming, ScheduleVisibilityFilters } from '../../types/factoryTypes';
 
 type GetMatchUpScheduleDetailsArgs = {

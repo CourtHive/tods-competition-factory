@@ -2,8 +2,8 @@ import { addDrawDefinitionExtension } from '../extensions/addRemoveExtensions';
 import { getParticipantIds } from '../../functions/global/extractors';
 import { intersection } from '../../tools/arrays';
 
-import { PARTICIPANT_REPRESENTATIVES } from '../../constants/extensionConstants';
-import { DRAW_DEFINITION_NOT_FOUND, INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { PARTICIPANT_REPRESENTATIVES } from '@Constants/extensionConstants';
+import { DRAW_DEFINITION_NOT_FOUND, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function setDrawParticipantRepresentativeIds({ representativeParticipantIds, drawDefinition }) {
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };

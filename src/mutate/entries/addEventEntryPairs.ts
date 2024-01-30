@@ -7,20 +7,20 @@ import { intersection } from '../../tools/arrays';
 import { addEventEntries } from './addEventEntries';
 import { UUID } from '../../tools/UUID';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
-import { ANY, FEMALE, MALE, MIXED } from '../../constants/genderConstants';
+import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 
 /**
  * Add PAIR participant to an event

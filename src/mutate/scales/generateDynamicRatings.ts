@@ -7,12 +7,12 @@ import { matchUpSort } from '../../functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
-import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { DYNAMIC, RATING } from '../../constants/scaleConstants';
+import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DYNAMIC, RATING } from '@Constants/scaleConstants';
 import { EventTypeUnion } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ELO } from '../../constants/ratingConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ELO } from '@Constants/ratingConstants';
 import { HydratedSide } from '../../types/hydrated';
 
 export function generateDynamicRatings({

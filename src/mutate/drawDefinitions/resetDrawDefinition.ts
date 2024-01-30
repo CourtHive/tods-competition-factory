@@ -2,11 +2,11 @@ import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMat
 import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
 import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import {
   ASSIGN_COURT,
   ASSIGN_VENUE,
@@ -14,7 +14,7 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
   ALLOCATE_COURTS,
-} from '../../constants/timeItemConstants';
+} from '@Constants/timeItemConstants';
 import { TimeItem } from '../../types/tournamentTypes';
 
 export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDefinition }) {

@@ -1,7 +1,7 @@
 import { definedAttributes } from '../../../../tools/definedAttributes';
 
-import { MISSING_STRUCTURE_ID } from '../../../../constants/errorConditionConstants';
-import { DRAW, WINNER } from '../../../../constants/drawDefinitionConstants';
+import { MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
+import { DRAW, WINNER } from '@Constants/drawDefinitionConstants';
 import { LinkTypeUnion } from '../../../../types/tournamentTypes';
 
 type GenerateQualifyingLinkArgs = {

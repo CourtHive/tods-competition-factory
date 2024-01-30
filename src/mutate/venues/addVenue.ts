@@ -5,9 +5,9 @@ import { addNotice } from '../../global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
 import { UUID } from '../../tools/UUID';
 
-import { CONTEXT } from '../../constants/extensionConstants';
-import { ADD_VENUE } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { CONTEXT } from '@Constants/extensionConstants';
+import { ADD_VENUE } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Venue } from '../../types/tournamentTypes';
 import {
   ErrorType,
@@ -15,7 +15,7 @@ import {
   MISSING_VALUE,
   VENUE_EXISTS,
   INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function addVenue(params) {
   const { disableNotice, venue, context } = params;

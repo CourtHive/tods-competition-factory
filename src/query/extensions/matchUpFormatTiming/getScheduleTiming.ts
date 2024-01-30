@@ -1,8 +1,8 @@
 import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../../../acquire/findPolicy';
 
-import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
 
 type GetScheduleTimingArgs = {

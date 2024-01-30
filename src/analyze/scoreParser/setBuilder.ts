@@ -1,4 +1,4 @@
-import { isNumeric } from '../../tools/math';
+import { isNumeric } from '@Tools/math';
 
 export function setBuilder({ score }) {
   const chars = score.split('');

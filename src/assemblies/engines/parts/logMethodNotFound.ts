@@ -1,8 +1,8 @@
 import { engineLogging } from '@Global/state/engineLogging';
 
 // constants and types
-import { METHOD_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { METHOD_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type LogMethodNotFoundArgs = {
   params?: { [key: string]: any };

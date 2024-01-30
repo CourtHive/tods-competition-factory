@@ -5,9 +5,9 @@ import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 import { getSwapOptions } from './getSwapOptions';
 import { chunkArray, generateRange, randomPop } from '../../../../tools/arrays';
 
-import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
+import { INVALID_ASSIGNMENT } from '@Constants/errorConditionConstants';
 import { PositionAssignment } from '../../../../types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { IdCollections } from '../../../../types/factoryTypes';
 
 type GeneratePositioningCandidateArgs = {

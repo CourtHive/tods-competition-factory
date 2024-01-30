@@ -5,8 +5,8 @@ import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import { SIGNED_IN, SIGN_IN_STATUS } from '../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { SIGNED_IN, SIGN_IN_STATUS } from '@Constants/participantConstants';
 
 export function getParticipantSignInStatus({ tournamentRecord, participantId }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

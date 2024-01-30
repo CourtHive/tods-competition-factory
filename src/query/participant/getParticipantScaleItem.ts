@@ -3,7 +3,7 @@ import { participantScaleItem } from './participantScaleItem';
 
 import { Tournament } from '../../types/tournamentTypes';
 import { ScaleAttributes, ScaleItem, TournamentRecords } from '../../types/factoryTypes';
-import { ErrorType, MISSING_PARTICIPANT_ID, PARTICIPANT_NOT_FOUND } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_PARTICIPANT_ID, PARTICIPANT_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 type GetParticipantScaleItemArgs = {
   tournamentRecords?: TournamentRecords;

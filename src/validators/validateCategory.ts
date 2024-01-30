@@ -2,7 +2,7 @@ import { getCategoryAgeDetails } from '../query/event/getCategoryAgeDetails';
 import { decorateResult } from '../functions/global/decorateResult';
 import { isObject } from '../tools/objects';
 
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { isNumeric } from '../tools/math';
 
 export function validateCategory({ category }) {

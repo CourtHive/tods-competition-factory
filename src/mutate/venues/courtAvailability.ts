@@ -7,11 +7,11 @@ import { validDateAvailability } from '../../validators/validateDateAvailability
 import { findCourt } from './findCourt';
 
 import { Availability, Tournament } from '../../types/tournamentTypes';
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type ModifyCourtAvailabilityArgs = {
   venueMatchUps?: HydratedMatchUp[];

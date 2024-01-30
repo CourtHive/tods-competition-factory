@@ -1,8 +1,8 @@
 import { setMatchUpStatus } from '../matchUps/matchUpStatus/setMatchUpStatus';
 import { findEvent } from '../../acquire/findEvent';
 
-import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function bulkMatchUpStatusUpdate(params) {
   if (!params?.outcomes) return { error: MISSING_VALUE };

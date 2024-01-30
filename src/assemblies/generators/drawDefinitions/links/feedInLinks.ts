@@ -2,7 +2,7 @@ import { getDevContext } from '../../../../global/state/globalState';
 import { generateRange } from '../../../../tools/arrays';
 
 import { Structure } from '../../../../types/tournamentTypes';
-import { BOTTOM_UP, TOP_DOWN, LOSER, FIRST_MATCHUP } from '../../../../constants/drawDefinitionConstants';
+import { BOTTOM_UP, TOP_DOWN, LOSER, FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 
 type FeedInLinksArgs = {
   mainStructure: Structure;

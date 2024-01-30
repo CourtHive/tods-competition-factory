@@ -5,10 +5,10 @@ import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../../../acquire/findPolicy';
 import { unique } from '../../../tools/arrays';
 
-import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
+import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { ErrorType, MISSING_EVENT } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
 import { Event, Tournament } from '../../../types/tournamentTypes';
 
 type GetEventMatchUpFormatTimingArgs = {

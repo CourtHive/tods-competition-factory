@@ -9,8 +9,8 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { ALTERNATE, WITHDRAWN } from '../../constants/entryStatusConstants';
-import { PAIR } from '../../constants/participantConstants';
+import { ALTERNATE, WITHDRAWN } from '@Constants/entryStatusConstants';
+import { PAIR } from '@Constants/participantConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 export function removeDrawPositionAssignment(params): ResultType & { participantId?: string } {

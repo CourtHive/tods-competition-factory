@@ -1,8 +1,8 @@
 import { matchTiebreak, standardSet, tiebreakSet } from './validPatterns';
 import { getWinningSide } from './getWinningSide';
 import { dashMash } from './commonPatterns';
+import { isNumeric } from '@Tools/math';
 import { isDiffOne } from './helpers';
-import { isNumeric } from '../../tools/math';
 
 export function sensibleSets({ score, matchUpStatus, attributes }) {
   const profile: any[] = [];

@@ -2,7 +2,7 @@ import { generateSeedingScaleItems } from '../../assemblies/generators/drawDefin
 import { getEntriesAndSeedsCount } from '../../query/entries/getEntriesAndSeedsCount';
 import { getScaledEntries } from '../../query/event/getScaledEntries';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { StageTypeUnion } from '../../types/tournamentTypes';
 
 type AutoSeedingParams = {

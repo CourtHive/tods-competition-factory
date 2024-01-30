@@ -4,7 +4,7 @@ import { getStageEntries } from '../drawDefinition/getStageEntries';
 import { getSeedsCount } from '../drawDefinition/getSeedsCount';
 
 import { PolicyDefinitions } from '../../types/factoryTypes';
-import { ErrorType, MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Entry, StageTypeUnion } from '../../types/tournamentTypes';
 
 type GetEntriesAndSeedsCountArgs = {

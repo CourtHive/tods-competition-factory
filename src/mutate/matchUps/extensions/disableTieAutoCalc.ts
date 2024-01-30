@@ -1,8 +1,8 @@
 import { addExtension } from '../../extensions/addExtension';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { DISABLE_AUTO_CALC } from '@Constants/extensionConstants';
 
 export function disableTieAutoCalc({ drawDefinition, matchUpId, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -3,7 +3,7 @@ import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDa
 import { makeDeepCopy } from '../../../../../tools/makeDeepCopy';
 import { isValidDateString, timeStringMinutes } from '../../../../../tools/dateTime';
 
-import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function generateVirtualCourts(params) {
   const { remainingScheduleTimes = [], clearScheduleDates, periodLength = 30, scheduleDate, courts = [] } = params;

@@ -1,9 +1,9 @@
 import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
 
-import { DISABLED } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TOURNAMENT_RECORDS, VENUE_IDS } from '../../constants/attributeConstants';
+import { DISABLED } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 
 type DisableVenuesArgs = {
   tournamentRecords: any;

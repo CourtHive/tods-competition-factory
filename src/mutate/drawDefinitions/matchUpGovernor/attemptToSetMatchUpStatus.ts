@@ -15,7 +15,7 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 export function attemptToSetMatchUpStatus(params) {
   const { tournamentRecord, drawDefinition, matchUpStatus, structure, matchUp } = params;

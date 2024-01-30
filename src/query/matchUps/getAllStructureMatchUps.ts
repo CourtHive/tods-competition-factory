@@ -28,14 +28,14 @@ import { getSide } from './getSide';
 
 // constants and types
 import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '../../types/tournamentTypes';
-import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
-import { MISSING_STRUCTURE } from '../../constants/errorConditionConstants';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { MIXED } from '../../constants/genderConstants';
+import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { MIXED } from '@Constants/genderConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
-import { SINGLES } from '../../constants/matchUpTypes';
-import { TEAM } from '../../constants/eventConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 import {
   ContextContent,
   ContextProfile,

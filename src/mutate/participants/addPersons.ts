@@ -5,15 +5,15 @@ import { findParticipant } from '../../acquire/findParticipant';
 import { addParticipants } from './addParticipants';
 import { UUID } from '../../tools/UUID';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { Participant } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { COMPETITOR, participantRoles } from '../../constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
+import { COMPETITOR, participantRoles } from '@Constants/participantRoles';
 import {
   INVALID_PARTICIPANT_ROLE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // add persons to a tournamentRecord and create participants in the process
 // include ability to specify a doubles partner by personId

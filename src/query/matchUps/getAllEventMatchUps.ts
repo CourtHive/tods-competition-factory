@@ -6,7 +6,7 @@ import { getAllDrawMatchUps } from './drawMatchUps';
 
 import { HydratedMatchUp } from '../../types/hydrated';
 import { GetMatchUpsArgs } from '../../types/factoryTypes';
-import { MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;

@@ -1,6 +1,8 @@
 import { isValidPattern } from './validPatterns';
 import { transforms } from './transforms';
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
+
+// constants
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 let transformations: { [key: string]: number } = {};
 let invalid: any[] = [];

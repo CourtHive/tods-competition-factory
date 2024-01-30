@@ -2,7 +2,7 @@ import { checkParticipantProfileInitialization } from './checkParticipantProfile
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
 import { overlap } from '../../../../tools/arrays';
 
-import { TOTAL } from '../../../../constants/scheduleConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
 
 export function modifyParticipantMatchUpsCount({
   matchUpPotentialParticipantIds,

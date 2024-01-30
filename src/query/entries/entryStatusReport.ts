@@ -2,15 +2,15 @@ import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { getParticipants } from '../participants/getParticipants';
 import { getDetailsWTN } from '../scales/getDetailsWTN';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { WITHDRAW_PARTICIPANT } from '../../constants/positionActionConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { DOUBLES_EVENT } from '../../constants/eventConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { WITHDRAW_PARTICIPANT } from '@Constants/positionActionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { DOUBLES_EVENT } from '@Constants/eventConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 
 type GetEntryStatusReportsArgs = {
   tournamentRecord: Tournament;

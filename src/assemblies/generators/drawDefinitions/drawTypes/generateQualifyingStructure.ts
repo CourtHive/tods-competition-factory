@@ -9,18 +9,18 @@ import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
 
 import POLICY_ROUND_NAMING_DEFAULT from '../../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
-import { POLICY_TYPE_ROUND_NAMING } from '../../../../constants/policyConstants';
-import { ROUND_TARGET } from '../../../../constants/extensionConstants';
+import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { PolicyDefinitions } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_SIZE,
   STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/errorConditionConstants';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '../../../../types/tournamentTypes';
 
 type GenerateQualifyingStructureArgs = {

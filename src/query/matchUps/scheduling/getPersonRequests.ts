@@ -1,11 +1,11 @@
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { findExtension } from '../../../acquire/findExtension';
 
-import { TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { PERSON_REQUESTS } from '../../../constants/extensionConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
+import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { PERSON_REQUESTS } from '@Constants/extensionConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
 import { PersonRequests } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '../../../types/tournamentTypes';
 
 type GetPersonRequestsArgs = {

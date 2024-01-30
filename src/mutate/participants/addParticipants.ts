@@ -5,10 +5,10 @@ import { addParticipant } from './addParticipant';
 import { UUID } from '../../tools/UUID';
 
 import { Participant, Tournament } from '../../types/tournamentTypes';
-import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { MISSING_TOURNAMENT_RECORD, EXISTING_PARTICIPANT } from '../../constants/errorConditionConstants';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { MISSING_TOURNAMENT_RECORD, EXISTING_PARTICIPANT } from '@Constants/errorConditionConstants';
 
 type AddParticipantsType = {
   allowDuplicateParticipantIdPairs?: boolean;

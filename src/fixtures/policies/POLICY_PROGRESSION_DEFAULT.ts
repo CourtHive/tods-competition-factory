@@ -1,4 +1,4 @@
-import { POLICY_TYPE_PROGRESSION } from '../../constants/policyConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
 
 export const POLICY_PROGRESSION_DEFAULT = {
   [POLICY_TYPE_PROGRESSION]: {

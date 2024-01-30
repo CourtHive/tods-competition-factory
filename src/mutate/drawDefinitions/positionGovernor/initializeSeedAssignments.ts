@@ -8,14 +8,10 @@ import { generateRange } from '@Tools/arrays';
 
 // constants and types
 import { PolicyDefinitions, SeedingProfile } from '@Types/factoryTypes';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  ErrorType,
-  SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, SEEDSCOUNT_GREATER_THAN_DRAW_SIZE, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 type InitializeStructureSeedAssignmentsArgs = {
   appliedPolicies?: PolicyDefinitions;

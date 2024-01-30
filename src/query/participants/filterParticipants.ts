@@ -5,8 +5,8 @@ import { getFlightProfile } from '../event/getFlightProfile';
 import { getTimeItem } from '../base/timeItems';
 import { unique } from '../../tools/arrays';
 
-import { SIGN_IN_STATUS } from '../../constants/participantConstants';
-import { SINGLES } from '../../constants/eventConstants';
+import { SIGN_IN_STATUS } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 import type { Tournament } from '../../types/tournamentTypes';
 import { ParticipantFilters } from '../../types/factoryTypes';

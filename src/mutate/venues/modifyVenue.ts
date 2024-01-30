@@ -11,11 +11,11 @@ import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 import { findVenue } from './findVenue';
 
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { Venue, Tournament } from '../../types/tournamentTypes';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
@@ -25,7 +25,7 @@ import {
   VENUE_NOT_FOUND,
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ModifyVenueArgs = {
   tournamentRecords?: TournamentRecords;

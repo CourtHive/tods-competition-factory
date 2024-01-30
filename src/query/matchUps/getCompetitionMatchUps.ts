@@ -1,7 +1,7 @@
 import { tournamentMatchUps } from './getTournamentMatchUps';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import {
   GroupInfo,

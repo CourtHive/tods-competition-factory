@@ -6,7 +6,7 @@ import { makeDeepCopy } from '../../../tools/makeDeepCopy';
 import { executeFunction } from '../parts/executeMethod';
 import { setState } from '../parts/stateMethods';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { Directives, FactoryEngine } from '../../../types/factoryTypes';
 
 export function executionQueue(engine: FactoryEngine, directives: Directives, rollbackOnError?: boolean) {

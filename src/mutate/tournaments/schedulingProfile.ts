@@ -6,11 +6,11 @@ import { getEventIdsAndDrawIds } from '../../query/tournaments/getEventIdsAndDra
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '../../acquire/findExtension';
 
-import { SCHEDULING_PROFILE } from '../../constants/extensionConstants';
+import { SCHEDULING_PROFILE } from '@Constants/extensionConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GetSchedulingProfileArgs = {
   tournamentRecords?: TournamentRecords;

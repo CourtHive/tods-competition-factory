@@ -4,10 +4,10 @@
  * @param engineInvoke - The engineInvoke object.
  */
 
-import { newTournamentRecord } from '../../generators/tournamentRecords/newTournamentRecord';
-import { factoryVersion } from '../../../functions/global/factoryVersion';
-import { importMethods } from '../parts/importMethods';
-import { processResult } from '../parts/processResult';
+import { newTournamentRecord } from '@Assemblies/generators/tournamentRecords/newTournamentRecord';
+import { importMethods } from '@Assemblies/engines/parts/importMethods';
+import { processResult } from '@Assemblies/engines/parts/processResult';
+import { factoryVersion } from '@Functions/global/factoryVersion';
 import {
   setDeepCopy,
   setDevContext,
@@ -16,17 +16,18 @@ import {
   setTournamentRecords,
   setTournamentId,
   getTournamentId,
-} from '../../../global/state/globalState';
+} from '@Global/state/globalState';
 import {
   getState,
   getTournament,
   removeUnlinkedTournamentRecords,
   setState,
   setTournamentRecord,
-} from '../parts/stateMethods';
+} from '@Assemblies/engines/parts/stateMethods';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
+// constants and types
+import { SUCCESS } from '@Constants/resultConstants';
+import { FactoryEngine } from '@Types/factoryTypes';
 
 export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
   engine.importMethods = (methods, collections, depth) =>

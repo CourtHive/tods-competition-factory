@@ -5,11 +5,11 @@ import { addNotice } from '../../global/state/globalState';
 import { intersection } from '../../tools/arrays';
 import { UUID } from '../../tools/UUID';
 
-import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '../../types/tournamentTypes';
-import { GROUP, INDIVIDUAL, PAIR, participantTypes, TEAM } from '../../constants/participantConstants';
+import { GROUP, INDIVIDUAL, PAIR, participantTypes, TEAM } from '@Constants/participantConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
@@ -21,7 +21,7 @@ import {
   MISSING_PARTICIPANT,
   INVALID_VALUES,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddParticipantType = {
   allowDuplicateParticipantIdPairs?: boolean;

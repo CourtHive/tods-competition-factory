@@ -10,7 +10,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Extension, Tournament } from '../../types/tournamentTypes';
 
 type AddExtensionArgs = {

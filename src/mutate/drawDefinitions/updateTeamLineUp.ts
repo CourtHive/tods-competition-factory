@@ -5,10 +5,10 @@ import { findExtension } from '../../acquire/findExtension';
 import { addExtension } from '../extensions/addExtension';
 
 import { DrawDefinition, TieFormat } from '../../types/tournamentTypes';
-import { LINEUPS } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { LineUp } from '../../types/factoryTypes';
-import { ErrorType, MISSING_DRAW_DEFINITION, MISSING_PARTICIPANT_ID } from '../../constants/errorConditionConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 
 // update an extension on the drawDefinition that keeps track of the latest lineUp for all team participantIds
 // each matchUp in the draw will use this as the template on first load and then write lineUp to the matchUp

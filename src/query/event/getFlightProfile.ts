@@ -1,8 +1,8 @@
 import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
 
-import { MISSING_EVENT } from '../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { Event } from '../../types/tournamentTypes';
 
 type GetFlightProfileArgs = {

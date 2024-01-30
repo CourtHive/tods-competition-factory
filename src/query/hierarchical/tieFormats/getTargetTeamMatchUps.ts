@@ -3,8 +3,8 @@ import { allDrawMatchUps } from '../../matchUps/getAllDrawMatchUps';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 
 import { MatchUp } from '../../../types/tournamentTypes';
-import { TEAM } from '../../../constants/matchUpTypes';
-import { COMPLETED, IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
+import { TEAM } from '@Constants/matchUpTypes';
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 export function getTargetTeamMatchUps({
   updateInProgressMatchUps,

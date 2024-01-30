@@ -5,7 +5,7 @@ import { chunkArray, shuffleArray, unique } from '../../../../tools/arrays';
 import { numericSort } from '../../../../tools/sorting';
 import { getSeedBlocks } from '../getSeedBlocks';
 
-import { CLUSTER, CONTAINER, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
+import { CLUSTER, CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
   provisionalPositioning,

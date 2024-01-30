@@ -8,7 +8,7 @@ import {
   MISSING_PARTICIPANT,
   MISSING_PARTICIPANTS,
   MISSING_POLICY_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  *

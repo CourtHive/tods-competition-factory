@@ -6,14 +6,14 @@ import { getDetailsWTN } from '../scales/getDetailsWTN';
 import { getTimeItem } from '../base/timeItems';
 import { getAvgWTN } from '../scales/getAvgWTN';
 
-import { MISSING_TOURNAMENT_ID } from '../../constants/errorConditionConstants';
-import { ADD_SCALE_ITEMS } from '../../constants/topicConstants';
+import { MISSING_TOURNAMENT_ID } from '@Constants/errorConditionConstants';
+import { ADD_SCALE_ITEMS } from '@Constants/topicConstants';
 import { HydratedParticipant } from '../../types/hydrated';
-import { SEEDING } from '../../constants/scaleConstants';
+import { SEEDING } from '@Constants/scaleConstants';
 import { Participant, Side, Tournament } from '../../types/tournamentTypes';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { AUDIT_POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '../../constants/extensionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { AUDIT_POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
 
 type GetStructureReportsArgs = {
   tournamentRecord: Tournament;

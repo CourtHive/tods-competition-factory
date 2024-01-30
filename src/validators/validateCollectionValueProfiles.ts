@@ -1,7 +1,7 @@
 import { unique } from '../tools/arrays';
 
 import { CollectionValueProfile } from '../types/tournamentTypes';
-import { SUCCESS } from '../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type ValidateCollectionDefinitionArgs = {
   collectionValueProfiles: CollectionValueProfile[];

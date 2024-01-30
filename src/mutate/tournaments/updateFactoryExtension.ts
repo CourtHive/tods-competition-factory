@@ -1,5 +1,5 @@
 import { addExtension } from '../extensions/addExtension';
-import { extensionConstants } from '../../constants/extensionConstants';
+import { extensionConstants } from '@Constants/extensionConstants';
 import { findExtension } from '../../acquire/findExtension';
 
 const { FACTORY } = extensionConstants;

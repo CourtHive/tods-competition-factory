@@ -3,7 +3,7 @@ import { generateTimeSlots } from '../../../../../assemblies/generators/scheduli
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { extractTime, minutesDifference, timeToDate } from '../../../../../tools/dateTime';
 
-import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type GetEarliestCourtTimeArgs = {
   averageMinutes: number;

@@ -2,10 +2,10 @@ import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 import { findPolicy } from '../../acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
-import { POLICY_TYPE_COMPETITIVE_BANDS } from '../../constants/policyConstants';
+import { POLICY_TYPE_COMPETITIVE_BANDS } from '@Constants/policyConstants';
 import { MatchUp, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, INVALID_VALUES, MISSING_MATCHUP } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, INVALID_VALUES, MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 
 type GetMatchUpCompetitivenessArgs = {
   tournamentRecord?: Tournament;

@@ -4,7 +4,7 @@ import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { ensureInt } from '../../../../../tools/ensureInt';
 
-import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '../../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 import { Tournament } from '../../../../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../../../../types/hydrated';
 import {
@@ -16,7 +16,7 @@ import {
   SCHEDULE_STATE,
   CONFLICT_MATCHUP_ORDER,
   CONFLICT_PARTICIPANTS,
-} from '../../../../../constants/scheduleConstants';
+} from '@Constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 type ProConflictsArgs = {

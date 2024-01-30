@@ -6,16 +6,16 @@ import { getEventData } from '../../query/event/getEventData';
 import { addNotice } from '../../global/state/globalState';
 
 import { Event, Tournament } from '../../types/tournamentTypes';
-import { PUBLISH_EVENT } from '../../constants/topicConstants';
+import { PUBLISH_EVENT } from '@Constants/topicConstants';
 import { PolicyDefinitions } from '../../types/factoryTypes';
-import { PUBLIC } from '../../constants/timeItemConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export type PublishingDetail = {
   roundLimit?: number; // only applicable to structureDetails

@@ -6,18 +6,18 @@ import { definedAttributes } from '../../tools/definedAttributes';
 import { getTopics } from '../../global/state/globalState';
 import { UUID } from '../../tools/UUID';
 
-import { SINGLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
+import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { Event, Tournament } from '../../types/tournamentTypes';
-import { ADD_MATCHUPS } from '../../constants/topicConstants';
+import { ADD_MATCHUPS } from '@Constants/topicConstants';
 import { tieFormats } from '../../fixtures/scoring/tieFormats';
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_EXISTS,
   ErrorType,
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddEventArgs = {
   suppressNotifications?: boolean;

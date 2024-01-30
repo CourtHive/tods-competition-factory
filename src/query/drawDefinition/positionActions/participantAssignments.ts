@@ -8,15 +8,15 @@ import { getNextSeedBlock } from '../seedGetter';
 
 import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
 import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import { HydratedParticipant } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/eventConstants';
+import { TEAM } from '@Constants/eventConstants';
 import {
   ASSIGN_BYE,
   ASSIGN_BYE_METHOD,
   ASSIGN_PARTICIPANT,
   ASSIGN_PARTICIPANT_METHOD,
-} from '../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 type GetValidAssignmentActionsArgs = {
   tournamentParticipants?: HydratedParticipant[];

@@ -1,7 +1,7 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function addGame({ matchUp, game }) {
   // TODO: check game validity

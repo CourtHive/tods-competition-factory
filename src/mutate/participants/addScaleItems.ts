@@ -6,11 +6,11 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { findEvent } from '@Acquire/findEvent';
 
 // constants and types
-import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { Participant, Tournament } from '../../types/tournamentTypes';
 import { ScaleItem, ResultType } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { SCALE } from '../../constants/scaleConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SCALE } from '@Constants/scaleConstants';
 import {
   INVALID_SCALE_ITEM,
   MISSING_PARTICIPANT,
@@ -19,7 +19,7 @@ import {
   NO_MODIFICATIONS_APPLIED,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type SetParticipantScaleItemArgs = {
   tournamentRecord: Tournament;

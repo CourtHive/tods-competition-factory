@@ -3,10 +3,10 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isObject, objShallowEqual } from '@Tools/objects';
 
 // constants and types
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { Event, Tournament } from '../../types/tournamentTypes';
-import { PUBLIC } from '../../constants/timeItemConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '../../types/factoryTypes';
 
 type ScheduleDetails = {

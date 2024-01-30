@@ -1,4 +1,4 @@
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function getStageParticipantsCount({ drawProfiles, category, gender }) {
   const uniqueParticipantsCount = {};

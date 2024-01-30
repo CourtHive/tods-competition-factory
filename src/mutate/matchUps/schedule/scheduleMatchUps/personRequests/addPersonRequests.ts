@@ -3,9 +3,9 @@ import { mergePersonRequests } from './mergePersonRequests';
 import { savePersonRequests } from './savePersonRequests';
 import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getPersonRequests';
 
-import { INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { TournamentRecords } from '../../../../../types/factoryTypes';
-import { ARRAY, INVALID, OF_TYPE, PERSON_ID, TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
+import { ARRAY, INVALID, OF_TYPE, PERSON_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 type AddPersonRequestsArgs = {
   tournamentRecords: TournamentRecords;

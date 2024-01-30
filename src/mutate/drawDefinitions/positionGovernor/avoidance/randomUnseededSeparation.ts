@@ -15,15 +15,15 @@ import { numericSort } from '@Tools/sorting';
 // constants and types
 import { DrawDefinition, Event, Tournament } from '../../../../types/tournamentTypes';
 import { HydratedMatchUp, HydratedParticipant } from '../../../../types/hydrated';
-import { GROUP, PAIR, TEAM } from '../../../../constants/participantConstants';
+import { GROUP, PAIR, TEAM } from '@Constants/participantConstants';
 import { IdCollections, MatchUpsMap } from '../../../../types/factoryTypes';
-import { CONTAINER } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INSUFFICIENT_DRAW_POSITIONS,
   MISSING_AVOIDANCE_POLICY,
   NO_CANDIDATES,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RandomUnseededDistribution = {
   inContextDrawMatchUps?: HydratedMatchUp[];

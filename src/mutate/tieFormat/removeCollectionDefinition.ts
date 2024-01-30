@@ -30,7 +30,7 @@ import {
   MISSING_DRAW_DEFINITION,
   NOT_FOUND,
   NO_MODIFICATIONS_APPLIED,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /*
  * if an eventId is provided, will be removed from an event tieFormat

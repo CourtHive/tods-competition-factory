@@ -1,6 +1,6 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
-import { ASSIGN_VENUE } from '../../constants/timeItemConstants';
+import { ASSIGN_VENUE } from '@Constants/timeItemConstants';
 
 export function matchUpAssignedVenueId({
   visibilityThreshold,

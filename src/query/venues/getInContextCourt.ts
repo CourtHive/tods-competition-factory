@@ -2,7 +2,7 @@ import { makeDeepCopy } from '../../tools/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
 import { isObject } from '../../tools/objects';
 
-import { DISABLED } from '../../constants/extensionConstants';
+import { DISABLED } from '@Constants/extensionConstants';
 
 export function getInContextCourt({ convertExtensions, ignoreDisabled, venue, court }) {
   const inContextCourt = {

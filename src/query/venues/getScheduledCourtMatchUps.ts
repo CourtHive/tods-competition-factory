@@ -3,7 +3,7 @@ import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps'
 import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 
 // constants and types
-import { MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '../../constants/errorConditionConstants';
+import { MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
 import { MatchUpFilters, ScheduleVisibilityFilters, ResultType } from '../../types/factoryTypes';
 import { Tournament } from '../../types/tournamentTypes';
 import { HydratedMatchUp } from '../../types/hydrated';

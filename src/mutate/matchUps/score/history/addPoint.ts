@@ -1,7 +1,7 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { INVALID_VALUES, MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function addPoint({ matchUp, point }) {
   // TODO: check point validity

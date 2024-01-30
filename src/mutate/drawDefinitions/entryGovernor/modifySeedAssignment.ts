@@ -5,14 +5,14 @@ import { ensureInt } from '../../../tools/ensureInt';
 import { isNumeric } from '../../../tools/math';
 
 import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ModifySeedAssignmentArgs = {
   tournamentRecord?: Tournament;

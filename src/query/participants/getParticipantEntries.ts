@@ -14,11 +14,11 @@ import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';
 import { isObject } from '../../tools/objects';
 
-import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { WIN_RATIO } from '../../constants/statsConstants';
+import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { WIN_RATIO } from '@Constants/statsConstants';
 import { HydratedMatchUp } from '../../types/hydrated';
 import { unique } from '../../tools/arrays';
 
