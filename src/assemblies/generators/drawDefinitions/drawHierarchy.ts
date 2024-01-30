@@ -5,6 +5,9 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { ensureInt } from '@Tools/ensureInt';
 import { UUID } from '@Tools/UUID';
 
+import { includesMatchUpType } from '@Helpers/matchUpTypes/includesMatchUpType';
+import { isMatchUpType } from '@Helpers/matchUpTypes/isMatchUpType';
+
 import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { BYE } from '@Constants/matchUpStatusConstants';
@@ -27,12 +30,12 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
   if (matchUpType) matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === matchUpType);
   const matchUpTypes = unique(matchUps.map(({ matchUpType }) => matchUpType));
   if (matchUpTypes.length > 1) {
-    if (matchUpTypes.includes(TEAM)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === TEAM);
-    } else if (matchUpTypes.includes(SINGLES)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === SINGLES);
-    } else if (matchUpTypes.includes(DOUBLES)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === DOUBLES);
+    if (includesMatchUpType(TEAM)) {
+      matchUps = matchUps.filter(isMatchUpType(TEAM));
+    } else if (includesMatchUpType(SINGLES)) {
+      matchUps = matchUps.filter(isMatchUpType(SINGLES));
+    } else if (includesMatchUpType(DOUBLES)) {
+      matchUps = matchUps.filter(isMatchUpType(DOUBLES));
     } else {
       return {};
     }
