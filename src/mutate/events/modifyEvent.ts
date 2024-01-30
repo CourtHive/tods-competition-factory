@@ -10,14 +10,14 @@ import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ANY, MIXED } from '@Constants/genderConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   // Category,
   Event,
   Tournament,
   EventTypeUnion,
   GenderUnion,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;

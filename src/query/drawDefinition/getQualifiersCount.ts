@@ -4,7 +4,7 @@ import { findStructure } from '../../acquire/findStructure';
 
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 type GetQualifiersCountArgs = {
   provisionalPositioning?: boolean;

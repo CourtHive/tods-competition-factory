@@ -1,12 +1,12 @@
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';
 
 import { MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   DRAW_DEFINITION,

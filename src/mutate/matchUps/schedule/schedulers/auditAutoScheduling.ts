@@ -1,5 +1,5 @@
 import { addTournamentTimeItem } from '../../../timeItems/addTimeItem';
-import { addNotice } from '../../../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
 import { AUTO_SCHEDULING_AUDIT } from '@Constants/auditConstants';
 import { AUDIT } from '@Constants/topicConstants';

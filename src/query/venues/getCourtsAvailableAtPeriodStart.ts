@@ -6,8 +6,8 @@ import { getEnoughTime } from './getEnoughTime';
 // constants and types
 import { ARRAY } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
-import { Court } from '../../types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
+import { Court } from '@Types/tournamentTypes';
 
 type GetCourtsAvailableAtPeriodStartArgs = {
   averageMatchUpMinutes: number;

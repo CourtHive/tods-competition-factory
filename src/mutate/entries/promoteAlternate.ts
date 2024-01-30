@@ -1,5 +1,5 @@
 import { decorateResult } from '../../functions/global/decorateResult';
-import { ensureInt } from '../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

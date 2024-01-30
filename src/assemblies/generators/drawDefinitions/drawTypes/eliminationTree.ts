@@ -1,9 +1,9 @@
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { addFinishingRounds } from '../addFinishingRounds';
-import { isPowerOf2 } from '../../../../tools/math';
+import { isPowerOf2 } from '@Tools/math';
 import { buildRound } from '../buildRound';
 
-import { MatchUp } from '../../../../types/tournamentTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type TreeMatchUpsArgs = {
   finishingPositionOffset?: number;

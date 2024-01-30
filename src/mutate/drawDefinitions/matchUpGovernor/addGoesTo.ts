@@ -5,9 +5,9 @@ import { positionTargets } from '@Query/matchUp/positionTargets';
 
 // constants and types
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type AddGoesToArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

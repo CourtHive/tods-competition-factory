@@ -1,7 +1,7 @@
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { isISODateString } from '../../../tools/dateTime';
+import { isISODateString } from '@Tools/dateTime';
 import { validDateString } from '../../../validators/regex';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { INVALID_DATE } from '../../../constants/errorConditionConstants';
 

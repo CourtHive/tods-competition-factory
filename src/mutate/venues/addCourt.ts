@@ -10,10 +10,10 @@ import { findVenue } from './findVenue';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { Availability, Court, Tournament } from '../../types/tournamentTypes';
+import { Availability, Court, Tournament } from '@Types/tournamentTypes';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   MISSING_VENUE_ID,
   MISSING_COURTS_INFO,

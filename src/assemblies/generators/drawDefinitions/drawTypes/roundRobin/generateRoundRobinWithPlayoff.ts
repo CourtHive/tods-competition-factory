@@ -3,7 +3,7 @@
 // groups of finishing drawPositions which playoff
 
 import { processPlayoffGroups } from '../processPlayoffGroups';
-import { constantToString } from '../../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { generateRoundRobin } from './roundRobin';
 
 import { INVALID_CONFIGURATION } from '@Constants/errorConditionConstants';

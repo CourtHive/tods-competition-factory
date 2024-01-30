@@ -11,7 +11,7 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Extension, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Extension, Tournament } from '@Types/tournamentTypes';
 
 type AddExtensionArgs = {
   tournamentRecord?: Tournament;

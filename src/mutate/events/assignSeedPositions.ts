@@ -3,8 +3,8 @@ import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment
 import { uniqueValues } from '@Tools/arrays';
 
 // constants and types
-import { DrawDefinition, SeedAssignment, Tournament } from '../../types/tournamentTypes';
-import { SeedingProfile, ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, SeedAssignment, Tournament } from '@Types/tournamentTypes';
+import { SeedingProfile, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,

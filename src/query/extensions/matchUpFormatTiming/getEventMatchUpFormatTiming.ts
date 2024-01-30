@@ -1,15 +1,15 @@
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
 import { findExtension } from '../../../acquire/findExtension';
 import { findPolicy } from '../../../acquire/findPolicy';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
 import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { Event, Tournament } from '@Types/tournamentTypes';
 
 type GetEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;

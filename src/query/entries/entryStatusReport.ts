@@ -8,7 +8,7 @@ import { WITHDRAW_PARTICIPANT } from '@Constants/positionActionConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { DOUBLES_EVENT } from '@Constants/eventConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 

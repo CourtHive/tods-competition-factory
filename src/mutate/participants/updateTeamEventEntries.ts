@@ -1,4 +1,4 @@
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/eventConstants';

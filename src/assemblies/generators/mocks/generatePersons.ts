@@ -1,10 +1,10 @@
-import { getCategoryAgeDetails } from '../../../query/event/getCategoryAgeDetails';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { generatePersonData } from './generatePersonData';
-import { dateFromDay } from '../../../tools/dateTime';
-import { countries } from '../../../fixtures/countryData';
-import { ensureInt } from '../../../tools/ensureInt';
-import { generateRange, randomMember, randomPop, shuffleArray } from '../../../tools/arrays';
+import { dateFromDay } from '@Tools/dateTime';
+import { countries } from '@Fixtures/countryData';
+import { ensureInt } from '@Tools/ensureInt';
+import { generateRange, randomMember, randomPop, shuffleArray } from '@Tools/arrays';
 
 import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
 import { MALE, FEMALE } from '../../../constants/genderConstants';

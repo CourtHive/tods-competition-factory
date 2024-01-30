@@ -1,13 +1,13 @@
 import { getEventAlternateParticipantIds } from './getEventAlternateParticipantids';
 import { getParticipantId } from '../../../functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { getFlightProfile } from '../../event/getFlightProfile';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
 import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '@Constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { HydratedParticipant } from '@Types/hydrated';
 import { ALTERNATE, DIRECT_ENTRY_STATUSES, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 
 export function adHocMatchUpActions({

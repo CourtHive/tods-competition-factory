@@ -1,12 +1,12 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getDrawMatchUps } from './drawMatchUps';
 
 import { SUCCESS } from '@Constants/resultConstants';
-import { GetMatchUpsArgs, GroupsMatchUpsResult } from '../../types/factoryTypes';
+import { GetMatchUpsArgs, GroupsMatchUpsResult } from '@Types/factoryTypes';
 
 export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   let { participants: tournamentParticipants, contextContent, participantMap } = params;

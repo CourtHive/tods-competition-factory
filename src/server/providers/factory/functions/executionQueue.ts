@@ -2,7 +2,7 @@ import { mutationEngine } from '../engines/mutationEngine';
 import { recordStorage } from '../../../data/fileSystem';
 import { Logger } from '@nestjs/common';
 
-import { TournamentRecords } from '../../../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 export async function executionQueue(payload: any) {
   const { executionQueue = [] } = payload ?? {};

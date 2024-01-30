@@ -1,9 +1,9 @@
 import { validateSchedulingProfile } from '../../../validators/validateSchedulingProfile';
-import { getRoundId } from '../../../query/matchUps/scheduling/schedulingUtils';
+import { getRoundId } from '@Query/matchUps/scheduling/schedulingUtils';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { ErrorType, INVALID_TOURNAMENT_RECORD, NOT_FOUND } from '../../../constants/errorConditionConstants';
 
 type GetProfileRoundsArgs = {

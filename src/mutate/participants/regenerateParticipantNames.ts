@@ -1,7 +1,7 @@
-import { createMap, isObject } from '../../tools/objects';
+import { createMap, isObject } from '@Tools/objects';
 import { formatParticipantName } from '../../assemblies/generators/participants/formatParticipantName';
 
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 

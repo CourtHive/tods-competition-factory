@@ -1,7 +1,7 @@
-import { getDevContext } from '../../../../global/state/globalState';
-import { generateRange } from '../../../../tools/arrays';
+import { getDevContext } from '@Global/state/globalState';
+import { generateRange } from '@Tools/arrays';
 
-import { Structure } from '../../../../types/tournamentTypes';
+import { Structure } from '@Types/tournamentTypes';
 import { BOTTOM_UP, TOP_DOWN, LOSER, FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 
 type FeedInLinksArgs = {

@@ -1,12 +1,12 @@
 import { generateRoundRobinWithPlayOff } from './drawTypes/roundRobin/generateRoundRobinWithPlayoff';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { firstRoundLoserConsolation } from './drawTypes/firstRoundLoserConsolation';
 import { generateDoubleElimination } from './drawTypes/doubleEliminattion';
 import { generateCurtisConsolation } from './drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './drawTypes/playoffStructures';
 import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
 import structureTemplate from '../templates/structureTemplate';
-import { constantToString } from '../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { feedInChampionship } from './drawTypes/feedInChamp';
 import { treeMatchUps } from './drawTypes/eliminationTree';
 import { feedInMatchUps } from './feedInMatchUps';

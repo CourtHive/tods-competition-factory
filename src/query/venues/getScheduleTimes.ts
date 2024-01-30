@@ -9,7 +9,7 @@ import { generateRange } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
-import { ScheduleTimesResult, ResultType } from '../../types/factoryTypes';
+import { ScheduleTimesResult, ResultType } from '@Types/factoryTypes';
 import { ARRAY } from '@Constants/attributeConstants';
 
 export function getScheduleTimes(params): ResultType & {

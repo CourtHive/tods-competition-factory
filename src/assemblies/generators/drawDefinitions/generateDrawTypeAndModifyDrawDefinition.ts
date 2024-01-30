@@ -12,17 +12,14 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
-import {
-  setStageDrawSize,
-  setStageQualifiersCount,
-} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 // constants and types
-import { PolicyDefinitions, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
+import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {
   DrawDefinition,
@@ -33,7 +30,7 @@ import {
   TieFormat,
   Tournament,
   EventTypeUnion,
-} from '../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GenerateDrawTypeAndModify = {
   policyDefinitions?: PolicyDefinitions;

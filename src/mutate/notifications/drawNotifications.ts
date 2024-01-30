@@ -1,7 +1,7 @@
-import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
-import { addNotice, deleteNotice } from '../../global/state/globalState';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { addNotice, deleteNotice } from '@Global/state/globalState';
 
-import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
+import { DrawDefinition, MatchUp } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   ADD_DRAW_DEFINITION,

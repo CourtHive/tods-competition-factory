@@ -14,9 +14,9 @@ import { nextPowerOf2 } from '@Tools/math';
 // constants and types
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
+import { DrawLink, Structure } from '@Types/tournamentTypes';
 import { WIN_RATIO } from '@Constants/statsConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   AD_HOC,
   COMPASS,

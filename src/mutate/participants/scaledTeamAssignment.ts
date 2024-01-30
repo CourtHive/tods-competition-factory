@@ -1,11 +1,11 @@
-import { participantScaleItem } from '../../query/participant/participantScaleItem';
+import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import { getParticipantId } from '../../functions/global/extractors';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isConvertableInteger } from '../../tools/math';
-import { generateRange } from '../../tools/arrays';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { isConvertableInteger } from '@Tools/math';
+import { generateRange } from '@Tools/arrays';
 import { addParticipants } from './addParticipants';
 
-import { Event, Participant, Tournament } from '../../types/tournamentTypes';
+import { Event, Participant, Tournament } from '@Types/tournamentTypes';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { TEAM_EVENT } from '@Constants/eventConstants';

@@ -10,7 +10,7 @@ import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { DRAW } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function placeQualifier(params): ResultType & { qualifierPlaced?: boolean } {
   let qualifierPlaced;

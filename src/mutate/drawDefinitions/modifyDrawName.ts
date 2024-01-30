@@ -5,8 +5,8 @@ import { getFlightProfile } from '@Query/event/getFlightProfile';
 
 // constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { Flight, FlightProfile, ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { Flight, FlightProfile, ResultType } from '@Types/factoryTypes';
 import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 

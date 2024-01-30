@@ -1,5 +1,5 @@
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import { generateRange, unique } from '../../../tools/arrays';
+import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
+import { generateRange, unique } from '@Tools/arrays';
 
 export function getFinishingPositionSourceRoundsMap({ finishingPositions, drawDefinition, structureId }) {
   const { roundProfile } = getStructureRoundProfile({

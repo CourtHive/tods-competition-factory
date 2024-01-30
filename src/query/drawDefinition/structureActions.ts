@@ -4,7 +4,7 @@ import { getPositionAssignments } from './positionsGetter';
 
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
 import { TEAM } from '@Constants/matchUpTypes';
 
 type StructureActionsArgs = {

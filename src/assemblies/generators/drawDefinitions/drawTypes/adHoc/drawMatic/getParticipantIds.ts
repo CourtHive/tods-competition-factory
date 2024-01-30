@@ -4,8 +4,8 @@ import { getParticipantId } from '@Functions/global/extractors';
 // types and constants
 import { INVALID_PARTICIPANT_ID, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
-import { EntryStatusUnion } from '../../../../../../types/tournamentTypes';
-import { ResultType } from '../../../../../../types/factoryTypes';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function getParticipantIds(params): ResultType & { participantIds?: string[] } {
   let { participantIds } = params;

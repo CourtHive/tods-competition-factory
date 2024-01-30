@@ -6,13 +6,13 @@ import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterR
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
-import { getVenueSchedulingDetails } from '../../../../../query/matchUps/scheduling/getVenueSchedulingDetails';
+import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../functions/global/extractors';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
-import { extractDate, sameDay, timeStringMinutes, zeroPad } from '../../../../../tools/dateTime';
+import { extractDate, sameDay, timeStringMinutes, zeroPad } from '@Tools/dateTime';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { TOTAL } from '@Constants/scheduleConstants';

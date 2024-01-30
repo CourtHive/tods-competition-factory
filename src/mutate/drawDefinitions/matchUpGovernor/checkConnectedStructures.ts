@@ -1,5 +1,5 @@
 import { getAffectedTargetStructureIds } from './getAffectedTargetStructureIds';
-import { isCompletedStructure } from '../../../query/drawDefinition/structureActions';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 
 import { WIN_RATIO } from '../../../constants/drawDefinitionConstants';
 

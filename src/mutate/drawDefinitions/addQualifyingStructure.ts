@@ -1,9 +1,9 @@
 import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
   INVALID_VALUES,

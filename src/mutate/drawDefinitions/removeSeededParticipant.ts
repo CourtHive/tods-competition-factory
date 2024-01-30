@@ -2,9 +2,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 
 // constants and types
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_STRUCTURE,
   MISSING_DRAW_DEFINITION,

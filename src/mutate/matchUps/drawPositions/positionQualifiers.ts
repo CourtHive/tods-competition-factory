@@ -1,11 +1,11 @@
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { decorateResult } from '../../../functions/global/decorateResult';
-import { generateRange, randomPop } from '../../../tools/arrays';
+import { generateRange, randomPop } from '@Tools/arrays';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 
 import { CONSOLATION } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

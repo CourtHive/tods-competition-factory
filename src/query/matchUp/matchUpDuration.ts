@@ -1,5 +1,5 @@
 import { validTimeString } from '../../validators/regex';
-import { getUTCdateString } from '../../tools/dateTime';
+import { getUTCdateString } from '@Tools/dateTime';
 
 import { MISSING_MATCHUP, MISSING_TIME_ITEMS } from '@Constants/errorConditionConstants';
 import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME } from '@Constants/timeItemConstants';

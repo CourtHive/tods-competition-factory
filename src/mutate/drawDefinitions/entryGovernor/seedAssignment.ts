@@ -1,20 +1,20 @@
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../functions/global/decorateResult';
-import { participantInEntries } from '../../../query/drawDefinition/entryGetter';
-import { isValidSeedPosition } from '../../../query/drawDefinition/seedGetter';
+import { participantInEntries } from '@Query/drawDefinition/entryGetter';
+import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
 import { findStructure } from '../../../acquire/findStructure';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
+import { SeedingProfile } from '@Types/factoryTypes';
 import {
   INVALID_DRAW_POSITION_FOR_SEEDING,
   INVALID_PARTICIPANT_ID,
   INVALID_SEED_NUMBER,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type AssignSeedArgs = {
   provisionalPositioning?: boolean;

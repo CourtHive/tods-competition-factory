@@ -2,10 +2,10 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 
 // constants and types
 import { INVALID_OBJECT, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { SCHEDULE_LIMITS } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 type SetMatchUpDailyLimitsArgs = {
   tournamentRecords?: TournamentRecords;

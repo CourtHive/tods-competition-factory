@@ -1,5 +1,5 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { refreshEventDrawOrder } from './refreshEventDrawOrder';
 import { deleteDrawDefinitions } from '../events/deleteDrawDefinitions';
 

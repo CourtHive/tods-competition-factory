@@ -1,6 +1,6 @@
 import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { instanceCount } from '../../../tools/arrays';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { instanceCount } from '@Tools/arrays';
 
 import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 

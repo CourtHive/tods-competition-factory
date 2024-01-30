@@ -1,7 +1,7 @@
 import { removeIndividualParticipantIds } from './removeIndividualParticipantIds';
 import { decorateResult } from '../../functions/global/decorateResult';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { addNotice, getTopics } from '../../global/state/globalState';
+import { addNotice, getTopics } from '@Global/state/globalState';
 
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import {

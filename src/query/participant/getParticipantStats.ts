@@ -8,10 +8,10 @@ import { intersection } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
+import { ParticipantTypeUnion, Tournament } from '@Types/tournamentTypes';
 import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
-import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
-import { ResultType, Tally } from '../../types/factoryTypes';
+import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
+import { ResultType, Tally } from '@Types/factoryTypes';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { SUCCESS } from '@Constants/resultConstants';

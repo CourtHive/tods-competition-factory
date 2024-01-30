@@ -4,7 +4,7 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { TEAM, INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { SINGLES, DOUBLES } from '@Constants/matchUpTypes';
 import { MATCHUP } from '@Constants/attributeConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 // derive matchUpType from participants when not defined on matchUp
 export function getMatchUpType(params: {

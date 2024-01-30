@@ -4,7 +4,7 @@ import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { getStructureGroups } from '../structure/getStructureGroups';
 import { getStructureLinks } from '../drawDefinition/linkGetter';
 import { stageOrder } from '@Constants/drawDefinitionConstants';
-import { ensureInt } from '../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { ErrorType, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

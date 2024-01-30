@@ -3,7 +3,7 @@ import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredP
 import { removeExtension } from '../extensions/removeExtension';
 
 import { DISABLED } from '@Constants/extensionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 

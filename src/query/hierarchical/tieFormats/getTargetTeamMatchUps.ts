@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps'
 import { allDrawMatchUps } from '../../matchUps/getAllDrawMatchUps';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
 
-import { MatchUp } from '../../../types/tournamentTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 import { TEAM } from '@Constants/matchUpTypes';
 import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 

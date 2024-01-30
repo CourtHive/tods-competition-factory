@@ -3,9 +3,9 @@ import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
 import { DEFAULTED, RETIRED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { Score } from '../../../types/tournamentTypes';
-import { Tally } from '../../../types/factoryTypes';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { Score } from '@Types/tournamentTypes';
+import { Tally } from '@Types/factoryTypes';
 
 type CountSetsArgs = {
   matchUpFormat?: string;

@@ -12,10 +12,10 @@ import { findExtension } from '@Acquire/findExtension';
 import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { AD_HOC, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { Entry, PositionAssignment } from '../../../../types/tournamentTypes';
+import { Entry, PositionAssignment } from '@Types/tournamentTypes';
 import { RANKING, SEEDING } from '@Constants/scaleConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function prepareStage(params): ResultType & {
   positionAssignments?: PositionAssignment[];

@@ -1,7 +1,7 @@
 import { getFlightProfile } from '../event/getFlightProfile';
 
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
-import { DrawDefinition, Entry, EntryStatusUnion, Event } from '../../types/tournamentTypes';
+import { DrawDefinition, Entry, EntryStatusUnion, Event } from '@Types/tournamentTypes';
 
 type GetStageEntriesArgs = {
   entryStatuses?: EntryStatusUnion[];

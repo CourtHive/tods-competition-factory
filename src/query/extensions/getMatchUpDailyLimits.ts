@@ -6,8 +6,8 @@ import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { SCHEDULE_LIMITS } from '@Constants/extensionConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 import { findPolicy } from '../../acquire/findPolicy';
 
 type GetMatchUpDailyLimitsArgs = {

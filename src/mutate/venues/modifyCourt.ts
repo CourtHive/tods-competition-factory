@@ -6,11 +6,11 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findCourt } from './findCourt';
 
 // constants and types
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
-import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { HydratedMatchUp, HydratedCourt } from '@Types/hydrated';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import {
   INVALID_OBJECT,
   MISSING_COURT_ID,

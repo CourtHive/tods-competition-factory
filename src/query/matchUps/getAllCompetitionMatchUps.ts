@@ -1,14 +1,14 @@
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   MatchUpFilters,
   ParticipantsProfile,
   PolicyDefinitions,
   ScheduleVisibilityFilters,
   TournamentRecords,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 type CompetitionMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;

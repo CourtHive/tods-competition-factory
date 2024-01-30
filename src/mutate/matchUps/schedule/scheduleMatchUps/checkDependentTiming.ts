@@ -1,4 +1,4 @@
-import { addMinutesToTimeString, timeStringMinutes } from '../../../../tools/dateTime';
+import { addMinutesToTimeString, timeStringMinutes } from '@Tools/dateTime';
 
 export function checkDependendantTiming({
   matchUpScheduleTimes,

@@ -4,8 +4,8 @@ import { decorateResult } from '../../functions/global/decorateResult';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
-import { TournamentRecords } from '../../types/factoryTypes';
-import { Extension } from '../../types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { Extension } from '@Types/tournamentTypes';
 
 type AddExtensionArgs = {
   tournamentRecords?: TournamentRecords;

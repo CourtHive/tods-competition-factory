@@ -1,8 +1,8 @@
-import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
-import { getSeedPattern, getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { chunkArray, shuffleArray, unique } from '../../../../tools/arrays';
-import { numericSort } from '../../../../tools/sorting';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getSeedPattern, getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { chunkArray, shuffleArray, unique } from '@Tools/arrays';
+import { numericSort } from '@Tools/sorting';
 import { getSeedBlocks } from '../getSeedBlocks';
 
 import { CLUSTER, CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';

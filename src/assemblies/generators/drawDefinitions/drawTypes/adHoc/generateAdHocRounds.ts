@@ -3,9 +3,9 @@ import { generateAdHocMatchUps } from './generateAdHocMatchUps';
 import { generateRange } from '@Tools/arrays';
 
 // types
-import { DrawDefinition, Event, MatchUp } from '../../../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp } from '@Types/tournamentTypes';
 import { getParticipantIds } from './drawMatic/getParticipantIds';
-import { ResultType } from '../../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type GenerateAdHocRoundsArgs = {
   restrictMatchUpsCount?: boolean;

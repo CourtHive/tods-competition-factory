@@ -2,7 +2,7 @@ import { decorateResult } from '../../functions/global/decorateResult';
 
 import { ErrorType, INVALID_VALUES, MISSING_VALUE, NOT_FOUND } from '@Constants/errorConditionConstants';
 import { ELEMENT_REQUIRED, MISSING_NAME } from '@Constants/infoConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
 type RemoveExtensionResult = {

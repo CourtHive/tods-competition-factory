@@ -27,13 +27,13 @@ import { unique } from '@Tools/arrays';
 import { getSide } from './getSide';
 
 // constants and types
-import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '../../types/tournamentTypes';
+import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '@Types/tournamentTypes';
 import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
 import { MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { MIXED } from '@Constants/genderConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
 import {
@@ -46,7 +46,7 @@ import {
   PolicyDefinitions,
   ScheduleTiming,
   ScheduleVisibilityFilters,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 /*
   return all matchUps within a structure and its child structures

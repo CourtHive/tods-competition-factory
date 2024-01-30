@@ -1,12 +1,12 @@
-import { competitionScheduleMatchUps } from '../../../../../query/matchUps/competitionScheduleMatchUps';
-import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUpDependencies';
+import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
 import { validMatchUps } from '../../../../../validators/validMatchUp';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
-import { isObject } from '../../../../../tools/objects';
+import { isObject } from '@Tools/objects';
 
-import { Tournament } from '../../../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { INVALID_VALUES, MISSING_CONTEXT } from '@Constants/errorConditionConstants';
 import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 

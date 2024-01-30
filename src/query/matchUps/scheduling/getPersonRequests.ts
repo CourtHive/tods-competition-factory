@@ -4,9 +4,9 @@ import { findExtension } from '../../../acquire/findExtension';
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { PERSON_REQUESTS } from '@Constants/extensionConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';
-import { PersonRequests } from '../../../types/factoryTypes';
+import { PersonRequests } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 type GetPersonRequestsArgs = {
   tournamentRecords: { [key: string]: Tournament };

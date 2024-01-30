@@ -1,5 +1,5 @@
 import { findMatchUp } from '../../acquire/findMatchUp';
-import { isObject, isString } from '../../tools/objects';
+import { isObject, isString } from '@Tools/objects';
 
 import { MATCHUP, STRUCTURE } from '@Constants/attributeConstants';
 import { ErrorType, INVALID_VALUES, NOT_FOUND } from '@Constants/errorConditionConstants';

@@ -1,11 +1,11 @@
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
 import { removeDrawPositionAssignment } from '../../drawDefinitions/removeDrawPositionAssignment';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';

@@ -1,21 +1,21 @@
-import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
-import { formatDate, isValidDateString } from '../../../tools/dateTime';
+import { formatDate, isValidDateString } from '@Tools/dateTime';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { cycleMutationStatus } from '../../../global/state/globalState';
-import { generateVenues } from '../../../mutate/venues/generateVenues';
+import { cycleMutationStatus } from '@Global/state/globalState';
+import { generateVenues } from '@Mutate/venues/generateVenues';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateScheduledRounds } from './generateScheduledRounds';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { Extension } from '../../../types/tournamentTypes';
-import { addEvent } from '../../../mutate/events/addEvent';
-import { randomPop } from '../../../tools/arrays';
+import { Extension } from '@Types/tournamentTypes';
+import { addEvent } from '@Mutate/events/addEvent';
+import { randomPop } from '@Tools/arrays';
 
 import { INVALID_DATE, INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '../../../constants/resultConstants';
 
 const mockTournamentNames = [

@@ -1,12 +1,12 @@
-import { getParticipants } from '../../query/participants/getParticipants';
+import { getParticipants } from '@Query/participants/getParticipants';
 import { getParticipantId } from '../../functions/global/extractors';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { findParticipant } from '../../acquire/findParticipant';
 import { addParticipants } from './addParticipants';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
-import { Participant } from '../../types/tournamentTypes';
+import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { COMPETITOR, participantRoles } from '@Constants/participantRoles';
 import {

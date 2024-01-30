@@ -1,4 +1,4 @@
-import { getTeamLineUp } from '../../query/drawDefinition/getTeamLineUp';
+import { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 

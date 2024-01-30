@@ -1,5 +1,5 @@
 import { SET, NOAD } from '../../../constants/matchUpFormatConstants';
-import { isObject } from '../../../tools/objects';
+import { isObject } from '@Tools/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
   if (!isObject(matchUpFormatObject)) undefined;

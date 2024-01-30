@@ -1,20 +1,20 @@
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { addExtension } from '../../mutate/extensions/addExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { getParticipants } from '../participants/getParticipants';
 import { getTargetElement } from './getTargetElement';
 import { getAwardProfile } from './getAwardProfile';
 import { getAwardPoints } from './getAwardPoints';
-import { unique } from '../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
 import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { RANKING_POINTS } from '@Constants/extensionConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { MISSING_POLICY_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
-import { ParticipantFilters, PolicyDefinitions } from '../../types/factoryTypes';
+import { ParticipantFilters, PolicyDefinitions } from '@Types/factoryTypes';
 
 type GetTournamentPointsArgs = {
   participantFilters?: ParticipantFilters;

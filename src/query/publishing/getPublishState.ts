@@ -4,11 +4,11 @@ import { getDrawPublishStatus } from '@Query/event/getDrawPublishStatus';
 import { getDrawId } from '@Functions/global/extractors';
 
 // constants and types
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import { findEvent } from '../../acquire/findEvent';
-import { isString } from '../../tools/objects';
+import { isString } from '@Tools/objects';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,

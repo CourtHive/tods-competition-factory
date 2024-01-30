@@ -2,7 +2,7 @@ import { destroyGroupEntry } from './destroyGroupEntry';
 
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { DrawDefinition, Tournament, Event } from '../../types/tournamentTypes';
+import { DrawDefinition, Tournament, Event } from '@Types/tournamentTypes';
 
 /**
  *

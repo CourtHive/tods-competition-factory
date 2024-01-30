@@ -2,7 +2,7 @@ import { definedAttributes } from '@Tools/definedAttributes';
 
 // constants
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type DecorateResultArgs = {
   context?: { [key: string]: any };

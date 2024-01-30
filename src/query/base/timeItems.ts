@@ -1,10 +1,10 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 
 // constants and types
-import { Event, TimeItem, Tournament } from '../../types/tournamentTypes';
+import { Event, TimeItem, Tournament } from '@Types/tournamentTypes';
 import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,

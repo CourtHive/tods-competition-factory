@@ -1,12 +1,12 @@
-import { addParticipantGroupings } from '../../mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
-import { addNationalityCode } from '../../mutate/participants/addNationalityCode';
+import { addParticipantGroupings } from '@Mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
+import { addNationalityCode } from '@Mutate/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 import { getParticipantMap } from './getParticipantMap';
-import { Tournament } from '../../types/tournamentTypes';
-import { HydratedParticipant } from '../../types/hydrated';
-import { ContextProfile, ParticipantsProfile, PolicyDefinitions } from '../../types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedParticipant } from '@Types/hydrated';
+import { ContextProfile, ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
 
 type HydrateParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;

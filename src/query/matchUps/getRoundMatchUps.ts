@@ -1,15 +1,15 @@
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { validMatchUps } from '../../validators/validMatchUp';
-import { numericSort } from '../../tools/sorting';
-import { ensureInt } from '../../tools/ensureInt';
-import { isPowerOf2 } from '../../tools/math';
-import { chunkArray, generateRange, intersection } from '../../tools/arrays';
+import { numericSort } from '@Tools/sorting';
+import { ensureInt } from '@Tools/ensureInt';
+import { isPowerOf2 } from '@Tools/math';
+import { chunkArray, generateRange, intersection } from '@Tools/arrays';
 
 import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { RoundProfile } from '../../types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { RoundProfile } from '@Types/factoryTypes';
 import { TEAM } from '@Constants/matchUpTypes';
 
 type GetRoundMatchUpsArgs = {

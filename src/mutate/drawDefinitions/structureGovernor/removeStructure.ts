@@ -1,9 +1,9 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '../../../functions/global/extractors';
-import { xa } from '../../../tools/objects';
+import { xa } from '@Tools/objects';
 import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '../../../acquire/findStructure';
 import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';
@@ -19,7 +19,7 @@ import {
   SCORES_PRESENT,
   STRUCTURE_NOT_FOUND,
 } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type RemoveStructureArgs = {
   tournamentRecord: Tournament;

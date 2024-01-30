@@ -1,12 +1,12 @@
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../../helpers/parameters/resolveFromParameters';
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';
 
 import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { DRAW_DEFINITION, ERROR, MATCHUP, MATCHUP_ID, PARAM, PARTICIPANT_ID } from '@Constants/attributeConstants';
 
 type ToggleParticipantCheckInStateArgs = {

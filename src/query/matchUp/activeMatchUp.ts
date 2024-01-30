@@ -3,7 +3,7 @@ import { isActiveMatchUpStatus } from '@Query/matchUp/checkStatusType';
 
 // constants and types
 import { DEFAULTED, IN_PROGRESS, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { Score } from '../../types/tournamentTypes';
+import { Score } from '@Types/tournamentTypes';
 
 // an active matchUp is one that has a winningSide, more than one set, or a single set with any score value greater than zero
 // when { matchUpType: TEAM } the child tieMatchUps must be checked as well

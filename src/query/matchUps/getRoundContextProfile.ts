@@ -3,12 +3,12 @@ import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { getRoundMatchUps } from './getRoundMatchUps';
 
 // constants and types
-import { POLICY_ROUND_NAMING_DEFAULT } from '../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { POLICY_ROUND_NAMING_DEFAULT } from '@Fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { RoundProfile, ResultType } from '../../types/factoryTypes';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
+import { RoundProfile, ResultType } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetRoundContextProfileArgs = {
   drawDefinition?: DrawDefinition;

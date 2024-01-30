@@ -1,4 +1,4 @@
-import { addNotice } from '../../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
@@ -12,7 +12,7 @@ import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
 } from '../../../constants/errorConditionConstants';
-import { Participant, Penalty, Tournament } from '../../../types/tournamentTypes';
+import { Participant, Penalty, Tournament } from '@Types/tournamentTypes';
 
 export function modifyPenalty(params) {
   const { tournamentRecords } = params;

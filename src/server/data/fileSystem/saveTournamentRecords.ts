@@ -1,5 +1,5 @@
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { Tournament } from '../../../types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS, UTF8 } from '../../common/constants/app';
 
 import * as fs from 'fs-extra';

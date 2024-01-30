@@ -1,8 +1,8 @@
 import { saveTournamentRecords } from './saveTournamentRecords';
 import * as governors from '../../../assemblies/governors';
 
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { Tournament } from '../../../types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../common/constants/app';
 
 export function generateTournamentRecord(mockProfile?: any) {

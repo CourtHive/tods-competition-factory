@@ -1,7 +1,7 @@
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
-import { getEventTimeItem } from '../../query/base/timeItems';
+import { getEventTimeItem } from '@Query/base/timeItems';
 import { addEventTimeItem } from '../timeItems/addTimeItem';
-import { addNotice } from '../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
 import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';

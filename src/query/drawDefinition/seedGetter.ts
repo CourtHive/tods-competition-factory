@@ -1,7 +1,7 @@
-import { getSeedBlocks, getSeedGroups } from '../../mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+import { getSeedBlocks, getSeedGroups } from '@Mutate/drawDefinitions/positionGovernor/getSeedBlocks';
 import { getPositionAssignments, structureAssignedDrawPositions } from './positionsGetter';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { chunkArray, generateRange, shuffleArray } from '../../tools/arrays';
+import { chunkArray, generateRange, shuffleArray } from '@Tools/arrays';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getNumericSeedValue } from './getNumericSeedValue';
@@ -11,8 +11,8 @@ import { isLucky } from './isLucky';
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
 import { CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '@Constants/drawDefinitionConstants';
 import { INVALID_SEED_POSITION, MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
-import { PolicyDefinitions, SeedBlock, SeedingProfile } from '../../types/factoryTypes';
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
+import { PolicyDefinitions, SeedBlock, SeedingProfile } from '@Types/factoryTypes';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
 
 /**
  * A seedBlock is an object pairing an array of drawPositions with an array of seedNumbers { drawPositions: [], seedNumbers: []}

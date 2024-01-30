@@ -1,4 +1,4 @@
-import { chunkArray, generateRange } from '../../tools/arrays';
+import { chunkArray, generateRange } from '@Tools/arrays';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findStructure } from '../../acquire/findStructure';

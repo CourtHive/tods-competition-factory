@@ -1,15 +1,15 @@
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addDrawNotice, addMatchUpsNotice } from '../notifications/drawNotifications';
-import { allEventMatchUps } from '../../query/matchUps/getAllEventMatchUps';
+import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '../../validators/validateTieFormat';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { getTopics } from '../../global/state/globalState';
-import { UUID } from '../../tools/UUID';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { getTopics } from '@Global/state/globalState';
+import { UUID } from '@Tools/UUID';
 
 import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
-import { Event, Tournament } from '../../types/tournamentTypes';
+import { Event, Tournament } from '@Types/tournamentTypes';
 import { ADD_MATCHUPS } from '@Constants/topicConstants';
-import { tieFormats } from '../../fixtures/scoring/tieFormats';
+import { tieFormats } from '@Fixtures/scoring/tieFormats';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_EXISTS,

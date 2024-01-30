@@ -1,9 +1,9 @@
-import { getCompetitionDateRange } from '../../../query/tournaments/getCompetitionDateRange';
+import { getCompetitionDateRange } from '@Query/tournaments/getCompetitionDateRange';
 import { decorateResult } from '../../../functions/global/decorateResult';
-import { isValidDateString, sameDay } from '../../../tools/dateTime';
+import { isValidDateString, sameDay } from '@Tools/dateTime';
 import { findExtension } from '../../../acquire/findExtension';
 import { setSchedulingProfile } from '../../tournaments/schedulingProfile';
-import { isObject } from '../../../tools/objects';
+import { isObject } from '@Tools/objects';
 
 import { SCHEDULING_PROFILE } from '../../../constants/extensionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

@@ -3,7 +3,7 @@ import { nextPowerOf2 } from '@Tools/math';
 
 // constants and types
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type GetDrawSizeArgs = {
   participantsCount?: number;

@@ -1,7 +1,7 @@
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { findVenue } from '../../venues/findVenue';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 import { ASSIGN_VENUE } from '../../../constants/timeItemConstants';
 import { MISSING_TOURNAMENT_RECORD, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
 

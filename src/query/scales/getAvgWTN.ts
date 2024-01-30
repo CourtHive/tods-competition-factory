@@ -1,6 +1,6 @@
 import { getDetailsWTN } from './getDetailsWTN';
 
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetAvgWTNArgs = {
   matchUps: HydratedMatchUp[];

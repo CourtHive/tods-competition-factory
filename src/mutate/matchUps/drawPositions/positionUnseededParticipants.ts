@@ -1,13 +1,13 @@
 import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/avoidance/randomUnseededSeparation';
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { decorateResult } from '../../../functions/global/decorateResult';
 import { findExtension } from '../../../acquire/findExtension';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { shuffleArray } from '../../../tools/arrays';
+import { shuffleArray } from '@Tools/arrays';
 
 import { INSUFFICIENT_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';

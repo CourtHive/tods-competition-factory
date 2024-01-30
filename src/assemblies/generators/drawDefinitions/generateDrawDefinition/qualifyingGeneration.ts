@@ -8,7 +8,7 @@ import { prepareStage } from './prepareStage';
 // constants and types
 import { POSITION, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
   const {

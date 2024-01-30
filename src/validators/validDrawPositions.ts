@@ -1,4 +1,4 @@
-import { getDevContext } from '../global/state/globalState';
+import { getDevContext } from '@Global/state/globalState';
 
 import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 

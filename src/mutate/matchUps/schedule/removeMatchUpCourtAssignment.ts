@@ -1,4 +1,4 @@
-import { latestVisibleTimeItemValue } from '../../../query/matchUp/latestVisibleTimeItemValue';
+import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';

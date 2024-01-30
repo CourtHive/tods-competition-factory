@@ -1,8 +1,8 @@
-import { getStructurePositionedSeeds } from '../../../../query/structure/getStructurePositionedSeeds';
-import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
+import { getStructurePositionedSeeds } from '@Query/structure/getStructurePositionedSeeds';
+import { getNumericSeedValue } from '@Query/drawDefinition/getNumericSeedValue';
 import { getBlockSortedRandomDrawPositions } from './getBlockSortedRandomDrawPositions';
-import { getValidSeedBlocks } from '../../../../query/drawDefinition/seedGetter';
-import { unique } from '../../../../tools/arrays';
+import { getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
+import { unique } from '@Tools/arrays';
 
 export function getSeedOrderByePositions({
   provisionalPositioning,

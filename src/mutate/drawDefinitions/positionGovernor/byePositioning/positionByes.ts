@@ -7,8 +7,8 @@ import { findStructure } from '@Acquire/findStructure';
 import { shuffleArray } from '@Tools/arrays';
 
 // constants and types
-import { DrawDefinition, Event, Structure, Tournament } from '../../../../types/tournamentTypes';
-import { PolicyDefinitions, SeedingProfile, MatchUpsMap } from '../../../../types/factoryTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
+import { PolicyDefinitions, SeedingProfile, MatchUpsMap } from '@Types/factoryTypes';
 import { CONTAINER, ITEM, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 

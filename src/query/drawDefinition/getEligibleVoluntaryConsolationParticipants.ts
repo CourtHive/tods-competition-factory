@@ -7,9 +7,9 @@ import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '@Constants/policyConstants';
 import { MAIN, PLAY_OFF, QUALIFYING, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { UNGROUPED, WITHDRAWN } from '@Constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedSide } from '../../types/hydrated';
+import { HydratedSide } from '@Types/hydrated';
 import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
@@ -18,7 +18,7 @@ import {
   Participant,
   StageTypeUnion,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GetEligibleVoluntaryConsolationParticipantsArgs = {
   excludedMatchUpStatuses?: MatchUpStatusUnion[];

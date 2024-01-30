@@ -1,5 +1,5 @@
-import { xa } from '../../tools/objects';
-import { chunkArray } from '../../tools/arrays';
+import { xa } from '@Tools/objects';
+import { chunkArray } from '@Tools/arrays';
 
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 

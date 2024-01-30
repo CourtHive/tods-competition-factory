@@ -1,17 +1,17 @@
-import { getStageParticipantsCount } from '../../../query/drawDefinition/getStageParticipantsCount';
-import { getStageParticipants } from '../../../query/drawDefinition/getStageParticipants';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { getStageParticipantsCount } from '@Query/drawDefinition/getStageParticipantsCount';
+import { getStageParticipants } from '@Query/drawDefinition/getStageParticipants';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { generateEventParticipants } from './generateEventParticipants';
 import { getParticipantId } from '../../../functions/global/extractors';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { publishEvent } from '../../../mutate/publishing/publishEvent';
+import { publishEvent } from '@Mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { addEvent } from '../../../mutate/events/addEvent';
+import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { SINGLES, DOUBLES, TEAM } from '../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';

@@ -6,8 +6,8 @@ import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
 import { LOSER, WINNER, ROUND_OUTCOME, DRAW, FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 /**
  * @param {string=} matchUpId - matchUp identifier for sourceMatchUp

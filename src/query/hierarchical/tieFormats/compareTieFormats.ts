@@ -1,9 +1,9 @@
-import { getTieFormatDesc } from '../../../query/hierarchical/tieFormats/getTieFormatDescription';
+import { getTieFormatDesc } from '@Query/hierarchical/tieFormats/getTieFormatDescription';
 import { stringSort } from '../../../functions/sorters/stringSort';
-import { isConvertableInteger } from '../../../tools/math';
-import { difference, unique } from '../../../tools/arrays';
+import { isConvertableInteger } from '@Tools/math';
+import { difference, unique } from '@Tools/arrays';
 
-import { TieFormat } from '../../../types/tournamentTypes';
+import { TieFormat } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
 type CompareTieFormatsArgs = {

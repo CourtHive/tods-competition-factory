@@ -9,14 +9,14 @@ import { addNotice } from '@Global/state/globalState';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { Participant, ParticipantRoleUnion, Tournament } from '../../types/tournamentTypes';
+import { Participant, ParticipantRoleUnion, Tournament } from '@Types/tournamentTypes';
 import { GROUP, TEAM, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { LINEUPS } from '@Constants/extensionConstants';
-import { HydratedParticipant } from '../../types/hydrated';
-import { MappedMatchUps } from '../../types/factoryTypes';
+import { HydratedParticipant } from '@Types/hydrated';
+import { MappedMatchUps } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,

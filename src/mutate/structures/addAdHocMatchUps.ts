@@ -8,7 +8,7 @@ import { overlap } from '@Tools/arrays';
 // constants and types
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_VALUES,
   INVALID_STRUCTURE,

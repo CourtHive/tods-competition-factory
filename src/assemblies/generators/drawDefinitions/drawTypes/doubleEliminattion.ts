@@ -1,12 +1,12 @@
 import { doubleEliminationLinks } from '../links/doubleEliminationLinks';
 import { structureTemplate } from '../../templates/structureTemplate';
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
 import { MAIN, BACKDRAW, DECIDER, CONSOLATION, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Structure } from '../../../../types/tournamentTypes';
+import { Structure } from '@Types/tournamentTypes';
 
 export function generateDoubleElimination({ structureName, matchUpType, idPrefix, drawSize, isMock, uuids }) {
   const structures: Structure[] = [];

@@ -1,5 +1,5 @@
-import { extractDate, extractTime } from '../../../../../tools/dateTime';
-import { generateTimeCode } from '../../../../../tools/timeCode';
+import { extractDate, extractTime } from '@Tools/dateTime';
+import { generateTimeCode } from '@Tools/timeCode';
 
 import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
 

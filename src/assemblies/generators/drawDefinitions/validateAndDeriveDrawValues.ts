@@ -10,9 +10,9 @@ import { nextPowerOf2 } from '@Tools/math';
 // constants and types
 import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
-import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
-import { DrawTypeUnion } from '../../../types/tournamentTypes';
+import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { DrawTypeUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   AD_HOC,

@@ -1,5 +1,5 @@
 import { decorateResult } from '../../functions/global/decorateResult';
-import { overlap } from '../../tools/arrays';
+import { overlap } from '@Tools/arrays';
 
 import { LOSER, WINNER } from '@Constants/drawDefinitionConstants';
 import { MISSING_STRUCTURE_ID, MISSING_DRAW_DEFINITION, INVALID_VALUES } from '@Constants/errorConditionConstants';

@@ -1,7 +1,7 @@
 import syncGlobalState from './syncGlobalState';
 import { intersection } from '@Tools/arrays';
 
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import {
   ErrorType,
   INVALID_VALUES,

@@ -1,13 +1,13 @@
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
 import { decorateResult } from '../../functions/global/decorateResult';
-import { getEventData } from '../../query/event/getEventData';
-import { addNotice } from '../../global/state/globalState';
+import { getEventData } from '@Query/event/getEventData';
+import { addNotice } from '@Global/state/globalState';
 
-import { Event, Tournament } from '../../types/tournamentTypes';
+import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

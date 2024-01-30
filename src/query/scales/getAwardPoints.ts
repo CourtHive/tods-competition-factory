@@ -1,4 +1,4 @@
-import { isConvertableInteger } from '../../tools/math';
+import { isConvertableInteger } from '@Tools/math';
 import { getTargetElement } from './getTargetElement';
 
 type GetAwardPointsArgs = {

@@ -1,9 +1,9 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { generateRange, unique } from '../../../tools/arrays';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { generateRange, unique } from '@Tools/arrays';
 import { validMatchUps } from '../../../validators/validMatchUp';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { ensureInt } from '../../../tools/ensureInt';
-import { UUID } from '../../../tools/UUID';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { ensureInt } from '@Tools/ensureInt';
+import { UUID } from '@Tools/UUID';
 
 import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';

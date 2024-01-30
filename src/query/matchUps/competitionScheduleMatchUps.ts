@@ -1,19 +1,19 @@
 import { getCompetitionPublishedDrawDetails } from './getCompetitionPublishedDrawDetails';
 import { scheduledSortedMatchUps } from '../../functions/sorters/scheduledSortedMatchUps';
 import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
-import { getSchedulingProfile } from '../../mutate/tournaments/schedulingProfile';
+import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getCompetitionMatchUps } from './getCompetitionMatchUps';
-import { getTournamentId } from '../../global/state/globalState';
+import { getTournamentId } from '@Global/state/globalState';
 import { getTournamentTimeItem } from '../base/timeItems';
 
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { MatchUpFilters, TournamentRecords } from '../../types/factoryTypes';
+import { MatchUpFilters, TournamentRecords } from '@Types/factoryTypes';
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { Venue } from '../../types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { Venue } from '@Types/tournamentTypes';
 
 type CompetitionScheduleMatchUpsArgs = {
   tournamentRecords: TournamentRecords;

@@ -1,5 +1,5 @@
-import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { removeExtension } from '../../extensions/removeExtension';
 import { addExtension } from '../../extensions/addExtension';

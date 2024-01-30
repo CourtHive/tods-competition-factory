@@ -1,5 +1,5 @@
 import { parse } from '../matchUpFormatCode/parse';
-import { isNumeric } from '../../../tools/math';
+import { isNumeric } from '@Tools/math';
 
 import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 import {

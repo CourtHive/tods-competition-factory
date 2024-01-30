@@ -1,6 +1,6 @@
-import { isConvertableInteger, isPowerOf2 } from '../../../../tools/math';
-import { generateRange } from '../../../../tools/arrays';
-import { ensureInt } from '../../../../tools/ensureInt';
+import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
+import { generateRange } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
 import { addFinishingRounds } from '../addFinishingRounds';
 import { generateMatchUpId } from '../generateMatchUpId';
 import { treeMatchUps } from './eliminationTree';

@@ -1,4 +1,4 @@
-import { deepCopyEnabled } from '../global/state/globalState';
+import { deepCopyEnabled } from '@Global/state/globalState';
 
 function getDefinedKeys(obj, ignoreValues, ignoreEmptyArrays) {
   return Object.keys(obj).filter(

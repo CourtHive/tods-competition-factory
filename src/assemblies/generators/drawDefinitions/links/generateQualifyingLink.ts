@@ -1,8 +1,8 @@
-import { definedAttributes } from '../../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 
 import { MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
 import { DRAW, WINNER } from '@Constants/drawDefinitionConstants';
-import { LinkTypeUnion } from '../../../../types/tournamentTypes';
+import { LinkTypeUnion } from '@Types/tournamentTypes';
 
 type GenerateQualifyingLinkArgs = {
   targetEntryRound?: number;

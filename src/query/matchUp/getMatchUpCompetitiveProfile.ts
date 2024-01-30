@@ -1,9 +1,9 @@
 import { getBand, getScoreComponents, pctSpread } from './scoreComponents';
 import { findPolicy } from '../../acquire/findPolicy';
 
-import POLICY_COMPETITIVE_BANDS_DEFAULT from '../../fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
+import POLICY_COMPETITIVE_BANDS_DEFAULT from '@Fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
 import { POLICY_TYPE_COMPETITIVE_BANDS } from '@Constants/policyConstants';
-import { MatchUp, Tournament } from '../../types/tournamentTypes';
+import { MatchUp, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ErrorType, INVALID_VALUES, MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 

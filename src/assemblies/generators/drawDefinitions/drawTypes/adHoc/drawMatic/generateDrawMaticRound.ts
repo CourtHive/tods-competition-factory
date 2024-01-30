@@ -8,7 +8,7 @@ import { isObject } from '@Tools/objects';
 // constants and types
 import { TEAM } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_IDS,
@@ -16,14 +16,7 @@ import {
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-  EventTypeUnion,
-  Event,
-  Tournament,
-} from '../../../../../../types/tournamentTypes';
+import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event, Tournament } from '@Types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;

@@ -5,10 +5,10 @@ import { getItemTieFormat } from './getItemTieFormat';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '@Types/tournamentTypes';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   ErrorType,
   INVALID_MATCHUP,

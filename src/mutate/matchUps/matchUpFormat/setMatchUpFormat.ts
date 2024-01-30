@@ -1,15 +1,15 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
 import { decorateResult } from '../../../functions/global/decorateResult';
 import { getMatchUpId } from '../../../functions/global/extractors';
 import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
 import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
 
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
 import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   INVALID_EVENT_TYPE,
   INVALID_VALUES,

@@ -4,10 +4,10 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 // constants and types
 import { completedMatchUpStatuses, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { AD_HOC } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   INVALID_DRAW_TYPE,

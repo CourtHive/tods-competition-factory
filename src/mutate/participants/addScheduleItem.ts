@@ -1,5 +1,5 @@
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { extractDate, extractTime } from '../../tools/dateTime';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { extractDate, extractTime } from '@Tools/dateTime';
 
 import { BYE } from '@Constants/matchUpStatusConstants';
 

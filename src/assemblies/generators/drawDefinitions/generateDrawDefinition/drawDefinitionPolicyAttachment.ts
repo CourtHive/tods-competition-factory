@@ -2,7 +2,7 @@ import { decorateResult } from '../../../../functions/global/decorateResult';
 import { attachPolicies } from '../../../governors/policyGovernor';
 
 import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
-import POLICY_SEEDING_DEFAULT from '../../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
+import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function policyAttachment({ appliedPolicies, policyDefinitions, drawDefinition, stack }) {

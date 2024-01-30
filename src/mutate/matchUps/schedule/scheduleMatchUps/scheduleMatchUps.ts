@@ -1,6 +1,6 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
-import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { checkRequiredParameters } from '../../../../helpers/parameters/checkRequiredParameters';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
@@ -14,8 +14,8 @@ import { addMatchUpScheduledTime } from '../scheduledTime';
 import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
-import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
-import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../tools/dateTime';
+import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
+import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '@Tools/dateTime';
 
 import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
 import { SUCCESS } from '@Constants/resultConstants';

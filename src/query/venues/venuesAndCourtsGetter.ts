@@ -5,9 +5,9 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
-import { HydratedCourt, HydratedVenue } from '../../types/hydrated';
-import { Tournament, Venue } from '../../types/tournamentTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { HydratedCourt, HydratedVenue } from '@Types/hydrated';
+import { Tournament, Venue } from '@Types/tournamentTypes';
 import { DISABLED } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 

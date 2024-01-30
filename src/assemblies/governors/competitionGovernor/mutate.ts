@@ -1,1 +1,1 @@
-export { linkTournaments, unlinkTournament, unlinkTournaments } from '../../../mutate/tournaments/tournamentLinks';
+export { linkTournaments, unlinkTournament, unlinkTournaments } from '@Mutate/tournaments/tournamentLinks';

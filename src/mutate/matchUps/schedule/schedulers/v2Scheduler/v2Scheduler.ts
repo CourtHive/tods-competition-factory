@@ -6,7 +6,7 @@ import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterR
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
-import { getVenueSchedulingDetails } from '../../../../../query/matchUps/scheduling/getVenueSchedulingDetails';
+import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '../../../../../functions/global/extractors';
@@ -15,19 +15,12 @@ import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
 import { generateBookings } from '../utils/generateBookings';
-import {
-  addMinutesToTimeString,
-  extractDate,
-  sameDay,
-  timeStringMinutes,
-  timeToDate,
-  zeroPad,
-} from '../../../../../tools/dateTime';
+import { addMinutesToTimeString, extractDate, sameDay, timeStringMinutes, timeToDate, zeroPad } from '@Tools/dateTime';
 
-import { HydratedCourt, HydratedMatchUp } from '../../../../../types/hydrated';
+import { HydratedCourt, HydratedMatchUp } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TOTAL } from '@Constants/scheduleConstants';
-import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
+import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
 
 // NOTE: non-Garman scheduling
 

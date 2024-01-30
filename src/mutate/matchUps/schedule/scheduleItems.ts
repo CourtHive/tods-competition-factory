@@ -13,21 +13,14 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findParticipant } from '@Acquire/findParticipant';
 import { isConvertableInteger } from '@Tools/math';
 import { ensureInt } from '@Tools/ensureInt';
-import {
-  convertTime,
-  extractDate,
-  extractTime,
-  formatDate,
-  getIsoDateString,
-  validTimeValue,
-} from '../../../tools/dateTime';
+import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, validTimeValue } from '@Tools/dateTime';
 
 // constants and types
-import { AddScheduleAttributeArgs, ResultType } from '../../../types/factoryTypes';
+import { AddScheduleAttributeArgs, ResultType } from '@Types/factoryTypes';
 import { INDIVIDUAL } from '../../../constants/participantConstants';
 import { OFFICIAL } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
@@ -53,7 +46,7 @@ import {
   SCHEDULED_DATE,
   COURT_ORDER,
 } from '../../../constants/timeItemConstants';
-import { DrawDefinition, Event, TimeItem } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, TimeItem } from '@Types/tournamentTypes';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);

@@ -6,8 +6,8 @@ import { numericSort } from '@Tools/sorting';
 
 // constants and types
 import { MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { RoundProfile, MatchUpsMap } from '../../types/factoryTypes';
-import { DrawDefinition } from '../../types/tournamentTypes';
+import { RoundProfile, MatchUpsMap } from '@Types/factoryTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 type GetDrawPositionRangesArgs = {
   drawDefinition: DrawDefinition;

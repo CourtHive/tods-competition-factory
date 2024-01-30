@@ -14,12 +14,12 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '@Types/tournamentTypes';
 import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
 import { CONTAINER } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,

@@ -2,13 +2,13 @@ import { getSourceStructureIdsAndRelevantLinks } from '../../structure/getSource
 import { findExtension } from '../../../acquire/findExtension';
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '../positionsGetter';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { isCompletedStructure } from '../structureActions';
 
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { TALLY } from '@Constants/extensionConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { HydratedParticipant } from '@Types/hydrated';
 import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
 

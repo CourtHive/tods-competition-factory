@@ -3,8 +3,8 @@ import { getParticipants } from './getParticipants';
 // constants and types
 import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { GROUP, PAIR, TEAM } from '@Constants/participantConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 // Returns all grouping participants which include individual participantId
 

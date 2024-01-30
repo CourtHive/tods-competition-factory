@@ -1,15 +1,15 @@
 import { getParticipantId } from '../../../functions/global/extractors';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
 import { getNumericSeedValue } from '../getNumericSeedValue';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { getNextSeedBlock } from '../seedGetter';
 
-import { DrawDefinition, Event, PositionAssignment } from '../../../types/tournamentTypes';
-import { PolicyDefinitions, SeedingProfile } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, PositionAssignment } from '@Types/tournamentTypes';
+import { PolicyDefinitions, SeedingProfile } from '@Types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { HydratedParticipant } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
 import {
   ASSIGN_BYE,

@@ -1,4 +1,4 @@
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 export function resolveTournamentRecords(params?): TournamentRecords {
   return (

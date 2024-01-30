@@ -1,9 +1,9 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { addSchedulingProfileRound } from '../../../mutate/matchUps/schedule/addSchedulingProfileRound';
-import { intersection, unique } from '../../../tools/arrays';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { addSchedulingProfileRound } from '@Mutate/matchUps/schedule/addSchedulingProfileRound';
+import { intersection, unique } from '@Tools/arrays';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { ErrorType, INVALID_VALUES } from '../../../constants/errorConditionConstants';
 
 type GenerateSchedulingProfileArgs = {

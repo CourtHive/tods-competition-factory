@@ -1,5 +1,5 @@
-import { isConvertableInteger } from '../../tools/math';
-import { ensureInt } from '../../tools/ensureInt';
+import { isConvertableInteger } from '@Tools/math';
+import { ensureInt } from '@Tools/ensureInt';
 
 export function getNumericSeedValue(seedValue) {
   if (!seedValue) return Infinity;

@@ -3,9 +3,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 // constants and types
 import { INVALID_GENDER } from '@Constants/errorConditionConstants';
 import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
-import { GenderUnion } from '../types/tournamentTypes';
+import { GenderUnion } from '@Types/tournamentTypes';
 import { DOUBLES } from '@Constants/matchUpTypes';
-import { ResultType } from '../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type GenderValidityCheckArgs = {
   referenceGender?: GenderUnion;

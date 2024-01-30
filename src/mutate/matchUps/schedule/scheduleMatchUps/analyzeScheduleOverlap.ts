@@ -1,5 +1,5 @@
-import { definedAttributes } from '../../../../tools/definedAttributes';
-import { timeStringMinutes } from '../../../../tools/dateTime';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { timeStringMinutes } from '@Tools/dateTime';
 
 export function analyzeScheduleOverlap(a, b) {
   const startA = timeStringMinutes(a.scheduleTime);

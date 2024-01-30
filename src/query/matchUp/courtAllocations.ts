@@ -1,5 +1,5 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';

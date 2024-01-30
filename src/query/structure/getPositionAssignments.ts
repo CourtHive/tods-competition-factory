@@ -6,7 +6,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Structure, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Structure, Tournament } from '@Types/tournamentTypes';
 
 type GetPositionAssignmentsArgs = {
   tournamentRecord: Tournament;

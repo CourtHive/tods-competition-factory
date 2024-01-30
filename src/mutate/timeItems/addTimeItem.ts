@@ -1,7 +1,7 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { getTimeItem } from '../../query/base/timeItems';
+import { getTimeItem } from '@Query/base/timeItems';
 
-import { TimeItem, Tournament } from '../../types/tournamentTypes';
+import { TimeItem, Tournament } from '@Types/tournamentTypes';
 import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

@@ -5,11 +5,11 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { SUB_ORDER } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import { TEAM } from '@Constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,

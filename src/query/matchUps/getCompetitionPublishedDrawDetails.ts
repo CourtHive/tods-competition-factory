@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from '../event/getEventPublishStatus';
 import { getDrawPublishStatus } from '../event/getDrawPublishStatus';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { isObject } from '../../tools/objects';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { isObject } from '@Tools/objects';
 
 export function getCompetitionPublishedDrawDetails({ tournamentRecords }: { tournamentRecords: TournamentRecords }) {
   const drawIds: string[] = [];

@@ -13,9 +13,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureSideLineUps } from './ensureSideLineUps';
 
 // constants and types
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { LineUp, PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';

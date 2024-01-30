@@ -1,6 +1,6 @@
 import { findExtension } from '../../acquire/findExtension';
 
-import { QueueMethod, TournamentRecords } from '../../types/factoryTypes';
+import { QueueMethod, TournamentRecords } from '@Types/factoryTypes';
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 /**

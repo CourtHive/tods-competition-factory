@@ -4,10 +4,10 @@ import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { addExtension } from '@Mutate/extensions/addExtension';
 
 // constants and types
-import { PolicyDefinitions, TournamentRecords, ResultType } from '../../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { PolicyDefinitions, TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { isObject, isString } from '../../../tools/objects';
+import { isObject, isString } from '@Tools/objects';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,

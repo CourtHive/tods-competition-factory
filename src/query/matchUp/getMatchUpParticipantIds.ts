@@ -2,10 +2,10 @@ import { unique } from '@Tools/arrays';
 
 // constants and types
 import { MISSING_CONTEXT, MISSING_MATCHUP, INVALID_MATCHUP } from '@Constants/errorConditionConstants';
-import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
+import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 // Does NOT include potential participandIds
 

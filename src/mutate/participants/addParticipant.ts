@@ -1,14 +1,14 @@
 import { decorateResult } from '../../functions/global/decorateResult';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../tools/arrays';
-import { UUID } from '../../tools/UUID';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
+import { intersection } from '@Tools/arrays';
+import { UUID } from '@Tools/UUID';
 
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { GROUP, INDIVIDUAL, PAIR, participantTypes, TEAM } from '@Constants/participantConstants';
 import {
   INVALID_PARTICIPANT_IDS,

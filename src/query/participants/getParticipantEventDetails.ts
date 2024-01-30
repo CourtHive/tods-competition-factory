@@ -3,8 +3,8 @@ import { overlap } from '@Tools/arrays';
 // constants and types
 import { MISSING_PARTICIPANT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { PAIR, TEAM } from '@Constants/participantConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { ResultType } from '../../types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 /**
  * Returns { eventDetails: { eventName, eventId }} for events in which participantId or TEAM/PAIR including participantId appears

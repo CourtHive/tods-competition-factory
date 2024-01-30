@@ -11,7 +11,7 @@ import { findStructure } from '@Acquire/findStructure';
 // constants and types
 import { ALTERNATE, WITHDRAWN } from '@Constants/entryStatusConstants';
 import { PAIR } from '@Constants/participantConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function removeDrawPositionAssignment(params): ResultType & { participantId?: string } {
   const { tournamentRecord, replaceWithBye, drawDefinition, destroyPair, entryStatus, matchUpsMap, drawId } = params;

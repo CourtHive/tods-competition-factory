@@ -1,5 +1,5 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { addNotice, getTopics } from '../../global/state/globalState';
+import { addNotice, getTopics } from '@Global/state/globalState';
 
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';

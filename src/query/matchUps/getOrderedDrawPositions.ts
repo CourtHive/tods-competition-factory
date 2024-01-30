@@ -1,8 +1,8 @@
-import { allNumeric, noNumeric, overlap } from '../../tools/arrays';
-import { ensureInt } from '../../tools/ensureInt';
-import { numericSort } from '../../tools/sorting';
+import { allNumeric, noNumeric, overlap } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
+import { numericSort } from '@Tools/sorting';
 
-import { RoundProfile } from '../../types/factoryTypes';
+import { RoundProfile } from '@Types/factoryTypes';
 
 type GetOrderedDrawPositionsArgs = {
   roundProfile: RoundProfile;

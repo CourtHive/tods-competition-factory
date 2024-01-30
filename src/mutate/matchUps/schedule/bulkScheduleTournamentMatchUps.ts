@@ -1,10 +1,10 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from './scheduleItems';
 import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 
-import { Tournament } from '../../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_SCHEDULE,

@@ -9,11 +9,11 @@ import { generateRange } from '@Tools/arrays';
 import { isNumeric } from '@Tools/math';
 
 // constants and types
-import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
+import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '@Types/tournamentTypes';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
 import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
-import { ResultType, LineUp } from '../../../types/factoryTypes';
+import { ResultType, LineUp } from '@Types/factoryTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { DESCENDING } from '../../../constants/sortingConstants';
 import { LINEUPS } from '../../../constants/extensionConstants';

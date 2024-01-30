@@ -1,4 +1,4 @@
-import { extractAttributeValues } from '../../../../query/participants/getAttributeGrouping';
+import { extractAttributeValues } from '@Query/participants/getAttributeGrouping';
 
 export function getPositionedParticipants({
   candidatePositionAssignments,

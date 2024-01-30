@@ -3,7 +3,7 @@ import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '../../../acquire/findEvent';
 
 import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,

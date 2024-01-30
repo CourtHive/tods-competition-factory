@@ -1,13 +1,13 @@
 import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { getParticipants } from '../../query/participants/getParticipants';
+import { getParticipants } from '@Query/participants/getParticipants';
 import { getParticipantId } from '../../functions/global/extractors';
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { participantRoles } from '@Constants/participantRoles';
 import { genderConstants } from '@Constants/genderConstants';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
-import { countries } from '../../fixtures/countryData';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
+import { countries } from '@Fixtures/countryData';
 import { addParticipant } from './addParticipant';
 
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';

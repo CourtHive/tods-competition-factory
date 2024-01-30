@@ -1,4 +1,4 @@
-import { MatchUpStatusUnion } from '../../types/tournamentTypes';
+import { MatchUpStatusUnion } from '@Types/tournamentTypes';
 import {
   nonDirectingMatchUpStatuses,
   directingMatchUpStatuses,

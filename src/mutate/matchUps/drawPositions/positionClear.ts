@@ -15,12 +15,12 @@ import { ensureInt } from '@Tools/ensureInt';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '@Types/tournamentTypes';
 import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { CONTAINER, DRAW } from '@Constants/drawDefinitionConstants';
-import { MatchUpsMap, ResultType } from '../../../types/factoryTypes';
+import { MatchUpsMap, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/matchUpTypes';
 
 import {

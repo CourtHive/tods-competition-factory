@@ -1,18 +1,18 @@
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
-import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
+import { getScheduledCourtMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
 import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { addNotice } from '../../global/state/globalState';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { addNotice } from '@Global/state/globalState';
 import { findCourt } from './findCourt';
 
 import { COURT_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { COURT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 type DeleteCourtArgs = {

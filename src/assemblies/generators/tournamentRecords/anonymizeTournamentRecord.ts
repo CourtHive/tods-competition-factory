@@ -1,10 +1,10 @@
 import { postalCodeMocks, stateMocks, cityMocks } from '../mocks/address';
-import { extractDate, formatDate } from '../../../tools/dateTime';
+import { extractDate, formatDate } from '@Tools/dateTime';
 import { findExtension } from '../../../acquire/findExtension';
 import { generatePersons } from '../mocks/generatePersons';
 import { generateAddress } from '../mocks/generateAddress';
 import { nameMocks } from '../mocks/nameMocks';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';

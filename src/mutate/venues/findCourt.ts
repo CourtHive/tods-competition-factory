@@ -1,9 +1,9 @@
-import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
+import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
 import { decorateResult } from '../../functions/global/decorateResult';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
-import { Court, Tournament, Venue } from '../../types/tournamentTypes';
+import { Court, Tournament, Venue } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   COURT_NOT_FOUND,

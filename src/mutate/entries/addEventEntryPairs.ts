@@ -1,11 +1,11 @@
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { getParticipantId } from '../../functions/global/extractors';
 import { addParticipants } from '../participants/addParticipants';
 import { stringSort } from '../../functions/sorters/stringSort';
-import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../tools/arrays';
+import { addNotice } from '@Global/state/globalState';
+import { intersection } from '@Tools/arrays';
 import { addEventEntries } from './addEventEntries';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
@@ -19,7 +19,7 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 
 /**

@@ -1,7 +1,7 @@
 import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
 import { validMatchUps } from '../../validators/validMatchUp';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { isConvertableInteger } from '../../tools/math';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { isConvertableInteger } from '@Tools/math';
 import { allEventMatchUps } from './getAllEventMatchUps';
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 import { allDrawMatchUps } from './getAllDrawMatchUps';
@@ -9,8 +9,8 @@ import { allDrawMatchUps } from './getAllDrawMatchUps';
 import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { DrawDefinition, Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { DrawDefinition, Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 import { ABANDONED, DEAD_RUBBER, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 

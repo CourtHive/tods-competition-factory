@@ -7,10 +7,10 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 // constants and types
 import { INVALID_VALUES, MISSING_MATCHUP, MISSING_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure, TieFormat } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, TieFormat } from '@Types/tournamentTypes';
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { ResultType, MatchUpsMap } from '../../../types/factoryTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { ResultType, MatchUpsMap } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 /**
  * Calculates the number of wins per side and winningSide. When provided with `sideAdjustments`

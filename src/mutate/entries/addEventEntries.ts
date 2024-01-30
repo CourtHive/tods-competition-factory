@@ -9,12 +9,12 @@ import { removeEventEntries } from './removeEventEntries';
 import { isUngrouped } from '@Query/entries/isUngrouped';
 
 // constants and types
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
-import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { MAIN } from '@Constants/drawDefinitionConstants';
@@ -27,14 +27,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  EntryStatusUnion,
-  Event,
-  Extension,
-  StageTypeUnion,
-  Tournament,
-} from '../../types/tournamentTypes';
+import { DrawDefinition, EntryStatusUnion, Event, Extension, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.

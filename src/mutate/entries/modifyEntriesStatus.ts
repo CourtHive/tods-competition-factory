@@ -1,4 +1,4 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from './refreshEntryPositions';
 import { findParticipant } from '../../acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
@@ -6,8 +6,8 @@ import { removeExtension } from '../extensions/removeExtension';
 import { decorateResult } from '../../functions/global/decorateResult';
 import { isValidExtension } from '../../validators/isValidExtension';
 import { addExtension } from '../extensions/addExtension';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isUngrouped } from '../../query/entries/isUngrouped';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { isUngrouped } from '@Query/entries/isUngrouped';
 
 import { validStages } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '@Constants/eventConstants';
@@ -39,7 +39,7 @@ import {
   Extension,
   StageTypeUnion,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
 type ModifyEntriesStatusArgs = {

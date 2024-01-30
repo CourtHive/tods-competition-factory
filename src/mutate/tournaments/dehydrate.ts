@@ -1,4 +1,4 @@
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 
 import { SUCCESS } from '@Constants/resultConstants';
 import { ErrorType, INVALID_VALUES, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

@@ -6,7 +6,7 @@ import { DOUBLES_EVENT, SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConsta
 import { RANKING, RATING, SCALE, SEEDING } from '@Constants/scaleConstants';
 import { PARTICIPANT } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type ScaleType = {
   scaleName: string;

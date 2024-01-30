@@ -9,7 +9,7 @@ import { resolveTieFormat } from './resolveTieFormat';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   EVENT_NOT_FOUND,
   ErrorType,
@@ -18,15 +18,7 @@ import {
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Participant,
-  Structure,
-  TieFormat,
-  Tournament,
-} from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Participant, Structure, TieFormat, Tournament } from '@Types/tournamentTypes';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp

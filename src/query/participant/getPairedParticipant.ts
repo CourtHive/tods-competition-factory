@@ -1,8 +1,8 @@
 import { decorateResult } from '../../functions/global/decorateResult';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { intersection } from '../../tools/arrays';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { intersection } from '@Tools/arrays';
 
-import { Participant, Tournament } from '../../types/tournamentTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { PAIR } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

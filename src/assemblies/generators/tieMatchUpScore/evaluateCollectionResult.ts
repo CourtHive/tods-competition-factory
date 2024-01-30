@@ -1,4 +1,4 @@
-import { isConvertableInteger } from '../../../tools/math';
+import { isConvertableInteger } from '@Tools/math';
 
 import { COMPLETED, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
 

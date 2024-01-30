@@ -16,9 +16,9 @@ import { overlap } from '@Tools/arrays';
 import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
 import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '../../../constants/matchUpTypes';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { MatchUpsMap } from '@Types/factoryTypes';
 import {
   BYE,
   COMPLETED,
@@ -29,7 +29,7 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type AssignMatchUpDrawPositionArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];

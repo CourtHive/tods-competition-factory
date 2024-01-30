@@ -1,4 +1,4 @@
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ELO } from '@Constants/ratingConstants';

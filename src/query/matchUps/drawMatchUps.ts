@@ -10,9 +10,9 @@ import { getMatchUpsMap } from './getMatchUpsMap';
 
 // constants and types
 import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
-import { GroupsMatchUpsResult, MatchUpsMap, ResultType } from '../../types/factoryTypes';
+import { GroupsMatchUpsResult, MatchUpsMap, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 /*
   return ALL matchUps within a drawDefinition, regardless of state

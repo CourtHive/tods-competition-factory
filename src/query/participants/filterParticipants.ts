@@ -1,16 +1,16 @@
 import { getAllPositionedParticipantIds } from '../drawDefinition/positionsGetter';
 import { getParticipantId } from '../../functions/global/extractors';
-import { getAccessorValue } from '../../tools/getAccessorValue';
+import { getAccessorValue } from '@Tools/getAccessorValue';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { getTimeItem } from '../base/timeItems';
-import { unique } from '../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
 import { SIGN_IN_STATUS } from '@Constants/participantConstants';
 import { SINGLES } from '@Constants/eventConstants';
 
-import type { Tournament } from '../../types/tournamentTypes';
-import { ParticipantFilters } from '../../types/factoryTypes';
-import { HydratedParticipant } from '../../types/hydrated';
+import type { Tournament } from '@Types/tournamentTypes';
+import { ParticipantFilters } from '@Types/factoryTypes';
+import { HydratedParticipant } from '@Types/hydrated';
 
 type FilterParticipantsArgs = {
   participantFilters: ParticipantFilters;

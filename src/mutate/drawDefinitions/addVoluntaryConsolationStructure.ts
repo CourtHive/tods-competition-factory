@@ -1,10 +1,10 @@
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { constantToString } from '../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import structureTemplate from '../../assemblies/generators/templates/structureTemplate';
 
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
 type AddVoluntaryConsolationStructureArgs = {

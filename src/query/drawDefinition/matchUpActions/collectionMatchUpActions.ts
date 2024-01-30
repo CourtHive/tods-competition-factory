@@ -7,10 +7,10 @@ import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
-import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
+import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
 import { ANY, MIXED } from '@Constants/genderConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { MatchUp } from '../../../types/tournamentTypes';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 import {
   ASSIGN_TEAM_POSITION_METHOD,
   REMOVE_PARTICIPANT,

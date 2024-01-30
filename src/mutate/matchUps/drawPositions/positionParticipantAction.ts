@@ -1,9 +1,9 @@
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../functions/global/decorateResult';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { findStructure } from '../../../acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';

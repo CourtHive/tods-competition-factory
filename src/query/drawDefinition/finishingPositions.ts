@@ -2,7 +2,7 @@ import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED } from '@Constants/matchUpStatusConstants';
-import { DrawDefinition, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 
 type GetParticipantIdFinishingPositionsArgs = {
   tournamentRecord: Tournament;

@@ -1,9 +1,9 @@
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import structureTemplate from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
+import { DrawLink, Structure } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { MAIN, CONSOLATION, LOSER, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 

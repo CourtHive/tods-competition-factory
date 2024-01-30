@@ -1,8 +1,8 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { findVenue } from '../../mutate/venues/findVenue';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { findVenue } from '@Mutate/venues/findVenue';
 import { getCourtInfo } from './getCourtInfo';
 
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ErrorType, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
 

@@ -1,4 +1,4 @@
-import { ensureInt } from '../../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 import { getWinningSide } from './winningSide';
 
 import { SPACE_CHARACTER, SET_TIEBREAK_BRACKETS } from './constants';

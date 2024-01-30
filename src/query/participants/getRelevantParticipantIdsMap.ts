@@ -1,6 +1,6 @@
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 /**
  * @param {object=} tournamentRecord - optional - either tournamentRecord or tournamentRecords must be provided

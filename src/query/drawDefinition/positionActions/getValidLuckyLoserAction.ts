@@ -4,10 +4,10 @@ import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
 import { getParticipantId } from '../../../functions/global/extractors';
 import { findStructure } from '../../../acquire/findStructure';
 
-import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';
 import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
+import { HydratedParticipant } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
 
 type GetValidLuckLoserActionArgs = {

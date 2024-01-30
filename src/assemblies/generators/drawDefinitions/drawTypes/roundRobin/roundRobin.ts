@@ -6,13 +6,13 @@ import { generateRange } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { PlayoffAttributes, PolicyDefinitions, SeedingProfile, ResultType } from '../../../../../types/factoryTypes';
+import { PlayoffAttributes, PolicyDefinitions, SeedingProfile, ResultType } from '@Types/factoryTypes';
 import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '@Constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
-import { MatchUp, EventTypeUnion } from '../../../../../types/tournamentTypes';
+import { MatchUp, EventTypeUnion } from '@Types/tournamentTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;

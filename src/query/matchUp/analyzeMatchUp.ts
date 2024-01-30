@@ -4,7 +4,7 @@ import { analyzeSet } from './analyzeSet';
 
 // constants and types
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 // TODO: what about checking array of sets are in order? ( setNumber )
 

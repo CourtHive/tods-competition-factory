@@ -1,10 +1,10 @@
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { modifySeedAssignmentsNotice } from '../../../mutate/notifications/drawNotifications';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { modifySeedAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
 import { findStructure } from '../../../acquire/findStructure';
-import { ensureInt } from '../../../tools/ensureInt';
-import { isNumeric } from '../../../tools/math';
+import { ensureInt } from '@Tools/ensureInt';
+import { isNumeric } from '@Tools/math';
 
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_PARTICIPANT_ID,

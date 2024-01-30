@@ -1,12 +1,12 @@
 import { validateCollectionValueProfiles } from './validateCollectionValueProfiles';
 import { tieFormatGenderValidityCheck } from './tieFormatGenderValidityCheck';
-import { categoryCanContain } from '../query/event/categoryCanContain';
+import { categoryCanContain } from '@Query/event/categoryCanContain';
 import { decorateResult } from '../functions/global/decorateResult';
 import { isValidMatchUpFormat } from './isValidMatchUpFormat';
-import { isConvertableInteger } from '../tools/math';
+import { isConvertableInteger } from '@Tools/math';
 
 import { INVALID_CATEGORY, INVALID_COLLECTION_DEFINITION, INVALID_OBJECT } from '@Constants/errorConditionConstants';
-import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '../types/tournamentTypes';
+import { Category, CollectionDefinition, Event, EventTypeUnion, GenderUnion } from '@Types/tournamentTypes';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 type ValidateCollectionDefinitionArgs = {

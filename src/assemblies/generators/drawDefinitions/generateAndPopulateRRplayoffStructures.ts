@@ -1,7 +1,7 @@
-import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '../../../functions/global/decorateResult';
 import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getMatchUpId } from '../../../functions/global/extractors';

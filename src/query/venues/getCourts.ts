@@ -1,4 +1,4 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 

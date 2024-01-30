@@ -2,7 +2,7 @@ import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredP
 
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 type Aggregator = {
   tournamentIdMap: { [key: string]: string[] };

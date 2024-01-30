@@ -3,7 +3,7 @@ import { resolveFromParameters } from '../../helpers/parameters/resolveFromParam
 import { findStructure } from '../../acquire/findStructure';
 
 import { MISSING_DRAW_ID, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import {
   ANY_OF,
   DRAW_ID,

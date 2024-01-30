@@ -4,7 +4,7 @@ import { extractDate } from '@Tools/dateTime';
 
 // constants and types
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_DATE,
   INVALID_TOURNAMENT_DATES,

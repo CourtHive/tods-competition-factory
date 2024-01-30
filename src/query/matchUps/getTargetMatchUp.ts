@@ -1,6 +1,6 @@
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { chunkArray, generateRange } from '../../tools/arrays';
-import { getDevContext } from '../../global/state/globalState';
+import { chunkArray, generateRange } from '@Tools/arrays';
+import { getDevContext } from '@Global/state/globalState';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findExtension } from '../../acquire/findExtension';
 import { findStructure } from '../../acquire/findStructure';

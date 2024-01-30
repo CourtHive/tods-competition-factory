@@ -3,7 +3,7 @@ import { findPolicy } from '../../../acquire/findPolicy';
 
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { Event, Tournament } from '@Types/tournamentTypes';
 
 type GetScheduleTimingArgs = {
   tournamentRecord?: Tournament;

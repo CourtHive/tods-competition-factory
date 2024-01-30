@@ -1,8 +1,8 @@
-import { definedAttributes } from '../../tools/definedAttributes';
-import { isNumeric } from '../../tools/math';
-import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '../../tools/dateTime';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { isNumeric } from '@Tools/math';
+import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '@Tools/dateTime';
 
-import { Category } from '../../types/tournamentTypes';
+import { Category } from '@Types/tournamentTypes';
 import { INVALID_CATEGORY, INVALID_DATE } from '@Constants/errorConditionConstants';
 
 const typeMatch = (arr, type) => arr.filter(Boolean).every((i) => typeof i === type);

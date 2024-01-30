@@ -1,7 +1,7 @@
-import { getMatchUp } from '../../../query/matchUps/getMatchUpFromMatchUps';
+import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { findEvent } from '../../../acquire/findEvent';
 
 import { SUCCESS } from '../../../constants/resultConstants';
@@ -13,7 +13,7 @@ import {
 } from '../../../constants/errorConditionConstants';
 import { ALLOCATE_COURTS, ASSIGN_COURT } from '../../../constants/timeItemConstants';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 
 type RemoveCourtAssignmentArgs = {
   drawDefinition?: DrawDefinition;

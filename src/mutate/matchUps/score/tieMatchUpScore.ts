@@ -10,8 +10,8 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { PolicyDefinitions, TournamentRecords, MatchUpsMap } from '../../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { PolicyDefinitions, TournamentRecords, MatchUpsMap } from '@Types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { DISABLE_AUTO_CALC } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

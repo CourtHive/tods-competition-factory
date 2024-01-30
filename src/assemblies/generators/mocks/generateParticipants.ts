@@ -1,15 +1,15 @@
-import { isNumeric, randomInt, skewedDistribution } from '../../../tools/math';
-import { generateRange, shuffleArray } from '../../../tools/arrays';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { isNumeric, randomInt, skewedDistribution } from '@Tools/math';
+import { generateRange, shuffleArray } from '@Tools/arrays';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { cityMocks, stateMocks, postalCodeMocks } from './address';
-import { isValidDateString } from '../../../tools/dateTime';
-import { countries } from '../../../fixtures/countryData';
+import { isValidDateString } from '@Tools/dateTime';
+import { countries } from '@Fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { nameMocks } from './nameMocks';
 
-import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
 import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';

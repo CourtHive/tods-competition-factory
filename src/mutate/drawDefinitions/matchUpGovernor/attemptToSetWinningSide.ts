@@ -1,6 +1,6 @@
 import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
 import { decorateResult } from '../../../functions/global/decorateResult';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToModifyScore } from './attemptToModifyScore';
 import { directParticipants } from '../../matchUps/drawPositions/directParticipants';

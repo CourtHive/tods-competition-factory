@@ -2,7 +2,7 @@ import { findExtension } from '../../acquire/findExtension';
 
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
-import { Structure } from '../../types/tournamentTypes';
+import { Structure } from '@Types/tournamentTypes';
 import {
   aggregateOrder,
   finishOrder,

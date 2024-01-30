@@ -1,18 +1,18 @@
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { decorateResult } from '../../../functions/global/decorateResult';
 import { structureSort } from '../../../functions/sorters/structureSort';
 import { generateQualifyingLink } from './links/generateQualifyingLink';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
 import { getCoercedDrawType } from './getCoercedDrawType';
-import { ensureInt } from '../../../tools/ensureInt';
-import { isPowerOf2 } from '../../../tools/math';
+import { ensureInt } from '@Tools/ensureInt';
+import { isPowerOf2 } from '@Tools/math';
 import { getGenerators } from './getGenerators';
 
 import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Structure, TieFormat } from '../../../types/tournamentTypes';
-import { PlayoffAttributes, PolicyDefinitions } from '../../../types/factoryTypes';
+import { DrawDefinition, Structure, TieFormat } from '@Types/tournamentTypes';
+import { PlayoffAttributes, PolicyDefinitions } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { SINGLES } from '../../../constants/matchUpTypes';
 import {

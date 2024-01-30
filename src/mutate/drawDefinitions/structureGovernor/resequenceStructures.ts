@@ -1,4 +1,4 @@
-import { getStructureGroups } from '../../../query/structure/getStructureGroups';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
 
 import { SUCCESS } from '@Constants/resultConstants';
 

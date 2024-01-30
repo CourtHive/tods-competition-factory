@@ -1,12 +1,12 @@
-import { getParticipants } from '../../query/participants/getParticipants';
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addParticipant } from './addParticipant';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { GROUP, INDIVIDUAL } from '@Constants/participantConstants';
-import { Participant, Tournament } from '../../types/tournamentTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { OTHER } from '@Constants/participantRoles';

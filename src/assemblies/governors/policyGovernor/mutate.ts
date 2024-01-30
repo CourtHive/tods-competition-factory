@@ -1,2 +1,2 @@
-export { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
-export { removePolicy } from '../../../mutate/extensions/policies/removePolicy';
+export { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+export { removePolicy } from '@Mutate/extensions/policies/removePolicy';

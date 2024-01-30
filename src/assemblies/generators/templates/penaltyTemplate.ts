@@ -1,4 +1,4 @@
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 export const penaltyTemplate = ({ penaltyId = UUID() } = {}) => ({
   refereeParticipantId: undefined,

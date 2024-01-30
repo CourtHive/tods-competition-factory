@@ -1,8 +1,8 @@
 import { getTournamentPenalties } from './getTournamentPenalties';
 
 import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { Penalty } from '../../types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { Penalty } from '@Types/tournamentTypes';
 
 type GetCompetitionPenaltiesArgs = {
   tournamentRecords: TournamentRecords;

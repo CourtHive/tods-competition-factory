@@ -1,4 +1,4 @@
-import { deepCopyEnabled, getProvider } from '../global/state/globalState';
+import { deepCopyEnabled, getProvider } from '@Global/state/globalState';
 import { isDateObject } from './dateTime';
 
 export function makeDeepCopy(

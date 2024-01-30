@@ -7,8 +7,8 @@ import { findEvent } from '@Acquire/findEvent';
 
 // constants and types
 import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
-import { Participant, Tournament } from '../../types/tournamentTypes';
-import { ScaleItem, ResultType } from '../../types/factoryTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
+import { ScaleItem, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SCALE } from '@Constants/scaleConstants';
 import {

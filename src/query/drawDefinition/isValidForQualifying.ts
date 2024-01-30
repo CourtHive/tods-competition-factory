@@ -1,5 +1,5 @@
-import { intersection } from '../../tools/arrays';
-import { isString } from '../../tools/objects';
+import { intersection } from '@Tools/arrays';
+import { isString } from '@Tools/objects';
 import { getStructureLinks } from './linkGetter';
 
 import { SUCCESS } from '@Constants/resultConstants';

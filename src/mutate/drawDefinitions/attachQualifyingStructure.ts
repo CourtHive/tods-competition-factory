@@ -1,5 +1,5 @@
 import { resequenceStructures } from './structureGovernor/resequenceStructures';
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
 import { decorateResult } from '../../functions/global/decorateResult';
 import { findStructure } from '../../acquire/findStructure';
@@ -12,7 +12,7 @@ import {
   MISSING_TARGET_LINK,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, DrawLink, Structure } from '../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, Structure } from '@Types/tournamentTypes';
 
 export function attachQualifyingStructure({ tournamentRecord, drawDefinition, structure, link }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

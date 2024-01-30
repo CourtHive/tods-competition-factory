@@ -6,8 +6,8 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
+import { MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {
   ErrorType,

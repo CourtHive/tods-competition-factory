@@ -1,4 +1,4 @@
-import { checkSetIsComplete, getLeadingSide } from '../../../query/matchUp/checkSetIsComplete';
+import { checkSetIsComplete, getLeadingSide } from '@Query/matchUp/checkSetIsComplete';
 
 export function getWinningSide({ analysis, set }) {
   const leadingSide = getLeadingSide({ set });

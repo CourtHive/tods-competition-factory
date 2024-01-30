@@ -1,10 +1,10 @@
 import { getMatchUpWinner, removeFromScore, getHighTiebreakValue } from './keyValueUtilities';
-import { getLeadingSide } from '../../../query/matchUp/checkSetIsComplete';
+import { getLeadingSide } from '@Query/matchUp/checkSetIsComplete';
 import { processIncompleteSetScore } from './processIncompleteSetScore';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
 import { processTiebreakSet } from './processTiebreakSet';
-import { arrayIndices } from '../../../tools/arrays';
-import { ensureInt } from '../../../tools/ensureInt';
+import { arrayIndices } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
 import { keyValueSetScore } from './keyValueSetScore';
 import { getScoreAnalysis } from './scoreAnalysis';
 import { processOutcome } from './processOutcome';

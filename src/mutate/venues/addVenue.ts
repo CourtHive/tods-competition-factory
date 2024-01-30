@@ -1,14 +1,14 @@
 import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { CONTEXT } from '@Constants/extensionConstants';
 import { ADD_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Venue } from '../../types/tournamentTypes';
+import { Venue } from '@Types/tournamentTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,

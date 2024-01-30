@@ -1,5 +1,5 @@
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addFlight } from '../../../mutate/events/addFlight';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { addFlight } from '@Mutate/events/addFlight';
 import { getParticipantId } from '../../../functions/global/extractors';
 
 import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';

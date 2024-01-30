@@ -1,9 +1,9 @@
-import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { validMatchUps } from '../../validators/validMatchUp';
-import { extractDate, extractTime, timeSort } from '../../tools/dateTime';
+import { extractDate, extractTime, timeSort } from '@Tools/dateTime';
 
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { INVALID_VALUES, MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 
 /**

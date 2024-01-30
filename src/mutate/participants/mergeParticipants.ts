@@ -1,10 +1,10 @@
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { xa } from '../../tools/objects';
-import { deepMerge } from '../../tools/deepMerge';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { xa } from '@Tools/objects';
+import { deepMerge } from '@Tools/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
-import { Participant } from '../../types/tournamentTypes';
+import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 

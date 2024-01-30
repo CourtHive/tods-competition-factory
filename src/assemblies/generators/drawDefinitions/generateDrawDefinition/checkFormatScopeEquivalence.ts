@@ -1,5 +1,5 @@
-import { setMatchUpMatchUpFormat } from '../../../../mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
-import { checkTieFormat } from '../../../../mutate/tieFormat/checkTieFormat';
+import { setMatchUpMatchUpFormat } from '@Mutate/matchUps/matchUpFormat/setMatchUpMatchUpFormat';
+import { checkTieFormat } from '@Mutate/tieFormat/checkTieFormat';
 
 export function checkFormatScopeEquivalence({
   tournamentRecord,

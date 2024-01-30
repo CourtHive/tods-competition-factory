@@ -1,10 +1,10 @@
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../../helpers/parameters/resolveFromParameters';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { INVALID_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
-import { CheckInOutParticipantArgs } from '../../../types/factoryTypes';
+import { CheckInOutParticipantArgs } from '@Types/factoryTypes';
 import { CHECK_IN } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

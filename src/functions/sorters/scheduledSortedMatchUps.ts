@@ -1,5 +1,5 @@
-import { HydratedMatchUp } from '../../types/hydrated';
-import { extractDate, extractTime } from '../../tools/dateTime';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { extractDate, extractTime } from '@Tools/dateTime';
 
 type ScheduledSortedMatchUpsArgs = {
   matchUps: HydratedMatchUp[];

@@ -1,9 +1,9 @@
 import { addParticipantTimeItem } from '../timeItems/addTimeItem';
-import { addNotice, getTopics } from '../../global/state/globalState';
+import { addNotice, getTopics } from '@Global/state/globalState';
 import { getParticipantId } from '../../functions/global/extractors';
 
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
-import { Participant } from '../../types/tournamentTypes';
+import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_VALUES,

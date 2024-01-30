@@ -6,10 +6,10 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 // constants and types
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { GROUP, INDIVIDUAL, TEAM } from '@Constants/participantConstants';
-import { Participant, Tournament } from '../../types/tournamentTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,

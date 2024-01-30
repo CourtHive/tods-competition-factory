@@ -3,12 +3,12 @@ import { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
 import { getTargetMatchUps } from '@Query/matchUps/getTargetMatchUps';
 
 // constants and types
-import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
 import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type ResetLineUpsArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

@@ -2,7 +2,7 @@ import { checkRequiredParameters } from '../../../../../helpers/parameters/check
 import { addExtension } from '../../../../extensions/addExtension';
 import { findParticipant } from '../../../../../acquire/findParticipant';
 
-import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
+import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { PERSON_REQUESTS } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

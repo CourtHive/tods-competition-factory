@@ -1,10 +1,10 @@
-import { positionTargets } from '../../../query/matchUp/positionTargets';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getParticipantIds } from '../../../functions/global/extractors';
-import { timeStringMinutes } from '../../../tools/dateTime';
+import { timeStringMinutes } from '@Tools/dateTime';
 import { findStructure } from '../../../acquire/findStructure';
-import { numericSort } from '../../../tools/sorting';
-import { ensureInt } from '../../../tools/ensureInt';
+import { numericSort } from '@Tools/sorting';
+import { ensureInt } from '@Tools/ensureInt';
 
 import { FIRST_MATCHUP, WIN_RATIO } from '@Constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';

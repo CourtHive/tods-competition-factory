@@ -3,9 +3,9 @@ import { decorateResult } from '../../functions/global/decorateResult';
 import { getStageEntries } from '../drawDefinition/getStageEntries';
 import { getSeedsCount } from '../drawDefinition/getSeedsCount';
 
-import { PolicyDefinitions } from '../../types/factoryTypes';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 import { ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Entry, StageTypeUnion } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Entry, StageTypeUnion } from '@Types/tournamentTypes';
 
 type GetEntriesAndSeedsCountArgs = {
   policyDefinitions: PolicyDefinitions;

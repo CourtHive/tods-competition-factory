@@ -1,6 +1,6 @@
-import { ScaleAttributes } from '../../../types/factoryTypes';
+import { ScaleAttributes } from '@Types/factoryTypes';
 import { SEEDING } from '../../../constants/scaleConstants';
-import { Entry } from '../../../types/tournamentTypes';
+import { Entry } from '@Types/tournamentTypes';
 import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
 
 type ScaleItemsWithParticipantId = {

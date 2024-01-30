@@ -1,9 +1,9 @@
-import { unique } from '../../../tools/arrays';
-import { UUID } from '../../../tools/UUID';
+import { unique } from '@Tools/arrays';
+import { UUID } from '@Tools/UUID';
 
 import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
-import { SeedingProfile } from '../../../types/factoryTypes';
-import { MatchUp, SeedAssignment, Structure } from '../../../types/tournamentTypes';
+import { SeedingProfile } from '@Types/factoryTypes';
+import { MatchUp, SeedAssignment, Structure } from '@Types/tournamentTypes';
 
 type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];

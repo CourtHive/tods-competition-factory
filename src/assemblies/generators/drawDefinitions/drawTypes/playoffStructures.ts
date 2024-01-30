@@ -1,12 +1,12 @@
 import structureTemplate from '../../templates/structureTemplate';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 
 import { LOSER, MAIN, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { DrawDefinition, DrawLink, MatchUp, Structure } from '../../../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, MatchUp, Structure } from '@Types/tournamentTypes';
 
 export type NamingEntry = {
   [key: string]: { name: string; abbreviation: string; structureId?: string };

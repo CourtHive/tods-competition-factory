@@ -1,5 +1,5 @@
 import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { arrayIndices } from '../../../tools/arrays';
+import { arrayIndices } from '@Tools/arrays';
 
 import {
   SET_TIEBREAK_BRACKETS,

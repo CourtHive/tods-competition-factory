@@ -1,5 +1,5 @@
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
 import { FEMALE, MIXED, OTHER, MALE, ANY } from '../../../constants/genderConstants';

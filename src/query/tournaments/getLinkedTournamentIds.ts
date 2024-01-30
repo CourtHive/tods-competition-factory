@@ -2,7 +2,7 @@ import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
 import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';
 
 export function getLinkedTournamentIds({

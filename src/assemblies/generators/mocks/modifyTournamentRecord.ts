@@ -1,19 +1,19 @@
-import { getStageParticipantsCount } from '../../../query/drawDefinition/getStageParticipantsCount';
-import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import { getStageParticipants } from '../../../query/drawDefinition/getStageParticipants';
-import { setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
+import { getStageParticipantsCount } from '@Query/drawDefinition/getStageParticipantsCount';
+import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
+import { getStageParticipants } from '@Query/drawDefinition/getStageParticipants';
+import { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventParticipants } from './generateEventParticipants';
-import { generateVenues } from '../../../mutate/venues/generateVenues';
-import { publishEvent } from '../../../mutate/publishing/publishEvent';
+import { generateVenues } from '@Mutate/venues/generateVenues';
+import { publishEvent } from '@Mutate/publishing/publishEvent';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { addEvent } from '../../../mutate/events/addEvent';
+import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 
 import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
+import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
 import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

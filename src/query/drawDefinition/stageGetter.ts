@@ -1,14 +1,14 @@
-import { modifyEntryProfile } from '../../mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
+import { modifyEntryProfile } from '@Mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
 import { findExtension } from '../../acquire/findExtension';
 import { findStructure } from '../../acquire/findStructure';
-import { numericSort } from '../../tools/sorting';
+import { numericSort } from '@Tools/sorting';
 import { getEntryProfile } from './getEntryProfile';
 
 import { ROUND_TARGET, TALLY } from '@Constants/extensionConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';
 import { POSITION, CONTAINER, PLAY_OFF, validStages } from '@Constants/drawDefinitionConstants';
 import { ALTERNATE, FEED_IN, WILDCARD, DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
-import { DrawDefinition, DrawLink, EntryStatusUnion } from '../../types/tournamentTypes';
+import { DrawDefinition, DrawLink, EntryStatusUnion } from '@Types/tournamentTypes';
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });

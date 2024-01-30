@@ -2,8 +2,8 @@ import { getParticipantId } from '@Functions/global/extractors';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, PositionAssignment, Structure } from '../../types/tournamentTypes';
-import { ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, PositionAssignment, Structure } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 import { ErrorType, MISSING_DRAW_DEFINITION, MISSING_POSITION_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 
 export function getAllPositionedParticipantIds({ drawDefinition }): ResultType & {

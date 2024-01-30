@@ -4,9 +4,9 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 import { addNotice } from '@Global/state/globalState';
 
 // constants and types
-import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
+import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '@Types/tournamentTypes';
 import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
-import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
 import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
 import { SUCCESS } from '../../../constants/resultConstants';
 import {

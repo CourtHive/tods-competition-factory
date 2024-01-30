@@ -1,5 +1,5 @@
 import { stageOrder } from '@Constants/drawDefinitionConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 /**
  * Sorting function to arrange matchUps by stage, stageSequence, roundNumber, roundPosition (where applicable)

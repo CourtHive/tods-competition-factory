@@ -1,5 +1,5 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';

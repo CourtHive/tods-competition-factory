@@ -1,4 +1,4 @@
-import { ensureInt } from '../../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 import { removeFromScore } from './keyValueUtilities';
 import { processOutcome } from './processOutcome';
 

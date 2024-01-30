@@ -1,13 +1,13 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { decorateResult } from '../../functions/global/decorateResult';
 import { getParticipantId } from '../../functions/global/extractors';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { intersection } from '../../tools/arrays';
-import { isString } from '../../tools/objects';
+import { intersection } from '@Tools/arrays';
+import { isString } from '@Tools/objects';
 
-import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
-import { HydratedParticipant } from '../../types/hydrated';
+import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_EVENT,

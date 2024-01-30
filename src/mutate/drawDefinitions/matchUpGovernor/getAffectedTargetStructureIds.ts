@@ -1,11 +1,11 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getStructureLinks } from '../../../query/drawDefinition/linkGetter';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getStructureLinks } from '@Query/drawDefinition/linkGetter';
 import { findExtension } from '../../../acquire/findExtension';
-import { overlap } from '../../../tools/arrays';
+import { overlap } from '@Tools/arrays';
 
 import { TALLY } from '@Constants/extensionConstants';
-import { DrawDefinition, MatchUp, Structure } from '../../../types/tournamentTypes';
+import { DrawDefinition, MatchUp, Structure } from '@Types/tournamentTypes';
 
 /**
  * Finds all structureIds which are affected by an outcome change in a completed structure

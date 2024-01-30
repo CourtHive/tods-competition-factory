@@ -6,8 +6,8 @@ import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
 import { AD_HOC, LUCKY_DRAW, MAIN } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
-import { ResultType } from '../../../../types/factoryTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function generateNewDrawDefinition(params): ResultType & {
   drawDefinition?: DrawDefinition;

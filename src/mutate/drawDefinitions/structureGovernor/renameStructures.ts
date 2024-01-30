@@ -2,9 +2,9 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type RenameStructuresArgs = {
   drawDefinition: DrawDefinition;

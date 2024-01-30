@@ -1,13 +1,14 @@
-import { deleteNotices, getTournamentRecords, getMethods } from '../../../global/state/globalState';
-import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { getMutationStatus } from '../parts/getMutationStatus';
-import { logMethodNotFound } from '../parts/logMethodNotFound';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { executeFunction } from '../parts/executeMethod';
-import { setState } from '../parts/stateMethods';
+import { deleteNotices, getTournamentRecords, getMethods } from '@Global/state/globalState';
+import { getMutationStatus } from '@Assemblies/engines/parts/getMutationStatus';
+import { logMethodNotFound } from '@Assemblies/engines/parts/logMethodNotFound';
+import { executeFunction } from '@Assemblies/engines/parts/executeMethod';
+import { notifySubscribers } from '@Global/state/notifySubscribers';
+import { setState } from '@Assemblies/engines/parts/stateMethods';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { Directives, FactoryEngine } from '../../../types/factoryTypes';
+import { Directives, FactoryEngine } from '@Types/factoryTypes';
 
 export function executionQueue(engine: FactoryEngine, directives: Directives, rollbackOnError?: boolean) {
   if (!Array.isArray(directives)) return { error: INVALID_VALUES, message: 'directives must be an array' };

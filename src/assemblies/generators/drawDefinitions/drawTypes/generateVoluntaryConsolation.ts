@@ -1,19 +1,19 @@
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { resolveTieFormat } from '../../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTieFormat';
-import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { validateTieFormat } from '../../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawStructures } from '../../../../acquire/findStructure';
-import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
-import { constantToString } from '../../../../tools/strings';
-import { nextPowerOf2 } from '../../../../tools/math';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { constantToString } from '@Tools/strings';
+import { nextPowerOf2 } from '@Tools/math';
 import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 
-import { PlayoffAttributes, SeedingProfile } from '../../../../types/factoryTypes';
+import { PlayoffAttributes, SeedingProfile } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SINGLES } from '@Constants/matchUpTypes';
 import {
@@ -40,7 +40,7 @@ import {
   TieFormat,
   Tournament,
   EventTypeUnion,
-} from '../../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GenerateVoluntaryConsolationArgs = {
   playoffAttributes?: PlayoffAttributes;

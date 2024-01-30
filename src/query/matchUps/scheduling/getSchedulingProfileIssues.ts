@@ -1,11 +1,11 @@
-import { getSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
+import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
 import { getMatchUpDependencies } from '../../matchUps/getMatchUpDependencies';
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
-import { intersection, unique } from '../../../tools/arrays';
-import { isValidDateString } from '../../../tools/dateTime';
+import { intersection, unique } from '@Tools/arrays';
+import { isValidDateString } from '@Tools/dateTime';
 
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { INVALID_DATE, INVALID_TOURNAMENT_RECORD, INVALID_VALUES } from '@Constants/errorConditionConstants';
 

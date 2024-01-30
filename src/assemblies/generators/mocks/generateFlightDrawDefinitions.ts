@@ -1,14 +1,14 @@
-import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
-import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
-import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
+import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 import { isValidExtension } from '../../../validators/isValidExtension';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { xa } from '../../../tools/objects';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { xa } from '@Tools/objects';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
 import { PARTICIPANT_ID } from '../../../constants/attributeConstants';
 import { SUCCESS } from '../../../constants/resultConstants';

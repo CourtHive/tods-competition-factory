@@ -1,7 +1,7 @@
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { countries } from '../../../fixtures/countryData';
-import namesData from '../../../fixtures/data/names.json';
-import { generateRange, randomMember, randomPop } from '../../../tools/arrays';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { countries } from '@Fixtures/countryData';
+import namesData from '@Fixtures/data/names.json';
+import { generateRange, randomMember, randomPop } from '@Tools/arrays';
 
 import { FEMALE, MALE } from '../../../constants/genderConstants';
 import { ErrorType, INVALID_VALUES } from '../../../constants/errorConditionConstants';

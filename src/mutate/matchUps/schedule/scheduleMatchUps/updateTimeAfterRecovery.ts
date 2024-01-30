@@ -1,12 +1,12 @@
 import { processNextMatchUps } from './processNextMatchUps';
-import { ensureInt } from '../../../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 import {
   addParticipantPotentialRecovery,
   checkParticipantProfileInitialization,
 } from './checkParticipantProfileInitialization';
-import { addMinutesToTimeString, extractTime } from '../../../../tools/dateTime';
+import { addMinutesToTimeString, extractTime } from '@Tools/dateTime';
 
-import { HydratedMatchUp } from '../../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type UpdateTimeAfterRecoveryArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };

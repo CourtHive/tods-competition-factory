@@ -1,11 +1,11 @@
 import { clearScheduledMatchUps } from '../matchUps/schedule/clearScheduledMatchUps';
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '../venues/updateCourtAvailability';
 import { dateValidation } from '../../validators/regex';
-import { addNotice } from '../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_DATE,

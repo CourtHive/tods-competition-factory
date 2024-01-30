@@ -3,11 +3,11 @@ import { scheduledMatchUpDate } from './matchUp/scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './matchUp/courtAllocations';
 import { matchUpAssignedCourtId } from './matchUp/courtAssignment';
 import { matchUpAssignedVenueId } from './matchUp/venueAssignment';
-import { extractDate, sameDay } from '../tools/dateTime';
+import { extractDate, sameDay } from '@Tools/dateTime';
 
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
-import { MatchUpFilters } from '../types/factoryTypes';
-import { HydratedMatchUp } from '../types/hydrated';
+import { MatchUpFilters } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type FilterMatchUpsArgs = MatchUpFilters & {
   matchUps: HydratedMatchUp[];

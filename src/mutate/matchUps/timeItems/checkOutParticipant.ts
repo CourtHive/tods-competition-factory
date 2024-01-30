@@ -1,12 +1,12 @@
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
-import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
+import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
 import { resolveFromParameters } from '../../../helpers/parameters/resolveFromParameters';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
 import { activeMatchUpStatuses, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
-import { CheckInOutParticipantArgs } from '../../../types/factoryTypes';
+import { CheckInOutParticipantArgs } from '@Types/factoryTypes';
 import { CHECK_OUT } from '@Constants/timeItemConstants';
 import { INVALID_ACTION, INVALID_PARTICIPANT_ID, PARTICIPANT_NOT_CHECKED_IN } from '@Constants/errorConditionConstants';
 import {

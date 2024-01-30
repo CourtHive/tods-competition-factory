@@ -1,10 +1,10 @@
-import { definedAttributes } from '../../tools/definedAttributes';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
 import { addParticipant } from './addParticipant';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
-import { Participant, Tournament } from '../../types/tournamentTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';

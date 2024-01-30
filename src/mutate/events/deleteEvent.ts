@@ -1,7 +1,7 @@
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { mustBeAnArray } from '../../tools/mustBeAnArray';
-import { addNotice } from '../../global/state/globalState';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { addNotice } from '@Global/state/globalState';
 
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { DELETE_EVENTS } from '@Constants/auditConstants';

@@ -1,20 +1,20 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
-import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
-import { getMatchUpDailyLimits } from '../../../query/extensions/getMatchUpDailyLimits';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { getMatchUpDailyLimits } from '@Query/extensions/getMatchUpDailyLimits';
 import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
-import { extractDate, isValidDateString } from '../../../tools/dateTime';
+import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
+import { extractDate, isValidDateString } from '@Tools/dateTime';
 import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
-import { getPersonRequests } from '../../../query/matchUps/scheduling/getPersonRequests';
+import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
 import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
 import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 
 import { NO_VALID_DATES } from '../../../constants/errorConditionConstants';
 import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
 import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { ARRAY, OF_TYPE, SCHEDULE_DATES, TOURNAMENT_RECORDS, VALIDATE } from '../../../constants/attributeConstants';
 

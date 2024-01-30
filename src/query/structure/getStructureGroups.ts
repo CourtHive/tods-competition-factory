@@ -1,7 +1,7 @@
-import { generateRange, intersection, overlap, unique } from '../../tools/arrays';
+import { generateRange, intersection, overlap, unique } from '@Tools/arrays';
 
-import { DrawDefinition } from '../../types/tournamentTypes';
-import { StructureProfile } from '../../types/factoryTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { StructureProfile } from '@Types/factoryTypes';
 import {
   BOTTOM_UP,
   DRAW,

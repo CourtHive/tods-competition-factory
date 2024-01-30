@@ -2,7 +2,7 @@ import { checkRequiredParameters } from '../../../helpers/parameters/checkRequir
 import { timeToDate, extractTime, tidyTime } from '@Tools/dateTime';
 
 import { OBJECT } from '../../../constants/attributeConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type GenerateTimeSlotsArgs = {
   includeBookingTypes?: string[];

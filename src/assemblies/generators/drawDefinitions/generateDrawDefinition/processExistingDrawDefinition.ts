@@ -6,7 +6,7 @@ import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 
 // constants and types
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function processExistingDrawDefinition(params): ResultType & {
   structureId?: string;

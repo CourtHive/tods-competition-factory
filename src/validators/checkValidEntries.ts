@@ -1,12 +1,12 @@
-import { getParticipants } from '../query/participants/getParticipants';
-import { isUngrouped } from '../query/entries/isUngrouped';
-import { unique } from '../tools/arrays';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { isUngrouped } from '@Query/entries/isUngrouped';
+import { unique } from '@Tools/arrays';
 
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { Entry, Event, Participant, Tournament } from '../types/tournamentTypes';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { Entry, Event, Participant, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
-import { ParticipantMap, PolicyDefinitions } from '../types/factoryTypes';
+import { ParticipantMap, PolicyDefinitions } from '@Types/factoryTypes';
 import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { WITHDRAWN } from '@Constants/entryStatusConstants';

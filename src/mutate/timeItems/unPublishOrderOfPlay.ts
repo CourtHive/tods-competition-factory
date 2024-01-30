@@ -1,5 +1,5 @@
-import { addNotice } from '../../global/state/globalState';
-import { getTimeItem } from '../../query/base/timeItems';
+import { addNotice } from '@Global/state/globalState';
+import { getTimeItem } from '@Query/base/timeItems';
 import { addTimeItem } from './addTimeItem';
 
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';

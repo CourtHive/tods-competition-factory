@@ -1,4 +1,4 @@
-import { getTournamentTimeItem } from '../../query/base/timeItems';
+import { getTournamentTimeItem } from '@Query/base/timeItems';
 
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 

@@ -1,7 +1,7 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { getDevContext } from '../../../global/state/globalState';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getDevContext } from '@Global/state/globalState';
 import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 
 /**

@@ -1,10 +1,10 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getDevContext } from '../../../global/state/globalState';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getDevContext } from '@Global/state/globalState';
 import { validMatchUps } from '../../../validators/validMatchUp';
-import { xa } from '../../../tools/objects';
-import { generateRange } from '../../../tools/arrays';
+import { xa } from '@Tools/objects';
+import { generateRange } from '@Tools/arrays';
 
-import { MatchUp } from '../../../types/tournamentTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type AddFinishingRoundsArgs = {
   finishingPositionOffset?: number;

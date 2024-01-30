@@ -3,8 +3,8 @@ import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 
 // constants and types
-import { DrawDefinition, Participant, PositionAssignment } from '../../types/tournamentTypes';
-import { ParticipantMap, Substitution } from '../../types/factoryTypes';
+import { DrawDefinition, Participant, PositionAssignment } from '@Types/tournamentTypes';
+import { ParticipantMap, Substitution } from '@Types/factoryTypes';
 import { DOUBLES } from '@Constants/matchUpTypes';
 
 type GetDrawPositionCollectionAssignmentArgs = {

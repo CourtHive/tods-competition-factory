@@ -7,8 +7,8 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 

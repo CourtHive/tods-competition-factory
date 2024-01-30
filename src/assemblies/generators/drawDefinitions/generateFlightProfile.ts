@@ -1,17 +1,17 @@
-import { attachFlightProfile as attachProfile } from '../../../mutate/events/attachFlightProfile';
-import { getScaledEntries } from '../../../query/event/getScaledEntries';
+import { attachFlightProfile as attachProfile } from '@Mutate/events/attachFlightProfile';
+import { getScaledEntries } from '@Query/event/getScaledEntries';
 import { getParticipantId } from '../../../functions/global/extractors';
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import { getDevContext } from '../../../global/state/globalState';
-import { UUID } from '../../../tools/UUID';
-import { chunkArray, chunkByNth, generateRange, shuffleArray } from '../../../tools/arrays';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { getDevContext } from '@Global/state/globalState';
+import { UUID } from '@Tools/UUID';
+import { chunkArray, chunkByNth, generateRange, shuffleArray } from '@Tools/arrays';
 
 import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { FlightProfile, ScaleAttributes } from '../../../types/factoryTypes';
+import { FlightProfile, ScaleAttributes } from '@Types/factoryTypes';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { EXISTING_PROFILE, ErrorType, MISSING_EVENT } from '../../../constants/errorConditionConstants';
 import { SPLIT_SHUTTLE, SPLIT_WATERFALL } from '../../../constants/flightConstants';
-import { Entry, Event, StageTypeUnion, Tournament } from '../../../types/tournamentTypes';
+import { Entry, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId

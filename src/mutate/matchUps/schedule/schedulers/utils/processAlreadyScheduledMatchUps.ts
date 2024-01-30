@@ -4,7 +4,7 @@ import { getMatchUpId } from '../../../../../functions/global/extractors';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 
 import { BYE } from '@Constants/matchUpStatusConstants';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type ProcessAlreadyScheduledMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };

@@ -1,6 +1,6 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findExtension } from '../../acquire/findExtension';
-import { isObject } from '../../tools/objects';
+import { isObject } from '@Tools/objects';
 
 import { DISABLED } from '@Constants/extensionConstants';
 

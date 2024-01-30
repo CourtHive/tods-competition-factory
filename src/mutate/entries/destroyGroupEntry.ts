@@ -1,8 +1,8 @@
 import { deleteParticipants } from '../participants/deleteParticipants';
-import { getStageEntries } from '../../query/drawDefinition/getStageEntries';
+import { getStageEntries } from '@Query/drawDefinition/getStageEntries';
 import { decorateResult } from '../../functions/global/decorateResult';
 import { getParticipantId } from '../../functions/global/extractors';
-import { arrayIndices } from '../../tools/arrays';
+import { arrayIndices } from '@Tools/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
@@ -20,7 +20,7 @@ import {
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
 import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
-import { DrawDefinition, Tournament, Event } from '../../types/tournamentTypes';
+import { DrawDefinition, Tournament, Event } from '@Types/tournamentTypes';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries

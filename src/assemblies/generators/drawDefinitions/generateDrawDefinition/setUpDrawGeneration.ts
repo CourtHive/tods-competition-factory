@@ -4,9 +4,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { policyAttachment } from './drawDefinitionPolicyAttachment';
 
 // constants and types
-import { DrawDefinition, DrawTypeUnion } from '../../../../types/tournamentTypes';
+import { DrawDefinition, DrawTypeUnion } from '@Types/tournamentTypes';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 export function setUpDrawGeneration(params): ResultType & {
   existingQualifyingPlaceholderStructureId?: string | boolean;

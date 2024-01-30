@@ -1,10 +1,10 @@
-import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
-import { Tournament, Venue } from '../../types/tournamentTypes';
+import { Tournament, Venue } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,

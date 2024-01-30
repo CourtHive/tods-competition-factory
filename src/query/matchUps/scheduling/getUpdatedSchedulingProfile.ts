@@ -1,4 +1,4 @@
-import { extractDate } from '../../../tools/dateTime';
+import { extractDate } from '@Tools/dateTime';
 
 export function getUpdatedSchedulingProfile({ schedulingProfile, venueIds, eventIds, drawIds }) {
   const issues: string[] = [];

@@ -5,8 +5,8 @@ import { findEvent } from '../../../acquire/findEvent';
 import { EVENT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { EVENT_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 type RemoveEventMatchUpFormatTimingArgs = {
   tournamentRecords?: TournamentRecords;

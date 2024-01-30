@@ -1,15 +1,15 @@
 import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { attributeFilter } from '../../tools/attributeFilter';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { attributeFilter } from '@Tools/attributeFilter';
 import { getParticipantEntries } from './getParticipantEntries';
 import { filterParticipants } from './filterParticipants';
 import { getParticipantMap } from './getParticipantMap';
-import { isObject } from '../../tools/objects';
+import { isObject } from '@Tools/objects';
 
 import { MISSING_TOURNAMENT_RECORD, ErrorType } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
-import { MatchUp, Tournament } from '../../types/tournamentTypes';
-import { HydratedParticipant } from '../../types/hydrated';
+import { MatchUp, Tournament } from '@Types/tournamentTypes';
+import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   ContextProfile,
@@ -17,7 +17,7 @@ import {
   PolicyDefinitions,
   ScheduleAnalysis,
   ParticipantMap,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 type GetParticipantsArgs = {
   withIndividualParticipants?: boolean | { [key: string]: any };

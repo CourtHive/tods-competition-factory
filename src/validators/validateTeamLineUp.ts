@@ -1,10 +1,10 @@
 import { getParticipantId } from '../functions/global/extractors';
-import { mustBeAnArray } from '../tools/mustBeAnArray';
-import { unique } from '../tools/arrays';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { unique } from '@Tools/arrays';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { TieFormat } from '../types/tournamentTypes';
-import { LineUp } from '../types/factoryTypes';
+import { TieFormat } from '@Types/tournamentTypes';
+import { LineUp } from '@Types/factoryTypes';
 
 type ValidateLineUpArgs = {
   tieFormat?: TieFormat;

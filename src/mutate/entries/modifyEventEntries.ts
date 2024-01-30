@@ -1,6 +1,6 @@
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { addParticipants } from '../participants/addParticipants';
-import { intersection } from '../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
@@ -9,7 +9,7 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 
 import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
-import { EntryStatusUnion, Event, Tournament } from '../../types/tournamentTypes';
+import { EntryStatusUnion, Event, Tournament } from '@Types/tournamentTypes';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...

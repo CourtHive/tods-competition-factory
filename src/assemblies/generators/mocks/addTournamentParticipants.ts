@@ -1,13 +1,13 @@
-import { createTeamsFromParticipantAttributes } from '../../../mutate/participants/createTeamsFromAttributes';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
+import { createTeamsFromParticipantAttributes } from '@Mutate/participants/createTeamsFromAttributes';
+import { addParticipants } from '@Mutate/participants/addParticipants';
 import { getParticipantId } from '../../../functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
-import { Participant, Tournament } from '../../../types/tournamentTypes';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { INDIVIDUAL, TEAM } from '../../../constants/participantConstants';
-import { ParticipantsProfile } from '../../../types/factoryTypes';
+import { ParticipantsProfile } from '@Types/factoryTypes';
 import { COMPETITOR } from '../../../constants/participantRoles';
 import { SUCCESS } from '../../../constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
