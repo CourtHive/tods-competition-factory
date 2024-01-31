@@ -106,8 +106,9 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
 
   const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
   const courtIdsToModify = modifications.courts?.map((court) => court.courtId) || [];
-  const courtIdsToDelete =
-    courtIdsToModify.length && existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId));
+  const courtIdsToDelete = courtIdsToModify.length
+    ? existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId))
+    : existingCourtIds;
 
   const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
   if (courtIdsToDelete.length) {
@@ -129,7 +130,6 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
         return result.matchUps?.length ?? 0;
       })
       .reduce((a, b) => a + b);
-
     if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
       venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
       bulkScheduleTournamentMatchUps({
