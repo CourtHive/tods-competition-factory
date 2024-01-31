@@ -1,6 +1,6 @@
 import { generateRange, randomMember, randomPop } from '@Tools/arrays';
-import { countries } from '@Fixtures/countryData';
-import namesData from '@Fixtures/data/names.json';
+import { countries } from '../../../fixtures/countryData';
+import namesData from '../../../fixtures/data/names.json';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants

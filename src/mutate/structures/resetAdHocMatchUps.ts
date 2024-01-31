@@ -1,5 +1,6 @@
-import { removeMatchUpSideParticipant, resetMatchUpLineUps } from '@Assemblies/governors/matchUpGovernor';
+import { removeMatchUpSideParticipant } from '@Mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resetMatchUpLineUps } from '@Mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { getAdHocStructureDetails } from './getAdHocStructureDetails';
