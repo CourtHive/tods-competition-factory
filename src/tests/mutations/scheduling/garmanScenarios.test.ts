@@ -1,8 +1,8 @@
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getParticipantId } from '@Functions/global/extractors';
-import { intersection, unique } from '../../../tools/arrays';
+import { intersection, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
-import { extractTime } from '../../../tools/dateTime';
+import { extractTime } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
 import garman from '@Assemblies/generators/scheduling/garman/garman';
 import { expect, it } from 'vitest';

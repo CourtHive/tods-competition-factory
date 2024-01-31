@@ -1,7 +1,7 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';

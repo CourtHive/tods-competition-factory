@@ -1,5 +1,5 @@
 import { avoidanceTest } from './avoidanceTest';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { PAIR } from '../../../../constants/participantConstants';

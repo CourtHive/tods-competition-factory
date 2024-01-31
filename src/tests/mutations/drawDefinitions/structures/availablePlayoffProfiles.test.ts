@@ -3,7 +3,7 @@ import { getAvailablePlayoffProfiles } from '@Query/drawDefinition/getAvailableP
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { globalState } from '../../../..';

@@ -1,5 +1,5 @@
 import { generateBlockPattern } from '@Assemblies/generators/drawDefinitions/generateBlockPattern';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 import { CLUSTER, SEPARATE } from '../../../../constants/drawDefinitionConstants';

@@ -7,7 +7,7 @@ import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { numericSort } from '../../../../tools/sorting';
+import { numericSort } from '@Tools/sorting';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import { getNextSeedBlock, getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';

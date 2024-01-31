@@ -1,7 +1,7 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';

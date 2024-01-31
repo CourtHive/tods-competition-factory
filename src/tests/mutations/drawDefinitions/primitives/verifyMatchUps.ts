@@ -2,7 +2,7 @@ import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState'
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
-import { parseScoreString } from '../../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findStructure } from '@Acquire/findStructure';
 import { expect } from 'vitest';

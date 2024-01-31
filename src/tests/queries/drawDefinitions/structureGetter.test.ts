@@ -3,7 +3,7 @@ import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDra
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../mutations/drawDefinitions/primitives/feedIn';
 import { findStructure, getDrawStructures } from '@Acquire/findStructure';
-import { constantToString } from '../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { expect, it } from 'vitest';
 
 import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';

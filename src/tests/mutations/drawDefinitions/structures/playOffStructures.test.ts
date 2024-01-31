@@ -1,8 +1,8 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { instanceCount } from '../../../../tools/arrays';
-import { numericSort } from '../../../../tools/sorting';
+import { instanceCount } from '@Tools/arrays';
+import { numericSort } from '@Tools/sorting';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';

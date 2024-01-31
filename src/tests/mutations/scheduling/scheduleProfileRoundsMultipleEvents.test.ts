@@ -2,7 +2,7 @@ import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visu
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import mocksEngine from '@Assemblies/engines/mock';
-import { extractTime } from '../../../tools/dateTime';
+import { extractTime } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

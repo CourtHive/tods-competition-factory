@@ -1,6 +1,6 @@
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { parseScoreString } from '../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

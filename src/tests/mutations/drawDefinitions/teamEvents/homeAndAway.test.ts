@@ -1,4 +1,4 @@
-import { xa } from '../../../../tools/objects';
+import { xa } from '@Tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';

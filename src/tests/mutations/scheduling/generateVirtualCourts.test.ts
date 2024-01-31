@@ -1,5 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { extractDate, timeStringMinutes } from '../../../tools/dateTime';
+import { extractDate, timeStringMinutes } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { mocksEngine, competitionEngine } from '../../..';

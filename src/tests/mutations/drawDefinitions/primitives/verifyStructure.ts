@@ -4,7 +4,7 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { getPairedDrawPosition } from '@Query/drawDefinition/getPairedDrawPosition';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getNumericSeedValue } from '@Query/drawDefinition/getNumericSeedValue';
-import { chunkArray, generateRange } from '../../../../tools/arrays';
+import { chunkArray, generateRange } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { expect } from 'vitest';

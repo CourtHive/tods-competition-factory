@@ -2,7 +2,7 @@ import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { completeMatchUp } from '../../primitives/verifyMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '../../../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

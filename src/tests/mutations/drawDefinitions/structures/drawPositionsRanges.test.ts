@@ -1,6 +1,6 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';

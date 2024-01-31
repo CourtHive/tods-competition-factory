@@ -3,7 +3,7 @@ import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 

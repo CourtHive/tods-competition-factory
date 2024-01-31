@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { extractTime } from '../../../tools/dateTime';
-import { intersection } from '../../../tools/arrays';
+import { extractTime } from '@Tools/dateTime';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

@@ -1,4 +1,4 @@
-import { dateStringDaysChange } from '../../../tools/dateTime';
+import { dateStringDaysChange } from '@Tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';

@@ -1,5 +1,5 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { extractTime } from '../../../tools/dateTime';
+import { extractTime } from '@Tools/dateTime';
 import { printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 
 export function visualizeScheduledMatchUps({ scheduledMatchUps, showGlobalLog }) {

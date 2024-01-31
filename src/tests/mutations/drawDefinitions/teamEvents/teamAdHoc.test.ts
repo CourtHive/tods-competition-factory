@@ -1,7 +1,7 @@
-import { generateDateRange } from '../../../../tools/dateTime';
+import { generateDateRange } from '@Tools/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { queryEngine } from '@Engines/queryEngine';
-import { hav } from '../../../../tools/objects';
+import { hav } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
 import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';

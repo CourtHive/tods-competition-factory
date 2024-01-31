@@ -1,9 +1,9 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
-import { intersection, overlap, unique } from '../../../../../tools/arrays';
+import { intersection, overlap, unique } from '@Tools/arrays';
 import { structureSort } from '@Functions/sorters/structureSort';
-import { xa } from '../../../../../tools/objects';
+import { xa } from '@Tools/objects';
 import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';

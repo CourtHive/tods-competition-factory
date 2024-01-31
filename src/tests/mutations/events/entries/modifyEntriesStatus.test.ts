@@ -1,9 +1,9 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 import { getEntryStatus, getParticipantId, getParticipantIds } from '@Functions/global/extractors';
-import { instanceCount, intersection, unique } from '../../../../tools/arrays';
+import { instanceCount, intersection, unique } from '@Tools/arrays';
 
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { COMPETITOR } from '../../../../constants/participantRoles';

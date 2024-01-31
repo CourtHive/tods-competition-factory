@@ -1,8 +1,8 @@
 import tournamentEngine from '../engines/syncEngine';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
 import { APPLIED_POLICIES } from '@Constants/extensionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';

@@ -15,7 +15,7 @@ export { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUp
 export { getSetComplement, getTiebreakComplement } from '../../../query/matchUp/getComplement';
 export { keyValueScore } from '../../../mutate/score/keyValueScore/keyValueScore';
 export { checkSetIsComplete } from '../../../query/matchUp/checkSetIsComplete';
-export { parseScoreString } from '../../../tools/parseScoreString';
+export { parseScoreString } from '@Tools/parseScoreString';
 
 // history
 export { calculateHistoryScore } from '../../../mutate/matchUps/score/history/calculateHistoryScore';

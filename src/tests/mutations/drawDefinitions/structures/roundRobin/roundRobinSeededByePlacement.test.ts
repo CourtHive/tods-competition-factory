@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { generateRange, unique } from '../../../../../tools/arrays';
+import { generateRange, unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SEEDING_BYES from '@Fixtures/policies/POLICY_SEEDING_BYES';

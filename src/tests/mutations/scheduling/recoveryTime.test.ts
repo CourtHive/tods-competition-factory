@@ -2,7 +2,7 @@ import { getMatchUpIds } from '@Functions/global/extractors';
 import { stringSort } from '@Functions/sorters/stringSort';
 import competitionEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';

@@ -1,7 +1,7 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../tools/arrays';
-import { xa } from '../../../../tools/objects';
+import { unique } from '@Tools/arrays';
+import { xa } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
 import { INVALID_PARTICIPANT } from '../../../../constants/errorConditionConstants';

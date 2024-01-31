@@ -4,7 +4,7 @@ import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEnt
 import { feedInMatchUps } from '@Assemblies/generators/drawDefinitions/feedInMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawData } from '@Query/drawDefinition/getDrawData';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 

@@ -3,7 +3,7 @@ import { getMatchUpIds } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
-import { dateStringDaysChange, extractDate, extractTime } from '../../../tools/dateTime';
+import { dateStringDaysChange, extractDate, extractTime } from '@Tools/dateTime';
 
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { SINGLES } from '@Constants/eventConstants';

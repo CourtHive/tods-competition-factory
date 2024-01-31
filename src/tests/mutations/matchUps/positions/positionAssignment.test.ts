@@ -5,7 +5,7 @@ import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssig
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 

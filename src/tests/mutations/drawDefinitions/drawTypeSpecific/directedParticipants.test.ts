@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';

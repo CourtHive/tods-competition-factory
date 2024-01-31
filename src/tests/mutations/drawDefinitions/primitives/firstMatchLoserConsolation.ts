@@ -7,7 +7,7 @@ import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioni
 import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { MAIN, FIRST_MATCH_LOSER_CONSOLATION, CONSOLATION } from '../../../../constants/drawDefinitionConstants';

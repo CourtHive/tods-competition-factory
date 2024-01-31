@@ -1,5 +1,5 @@
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';

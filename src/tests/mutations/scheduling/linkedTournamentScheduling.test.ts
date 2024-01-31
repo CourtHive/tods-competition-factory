@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { formatDate } from '../../../tools/dateTime';
+import { formatDate } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 

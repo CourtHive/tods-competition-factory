@@ -1,7 +1,7 @@
 import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
-import { intersection, unique } from '../../../tools/arrays';
-import { xa } from '../../../tools/objects';
-import { constantToString } from '../../../tools/strings';
+import { intersection, unique } from '@Tools/arrays';
+import { xa } from '@Tools/objects';
+import { constantToString } from '@Tools/strings';
 import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';

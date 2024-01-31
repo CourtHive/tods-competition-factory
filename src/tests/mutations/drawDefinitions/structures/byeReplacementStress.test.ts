@@ -1,4 +1,4 @@
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';

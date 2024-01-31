@@ -1,6 +1,6 @@
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 

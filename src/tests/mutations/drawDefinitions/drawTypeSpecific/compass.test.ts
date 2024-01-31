@@ -10,7 +10,7 @@ import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { drawMatchUps } from '@Query/matchUps/getDrawMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';

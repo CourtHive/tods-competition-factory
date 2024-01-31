@@ -1,5 +1,5 @@
 import tournamentEngine from '../engines/syncEngine';
-import { getAccessorValue } from '../../tools/getAccessorValue';
+import { getAccessorValue } from '@Tools/getAccessorValue';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 

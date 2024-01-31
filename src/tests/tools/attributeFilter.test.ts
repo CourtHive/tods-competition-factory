@@ -1,4 +1,4 @@
-import { attributeFilter } from '../../tools/attributeFilter';
+import { attributeFilter } from '@Tools/attributeFilter';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '@Constants/participantConstants';

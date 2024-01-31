@@ -1,4 +1,4 @@
-import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
+import { extractTime, timeStringMinutes } from '@Tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';

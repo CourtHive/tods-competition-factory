@@ -1,7 +1,7 @@
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getDrawStructures } from '@Acquire/findStructure';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '../../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

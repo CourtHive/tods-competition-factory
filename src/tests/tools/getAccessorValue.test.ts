@@ -1,4 +1,4 @@
-import { getAccessorValue } from '../../tools/getAccessorValue';
+import { getAccessorValue } from '@Tools/getAccessorValue';
 import { expect, it } from 'vitest';
 
 const MAIN_STREET = 'Main Street';

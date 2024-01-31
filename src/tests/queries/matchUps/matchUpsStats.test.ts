@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { instanceCount } from '../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';

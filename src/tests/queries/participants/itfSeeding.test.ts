@@ -1,4 +1,4 @@
-import { generateRange, unique } from '../../../tools/arrays';
+import { generateRange, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

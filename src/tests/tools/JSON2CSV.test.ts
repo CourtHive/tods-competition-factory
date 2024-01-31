@@ -6,7 +6,7 @@ import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES_EVENT } from '@Constants/eventConstants';
 import { WALKOVER } from '@Constants/matchUpStatusConstants';
 import { SINGLES } from '@Constants/matchUpTypes';
-import { JSON2CSV } from '../../tools/json';
+import { JSON2CSV } from '@Tools/json';
 import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 it('can create CSV from shallow JSON objects', () => {

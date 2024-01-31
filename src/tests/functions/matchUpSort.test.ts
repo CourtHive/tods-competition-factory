@@ -1,7 +1,7 @@
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import mocksEngine from '../../assemblies/engines/mock';
 import queryEngine from '../engines/queryEngine';
-import { shuffleArray } from '../../tools/arrays';
+import { shuffleArray } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
 import { COMPASS, CURTIS_CONSOLATION, stageOrder } from '@Constants/drawDefinitionConstants';

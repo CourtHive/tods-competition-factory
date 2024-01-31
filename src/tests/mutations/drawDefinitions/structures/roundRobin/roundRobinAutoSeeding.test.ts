@@ -1,7 +1,7 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { xa } from '../../../../../tools/objects';
+import { xa } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
 import { MAIN, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';

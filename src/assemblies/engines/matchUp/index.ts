@@ -2,7 +2,7 @@ import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMetho
 import { notifySubscribers } from '../../../global/state/notifySubscribers';
 import { factoryVersion } from '../../../functions/global/factoryVersion';
 import * as scoreGovernor from '../../governors/scoreGovernor';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import {
   setDeepCopy,
   setDevContext,
@@ -12,7 +12,7 @@ import {
 } from '../../../global/state/globalState';
 
 import { SUCCESS } from '../../../constants/resultConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
+import { FactoryEngine } from '@Types/factoryTypes';
 
 export const matchUpEngine = (() => {
   const engine: FactoryEngine = {
