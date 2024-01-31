@@ -1,25 +1,31 @@
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
-import { AD_HOC } from '@Constants/drawDefinitionConstants';
+// constants
+import { INVALID_DRAW_TYPE, INVALID_VALUES, MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DRAW_DEFINITION, MATCHUP_ID, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import {
-  INVALID_DRAW_TYPE,
-  INVALID_VALUES,
-  MATCHUP_NOT_FOUND,
-  MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP_ID,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '@Constants/errorConditionConstants';
 
-export function removeMatchUpSideParticipant({ tournamentRecord, drawDefinition, sideNumber, matchUpId, event }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (!sideNumber) return { error: MISSING_VALUE };
+type RemoveMatchUpSideParticipantArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  sideNumber?: number;
+  matchUpId: string;
+  event?: Event;
+};
 
-  if (![1, 2].includes(sideNumber)) return { error: INVALID_VALUES, sideNumber };
+export function removeMatchUpSideParticipant(params: RemoveMatchUpSideParticipantArgs) {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true, [DRAW_DEFINITION]: true, [MATCHUP_ID]: true },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { drawDefinition, sideNumber, matchUpId, event } = params;
+
+  if (sideNumber && ![1, 2].includes(sideNumber)) return { error: INVALID_VALUES, sideNumber };
 
   const { matchUp, structure } = findDrawMatchUp({
     drawDefinition,
@@ -28,20 +34,14 @@ export function removeMatchUpSideParticipant({ tournamentRecord, drawDefinition,
   });
 
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
-
-  const isAdHoc =
-    !structure?.structures &&
-    !(drawDefinition.drawType && drawDefinition.drawType !== AD_HOC) &&
-    !structure?.matchUps?.find(({ roundPosition }) => !!roundPosition);
-
-  if (!isAdHoc) return { error: INVALID_DRAW_TYPE };
+  if (!isAdHoc({ structure })) return { error: INVALID_DRAW_TYPE };
 
   matchUp.sides?.forEach((side) => {
-    if (side.sideNumber === sideNumber) delete side.participantId;
+    if (!sideNumber || side.sideNumber === sideNumber) delete side.participantId;
   });
 
   modifyMatchUpNotice({
-    tournamentId: tournamentRecord?.tournamentId,
+    tournamentId: params.tournamentRecord?.tournamentId,
     context: 'assignSideParticipant',
     drawDefinition,
     matchUp,
