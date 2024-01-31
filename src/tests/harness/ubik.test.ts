@@ -1,4 +1,4 @@
-import tournamentEngine from '../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 import fs from 'fs';
 
@@ -8,8 +8,8 @@ import fs from 'fs';
  * Capture { method, params } and paste into methods array
  */
 
-test.skip('can execute abitrary methods', () => {
-  const tournamentRecordJSON = fs.readFileSync('./src/global/tests/generic/tournament.tods.json', 'utf-8');
+test('can execute abitrary methods', () => {
+  const tournamentRecordJSON = fs.readFileSync('src/tests/harness/tournament.tods.json', 'utf-8');
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
   let result = tournamentEngine.devContext(true).setState(tournamentRecord, false);
   expect(result.success).toEqual(true);
