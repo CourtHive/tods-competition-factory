@@ -123,7 +123,7 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     }));
 
   const getPrefixedId = (index: number) => {
-    if (!params.idPrefix && !isMock) return undefined;
+    if (!params.idPrefix) return undefined;
     const drawId = drawDefinition.drawId;
     const idPrefix = params.idPrefix ?? 'ah';
     return `${drawId}-${idPrefix}-${nextRoundNumber}-${index}`;
