@@ -1,8 +1,9 @@
-import mocksEngine from '@Assemblies/engines/mock';
-import { extractDate } from '../../../tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import { extractDate } from '@Tools/dateTime';
 import { expect, it } from 'vitest';
 
+// constants and fixtures
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 import { SCHEDULED_MATCHUPS } from '@Constants/errorConditionConstants';
 
@@ -36,18 +37,17 @@ it('thows an error if a venue has scheduled matchUps', () => {
     },
   ];
 
-  const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+  const { schedulerResult } = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     autoSchedule: true,
     schedulingProfile,
+    setState: true,
     venueProfiles,
     drawProfiles,
     startDate,
   });
 
   expect(schedulerResult.scheduledMatchUpIds[startDate].length).toEqual(30);
-
-  tournamentEngine.setState(tournamentRecord);
 
   const myCourts = { venueName: 'My Courts' };
   let result = tournamentEngine.addVenue({ venue: myCourts });
@@ -83,4 +83,16 @@ it('thows an error if a venue has scheduled matchUps', () => {
     },
   });
   expect(result.success).toEqual(true);
+
+  let venueData = tournamentEngine.getVenueData({ venueId }).venueData;
+  expect(venueData.courtsInfo.length).toEqual(8);
+
+  result = tournamentEngine.modifyVenue({ venueId, modifications: { courts: [] } });
+  expect(result.error).toEqual(SCHEDULED_MATCHUPS);
+
+  result = tournamentEngine.modifyVenue({ venueId, modifications: { courts: [] }, force: true });
+  expect(result.success).toEqual(true);
+
+  venueData = tournamentEngine.getVenueData({ venueId }).venueData;
+  expect(venueData.courtsInfo.length).toEqual(0);
 });

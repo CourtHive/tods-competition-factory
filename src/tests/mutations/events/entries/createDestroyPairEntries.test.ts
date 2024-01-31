@@ -1,16 +1,17 @@
 import { isUngrouped } from '@Query/entries/isUngrouped';
-import { chunkArray, unique } from '../../../../tools/arrays';
+import { chunkArray, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+// constants
+import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { FEMALE, MALE, MIXED } from '../../../../constants/genderConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
+import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_IDS,
@@ -18,7 +19,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const startDate = '2020-01-01';
 const endDate = '2020-01-06';

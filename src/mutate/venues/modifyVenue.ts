@@ -11,6 +11,7 @@ import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 import { findVenue } from './findVenue';
 
+// constants and types
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { Venue, Tournament } from '@Types/tournamentTypes';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
@@ -106,11 +107,14 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
 
   const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
   const courtIdsToModify = modifications.courts?.map((court) => court.courtId) || [];
-  const courtIdsToDelete =
-    courtIdsToModify.length && existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId));
+
+  // courts will be deleted if courts array included in modifications
+  const courtIdsToDelete = courtIdsToModify.length
+    ? existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId))
+    : modifications?.courts && existingCourtIds;
 
   const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
-  if (courtIdsToDelete.length) {
+  if (courtIdsToDelete?.length) {
     const courtsToDelete = venue?.courts?.filter((court) => courtIdsToDelete.includes(court.courtId));
     const scheduleDeletionsCount = courtsToDelete
       ?.map((court) => {
@@ -129,7 +133,6 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
         return result.matchUps?.length ?? 0;
       })
       .reduce((a, b) => a + b);
-
     if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
       venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
       bulkScheduleTournamentMatchUps({

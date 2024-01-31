@@ -1,5 +1,6 @@
 import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
 import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
@@ -7,8 +8,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpId } from '@Functions/global/extractors';
 
 // constants and types
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -16,8 +18,6 @@ import {
   INVALID_EVENT_TYPE,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP_FORMAT,
-  MISSING_TOURNAMENT_RECORD,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '@Constants/errorConditionConstants';
@@ -46,6 +46,16 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
   const stack = 'setMatchUpFormat';
 
+  const paramsCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+    {
+      [VALIDATE]: (value) => isValidMatchUpFormat({ matchUpFormat: value }),
+      [INVALID]: UNRECOGNIZED_MATCHUP_FORMAT,
+      matchUpFormat: true,
+    },
+  ]);
+  if (paramsCheck.error) return decorateResult({ result: paramsCheck, stack });
+
   const {
     tournamentRecord,
     drawDefinition,
@@ -62,13 +72,6 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
     force, // strip matchUpFormat from scoped matchUps which have not been scored
   } = params;
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!matchUpFormat) return { error: MISSING_MATCHUP_FORMAT };
-  if (matchUpFormat && !isValidMatchUpFormat({ matchUpFormat }))
-    return decorateResult({
-      result: { error: UNRECOGNIZED_MATCHUP_FORMAT, matchUpFormat },
-      stack,
-    });
   if (scheduledDates && !Array.isArray(scheduledDates))
     return decorateResult({
       result: { error: INVALID_VALUES, scheduledDates },
@@ -119,14 +122,14 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
         modificationsCount += 1;
       }
 
-      const matchUps: HydratedMatchUp[] =
+      const matchUps: MatchUp[] =
         (force || scheduledDates) &&
         getAllStructureMatchUps({
           matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
           structure,
         }).matchUps;
 
-      const inContextMatchUps =
+      const inContextMatchUps: HydratedMatchUp[] =
         scheduledDates &&
         getAllStructureMatchUps({
           matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
@@ -163,7 +166,7 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
     return modifiedStructureIds;
   };
 
-  for (const event of tournamentRecord.events || []) {
+  for (const event of tournamentRecord?.events || []) {
     if (
       (eventIds?.length && !eventIds.includes(event.eventId)) ||
       (eventType && eventType !== event.eventType) ||

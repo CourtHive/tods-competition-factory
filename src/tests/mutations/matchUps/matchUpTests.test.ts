@@ -8,17 +8,23 @@ import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { getDrawStructures } from '@Acquire/findStructure';
+import { tournamentEngine } from '@Engines/syncEngine';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 // constants and types
 import { MAIN, ROUND_ROBIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { SINGLES } from '@Constants/matchUpTypes';
 import {
+  INVALID_EVENT_TYPE,
+  INVALID_MATCHUP,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_FORMAT,
   STRUCTURE_NOT_FOUND,
+  UNRECOGNIZED_MATCHUP_FORMAT,
 } from '@Constants/errorConditionConstants';
 
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
@@ -147,7 +153,13 @@ it('can set matchUpFormat', () => {
   const matchUpId = matchUp?.matchUpId as string;
   let result = setMatchUpMatchUpFormat({
     drawDefinition,
+    matchUpFormat,
     matchUpId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = setMatchUpMatchUpFormat({
+    drawDefinition,
     matchUpFormat,
   });
   expect(result.success).toEqual(true);
@@ -188,4 +200,86 @@ it('can set matchUpFormat', () => {
     matchUpFormat,
   });
   expect(result.success).toEqual(true);
+  result = setMatchUpMatchUpFormat({
+    // @ts-expect-error possibly undefined param
+    structureIds: [structure?.structureId],
+    drawDefinition,
+    matchUpFormat,
+  });
+  expect(result.success).toEqual(true);
+  result = setMatchUpMatchUpFormat({
+    structureIds: ['bogus structureId'],
+    drawDefinition,
+    matchUpFormat,
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
+  result = setMatchUpMatchUpFormat({
+    structureId: structure?.structureId,
+    matchUpFormat: 'bogus format',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
+
+  // @ts-expect-error missing params
+  result = setMatchUpMatchUpFormat({
+    structureId: structure?.structureId,
+    matchUpFormat,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
+});
+
+it('throws error when setting matchUpFormat on TEAM events', () => {
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId: 'did', drawSize: 4, idPrefix: 'match', eventType: TEAM_EVENT }],
+    setState: true,
+  });
+
+  const { drawDefinition, event } = tournamentEngine.getEvent({ drawId: 'did' });
+  const structureId = drawDefinition.structures[0].structureId;
+
+  expect(event.eventType).toEqual(TEAM_EVENT);
+
+  let result = setMatchUpMatchUpFormat({
+    matchUpFormat: 'SET1-S:T10',
+    drawDefinition,
+    structureId,
+    event,
+  });
+  expect(result.error).toEqual(INVALID_EVENT_TYPE);
+
+  result = setMatchUpMatchUpFormat({
+    matchUpFormat: 'SET1-S:T10',
+    structureIds: [structureId],
+    drawDefinition,
+    event,
+  });
+  expect(result.error).toEqual(INVALID_EVENT_TYPE);
+
+  result = setMatchUpMatchUpFormat({
+    matchUpFormat: 'SET1-S:T10',
+    matchUpId: 'match-1-1',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = setMatchUpMatchUpFormat({
+    matchUpFormat: 'SET1-S:T10',
+    matchUpId: 'match-x-y',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(MATCHUP_NOT_FOUND);
+
+  result = setMatchUpMatchUpFormat({
+    structureId: 'bogusStructureId',
+    matchUpFormat: 'SET1-S:T10',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
+
+  result = setMatchUpMatchUpFormat({
+    structureIds: ['bogusStructureId'],
+    matchUpFormat: 'SET1-S:T10',
+    drawDefinition,
+  });
+  expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
 });

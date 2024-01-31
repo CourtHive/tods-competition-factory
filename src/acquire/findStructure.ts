@@ -1,17 +1,14 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { structureSort } from '@Functions/sorters/structureSort';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { StructureSortConfig, ResultType } from '@Types/factoryTypes';
+import { MISSING_STRUCTURES, STRUCTURE_NOT_FOUND, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { DRAW_DEFINITION, STRUCTURE_ID } from '@Constants/attributeConstants';
 import { ITEM, validStages } from '@Constants/drawDefinitionConstants';
+import { StructureSortConfig, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Structure } from '@Types/tournamentTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
-import {
-  MISSING_STRUCTURES,
-  STRUCTURE_NOT_FOUND,
-  MISSING_STRUCTURE_ID,
-  MISSING_DRAW_DEFINITION,
-} from '@Constants/errorConditionConstants';
 
 type FindStructureArgs = {
   drawDefinition?: DrawDefinition;
@@ -23,9 +20,12 @@ type FoundStructureResult = {
   structure?: Structure;
 };
 
-export function findStructure({ drawDefinition, structureId }: FindStructureArgs): ResultType & FoundStructureResult {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structureId) return { error: MISSING_STRUCTURE_ID };
+export function findStructure(params: FindStructureArgs): ResultType & FoundStructureResult {
+  const paramsCheck = checkRequiredParameters(params, [{ [DRAW_DEFINITION]: true, [STRUCTURE_ID]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { drawDefinition, structureId } = params;
+
   const { structures } = getDrawStructures({ drawDefinition });
   const allStructures = structures
     ?.map((structure) => {
