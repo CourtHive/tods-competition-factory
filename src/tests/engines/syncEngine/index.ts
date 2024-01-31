@@ -1,5 +1,5 @@
-import * as governors from '../../../assemblies/governors';
-import syncEngine from '../../../assemblies/engines/sync';
+import * as governors from '@Assemblies/governors';
+import syncEngine from '@Assemblies/engines/sync';
 
 syncEngine.importMethods(governors, true, 1);
 

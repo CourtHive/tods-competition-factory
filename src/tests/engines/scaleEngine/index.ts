@@ -1,6 +1,6 @@
 import rankingsGovernor from './governors/rankingsGovernor';
 import ratingsGovernor from './governors/ratingsGovernor';
-import syncEngine from '../../../assemblies/engines/sync';
+import syncEngine from '@Assemblies/engines/sync';
 
 const methods = {
   ...rankingsGovernor,

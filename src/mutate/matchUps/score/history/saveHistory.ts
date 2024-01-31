@@ -1,5 +1,6 @@
-import { addExtension } from '../../../extensions/addExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
 
+// constants
 import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
 import { MatchUp } from '@Types/tournamentTypes';
 

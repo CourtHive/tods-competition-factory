@@ -1,5 +1,5 @@
-import * as governors from '../../../assemblies/governors';
-import async from '../../../assemblies/engines/async';
+import * as governors from '@Assemblies/governors';
+import async from '@Assemblies/engines/async';
 
 /**
 // NOTE: This is an example of how to use asyncEngine with asyncGlobalState

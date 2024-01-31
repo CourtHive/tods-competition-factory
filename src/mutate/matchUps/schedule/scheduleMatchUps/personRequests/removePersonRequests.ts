@@ -1,8 +1,9 @@
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { removeExtension } from '../../../../extensions/removeExtension';
 import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { savePersonRequests } from './savePersonRequests';
 
+// constants and types
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { PERSON_REQUESTS } from '@Constants/extensionConstants';
 import { TournamentRecords } from '@Types/factoryTypes';

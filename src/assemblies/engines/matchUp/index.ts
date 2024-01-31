@@ -1,10 +1,11 @@
-import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMethods';
-import { notifySubscribers } from '@Global/state/notifySubscribers';
-import { factoryVersion } from '../../../functions/global/factoryVersion';
-import * as scoreGovernor from '../../governors/scoreGovernor';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { setDeepCopy, setDevContext, getDevContext, deleteNotices, handleCaughtError } from '@Global/state/globalState';
+import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMethods';
+import * as scoreGovernor from '@Assemblies/governors/scoreGovernor';
+import { notifySubscribers } from '@Global/state/notifySubscribers';
+import { factoryVersion } from '@Functions/global/factoryVersion';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
 import { SUCCESS } from '@Constants/resultConstants';
 import { FactoryEngine } from '@Types/factoryTypes';
 

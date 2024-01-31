@@ -3,9 +3,9 @@ export { generateScoreString } from '../../generators/matchUps/generateScoreStri
 export { tidyScore } from '../../../analyze/scoreParser/scoreParser';
 export { reverseScore } from '../../generators/score/reverseScore';
 
-export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-export { validateTieFormat } from '../../../validators/validateTieFormat';
-export { validateScore } from '../../../validators/validateScore';
+export { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+export { validateTieFormat } from '@Validators/validateTieFormat';
+export { validateScore } from '@Validators/validateScore';
 
 export { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 export { analyzeSet } from '@Query/matchUp/analyzeSet';

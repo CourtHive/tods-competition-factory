@@ -1,5 +1,5 @@
-import * as queryGovernor from '../../../assemblies/governors/queryGovernor';
-import ask from '../../../assemblies/engines/ask';
+import * as queryGovernor from '@Assemblies/governors/queryGovernor';
+import ask from '@Assemblies/engines/ask';
 
 ask.importMethods(queryGovernor, true, 1);
 
