@@ -3,11 +3,12 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
-import { RATING, SEEDING } from '../../../../../constants/scaleConstants';
-import { COMPETITOR } from '../../../../../constants/participantRoles';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { ELO } from '../../../../../constants/ratingConstants';
+// constants
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { RATING, SEEDING } from '@Constants/scaleConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SINGLES } from '@Constants/eventConstants';
+import { ELO } from '@Constants/ratingConstants';
 
 // TODO: unPublishEventSeeding - unPublish only MAIN or only QUALIFYING or both...
 const scenarios = [
