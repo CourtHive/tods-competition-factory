@@ -172,6 +172,18 @@ const drawTypes = engine.getAllowedMatchUpFormats();
 
 ---
 
+## getAvailableMatchUpsCount
+
+```js
+const { availableMatchUpsCount } = engine.getAvailbleMatchUpsCount({
+  structureId, // required if there is more than one structure in the drawDefinition
+  roundNumber, // optional; will default to last roundNumber
+  drawId,
+});
+```
+
+---
+
 ## getAvailablePlayoffProfiles
 
 If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.

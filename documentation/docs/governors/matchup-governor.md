@@ -358,6 +358,38 @@ engine.removeTieMatchUpParticipantId({
 
 ---
 
+## resetAdHocMatchUps
+
+Will remove all results (scores) and optionally all participant assignments from specified matchUps (via matchUpIds or roundNumbers).
+
+```js
+const result = engine.resetAdHocMatchUps({
+  removeAssignments, // optional; remove all assigned participants
+  roundNumbers, // optional if matchUpids provided
+  matchUpIds, // optional only if roundNumber(s) provided
+  structureId, // optional unless matchUpIds not provided
+  drawId,
+};
+
+export function resetAdHocMatchUps(params: ResetAdHocMatchUps) {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [DRAW_DEFINITION]: true, [EVENT]: true },
+    {
+      [ONE_OF]: { [MATCHUP_IDS]: false, roundNumbers: false },
+      [INVALID]: INVALID_VALUES,
+      [OF_TYPE]: ARRAY,
+    },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const structureResult = getAdHocStructureDetails(params);
+  if (structureResult.error) return structureResult;
+  const { matchUpIds } = structureResult;
+})
+```
+
+---
+
 ## resetScorecard
 
 Removes all scores from `tieMatchUps` within a TEAM `matchUp`; preserves `lineUps`.

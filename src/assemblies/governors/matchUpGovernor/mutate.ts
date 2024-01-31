@@ -16,6 +16,7 @@ export { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatu
 export { bulkMatchUpStatusUpdate } from '@Mutate/events/bulkMatchUpStatusUpdate';
 export { setDelegatedOutcome } from '@Mutate/drawDefinitions/setDelegatedOutcome';
 export { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+export { resetAdHocMatchUps } from '@Mutate/structures/resetAdHocMatchUps';
 export { setOrderOfFinish } from '@Mutate/drawDefinitions/setOrderOfFinish';
 export { publicFindMatchUp as findMatchUp } from '@Acquire/findMatchUp';
 export { applyLineUps } from '@Mutate/matchUps/lineUps/applyLineUps';
