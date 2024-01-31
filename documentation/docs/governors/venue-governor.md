@@ -198,13 +198,15 @@ const result = engine.modifyCourtAvailability({
 
 ## modifyVenue
 
-See [Scheduling](/docs/concepts/venues-courts).
+Courts present on venue will replaced with courts specified in parameters. If courts are not present in parameters, courts will be unchanged.
+
+See [Scheduling](/docs/concepts/venues-courts) for more detail on court `dateAvailability`.
 
 ```js
 const modifications = {
-  venueName,
-  onlineResources,
   venueAbbreviation,
+  onlineResources,
+  venueName,
   courts: [
     {
       courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
