@@ -1,12 +1,14 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import { validMatchUp, validMatchUps } from '@Validators/validMatchUp';
-import { intersection, unique } from '../../../tools/arrays';
+import { intersection, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { xa } from '../../../tools/objects';
 import { expect, it, test } from 'vitest';
+import { xa } from '@Tools/objects';
 
+// constants
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { REMOVE_PARTICIPANT } from '@Constants/matchUpActionConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import {
@@ -110,9 +112,9 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     sideNumber: 1,
   }).validActions;
 
-  expect(validActions.map(xa('type')).includes('ASSIGN')).toBeTruthy();
+  expect(validActions.map(xa('type')).includes(ASSIGN_PARTICIPANT)).toBeTruthy();
 
-  let assignAction = validActions.find((action) => action.type === 'ASSIGN');
+  let assignAction = validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
 
   const availableParticipantIds = assignAction.availableParticipantIds;
   expect(availableParticipantIds.length).toEqual(participantsCount);
@@ -130,7 +132,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     ...matchUps[1],
     sideNumber: 1,
   }).validActions;
-  assignAction = validActions.find((action) => action.type === 'ASSIGN');
+  assignAction = validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
   expect(assignAction.availableParticipantIds.includes(targetParticipantId)).toEqual(false);
 
   // possible to override default setting
@@ -139,7 +141,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
     ...matchUps[1],
     sideNumber: 1,
   }).validActions;
-  assignAction = validActions.find((action) => action.type === 'ASSIGN');
+  assignAction = validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
   expect(assignAction.availableParticipantIds.includes(targetParticipantId)).toEqual(true);
 
   validActions = tournamentEngine.positionActions({
@@ -148,7 +150,7 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   }).validActions;
 
   targetParticipantId = availableParticipantIds[0];
-  assignAction = validActions.find((action) => action.type === 'ASSIGN');
+  assignAction = validActions.find((action) => action.type === ASSIGN_PARTICIPANT);
   payload = {
     ...assignAction.payload,
     participantId: targetParticipantId,

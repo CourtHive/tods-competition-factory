@@ -2,6 +2,7 @@ import { getProjectedDualWinningSide } from '@Mutate/drawDefinitions/matchUpGove
 import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGovernor/noDownstreamDependencies';
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems';
 import { swapWinnerLoser } from '@Mutate/matchUps/drawPositions/swapWinnerLoser';
@@ -15,12 +16,13 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { validateScore } from '@Validators/validateScore';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { pushGlobalLog } from '@Functions/global/globalLog';
+import { validateScore } from '@Validators/validateScore';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
@@ -148,12 +150,13 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const structureId = inContextMatchUp?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
+  const isTeam = isMatchUpEventType(TEAM)(matchUp.matchUpType);
 
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(Boolean);
 
   let dualWinningSideChange;
-  if (matchUp.matchUpType === TEAM) {
+  if (isTeam) {
     if (disableAutoCalc) {
       addExtension({
         extension: { name: DISABLE_AUTO_CALC, value: true },
@@ -201,7 +204,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   }
 
   if (
-    matchUp.matchUpType === TEAM &&
+    isTeam &&
     matchUpStatus &&
     [
       AWAITING_RESULT,
@@ -226,7 +229,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     drawDefinition,
   });
 
-  if (score && matchUp.matchUpType !== TEAM && !disableScoreValidation) {
+  if (score && !isTeam && !disableScoreValidation) {
     const matchUpFormat =
       matchUp.matchUpFormat ?? structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
 
@@ -249,17 +252,19 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       }).positionAssignments
     : [];
 
-  const bothSideParticipants =
-    inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length === 2 ||
+  const participantsCount = inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length;
+  const requiredParticipants =
+    (participantsCount && participantsCount === 2) ||
+    (isTeam && isAdHoc({ structure }) && participantsCount && participantsCount >= 1) ||
     (assignedDrawPositions?.length === 2 &&
       positionAssignments
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
 
-  if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !bothSideParticipants) {
+  if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'present in participantRequiredMatchUpStatuses',
-      context: { matchUpStatus, bothSideParticipants },
+      context: { matchUpStatus, requiredParticipants },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }
@@ -395,11 +400,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   }
 
   const validWinningSideSwap =
-    matchUp.matchUpType !== TEAM &&
-    !dualWinningSideChange &&
-    winningSide &&
-    matchUp.winningSide &&
-    matchUp.winningSide !== winningSide;
+    !isTeam && !dualWinningSideChange && winningSide && matchUp.winningSide && matchUp.winningSide !== winningSide;
 
   if (
     allowChangePropagation &&

@@ -6,6 +6,7 @@ import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { xa } from '@Tools/objects';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

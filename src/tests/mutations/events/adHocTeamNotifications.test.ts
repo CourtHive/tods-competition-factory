@@ -1,6 +1,7 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { mocksEngine, tournamentEngine } from '../../..';
+import { tournamentEngine } from '@Engines/syncEngine';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
