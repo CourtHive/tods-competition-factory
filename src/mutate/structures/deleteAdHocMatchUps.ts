@@ -3,15 +3,15 @@ import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mu
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getAdHocStructureDetails } from './getAdHocStructureDetails';
 import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { xa } from '@Tools/objects';
 
 // constants and types
 import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
-import { INVALID_STRUCTURE, INVALID_VALUES, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
 type DeleteAdHocMatchUpsArgs = {
@@ -36,7 +36,6 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
   ]);
   if (paramsCheck.error) return paramsCheck;
 
-  let matchUpIds = params.matchUpIds ?? [];
   const {
     removeIncomplete = false,
     removeUnAssigned = true,
@@ -46,35 +45,10 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
     event,
   } = params;
 
-  const structureId =
-    params.structureId ??
-    drawDefinition?.structures?.find((structure) =>
-      structure.matchUps?.some(({ matchUpId }) => matchUpIds.includes(matchUpId)),
-    )?.structureId ??
-    drawDefinition?.structures?.[0]?.structureId;
+  const structureResult = getAdHocStructureDetails(params);
+  if (structureResult.error) return structureResult;
 
-  if (!structureId) return { error: STRUCTURE_NOT_FOUND };
-
-  const structure: any = drawDefinition.structures?.find((structure) => structure.structureId === structureId);
-  if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
-  const existingMatchUps = structure?.matchUps;
-  const structureHasRoundPositions = existingMatchUps?.find((matchUp) => !!matchUp.roundPosition);
-
-  if (structure.structures || structureHasRoundPositions || structure.finishingPosition === ROUND_OUTCOME) {
-    return { error: INVALID_STRUCTURE };
-  }
-
-  if (params.roundNumbers) {
-    const existingRoundMatchUpIds = existingMatchUps
-      .filter(({ roundNumber }) => params.roundNumbers?.includes(roundNumber))
-      .map(getMatchUpId);
-    if (matchUpIds.length) {
-      matchUpIds = matchUpIds.filter((matchUpId) => existingRoundMatchUpIds.includes(matchUpId));
-    } else {
-      matchUpIds = existingRoundMatchUpIds;
-    }
-  }
+  const { structure, structureId, existingMatchUps, matchUpIds } = structureResult;
 
   const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =

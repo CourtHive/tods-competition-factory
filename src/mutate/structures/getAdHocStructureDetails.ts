@@ -30,7 +30,7 @@ export function getAdHocStructureDetails(params) {
     .map(getMatchUpId);
 
   // filter out any erroneous matchUpIds
-  matchUpIds = matchUpIds.filter((matchUpId) => existingRoundMatchUpIds.includes(matchUpId));
+  matchUpIds = matchUpIds.filter((matchUpId) => !existingRoundMatchUpIds.includes(matchUpId));
 
   // if no matchUpIds are provided, use existingRoundMatchUpIds
   if (params.roundNumbers && !matchUpIds.length) matchUpIds = existingRoundMatchUpIds;
