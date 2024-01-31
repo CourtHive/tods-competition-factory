@@ -208,7 +208,7 @@ it.each(scenarios)('can generate and seed a qualifying structure', (scenario) =>
     eventId,
   });
 
-  participants = tournamentEngine.getParticipants({
+  participants = tournamentEngine.devContext(true).getParticipants({
     participantFilters: { participantRoles: [COMPETITOR] },
     withSeeding: true,
     withEvents: true,
