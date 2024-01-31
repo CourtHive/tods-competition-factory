@@ -3,13 +3,12 @@ export enum Environment {
   Production = 'production',
   Staging = 'stage',
   Testing = 'test',
-  Local = 'local'
+  Local = 'local',
 }
 
 export enum ConfigKey {
   App = 'APP',
-  Db = 'DB'
+  Db = 'DB',
 }
 
-export const SUCCESS = { success: true };
 export const UTF8 = 'utf8';

@@ -40,7 +40,6 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
     {
       method: 'drawMatic',
       params: {
-        drawId,
         participantIds: [
           'TEAM-ptcpt-P-0',
           'TEAM-ptcpt-P-1',
@@ -51,6 +50,8 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
         ],
         scaleAccessor: 'utrRating',
         scaleName: 'UTR',
+        idPrefix: 'ah',
+        drawId,
       },
     },
     {
