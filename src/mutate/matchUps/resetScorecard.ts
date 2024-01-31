@@ -3,11 +3,11 @@ import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieForma
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { setMatchUpState } from './matchUpStatus/setMatchUpState';
 import { resetTieFormat } from '@Mutate/tieFormat/resetTieFormat';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { findStructure } from '@Acquire/findStructure';
 import { isString } from '@Tools/objects';
@@ -27,12 +27,10 @@ import {
 } from '@Constants/errorConditionConstants';
 
 type ResetScoreCardArgs = {
-  score?: { sets: { side1Score: number; side2Score: number }[] };
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   tiebreakReset?: boolean;
   matchUpStatus?: string;
-  winningSide?: number;
   matchUpId: string;
   event?: Event;
 };
