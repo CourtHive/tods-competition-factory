@@ -928,7 +928,7 @@ const { participantSchedules } = engine.getParticipantSchedules({
 
 ## getParticipantSignInStatus
 
-Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](#modifyparticipantssigninstatus).
+Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](/docs/governors/participant-governor#modifyparticipantssigninstatus).
 
 ```js
 const signInStatus = engine.getParticipantSignInStatus({

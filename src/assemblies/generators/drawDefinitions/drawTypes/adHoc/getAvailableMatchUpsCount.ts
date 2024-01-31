@@ -6,6 +6,7 @@ import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { DrawDefinition, EntryStatusUnion } from '@Types/tournamentTypes';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type GetAvailableMatchUpsCountArgs = {
   drawDefinition: DrawDefinition;
@@ -13,7 +14,11 @@ type GetAvailableMatchUpsCountArgs = {
   roundNumber?: number;
 };
 
-export function getAvailableMatchUpsCount(params: GetAvailableMatchUpsCountArgs) {
+export function getAvailableMatchUpsCount(params: GetAvailableMatchUpsCountArgs): ResultType & {
+  availableMatchUpsCount?: number;
+  roundMatchUpsCount?: number;
+  lastRoundNumber?: number;
+} {
   const paramsCheck = checkRequiredParameters(params, [{ drawDefinition: true }]);
   if (paramsCheck.error) return paramsCheck;
 
@@ -54,5 +59,5 @@ export function getAvailableMatchUpsCount(params: GetAvailableMatchUpsCountArgs)
   const maxRemaining = roundMatchUpsCount - existingRoundMatchUps;
   const availableMatchUpsCount = maxRemaining > 0 ? maxRemaining : 0;
 
-  return { ...SUCCESS, availableMatchUpsCount, lastRoundNumber };
+  return { ...SUCCESS, availableMatchUpsCount, lastRoundNumber, roundMatchUpsCount };
 }
