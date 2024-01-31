@@ -11,6 +11,7 @@ import {
   INVALID_MATCHUP,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
+  MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
 } from '../../../../constants/errorConditionConstants';
 
@@ -149,11 +150,17 @@ test('can clear TEAM matchUp "scorecards"', () => {
   const tieMatchUpId = firstRoundDualMatchUps[0].tieMatchUps[0].matchUpId;
 
   result = tournamentEngine.resetScorecard({
-    tiebreakReset: true,
     matchUpId: tieMatchUpId,
+    tiebreakReset: true,
     drawId,
   });
   expect(result.error).toEqual(INVALID_MATCHUP);
+
+  result = tournamentEngine.resetScorecard({
+    tiebreakReset: true,
+    matchUpId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 
   trackMatchUpModifications = true;
   result = tournamentEngine.resetScorecard({

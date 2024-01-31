@@ -1,10 +1,14 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { setSubscriptions } from '@Global/state/globalState';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { mocksEngine, tournamentEngine } from '../../..';
+import { tournamentEngine } from '@Engines/syncEngine';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
 import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { COLLEGE_DEFAULT, DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { DEFAULTED } from '@Constants/matchUpStatusConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/eventConstants';
 
@@ -46,6 +50,25 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   expect(matchUps.length).toEqual(scenario.expectation.added);
+
+  const teamMatchUps = matchUps.filter(isMatchUpEventType(TEAM));
+  const targetTeamMatchUp = teamMatchUps[0];
+  const targetTieMatchUp = targetTeamMatchUp.tieMatchUps[0];
+  const targetSide = targetTeamMatchUp.sides[0];
+  const targetIndividualParticipant = targetSide.participant.individualParticipants[0];
+  const assignmentResult = tournamentEngine.assignTieMatchUpParticipantId({
+    participantId: targetIndividualParticipant.participantId,
+    tieMatchUpId: targetTieMatchUp.matchUpId,
+    drawId,
+  });
+  expect(assignmentResult.success).toEqual(true);
+
+  const statusResult = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: DEFAULTED, winningSide: 1 },
+    matchUpId: targetTeamMatchUp.matchUpId,
+    drawId,
+  });
+  expect(statusResult.success).toEqual(true);
 
   const teamMatchUpIds = tournamentEngine
     .allTournamentMatchUps({ matchUpFilters: { matchUpTypes: [TEAM] } })
