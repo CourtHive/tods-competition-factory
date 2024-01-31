@@ -99,6 +99,7 @@ it.each([syncEngine, asyncEngine])(
           'getPersonRequests',
           'getRoundMatchUps',
           'getTournamentIds',
+          'getPublishState',
           'setTournamentId',
           'getScaleValues',
           'devContext',
