@@ -1,8 +1,8 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { xa } from '../../../tools/objects';
-import { instanceCount, unique } from '../../../tools/arrays';
+import { xa } from '@Tools/objects';
+import { instanceCount, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';

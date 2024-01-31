@@ -1,12 +1,13 @@
+import { structureTemplate } from '@Assemblies/generators/templates/structureTemplate';
+import { feedInMatchUps } from '@Assemblies/generators/drawDefinitions/feedInMatchUps';
+import { feedInLinks } from '@Assemblies/generators/drawDefinitions/links/feedInLinks';
 import { constantToString } from '@Tools/strings';
-import { structureTemplate } from '../../templates/structureTemplate';
-import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
-import { feedInLinks } from '../links/feedInLinks';
 
+// constants and types
+import { MAIN, CONSOLATION, PLAY_OFF, LOSER, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 import { DrawLink, Structure } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MAIN, CONSOLATION, PLAY_OFF, LOSER, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 export function generateCurtisConsolation(params) {
   const {

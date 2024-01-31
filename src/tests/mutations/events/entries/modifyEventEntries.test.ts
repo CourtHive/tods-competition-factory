@@ -1,13 +1,13 @@
-import { chunkArray, unique } from '../../../../tools/arrays';
+import { chunkArray, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INVALID_PARTICIPANT_IDS, MISSING_EVENT } from '../../../../constants/errorConditionConstants';
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../../constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { INVALID_PARTICIPANT_IDS, MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
 
 it('can modify entries for a DOUBLES event and create PAIR participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

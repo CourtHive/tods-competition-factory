@@ -1,11 +1,11 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 
 it('can generate draws in TEAM events with tieFormat and assign participants to collectionPositions', () => {
   const singlesCollectionId = UUID();

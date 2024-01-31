@@ -1,6 +1,6 @@
 import { mocksEngine } from '@Assemblies/engines/mock';
 import competitionEngine from '@Engines/syncEngine';
-import { addDays } from '../../../tools/dateTime';
+import { addDays } from '@Tools/dateTime';
 import { expect, it } from 'vitest';
 
 import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';

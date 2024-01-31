@@ -1,10 +1,11 @@
-import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// constants
 import { INVALID_MATCHUP, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type ResetMatchUpLineUps = {
   tournamentRecord?: Tournament;

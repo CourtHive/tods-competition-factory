@@ -1,6 +1,6 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
-import { instanceCount, unique } from '../../../tools/arrays';
-import { numericSort } from '../../../tools/sorting';
+import { instanceCount, unique } from '@Tools/arrays';
+import { numericSort } from '@Tools/sorting';
 import namesData from '@Fixtures/data/names.json';
 import { it, expect } from 'vitest';
 

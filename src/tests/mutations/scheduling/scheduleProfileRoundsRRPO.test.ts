@@ -1,4 +1,4 @@
-import { shuffleArray, unique } from '../../../tools/arrays';
+import { shuffleArray, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

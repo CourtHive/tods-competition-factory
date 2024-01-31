@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import { expect, it } from 'vitest';
 
 it('can parse match tiebreaks', () => {

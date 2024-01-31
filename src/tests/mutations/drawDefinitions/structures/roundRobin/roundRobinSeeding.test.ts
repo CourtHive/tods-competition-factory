@@ -1,11 +1,11 @@
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
-import { chunkArray, unique } from '../../../../../tools/arrays';
+import { chunkArray, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
 import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 const scenarios = [
   { drawProfiles: [{ drawSize: 32, drawType: ROUND_ROBIN, seedsCount: 8 }] },

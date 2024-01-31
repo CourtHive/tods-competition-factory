@@ -2,9 +2,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLES_MATCHUP } from '../../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 it('collectionDefinitions support processCodes', () => {
   const {

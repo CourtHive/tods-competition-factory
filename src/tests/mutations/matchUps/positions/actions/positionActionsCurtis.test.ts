@@ -1,7 +1,7 @@
 import { replacementTest } from '../../../drawDefinitions/structures/byeReplacementStressTest';
 import { expect, test } from 'vitest';
 
-import { CURTIS_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
+import { CURTIS_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 test.each([
   [8, CURTIS_CONSOLATION, [8, 7, 4, 6]],

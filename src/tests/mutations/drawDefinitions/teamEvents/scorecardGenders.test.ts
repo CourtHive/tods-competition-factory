@@ -2,10 +2,10 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INVALID_TIE_FORMAT } from '../../../../constants/errorConditionConstants';
-import { MALE } from '../../../../constants/genderConstants';
-import { TEAM } from '../../../../constants/eventConstants';
-import { DOMINANT_DUO, DOMINANT_DUO_MIXED } from '../../../../constants/tieFormatConstants';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
+import { MALE } from '@Constants/genderConstants';
+import { TEAM } from '@Constants/eventConstants';
+import { DOMINANT_DUO, DOMINANT_DUO_MIXED } from '@Constants/tieFormatConstants';
 
 it('will throw errors if gendered tieFormat not aligned with event gender', () => {
   const {

@@ -9,7 +9,7 @@ import {
   MISSING_SET_NUMBER,
   MISSING_SIDE_NUMBER,
   INVALID_SIDE_NUMBER,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 test('submitScoreChange smoke test', () => {
   const matchUp = {

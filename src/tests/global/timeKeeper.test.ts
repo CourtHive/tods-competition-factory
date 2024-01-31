@@ -1,4 +1,4 @@
-import { timeKeeper } from '../../global/state/globalState';
+import { timeKeeper } from '@Global/state/globalState';
 import { expect, it } from 'vitest';
 
 async function getAllTimers(delay = 1000) {

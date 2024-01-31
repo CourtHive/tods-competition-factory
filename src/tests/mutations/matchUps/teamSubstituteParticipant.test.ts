@@ -3,7 +3,7 @@ import { generateTeamTournament } from '../participants/team/generateTestTeamTou
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { validateLineUp } from '@Validators/validateTeamLineUp';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

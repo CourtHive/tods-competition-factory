@@ -1,12 +1,12 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
-import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
+import { setGlobalLog, setMethods, setStateProvider } from '@Global/state/globalState';
 import { deleteDrawDefinitions } from '@Mutate/events/deleteDrawDefinitions';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getParticipants } from '@Query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
 import * as eventGovernor from '@Assemblies/governors/eventGovernor';
 import * as query from '@Assemblies/governors/queryGovernor';
-import { getMethods } from '../../../global/state/syncGlobalState';
+import { getMethods } from '@Global/state/syncGlobalState';
 import asyncEngine from '@Assemblies/engines/async';
 import mocksEngine from '@Assemblies/engines/mock';
 import syncEngine from '@Assemblies/engines/sync';

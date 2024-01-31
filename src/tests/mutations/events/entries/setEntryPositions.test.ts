@@ -2,8 +2,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES, MISSING_PARTICIPANT_ID } from '../../../../constants/errorConditionConstants';
-import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
+import { INVALID_VALUES, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 it('can set entryPositions', () => {
   const drawProfiles = [

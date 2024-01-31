@@ -1,10 +1,10 @@
 import { validateTieFormat } from '@Validators/validateTieFormat';
-import tieFormatConstants from '../../../../constants/tieFormatConstants';
+import tieFormatConstants from '@Constants/tieFormatConstants';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import { TEAM } from '../../../../constants/eventConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 const tieKeys = [
   { key: tieFormatConstants.COLLEGE_D3, collectionsCount: 2 },

@@ -1,9 +1,9 @@
-import { createInstanceState } from '../../../global/state/globalState';
+import { createInstanceState } from '@Global/state/globalState';
 import { asyncExecutionQueue } from './asyncExecutionQueue';
 import { asyncEngineInvoke } from './asyncEngineInvoke';
 import { engineStart } from '../parts/engineStart';
 
-import { Directives, FactoryEngine } from '../../../types/factoryTypes';
+import { Directives, FactoryEngine } from '@Types/factoryTypes';
 
 export function asyncEngine(test?: boolean): FactoryEngine & { error?: any } {
   const result = createInstanceState();

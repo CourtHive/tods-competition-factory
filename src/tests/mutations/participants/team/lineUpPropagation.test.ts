@@ -1,16 +1,16 @@
-import { xa } from '../../../../tools/objects';
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { xa } from '@Tools/objects';
+import { setSubscriptions } from '@Global/state/globalState';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { findExtension } from '@Acquire/findExtension';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MODIFY_DRAW_DEFINITION } from '../../../../constants/topicConstants';
-import { LINEUPS } from '../../../../constants/extensionConstants';
-import { TEAM } from '../../../../constants/participantConstants';
-import { SINGLES } from '../../../../constants/matchUpTypes';
-import { COMPASS, ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { MODIFY_DRAW_DEFINITION } from '@Constants/topicConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { TEAM } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { COMPASS, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 const scenario = {
   drawType: COMPASS,

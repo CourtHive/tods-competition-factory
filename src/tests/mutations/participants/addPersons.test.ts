@@ -1,6 +1,6 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, test } from 'vitest';
 
 import { INVALID_PARTICIPANT_ROLE, INVALID_VALUES, MISSING_PERSON_DETAILS } from '@Constants/errorConditionConstants';

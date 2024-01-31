@@ -1,7 +1,7 @@
 import { stringSort } from '@Functions/sorters/stringSort';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';

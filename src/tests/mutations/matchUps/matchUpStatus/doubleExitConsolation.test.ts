@@ -3,12 +3,12 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { printGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
-import { setDevContext, setSubscriptions } from '../../../../global/state/globalState';
+import { setDevContext, setSubscriptions } from '@Global/state/globalState';
 
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;

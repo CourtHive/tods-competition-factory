@@ -2,9 +2,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 import { mocksEngine } from '../../../..';
 
-import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
-import { MALE } from '../../../../constants/genderConstants';
-import { TEAM } from '../../../../constants/eventConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { MALE } from '@Constants/genderConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 test('it can use tieFormatName in addEvent', () => {
   const category = { ageCategoryCode: 'U18' };

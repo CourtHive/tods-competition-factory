@@ -1,7 +1,7 @@
-import { xa } from '../../../tools/objects';
+import { xa } from '@Tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { chunkArray } from '../../../tools/arrays';
+import { chunkArray } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';

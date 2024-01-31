@@ -3,15 +3,15 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { getDrawPosition } from '@Functions/global/extractors';
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_PROGRESSION } from '../../../../constants/policyConstants';
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import { BYE, DEFAULTED, DOUBLE_DEFAULT } from '../../../../constants/matchUpStatusConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { BYE, DEFAULTED, DOUBLE_DEFAULT } from '@Constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);

@@ -3,14 +3,14 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { getParticipantId, getParticipantIds } from '@Functions/global/extractors';
 
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
 import {
   EVENT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_IDS,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('will modify flight.drawEntries when no drawDefinition is present', () => {
   const participantsProfile = { participantsCount: 40 };

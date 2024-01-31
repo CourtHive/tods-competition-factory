@@ -172,6 +172,18 @@ const drawTypes = engine.getAllowedMatchUpFormats();
 
 ---
 
+## getAvailableMatchUpsCount
+
+```js
+const { availableMatchUpsCount } = engine.getAvailbleMatchUpsCount({
+  structureId, // required if there is more than one structure in the drawDefinition
+  roundNumber, // optional; will default to last roundNumber
+  drawId,
+});
+```
+
+---
+
 ## getAvailablePlayoffProfiles
 
 If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.
@@ -916,7 +928,7 @@ const { participantSchedules } = engine.getParticipantSchedules({
 
 ## getParticipantSignInStatus
 
-Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](#modifyparticipantssigninstatus).
+Participant signInStatus can be either 'SIGNED_IN' or 'SIGNED_OUT' (or undefined). See [modifyParticipantsSignInStatus](/docs/governors/participant-governor#modifyparticipantssigninstatus).
 
 ```js
 const signInStatus = engine.getParticipantSignInStatus({

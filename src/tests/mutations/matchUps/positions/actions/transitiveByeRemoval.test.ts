@@ -1,6 +1,6 @@
 import { getDrawPosition } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '../../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import {
@@ -14,7 +14,7 @@ import {
   REMOVE_ASSIGNMENT,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });

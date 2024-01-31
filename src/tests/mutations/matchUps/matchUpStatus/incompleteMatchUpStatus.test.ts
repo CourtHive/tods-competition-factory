@@ -3,8 +3,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { getContextMatchUp, getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
 
-import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../../constants/errorConditionConstants';
-import { INCOMPLETE } from '../../../../constants/matchUpStatusConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
+import { INCOMPLETE } from '@Constants/matchUpStatusConstants';
 
 it('DISALLOWS entry of incomplete result if active downsream', () => {
   const drawProfiles = [

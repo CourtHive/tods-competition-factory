@@ -1,9 +1,9 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
+import { extractTime, timeStringMinutes } from '@Tools/dateTime';
 import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

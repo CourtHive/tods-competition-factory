@@ -2,8 +2,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 import { getConflicts } from './testGetConflicts';
 
 it('properly handles qualifiers with avoidances', () => {

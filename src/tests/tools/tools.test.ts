@@ -1,8 +1,8 @@
-import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '../../tools/math';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { generateHashCode } from '../../tools/objects';
-import { safeUUID, UUIDS } from '../../tools/UUID';
-import { deepMerge } from '../../tools/deepMerge';
+import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '@Tools/math';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { generateHashCode } from '@Tools/objects';
+import { safeUUID, UUIDS } from '@Tools/UUID';
+import { deepMerge } from '@Tools/deepMerge';
 import { expect, it, test } from 'vitest';
 import {
   addMinutesToTimeString,
@@ -18,7 +18,7 @@ import {
   subtractWeek,
   timeSort,
   weekDays,
-} from '../../tools/dateTime';
+} from '@Tools/dateTime';
 import {
   arrayIndices,
   chunkByNth,
@@ -33,7 +33,7 @@ import {
   intersection,
   noNulls,
   randomPop,
-} from '../../tools/arrays';
+} from '@Tools/arrays';
 
 it('can count values and determine active drawPositions', () => {
   const drawPositions = [1, 1, 2, 3, 4, 5, 5, 6];

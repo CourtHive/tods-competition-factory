@@ -2,7 +2,7 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { feedInChampionship } from '../primitives/feedIn';
 import { it, expect } from 'vitest';
 
-import { BOTTOM_UP, FEED_IN_CHAMPIONSHIP_TO_SF, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
+import { BOTTOM_UP, FEED_IN_CHAMPIONSHIP_TO_SF, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const { links, drawDefinition, mainDrawMatchUps, consolationMatchUps, consolationStructure } = feedInChampionship({

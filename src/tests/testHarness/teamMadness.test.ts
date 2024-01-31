@@ -1,6 +1,6 @@
 import tournamentEngine from '../engines/syncEngine';
-import { numericSort } from '../../tools/sorting';
-import { unique } from '../../tools/arrays';
+import { numericSort } from '@Tools/sorting';
+import { unique } from '@Tools/arrays';
 import { mocksEngine } from '../..';
 import { expect, it } from 'vitest';
 

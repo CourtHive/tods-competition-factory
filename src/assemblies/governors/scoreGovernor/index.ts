@@ -3,31 +3,31 @@ export { generateScoreString } from '../../generators/matchUps/generateScoreStri
 export { tidyScore } from '../../../analyze/scoreParser/scoreParser';
 export { reverseScore } from '../../generators/score/reverseScore';
 
-export { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-export { validateTieFormat } from '../../../validators/validateTieFormat';
-export { validateScore } from '../../../validators/validateScore';
+export { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+export { validateTieFormat } from '@Validators/validateTieFormat';
+export { validateScore } from '@Validators/validateScore';
 
-export { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-export { analyzeSet } from '../../../query/matchUp/analyzeSet';
+export { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+export { analyzeSet } from '@Query/matchUp/analyzeSet';
 
-export { updateTieMatchUpScore } from '../../../mutate/matchUps/score/tieMatchUpScore';
+export { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 
-export { getSetComplement, getTiebreakComplement } from '../../../query/matchUp/getComplement';
-export { keyValueScore } from '../../../mutate/score/keyValueScore/keyValueScore';
-export { checkSetIsComplete } from '../../../query/matchUp/checkSetIsComplete';
-export { parseScoreString } from '../../../tools/parseScoreString';
+export { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
+export { keyValueScore } from '@Mutate/score/keyValueScore/keyValueScore';
+export { checkSetIsComplete } from '@Query/matchUp/checkSetIsComplete';
+export { parseScoreString } from '@Tools/parseScoreString';
 
 // history
-export { calculateHistoryScore } from '../../../mutate/matchUps/score/history/calculateHistoryScore';
-export { setServingSide } from '../../../mutate/matchUps/score/history/setServingSide';
-export { clearHistory } from '../../../mutate/matchUps/score/history/clearHistory';
-export { addPoint } from '../../../mutate/matchUps/score/history/addPoint';
-export { addGame } from '../../../mutate/matchUps/score/history/addGame';
-export { addShot } from '../../../mutate/matchUps/score/history/addShot';
-export { addSet } from '../../../mutate/matchUps/score/history/addSet';
-export { redo } from '../../../mutate/matchUps/score/history/redo';
-export { undo } from '../../../mutate/matchUps/score/history/undo';
-export { umo } from '../../../mutate/matchUps/score/history/umo';
+export { calculateHistoryScore } from '@Mutate/matchUps/score/history/calculateHistoryScore';
+export { setServingSide } from '@Mutate/matchUps/score/history/setServingSide';
+export { clearHistory } from '@Mutate/matchUps/score/history/clearHistory';
+export { addPoint } from '@Mutate/matchUps/score/history/addPoint';
+export { addGame } from '@Mutate/matchUps/score/history/addGame';
+export { addShot } from '@Mutate/matchUps/score/history/addShot';
+export { addSet } from '@Mutate/matchUps/score/history/addSet';
+export { redo } from '@Mutate/matchUps/score/history/redo';
+export { undo } from '@Mutate/matchUps/score/history/undo';
+export { umo } from '@Mutate/matchUps/score/history/umo';
 
 // renamed
 export { stringify as stringifyMatchUpFormat } from '../../generators/matchUpFormatCode/stringify';

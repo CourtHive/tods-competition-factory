@@ -3,7 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ABANDONED, COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { ABANDONED, COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can set matchUp score and advance winningSide when changing from ABANDONED matchUpStatus', () => {
   const drawProfiles = [

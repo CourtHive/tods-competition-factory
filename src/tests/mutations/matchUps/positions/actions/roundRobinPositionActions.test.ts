@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import {
   SWAP_PARTICIPANTS,
   ADD_PENALTY,
@@ -11,7 +11,7 @@ import {
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 it('can return accurate position details when requesting positionActions', () => {
   const drawProfiles = [

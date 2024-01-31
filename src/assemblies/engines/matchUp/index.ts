@@ -1,18 +1,13 @@
+import { setDeepCopy, setDevContext, getDevContext, deleteNotices, handleCaughtError } from '@Global/state/globalState';
 import { getMatchUps, getMatchUp, setState, getState, reset } from './stateMethods';
-import { notifySubscribers } from '../../../global/state/notifySubscribers';
-import { factoryVersion } from '../../../functions/global/factoryVersion';
-import * as scoreGovernor from '../../governors/scoreGovernor';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import {
-  setDeepCopy,
-  setDevContext,
-  getDevContext,
-  deleteNotices,
-  handleCaughtError,
-} from '../../../global/state/globalState';
+import * as scoreGovernor from '@Assemblies/governors/scoreGovernor';
+import { notifySubscribers } from '@Global/state/notifySubscribers';
+import { factoryVersion } from '@Functions/global/factoryVersion';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { FactoryEngine } from '../../../types/factoryTypes';
+// constants and types
+import { SUCCESS } from '@Constants/resultConstants';
+import { FactoryEngine } from '@Types/factoryTypes';
 
 export const matchUpEngine = (() => {
   const engine: FactoryEngine = {

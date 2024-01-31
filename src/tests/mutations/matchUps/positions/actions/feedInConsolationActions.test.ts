@@ -2,11 +2,11 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ADD_PENALTY } from '../../../../../constants/positionActionConstants';
-import { SCORE } from '../../../../../constants/matchUpActionConstants';
-import { PAIR } from '../../../../../constants/participantConstants';
-import { DOUBLES } from '../../../../../constants/eventConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '../../../../../constants/drawDefinitionConstants';
+import { ADD_PENALTY } from '@Constants/positionActionConstants';
+import { SCORE } from '@Constants/matchUpActionConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 it('can modify score for main draw match after loser directed to consolation', () => {
   const participantsProfile = {

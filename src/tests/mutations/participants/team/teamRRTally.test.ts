@@ -2,12 +2,12 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
-import { TALLY } from '../../../../constants/extensionConstants';
-import { SINGLES } from '../../../../constants/matchUpTypes';
-import { TEAM } from '../../../../constants/eventConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { TALLY } from '@Constants/extensionConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 
 /*
 Geneate a ROUND_ROBIN in a TEAM event and complete singles tieMatchUps such that all teams are tied in all TEAM matchUps at 1-1

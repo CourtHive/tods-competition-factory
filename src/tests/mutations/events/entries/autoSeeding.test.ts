@@ -1,14 +1,14 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { RANKING, RATING, SEEDING } from '../../../../constants/scaleConstants';
-import { MISSING_EVENT } from '../../../../constants/errorConditionConstants';
+import { RANKING, RATING, SEEDING } from '@Constants/scaleConstants';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { ADD_SCALE_ITEMS } from '../../../../constants/topicConstants';
-import { SINGLES_EVENT } from '../../../../constants/eventConstants';
+import { ADD_SCALE_ITEMS } from '@Constants/topicConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 import { ScaleAttributes } from '@Types/factoryTypes';
 
 it('can autoSeed by Rankings', () => {

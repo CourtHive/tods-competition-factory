@@ -1,17 +1,17 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '@Functions/global/extractors';
-import { xa } from '../../../../tools/objects';
+import { xa } from '@Tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
-import { shuffleArray } from '../../../../tools/arrays';
+import { shuffleArray } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { findEvent } from '@Acquire/findEvent';
-import { randomInt } from '../../../../tools/math';
+import { randomInt } from '@Tools/math';
 import { expect } from 'vitest';
 import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 
-import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 // pseudocode...
 // 1. Generate drawType of drawSize

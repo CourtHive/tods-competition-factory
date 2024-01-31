@@ -10,12 +10,12 @@ import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { drawMatchUps } from '@Query/matchUps/getDrawMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';
+import { MAIN, COMPASS } from '@Constants/drawDefinitionConstants';
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   let drawSize, seedsCount, participantsCount;

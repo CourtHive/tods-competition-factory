@@ -4,7 +4,7 @@ import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEnt
 import { feedInMatchUps } from '@Assemblies/generators/drawDefinitions/feedInMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawData } from '@Query/drawDefinition/getDrawData';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
@@ -18,7 +18,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FICR16,
   FICSF,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can generate structured entry draw', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

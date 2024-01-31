@@ -7,9 +7,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import { getOrderedDrawPositionPairs, replaceWithBye } from '../../testingUtilities';
 
-import { POLICY_TYPE_FEED_IN } from '../../../../../constants/policyConstants';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 

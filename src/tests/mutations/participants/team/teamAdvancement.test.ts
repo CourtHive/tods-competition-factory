@@ -1,23 +1,19 @@
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { findExtension } from '@Acquire/findExtension';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { SWAP_PARTICIPANTS } from '../../../../constants/positionActionConstants';
-import { EXISTING_PARTICIPANT, TEAM_NOT_FOUND } from '../../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { LINEUPS } from '../../../../constants/extensionConstants';
-import {
-  TEAM_DOUBLES_3_AGGREGATION,
-  USTA_BREWER_CUP,
-  USTA_GOLD_TEAM_CHALLENGE,
-} from '../../../../constants/tieFormatConstants';
-import { COMPLETED, DOUBLE_WALKOVER, IN_PROGRESS, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { SWAP_PARTICIPANTS } from '@Constants/positionActionConstants';
+import { EXISTING_PARTICIPANT, TEAM_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { TEAM_DOUBLES_3_AGGREGATION, USTA_BREWER_CUP, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
+import { COMPLETED, DOUBLE_WALKOVER, IN_PROGRESS, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {

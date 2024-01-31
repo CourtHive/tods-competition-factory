@@ -3,8 +3,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('can recognize absolute ties between multiple participants', () => {
   // 5 ties, each drawPosition has 2 wins

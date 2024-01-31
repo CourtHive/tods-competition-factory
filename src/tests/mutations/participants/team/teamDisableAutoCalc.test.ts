@@ -2,10 +2,10 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { TALLY } from '../../../../constants/extensionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { TALLY } from '@Constants/extensionConstants';
 
 it('supports disabling and then re-enabling auto-Calc', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

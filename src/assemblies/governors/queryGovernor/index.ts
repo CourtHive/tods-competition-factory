@@ -1,6 +1,6 @@
-export { findExtension } from '../../../acquire/findExtension';
-export { getTimeItem } from '../../../query/base/timeItems';
-export { credits } from '../../../fixtures/credits';
+export { findExtension } from '@Acquire/findExtension';
+export { getTimeItem } from '@Query/base/timeItems';
+export { credits } from '@Fixtures/credits';
 
 export * from '../competitionGovernor/query';
 export * from '../participantGovernor/query';

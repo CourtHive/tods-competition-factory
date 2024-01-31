@@ -5,7 +5,7 @@ import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { constantToString } from '../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 

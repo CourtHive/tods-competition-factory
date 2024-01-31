@@ -8,7 +8,7 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 test.each([
   [16, COMPASS],

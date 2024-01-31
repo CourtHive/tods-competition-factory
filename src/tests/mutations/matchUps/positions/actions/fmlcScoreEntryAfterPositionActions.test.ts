@@ -4,7 +4,7 @@ import { expect, it } from 'vitest';
 import { replaceWithBye, getOrderedDrawPositionPairs } from '../../../drawDefinitions/testingUtilities';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 // tests that manual placement of a BYE in consolation structure does not prevent
 // entry of scores in main draw matchUps with links disabled by consolation positionActions

@@ -3,10 +3,10 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 

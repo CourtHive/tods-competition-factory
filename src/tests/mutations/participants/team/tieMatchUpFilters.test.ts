@@ -2,7 +2,7 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 it('can retrieve tieMatchUps by matchUpId using matchUpFilters', () => {
   const { tournamentRecord } = generateTeamTournament();

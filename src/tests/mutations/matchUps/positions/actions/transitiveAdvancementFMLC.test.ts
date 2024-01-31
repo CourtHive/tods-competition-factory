@@ -4,7 +4,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import { getOrderedDrawPositionPairs, removeAssignment } from '../../../drawDefinitions/testingUtilities';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 it('can generate FMLC and properly place BYEs in consolation structure', () => {
   const drawProfiles = [

@@ -1,11 +1,11 @@
-import { xa } from '../../../../tools/objects';
+import { xa } from '@Tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 /**
  * mocksEngine

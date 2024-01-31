@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { it, test, expect } from 'vitest';
 
 import {

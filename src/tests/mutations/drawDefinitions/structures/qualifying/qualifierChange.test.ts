@@ -1,15 +1,15 @@
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { getParticipantId } from '@Functions/global/extractors';
-import { setSubscriptions } from '../../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { QUALIFYING_PARTICIPANT } from '../../../../../constants/positionActionConstants';
-import { MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
-import { POLICY_TYPE_PROGRESSION } from '../../../../../constants/policyConstants';
-import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
+import { QUALIFYING_PARTICIPANT } from '@Constants/positionActionConstants';
+import { MODIFY_POSITION_ASSIGNMENTS } from '@Constants/topicConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 it('generates expected finishingPositions for qualifying structures', () => {
   let assignmentNotifications: any[] = [];

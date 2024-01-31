@@ -1,6 +1,6 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';

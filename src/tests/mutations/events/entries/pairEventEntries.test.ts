@@ -3,9 +3,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { WITHDRAWN } from '../../../../constants/entryStatusConstants';
-import { PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES } from '../../../../constants/eventConstants';
+import { WITHDRAWN } from '@Constants/entryStatusConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { DOUBLES } from '@Constants/eventConstants';
 
 it('can add doubles events to a tournament record', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

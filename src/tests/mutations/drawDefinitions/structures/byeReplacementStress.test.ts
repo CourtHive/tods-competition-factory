@@ -1,11 +1,11 @@
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 
-import { AUDIT_POSITION_ACTIONS } from '../../../../constants/extensionConstants';
+import { AUDIT_POSITION_ACTIONS } from '@Constants/extensionConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -13,7 +13,7 @@ import {
   FIRST_MATCH_LOSER_CONSOLATION,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can run stress tests when JEST_STRESS=true', () => {
   if (!process.env.JEST_STRESS) {

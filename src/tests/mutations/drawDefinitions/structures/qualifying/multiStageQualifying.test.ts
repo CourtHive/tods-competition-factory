@@ -3,7 +3,7 @@ import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
@@ -18,9 +18,9 @@ import {
   WITHDRAW_PARTICIPANT,
   REMOVE_ASSIGNMENT,
   ADD_NICKNAME,
-} from '../../../../../constants/positionActionConstants';
-import { DRAW, MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+} from '@Constants/positionActionConstants';
+import { DRAW, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [

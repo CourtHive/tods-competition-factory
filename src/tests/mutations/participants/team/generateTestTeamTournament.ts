@@ -1,9 +1,9 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
-import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 export function generateTeamTournament(params?) {

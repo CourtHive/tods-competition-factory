@@ -2,7 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { FIRST_MATCH_LOSER_CONSOLATION, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 it('Feeds both consolation rounds TOP_DOWN', () => {
   const drawProfiles = [

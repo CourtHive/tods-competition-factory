@@ -8,7 +8,7 @@ import {
   removeAssignment,
 } from '../../../drawDefinitions/testingUtilities';
 
-import { FEED_IN_CHAMPIONSHIP } from '../../../../../constants/drawDefinitionConstants';
+import { FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 it('can remove transitive BYEs in consolation of FIC', () => {
   // STEP #1: generate FIC w/ 8 participants

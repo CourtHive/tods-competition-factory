@@ -2,11 +2,11 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import { COMPASS } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { tieFormats } from '@Fixtures/scoring/tieFormats';
-import { TEAM } from '../../../../constants/eventConstants';
-import { COLLEGE_JUCO, DOMINANT_DUO, LAVER_CUP } from '../../../../constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
+import { COLLEGE_JUCO, DOMINANT_DUO, LAVER_CUP } from '@Constants/tieFormatConstants';
 
 // prettier-ignore
 const scenarios = [

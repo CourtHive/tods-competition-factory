@@ -38,8 +38,9 @@ export const OBJECT = 'object';
 export const ARRAY = 'array';
 
 export const BYPASS_PARAM_CHECK = '_bypassParamCheck';
-export const VALIDATE = 'validate';
-export const INVALID = 'invalid';
+export const VALIDATE = '_validate';
+export const MESSAGE = '_message';
+export const INVALID = '_invalid';
 export const OF_TYPE = '_ofType';
 export const ANY_OF = '_anyOf';
 export const ONE_OF = '_oneOf';

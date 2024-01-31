@@ -1,12 +1,12 @@
 import { replaceWithBye, assignDrawPosition } from '../../../drawDefinitions/testingUtilities';
-import { setSubscriptions } from '../../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../../constants/drawDefinitionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
-import { MODIFY_MATCHUP, MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
+import { FEED_IN_CHAMPIONSHIP_TO_SF } from '@Constants/drawDefinitionConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP, MODIFY_POSITION_ASSIGNMENTS } from '@Constants/topicConstants';
 
 it('will remove BYEs fed into CONSOLATION', () => {
   const {

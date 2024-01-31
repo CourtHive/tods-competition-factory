@@ -3,7 +3,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { FEED_IN } from '../../../../constants/drawDefinitionConstants';
+import { FEED_IN } from '@Constants/drawDefinitionConstants';
 
 it('can accurately generate sideNumbers', () => {
   const {

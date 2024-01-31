@@ -1,6 +1,6 @@
 import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';

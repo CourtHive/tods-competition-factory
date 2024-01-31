@@ -2,12 +2,12 @@ import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState'
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
-import { parseScoreString } from '../../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findStructure } from '@Acquire/findStructure';
 import { expect } from 'vitest';
 
-import { MATCHUP_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function completeMatchUp(params) {
   const { drawDefinition, roundPosition, matchUpStatus, roundNumber, scoreString, structureId, winningSide } = params;

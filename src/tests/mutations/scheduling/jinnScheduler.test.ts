@@ -1,9 +1,9 @@
 import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { constantToString } from '../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import mocksEngine from '@Assemblies/engines/mock';
-import { extractTime } from '../../../tools/dateTime';
+import { extractTime } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';

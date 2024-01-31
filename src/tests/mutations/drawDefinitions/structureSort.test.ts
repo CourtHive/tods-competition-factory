@@ -1,7 +1,7 @@
 import { structureSort } from '@Functions/sorters/structureSort';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { instanceCount } from '../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import * as tools from '@Assemblies/tools';
 import { expect, test } from 'vitest';
 

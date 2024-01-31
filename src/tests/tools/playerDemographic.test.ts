@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES } from '@Constants/eventConstants';
 import { MALE } from '@Constants/genderConstants';
-import { JSON2CSV } from '../../tools/json';
+import { JSON2CSV } from '@Tools/json';
 
 it('can export CSV files with player demographic data', () => {
   const personExtensions = [

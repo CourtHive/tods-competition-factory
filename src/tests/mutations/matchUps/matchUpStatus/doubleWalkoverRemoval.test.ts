@@ -1,14 +1,14 @@
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../../constants/errorConditionConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { REFEREE, SCORE } from '../../../../constants/matchUpActionConstants';
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../constants/drawDefinitionConstants';
+import { REFEREE, SCORE } from '@Constants/matchUpActionConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_SF } from '@Constants/drawDefinitionConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;

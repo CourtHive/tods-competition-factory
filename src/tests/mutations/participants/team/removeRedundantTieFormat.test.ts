@@ -4,9 +4,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { TEAM } from '@Constants/matchUpTypes';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('will remove redundant tieFormat on matchUp with no results', () => {
   const {

@@ -7,9 +7,9 @@ import { verifyStructure } from '../../primitives/verifyStructure';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { expect, it } from 'vitest';
 
-import { MAIN, CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_FEED_IN } from '../../../../../constants/policyConstants';
-import { BYE, RETIRED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { BYE, RETIRED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const participantsCount = 30;

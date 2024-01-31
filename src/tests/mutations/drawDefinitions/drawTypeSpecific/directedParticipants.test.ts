@@ -1,4 +1,4 @@
-import { parseScoreString } from '../../../../tools/parseScoreString';
+import { parseScoreString } from '@Tools/parseScoreString';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
@@ -13,23 +13,16 @@ import {
   findMatchUpByRoundNumberAndPosition,
 } from '../primitives/verifyMatchUps';
 
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 import { EntryStatusUnion, StageTypeUnion } from '@Types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_VALUES,
-} from '../../../../constants/errorConditionConstants';
-import {
-  BYE,
-  RETIRED,
-  COMPLETED,
-  TO_BE_PLAYED,
-  DEFAULTED,
-  SUSPENDED,
-} from '../../../../constants/matchUpStatusConstants';
-import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { BYE, RETIRED, COMPLETED, TO_BE_PLAYED, DEFAULTED, SUSPENDED } from '@Constants/matchUpStatusConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';

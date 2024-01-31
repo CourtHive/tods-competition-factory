@@ -3,8 +3,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { COMPASS } from '../../../../../constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED, WALKOVER } from '../../../../../constants/matchUpStatusConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import POLICY_PROGRESSION_DEFAULT from '@Fixtures/policies/POLICY_PROGRESSION_DEFAULT';
 
 it('will not allow BYE removal when there are active matchUps in connected structures', () => {

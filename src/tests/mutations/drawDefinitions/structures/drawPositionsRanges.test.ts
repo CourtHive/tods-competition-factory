@@ -1,12 +1,12 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP_TO_SF } from '../../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { FEED_IN_CHAMPIONSHIP_TO_SF } from '@Constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('can add drawPositionsRange to inContext matchUps in a SINGLE_ELIMINATION structure', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

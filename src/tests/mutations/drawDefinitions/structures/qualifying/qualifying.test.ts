@@ -3,15 +3,15 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../../constants/policyConstants';
-import { DIRECT_ACCEPTANCE } from '../../../../../constants/entryStatusConstants';
-import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
-import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import {
   ADD_NICKNAME,
   ADD_PENALTY,
@@ -24,15 +24,8 @@ import {
   SEED_VALUE,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
-import {
-  DRAW,
-  FEED_IN,
-  MAIN,
-  POSITION,
-  QUALIFYING,
-  ROUND_ROBIN,
-} from '../../../../../constants/drawDefinitionConstants';
+} from '@Constants/positionActionConstants';
+import { DRAW, FEED_IN, MAIN, POSITION, QUALIFYING, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('will throw an error for incorrect qualifyingStructures', () => {
   const result = mocksEngine.generateTournamentRecord({

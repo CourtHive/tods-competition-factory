@@ -1,12 +1,12 @@
-import { setSubscriptions } from '../../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '../../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { ENTRY_PROFILE } from '../../../../../constants/extensionConstants';
-import { DOMINANT_DUO } from '../../../../../constants/tieFormatConstants';
-import { TEAM_EVENT } from '../../../../../constants/eventConstants';
+import { ENTRY_PROFILE } from '@Constants/extensionConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 import {
   COMPASS,
   CURTIS,
@@ -17,10 +17,10 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
   WINNER,
-} from '../../../../../constants/drawDefinitionConstants';
-import { DRAW_ID_EXISTS, INVALID_DRAW_SIZE } from '../../../../../constants/errorConditionConstants';
-import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../../../constants/topicConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../../../constants/participantConstants';
+} from '@Constants/drawDefinitionConstants';
+import { DRAW_ID_EXISTS, INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])('will generate a drawDefinition with no matchUps', (drawType) => {
   const result = mocksEngine.generateTournamentRecord({

@@ -1,10 +1,10 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import { generatePersons } from '@Assemblies/generators/mocks/generatePersons';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import namesData from '@Fixtures/data/names.json';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, test } from 'vitest';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';

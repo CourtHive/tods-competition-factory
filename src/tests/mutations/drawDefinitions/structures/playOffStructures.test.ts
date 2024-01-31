@@ -1,13 +1,13 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { instanceCount } from '../../../../tools/arrays';
-import { numericSort } from '../../../../tools/sorting';
+import { instanceCount } from '@Tools/arrays';
+import { numericSort } from '@Tools/sorting';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { ERROR } from '../../../../constants/resultConstants';
-import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { ERROR } from '@Constants/resultConstants';
+import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playoffDraw({

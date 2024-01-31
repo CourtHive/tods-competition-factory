@@ -2,11 +2,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { TEAM } from '../../../../constants/eventConstants';
-import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../constants/drawDefinitionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 test('changing scores after playoffs generated in team round robin with playoffs', () => {
   const structureOptions = {

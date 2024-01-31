@@ -1,14 +1,14 @@
-import { removeMatchUpSideParticipant, resetMatchUpLineUps } from '@Assemblies/governors/matchUpGovernor';
+import { removeMatchUpSideParticipant } from '@Mutate/matchUps/sides/removeMatchUpSideParticipant';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { resetMatchUpLineUps } from '@Mutate/matchUps/lineUps/resetMatchUpLineUps';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { getAdHocStructureDetails } from './getAdHocStructureDetails';
 import { resetScorecard } from '@Mutate/matchUps/resetScorecard';
 
 // constants
-import { ARRAY, DRAW_DEFINITION, EVENT, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
+import { ARRAY, DRAW_DEFINITION, EVENT, MATCHUP_IDS, MESSAGE, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
@@ -27,7 +27,7 @@ export function resetAdHocMatchUps(params: ResetAdHocMatchUps) {
     { [DRAW_DEFINITION]: true, [EVENT]: true },
     {
       [ONE_OF]: { [MATCHUP_IDS]: false, roundNumbers: false },
-      [INVALID]: INVALID_VALUES,
+      [MESSAGE]: 'At least one must be provided',
       [OF_TYPE]: ARRAY,
     },
   ]);

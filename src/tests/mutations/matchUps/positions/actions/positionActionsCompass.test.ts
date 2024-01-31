@@ -1,7 +1,7 @@
 import { replacementTest } from '../../../drawDefinitions/structures/byeReplacementStressTest';
 import { expect, test } from 'vitest';
 
-import { COMPASS } from '../../../../../constants/drawDefinitionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 test.each([
   [8, COMPASS, [6, 1, 2, 7]],

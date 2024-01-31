@@ -2,7 +2,7 @@ import { engineStart } from '../parts/engineStart';
 import { executionQueue } from './executionQueue';
 import { engineInvoke } from './engineInvoke';
 
-import { Directives, FactoryEngine } from '../../../types/factoryTypes';
+import { Directives, FactoryEngine } from '@Types/factoryTypes';
 
 export const syncEngine = ((): FactoryEngine => {
   const engine: FactoryEngine = {

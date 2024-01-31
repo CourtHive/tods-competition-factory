@@ -2,7 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { FEED_IN_CHAMPIONSHIP, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('generates correct finishingPositionRanges for FEED_IN_CHAMPIONSHIP', () => {
   let { tournamentRecord } = mocksEngine.generateTournamentRecord({

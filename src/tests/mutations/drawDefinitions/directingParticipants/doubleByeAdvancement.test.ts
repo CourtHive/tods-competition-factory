@@ -4,9 +4,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { SCORE } from '../../../../constants/matchUpActionConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { SCORE } from '@Constants/matchUpActionConstants';
 
 it('can create double bye and remove advanced participant when outcome is reset', () => {
   const participantsProfile = {

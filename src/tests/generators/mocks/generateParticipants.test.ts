@@ -1,7 +1,7 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '../../../tools/arrays';
-import { UUID } from '../../../tools/UUID';
+import { generateRange } from '@Tools/arrays';
+import { UUID } from '@Tools/UUID';
 import { expect, it, test } from 'vitest';
 
 import { FEMALE, MALE } from '@Constants/genderConstants';

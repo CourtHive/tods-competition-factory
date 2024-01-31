@@ -1,4 +1,4 @@
-import { ensureInt } from '../../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

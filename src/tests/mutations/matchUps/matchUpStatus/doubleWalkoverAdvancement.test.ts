@@ -1,12 +1,12 @@
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;

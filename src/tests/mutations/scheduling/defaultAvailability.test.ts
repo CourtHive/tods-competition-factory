@@ -1,7 +1,7 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { extractDate } from '../../../tools/dateTime';
+import { extractDate } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, test } from 'vitest';
 
 test('court availability overrides default availability', () => {

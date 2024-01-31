@@ -1,5 +1,5 @@
 import { getParticipants } from '@Query/participants/getParticipants';
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

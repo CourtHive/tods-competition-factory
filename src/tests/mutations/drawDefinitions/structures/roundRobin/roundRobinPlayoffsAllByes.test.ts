@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('can handle RR playoffs which are only BYEs', () => {
   const structureOptions = {

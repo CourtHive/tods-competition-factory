@@ -4,7 +4,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { verifyMatchUps, verifySideNumbers } from '../primitives/verifyMatchUps';
-import { generateRange, instanceCount, unique } from '../../../../tools/arrays';
+import { generateRange, instanceCount, unique } from '@Tools/arrays';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 

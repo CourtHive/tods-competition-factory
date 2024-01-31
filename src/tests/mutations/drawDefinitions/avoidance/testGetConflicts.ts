@@ -1,6 +1,6 @@
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { processAccessors } from '@Query/drawDefinition/processAccessors';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 
 export function getConflicts({ tournamentRecord, structureId, keysToTest, drawId }) {
   const matchUps = allTournamentMatchUps({

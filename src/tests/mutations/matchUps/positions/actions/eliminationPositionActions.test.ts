@@ -2,10 +2,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
-import { MAIN } from '../../../../../constants/drawDefinitionConstants';
-import { INVALID_DRAW_POSITION, INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
-import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { INVALID_DRAW_POSITION, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import {
   SWAP_PARTICIPANTS,
   ADD_PENALTY,
@@ -14,7 +14,7 @@ import {
   ALTERNATE_PARTICIPANT,
   ASSIGN_BYE,
   SEED_VALUE,
-} from '../../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 it('can return accurate position details when requesting positionActions', () => {
   const drawProfiles = [

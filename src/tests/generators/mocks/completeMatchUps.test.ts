@@ -1,6 +1,6 @@
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '../../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { fmlc32profile } from './fmlc32';
 import { expect, it } from 'vitest';

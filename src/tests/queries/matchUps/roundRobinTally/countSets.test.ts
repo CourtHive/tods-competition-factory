@@ -2,7 +2,7 @@ import { countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can count normal sets', () => {
   const matchUp = {

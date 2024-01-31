@@ -1,9 +1,9 @@
-// import { getDevContext, setSubscriptions } from '../../../global/state/globalState';
+// import { getDevContext, setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
 // import { MODIFY_MATCHUP } from '@Constants/topicConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>

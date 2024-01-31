@@ -1,10 +1,10 @@
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { completeMatchUp } from '../../primitives/verifyMatchUps';
-import { chunkArray } from '../../../../../tools/arrays';
+import { chunkArray } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
 

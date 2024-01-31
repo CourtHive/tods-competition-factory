@@ -7,7 +7,7 @@ import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { numericSort } from '../../../../tools/sorting';
+import { numericSort } from '@Tools/sorting';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import { getNextSeedBlock, getValidSeedBlocks } from '@Query/drawDefinition/seedGetter';
@@ -17,14 +17,10 @@ import SEEDING_NATIONAL from '@Fixtures/policies/POLICY_SEEDING_NATIONAL';
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { EntryStatusUnion } from '@Types/tournamentTypes';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { ERROR } from '../../../../constants/resultConstants';
-import {
-  INVALID_VALUES,
-  MISSING_STRUCTURE_ID,
-  STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { ERROR } from '@Constants/resultConstants';
+import { INVALID_VALUES, MISSING_STRUCTURE_ID, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
 
 it('can define seedAssignments', () => {
   const drawSize = 8;

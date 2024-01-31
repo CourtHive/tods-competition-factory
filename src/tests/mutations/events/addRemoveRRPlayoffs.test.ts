@@ -1,8 +1,8 @@
 import { getPositionsPlayedOff } from '@Query/drawDefinition/getPositionsPlayedOff';
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { chunkByNth } from '../../../tools/arrays';
+import { chunkByNth } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import {

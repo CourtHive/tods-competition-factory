@@ -1,7 +1,7 @@
 import { unlinkTournament } from '@Mutate/tournaments/tournamentLinks';
 import competitionEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 import { LINKED_TOURNAMENTS } from '@Constants/extensionConstants';

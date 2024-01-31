@@ -1,18 +1,18 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '../../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 import { getEntryStatus, getParticipantId, getParticipantIds } from '@Functions/global/extractors';
-import { instanceCount, intersection, unique } from '../../../../tools/arrays';
+import { instanceCount, intersection, unique } from '@Tools/arrays';
 
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_ENTRY_STATUS,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ALTERNATE,
   CONFIRMED,
@@ -21,7 +21,7 @@ import {
   ORGANISER_ACCEPTANCE,
   UNGROUPED,
   WITHDRAWN,
-} from '../../../../constants/entryStatusConstants';
+} from '@Constants/entryStatusConstants';
 
 it('can modify entryStatus within event.entries', () => {
   const drawProfiles = [{ drawSize: 8, alternatesCount: 2 }];

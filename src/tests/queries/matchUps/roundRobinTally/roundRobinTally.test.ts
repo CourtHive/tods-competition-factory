@@ -3,17 +3,17 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
-import { SINGLES, TEAM } from '../../../../constants/eventConstants';
-import { TALLY } from '../../../../constants/extensionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { SINGLES, TEAM } from '@Constants/eventConstants';
+import { TALLY } from '@Constants/extensionConstants';
 import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '../../../../constants/errorConditionConstants';
-import { DEFAULTED, RETIRED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [

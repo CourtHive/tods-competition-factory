@@ -2,10 +2,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
-import { TALLY } from '../../../../constants/extensionConstants';
-import { RETIRED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { TALLY } from '@Constants/extensionConstants';
+import { RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 function getDrawPositionTally({ positionAssignments, drawPosition }) {
   return positionAssignments

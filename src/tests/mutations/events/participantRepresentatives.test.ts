@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '../../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 

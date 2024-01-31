@@ -9,11 +9,11 @@ import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { verifyStructure } from '../primitives/verifyStructure';
-import { generateRange } from '../../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
-import { MAIN, CONSOLATION, CURTIS, PLAY_OFF } from '../../../../constants/drawDefinitionConstants';
+import { MAIN, CONSOLATION, CURTIS, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 
 it('can generate and verify curtis structures', () => {
   let mainStructureId, consolation1stStructureId, consolation2ndStructureId, drawDefinition;

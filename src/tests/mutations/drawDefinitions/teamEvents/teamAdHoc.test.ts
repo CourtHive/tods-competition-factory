@@ -1,14 +1,14 @@
-import { generateDateRange } from '../../../../tools/dateTime';
+import { generateDateRange } from '@Tools/dateTime';
 import { mocksEngine, tournamentEngine } from '../../../..';
 import { queryEngine } from '@Engines/queryEngine';
-import { hav } from '../../../../tools/objects';
+import { hav } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
-import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
-import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
-import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../../constants/eventConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { TEAM } from '@Constants/eventConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
