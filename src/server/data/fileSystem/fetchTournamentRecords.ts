@@ -1,7 +1,8 @@
 import { findTournamentRecord } from './findTournamentRecord';
 
+// constants
 import { errorConditionConstants } from '../../../constants';
-import { SUCCESS } from '../../common/constants/app';
+import { SUCCESS } from '@Constants/resultConstants';
 
 errorConditionConstants;
 export async function fetchTournamentRecords(params?: { tournamentIds?: string[]; tournamentId?: string }) {

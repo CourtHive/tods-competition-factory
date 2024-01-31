@@ -1,5 +1,6 @@
 import { updateAssignmentParticipantResults } from '@Mutate/drawDefinitions/matchUpGovernor/updateAssignmentParticipantResults';
 import { deleteMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
@@ -7,33 +8,50 @@ import { getMatchUpId } from '@Functions/global/extractors';
 import { xa } from '@Tools/objects';
 
 // constants and types
+import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
+import { INVALID_STRUCTURE, INVALID_VALUES, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import {
-  INVALID_STRUCTURE,
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '@Constants/errorConditionConstants';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  removeUnAssigned?: boolean; // defaults to true
+  removeIncomplete?: boolean; // defaults to false
+  removeCompleted?: boolean; // defaults to false
+  roundNumbers?: number[];
   matchUpIds?: string[];
   structureId?: string;
   event?: Event;
 };
 export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
-  const { tournamentRecord, matchUpIds = [], drawDefinition, event } = params;
-  if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };
-  if (!Array.isArray(matchUpIds)) return { error: INVALID_VALUES };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [DRAW_DEFINITION]: true },
+    {
+      [ONE_OF]: { [MATCHUP_IDS]: false, roundNumbers: false },
+      [INVALID]: INVALID_VALUES,
+      [OF_TYPE]: ARRAY,
+    },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  let matchUpIds = params.matchUpIds ?? [];
+  const {
+    removeIncomplete = false,
+    removeUnAssigned = true,
+    removeCompleted = false,
+    tournamentRecord,
+    drawDefinition,
+    event,
+  } = params;
 
   const structureId =
     params.structureId ??
     drawDefinition?.structures?.find((structure) =>
       structure.matchUps?.some(({ matchUpId }) => matchUpIds.includes(matchUpId)),
-    )?.structureId;
+    )?.structureId ??
+    drawDefinition?.structures?.[0]?.structureId;
 
   if (!structureId) return { error: STRUCTURE_NOT_FOUND };
 
@@ -47,11 +65,26 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
     return { error: INVALID_STRUCTURE };
   }
 
+  if (params.roundNumbers) {
+    const existingRoundMatchUpIds = existingMatchUps
+      .filter(({ roundNumber }) => params.roundNumbers?.includes(roundNumber))
+      .map(getMatchUpId);
+    if (matchUpIds.length) {
+      matchUpIds = matchUpIds.filter((matchUpId) => existingRoundMatchUpIds.includes(matchUpId));
+    } else {
+      matchUpIds = existingRoundMatchUpIds;
+    }
+  }
+
   const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =
-    existingMatchUps?.filter(({ matchUpId, score }) => {
-      if (checkScoreHasValue({ score })) matchUpIdsWithScoreValue.push(matchUpId);
-      return matchUpIds.includes(matchUpId);
+    existingMatchUps?.filter(({ matchUpId, score, winningSide }) => {
+      if (checkScoreHasValue({ score })) {
+        if (!winningSide && !removeIncomplete) return false;
+        if (winningSide && !removeCompleted) return false;
+        matchUpIdsWithScoreValue.push(matchUpId);
+      } else if (!removeUnAssigned) return false;
+      return matchUpIds?.includes(matchUpId);
     }) ?? [];
   const matchUpIdsToDelete = matchUpsToDelete.map(getMatchUpId);
   const tieMatchUpIdsToDelete: string[] = matchUpsToDelete

@@ -1,19 +1,20 @@
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { USTA_GOLD_TEAM_CHALLENGE } from '../../../../constants/tieFormatConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { TEAM } from '../../../../constants/matchUpTypes';
-import { MODIFY_DRAW_DEFINITION, MODIFY_MATCHUP } from '../../../../constants/topicConstants';
+// constants
+import { MODIFY_DRAW_DEFINITION, MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   INVALID_MATCHUP,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // reusable
 test('can clear TEAM matchUp "scorecards"', () => {

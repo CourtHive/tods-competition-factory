@@ -23,7 +23,6 @@ test('generateDrawDefinition can generate specified number of rounds', () => {
 
   const roundsCount = 3;
   const {
-    tournamentRecord,
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
     eventProfiles: [
@@ -32,9 +31,8 @@ test('generateDrawDefinition can generate specified number of rounds', () => {
         eventType: SINGLES_EVENT,
       },
     ],
+    setState: true,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   const event = tournamentEngine.getEvent({ eventId }).event;
   expect(event.entries.length).toEqual(participantsCount);
@@ -468,4 +466,49 @@ it('can add matchUps to an existing adHoc round', () => {
   // a total of 5 matchUps were previously deleted
   // [firstRoundMatchUp.matchUpId, ...halfOfRoundOneMatchUpIds]
   expect(generationResult.matchUps.length).toEqual(5);
+});
+
+test('adHoc matchUps can be deleted by roundNumber', () => {
+  const roundsCount = 3;
+  const drawSize = 16;
+  const drawId = 'adHoc';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawType: AD_HOC,
+        automated: true,
+        roundsCount,
+        drawSize,
+        drawId,
+      },
+    ],
+    setState: true,
+  });
+
+  let matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual((drawSize / 2) * roundsCount);
+
+  const deletionResult = tournamentEngine.deleteAdHocMatchUps({ roundNumbers: [2], drawId });
+  expect(deletionResult.success).toEqual(true);
+
+  matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
+  expect(matchUps.length).toEqual((drawSize / 2) * (roundsCount - 1));
+
+  const roundNumbers = unique(matchUps.map(xa('roundNumber')));
+  expect(roundNumbers).toEqual([1, 2]); // round 3 was renamed to round 2
+
+  let generationResult = tournamentEngine.drawMatic({ drawId });
+  expect(generationResult.success).toEqual(true);
+  expect(generationResult.matchUps.length).toEqual(drawSize / 2);
+  expect(generationResult.roundResults[0].roundNumber).toEqual(3);
+  const addResult = tournamentEngine.addAdHocMatchUps({
+    matchUps: generationResult.matchUps,
+    drawId,
+  });
+  expect(addResult.success).toEqual(true);
+
+  generationResult = tournamentEngine.drawMatic({ drawId, roundsCount: 2 });
+  expect(generationResult.success).toEqual(true);
+  expect(generationResult.roundResults.length).toEqual(2);
+  expect(generationResult.roundResults[1].roundNumber).toEqual(5);
 });

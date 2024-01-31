@@ -1,10 +1,7 @@
-import { executionAsyncId, createHook } from 'async_hooks';
 import { GetNoticesArgs, HandleCaughtErrorArgs, ImplemtationGlobalStateTypes, Notice } from '@Global/state/globalState';
-
-const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
-const INVALID_VALUES = 'Invalid values';
-const SUCCESS = { success: true };
-const NOT_FOUND = 'Not found';
+import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, NOT_FOUND } from '@Constants/errorConditionConstants';
+import { executionAsyncId, createHook } from 'async_hooks';
+import { SUCCESS } from '@Constants/resultConstants';
 
 /**
  * This code enables "global" state for each async execution context.

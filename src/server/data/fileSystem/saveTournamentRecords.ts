@@ -1,8 +1,10 @@
-import { TournamentRecords } from '@Types/factoryTypes';
-import { Tournament } from '@Types/tournamentTypes';
-import { SUCCESS, UTF8 } from '../../common/constants/app';
-
 import * as fs from 'fs-extra';
+
+// constants
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { UTF8 } from '../../common/constants/app';
 
 export async function saveTournamentRecords(params?: {
   tournamentRecords?: TournamentRecords;
@@ -22,5 +24,6 @@ export async function saveTournamentRecords(params?: {
       if (err) console.log(`error: ${err}`);
     });
   }
+
   return { ...SUCCESS };
 }

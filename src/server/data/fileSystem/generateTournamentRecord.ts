@@ -1,9 +1,10 @@
 import { saveTournamentRecords } from './saveTournamentRecords';
 import * as governors from '@Assemblies/governors';
 
+// constants and types
 import { TournamentRecords } from '@Types/factoryTypes';
 import { Tournament } from '@Types/tournamentTypes';
-import { SUCCESS } from '../../common/constants/app';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateTournamentRecord(mockProfile?: any) {
   const mockResult = governors.mocksGovernor.generateTournamentRecord(mockProfile);

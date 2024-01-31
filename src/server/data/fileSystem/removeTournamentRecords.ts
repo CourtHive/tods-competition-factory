@@ -1,5 +1,7 @@
-import { SUCCESS } from '../../common/constants/app';
 import * as fs from 'fs-extra';
+
+// constants
+import { SUCCESS } from '@Constants/resultConstants';
 
 export async function removeTournamentRecords(params?: any) {
   const tournamentIds = params?.tournamentIds ?? [params?.tournamentId].filter(Boolean);

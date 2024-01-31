@@ -1,24 +1,23 @@
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { generateRange, randomPop } from '../../../tools/arrays';
+import { generateRange, randomPop } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { CANNOT_REMOVE_PARTICIPANTS, INVALID_STRUCTURE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { PENALTY, REFEREE, SCHEDULE, SCORE } from '@Constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { AD_HOC, WIN_RATIO } from '@Constants/drawDefinitionConstants';
-import { CANNOT_REMOVE_PARTICIPANTS, INVALID_STRUCTURE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 it('will generate an AD_HOC drawDefinition with no matchUps', () => {
   const {
-    tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 0, drawType: AD_HOC }],
+    setState: true,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   expect(drawDefinition.structures.length).toEqual(1);
