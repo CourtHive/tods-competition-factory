@@ -34,12 +34,15 @@ import {
   DRAW_ID,
   EVENT,
   EVENT_ID,
+  INVALID,
   MATCHUP,
   MATCHUPS,
   MATCHUP_FORMAT,
   MATCHUP_ID,
   MATCHUP_IDS,
+  MESSAGE,
   OBJECT,
+  ONE_OF,
   PARTICIPANT,
   PARTICIPANT_ID,
   POLICY_DEFINITIONS,
@@ -51,6 +54,7 @@ import {
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
   UUIDS,
+  VALIDATE,
   VENUE_IDS,
 } from '@Constants/attributeConstants';
 
@@ -124,10 +128,11 @@ export function checkRequiredParameters(
   const error =
     params?.[errorParam] === undefined
       ? errors[errorParam] || INVALID_VALUES
-      : (paramError.validate && paramError.invalid) || INVALID_VALUES;
+      : (paramError[VALIDATE] && paramError[INVALID]) || INVALID_VALUES;
 
+  const param = errorParam ?? (paramError[ONE_OF] && Object.keys(paramError[ONE_OF]).join(', '));
   return decorateResult({
-    info: { param: errorParam },
+    info: { param, message: paramError[MESSAGE] },
     result: { error },
     stack,
   });
@@ -154,8 +159,8 @@ function getAnyOf(params, _anyOf) {
 }
 
 function findParamError(params, requiredParams) {
-  let errorParam;
-  const paramError = requiredParams.find(({ _ofType, _oneOf, _anyOf, validate, ...attrs }) => {
+  let errorParam, paramInfo;
+  const paramError = requiredParams.find(({ _ofType, _oneOf, _anyOf, _validate, _info, ...attrs }) => {
     const oneOf = _oneOf && getOneOf(params, _oneOf);
     if (oneOf?.error) return oneOf.error;
     oneOf && Object.assign(attrs, oneOf);
@@ -167,20 +172,23 @@ function findParamError(params, requiredParams) {
     const booleanParams = Object.keys(attrs).filter((key) => typeof attrs[key] === 'boolean');
 
     const invalidParam = booleanParams.find((param) => {
-      const invalidValidationFunction = validate && !isFunction(validate); // validate is specified but not a function
-      const faliedTypeCheck = params[param] && !validate && invalidType(params, param, _ofType); // param is present, no validation function provided, and invalid type
+      const invalidValidationFunction = _validate && !isFunction(_validate); // validate is specified but not a function
+      const faliedTypeCheck = params[param] && !_validate && invalidType(params, param, _ofType); // param is present, no validation function provided, and invalid type
       const paramNotPresent = attrs[param] && !params[param]; // attrs[param] boolean value is true and param is not present
       const invalid = invalidValidationFunction || faliedTypeCheck || paramNotPresent;
 
-      const hasError = invalid || (validate && params[param] && !checkValidation(params[param], validate));
-      if (hasError) errorParam = param;
+      const hasError = invalid || (_validate && params[param] && !checkValidation(params[param], _validate));
+      if (hasError) {
+        errorParam = param;
+        paramInfo = _info;
+      }
 
       return hasError;
     });
 
     return !booleanParams.length || invalidParam;
   });
-  return { paramError, errorParam };
+  return { paramError, errorParam, paramInfo };
 }
 
 function invalidType(params, param, _ofType) {
