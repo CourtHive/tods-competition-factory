@@ -3,8 +3,8 @@ import { expect, it, test } from 'vitest';
 import { mocksEngine } from '../../../..';
 
 import { tieFormats } from '@Fixtures/scoring/tieFormats';
-import { LAVER_CUP } from '../../../../constants/tieFormatConstants';
-import { TEAM } from '../../../../constants/eventConstants';
+import { LAVER_CUP } from '@Constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 test('it can use tieFormatName in addEvent', () => {
   const participantsCount = 8;

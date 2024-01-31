@@ -2,10 +2,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL } from '../../../../../constants/participantConstants';
-import { SEEDING } from '../../../../../constants/scaleConstants';
-import { SINGLES } from '../../../../../constants/eventConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SEEDING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('can generateDrawDefinition and place qualifiers', () => {
   const {

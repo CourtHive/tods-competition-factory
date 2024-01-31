@@ -9,10 +9,10 @@ import { generateRange } from '@Tools/arrays';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { ERROR, SUCCESS } from '../../../../constants/resultConstants';
+import { ERROR, SUCCESS } from '@Constants/resultConstants';
 import { EntryStatusUnion } from '@Types/tournamentTypes';
-import { MAIN, ROUND_ROBIN, CONTAINER } from '../../../../constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
+import { MAIN, ROUND_ROBIN, CONTAINER } from '@Constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
 
 let result;
 

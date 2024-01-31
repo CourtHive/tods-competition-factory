@@ -3,7 +3,7 @@ import { xa } from '@Tools/objects';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../../constants/policyConstants';
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 
 import tournamentRecord from './dominantDuo.tods.json';
 import { POLICY_ROUND_ROBIN_TALLY_DEFAULT } from '@Fixtures/policies/POLICY_ROUND_ROBIN_TALLY_DEFAULT';

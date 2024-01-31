@@ -2,8 +2,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLE_WALKOVER } from '../../../../constants/matchUpStatusConstants';
-import { SCORE } from '../../../../constants/matchUpActionConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { SCORE } from '@Constants/matchUpActionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);

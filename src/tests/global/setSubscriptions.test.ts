@@ -1,4 +1,4 @@
-import { setSubscriptions } from '../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngine from '../engines/syncEngine';
 import * as tools from '../../assemblies/tools';
 import { expect, it } from 'vitest';

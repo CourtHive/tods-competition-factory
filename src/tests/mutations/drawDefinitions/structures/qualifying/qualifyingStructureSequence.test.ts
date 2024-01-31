@@ -4,7 +4,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import * as factory from '../../../../../index';
 import { expect, it } from 'vitest';
 
-import { QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 it('can modify stageSequence when adding pre-qualifying structures', () => {
   const {

@@ -3,7 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 test('drawPosition placement is not randomized when drawSize: 2', () => {
   const {

@@ -6,16 +6,16 @@ import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, TEAM } from '../../../../constants/matchUpTypes';
-import { LINEUPS } from '../../../../constants/extensionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, TEAM } from '@Constants/matchUpTypes';
+import { LINEUPS } from '@Constants/extensionConstants';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getDoublesMatchUp = (id, inContext?) => {

@@ -9,13 +9,8 @@ import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDra
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { ERROR } from '../../../../constants/resultConstants';
-import {
-  MAIN,
-  FEED_IN_CHAMPIONSHIP,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  COMPASS,
-} from '../../../../constants/drawDefinitionConstants';
+import { ERROR } from '@Constants/resultConstants';
+import { MAIN, FEED_IN_CHAMPIONSHIP, FIRST_MATCH_LOSER_CONSOLATION, COMPASS } from '@Constants/drawDefinitionConstants';
 
 it('can direct participants in First Match Consolation (FIRST_MATCH_LOSER_CONSOLATION)', () => {
   const drawSize = 32;

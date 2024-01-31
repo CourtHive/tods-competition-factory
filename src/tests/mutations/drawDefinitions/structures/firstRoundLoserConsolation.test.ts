@@ -6,9 +6,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
-import { ELIMINATION, FIRST_ROUND_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { ELIMINATION, FIRST_ROUND_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 it('correctly assigns positions for Elimination structure', () => {
   const drawSize = 32;

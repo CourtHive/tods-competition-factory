@@ -1,4 +1,4 @@
-import { createInstanceState } from '../../../global/state/globalState';
+import { createInstanceState } from '@Global/state/globalState';
 import { asyncExecutionQueue } from './asyncExecutionQueue';
 import { asyncEngineInvoke } from './asyncEngineInvoke';
 import { engineStart } from '../parts/engineStart';

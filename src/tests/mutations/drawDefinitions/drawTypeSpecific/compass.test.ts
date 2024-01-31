@@ -13,9 +13,9 @@ import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { MAIN, COMPASS } from '../../../../constants/drawDefinitionConstants';
+import { MAIN, COMPASS } from '@Constants/drawDefinitionConstants';
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 it('can generate COMPASS and fill all drawPositions', () => {
   let drawSize, seedsCount, participantsCount;

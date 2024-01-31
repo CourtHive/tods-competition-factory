@@ -4,10 +4,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { chunkArray } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
-import { RATING, SEEDING } from '../../../../../constants/scaleConstants';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { ELO } from '../../../../../constants/ratingConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { RATING, SEEDING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { ELO } from '@Constants/ratingConstants';
 
 const scenarios = [
   {

@@ -2,13 +2,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  CONSOLATION,
-  FIRST_MATCH_LOSER_CONSOLATION,
-  MAIN,
-  PLAY_OFF,
-} from '../../../../constants/drawDefinitionConstants';
-import { BYE, COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAY_OFF } from '@Constants/drawDefinitionConstants';
+import { BYE, COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('will place a BYE in CONSOLATION if participant has progressed to 3-4 playoff', () => {
   const {

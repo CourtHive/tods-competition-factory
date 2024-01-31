@@ -8,10 +8,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../../../../constants/matchUpTypes';
-import { MALE } from '../../../../../constants/genderConstants';
-import { MAIN, CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { MALE } from '@Constants/genderConstants';
+import { MAIN, CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 

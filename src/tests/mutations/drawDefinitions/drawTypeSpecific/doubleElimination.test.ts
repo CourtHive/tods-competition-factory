@@ -3,8 +3,8 @@ import * as tools from '@Assemblies/tools';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED, TO_BE_PLAYED, upcomingMatchUpStatuses } from '../../../../constants/matchUpStatusConstants';
-import { DOUBLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED, upcomingMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DOUBLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 it('generates valid DOUBLE_ELIMINATION', () => {
   const drawSize = 32;

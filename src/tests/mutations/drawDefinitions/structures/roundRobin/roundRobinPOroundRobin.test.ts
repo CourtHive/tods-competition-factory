@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { PLAY_OFF, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
+import { PLAY_OFF, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('will generate single elimination playoff for ROUND_ROBIN when drawSize: 2', () => {
   const {

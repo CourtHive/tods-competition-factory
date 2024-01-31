@@ -18,9 +18,9 @@ import {
   WITHDRAW_PARTICIPANT,
   REMOVE_ASSIGNMENT,
   ADD_NICKNAME,
-} from '../../../../../constants/positionActionConstants';
-import { DRAW, MAIN, QUALIFYING } from '../../../../../constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+} from '@Constants/positionActionConstants';
+import { DRAW, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [

@@ -4,7 +4,7 @@ import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEnt
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {

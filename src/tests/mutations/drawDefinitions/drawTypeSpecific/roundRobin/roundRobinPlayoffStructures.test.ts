@@ -8,8 +8,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '../../../../../constants/matchUpStatusConstants';
-import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '../../../../../constants/drawDefinitionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   const completionGoal = 48;

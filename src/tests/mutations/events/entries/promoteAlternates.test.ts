@@ -2,15 +2,15 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { ALTERNATE } from '../../../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 import {
   INVALID_ENTRY_STATUS,
   MISSING_EVENT,
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND_IN_STAGE,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can promote alternates', () => {
   const drawProfiles = [

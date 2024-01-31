@@ -4,7 +4,7 @@ import { generateRange } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('generates roundNumbers for all matchUps when odd-sized groups', () => {
   const drawProfiles = [

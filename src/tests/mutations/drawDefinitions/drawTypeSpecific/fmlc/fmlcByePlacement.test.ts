@@ -8,7 +8,7 @@ import { expect, it } from 'vitest';
 
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../../constants/drawDefinitionConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can support ITF Consolation BYE placement', () => {
   const participantsCount = 24;

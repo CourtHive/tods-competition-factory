@@ -1,4 +1,4 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';

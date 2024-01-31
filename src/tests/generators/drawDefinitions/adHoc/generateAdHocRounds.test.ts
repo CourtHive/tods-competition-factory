@@ -2,7 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { AD_HOC } from '../../../../constants/drawDefinitionConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
 
 it('can generate multiple AD_HOC rounds', () => {
   const drawSize = 32;

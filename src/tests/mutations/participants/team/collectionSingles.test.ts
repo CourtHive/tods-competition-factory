@@ -4,9 +4,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../../constants/participantRoles';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
 import {
   EXISTING_OUTCOME,
   INVALID_PARTICIPANT_TYPE,
@@ -14,8 +14,8 @@ import {
   MISSING_DRAW_ID,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {

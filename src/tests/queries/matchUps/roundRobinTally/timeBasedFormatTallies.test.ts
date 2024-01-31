@@ -4,7 +4,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('round robins with timed formats will default to game based when no indicator', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

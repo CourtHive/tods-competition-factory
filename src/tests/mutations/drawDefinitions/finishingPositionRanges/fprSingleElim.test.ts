@@ -1,11 +1,11 @@
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { eventConstants } from '../../../../constants/eventConstants';
+import { eventConstants } from '@Constants/eventConstants';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MISSING_ASSIGNMENTS } from '../../../../constants/errorConditionConstants';
+import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;

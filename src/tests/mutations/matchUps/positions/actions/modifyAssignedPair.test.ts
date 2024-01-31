@@ -3,11 +3,11 @@ import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { MODIFY_PAIR_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
-import { INDIVIDUAL, PAIR } from '../../../../../constants/participantConstants';
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import { DOUBLES_EVENT } from '../../../../../constants/eventConstants';
-import { DIRECT_ACCEPTANCE, UNGROUPED } from '../../../../../constants/entryStatusConstants';
+import { MODIFY_PAIR_ASSIGNMENT } from '@Constants/positionActionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES_EVENT } from '@Constants/eventConstants';
+import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 
 test('postionAction for replacing participant within PAIR', () => {
   const participantsCount = 10;

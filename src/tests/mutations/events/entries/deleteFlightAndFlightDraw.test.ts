@@ -2,8 +2,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { MISSING_DRAW_ID, MISSING_EVENT } from '../../../../constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { MISSING_DRAW_ID, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 it('can delete flight and flightDrawDefinition', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

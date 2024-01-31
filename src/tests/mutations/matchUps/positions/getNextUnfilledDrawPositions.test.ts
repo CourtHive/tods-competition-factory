@@ -2,8 +2,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { MISSING_STRUCTURE_ID, STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { MISSING_STRUCTURE_ID, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { getNextUnfilledDrawPositions } from '@Query/drawDefinition/positionActions/getNextUnfilledDrawPositions';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 

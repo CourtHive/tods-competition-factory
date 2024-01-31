@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '../../../../constants/drawDefinitionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 it('can rename structures', () => {
   const {

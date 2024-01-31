@@ -3,7 +3,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { COMPASS, CURTIS_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { COMPASS, CURTIS_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 test('can recreate an exitProfile for a COMPASS draw', () => {
   const {

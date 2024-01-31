@@ -1,7 +1,7 @@
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { CANNOT_REMOVE_PARTICIPANTS } from '../../../../constants/errorConditionConstants';
+import { CANNOT_REMOVE_PARTICIPANTS } from '@Constants/errorConditionConstants';
 import tournamentRecord from '../teamEvents/removeIndividualParticipants.tods.json';
 
 it('will remove participants from lineUps unless they are part of a matchUp with a result', () => {

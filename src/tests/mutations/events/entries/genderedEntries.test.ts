@@ -3,8 +3,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { INVALID_PARTICIPANT_IDS } from '../../../../constants/errorConditionConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
+import { INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 
 it('throws an error on misgendered entries', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

@@ -2,10 +2,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 // this test originated because an error was being thrown with this scenario
 test('team ROUND_robin with 3 teams', () => {

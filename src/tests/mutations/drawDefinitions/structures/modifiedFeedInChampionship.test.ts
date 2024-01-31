@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { MFIC } from '../../../../constants/drawDefinitionConstants';
+import { MFIC } from '@Constants/drawDefinitionConstants';
 
 it('will not feed main final in MFIC with drawSize 4', () => {
   const {

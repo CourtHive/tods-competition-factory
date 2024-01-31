@@ -1,4 +1,4 @@
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngineAsync from '@Engines/asyncEngine';
 import tournamentEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';

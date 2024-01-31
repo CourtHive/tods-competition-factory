@@ -1,7 +1,7 @@
 import { replacementTest } from '../../../drawDefinitions/structures/byeReplacementStressTest';
 import { expect, test } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP } from '../../../../../constants/drawDefinitionConstants';
+import { FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 test.each([
   [8, FEED_IN_CHAMPIONSHIP, [2, 4, 5, 6]],

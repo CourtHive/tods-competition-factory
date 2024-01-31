@@ -1,5 +1,5 @@
 export { findExtension } from '../../../acquire/findExtension';
-export { getTimeItem } from '../../../query/base/timeItems';
+export { getTimeItem } from '@Query/base/timeItems';
 export { credits } from '../../../fixtures/credits';
 
 export * from '../competitionGovernor/query';

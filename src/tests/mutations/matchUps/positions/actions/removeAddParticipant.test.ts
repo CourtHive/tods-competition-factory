@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
+import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '@Constants/positionActionConstants';
 
 it('can remove drawPosition assignment and add it back', () => {
   const drawProfiles = [

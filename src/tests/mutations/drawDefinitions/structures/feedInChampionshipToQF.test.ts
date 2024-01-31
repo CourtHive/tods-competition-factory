@@ -1,8 +1,8 @@
 import { feedInChampionship } from '../primitives/feedIn';
 import { expect, it } from 'vitest';
 
-import { FICQF } from '../../../../constants/drawDefinitionConstants';
-import { INVALID_DRAW_SIZE } from '../../../../constants/errorConditionConstants';
+import { FICQF } from '@Constants/drawDefinitionConstants';
+import { INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
 
 it('can generate FEED_IN_CHAMPIONSHIP to QF with drawSize 32', () => {
   const { links, mainDrawMatchUps, consolationMatchUps } = feedInChampionship({

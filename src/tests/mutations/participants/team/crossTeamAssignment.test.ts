@@ -2,8 +2,8 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { SINGLES, TEAM } from '../../../../constants/matchUpTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES, TEAM } from '@Constants/matchUpTypes';
 
 test.skip('participants can play for a team even when not part of team', () => {
   const scenario = {

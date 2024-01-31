@@ -18,7 +18,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FICR16,
   FICSF,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can generate structured entry draw', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

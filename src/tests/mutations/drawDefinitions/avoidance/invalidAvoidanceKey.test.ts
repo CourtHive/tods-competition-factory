@@ -1,7 +1,7 @@
 import { avoidanceTest } from './avoidanceTest';
 import { it } from 'vitest';
 
-import { PAIR } from '../../../../constants/participantConstants';
+import { PAIR } from '@Constants/participantConstants';
 import { eventConstants } from '../../../..';
 const { DOUBLES } = eventConstants;
 

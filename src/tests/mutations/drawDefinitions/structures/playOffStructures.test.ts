@@ -6,8 +6,8 @@ import { numericSort } from '@Tools/sorting';
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { ERROR } from '../../../../constants/resultConstants';
-import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { ERROR } from '@Constants/resultConstants';
+import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playoffDraw({

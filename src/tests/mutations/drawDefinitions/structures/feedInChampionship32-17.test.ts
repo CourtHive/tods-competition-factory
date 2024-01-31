@@ -5,9 +5,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 it('correctly assigns BYE positions in consolation structure', () => {
   const drawSize = 32;

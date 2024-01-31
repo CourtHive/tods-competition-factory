@@ -2,8 +2,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ASSIGN_BYE, REMOVE_ASSIGNMENT } from '../../../../../constants/positionActionConstants';
-import { ALTERNATE, DIRECT_ACCEPTANCE, WITHDRAWN } from '../../../../../constants/entryStatusConstants';
+import { ASSIGN_BYE, REMOVE_ASSIGNMENT } from '@Constants/positionActionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE, WITHDRAWN } from '@Constants/entryStatusConstants';
 
 it('can replace positioned participant with a bye and move to ALTERNATEs', () => {
   const drawProfiles = [

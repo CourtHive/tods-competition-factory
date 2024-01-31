@@ -3,10 +3,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../../constants/matchUpTypes';
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { INVALID_MATCHUP, INVALID_VALUES, VALUE_UNCHANGED } from '../../../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { INVALID_MATCHUP, INVALID_VALUES, VALUE_UNCHANGED } from '@Constants/errorConditionConstants';
 
 test('groupValue can be used in tieFormats and lineUps can be applied after scoring is completed', () => {
   const mockProfile = {

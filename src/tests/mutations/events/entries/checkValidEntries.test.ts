@@ -3,9 +3,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../../constants/policyConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
-import { INVALID_ENTRIES, INVALID_PARTICIPANT_IDS } from '../../../../constants/errorConditionConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { INVALID_ENTRIES, INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 
 it('can validate entries', () => {
   const {

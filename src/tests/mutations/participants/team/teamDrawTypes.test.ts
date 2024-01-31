@@ -1,11 +1,11 @@
-import { setSubscriptions } from '../../../../global/state/syncGlobalState';
+import { setSubscriptions } from '@Global/state/syncGlobalState';
 import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { TALLY } from '../../../../constants/extensionConstants';
-import { TEAM } from '../../../../constants/eventConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TALLY } from '@Constants/extensionConstants';
+import { TEAM } from '@Constants/eventConstants';
 import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
@@ -14,8 +14,8 @@ import {
   PLAY_OFF,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-} from '../../../../constants/drawDefinitionConstants';
-import { COMPLETED, IN_PROGRESS } from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/drawDefinitionConstants';
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {

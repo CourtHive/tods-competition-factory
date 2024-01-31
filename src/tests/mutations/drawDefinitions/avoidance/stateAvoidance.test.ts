@@ -3,7 +3,7 @@ import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
 
 const avoidancePolicy = {
   policyAttributes: [{ key: 'person.addresses.state' }],

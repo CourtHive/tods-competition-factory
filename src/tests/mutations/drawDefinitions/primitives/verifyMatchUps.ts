@@ -7,7 +7,7 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findStructure } from '@Acquire/findStructure';
 import { expect } from 'vitest';
 
-import { MATCHUP_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function completeMatchUp(params) {
   const { drawDefinition, roundPosition, matchUpStatus, roundNumber, scoreString, structureId, winningSide } = params;

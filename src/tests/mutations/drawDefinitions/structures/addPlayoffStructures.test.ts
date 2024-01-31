@@ -1,7 +1,7 @@
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';

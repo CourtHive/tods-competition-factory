@@ -11,7 +11,7 @@ import {
   NOT_PLAYED,
   DEAD_RUBBER,
   AWAITING_RESULT,
-} from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 it('supports entering CANCELED matchUpStatus', () => {
   const drawProfiles = [

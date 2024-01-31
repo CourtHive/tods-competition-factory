@@ -4,7 +4,7 @@ import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDra
 import { getSourceRounds } from '@Query/drawDefinition/getSourceRounds';
 import { it, expect } from 'vitest';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION', () => {

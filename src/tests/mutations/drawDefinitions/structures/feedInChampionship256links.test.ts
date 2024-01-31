@@ -3,14 +3,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import {
-  BOTTOM_UP,
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-  MAIN,
-  TOP_DOWN,
-} from '../../../../constants/drawDefinitionConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { BOTTOM_UP, CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN, TOP_DOWN } from '@Constants/drawDefinitionConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('can properly generate feed in championship links', () => {
   const participantsProfile = {

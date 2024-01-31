@@ -1,10 +1,10 @@
-import { setSubscriptions } from '../../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
-import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);

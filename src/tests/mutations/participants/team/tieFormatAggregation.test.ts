@@ -3,9 +3,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { COLLEGE_JUCO, USTA_BREWER_CUP, USTA_COLLEGE, USTA_TOC } from '../../../../constants/tieFormatConstants';
-import { TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { COLLEGE_JUCO, USTA_BREWER_CUP, USTA_COLLEGE, USTA_TOC } from '@Constants/tieFormatConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 it('can aggregate tieFormats found in drawDefinitions to event.tieFormats', () => {
   const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({

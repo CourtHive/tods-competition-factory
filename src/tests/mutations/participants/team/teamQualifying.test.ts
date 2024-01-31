@@ -6,10 +6,10 @@ import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../../constants/matchUpTypes';
-import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   const singlesCollectionId = UUID();

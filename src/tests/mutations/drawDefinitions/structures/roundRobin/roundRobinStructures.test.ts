@@ -4,7 +4,7 @@ import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDra
 import { expect, it } from 'vitest';
 
 import { DrawDefinition } from '@Types/tournamentTypes';
-import { ITEM, CONTAINER, WIN_RATIO, ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
+import { ITEM, CONTAINER, WIN_RATIO, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can generate Round Robin Main Draws', () => {
   let drawDefinition: DrawDefinition = newDrawDefinition();

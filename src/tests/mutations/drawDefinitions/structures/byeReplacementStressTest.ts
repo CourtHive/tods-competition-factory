@@ -10,8 +10,8 @@ import { randomInt } from '@Tools/math';
 import { expect } from 'vitest';
 import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 
-import { PARTICIPANT_ID } from '../../../../constants/attributeConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 // pseudocode...
 // 1. Generate drawType of drawSize

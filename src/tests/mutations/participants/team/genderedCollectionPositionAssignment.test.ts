@@ -4,13 +4,13 @@ import { unique } from '@Tools/arrays';
 import { xa } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
-import { INVALID_PARTICIPANT } from '../../../../constants/errorConditionConstants';
-import { USTA_GOLD_TEAM_CHALLENGE } from '../../../../constants/tieFormatConstants';
-import { ASSIGN_PARTICIPANT } from '../../../../constants/positionActionConstants';
-import { SINGLES_MATCHUP, TEAM_MATCHUP } from '../../../../constants/matchUpTypes';
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { FEMALE, MALE } from '../../../../constants/genderConstants';
-import { TEAM_EVENT } from '../../../../constants/eventConstants';
+import { INVALID_PARTICIPANT } from '@Constants/errorConditionConstants';
+import { USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { SINGLES_MATCHUP, TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 it('can enforce collection gender', () => {
   // 1. generate gendered tieFormat

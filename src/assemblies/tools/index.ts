@@ -1,6 +1,6 @@
 export { visualizeScheduledMatchUps } from '../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
 export { generateDateRange, dateTime } from '@Tools/dateTime';
-export { dehydrateMatchUps } from '../../mutate/tournaments/dehydrate';
+export { dehydrateMatchUps } from '@Mutate/tournaments/dehydrate';
 export { structureSort } from '../../functions/sorters/structureSort';
 export { definedAttributes } from '@Tools/definedAttributes';
 export { attributeFilter } from '@Tools/attributeFilter';

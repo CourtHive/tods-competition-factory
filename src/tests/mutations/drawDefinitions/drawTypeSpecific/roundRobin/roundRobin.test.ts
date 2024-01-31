@@ -6,8 +6,8 @@ import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { SINGLES_EVENT } from '../../../../../constants/eventConstants';
-import { MAIN, ROUND_ROBIN, WATERFALL } from '../../../../../constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { MAIN, ROUND_ROBIN, WATERFALL } from '@Constants/drawDefinitionConstants';
 
 const scenarios = [
   {

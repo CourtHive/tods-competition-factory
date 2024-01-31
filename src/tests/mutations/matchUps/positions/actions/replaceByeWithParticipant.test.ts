@@ -5,9 +5,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { replaceWithAlternate, replaceWithBye } from '../../../drawDefinitions/testingUtilities';
 
-import { ALTERNATE } from '../../../../../constants/entryStatusConstants';
-import { ALTERNATE_PARTICIPANT, ASSIGN_BYE } from '../../../../../constants/positionActionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { ALTERNATE_PARTICIPANT, ASSIGN_BYE } from '@Constants/positionActionConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('supports replacing a BYE with a participant (DA or ALT)', () => {
   const drawProfiles = [

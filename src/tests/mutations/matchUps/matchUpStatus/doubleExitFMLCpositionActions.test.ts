@@ -2,9 +2,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../constants/policyConstants';
-import { DOUBLE_WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 import {
   ADD_NICKNAME,
   ADD_PENALTY,
@@ -14,7 +14,7 @@ import {
   SEED_VALUE,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);

@@ -4,9 +4,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { LUCKY_DRAW } from '../../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../../constants/matchUpStatusConstants';
-import { DOUBLES } from '../../../../constants/eventConstants';
+import { LUCKY_DRAW } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { DOUBLES } from '@Constants/eventConstants';
 
 // prettier-ignore
 const scenarios = [

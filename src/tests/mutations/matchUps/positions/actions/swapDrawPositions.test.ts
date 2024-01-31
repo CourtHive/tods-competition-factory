@@ -3,14 +3,14 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { globalState } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import { MODIFY_DRAW_DEFINITION, MODIFY_POSITION_ASSIGNMENTS } from '../../../../../constants/topicConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { MODIFY_DRAW_DEFINITION, MODIFY_POSITION_ASSIGNMENTS } from '@Constants/topicConstants';
 import {
   ALTERNATE_PARTICIPANT,
   REMOVE_ASSIGNMENT,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 it('can recognize valid SWAP positions', () => {
   const drawProfiles = [

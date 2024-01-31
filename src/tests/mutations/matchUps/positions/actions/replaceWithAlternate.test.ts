@@ -2,11 +2,11 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ALTERNATE_PARTICIPANT } from '../../../../../constants/positionActionConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../../../constants/policyConstants';
-import { APPLIED_POLICIES } from '../../../../../constants/extensionConstants';
-import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';
-import { ALTERNATE } from '../../../../../constants/entryStatusConstants';
+import { ALTERNATE_PARTICIPANT } from '@Constants/positionActionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
 
 it('can recognize valid ALTERNATES', () => {
   // Create mock tournament record

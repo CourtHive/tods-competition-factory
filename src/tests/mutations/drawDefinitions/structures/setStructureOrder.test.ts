@@ -3,7 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '../../../../constants/drawDefinitionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 it('can order structures', () => {
   const {

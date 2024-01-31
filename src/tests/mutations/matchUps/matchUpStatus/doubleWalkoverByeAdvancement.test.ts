@@ -3,8 +3,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { BYE, DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { BYE, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 test('Consolation WO/WO advancing fed BYE', () => {
   // prettier-ignore

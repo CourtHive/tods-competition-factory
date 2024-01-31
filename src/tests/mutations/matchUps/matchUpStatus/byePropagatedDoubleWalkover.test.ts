@@ -2,8 +2,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DOUBLE_WALKOVER } from '../../../../constants/matchUpStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 
 test('bye propagated double walkover hydration', () => {
   let result = mocksEngine.generateTournamentRecord({

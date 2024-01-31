@@ -9,7 +9,7 @@ import {
   IN_PROGRESS,
   RETIRED,
   WALKOVER,
-} from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 tournamentEngine.devContext(true);
 

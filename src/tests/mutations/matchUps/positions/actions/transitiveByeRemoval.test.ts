@@ -14,7 +14,7 @@ import {
   REMOVE_ASSIGNMENT,
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
-} from '../../../../../constants/positionActionConstants';
+} from '@Constants/positionActionConstants';
 
 it('supports transitive BYE removal', () => {
   swapTest({ swapPosition: 4 });

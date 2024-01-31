@@ -4,7 +4,7 @@ import { numericSort } from '@Tools/sorting';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { BYE, COMPLETED } from '../../../../constants/matchUpStatusConstants';
+import { BYE, COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('correctly identifies active drawPositions', () => {
   const drawProfiles = [

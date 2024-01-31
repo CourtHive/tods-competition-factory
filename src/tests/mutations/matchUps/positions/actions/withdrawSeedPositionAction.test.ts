@@ -2,9 +2,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { REMOVE_SEED } from '../../../../../constants/positionActionConstants';
-import { MALE } from '../../../../../constants/genderConstants';
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../../../constants/eventConstants';
+import { REMOVE_SEED } from '@Constants/positionActionConstants';
+import { MALE } from '@Constants/genderConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
 
 // TODO: complete!
 it('can re-position seeds when a seed is withdrawn', () => {

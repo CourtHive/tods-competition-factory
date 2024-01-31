@@ -3,14 +3,14 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { COMPETITOR } from '../../../../constants/participantRoles';
-import { MALE } from '../../../../constants/genderConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { MALE } from '@Constants/genderConstants';
 import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   INVALID_PARTICIPANT_ID,
-} from '../../../../constants/errorConditionConstants';
-import { ALTERNATE, DIRECT_ACCEPTANCE } from '../../../../constants/entryStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 test('event entries are only removed when not placed in draw structures', () => {
   const gender = MALE;

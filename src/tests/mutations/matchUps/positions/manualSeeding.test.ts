@@ -3,8 +3,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { SEEDING } from '../../../../constants/scaleConstants';
-import { SINGLES } from '../../../../constants/eventConstants';
+import { SEEDING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('supports manual seeding with alphanumeric values', () => {
   const mockProfile = {

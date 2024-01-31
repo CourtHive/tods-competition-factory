@@ -9,8 +9,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { globalState } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { ADD_MATCHUPS } from '../../../../constants/topicConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { ADD_MATCHUPS } from '@Constants/topicConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import {
   CONSOLATION,
@@ -21,7 +21,7 @@ import {
   MAIN,
   PLAY_OFF,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 

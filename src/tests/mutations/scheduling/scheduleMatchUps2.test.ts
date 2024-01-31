@@ -1,7 +1,7 @@
 import { removeCourtAssignment } from '@Mutate/matchUps/schedule/removeCourtAssignment';
 import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { setSubscriptions } from '../../../global/state/globalState';
+import { setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

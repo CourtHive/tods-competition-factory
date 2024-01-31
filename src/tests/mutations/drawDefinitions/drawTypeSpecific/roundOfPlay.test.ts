@@ -3,7 +3,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
-import { COMPASS } from '../../../../constants/drawDefinitionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 const scenarios = [
   { drawType: COMPASS, stageSequences: [1], roundsOfPlay: [1, 2, 3, 4, 5] },

@@ -2,7 +2,7 @@ import { avoidanceTest } from './avoidanceTest';
 import { intersection } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { PAIR } from '../../../../constants/participantConstants';
+import { PAIR } from '@Constants/participantConstants';
 import { eventConstants } from '../../../..';
 
 const { SINGLES } = eventConstants;

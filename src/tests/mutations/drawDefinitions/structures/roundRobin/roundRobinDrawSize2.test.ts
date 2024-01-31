@@ -2,7 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN, SINGLE_ELIMINATION } from '../../../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 it('will generate SINGLE_ELIMINATION when drawSize: 2', () => {
   let result = mocksEngine.generateTournamentRecord({

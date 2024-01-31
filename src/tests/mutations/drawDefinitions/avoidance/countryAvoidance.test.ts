@@ -4,8 +4,8 @@ import { avoidanceTest } from './avoidanceTest';
 import { eventConstants } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 const { SINGLES, DOUBLES } = eventConstants;
 
 const avoidancePolicy = {

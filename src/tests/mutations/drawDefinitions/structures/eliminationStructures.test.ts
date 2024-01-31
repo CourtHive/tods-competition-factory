@@ -7,7 +7,7 @@ import { structureSort } from '@Functions/sorters/structureSort';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { ERROR } from '../../../../constants/resultConstants';
+import { ERROR } from '@Constants/resultConstants';
 import {
   MAIN,
   CONSOLATION,
@@ -20,7 +20,7 @@ import {
   COMPASS,
   PLAY_OFF,
   AGGREGATE_EVENT_STRUCTURES,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can generate main draw', () => {
   const drawDefinition = newDrawDefinition();

@@ -1,4 +1,4 @@
-import { getTournamentPoints } from '../../../../../query/scales/getTournamentPoints';
+import { getTournamentPoints } from '@Query/scales/getTournamentPoints';
 
 const rankingsGovernor = {
   getTournamentPoints,

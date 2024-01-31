@@ -2,8 +2,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLE_WALKOVER, WALKOVER } from '../../../../constants/matchUpStatusConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '../../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('properly handles produced Exit fed into consolation structure', () => {
   const {

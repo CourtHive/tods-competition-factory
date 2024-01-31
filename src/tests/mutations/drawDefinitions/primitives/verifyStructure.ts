@@ -9,7 +9,7 @@ import { findStructure } from '@Acquire/findStructure';
 import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { expect } from 'vitest';
 
-import { STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
+import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function verifyStructure(params) {
   const {

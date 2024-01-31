@@ -3,8 +3,8 @@ import { generateTeamTournament } from './generateTestTeamTournament';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INDIVIDUAL } from '../../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 test('collection matchUps appear in participant reports', () => {
   const drawSize = 8;

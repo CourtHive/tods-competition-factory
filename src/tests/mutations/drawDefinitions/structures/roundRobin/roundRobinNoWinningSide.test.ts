@@ -2,8 +2,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../../../constants/drawDefinitionConstants';
-import { ABANDONED, CANCELLED, DOUBLE_WALKOVER } from '../../../../../constants/matchUpStatusConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 
 test('completed matchUp outcomes with no winningSide will not cause destructuring errors', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

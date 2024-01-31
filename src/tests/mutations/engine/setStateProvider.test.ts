@@ -1,8 +1,8 @@
-import syncGlobalState from '../../../global/state/syncGlobalState';
+import syncGlobalState from '@Global/state/syncGlobalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import { setStateProvider, setSubscriptions } from '../../../global/state/globalState';
+import { setStateProvider, setSubscriptions } from '@Global/state/globalState';
 
 import { DELETED_DRAW_IDS } from '@Constants/topicConstants';
 
