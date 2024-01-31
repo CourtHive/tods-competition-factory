@@ -1,9 +1,9 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { instanceCount } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { COMPETITIVE, DECISIVE, ROUTINE } from '../../../constants/statsConstants';
+import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';
 
 it('can generate competitive statistics for matchUps and add competitiveness', () => {
   const mocksProfile = {

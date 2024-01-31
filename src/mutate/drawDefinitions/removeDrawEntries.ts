@@ -1,15 +1,15 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from '../entries/refreshEntryPositions';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { overlap } from '../../tools/arrays';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { overlap } from '@Tools/arrays';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
   MISSING_DRAW_ID,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function removeDrawEntries({
   autoEntryPositions = true,

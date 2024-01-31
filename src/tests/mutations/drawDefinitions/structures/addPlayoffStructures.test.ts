@@ -1,11 +1,11 @@
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { addPlayoffStructures } from '../../../../mutate/drawDefinitions/addPlayoffStructures';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 
 it('can add 3-4 playoff structure to a SINGLE ELIMINATION structure', () => {
   const { success, drawDefinition } = drawEngineAddStructuresTest({

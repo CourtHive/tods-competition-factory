@@ -1,12 +1,12 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
-import { getMatchUpId } from '../../../functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import { getMatchUpId } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DO_NOT_SCHEDULE } from '../../../constants/requestConstants';
-import { Tournament } from '../../../types/tournamentTypes';
+import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
+import { Tournament } from '@Types/tournamentTypes';
 
 it('can add, query, amd remove personRequests across multiple tournaments', () => {
   const { tournamentRecord: tournament1 } = mocksEngine.generateTournamentRecord();

@@ -1,16 +1,16 @@
-import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import { chunkArray, intersection } from '../../../../../tools/arrays';
-import { findStructure } from '../../../../../acquire/findStructure';
-import tournamentEngine from '../../../../engines/syncEngine';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { chunkArray, intersection } from '@Tools/arrays';
+import { findStructure } from '@Acquire/findStructure';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
-import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
-import { SINGLES } from '../../../../../constants/eventConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { SINGLES } from '@Constants/eventConstants';
 import {
   MAIN,
   PLAY_OFF,
@@ -18,7 +18,7 @@ import {
   WATERFALL,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   const drawSize = 16;

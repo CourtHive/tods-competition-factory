@@ -1,12 +1,12 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngineAsync from '../../engines/asyncEngine';
-import tournamentEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngineAsync from '@Engines/asyncEngine';
+import tournamentEngineSync from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '@Constants/drawDefinitionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 function getLoserMatchUpIdRounds(matchUps) {
   const matchUpsWithLoserMatchUpIds = matchUps.filter(({ loserMatchUpId }) => loserMatchUpId);

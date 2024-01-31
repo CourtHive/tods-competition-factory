@@ -1,8 +1,8 @@
-export { modifyCollectionDefinition } from '../../../mutate/tieFormat/modifyCollectionDefinition';
-export { removeCollectionGroup } from '../../../mutate/tieFormat/removeCollectionGroup';
-export { orderCollectionDefinitions } from '../../../mutate/tieFormat/orderCollectionDefinitions';
-export { removeCollectionDefinition } from '../../../mutate/tieFormat/removeCollectionDefinition';
-export { addCollectionGroup } from '../../../mutate/tieFormat/addCollectionGroup';
-export { addCollectionDefinition } from '../../../mutate/tieFormat/addCollectionDefinition';
-export { modifyTieFormat } from '../../../mutate/tieFormat/modifyTieFormat';
-export { aggregateTieFormats } from '../../../mutate/tieFormat/aggregateTieFormats';
+export { modifyCollectionDefinition } from '@Mutate/tieFormat/modifyCollectionDefinition';
+export { removeCollectionGroup } from '@Mutate/tieFormat/removeCollectionGroup';
+export { orderCollectionDefinitions } from '@Mutate/tieFormat/orderCollectionDefinitions';
+export { removeCollectionDefinition } from '@Mutate/tieFormat/removeCollectionDefinition';
+export { addCollectionGroup } from '@Mutate/tieFormat/addCollectionGroup';
+export { addCollectionDefinition } from '@Mutate/tieFormat/addCollectionDefinition';
+export { modifyTieFormat } from '@Mutate/tieFormat/modifyTieFormat';
+export { aggregateTieFormats } from '@Mutate/tieFormat/aggregateTieFormats';

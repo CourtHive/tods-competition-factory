@@ -15,13 +15,13 @@ import { ensureInt } from '@Tools/ensureInt';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { CONTAINER, DRAW } from '../../../constants/drawDefinitionConstants';
-import { MatchUpsMap, ResultType } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '@Types/tournamentTypes';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONTAINER, DRAW } from '@Constants/drawDefinitionConstants';
+import { MatchUpsMap, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/matchUpTypes';
 
 import {
   DRAW_POSITION_ACTIVE,
@@ -29,7 +29,7 @@ import {
   DRAW_POSITION_NOT_CLEARED,
   ErrorType,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ClearDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

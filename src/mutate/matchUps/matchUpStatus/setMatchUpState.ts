@@ -15,7 +15,7 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { validateScore } from '../../../validators/validateScore';
+import { validateScore } from '@Validators/validateScore';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addExtension } from '@Mutate/extensions/addExtension';

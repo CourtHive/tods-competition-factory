@@ -1,8 +1,8 @@
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { ROUND_TARGET } from '../../constants/extensionConstants';
-import { Structure } from '../../types/tournamentTypes';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { Structure } from '@Types/tournamentTypes';
 import {
   aggregateOrder,
   finishOrder,
@@ -10,7 +10,7 @@ import {
   AGGREGATE_EVENT_STRUCTURES,
   FINISHING_POSITIONS,
   MAIN,
-} from '../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 export function structureSort(a: Structure | undefined, b: Structure | undefined, config?): number {
   const getRoundTarget = (element) => findExtension({ element, name: ROUND_TARGET })?.extension?.value;

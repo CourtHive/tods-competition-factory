@@ -9,13 +9,13 @@ import { getDrawStructures } from '@Acquire/findStructure';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { STRUCTURE_NOT_FOUND } from '../../../../constants/errorConditionConstants';
-import { DIRECT_ENTRY_STATUSES } from '../../../../constants/entryStatusConstants';
-import { AD_HOC, QUALIFYING } from '../../../../constants/drawDefinitionConstants';
-import { Entry, PositionAssignment } from '../../../../types/tournamentTypes';
-import { RANKING, SEEDING } from '../../../../constants/scaleConstants';
-import { ROUND_TARGET } from '../../../../constants/extensionConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { AD_HOC, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { Entry, PositionAssignment } from '@Types/tournamentTypes';
+import { RANKING, SEEDING } from '@Constants/scaleConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function prepareStage(params): ResultType & {
   positionAssignments?: PositionAssignment[];

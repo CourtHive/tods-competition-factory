@@ -1,13 +1,16 @@
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { generateRange, unique } from '../../../tools/arrays';
-import { validMatchUps } from '../../../validators/validMatchUp';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { ensureInt } from '../../../tools/ensureInt';
-import { UUID } from '../../../tools/UUID';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { generateRange, unique } from '@Tools/arrays';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { ensureInt } from '@Tools/ensureInt';
+import { UUID } from '@Tools/UUID';
 
-import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+
+import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 /*
   constructs an elimination hierarchy from an array of matchUps
@@ -27,12 +30,12 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
   if (matchUpType) matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === matchUpType);
   const matchUpTypes = unique(matchUps.map(({ matchUpType }) => matchUpType));
   if (matchUpTypes.length > 1) {
-    if (matchUpTypes.includes(TEAM)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === TEAM);
-    } else if (matchUpTypes.includes(SINGLES)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === SINGLES);
-    } else if (matchUpTypes.includes(DOUBLES)) {
-      matchUps = matchUps.filter((matchUp) => matchUp.matchUpType === DOUBLES);
+    if (includesMatchUpEventType(matchUpTypes, TEAM)) {
+      matchUps = matchUps.filter(isMatchUpEventType(TEAM));
+    } else if (includesMatchUpEventType(matchUpTypes, SINGLES)) {
+      matchUps = matchUps.filter(isMatchUpEventType(SINGLES));
+    } else if (includesMatchUpEventType(matchUpTypes, DOUBLES)) {
+      matchUps = matchUps.filter(isMatchUpEventType(DOUBLES));
     } else {
       return {};
     }

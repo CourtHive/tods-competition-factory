@@ -1,17 +1,17 @@
-import { decorateResult } from '../../functions/global/decorateResult';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { intersection } from '../../tools/arrays';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { intersection } from '@Tools/arrays';
 
-import { Participant, Tournament } from '../../types/tournamentTypes';
-import { PAIR } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { Participant, Tournament } from '@Types/tournamentTypes';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_PARTICIPANT_IDS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetPairedParticipantArgs = {
   tournamentParticipants?: any[];

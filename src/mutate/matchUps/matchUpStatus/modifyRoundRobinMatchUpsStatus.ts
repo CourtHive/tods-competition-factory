@@ -2,9 +2,9 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 
 // constants and types
-import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '../../../types/tournamentTypes';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '@Types/tournamentTypes';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type ModifyRoundRobinMatchUpStatusArgs = {
   positionAssignments: PositionAssignment[];

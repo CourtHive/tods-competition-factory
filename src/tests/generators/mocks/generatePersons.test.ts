@@ -1,15 +1,15 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import { generatePersons } from '../../../assemblies/generators/mocks/generatePersons';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
+import { generatePersons } from '@Assemblies/generators/mocks/generatePersons';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
-import namesData from '../../../fixtures/data/names.json';
-import tournamentEngine from '../../engines/syncEngine';
+import namesData from '@Fixtures/data/names.json';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
-import { MALE } from '../../../constants/genderConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { MALE } from '@Constants/genderConstants';
 
 test('lastName uniqueness', () => {
   const counts = Object.assign({}, ...Object.keys(namesData).map((key) => ({ [key]: namesData[key].length })));

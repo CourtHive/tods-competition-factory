@@ -1,4 +1,4 @@
-import { HydratedMatchUp } from '../../types/hydrated';
+import { HydratedMatchUp } from '@Types/hydrated';
 import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../matchUps/getInitialRoundNumber';
 

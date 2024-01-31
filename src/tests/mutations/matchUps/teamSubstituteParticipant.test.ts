@@ -1,25 +1,25 @@
-import { removeLineUpSubstitutions } from '../../../mutate/drawDefinitions/removeLineUpSubstitutions';
+import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpSubstitutions';
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { validateLineUp } from '../../../validators/validateTeamLineUp';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { validateLineUp } from '@Validators/validateTeamLineUp';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { IN_PROGRESS } from '@Constants/matchUpStatusConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_ID,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
-} from '../../../constants/errorConditionConstants';
-import { PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import {
   END,
   PENALTY,
@@ -32,8 +32,8 @@ import {
   START,
   STATUS,
   SUBSTITUTION,
-} from '../../../constants/matchUpActionConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+} from '@Constants/matchUpActionConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP, TEAM_MATCHUP } from '@Constants/matchUpTypes';
 
 const scenario = {
   singlesCount: 3,

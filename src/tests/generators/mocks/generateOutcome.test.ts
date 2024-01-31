@@ -1,4 +1,4 @@
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import { it, test, expect } from 'vitest';
 
@@ -10,8 +10,8 @@ import {
   RETIRED,
   SUSPENDED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
-import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+} from '@Constants/matchUpStatusConstants';
+import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 const SET1T20 = 'SET1-S:T20';
 const iterations = 1;

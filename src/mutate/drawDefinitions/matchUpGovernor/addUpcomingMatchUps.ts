@@ -1,13 +1,13 @@
-import { positionTargets } from '../../../query/matchUp/positionTargets';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import { getParticipantIds } from '../../../functions/global/extractors';
-import { timeStringMinutes } from '../../../tools/dateTime';
-import { findStructure } from '../../../acquire/findStructure';
-import { numericSort } from '../../../tools/sorting';
-import { ensureInt } from '../../../tools/ensureInt';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getParticipantIds } from '@Functions/global/extractors';
+import { timeStringMinutes } from '@Tools/dateTime';
+import { findStructure } from '@Acquire/findStructure';
+import { numericSort } from '@Tools/sorting';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { FIRST_MATCHUP, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
+import { FIRST_MATCHUP, WIN_RATIO } from '@Constants/drawDefinitionConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
   const scheduleConflictMatchUpIds = {};

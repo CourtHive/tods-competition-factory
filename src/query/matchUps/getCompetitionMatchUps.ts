@@ -1,8 +1,8 @@
 import { tournamentMatchUps } from './getTournamentMatchUps';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   GroupInfo,
   MatchUpFilters,
@@ -11,7 +11,7 @@ import {
   ResultType,
   ScheduleVisibilityFilters,
   TournamentRecords,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 type CompetitionMatchUpsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;

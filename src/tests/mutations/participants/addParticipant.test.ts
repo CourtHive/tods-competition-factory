@@ -1,17 +1,17 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../tools/UUID';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT_ROLE,
   MISSING_PERSON_DETAILS,
   PARTICIPANT_ID_EXISTS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('will not add the same participantId twice', () => {
   let result = tournamentEngine.newTournamentRecord();

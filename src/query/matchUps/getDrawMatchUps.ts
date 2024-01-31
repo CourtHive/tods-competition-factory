@@ -1,9 +1,9 @@
-import { definedAttributes } from '../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getDrawMatchUps } from './drawMatchUps';
 
-import { GetMatchUpsArgs } from '../../types/factoryTypes';
+import { GetMatchUpsArgs } from '@Types/factoryTypes';
 
 export function drawMatchUps({
   participants: tournamentParticipants,

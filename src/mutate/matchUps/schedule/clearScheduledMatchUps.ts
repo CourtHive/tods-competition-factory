@@ -5,23 +5,23 @@ import { getMatchUpId } from '@Functions/global/extractors';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { MatchUpStatusUnion, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_VENUE,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
-} from '../../../constants/timeItemConstants';
+} from '@Constants/timeItemConstants';
 
 type ClearScheduledMatchUpsArgs = {
   ignoreMatchUpStatuses?: MatchUpStatusUnion[];

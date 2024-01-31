@@ -1,19 +1,19 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { COMPETITOR, OTHER } from '../../../constants/participantRoles';
-import { TEAM } from '../../../constants/eventConstants';
+import { GROUP, INDIVIDUAL } from '@Constants/participantConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { COMPETITOR, OTHER } from '@Constants/participantRoles';
+import { TEAM } from '@Constants/eventConstants';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 let participantModifyEventsCounter = 0;
 setSubscriptions({

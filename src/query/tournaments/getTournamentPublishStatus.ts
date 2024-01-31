@@ -1,6 +1,6 @@
-import { getTournamentTimeItem } from '../../query/base/timeItems';
+import { getTournamentTimeItem } from '@Query/base/timeItems';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
+import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 
 export function getTournamentPublishStatus({ tournamentRecord, status = PUBLIC }) {
   const itemType = `${PUBLISH}.${STATUS}`;

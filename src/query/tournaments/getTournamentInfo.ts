@@ -1,7 +1,7 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function getTournamentInfo({ tournamentRecord }): {
   tournamentInfo?: any;

@@ -1,19 +1,14 @@
-import { getFlightProfile } from '../../../query/event/getFlightProfile';
-import tournamentEngine from '../../engines/syncEngine';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine, competitionEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import {
-  COMPASS,
-  CURTIS_CONSOLATION,
-  FEED_IN_CHAMPIONSHIP,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { PUBLISH, STATUS } from '@Constants/timeItemConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { COMPASS, CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 test('modifyTournamentRecord error conditions', () => {
   const result = mocksEngine.modifyTournamentRecord();

@@ -1,11 +1,11 @@
-import { generateTournamentRecord } from '../../../assemblies/generators/mocks/generateTournamentRecord';
-import { getRoundMatchUps } from '../../../query/matchUps/getRoundMatchUps';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES_EVENT } from '../../../constants/eventConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { DOUBLES_EVENT } from '@Constants/eventConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 it('can return event matchUps with potential participants', () => {
   const drawProfiles = [

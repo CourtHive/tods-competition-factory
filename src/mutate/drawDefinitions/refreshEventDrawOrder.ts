@@ -1,8 +1,8 @@
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { updateDrawIdsOrder } from './updateDrawIdsOrder';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function refreshEventDrawOrder({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

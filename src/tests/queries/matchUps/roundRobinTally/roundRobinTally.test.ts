@@ -1,17 +1,17 @@
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import { findExtension } from '../../../../acquire/findExtension';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { DOMINANT_DUO } from '../../../../constants/tieFormatConstants';
 import { SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { TALLY } from '../../../../constants/extensionConstants';
-import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '../../../../constants/errorConditionConstants';
 import { DEFAULTED, RETIRED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 

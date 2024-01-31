@@ -1,15 +1,15 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import mocksEngine from '@Assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 it('auto schedules multiple events at multiple venues and tracks participants across venues', () => {
   const venueProfiles = [

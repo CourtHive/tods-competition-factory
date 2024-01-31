@@ -1,13 +1,13 @@
-import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 
 it('can check-in and check-out matchUp participants', () => {
   const {

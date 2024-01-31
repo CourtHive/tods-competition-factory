@@ -1,11 +1,11 @@
-import { getParticipantId } from '../../../functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { getParticipantId } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { generateRange } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { DOUBLES } from '@Constants/eventConstants';
 
 it('can generate TEAMs from attributes', () => {
   let result = mocksEngine.generateTournamentRecord({

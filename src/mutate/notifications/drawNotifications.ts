@@ -1,8 +1,8 @@
-import { getPositionAssignments } from '../../query/drawDefinition/positionsGetter';
-import { addNotice, deleteNotice } from '../../global/state/globalState';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { addNotice, deleteNotice } from '@Global/state/globalState';
 
-import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DrawDefinition, MatchUp } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ADD_DRAW_DEFINITION,
   ADD_MATCHUPS,
@@ -13,13 +13,13 @@ import {
   MODIFY_POSITION_ASSIGNMENTS,
   MODIFY_SEED_ASSIGNMENTS,
   UPDATE_INCONTEXT_MATCHUP,
-} from '../../constants/topicConstants';
+} from '@Constants/topicConstants';
 import {
   ErrorType,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
   MISSING_STRUCTURE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 function drawUpdatedAt(drawDefinition: DrawDefinition, structureIds?: string[]) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -1,7 +1,7 @@
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getParticipantId } from '../../../../functions/global/extractors';
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getParticipantId } from '@Functions/global/extractors';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';

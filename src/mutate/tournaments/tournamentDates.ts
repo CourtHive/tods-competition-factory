@@ -1,19 +1,19 @@
 import { clearScheduledMatchUps } from '../matchUps/schedule/clearScheduledMatchUps';
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '../venues/updateCourtAvailability';
-import { dateValidation } from '../../validators/regex';
-import { addNotice } from '../../global/state/globalState';
+import { dateValidation } from '@Validators/regex';
+import { addNotice } from '@Global/state/globalState';
 
-import { MODIFY_TOURNAMENT_DETAIL } from '../../constants/topicConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_DATE,
   INVALID_VALUES,
   MISSING_DATE,
   MISSING_TOURNAMENT_RECORD,
   SCHEDULE_NOT_CLEARED,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;

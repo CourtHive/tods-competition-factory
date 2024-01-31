@@ -1,11 +1,11 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { INVALID_COLLECTION_DEFINITION } from '../../../constants/errorConditionConstants';
-import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/eventConstants';
+import { INVALID_COLLECTION_DEFINITION } from '@Constants/errorConditionConstants';
+import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
+import { SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 
 const PRO_SET = 'SET1-S:8/TB7@7';
 

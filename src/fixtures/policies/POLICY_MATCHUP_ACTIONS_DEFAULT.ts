@@ -1,4 +1,4 @@
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../constants/policyConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 
 export const POLICY_MATCHUP_ACTIONS_DEFAULT = {
   [POLICY_TYPE_MATCHUP_ACTIONS]: {

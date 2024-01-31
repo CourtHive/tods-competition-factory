@@ -1,9 +1,9 @@
-import { createMap, isObject } from '../../tools/objects';
+import { createMap, isObject } from '@Tools/objects';
 import { formatParticipantName } from '../../assemblies/generators/participants/formatParticipantName';
 
-import { Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 /**
  * "First Last"

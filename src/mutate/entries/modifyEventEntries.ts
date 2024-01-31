@@ -1,19 +1,15 @@
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { addParticipants } from '../participants/addParticipants';
-import { intersection } from '../../tools/arrays';
+import { intersection } from '@Tools/arrays';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { SUCCESS } from '../../constants/resultConstants';
-import {
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-  INVALID_PARTICIPANT_IDS,
-} from '../../constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD, INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 
-import { DIRECT_ACCEPTANCE, UNGROUPED } from '../../constants/entryStatusConstants';
-import { EntryStatusUnion, Event, Tournament } from '../../types/tournamentTypes';
+import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
+import { EntryStatusUnion, Event, Tournament } from '@Types/tournamentTypes';
 
 // should NOT remove entries that are present in drawDefinition.entries
 // if those entries are assigned positions in any structures...

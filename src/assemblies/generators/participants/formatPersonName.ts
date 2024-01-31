@@ -1,6 +1,6 @@
-import { capitalizeFirst } from '../../../tools/strings';
+import { capitalizeFirst } from '@Tools/strings';
 
-import { Person } from '../../../types/tournamentTypes';
+import { Person } from '@Types/tournamentTypes';
 
 type FormatPersonNameArgs = {
   personFormat: string;

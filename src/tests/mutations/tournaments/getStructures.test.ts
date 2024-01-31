@@ -1,5 +1,5 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import {
@@ -12,7 +12,7 @@ import {
   PLAY_OFF,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can extract and collate event and tournament structures', () => {
   const eventProfiles = [

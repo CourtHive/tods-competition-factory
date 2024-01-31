@@ -4,9 +4,9 @@ import { unique } from '../../tools/arrays';
 import { mocksEngine } from '../..';
 import { expect, it } from 'vitest';
 
-import { TEAM as EVENT_TEAM } from '../../constants/eventConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../constants/matchUpTypes';
-import { TEAM as PARTICIPANT_TEAM, INDIVIDUAL, PAIR } from '../../constants/participantConstants';
+import { TEAM as EVENT_TEAM } from '@Constants/eventConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { TEAM as PARTICIPANT_TEAM, INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 
 import tournamentRecord from './teamMadness.tods.json';
 

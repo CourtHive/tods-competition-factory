@@ -1,10 +1,10 @@
 import { updateTeamLineUp } from '../../drawDefinitions/updateTeamLineUp';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { INVALID_MATCHUP, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_MATCHUP, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type ResetMatchUpLineUps = {
   tournamentRecord?: Tournament;

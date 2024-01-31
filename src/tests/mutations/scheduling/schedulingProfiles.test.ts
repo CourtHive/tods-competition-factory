@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INVALID_DATE, INVALID_VALUES, VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES, VENUE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 const d220101 = '2022-01-01';
 const d220203 = '2022-01-03';

@@ -1,4 +1,4 @@
-import { POLICY_TYPE_AVOIDANCE } from '../../constants/policyConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
 
 export const POLICY_AVOIDANCE_COUNTRY = {
   [POLICY_TYPE_AVOIDANCE]: {

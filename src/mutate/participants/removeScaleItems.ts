@@ -1,10 +1,6 @@
-import { SUCCESS } from '../../constants/resultConstants';
-import { SCALE } from '../../constants/timeItemConstants';
-import {
-  MISSING_PARTICIPANT_IDS,
-  MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SCALE } from '@Constants/timeItemConstants';
+import { MISSING_PARTICIPANT_IDS, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 /**
  *

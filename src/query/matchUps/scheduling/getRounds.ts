@@ -1,20 +1,20 @@
 import { getFinishingPositionDetails, getRoundId, getRoundProfile, getRoundTiming } from './schedulingUtils';
 import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
-import { getProfileRounds } from '../../../mutate/matchUps/schedule/profileRounds';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { roundSort } from '../../../functions/sorters/roundSort';
-import { extractDate } from '../../../tools/dateTime';
-import { chunkArray } from '../../../tools/arrays';
+import { getProfileRounds } from '@Mutate/matchUps/schedule/profileRounds';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { roundSort } from '@Functions/sorters/roundSort';
+import { extractDate } from '@Tools/dateTime';
+import { chunkArray } from '@Tools/arrays';
 
-import { MatchUpFilters } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { Tournament } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { MatchUpFilters } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetRoundsArgs = {
   tournamentRecords?: { [key: string]: Tournament };

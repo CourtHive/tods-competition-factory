@@ -1,11 +1,11 @@
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { printGlobalLog, pushGlobalLog } from '../../../../functions/global/globalLog';
+import { printGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 import { setDevContext, setSubscriptions } from '../../../../global/state/globalState';
 
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { MODIFY_MATCHUP } from '../../../../constants/topicConstants';
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../../constants/matchUpStatusConstants';
 import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../../constants/drawDefinitionConstants';

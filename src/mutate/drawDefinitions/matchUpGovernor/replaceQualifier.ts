@@ -1,12 +1,12 @@
 import { modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { positionTargets } from '../../../query/matchUp/positionTargets';
-import { findStructure } from '../../../acquire/findStructure';
-import { isActiveDownstream } from '../../../query/drawDefinition/isActiveDownstream';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { findStructure } from '@Acquire/findStructure';
+import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { DRAW } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { DRAW } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function replaceQualifier(params) {
   let qualifierReplaced;

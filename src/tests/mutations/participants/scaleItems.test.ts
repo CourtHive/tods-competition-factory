@@ -1,12 +1,12 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { VALUE_UNCHANGED } from '../../../constants/errorConditionConstants';
-import { RANKING } from '../../../constants/timeItemConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { RATING } from '../../../constants/scaleConstants';
+import { VALUE_UNCHANGED } from '@Constants/errorConditionConstants';
+import { RANKING } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { RATING } from '@Constants/scaleConstants';
 
 const scaleDate = '2020-06-06';
 

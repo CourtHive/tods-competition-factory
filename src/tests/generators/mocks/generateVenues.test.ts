@@ -1,7 +1,7 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { extractDate } from '../../../tools/dateTime';
 import { expect, it } from 'vitest';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 
 it('can schedule all matchUps in first round with only drawId', () => {
   const venueId = 'venueId';

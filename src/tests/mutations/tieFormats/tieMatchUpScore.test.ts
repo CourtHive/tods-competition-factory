@@ -1,9 +1,9 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES, TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
+import { DOUBLES, SINGLES, TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 
 it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak sets', () => {
   const tieFormat = {

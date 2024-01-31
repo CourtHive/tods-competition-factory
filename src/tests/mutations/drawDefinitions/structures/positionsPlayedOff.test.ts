@@ -1,11 +1,11 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { getPositionsPlayedOff } from '../../../../query/drawDefinition/getPositionsPlayedOff';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { getPositionsPlayedOff } from '@Query/drawDefinition/getPositionsPlayedOff';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly determin positions playedOff for STANDARD_ELIMINATION', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

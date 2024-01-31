@@ -1,6 +1,6 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
-import { ASSIGN_COURT } from '../../constants/timeItemConstants';
+import { ASSIGN_COURT } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
 
 export function matchUpAssignedCourtId({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {

@@ -1,8 +1,8 @@
-import * as matchUpFormatCode from '../../../assemblies/governors/matchUpFormatGovernor';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
+import * as matchUpFormatCode from '@Assemblies/governors/matchUpFormatGovernor';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 const standard = FORMAT_STANDARD;
 const validFormats = [

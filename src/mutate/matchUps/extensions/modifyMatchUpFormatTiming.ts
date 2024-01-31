@@ -1,15 +1,15 @@
 import { addExtension } from '../../extensions/addExtension';
-import { findExtension } from '../../../acquire/findExtension';
-import { findEvent } from '../../../acquire/findEvent';
+import { findExtension } from '@Acquire/findExtension';
+import { findEvent } from '@Acquire/findEvent';
 
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function modifyMatchUpFormatTiming(params) {
   const { matchUpFormat, recoveryTimes, averageTimes, tournamentId, eventId } = params;

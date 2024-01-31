@@ -1,14 +1,14 @@
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { mustBeAnArray } from '../../tools/mustBeAnArray';
-import { addNotice } from '../../global/state/globalState';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { addNotice } from '@Global/state/globalState';
 
-import { UNGROUPED } from '../../constants/entryStatusConstants';
-import { DELETE_EVENTS } from '../../constants/auditConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DOUBLES } from '../../constants/eventConstants';
-import { AUDIT } from '../../constants/topicConstants';
-import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { DELETE_EVENTS } from '@Constants/auditConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { AUDIT } from '@Constants/topicConstants';
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function deleteEvents({ removePairParticipants, tournamentRecord, eventIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

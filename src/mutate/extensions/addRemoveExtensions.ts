@@ -1,4 +1,4 @@
-import { findParticipant } from '../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 import { removeExtension } from './removeExtension';
 import { addExtension } from './addExtension';
 
@@ -10,8 +10,8 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Extension, Tournament } from '../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Extension, Tournament } from '@Types/tournamentTypes';
 
 type AddExtensionArgs = {
   tournamentRecord?: Tournament;

@@ -1,5 +1,5 @@
-import { stringify } from '../assemblies/generators/matchUpFormatCode/stringify';
-import { parse } from '../assemblies/generators/matchUpFormatCode/parse';
+import { stringify } from '@Assemblies/generators/matchUpFormatCode/stringify';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
 
 export function isValidMatchUpFormat({ matchUpFormat }: { matchUpFormat: string }): boolean {
   if (typeof matchUpFormat !== 'string') return false;

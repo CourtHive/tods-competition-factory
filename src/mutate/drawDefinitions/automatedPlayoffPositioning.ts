@@ -1,17 +1,17 @@
-import { isCompletedStructure } from '../../query/drawDefinition/structureActions';
-import { getMinFinishingPositionRange } from '../../functions/sorters/structureSort';
-import { getPlayoffStructures } from '../../query/structure/structureGetter';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { getMinFinishingPositionRange } from '@Functions/sorters/structureSort';
+import { getPlayoffStructures } from '@Query/structure/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { SeedingProfile } from '../../types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SeedingProfile } from '@Types/factoryTypes';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   EVENT_NOT_FOUND,
   ErrorType,
   INCOMPLETE_SOURCE_STRUCTURE,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/tournamentTypes';
 
 type StructurePositionAssignmentType = {
   positionAssignments: PositionAssignment[];

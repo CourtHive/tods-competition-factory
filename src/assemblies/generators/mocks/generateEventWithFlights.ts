@@ -1,21 +1,23 @@
-import { getStageParticipantsCount } from '../../../query/drawDefinition/getStageParticipantsCount';
-import { getStageParticipants } from '../../../query/drawDefinition/getStageParticipants';
-import { attachPolicies } from '../../../mutate/extensions/policies/attachPolicies';
+import { getStageParticipantsCount } from '@Query/drawDefinition/getStageParticipantsCount';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { getStageParticipants } from '@Query/drawDefinition/getStageParticipants';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { generateEventParticipants } from './generateEventParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
-import { isValidExtension } from '../../../validators/isValidExtension';
-import { publishEvent } from '../../../mutate/publishing/publishEvent';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
+import { getParticipantId } from '@Functions/global/extractors';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { publishEvent } from '@Mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { addEvent } from '../../../mutate/events/addEvent';
+import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
-import { SINGLES, DOUBLES, TEAM } from '../../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
+// constants
+import { SINGLES, DOUBLES, TEAM } from '@Constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 export function generateEventWithFlights(params) {
   const {
@@ -76,7 +78,10 @@ export function generateEventWithFlights(params) {
     gender,
   });
 
-  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
+  const eventParticipantType =
+    (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+    (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+    eventType;
 
   const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
     ? generateEventParticipants({

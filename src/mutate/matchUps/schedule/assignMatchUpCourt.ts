@@ -2,9 +2,9 @@ import { findCourt } from '../../venues/findCourt';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
-import { ASSIGN_COURT } from '../../../constants/timeItemConstants';
-import { ErrorType, MISSING_MATCHUP_ID, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
+import { ASSIGN_COURT } from '@Constants/timeItemConstants';
+import { ErrorType, MISSING_MATCHUP_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type AssignMatchUpCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };

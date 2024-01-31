@@ -1,10 +1,10 @@
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addFlight } from '../../../mutate/events/addFlight';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { addFlight } from '@Mutate/events/addFlight';
+import { getParticipantId } from '@Functions/global/extractors';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { MAIN, SINGLE_ELIMINATION } from '../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 export function generateFlight({ autoEntryPositions, tournamentRecord, drawParticipants, drawProfile, event }) {
   const {

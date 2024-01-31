@@ -1,8 +1,10 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { FEMALE, MIXED, OTHER, MALE, ANY } from '../../../constants/genderConstants';
+// constants
+import { FEMALE, MIXED, OTHER, MALE, ANY } from '@Constants/genderConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 export function processTieFormat({ alternatesCount = 0, tieFormatName, tieFormat, drawSize }) {
   let maxDoublesCount = 0,
@@ -35,13 +37,13 @@ export function processTieFormat({ alternatesCount = 0, tieFormatName, tieFormat
     // ensure every collectionDefinition has a collectionId
     if (!collectionId) collectionDefinition.collectionId = UUID();
 
-    if (matchUpType === DOUBLES) {
+    if (isMatchUpEventType(DOUBLES)(matchUpType)) {
       const doublesCount = matchUpCount;
       doublesMatchUpTotal += matchUpCount;
       maxDoublesCount = Math.max(maxDoublesCount, doublesCount);
     }
 
-    if (matchUpType === SINGLES) {
+    if (isMatchUpEventType(SINGLES)(matchUpType)) {
       const singlescount = matchUpCount;
       singlesMatchUpTotal += matchUpCount;
       maxSinglesCount = Math.max(maxSinglesCount, singlescount);

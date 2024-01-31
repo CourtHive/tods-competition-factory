@@ -1,10 +1,10 @@
-import { generateRange, instanceCount } from '../../../tools/arrays';
+import { generateRange, instanceCount } from '@Tools/arrays';
 import { addFinishingRounds } from './addFinishingRounds';
-import { nearestPowerOf2 } from '../../../tools/math';
+import { nearestPowerOf2 } from '@Tools/math';
 import { buildFeedRound } from './buildFeedRound';
 import { buildRound } from './buildRound';
 
-import { MatchUp } from '../../../types/tournamentTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type FeedInMatchUpsArgs = {
   linkFedFinishingRoundNumbers?: number[];

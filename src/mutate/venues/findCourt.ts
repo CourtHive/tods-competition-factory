@@ -1,16 +1,16 @@
-import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
-import { Court, Tournament, Venue } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { Court, Tournament, Venue } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type FindCourtArgs = {
   tournamentRecords?: { [key: string]: Tournament };

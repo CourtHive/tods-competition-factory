@@ -3,7 +3,7 @@ import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getTournamentInfo } from '../tournaments/getTournamentInfo';
 import { getDrawMatchUps } from '../matchUps/drawMatchUps';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { getEventPublishStatus } from './getEventPublishStatus';
 
 export function getAllEventData({ tournamentRecord, policyDefinitions }) {

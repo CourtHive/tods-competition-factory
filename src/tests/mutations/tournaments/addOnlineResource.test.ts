@@ -1,5 +1,5 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import {
@@ -9,7 +9,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('supports adding onlineResources', () => {
   const participantsProfile = { participantsCount: 2 };

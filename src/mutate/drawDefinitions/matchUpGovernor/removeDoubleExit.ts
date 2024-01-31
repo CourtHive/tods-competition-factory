@@ -5,11 +5,11 @@ import { intersection, overlap } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 
 import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
-import { positionTargets } from '../../../query/matchUp/positionTargets';
+import { positionTargets } from '@Query/matchUp/positionTargets';
 
-import { pushGlobalLog } from '../../../functions/global/globalLog';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   BYE,
   completedMatchUpStatuses,
@@ -18,7 +18,7 @@ import {
   DOUBLE_WALKOVER,
   TO_BE_PLAYED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 const keyColors = {
   drawPositionToRemove: 'green',

@@ -1,18 +1,18 @@
-import { getStageDrawPositionsCount } from '../../../query/drawDefinition/getStageDrawPositions';
+import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPositions';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { getQualifiersCount } from '../../../query/drawDefinition/getQualifiersCount';
+import { getQualifiersCount } from '@Query/drawDefinition/getQualifiersCount';
 import { modifyEntryProfile } from './modifyEntryProfile';
 import {
   stageExists,
   getStageDirectEntriesCount,
   getStageWildcardEntriesCount,
-} from '../../../query/drawDefinition/stageGetter';
+} from '@Query/drawDefinition/stageGetter';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DRAW_SIZE_MISMATCH, INVALID_STAGE, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DRAW_SIZE_MISMATCH, INVALID_STAGE, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 export function setStageDrawSize({ stageSequence = 1, drawDefinition, drawSize, stage }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

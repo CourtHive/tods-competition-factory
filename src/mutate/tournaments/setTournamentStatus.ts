@@ -1,7 +1,7 @@
-import { tournamentConstants } from '../../constants/tournamentConstants';
+import { tournamentConstants } from '@Constants/tournamentConstants';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function setTournamentStatus({ tournamentRecord, status }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

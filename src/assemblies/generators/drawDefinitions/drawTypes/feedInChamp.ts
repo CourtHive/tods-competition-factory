@@ -1,13 +1,13 @@
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import structureTemplate from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from '../links/feedInLinks';
 
-import { MAIN, CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { DrawLink } from '../../../../types/tournamentTypes';
+import { MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DrawLink } from '@Types/tournamentTypes';
 
 export function feedInChampionship(params) {
   const {

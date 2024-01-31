@@ -1,6 +1,6 @@
-import { getExitProfiles } from '../../../../query/drawDefinition/getExitProfile';
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { COMPASS, CURTIS_CONSOLATION } from '../../../../constants/drawDefinitionConstants';

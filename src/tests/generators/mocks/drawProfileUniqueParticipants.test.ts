@@ -1,9 +1,9 @@
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { expect, test } from 'vitest';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 test('with uniqueParticipants: false draw entries will overlap', () => {
   const drawProfiles = [

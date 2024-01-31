@@ -1,5 +1,5 @@
-import { isNumeric } from '../../tools/math';
-import { unique } from '../../tools/arrays';
+import { isNumeric } from '@Tools/math';
+import { unique } from '@Tools/arrays';
 
 export function getRangeString(arr) {
   if (!Array.isArray(arr)) return '';

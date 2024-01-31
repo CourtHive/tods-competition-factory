@@ -1,8 +1,8 @@
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
-import { DrawDefinition, MatchUp, Structure } from '../../types/tournamentTypes';
-import { MappedMatchUps, MatchUpsMap } from '../../types/factoryTypes';
+import { DrawDefinition, MatchUp, Structure } from '@Types/tournamentTypes';
+import { MappedMatchUps, MatchUpsMap } from '@Types/factoryTypes';
 
 type GetMatchUpsMapArgs = {
   drawDefinition?: DrawDefinition;

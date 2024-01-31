@@ -1,10 +1,10 @@
-import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { MISSING_MATCHUP } from '../../../constants/errorConditionConstants';
-import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 test('can handle empty matchUp', () => {
   let analysis = analyzeMatchUp();

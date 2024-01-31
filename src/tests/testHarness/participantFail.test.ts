@@ -1,7 +1,7 @@
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 import tournamentRecord from './participantFail.tods.json';
 

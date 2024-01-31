@@ -1,8 +1,8 @@
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 import { generateMatchUpId } from './generateMatchUpId';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { MatchUp } from '../../../types/tournamentTypes';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type BuildFeedRoundArgs = {
   includeMatchUpType?: boolean;

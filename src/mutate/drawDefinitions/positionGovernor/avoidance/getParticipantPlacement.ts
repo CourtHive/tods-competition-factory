@@ -1,10 +1,10 @@
 import { organizeDrawPositionOptions } from './organizeDrawPositionOptions';
-import { PositionAssignment } from '../../../../types/tournamentTypes';
+import { PositionAssignment } from '@Types/tournamentTypes';
 import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
 import { getParticipantGroups } from './analyzeDrawPositions';
 import { getNextParticipantId } from './getNextParticipantId';
 import { getUnfilledPositions } from './getUnfilledPositions';
-import { randomPop } from '../../../../tools/arrays';
+import { randomPop } from '@Tools/arrays';
 
 type GetParticipantPlacementArgs = {
   candidatePositionAssignments: PositionAssignment[];

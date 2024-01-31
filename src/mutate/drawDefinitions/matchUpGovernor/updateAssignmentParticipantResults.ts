@@ -1,15 +1,15 @@
-import { tallyParticipantResults } from '../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { getPolicyDefinitions } from '../../../query/extensions/getAppliedPolicies';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
 import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { removeExtension } from '../../extensions/removeExtension';
 import { addExtension } from '../../extensions/addExtension';
-import { validMatchUps } from '../../../validators/validMatchUp';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { createSubOrderMap } from './createSubOrderMap';
 
-import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '../../../constants/policyConstants';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
-import { SUB_ORDER, TALLY } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { SUB_ORDER, TALLY } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function updateAssignmentParticipantResults({
   positionAssignments,

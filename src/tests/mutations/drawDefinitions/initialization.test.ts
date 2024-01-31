@@ -1,15 +1,15 @@
 import { it, expect } from 'vitest';
 
-import { ERROR, SUCCESS } from '../../../constants/resultConstants';
-import { MAIN, QUALIFYING, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { ERROR, SUCCESS } from '@Constants/resultConstants';
+import { MAIN, QUALIFYING, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import {
   setStageAlternatesCount,
   setStageDrawSize,
   setStageQualifiersCount,
   setStageWildcardsCount,
-} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+} from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 let result;
 

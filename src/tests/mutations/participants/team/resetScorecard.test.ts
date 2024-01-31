@@ -1,6 +1,6 @@
 import { setSubscriptions } from '../../../../global/state/globalState';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { USTA_GOLD_TEAM_CHALLENGE } from '../../../../constants/tieFormatConstants';

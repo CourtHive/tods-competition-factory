@@ -1,8 +1,8 @@
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import { mocksEngine } from '../../../..';
 
-import { tieFormats } from '../../../../fixtures/scoring/tieFormats';
+import { tieFormats } from '@Fixtures/scoring/tieFormats';
 import { LAVER_CUP } from '../../../../constants/tieFormatConstants';
 import { TEAM } from '../../../../constants/eventConstants';
 

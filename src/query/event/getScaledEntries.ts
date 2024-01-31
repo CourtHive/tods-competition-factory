@@ -1,9 +1,9 @@
 import { getParticipantScaleItem } from '../participant/getParticipantScaleItem';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { Entry, Event, Tournament } from '../../types/tournamentTypes';
-import { ScaleAttributes } from '../../types/factoryTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { Entry, Event, Tournament } from '@Types/tournamentTypes';
+import { ScaleAttributes } from '@Types/factoryTypes';
+import { ErrorType, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 /**
  *

@@ -4,10 +4,10 @@ import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, Participant, Structure, Tournament } from '../../types/tournamentTypes';
-import { ABANDONED, upcomingMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { TEAM } from '../../constants/matchUpTypes';
+import { DrawDefinition, Event, Participant, Structure, Tournament } from '@Types/tournamentTypes';
+import { ABANDONED, upcomingMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   ContextContent,
   ContextProfile,
@@ -19,7 +19,7 @@ import {
   ResultType,
   ScheduleTiming,
   ScheduleVisibilityFilters,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 /*
   completedMatchUps are those matchUps where a winningSide is defined

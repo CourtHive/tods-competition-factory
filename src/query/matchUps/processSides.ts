@@ -1,9 +1,9 @@
-import { addStructureParticipation } from '../../mutate/participants/addStructureParticipation';
-import { addScheduleItem } from '../../mutate/participants/addScheduleItem';
+import { addStructureParticipation } from '@Mutate/participants/addStructureParticipation';
+import { addScheduleItem } from '@Mutate/participants/addScheduleItem';
 
-import { DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { TEAM } from '../../constants/matchUpTypes';
-import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
+import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { TEAM } from '@Constants/matchUpTypes';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 
 export function processSides(params) {
   const {

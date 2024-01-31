@@ -1,8 +1,8 @@
-import competitionEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import competitionEngineSync from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 test.each([competitionEngineSync])(
   'can set matchUpStatus via competitionEngine for multiple tournament records',

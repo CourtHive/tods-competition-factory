@@ -1,8 +1,9 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
 import { getIndividualParticipantIds } from './getIndividualParticipantIds';
-import { unique } from '../../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
-import { TOTAL } from '../../../../constants/scheduleConstants';
+// constants
+import { TOTAL } from '@Constants/scheduleConstants';
 
 /**
  * @param {object} matchUp
@@ -19,8 +20,8 @@ export function checkDailyLimits({
   matchUpDailyLimits = {},
   matchUp,
 }) {
-  const { matchUpId, matchUpType } = matchUp;
   const { enteredIndividualParticipantIds } = getIndividualParticipantIds(matchUp);
+  const { matchUpId, matchUpType } = matchUp;
 
   // don't include potentials if matchUp is in round robin
   // this is because potentials uses { sidesTo } attribute which must be present for other calculations

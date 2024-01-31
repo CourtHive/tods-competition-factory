@@ -3,9 +3,9 @@ import tournamentEngine from '../engines/syncEngine';
 import * as tools from '../../assemblies/tools';
 import { expect, it } from 'vitest';
 
-import { MatchUp, Participant } from '../../types/tournamentTypes';
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
+import { MatchUp, Participant } from '@Types/tournamentTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 
 it('can set subscriptions in global state outside of engines', () => {
   const allParticipants: Participant[] = [];

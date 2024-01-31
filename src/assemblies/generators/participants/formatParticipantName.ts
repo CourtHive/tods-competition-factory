@@ -1,6 +1,6 @@
 import { formatPersonName } from './formatPersonName';
 
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 
 export function formatParticipantName({ participantMap, participant, formats }) {
   const { participantType, individualParticipantIds, person } = participant;

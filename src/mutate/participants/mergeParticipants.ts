@@ -1,12 +1,12 @@
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { xa } from '../../tools/objects';
-import { deepMerge } from '../../tools/deepMerge';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { xa } from '@Tools/objects';
+import { deepMerge } from '@Tools/deepMerge';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { PARTICIPANT_ID } from '../../constants/attributeConstants';
-import { Participant } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { Participant } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 export function mergeParticipants({ participants: incomingParticipants = [], tournamentRecord, arraysToMerge }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

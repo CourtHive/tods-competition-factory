@@ -1,8 +1,8 @@
 import { addTournamentTimeItem } from '../../../timeItems/addTimeItem';
-import { addNotice } from '../../../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
-import { AUTO_SCHEDULING_AUDIT } from '../../../../constants/auditConstants';
-import { AUDIT } from '../../../../constants/topicConstants';
+import { AUTO_SCHEDULING_AUDIT } from '@Constants/auditConstants';
+import { AUDIT } from '@Constants/topicConstants';
 
 export function auditAutoScheduling({ autoSchedulingAudit, tournamentRecords }) {
   addNotice({ topic: AUDIT, payload: autoSchedulingAudit });

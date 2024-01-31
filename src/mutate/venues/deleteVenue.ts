@@ -1,21 +1,21 @@
-import { allCompetitionMatchUps } from '../../query/matchUps/getAllCompetitionMatchUps';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { addNotice } from '../../global/state/globalState';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { addNotice } from '@Global/state/globalState';
 
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { Tournament, Venue } from '../../types/tournamentTypes';
-import { DELETE_VENUE } from '../../constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { Tournament, Venue } from '@Types/tournamentTypes';
+import { DELETE_VENUE } from '@Constants/topicConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type DeleteVenueArgs = {
   tournamentRecords?: TournamentRecords;

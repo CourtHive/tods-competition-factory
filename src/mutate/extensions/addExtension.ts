@@ -1,11 +1,11 @@
-import { isValidExtension } from '../../validators/isValidExtension';
-import { decorateResult } from '../../functions/global/decorateResult';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { decorateResult } from '@Functions/global/decorateResult';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
-import { TournamentRecords } from '../../types/factoryTypes';
-import { Extension } from '../../types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { Extension } from '@Types/tournamentTypes';
 
 type AddExtensionArgs = {
   tournamentRecords?: TournamentRecords;

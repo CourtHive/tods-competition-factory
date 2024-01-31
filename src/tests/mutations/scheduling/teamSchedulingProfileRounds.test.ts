@@ -1,10 +1,10 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOMINANT_DUO } from '../../../constants/tieFormatConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/eventConstants';
+import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 
 it('can return participant scheduled matchUps', () => {
   const startDate = '2023-06-26';

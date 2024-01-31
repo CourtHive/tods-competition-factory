@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from './getEventPublishStatus';
 import { getDrawPublishStatus } from './getDrawPublishStatus';
 
-import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 /**
  *

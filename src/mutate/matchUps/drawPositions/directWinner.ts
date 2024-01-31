@@ -1,14 +1,14 @@
 import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSubstitutions';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { assignDrawPosition } from './positionAssignment';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { assignMatchUpDrawPosition } from './assignMatchUpDrawPosition';
 import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,

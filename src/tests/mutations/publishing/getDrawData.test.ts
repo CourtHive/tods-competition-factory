@@ -1,9 +1,9 @@
-import { getStructureGroups } from '../../../query/structure/getStructureGroups';
-import { getDrawData } from '../../../query/drawDefinition/getDrawData';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { getDrawData } from '@Query/drawDefinition/getDrawData';
 import eliminationEvent from './eliminationMock.json';
 import roundRobinEvent from './roundRobinMock.json';
 import { expect, it } from 'vitest';
-import { DrawDefinition } from '../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can extract elimination structures', () => {
   const drawDefinition = eliminationEvent.drawDefinitions[0] as DrawDefinition;

@@ -6,12 +6,12 @@ import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type RemoveSubsequentDrawPositionArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];

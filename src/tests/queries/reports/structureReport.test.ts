@@ -1,14 +1,14 @@
-import { findExtension } from '../../../acquire/findExtension';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
-import * as tools from '../../../assemblies/tools';
+import tournamentEngine from '@Engines/syncEngine';
+import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { DOUBLES_EVENT } from '../../../constants/eventConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { DOUBLES_EVENT } from '@Constants/eventConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
 
 const sourcePath = './src/global/testHarness/structureReport';
 const filenames = [];

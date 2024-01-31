@@ -1,10 +1,10 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { NOT_FOUND } from '@Constants/errorConditionConstants';
+import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 it('can add collectionDefinitions to tieFormat in a drawDefinition', () => {
   const {

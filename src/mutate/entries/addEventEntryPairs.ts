@@ -1,26 +1,26 @@
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
-import { getParticipantId } from '../../functions/global/extractors';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { getParticipantId } from '@Functions/global/extractors';
 import { addParticipants } from '../participants/addParticipants';
-import { stringSort } from '../../functions/sorters/stringSort';
-import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../tools/arrays';
+import { stringSort } from '@Functions/sorters/stringSort';
+import { addNotice } from '@Global/state/globalState';
+import { intersection } from '@Tools/arrays';
 import { addEventEntries } from './addEventEntries';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { ADD_PARTICIPANTS } from '../../constants/topicConstants';
-import { ALTERNATE } from '../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { MAIN } from '../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../constants/matchUpTypes';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT_IDS,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
-import { ANY, FEMALE, MALE, MIXED } from '../../constants/genderConstants';
+} from '@Constants/errorConditionConstants';
+import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 
 /**
  * Add PAIR participant to an event

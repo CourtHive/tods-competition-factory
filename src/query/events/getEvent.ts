@@ -1,8 +1,8 @@
-import { definedAttributes } from '../../tools/definedAttributes';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type GetEventArgs = {
   context: { [key: string]: any };

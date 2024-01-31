@@ -3,16 +3,16 @@ import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment
 import { uniqueValues } from '@Tools/arrays';
 
 // constants and types
-import { DrawDefinition, SeedAssignment, Tournament } from '../../types/tournamentTypes';
-import { SeedingProfile, ResultType } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { DrawDefinition, SeedAssignment, Tournament } from '@Types/tournamentTypes';
+import { SeedingProfile, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_DRAW_ID,
   MISSING_ASSIGNMENTS,
   NO_MODIFICATIONS_APPLIED,
   INVALID_PARTICIPANT_SEEDING,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /*
  * Provides the ability to assign seedPositions *after* a structure has been generated

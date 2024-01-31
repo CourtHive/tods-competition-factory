@@ -1,7 +1,7 @@
 import { parse } from '../matchUpFormatCode/parse';
-import { isNumeric } from '../../../tools/math';
+import { isNumeric } from '@Tools/math';
 
-import { ErrorType, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import {
   ABANDONED,
   DEAD_RUBBER,
@@ -11,7 +11,7 @@ import {
   RETIRED,
   SUSPENDED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 type GenerateScoreString = {
   addOutcomeString?: boolean;

@@ -1,10 +1,10 @@
 import { dateStringDaysChange } from '../../../tools/dateTime';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { IN_PROGRESS } from '../../../constants/tournamentConstants';
-import { INVALID_VALUES, MISSING_DATE } from '../../../constants/errorConditionConstants';
+import { IN_PROGRESS } from '@Constants/tournamentConstants';
+import { INVALID_VALUES, MISSING_DATE } from '@Constants/errorConditionConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

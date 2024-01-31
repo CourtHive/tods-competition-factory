@@ -1,12 +1,12 @@
-import { getAllStructureMatchUps } from '../../query/matchUps/getAllStructureMatchUps';
-import { getMatchUpsMap } from '../../query/matchUps/getMatchUpsMap';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { toBePlayed } from '../../fixtures/scoring/outcomes/toBePlayed';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MAIN, QUALIFYING } from '../../constants/drawDefinitionConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import {
   ASSIGN_COURT,
   ASSIGN_VENUE,
@@ -14,8 +14,8 @@ import {
   SCHEDULED_DATE,
   SCHEDULED_TIME,
   ALLOCATE_COURTS,
-} from '../../constants/timeItemConstants';
-import { TimeItem } from '../../types/tournamentTypes';
+} from '@Constants/timeItemConstants';
+import { TimeItem } from '@Types/tournamentTypes';
 
 export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

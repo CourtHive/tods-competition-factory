@@ -1,7 +1,7 @@
-import { getDrawPosition } from '../../../../../functions/global/extractors';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import { getDrawPosition } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../../../tools/arrays';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import {
   getOrderedDrawPositionPairs,

@@ -1,16 +1,16 @@
 import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EXISTING_DRAW_DEFINITIONS,
   EXISTING_PROFILE,
   MISSING_EVENT,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function attachFlightProfile({ deleteExisting, event, flightProfile }) {
   const stack = 'attachFlightProfile';

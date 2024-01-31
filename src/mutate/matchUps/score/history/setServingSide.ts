@@ -1,7 +1,7 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { INVALID_SIDE_NUMBER } from '../../../../constants/errorConditionConstants';
+import { INVALID_SIDE_NUMBER } from '@Constants/errorConditionConstants';
 
 export function setServingSide({ matchUp, sideNumber }) {
   // TODO: check game validity

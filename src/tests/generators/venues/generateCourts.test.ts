@@ -1,8 +1,8 @@
-import { generateCourts } from '../../../assemblies/generators/venues/generateCourts';
+import { generateCourts } from '@Assemblies/generators/venues/generateCourts';
 import { xa } from '../../../tools/objects';
 import { expect, it } from 'vitest';
 
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 it('can generate courts', () => {
   // @ts-expect-error no params

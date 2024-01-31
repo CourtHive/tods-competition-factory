@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { COMPASS, FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 it('can bulkSchedule matchUps using matchUpDetails', () => {
   const venueId = 'cc-venue-id';

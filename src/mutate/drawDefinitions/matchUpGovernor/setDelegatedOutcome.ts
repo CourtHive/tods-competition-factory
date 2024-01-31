@@ -1,13 +1,13 @@
 import { addExtension } from '../../extensions/addExtension';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { DELEGATED_OUTCOME } from '../../../constants/extensionConstants';
+import { DELEGATED_OUTCOME } from '@Constants/extensionConstants';
 import {
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP,
   MISSING_VALUE,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function setDelegatedOutcome({ drawDefinition, matchUpId, outcome, matchUp }) {
   if (!matchUp && !drawDefinition) return { error: MISSING_DRAW_DEFINITION };

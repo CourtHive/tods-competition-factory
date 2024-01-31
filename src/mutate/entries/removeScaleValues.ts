@@ -1,10 +1,10 @@
 import { removeParticipantsScaleItems } from '../participants/removeScaleItems';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getParticipantId } from '../../functions/global/extractors';
-import { mustBeAnArray } from '../../tools/mustBeAnArray';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getParticipantId } from '@Functions/global/extractors';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { INVALID_VALUES, MISSING_EVENT } from '../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 /**
  *

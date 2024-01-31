@@ -1,4 +1,4 @@
-import { generateRange, shuffleArray } from '../../../tools/arrays';
+import { generateRange, shuffleArray } from '@Tools/arrays';
 import namesData from '../../../fixtures/data/teams.json';
 
 export function nameMocks({ nameRoot = 'TEAM', count = 1 } = {}) {

@@ -1,11 +1,11 @@
-import { getParticipants } from '../../../query/participants/getParticipants';
+import { getParticipants } from '@Query/participants/getParticipants';
 import { setSubscriptions } from '../../../global/state/globalState';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { GROUP, INDIVIDUAL } from '../../../constants/participantConstants';
-import { ADD_PARTICIPANTS } from '../../../constants/topicConstants';
+import { GROUP, INDIVIDUAL } from '@Constants/participantConstants';
+import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 
 it('can create group participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

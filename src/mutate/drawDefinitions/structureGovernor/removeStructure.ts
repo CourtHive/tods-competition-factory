@@ -1,16 +1,17 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { getMatchUpIds } from '../../../functions/global/extractors';
-import { xa } from '../../../tools/objects';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { getMatchUpIds } from '@Functions/global/extractors';
+import { xa } from '@Tools/objects';
 import { resequenceStructures } from './resequenceStructures';
-import { findStructure } from '../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_SCORING } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   CANNOT_REMOVE_MAIN_STRUCTURE,
   INVALID_VALUES,
@@ -18,8 +19,7 @@ import {
   MISSING_STRUCTURE_ID,
   SCORES_PRESENT,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
 
 type RemoveStructureArgs = {
   tournamentRecord: Tournament;

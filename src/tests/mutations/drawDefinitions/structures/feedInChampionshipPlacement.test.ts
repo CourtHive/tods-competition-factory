@@ -1,8 +1,8 @@
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { FEED_IN_CHAMPIONSHIP } from '../../../../constants/drawDefinitionConstants';

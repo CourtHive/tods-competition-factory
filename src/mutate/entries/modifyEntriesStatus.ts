@@ -1,18 +1,18 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { findParticipant } from '../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { removeExtension } from '../extensions/removeExtension';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { isValidExtension } from '../../validators/isValidExtension';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { isValidExtension } from '@Validators/isValidExtension';
 import { addExtension } from '../extensions/addExtension';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { isUngrouped } from '../../query/entries/isUngrouped';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { isUngrouped } from '@Query/entries/isUngrouped';
 
-import { validStages } from '../../constants/drawDefinitionConstants';
-import { DOUBLES, TEAM_EVENT } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { validStages } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, TEAM_EVENT } from '@Constants/eventConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   INVALID_ENTRY_STATUS,
@@ -22,14 +22,14 @@ import {
   MISSING_VALUE,
   INVALID_VALUES,
   INVALID_STAGE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   ALTERNATE,
   DRAW_SPECIFIC_STATUSES,
   EQUIVALENT_ACCEPTANCE_STATUSES,
   VALID_ENTRY_STATUSES,
   WITHDRAWN,
-} from '../../constants/entryStatusConstants';
+} from '@Constants/entryStatusConstants';
 
 import {
   DrawDefinition,
@@ -39,7 +39,7 @@ import {
   Extension,
   StageTypeUnion,
   Tournament,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 // disallow changing entryStatus to WITHDRAWN or UNGROUPED for assignedParticipants
 type ModifyEntriesStatusArgs = {

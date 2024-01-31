@@ -1,8 +1,8 @@
-import { findMatchUpFormatTiming } from '../../../acquire/findMatchUpFormatTiming';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { instanceCount } from '../../../tools/arrays';
+import { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { instanceCount } from '@Tools/arrays';
 
-import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 export function getRoundId(obj) {
   const { containerStructureId, roundSegment, isRoundRobin, tournamentId, roundNumber, structureId, eventId, drawId } =

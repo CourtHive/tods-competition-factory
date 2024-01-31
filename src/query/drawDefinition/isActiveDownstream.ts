@@ -1,8 +1,8 @@
 import { positionTargets } from '@Query/matchUp/positionTargets';
 
 // constants
-import { BYE, DEFAULTED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { FIRST_MATCHUP } from '../../constants/drawDefinitionConstants';
+import { BYE, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)

@@ -1,11 +1,11 @@
-import { getMatchUpIds } from '../../../functions/global/extractors';
-import { stringSort } from '../../../functions/sorters/stringSort';
-import competitionEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getMatchUpIds } from '@Functions/global/extractors';
+import { stringSort } from '@Functions/sorters/stringSort';
+import competitionEngineSync from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 test.each([competitionEngineSync])(
   'correctly allocates recovery times for Round Robin structures',

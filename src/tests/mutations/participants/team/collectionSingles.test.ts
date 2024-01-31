@@ -1,7 +1,7 @@
-import { getParticipantId } from '../../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';

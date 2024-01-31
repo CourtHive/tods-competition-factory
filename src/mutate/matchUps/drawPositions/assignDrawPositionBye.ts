@@ -14,19 +14,19 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '../../../types/tournamentTypes';
-import { BYE, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { CONTAINER } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '@Types/tournamentTypes';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 import {
   DRAW_POSITION_ACTIVE,
   INVALID_DRAW_POSITION,
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_DEFINITION,
   STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /*
   assignDrawPositionBye

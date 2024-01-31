@@ -1,4 +1,4 @@
-import { randomMember } from '../../../../tools/arrays';
+import { randomMember } from '@Tools/arrays';
 
 type GetNextParticipantId = {
   allGroups: { [key: string]: string[] };

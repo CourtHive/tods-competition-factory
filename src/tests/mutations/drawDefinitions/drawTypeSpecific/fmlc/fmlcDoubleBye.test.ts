@@ -1,9 +1,9 @@
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { verifyStructure } from '../../primitives/verifyStructure';
 import { verifyMatchUps } from '../../primitives/verifyMatchUps';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
-import tournamentEngine from '../../../../engines/syncEngine';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import { getOrderedDrawPositionPairs, replaceWithBye } from '../../testingUtilities';
 

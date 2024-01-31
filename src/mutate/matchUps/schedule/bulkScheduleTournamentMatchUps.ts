@@ -1,18 +1,18 @@
-import { getMatchUpDependencies } from '../../../query/matchUps/getMatchUpDependencies';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { addMatchUpScheduleItems } from './scheduleItems';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_SCHEDULE,
   MISSING_MATCHUP_IDS,
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
-import { BYE, completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 type BulkScheduleMachUpsArgs = {
   tournamentRecords?: { [key: string]: Tournament };

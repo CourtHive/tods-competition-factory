@@ -1,12 +1,12 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeEventExtension } from '../../extensions/addRemoveExtensions';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
-import { EVENT_ID, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { EVENT_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { TournamentRecords } from '../../../types/factoryTypes';
+import { EVENT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { EVENT_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 type RemoveEventMatchUpFormatTimingArgs = {
   tournamentRecords?: TournamentRecords;

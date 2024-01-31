@@ -1,1 +1,1 @@
-export { generateCourts } from '../../../assemblies/generators/venues/generateCourts';
+export { generateCourts } from '@Assemblies/generators/venues/generateCourts';

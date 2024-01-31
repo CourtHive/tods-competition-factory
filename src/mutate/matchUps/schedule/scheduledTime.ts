@@ -1,20 +1,16 @@
-import { scheduledMatchUpDate } from '../../../query/matchUp/scheduledMatchUpDate';
-import { matchUpTimeModifiers } from '../../../query/matchUp/timeModifiers';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { mustBeAnArray } from '../../../tools/mustBeAnArray';
+import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
+import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import { convertTime, extractDate, validTimeValue } from '../../../tools/dateTime';
+import { convertTime, extractDate, validTimeValue } from '@Tools/dateTime';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import {
-  MUTUALLY_EXCLUSIVE_TIME_MODIFIERS,
-  SCHEDULED_TIME,
-  TIME_MODIFIERS,
-} from '../../../constants/timeItemConstants';
-import { INVALID_TIME, INVALID_VALUES, MISSING_MATCHUP_ID } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, MatchUp, Tournament } from '../../../types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MUTUALLY_EXCLUSIVE_TIME_MODIFIERS, SCHEDULED_TIME, TIME_MODIFIERS } from '@Constants/timeItemConstants';
+import { INVALID_TIME, INVALID_VALUES, MISSING_MATCHUP_ID } from '@Constants/errorConditionConstants';
+import { DrawDefinition, MatchUp, Tournament } from '@Types/tournamentTypes';
 
 type AddScheduleAttributeArgs = {
   tournamentRecord?: Tournament;

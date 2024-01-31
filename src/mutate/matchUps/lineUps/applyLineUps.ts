@@ -1,14 +1,16 @@
-import { resolveTieFormat } from '../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getPairedParticipant } from '../../../query/participant/getPairedParticipant';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { addParticipant } from '../../participants/addParticipant';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { instanceCount } from '../../../tools/arrays';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { addParticipant } from '@Mutate/participants/addParticipant';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { instanceCount } from '@Tools/arrays';
 
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+// constants
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_MATCHUP,
@@ -19,7 +21,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, lineUps, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -98,7 +100,7 @@ export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, line
         const participantsCount = collectionParticipantIds[aggregator].length;
 
         if (
-          (collectionDefinition.matchUpType === SINGLES && participantsCount) ||
+          (isMatchUpEventType(SINGLES)(collectionDefinition.matchUpType) && participantsCount) ||
           (collectionDefinition.matchUpType === DOUBLES && participantsCount > 1)
         ) {
           // cannot have more than one assignment for singles or two for doubles

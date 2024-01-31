@@ -1,12 +1,8 @@
 // import { matchUpActions } from '../../../competitionEngine/governors/queryGovernor/matchUpActions';
-import { matchUpActions } from '../../../query/drawDefinition/matchUpActions/matchUpActions';
+import { matchUpActions } from '@Query/drawDefinition/matchUpActions/matchUpActions';
 import { expect, test } from 'vitest';
 
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 test('matchUpActions returns expected error messages', () => {
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment

@@ -1,20 +1,20 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { removeExtension } from '../removeExtension';
 import { addExtension } from '../addExtension';
 
-import { MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD, POLICY_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION,
   EVENT,
   POLICY_TYPE,
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
-} from '../../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 type RemovePolicyArgs = {
   tournamentRecords?: TournamentRecords;

@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
 it('can simulate clearing schedule on dryRun scheduleProfileRounds', () => {
   const venueId = 'venue1';

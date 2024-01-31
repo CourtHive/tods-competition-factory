@@ -1,20 +1,20 @@
 import { xa } from '../../../tools/objects';
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { TIE_FORMAT_MODIFICATIONS } from '../../../constants/extensionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { COLLEGE_D3 } from '../../../constants/tieFormatConstants';
-import { TEAM } from '../../../constants/eventConstants';
+import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
+import { TEAM } from '@Constants/eventConstants';
 import {
   INVALID_MATCHUP,
   INVALID_TIE_FORMAT,
   INVALID_VALUES,
   NOT_FOUND,
   NOT_IMPLEMENTED,
-} from '../../../constants/errorConditionConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
+} from '@Constants/errorConditionConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 
 it('can modify collectionDefinitions for a tieFormat on a drawDefinition', () => {
   const policyDefinitions = { audit: { [TIE_FORMAT_MODIFICATIONS]: true } };

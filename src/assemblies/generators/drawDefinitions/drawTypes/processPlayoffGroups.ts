@@ -12,11 +12,11 @@ import { numericSort } from '@Tools/sorting';
 import { nextPowerOf2 } from '@Tools/math';
 
 // constants and types
-import { INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { POLICY_TYPE_FEED_IN } from '../../../../constants/policyConstants';
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
-import { WIN_RATIO } from '../../../../constants/statsConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { DrawLink, Structure } from '@Types/tournamentTypes';
+import { WIN_RATIO } from '@Constants/statsConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   AD_HOC,
   COMPASS,
@@ -36,7 +36,7 @@ import {
   POSITION,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 export function processPlayoffGroups({
   requireSequential = true,

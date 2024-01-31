@@ -1,13 +1,13 @@
 import { assignDrawPositionBye as assignPositionBye } from '../matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition as assignPosition } from '../matchUps/drawPositions/positionAssignment';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   NOT_IMPLEMENTED,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function assignDrawPosition({
   tournamentRecord,

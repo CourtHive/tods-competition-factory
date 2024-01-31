@@ -1,13 +1,13 @@
-import { removeEventMatchUpFormatTiming } from '../../../mutate/events/extensions/removeEventMatchUpFormatTiming';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { removeEventMatchUpFormatTiming } from '@Mutate/events/extensions/removeEventMatchUpFormatTiming';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import POLICY_SCORING_USTA from '../../../fixtures/policies/POLICY_SCORING_USTA';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { EVENT_NOT_FOUND, MISSING_EVENT } from '../../../constants/errorConditionConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import POLICY_SCORING_USTA from '@Fixtures/policies/POLICY_SCORING_USTA';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
+import { EVENT_NOT_FOUND, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 

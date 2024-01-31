@@ -1,4 +1,4 @@
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 /**
  * Finds all container structures within a tournament object and returns a mapping of container structureIds to arrays of contained structureIds

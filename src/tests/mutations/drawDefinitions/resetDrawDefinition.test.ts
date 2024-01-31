@@ -1,8 +1,8 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
-import { COMPASS, FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
 
 // prettier-ignore
 const scenarios = [

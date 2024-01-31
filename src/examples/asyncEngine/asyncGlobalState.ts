@@ -1,10 +1,5 @@
 import { executionAsyncId, createHook } from 'async_hooks';
-import {
-  GetNoticesArgs,
-  HandleCaughtErrorArgs,
-  ImplemtationGlobalStateTypes,
-  Notice,
-} from '../../global/state/globalState';
+import { GetNoticesArgs, HandleCaughtErrorArgs, ImplemtationGlobalStateTypes, Notice } from '@Global/state/globalState';
 
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 const INVALID_VALUES = 'Invalid values';

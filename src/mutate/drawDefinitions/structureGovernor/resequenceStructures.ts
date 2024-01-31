@@ -1,6 +1,6 @@
-import { getStructureGroups } from '../../../query/structure/getStructureGroups';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function resequenceStructures({ drawDefinition }) {
   const { maxQualifyingDepth, structureProfiles } = getStructureGroups({

@@ -1,22 +1,24 @@
-import { getStageParticipantsCount } from '../../../query/drawDefinition/getStageParticipantsCount';
-import { scheduleProfileRounds } from '../../../mutate/matchUps/schedule/scheduleProfileRounds';
-import { getStageParticipants } from '../../../query/drawDefinition/getStageParticipants';
-import { setSchedulingProfile } from '../../../mutate/tournaments/schedulingProfile';
+import { getStageParticipantsCount } from '@Query/drawDefinition/getStageParticipantsCount';
+import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { getStageParticipants } from '@Query/drawDefinition/getStageParticipants';
 import { generateFlightDrawDefinitions } from './generateFlightDrawDefinitions';
+import { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventParticipants } from './generateEventParticipants';
-import { generateVenues } from '../../../mutate/venues/generateVenues';
-import { publishEvent } from '../../../mutate/publishing/publishEvent';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateEventWithDraw } from './generateEventWithDraw';
-import { addEvent } from '../../../mutate/events/addEvent';
+import { generateVenues } from '@Mutate/venues/generateVenues';
+import { publishEvent } from '@Mutate/publishing/publishEvent';
+import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+// constants and fixtures
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function modifyTournamentRecord(params) {
   const {
@@ -112,7 +114,9 @@ export function modifyTournamentRecord(params) {
         const { drawProfiles, publish } = eventProfile;
 
         const eventParticipantType =
-          (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
+          (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+          (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+          eventType;
 
         if (drawProfiles) {
           const { stageParticipantsCount, uniqueParticipantsCount, uniqueParticipantStages } =

@@ -1,7 +1,7 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MISSING_COURTS_INFO, MISSING_VENUE_ID } from '../../../constants/errorConditionConstants';
+import { MISSING_COURTS_INFO, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
 
 it('can define a new venue', () => {
   let result = tournamentEngine.newTournamentRecord();

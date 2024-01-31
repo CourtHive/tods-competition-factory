@@ -1,5 +1,5 @@
-import { allTournamentMatchUps } from '../../../../query/matchUps/getAllTournamentMatchUps';
-import { processAccessors } from '../../../../query/drawDefinition/processAccessors';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { processAccessors } from '@Query/drawDefinition/processAccessors';
 import { intersection } from '../../../../tools/arrays';
 
 export function getConflicts({ tournamentRecord, structureId, keysToTest, drawId }) {

@@ -1,13 +1,9 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import tournamentEngine from '../../engines/syncEngine';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
+import tournamentEngine from '@Engines/syncEngine';
 import { UUID } from '../../../tools/UUID';
 import { expect, test } from 'vitest';
 
-import {
-  INVALID_PARTICIPANT_ROLE,
-  INVALID_VALUES,
-  MISSING_PERSON_DETAILS,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_PARTICIPANT_ROLE, INVALID_VALUES, MISSING_PERSON_DETAILS } from '@Constants/errorConditionConstants';
 
 test('it can addPersons and create INDIVIDUAL and PAIR participants', () => {
   const personsCount = 20;

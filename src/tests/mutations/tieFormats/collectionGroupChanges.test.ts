@@ -1,12 +1,12 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { USTA_BREWER_CUP } from '../../../constants/tieFormatConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/eventConstants';
+import { USTA_BREWER_CUP } from '@Constants/tieFormatConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 
 it('can remove collectionGroups from tieFormats', () => {
   const {

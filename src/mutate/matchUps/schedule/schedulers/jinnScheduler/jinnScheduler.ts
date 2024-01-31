@@ -1,21 +1,21 @@
 import { addMatchUpScheduledTime } from '../../scheduledTime';
 import { assignMatchUpVenue } from '../../assignMatchUpVenue';
 import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { findDrawDefinition } from '../../../../../acquire/findDrawDefinition';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
 import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
 import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
 import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
-import { getVenueSchedulingDetails } from '../../../../../query/matchUps/scheduling/getVenueSchedulingDetails';
+import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
-import { getMatchUpId } from '../../../../../functions/global/extractors';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
-import { extractDate, sameDay, timeStringMinutes, zeroPad } from '../../../../../tools/dateTime';
+import { extractDate, sameDay, timeStringMinutes, zeroPad } from '@Tools/dateTime';
 
-import { SUCCESS } from '../../../../../constants/resultConstants';
-import { TOTAL } from '../../../../../constants/scheduleConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
 
 export function jinnScheduler({
   schedulingProfileModifications,

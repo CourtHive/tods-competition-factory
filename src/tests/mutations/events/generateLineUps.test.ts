@@ -1,17 +1,17 @@
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 import { instanceCount, unique } from '../../../tools/arrays';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { LINEUPS } from '../../../constants/extensionConstants';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { RANKING } from '../../../constants/scaleConstants';
-import { ASC } from '../../../constants/sortingConstants';
-import { LineUp } from '../../../types/factoryTypes';
-import { INVALID_VALUES, SCORES_PRESENT } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '../../../constants/tieFormatConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { RANKING } from '@Constants/scaleConstants';
+import { ASC } from '@Constants/sortingConstants';
+import { LineUp } from '@Types/factoryTypes';
+import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';

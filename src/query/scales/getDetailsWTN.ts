@@ -1,4 +1,4 @@
-import { WTN } from '../../constants/ratingConstants';
+import { WTN } from '@Constants/ratingConstants';
 
 export function getDetailsWTN({ participant, eventType }) {
   const personId = participant?.person?.personId;

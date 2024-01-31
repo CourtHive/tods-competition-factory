@@ -1,6 +1,6 @@
 import { xa } from '../../../tools/objects';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import {
@@ -11,7 +11,7 @@ import {
   FIRST_ROUND_LOSER_CONSOLATION,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it('can customize naming of COMPASS draw structures', () => {
   const playoffAttributes = {

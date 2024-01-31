@@ -1,7 +1,7 @@
-import { refreshEntryPositions } from '../../../mutate/entries/refreshEntryPositions';
+import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
 import { expect, it } from 'vitest';
 
-import { CONSOLATION, MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { CONSOLATION, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 it('can add and update entryPositions', () => {
   const entries = [{}, {}, {}, {}, {}, {}];

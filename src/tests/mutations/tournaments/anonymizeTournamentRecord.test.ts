@@ -1,11 +1,11 @@
-import { findExtension } from '../../../acquire/findExtension';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '../../../tools/arrays';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../../constants/extensionConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -16,7 +16,7 @@ import {
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const mockProfiles = [
   { drawProfiles: [{ drawSize: 32, drawType: MODIFIED_FEED_IN_CHAMPIONSHIP }] },

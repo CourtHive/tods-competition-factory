@@ -1,4 +1,4 @@
-import { arrayIndices } from '../../tools/arrays';
+import { arrayIndices } from '@Tools/arrays';
 
 export function dashMash(segment) {
   if (!/^[\d-]+(\(\d\))*$/.test(segment)) {

@@ -1,11 +1,11 @@
-import { checkRequiredParameters } from '../../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../../../../extensions/removeExtension';
-import { getPersonRequests } from '../../../../../query/matchUps/scheduling/getPersonRequests';
+import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
 import { savePersonRequests } from './savePersonRequests';
 
-import { TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
-import { PERSON_REQUESTS } from '../../../../../constants/extensionConstants';
-import { TournamentRecords } from '../../../../../types/factoryTypes';
+import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { PERSON_REQUESTS } from '@Constants/extensionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 // personRequests can be removed by date, requestId, or requestType
 type RemovePersonRequests = {

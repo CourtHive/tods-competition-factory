@@ -1,9 +1,9 @@
 import { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
-import { getEntriesAndSeedsCount } from '../../query/entries/getEntriesAndSeedsCount';
-import { getScaledEntries } from '../../query/event/getScaledEntries';
+import { getEntriesAndSeedsCount } from '@Query/entries/getEntriesAndSeedsCount';
+import { getScaledEntries } from '@Query/event/getScaledEntries';
 
-import { INVALID_VALUES } from '../../constants/errorConditionConstants';
-import { StageTypeUnion } from '../../types/tournamentTypes';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { StageTypeUnion } from '@Types/tournamentTypes';
 
 type AutoSeedingParams = {
   sortDescending: boolean;

@@ -1,6 +1,6 @@
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData }) {
   if (!Array.isArray(courtsData)) return { error: INVALID_VALUES };

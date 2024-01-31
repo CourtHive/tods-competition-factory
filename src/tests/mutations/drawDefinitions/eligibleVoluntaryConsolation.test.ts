@@ -1,9 +1,9 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { MAIN, VOLUNTARY_CONSOLATION } from '../../../constants/drawDefinitionConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { MAIN, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 test('can return participants eligible for voluntary consolation', () => {
   const {

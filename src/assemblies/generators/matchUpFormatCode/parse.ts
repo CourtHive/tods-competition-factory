@@ -1,7 +1,7 @@
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { isConvertableInteger } from '../../../tools/math';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { isConvertableInteger } from '@Tools/math';
 
-import { SET, NOAD, TIMED, setTypes } from '../../../constants/matchUpFormatConstants';
+import { SET, NOAD, TIMED, setTypes } from '@Constants/matchUpFormatConstants';
 
 type TiebreakFormat = {
   tiebreakTo: number;

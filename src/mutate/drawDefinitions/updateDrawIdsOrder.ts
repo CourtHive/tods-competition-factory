@@ -1,8 +1,8 @@
-import { getFlightProfile } from '../../query/event/getFlightProfile';
-import { intersection, unique } from '../../tools/arrays';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { intersection, unique } from '@Tools/arrays';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 /**
  *

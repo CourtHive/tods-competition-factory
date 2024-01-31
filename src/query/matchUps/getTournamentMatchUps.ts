@@ -3,8 +3,8 @@ import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getFlightProfile } from '../event/getFlightProfile';
 
-import { GetMatchUpsArgs, GroupsMatchUpsResult } from '../../types/factoryTypes';
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { GetMatchUpsArgs, GroupsMatchUpsResult } from '@Types/factoryTypes';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { eventMatchUps } from './getEventMatchUps';
 
 export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {

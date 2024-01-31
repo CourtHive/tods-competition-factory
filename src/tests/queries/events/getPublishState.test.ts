@@ -1,7 +1,15 @@
-import { DRAW_DEFINITION_NOT_FOUND, EVENT_NOT_FOUND, MISSING_EVENT } from '../../../constants/errorConditionConstants';
-import { mocksEngine } from '../../../assemblies/engines/mock';
-import { tournamentEngine } from '../../engines/syncEngine';
-import { expect, it } from 'vitest';
+import { getPublishState } from '@Query/publishing/getPublishState';
+import { tournamentEngine } from '@Engines/syncEngine';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import { expect, it, test } from 'vitest';
+
+// constants
+import {
+  DRAW_DEFINITION_NOT_FOUND,
+  EVENT_NOT_FOUND,
+  INVALID_VALUES,
+  MISSING_EVENT,
+} from '@Constants/errorConditionConstants';
 
 it('should return the publish state of all events', () => {
   mocksEngine.generateTournamentRecord({
@@ -18,6 +26,9 @@ it('should return the publish state of all events', () => {
         ],
         eventId: 'e4',
       },
+      {
+        eventId: 'e5',
+      },
     ],
     setState: true,
   });
@@ -28,12 +39,39 @@ it('should return the publish state of all events', () => {
     e2: { status: { published: false } },
     e3: { status: { published: false } },
     e4: { status: { published: false } },
+    e5: { status: { published: false } },
   });
 
   let pubResult = tournamentEngine.publishEvent({ eventId: 'e1' });
   expect(pubResult.success).toEqual(true);
 
+  const seedPublishResult = tournamentEngine.publishEventSeeding({ eventId: 'e1' });
+  expect(seedPublishResult.success).toEqual(true);
+
   publishState = tournamentEngine.getPublishState().publishState;
+  expect(publishState.e1.status.published).toEqual(true);
+  expect(publishState.e2.status.published).toEqual(false);
+
+  let stateResult = tournamentEngine.getPublishState({ eventIds: ['bogus'] });
+  expect(stateResult.error).toEqual(EVENT_NOT_FOUND);
+
+  stateResult = tournamentEngine.getPublishState({ eventIds: [100] });
+  expect(stateResult.error).toEqual(INVALID_VALUES);
+
+  stateResult = tournamentEngine.getPublishState({ eventId: 'e1', drawIds: ['bogus'] });
+  expect(stateResult.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
+
+  stateResult = tournamentEngine.getPublishState({ eventId: 'e1', drawIds: ['e1-d1'] });
+  expect(stateResult.publishState['e1-d1'].status.published).toEqual(true);
+
+  stateResult = tournamentEngine.getPublishState({ eventId: 'e1', drawIds: [1] });
+  expect(stateResult.error).toEqual(INVALID_VALUES);
+
+  // test event which has no drawDefinitions
+  stateResult = tournamentEngine.getPublishState({ eventId: 'e5', drawIds: ['foo'] });
+  expect(stateResult.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
+
+  publishState = tournamentEngine.getPublishState({ eventIds: ['e1', 'e2'] }).publishState;
   expect(publishState.e1.status.published).toEqual(true);
   expect(publishState.e2.status.published).toEqual(false);
 
@@ -42,7 +80,7 @@ it('should return the publish state of all events', () => {
   expect(publishState.status.publishedDrawIds.includes('e1-d1')).toEqual(true);
   expect(publishState.status.drawDetails['e1-d1'].publishingDetail.published).toEqual(true);
 
-  let stateResult = tournamentEngine.getPublishState({ eventId: 'e5' });
+  stateResult = tournamentEngine.getPublishState({ eventId: 'e6' });
   expect(stateResult.error).toEqual(EVENT_NOT_FOUND);
   expect(stateResult.publishState).toBeUndefined();
 
@@ -51,7 +89,7 @@ it('should return the publish state of all events', () => {
   expect(pubResult.success).toEqual(true);
 
   // test publishing a draw that doesn't exist
-  pubResult = tournamentEngine.publishEvent({ eventId: 'e5' });
+  pubResult = tournamentEngine.publishEvent({ eventId: 'e6' });
   expect(pubResult.error).toEqual(EVENT_NOT_FOUND);
 
   pubResult = tournamentEngine.publishEvent({ eventId: 'e3' });
@@ -98,4 +136,60 @@ it('should return the publish state of all events', () => {
 
   publishState = tournamentEngine.getPublishState({ eventId: 'e4' }).publishState;
   expect(publishState.status.published).toEqual(false);
+
+  publishState = tournamentEngine.getPublishState().publishState;
+  expect(publishState['e3-d1'].status.published).toEqual(true);
+  expect(Object.keys(publishState).map((key) => [key, publishState[key]?.status.published])).toEqual([
+    ['tournament', undefined],
+    ['e1', false],
+    ['e2', false],
+    ['e3', true],
+    ['e3-d1', true], // drawIds for published draws are included in publishState
+    ['e4', false],
+    ['e5', false],
+  ]);
+});
+
+test('calling getPublishState directly', () => {
+  // @ts-expect-error no params
+  let result = getPublishState();
+  expect(result.success).toEqual(true);
+
+  // @ts-expect-error missing params
+  result = getPublishState({ tournamentRecord: {} });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  // @ts-expect-error missing params
+  result = getPublishState({ tournamentRecord: { tournamentId: 'tid' }, eventId: 'boo' });
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
+
+  // just for test coverage
+  // @ts-expect-error missing params
+  result = getPublishState({ tournamentRecord: { tournamentId: 'tid' } });
+  expect(result.publishState.tournament).toBeUndefined();
+
+  const tournamentRecord: any = {
+    events: [{ eventId: 'e6' }],
+    tournamentId: 'tid',
+  };
+  // @ts-expect-error missing params
+  result = getPublishState({ tournamentRecord });
+  expect(result.publishState.e6.status.published).toEqual(false);
+
+  result = getPublishState({ tournamentRecord, eventId: 'e6', event: tournamentRecord.events[0] });
+  expect(result.publishState.status.published).toEqual(false);
+
+  result = getPublishState({ tournamentRecord, eventId: 'e6', event: tournamentRecord.events[0], drawIds: ['e6-d1'] });
+  expect(result.error).toEqual(DRAW_DEFINITION_NOT_FOUND);
+
+  tournamentRecord.events[0].timeItems = [
+    {
+      itemValue: { PUBLIC: { drawIds: ['e6-d1'] } },
+      itemType: 'PUBLISH.STATUS',
+    },
+  ];
+
+  // @ts-expect-error missing params
+  result = getPublishState({ tournamentRecord });
+  expect(result.publishState.e6.status.published).toEqual(true);
 });

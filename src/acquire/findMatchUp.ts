@@ -1,8 +1,8 @@
-import { allTournamentMatchUps } from '../query/matchUps/getAllTournamentMatchUps';
-import { hydrateParticipants } from '../query/participants/hydrateParticipants';
-import { getContextContent } from '../query/hierarchical/getContextContent';
-import { allDrawMatchUps } from '../query/matchUps/getAllDrawMatchUps';
-import { makeDeepCopy } from '../tools/makeDeepCopy';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { hydrateParticipants } from '@Query/participants/hydrateParticipants';
+import { getContextContent } from '@Query/hierarchical/getContextContent';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findDrawMatchUp } from './findDrawMatchUp';
 import { findEvent } from './findEvent';
 

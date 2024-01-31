@@ -1,21 +1,21 @@
-import { getMatchUpParticipantIds } from '../../../query/matchUp/getMatchUpParticipantIds';
-import { getCheckedInParticipantIds } from '../../../query/matchUp/getCheckedInParticipantIds';
+import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
+import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ELIMINATION } from '../../../constants/drawDefinitionConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { MALE } from '../../../constants/genderConstants';
+import { ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { MALE } from '@Constants/genderConstants';
 import {
   INVALID_PARTICIPANT_ID,
   MISSING_MATCHUP_ID,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_CHECKED_IN,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can check participants in and out', () => {
   const participantsProfile = {

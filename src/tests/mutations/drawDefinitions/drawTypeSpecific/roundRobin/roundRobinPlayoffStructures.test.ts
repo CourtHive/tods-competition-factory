@@ -1,10 +1,10 @@
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
-import { allDrawMatchUps } from '../../../../../query/matchUps/getAllDrawMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { intersection, overlap, unique } from '../../../../../tools/arrays';
-import { structureSort } from '../../../../../functions/sorters/structureSort';
+import { structureSort } from '@Functions/sorters/structureSort';
 import { xa } from '../../../../../tools/objects';
-import tournamentEngine from '../../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 

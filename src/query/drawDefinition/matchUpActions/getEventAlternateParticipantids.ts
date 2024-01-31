@@ -1,7 +1,7 @@
 import { eligibleEntryStage } from '../positionActions/getValidAlternatesAction';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { getParticipantId } from '@Functions/global/extractors';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
 
 export function getEventAlternateParticipantIds({ eventEntries, structure }) {
   const eligibleAlternate = (entry) => entry.entryStatus === ALTERNATE && eligibleEntryStage({ structure, entry });

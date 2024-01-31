@@ -1,24 +1,24 @@
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
-import { getParticipants } from '../../query/participants/getParticipants';
+import { getParticipants } from '@Query/participants/getParticipants';
 import { removeEventEntries } from '../entries/removeEventEntries';
 import { addEventEntries } from '../entries/addEventEntries';
-import { addNotice } from '../../global/state/globalState';
-import { intersection } from '../../tools/arrays';
+import { addNotice } from '@Global/state/globalState';
+import { intersection } from '@Tools/arrays';
 
-import { DELETE_PARTICIPANTS } from '../../constants/topicConstants';
-import { UNGROUPED } from '../../constants/entryStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DOUBLES } from '../../constants/matchUpTypes';
-import { TEAM } from '../../constants/eventConstants';
+import { DELETE_PARTICIPANTS } from '@Constants/topicConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
   MISSING_TOURNAMENT_RECORD,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
-} from '../../constants/errorConditionConstants';
-import { PAIR, TEAM as participantTeam } from '../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { PAIR, TEAM as participantTeam } from '@Constants/participantConstants';
 
 /**
  *

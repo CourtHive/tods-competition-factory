@@ -2,7 +2,7 @@ import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getAllDrawMatchUps } from './drawMatchUps';
 
-import { GetMatchUpsArgs } from '../../types/factoryTypes';
+import { GetMatchUpsArgs } from '@Types/factoryTypes';
 
 export function allDrawMatchUps(params: GetMatchUpsArgs) {
   let { participants: tournamentParticipants, participantMap, contextContent } = params;

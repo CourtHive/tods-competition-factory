@@ -1,8 +1,8 @@
-import { countGames } from '../../../../query/matchUps/roundRobinTally/scoreCounters';
+import { countGames } from '@Query/matchUps/roundRobinTally/scoreCounters';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '../../../../constants/matchUpStatusConstants';
-import { FORMAT_ATP_DOUBLES, FORMAT_SHORT_SETS, FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_ATP_DOUBLES, FORMAT_SHORT_SETS, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 it('can count games in normal sets', () => {
   let matchUp = {

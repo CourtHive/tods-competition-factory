@@ -1,10 +1,10 @@
 import { xa } from '../../tools/objects';
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, TEAM } from '../../constants/matchUpTypes';
-import { LINEUPS } from '../../constants/extensionConstants';
+import { DOUBLES, TEAM } from '@Constants/matchUpTypes';
+import { LINEUPS } from '@Constants/extensionConstants';
 
 import tournamentRecordSub from './assignTieMatchUpParticipantSub.tods.json';
 import tournamentRecord from './assignTieMatchUpParticipant.tods.json';

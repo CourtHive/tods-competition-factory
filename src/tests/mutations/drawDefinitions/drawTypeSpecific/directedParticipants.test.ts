@@ -1,9 +1,9 @@
 import { parseScoreString } from '../../../../tools/parseScoreString';
-import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
+import { getDrawStructures } from '@Acquire/findStructure';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 import {
@@ -14,7 +14,7 @@ import {
 } from '../primitives/verifyMatchUps';
 
 import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { EntryStatusUnion, StageTypeUnion } from '../../../../types/tournamentTypes';
+import { EntryStatusUnion, StageTypeUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '../../../../constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -30,9 +30,9 @@ import {
   SUSPENDED,
 } from '../../../../constants/matchUpStatusConstants';
 import { DIRECT_ACCEPTANCE, WILDCARD } from '../../../../constants/entryStatusConstants';
-import { assignDrawPositionBye } from '../../../../mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { assignDrawPosition } from '../../../../mutate/matchUps/drawPositions/positionAssignment';
-import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;

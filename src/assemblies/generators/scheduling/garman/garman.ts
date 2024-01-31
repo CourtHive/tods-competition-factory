@@ -1,5 +1,5 @@
-import { getCourtsAvailableAtPeriodStart } from '../../../../query/venues/getCourtsAvailableAtPeriodStart';
-import { getScheduleTimes } from '../../../../query/venues/getScheduleTimes';
+import { getCourtsAvailableAtPeriodStart } from '@Query/venues/getCourtsAvailableAtPeriodStart';
+import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
 import { generateTimeSlots } from '../generateTimeSlots';
 import { courtGenerator } from '../courtGenerator';
 

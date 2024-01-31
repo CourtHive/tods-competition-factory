@@ -1,4 +1,4 @@
-import { getTiebreakComplement } from '../query/matchUp/getComplement';
+import { getTiebreakComplement } from '@Query/matchUp/getComplement';
 
 type ParseScoreArgs = {
   scoreString: string;

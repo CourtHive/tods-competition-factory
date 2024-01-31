@@ -1,7 +1,7 @@
 import { matchUpScore } from '../../assemblies/generators/matchUps/matchUpScore';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '../../constants/matchUpStatusConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can generate score object', () => {
   const sets = [

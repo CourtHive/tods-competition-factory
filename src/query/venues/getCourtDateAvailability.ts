@@ -1,4 +1,4 @@
-import { sameDay } from '../../tools/dateTime';
+import { sameDay } from '@Tools/dateTime';
 
 export function getCourtDateAvailability({ court, date }) {
   const targetDateAvailability =

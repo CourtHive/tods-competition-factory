@@ -1,6 +1,6 @@
 import { matchTiebreak, standardSet, tiebreakSet } from './validPatterns';
 import { isBracketScore, isDiffOne, isTiebreakScore } from './helpers';
-import { arrayIndices } from '../../tools/arrays';
+import { arrayIndices } from '@Tools/arrays';
 
 export function joinFloatingTiebreak({ score }) {
   if (typeof score !== 'string') return { score };

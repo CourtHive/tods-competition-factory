@@ -1,6 +1,6 @@
-import { attributeFilter } from '../../tools/attributeFilter';
+import { attributeFilter } from '@Tools/attributeFilter';
 
-import { HydratedParticipant } from '../../types/hydrated';
+import { HydratedParticipant } from '@Types/hydrated';
 
 export function addIndividualParticipants({ participantMap, template }) {
   const participantObjects: any[] = Object.values(participantMap);

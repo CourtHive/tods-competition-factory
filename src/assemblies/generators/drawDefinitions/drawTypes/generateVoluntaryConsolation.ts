@@ -1,21 +1,21 @@
-import { automatedPositioning } from '../../../../mutate/drawDefinitions/automatedPositioning';
-import { resolveTieFormat } from '../../../../query/hierarchical/tieFormats/resolveTieFormat';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { copyTieFormat } from '../../../../query/hierarchical/tieFormats/copyTieFormat';
-import { modifyDrawNotice } from '../../../../mutate/notifications/drawNotifications';
-import { getStageEntries } from '../../../../query/drawDefinition/stageGetter';
-import { validateTieFormat } from '../../../../validators/validateTieFormat';
-import { definedAttributes } from '../../../../tools/definedAttributes';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
-import { constantToString } from '../../../../tools/strings';
-import { nextPowerOf2 } from '../../../../tools/math';
+import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
+import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { getDrawStructures } from '@Acquire/findStructure';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { constantToString } from '@Tools/strings';
+import { nextPowerOf2 } from '@Tools/math';
 import { generateTieMatchUps } from '../tieMatchUps';
 import { getGenerators } from '../getGenerators';
 
-import { PlayoffAttributes, SeedingProfile } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { SINGLES } from '../../../../constants/matchUpTypes';
+import { PlayoffAttributes, SeedingProfile } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   EXISTING_STRUCTURE,
   ErrorType,
@@ -23,7 +23,7 @@ import {
   MISSING_DRAW_DEFINITION,
   STAGE_SEQUENCE_LIMIT,
   UNRECOGNIZED_DRAW_TYPE,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 import {
   DOUBLE_ELIMINATION,
   FEED_IN,
@@ -31,7 +31,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
   VOLUNTARY_CONSOLATION,
-} from '../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 import {
   DrawDefinition,
   DrawLink,
@@ -40,7 +40,7 @@ import {
   TieFormat,
   Tournament,
   EventTypeUnion,
-} from '../../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GenerateVoluntaryConsolationArgs = {
   playoffAttributes?: PlayoffAttributes;

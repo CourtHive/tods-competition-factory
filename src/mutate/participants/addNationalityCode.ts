@@ -1,5 +1,5 @@
-import { countries } from '../../fixtures/countryData';
-import { HydratedParticipant } from '../../types/hydrated';
+import { countries } from '@Fixtures/countryData';
+import { HydratedParticipant } from '@Types/hydrated';
 
 type AddNationalityCodeArgs = {
   participant: HydratedParticipant;

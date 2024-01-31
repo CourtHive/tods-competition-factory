@@ -1,6 +1,6 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
-import { TIME_MODIFIERS } from '../../constants/timeItemConstants';
+import { TIME_MODIFIERS } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
 
 export function matchUpTimeModifiers({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {

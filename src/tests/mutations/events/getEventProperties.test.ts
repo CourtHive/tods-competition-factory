@@ -1,9 +1,9 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { RATING } from '../../../constants/scaleConstants';
-import { SINGLES } from '../../../constants/eventConstants';
+import { RATING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 it('can get event properties to determine if there are seeded, ranked, or rated participants', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({

@@ -1,10 +1,10 @@
-import { getTieFormatDesc } from '../../../query/hierarchical/tieFormats/getTieFormatDescription';
-import { stringSort } from '../../../functions/sorters/stringSort';
-import { isConvertableInteger } from '../../../tools/math';
-import { difference, unique } from '../../../tools/arrays';
+import { getTieFormatDesc } from '@Query/hierarchical/tieFormats/getTieFormatDescription';
+import { stringSort } from '@Functions/sorters/stringSort';
+import { isConvertableInteger } from '@Tools/math';
+import { difference, unique } from '@Tools/arrays';
 
-import { TieFormat } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { TieFormat } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type CompareTieFormatsArgs = {
   considerations?: any;

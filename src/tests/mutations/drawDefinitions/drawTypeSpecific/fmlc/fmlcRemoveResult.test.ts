@@ -1,11 +1,11 @@
-import { setMatchUpState } from '../../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
-import { getAllDrawMatchUps } from '../../../../../query/matchUps/drawMatchUps';
-import { toBePlayed } from '../../../../../fixtures/scoring/outcomes/toBePlayed';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '../../../../../acquire/findStructure';
-import tournamentEngine from '../../../../engines/syncEngine';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import { getDrawStructures } from '@Acquire/findStructure';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 import { TO_BE_PLAYED } from '../../../../../constants/matchUpStatusConstants';

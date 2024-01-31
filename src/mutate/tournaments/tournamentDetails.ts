@@ -1,7 +1,7 @@
 import { addNotes } from '../base/addRemoveNotes';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function setTournamentName({ tournamentRecord, promotionalName, tournamentName, formalName }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

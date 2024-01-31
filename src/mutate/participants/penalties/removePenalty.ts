@@ -1,15 +1,15 @@
-import { addNotice } from '../../../global/state/globalState';
+import { addNotice } from '@Global/state/globalState';
 
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   PENALTY_NOT_FOUND,
   MISSING_PENALTY_ID,
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
-} from '../../../constants/errorConditionConstants';
-import { Participant, Penalty, Tournament } from '../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { Participant, Penalty, Tournament } from '@Types/tournamentTypes';
 
 export function removePenalty(params) {
   const { tournamentRecords } = params;

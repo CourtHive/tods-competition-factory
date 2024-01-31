@@ -1,13 +1,13 @@
-import { getPositionAssignments } from '../../../../../query/drawDefinition/positionsGetter';
-import { isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
-import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
-import { getDrawStructures } from '../../../../../acquire/findStructure';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getDrawStructures } from '@Acquire/findStructure';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../../../tools/arrays';
 import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import {
   QUALIFYING_PARTICIPANT,
   ASSIGN_BYE,

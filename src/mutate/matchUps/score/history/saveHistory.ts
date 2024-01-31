@@ -1,7 +1,7 @@
 import { addExtension } from '../../../extensions/addExtension';
 
-import { MATCHUP_HISTORY } from '../../../../constants/extensionConstants';
-import { MatchUp } from '../../../../types/tournamentTypes';
+import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type SaveHistoryArgs = {
   undoHistory?: any[];

@@ -1,6 +1,6 @@
-import { getParticipantId } from '../../../../../functions/global/extractors';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { getParticipantId } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { chunkArray } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 

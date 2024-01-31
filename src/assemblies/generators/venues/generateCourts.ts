@@ -7,11 +7,11 @@ import { isNumeric } from '@Tools/math';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { Court, Tournament } from '../../../types/tournamentTypes';
-import { VALIDATE } from '../../../constants/attributeConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { Court, Tournament } from '@Types/tournamentTypes';
+import { VALIDATE } from '@Constants/attributeConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type GenerateCourtsArgs = {
   tournamentRecord?: Tournament;

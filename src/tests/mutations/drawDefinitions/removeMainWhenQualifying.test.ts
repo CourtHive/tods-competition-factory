@@ -1,10 +1,10 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { CANNOT_REMOVE_MAIN_STRUCTURE } from '../../../constants/errorConditionConstants';
-import { DRAW, MAIN, QUALIFYING, WINNER } from '../../../constants/drawDefinitionConstants';
+import { CANNOT_REMOVE_MAIN_STRUCTURE } from '@Constants/errorConditionConstants';
+import { DRAW, MAIN, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
 
 it('allows deletion of non-qualifying structures', () => {
   let result = mocksEngine.generateTournamentRecord({

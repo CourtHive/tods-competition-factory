@@ -6,18 +6,18 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findCourt } from './findCourt';
 
 // constants and types
-import { TournamentRecords, ResultType } from '../../types/factoryTypes';
-import { HydratedMatchUp, HydratedCourt } from '../../types/hydrated';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { HydratedMatchUp, HydratedCourt } from '@Types/hydrated';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import {
   INVALID_OBJECT,
   MISSING_COURT_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   NO_VALID_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ModifyCourtArgs = {
   tournamentRecords?: TournamentRecords;

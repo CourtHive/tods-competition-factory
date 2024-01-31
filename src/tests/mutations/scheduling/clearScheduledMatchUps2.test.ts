@@ -1,12 +1,12 @@
-import { getStructureRoundProfile } from '../../../query/structure/getStructureRoundProfile';
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { eventConstants } from '../../../constants/eventConstants';
+import { eventConstants } from '@Constants/eventConstants';
 
-import SEEDING_ITF_POLICY from '../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 const { SINGLES } = eventConstants;
 

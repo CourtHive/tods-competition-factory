@@ -1,10 +1,10 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 
 // constants and types
-import { Event, TimeItem, Tournament } from '../../types/tournamentTypes';
-import { ELEMENT_REQUIRED } from '../../constants/infoConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { Event, TimeItem, Tournament } from '@Types/tournamentTypes';
+import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_VALUES,
   MISSING_DRAW_ID,
@@ -14,7 +14,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type TimeItemResult = {
   timeItem?: TimeItem;

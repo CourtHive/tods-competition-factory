@@ -1,18 +1,14 @@
-import { getMatchUpIds } from '../../../functions/global/extractors';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { generateRange, randomPop } from '../../../tools/arrays';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { PENALTY, REFEREE, SCHEDULE, SCORE } from '../../../constants/matchUpActionConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { AD_HOC, WIN_RATIO } from '../../../constants/drawDefinitionConstants';
-import {
-  CANNOT_REMOVE_PARTICIPANTS,
-  INVALID_STRUCTURE,
-  INVALID_VALUES,
-} from '../../../constants/errorConditionConstants';
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { PENALTY, REFEREE, SCHEDULE, SCORE } from '@Constants/matchUpActionConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { AD_HOC, WIN_RATIO } from '@Constants/drawDefinitionConstants';
+import { CANNOT_REMOVE_PARTICIPANTS, INVALID_STRUCTURE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 it('will generate an AD_HOC drawDefinition with no matchUps', () => {
   const {

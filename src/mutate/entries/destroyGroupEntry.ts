@@ -1,14 +1,14 @@
 import { deleteParticipants } from '../participants/deleteParticipants';
-import { getStageEntries } from '../../query/drawDefinition/getStageEntries';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getParticipantId } from '../../functions/global/extractors';
-import { arrayIndices } from '../../tools/arrays';
+import { getStageEntries } from '@Query/drawDefinition/getStageEntries';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getParticipantId } from '@Functions/global/extractors';
+import { arrayIndices } from '@Tools/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
 
-import { UNGROUPED } from '../../constants/entryStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { PAIR, TEAM_PARTICIPANT } from '../../constants/participantConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import {
   ErrorType,
   INVALID_EVENT_TYPE,
@@ -18,9 +18,9 @@ import {
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../../constants/eventConstants';
-import { DrawDefinition, Tournament, Event } from '../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { DrawDefinition, Tournament, Event } from '@Types/tournamentTypes';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries

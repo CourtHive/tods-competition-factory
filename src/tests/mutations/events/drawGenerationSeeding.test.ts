@@ -1,16 +1,16 @@
-import { getEliminationDrawSize } from '../../../query/participants/getEliminationDrawSize';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { getEliminationDrawSize } from '@Query/participants/getEliminationDrawSize';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_AVOIDANCE_COUNTRY from '../../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SPLIT_WATERFALL } from '../../../constants/flightConstants';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { SEEDING } from '../../../constants/scaleConstants';
-import { SINGLES } from '../../../constants/eventConstants';
-import { MISSING_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '../../../constants/errorConditionConstants';
+import POLICY_AVOIDANCE_COUNTRY from '@Fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SPLIT_WATERFALL } from '@Constants/flightConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SEEDING } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
+import { MISSING_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '@Constants/errorConditionConstants';
 
 const TEST_EVENT = 'Test Event';
 const d200606 = '2020-06-06';

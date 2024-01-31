@@ -1,9 +1,9 @@
-import { generateDateRange, formatDate } from '../../tools/dateTime';
-import { UUID } from '../../tools/UUID';
+import { generateDateRange, formatDate } from '@Tools/dateTime';
+import { UUID } from '@Tools/UUID';
 import { addCourts } from './addCourt';
 import { addVenue } from './addVenue';
 
-import { Tournament } from '../../types/tournamentTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 type GenerateVenuesArgs = {
   tournamentRecord: Tournament;

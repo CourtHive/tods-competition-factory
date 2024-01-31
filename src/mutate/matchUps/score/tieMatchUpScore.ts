@@ -10,22 +10,17 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findExtension } from '@Acquire/findExtension';
 
 // constants and types
-import { PolicyDefinitions, TournamentRecords, MatchUpsMap } from '../../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { DISABLE_AUTO_CALC } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { PolicyDefinitions, TournamentRecords, MatchUpsMap } from '@Types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { DISABLE_AUTO_CALC } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_MATCHUP,
   MATCHUP_NOT_FOUND,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import {
-  COMPLETED,
-  completedMatchUpStatuses,
-  IN_PROGRESS,
-  TO_BE_PLAYED,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/errorConditionConstants';
+import { COMPLETED, completedMatchUpStatuses, IN_PROGRESS, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 type UpdateTieMatchUpScoreArgs = {
   tournamentRecords?: TournamentRecords;

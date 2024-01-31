@@ -1,3 +1,4 @@
+import { setStageDrawSize, setStageQualifiersCount } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPositions';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
@@ -12,18 +13,14 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateTieMatchUps } from './tieMatchUps';
-import {
-  setStageDrawSize,
-  setStageQualifiersCount,
-} from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 
 // constants and types
-import { PolicyDefinitions, MatchUpsMap, ResultType } from '../../../types/factoryTypes';
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   DrawDefinition,
   DrawLink,
@@ -33,7 +30,7 @@ import {
   TieFormat,
   Tournament,
   EventTypeUnion,
-} from '../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GenerateDrawTypeAndModify = {
   policyDefinitions?: PolicyDefinitions;

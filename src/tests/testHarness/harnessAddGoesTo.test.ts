@@ -1,10 +1,10 @@
-import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '../../tools/dateTime';
 import competitionEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 import tournamentRecord from './goesToTournament.tods.json';
 competitionEngine.setState(tournamentRecord);

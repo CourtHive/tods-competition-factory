@@ -1,14 +1,14 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
 import {
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   NOT_IMPLEMENTED,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('will return participant events including all entryStatuses', () => {
   const drawProfiles = [{ drawSize: 16, participantsCount: 14 }];

@@ -1,4 +1,4 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
@@ -7,7 +7,7 @@ import {
   MISSING_COURT_ID,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can return venue information', () => {
   const courtsCount = 8;

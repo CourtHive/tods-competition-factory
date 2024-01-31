@@ -1,7 +1,7 @@
-import { checkScoreHasValue } from '../../query/matchUp/checkScoreHasValue';
-import { extractDate, extractTime } from '../../tools/dateTime';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { extractDate, extractTime } from '@Tools/dateTime';
 
-import { BYE } from '../../constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 export function addScheduleItem(params) {
   const {

@@ -1,26 +1,28 @@
-import { assignTieMatchUpParticipantId } from '../../../mutate/matchUps/lineUps/assignTieMatchUpParticipant';
-import { setMatchUpStatus } from '../../../mutate/matchUps/matchUpStatus/setMatchUpStatus';
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { generateOutcomeFromScoreString } from './generateOutcomeFromScoreString';
-import { getParticipants } from '../../../query/participants/getParticipants';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { structureSort } from '../../../functions/sorters/structureSort';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
-import { getMatchUpId } from '../../../functions/global/extractors';
-import { generateLineUps } from '../participants/generateLineUps';
+import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/generateOutcomeFromScoreString';
+import { assignTieMatchUpParticipantId } from '@Mutate/matchUps/lineUps/assignTieMatchUpParticipant';
+import { generateLineUps } from '@Assemblies/generators/participants/generateLineUps';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatus';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { structureSort } from '@Functions/sorters/structureSort';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import { getMatchUpId } from '@Functions/global/extractors';
 import { generateOutcome } from './generateOutcome';
 
-import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '../../../constants/matchUpStatusConstants';
-import { ErrorType, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/matchUpTypes';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { LINEUPS } from '../../../constants/extensionConstants';
-import { ASCENDING } from '../../../constants/sortingConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { RANKING } from '../../../constants/scaleConstants';
+// constants and types
+import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { addParticipants } from '@Mutate/participants/addParticipants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { ASCENDING } from '@Constants/sortingConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { RANKING } from '@Constants/scaleConstants';
 
 export function completeDrawMatchUps(params): {
   completedCount?: number;
@@ -90,8 +92,8 @@ export function completeDrawMatchUps(params): {
           tournamentRecord,
         });
         const assignParticipants = (dualMatchUp) => {
-          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === SINGLES);
-          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(({ matchUpType }) => matchUpType === DOUBLES);
+          const singlesMatchUps = dualMatchUp.tieMatchUps.filter(isMatchUpEventType(SINGLES));
+          const doublesMatchUps = dualMatchUp.tieMatchUps.filter(isMatchUpEventType(DOUBLES));
 
           singlesMatchUps.forEach((singlesMatchUp, i) => {
             const tieMatchUpId = singlesMatchUp.matchUpId;

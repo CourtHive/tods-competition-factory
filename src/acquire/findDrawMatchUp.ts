@@ -14,7 +14,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   MISSING_MATCHUP_ID,
-} from '../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /*
   public version of findMatchUp

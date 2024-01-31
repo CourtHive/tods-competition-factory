@@ -1,8 +1,8 @@
-import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { ParticipantsProfile } from '../../../../types/factoryTypes';
-import { Participant } from '../../../../types/tournamentTypes';
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '../../../../constants/participantConstants';
+import { ParticipantsProfile } from '@Types/factoryTypes';
+import { Participant } from '@Types/tournamentTypes';
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 type AddParticipantGroupingsArgs = {
   participantsProfile?: ParticipantsProfile;

@@ -2,9 +2,9 @@ import { getGroupValueGroups } from '@Query/hierarchical/tieFormats/getGroupValu
 import { isConvertableInteger } from '@Tools/math';
 
 // constants and types
-import { CollectionDefinition } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { CollectionDefinition } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type CalculateWinCriteriaArgs = {
   collectionGroups?: { groupValue?: number; groupNumber?: number }[];

@@ -1,6 +1,6 @@
-import { toBePlayed } from '../../../../fixtures/scoring/outcomes/toBePlayed';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { INDIVIDUAL } from '../../../../constants/participantConstants';

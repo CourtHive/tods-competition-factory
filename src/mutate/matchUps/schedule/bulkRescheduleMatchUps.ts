@@ -12,18 +12,14 @@ import {
   extractDate,
   extractTime,
   timeStringMinutes,
-} from '../../../tools/dateTime';
+} from '@Tools/dateTime';
 
 // constants and types
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { Tournament } from '../../../types/tournamentTypes';
-import {
-  INVALID_VALUES,
-  MISSING_MATCHUP_IDS,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { INVALID_VALUES, MISSING_MATCHUP_IDS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type BulkRescheduleMatchUpsArgs = {
   tournamentRecords: TournamentRecords;

@@ -1,7 +1,7 @@
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 
-import { MODIFY_PAIR_ASSIGNMENT, MODIFY_PAIR_ASSIGNMENT_METHOD } from '../../../constants/positionActionConstants';
-import { UNGROUPED, UNPAIRED } from '../../../constants/entryStatusConstants';
+import { MODIFY_PAIR_ASSIGNMENT, MODIFY_PAIR_ASSIGNMENT_METHOD } from '@Constants/positionActionConstants';
+import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 
 export function getValidModifyAssignedPairAction({
   tournamentParticipants,

@@ -1,9 +1,9 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { findExtension } from '../../acquire/findExtension';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { findExtension } from '@Acquire/findExtension';
 
-import { MISSING_EVENT } from '../../constants/errorConditionConstants';
-import { FLIGHT_PROFILE } from '../../constants/extensionConstants';
-import { Event } from '../../types/tournamentTypes';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { Event } from '@Types/tournamentTypes';
 
 type GetFlightProfileArgs = {
   eventId?: string;

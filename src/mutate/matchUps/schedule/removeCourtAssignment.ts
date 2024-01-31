@@ -1,19 +1,19 @@
-import { getMatchUp } from '../../../query/matchUps/getMatchUpFromMatchUps';
+import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { findEvent } from '../../../acquire/findEvent';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { findEvent } from '@Acquire/findEvent';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import { ALLOCATE_COURTS, ASSIGN_COURT } from '../../../constants/timeItemConstants';
+} from '@Constants/errorConditionConstants';
+import { ALLOCATE_COURTS, ASSIGN_COURT } from '@Constants/timeItemConstants';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 
 type RemoveCourtAssignmentArgs = {
   drawDefinition?: DrawDefinition;

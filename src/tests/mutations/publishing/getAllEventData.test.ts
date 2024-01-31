@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can return all event data', () => {
   const drawProfiles = [{ drawSize: 32 }, { drawSize: 16, drawType: ROUND_ROBIN }];

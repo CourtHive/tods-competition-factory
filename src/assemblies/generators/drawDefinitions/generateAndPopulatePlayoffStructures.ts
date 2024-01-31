@@ -18,17 +18,13 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
-import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '../../../types/tournamentTypes';
-import { CONTAINER, LOSER, PLAY_OFF, TOP_DOWN } from '../../../constants/drawDefinitionConstants';
-import { RoundProfile, ResultType } from '../../../types/factoryTypes';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
-import {
-  INVALID_VALUES,
-  MISSING_DRAW_DEFINITION,
-  STRUCTURE_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, DrawLink, Event, Structure, Tournament } from '@Types/tournamentTypes';
+import { CONTAINER, LOSER, PLAY_OFF, TOP_DOWN } from '@Constants/drawDefinitionConstants';
+import { RoundProfile, ResultType } from '@Types/factoryTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 
 type GenerateAndPopulateArgs = {
   addNameBaseToAttributeName?: boolean;

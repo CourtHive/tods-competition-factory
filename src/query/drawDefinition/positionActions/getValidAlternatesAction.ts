@@ -1,25 +1,18 @@
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getAllPositionedParticipantIds } from '../positionsGetter';
 import { getFlightProfile } from '../../event/getFlightProfile';
-import { unique } from '../../../tools/arrays';
+import { unique } from '@Tools/arrays';
 
-import { POLICY_TYPE_POSITION_ACTIONS } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import {
   ALTERNATE_PARTICIPANT,
   ALTERNATE_PARTICIPANT_METHOD,
   ASSIGN_PARTICIPANT,
-} from '../../../constants/positionActionConstants';
-import { ALTERNATE, UNGROUPED, UNPAIRED, WITHDRAWN } from '../../../constants/entryStatusConstants';
-import {
-  DrawDefinition,
-  Entry,
-  Event,
-  Participant,
-  PositionAssignment,
-  Structure,
-} from '../../../types/tournamentTypes';
+} from '@Constants/positionActionConstants';
+import { ALTERNATE, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
+import { DrawDefinition, Entry, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';
 
 type GetValidAlternatesActionArgs = {
   positionAssignments: PositionAssignment[];

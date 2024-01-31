@@ -1,13 +1,13 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { addNotice, getTopics } from '../../global/state/globalState';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { addNotice, getTopics } from '@Global/state/globalState';
 
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
+} from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 export function modifyParticipantOtherName({ tournamentRecord, participantId, participantOtherName }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

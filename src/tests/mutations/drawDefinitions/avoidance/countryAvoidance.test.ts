@@ -1,5 +1,5 @@
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { allDrawMatchUps } from '../../../../query/matchUps/getAllDrawMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { avoidanceTest } from './avoidanceTest';
 import { eventConstants } from '../../../..';
 import { expect, it } from 'vitest';

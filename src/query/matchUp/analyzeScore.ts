@@ -1,8 +1,8 @@
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
-import { instanceCount } from '../../tools/arrays';
+import { instanceCount } from '@Tools/arrays';
 
-import { DEFAULTED, RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { Score } from '../../types/tournamentTypes';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { Score } from '@Types/tournamentTypes';
 
 type AnalyzeScoreArgs = {
   existingMatchUpStatus?: string;

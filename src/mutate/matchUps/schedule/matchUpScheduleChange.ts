@@ -1,17 +1,17 @@
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { allCompetitionMatchUps } from '../../../query/matchUps/getAllCompetitionMatchUps';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 
-import { SUCCESS } from '../../../constants/resultConstants';
-import { TEAM } from '../../../constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   NO_MODIFICATIONS_APPLIED,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function matchUpScheduleChange(params) {
   const stack = 'matchUpScheduleChange';

@@ -1,22 +1,17 @@
-import { getContainedStructures } from '../../../query/drawDefinition/getContainedStructures';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
 import { intersection, unique } from '../../../tools/arrays';
 import { xa } from '../../../tools/objects';
 import { constantToString } from '../../../tools/strings';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { EXISTING_ROUND } from '../../../constants/errorConditionConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import {
-  CONSOLATION,
-  FEED_IN_CHAMPIONSHIP_TO_R16,
-  MAIN,
-  ROUND_ROBIN,
-} from '../../../constants/drawDefinitionConstants';
+import { EXISTING_ROUND } from '@Constants/errorConditionConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can schedule potential rounds properly in scenarios with recovery times greater than average matchUp times', () => {
   const firstVenueId = 'firstVenueId';

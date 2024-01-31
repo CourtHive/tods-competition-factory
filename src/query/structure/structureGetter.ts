@@ -1,11 +1,7 @@
-import { findStructure, getDrawStructures } from '../../acquire/findStructure';
+import { findStructure, getDrawStructures } from '@Acquire/findStructure';
 
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import {
-  MISSING_DRAW_DEFINITION,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
+import { MISSING_DRAW_DEFINITION, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type GetPlayoffStructuresArgs = {
   drawDefinition: DrawDefinition;

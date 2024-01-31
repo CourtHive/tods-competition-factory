@@ -1,7 +1,7 @@
-import { definedAttributes } from '../../tools/definedAttributes';
-import { validateCategory } from '../../validators/validateCategory';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { validateCategory } from '@Validators/validateCategory';
 
-import { Category } from '../../types/tournamentTypes';
+import { Category } from '@Types/tournamentTypes';
 
 type CategoryCanContainArgs = {
   childCategory: Category;

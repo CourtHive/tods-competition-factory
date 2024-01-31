@@ -1,16 +1,16 @@
-import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
-import { validateTieFormat } from '../../../validators/validateTieFormat';
-import tournamentEngine from '../../engines/syncEngine';
+import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
+import { validateTieFormat } from '@Validators/validateTieFormat';
+import tournamentEngine from '@Engines/syncEngine';
 import { fixtures, mocksEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 
-import { INVALID_TIE_FORMAT } from '../../../constants/errorConditionConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { tieFormats } from '../../../fixtures/scoring/tieFormats';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { TEAM } from '../../../constants/eventConstants';
-import { COLLEGE_D3, DOMINANT_DUO, TEAM_DOUBLES_3_AGGREGATION } from '../../../constants/tieFormatConstants';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { tieFormats } from '@Fixtures/scoring/tieFormats';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { TEAM } from '@Constants/eventConstants';
+import { COLLEGE_D3, DOMINANT_DUO, TEAM_DOUBLES_3_AGGREGATION } from '@Constants/tieFormatConstants';
 
 const matchUpFormat = FORMAT_STANDARD;
 

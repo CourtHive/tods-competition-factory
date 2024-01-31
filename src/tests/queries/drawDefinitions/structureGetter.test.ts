@@ -1,14 +1,14 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { newDrawDefinition } from '../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { feedInChampionship } from '../../mutations/drawDefinitions/primitives/feedIn';
-import { findStructure, getDrawStructures } from '../../../acquire/findStructure';
+import { findStructure, getDrawStructures } from '@Acquire/findStructure';
 import { constantToString } from '../../../tools/strings';
 import { expect, it } from 'vitest';
 
-import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../types/tournamentTypes';
-import { ERROR } from '../../../constants/resultConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { ERROR } from '@Constants/resultConstants';
 
 it('can find structures by structureId', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

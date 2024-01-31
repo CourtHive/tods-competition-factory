@@ -6,24 +6,17 @@ import { getPairings } from './getPairings';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { TEAM } from '../../../../../../constants/participantConstants';
-import { SUCCESS } from '../../../../../../constants/resultConstants';
-import { ResultType } from '../../../../../../types/factoryTypes';
+import { TEAM } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_PARTICIPANT_IDS,
   MISSING_STRUCTURE,
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
-} from '../../../../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  MatchUp,
-  Structure,
-  EventTypeUnion,
-  Event,
-  Tournament,
-} from '../../../../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event, Tournament } from '@Types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;

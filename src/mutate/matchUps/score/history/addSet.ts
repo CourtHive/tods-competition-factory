@@ -1,7 +1,7 @@
 import { saveHistory } from './saveHistory';
 import { getHistory } from './getHistory';
 
-import { MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function addSet({ matchUp, set }) {
   // TODO: check set validity

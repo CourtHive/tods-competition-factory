@@ -5,18 +5,18 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
-import { GROUP, INDIVIDUAL, TEAM } from '../../constants/participantConstants';
-import { Participant, Tournament } from '../../types/tournamentTypes';
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { GROUP, INDIVIDUAL, TEAM } from '@Constants/participantConstants';
+import { Participant, Tournament } from '@Types/tournamentTypes';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   INVALID_PARTICIPANT_IDS,
   INVALID_PARTICIPANT_TYPE,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddIndividualParticipantIdsType = {
   individualParticipantIds: string[]; // individual participantIds to be added to grouping participant

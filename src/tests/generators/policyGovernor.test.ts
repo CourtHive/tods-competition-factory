@@ -1,25 +1,25 @@
 import { newDrawDefinition } from '../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { attachPolicies } from '../../mutate/extensions/policies/attachPolicies';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import tournamentEngine from '../engines/syncEngine';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test, it } from 'vitest';
 
-import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SCORING } from '../../constants/policyConstants';
-import POLICY_SCORING_DEFAULT from '../../fixtures/policies/POLICY_SCORING_DEFAULT';
-import AVOIDANCE_COUNTRY from '../../fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
-import { SINGLES, TEAM_EVENT } from '../../constants/eventConstants';
-import SEEDING_ITF from '../../fixtures/policies/POLICY_SEEDING_ITF';
-import { DEFAULTED } from '../../constants/matchUpStatusConstants';
-import { SINGLES_MATCHUP } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { POLICY_TYPE_AVOIDANCE, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import POLICY_SCORING_DEFAULT from '@Fixtures/policies/POLICY_SCORING_DEFAULT';
+import AVOIDANCE_COUNTRY from '@Fixtures/policies/POLICY_AVOIDANCE_COUNTRY';
+import { SINGLES, TEAM_EVENT } from '@Constants/eventConstants';
+import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
+import { DEFAULTED } from '@Constants/matchUpStatusConstants';
+import { SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EXISTING_POLICY_TYPE,
   INVALID_VALUES,
   MISSING_POLICY_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
   POLICY_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can set and remove policies from tournamentRecords and events', () => {
   expect(tournamentEngine).toHaveProperty('attachPolicies');

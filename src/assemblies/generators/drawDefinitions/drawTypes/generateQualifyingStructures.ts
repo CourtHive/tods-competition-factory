@@ -8,12 +8,12 @@ import { treeMatchUps } from './eliminationTree';
 import { constantToString } from '@Tools/strings';
 
 // constants and types
-import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
-import { MISSING_DRAW_SIZE } from '../../../../constants/errorConditionConstants';
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
-import { ROUND_TARGET } from '../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { ResultType } from '../../../../types/factoryTypes';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
+import { MISSING_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import { DrawLink, Structure } from '@Types/tournamentTypes';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function generateQualifyingStructures({
   qualifyingProfiles,

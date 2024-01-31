@@ -1,10 +1,10 @@
-import { setMatchUpState } from '../../../../mutate/matchUps/matchUpStatus/setMatchUpState';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getRoundMatchUps } from '../../../../query/matchUps/getRoundMatchUps';
-import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
 import { parseScoreString } from '../../../../tools/parseScoreString';
-import { findDrawMatchUp } from '../../../../acquire/findDrawMatchUp';
-import { findStructure } from '../../../../acquire/findStructure';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
+import { findStructure } from '@Acquire/findStructure';
 import { expect } from 'vitest';
 
 import { MATCHUP_NOT_FOUND } from '../../../../constants/errorConditionConstants';

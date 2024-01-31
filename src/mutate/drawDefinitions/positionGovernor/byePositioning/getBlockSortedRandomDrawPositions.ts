@@ -1,5 +1,5 @@
-import { chunkArray, shuffleArray } from '../../../../tools/arrays';
-import { isOdd } from '../../../../tools/math';
+import { chunkArray, shuffleArray } from '@Tools/arrays';
+import { isOdd } from '@Tools/math';
 
 /*
   seedBlocks for 32 seeds in a draw of 128 are as follows:

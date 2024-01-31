@@ -1,8 +1,8 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 
-import { PUBLISH, STATUS } from '../../../constants/timeItemConstants';
+import { PUBLISH, STATUS } from '@Constants/timeItemConstants';
 
 test('mocksEngine can publish generated events', () => {
   const drawProfiles = [{ drawSize: 32, publish: true }];

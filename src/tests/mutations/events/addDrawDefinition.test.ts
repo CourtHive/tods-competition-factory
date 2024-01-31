@@ -1,12 +1,12 @@
-import { getMatchUpContextIds } from '../../../query/matchUp/getMatchUpContextIds';
-import { getMatchUpType } from '../../../query/matchUp/getMatchUpType';
-import tournamentEngineSync from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getMatchUpContextIds } from '@Query/matchUp/getMatchUpContextIds';
+import { getMatchUpType } from '@Query/matchUp/getMatchUpType';
+import tournamentEngineSync from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 
 test.each([tournamentEngineSync])('can create flightProfile on addDrawDefinition', async (tournamentEngine) => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();

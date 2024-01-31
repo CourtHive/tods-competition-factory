@@ -1,9 +1,9 @@
-import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
-import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
-import { makeDeepCopy } from '../../../../../tools/makeDeepCopy';
-import { isValidDateString, timeStringMinutes } from '../../../../../tools/dateTime';
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
+import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { isValidDateString, timeStringMinutes } from '@Tools/dateTime';
 
-import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '../../../../../constants/errorConditionConstants';
+import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function generateVirtualCourts(params) {
   const { remainingScheduleTimes = [], clearScheduleDates, periodLength = 30, scheduleDate, courts = [] } = params;

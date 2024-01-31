@@ -1,14 +1,14 @@
 import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
 import { getInitialRoundNumber } from '../../matchUps/getInitialRoundNumber';
 import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
-import { getParticipantId } from '../../../functions/global/extractors';
-import { findStructure } from '../../../acquire/findStructure';
+import { getParticipantId } from '@Functions/global/extractors';
+import { findStructure } from '@Acquire/findStructure';
 
-import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '../../../types/tournamentTypes';
-import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '../../../constants/positionActionConstants';
-import { ROUND_OUTCOME } from '../../../constants/drawDefinitionConstants';
-import { HydratedParticipant } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/eventConstants';
+import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';
+import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
+import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
+import { HydratedParticipant } from '@Types/hydrated';
+import { TEAM } from '@Constants/eventConstants';
 
 type GetValidLuckLoserActionArgs = {
   tournamentParticipants?: HydratedParticipant[];

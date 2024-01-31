@@ -1,11 +1,11 @@
-import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
-import { getStructurePositionedSeeds } from '../../../../query/structure/getStructurePositionedSeeds';
-import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
-import { getPairedDrawPosition } from '../../../../query/drawDefinition/getPairedDrawPosition';
-import { getAllStructureMatchUps } from '../../../../query/matchUps/getAllStructureMatchUps';
-import { getNumericSeedValue } from '../../../../query/drawDefinition/getNumericSeedValue';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getStructurePositionedSeeds } from '@Query/structure/getStructurePositionedSeeds';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getPairedDrawPosition } from '@Query/drawDefinition/getPairedDrawPosition';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getNumericSeedValue } from '@Query/drawDefinition/getNumericSeedValue';
 import { chunkArray, generateRange } from '../../../../tools/arrays';
-import { findStructure } from '../../../../acquire/findStructure';
+import { findStructure } from '@Acquire/findStructure';
 import { verifyDrawHierarchy } from './verifyDrawHierarchy';
 import { expect } from 'vitest';
 

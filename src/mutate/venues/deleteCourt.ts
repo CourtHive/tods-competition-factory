@@ -1,19 +1,19 @@
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
-import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
+import { getScheduledCourtMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { addNotice } from '../../global/state/globalState';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { addNotice } from '@Global/state/globalState';
 import { findCourt } from './findCourt';
 
-import { COURT_NOT_FOUND } from '../../constants/errorConditionConstants';
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { Tournament } from '../../types/tournamentTypes';
-import { COURT_ID, TOURNAMENT_RECORDS } from '../../constants/attributeConstants';
+import { COURT_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { COURT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 type DeleteCourtArgs = {
   tournamentRecords?: TournamentRecords;

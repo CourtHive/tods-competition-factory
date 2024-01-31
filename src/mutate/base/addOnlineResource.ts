@@ -3,9 +3,9 @@ import { intersection } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { DrawDefinition, Event, OnlineResource, Tournament } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { DrawDefinition, Event, OnlineResource, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   COURT_NOT_FOUND,
   INVALID_OBJECT,
@@ -15,7 +15,7 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddOnlineResourceArgs = {
   onlineResource: OnlineResource;

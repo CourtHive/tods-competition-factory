@@ -2,11 +2,11 @@ import { validateTieFormat } from '@Assemblies/governors/scoreGovernor';
 import tieFormatDefaults from '@Generators/templates/tieFormatDefaults';
 
 // constants and types
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { TieFormat } from '../../../types/tournamentTypes';
-import { ResultType } from '../../../types/factoryTypes';
-import { TEAM } from '../../../constants/eventConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { TieFormat } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
+import { TEAM } from '@Constants/eventConstants';
 
 export function getDrawFormat(params): ResultType & { tieFormat?: TieFormat; matchUpFormat?: string } {
   const {

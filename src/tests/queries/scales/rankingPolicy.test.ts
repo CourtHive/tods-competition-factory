@@ -1,13 +1,13 @@
 import { finishingPositionSort, getFpMap } from './awardTestUtils';
-import { getAwardProfile } from '../../../query/scales/getAwardProfile';
-import tournamentEngine from '../../engines/syncEngine';
-import scaleEngine from '../../engines/scaleEngine';
+import { getAwardProfile } from '@Query/scales/getAwardProfile';
+import tournamentEngine from '@Engines/syncEngine';
+import scaleEngine from '@Engines/scaleEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 import { awardProfileExpandedLevels, awardProfileLevels, awardProfileThresholds } from './awardProfileExamples';
 
-import { POLICY_TYPE_RANKING_POINTS } from '../../../constants/policyConstants';
-import { COMPASS } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 const awardProfiles = [
   {

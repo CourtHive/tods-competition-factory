@@ -1,12 +1,12 @@
-import { getMatchUpDependencies } from '../../../../../query/matchUps/getMatchUpDependencies';
-import { generateRange, instanceCount, unique } from '../../../../../tools/arrays';
-import { matchUpSort } from '../../../../../functions/sorters/matchUpSort';
-import { validMatchUps } from '../../../../../validators/validMatchUp';
-import { ensureInt } from '../../../../../tools/ensureInt';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { generateRange, instanceCount, unique } from '@Tools/arrays';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '../../../../../constants/errorConditionConstants';
-import { Tournament } from '../../../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { ErrorType, MISSING_CONTEXT, MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
@@ -16,7 +16,7 @@ import {
   SCHEDULE_STATE,
   CONFLICT_MATCHUP_ORDER,
   CONFLICT_PARTICIPANTS,
-} from '../../../../../constants/scheduleConstants';
+} from '@Constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 type ProConflictsArgs = {

@@ -4,20 +4,20 @@ import { isObject, isString } from '@Tools/objects';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { DOUBLES, SINGLES, TEAM } from '../../constants/eventConstants';
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { ANY, MIXED } from '../../constants/genderConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { ANY, MIXED } from '@Constants/genderConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   // Category,
   Event,
   Tournament,
   EventTypeUnion,
   GenderUnion,
-} from '../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type ModifyEventArgs = {
   tournamentRecord: Tournament;

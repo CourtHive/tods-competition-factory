@@ -1,12 +1,12 @@
-import { getStructureSeedAssignments } from '../../../../query/structure/getStructureSeedAssignments';
-import { getAppliedPolicies } from '../../../../query/extensions/getAppliedPolicies';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { eventConstants } from '../../../../constants/eventConstants';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { MISSING_ASSIGNMENTS } from '../../../../constants/errorConditionConstants';
-import SEEDING_ITF_POLICY from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
+import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 
 const { SINGLES } = eventConstants;
 

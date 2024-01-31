@@ -1,8 +1,8 @@
-import { structureSort } from '../../../functions/sorters/structureSort';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { structureSort } from '@Functions/sorters/structureSort';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { instanceCount } from '../../../tools/arrays';
-import * as tools from '../../../assemblies/tools';
+import * as tools from '@Assemblies/tools';
 import { expect, test } from 'vitest';
 
 import {
@@ -12,7 +12,7 @@ import {
   FEED_IN_CHAMPIONSHIP,
   FINISHING_POSITIONS,
   FIRST_MATCH_LOSER_CONSOLATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 test('structureSort can sort by stage and stageSequence', () => {
   const {

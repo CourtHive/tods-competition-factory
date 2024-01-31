@@ -9,7 +9,7 @@ import {
   COMPLETED,
   DOUBLE_WALKOVER,
   DOUBLE_DEFAULT,
-} from '../../../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 export function getMatchUpsToSchedule({
   matchUpPotentialParticipantIds,

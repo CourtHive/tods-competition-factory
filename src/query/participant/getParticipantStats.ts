@@ -8,20 +8,20 @@ import { intersection } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { ParticipantTypeUnion, Tournament } from '../../types/tournamentTypes';
-import { TEAM_PARTICIPANT } from '../../constants/participantConstants';
-import { HydratedMatchUp, HydratedSide } from '../../types/hydrated';
-import { ResultType, Tally } from '../../types/factoryTypes';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { TEAM_MATCHUP } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { ParticipantTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
+import { ResultType, Tally } from '@Types/factoryTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_IDS,
   MISSING_MATCHUPS,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export type StatCounters = {
   participantName: string;

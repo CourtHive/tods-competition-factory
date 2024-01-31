@@ -1,9 +1,9 @@
 import { extractTime, timeStringMinutes } from '../../../tools/dateTime';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 
 test.each([
   [16, 8, 8, 18],

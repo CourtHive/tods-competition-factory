@@ -1,17 +1,17 @@
 import { addParticipantTimeItem } from '../timeItems/addTimeItem';
-import { addNotice, getTopics } from '../../global/state/globalState';
-import { getParticipantId } from '../../functions/global/extractors';
+import { addNotice, getTopics } from '@Global/state/globalState';
+import { getParticipantId } from '@Functions/global/extractors';
 
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
-import { Participant } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { Participant } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_VALUES,
   MISSING_PARTICIPANTS,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
-import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '@Constants/participantConstants';
 
 export function modifyParticipantsSignInStatus({ tournamentRecord, participantIds, signInState }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

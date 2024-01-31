@@ -1,13 +1,16 @@
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { scheduledMatchUpTime } from './matchUp/scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './matchUp/scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './matchUp/courtAllocations';
 import { matchUpAssignedCourtId } from './matchUp/courtAssignment';
 import { matchUpAssignedVenueId } from './matchUp/venueAssignment';
-import { extractDate, sameDay } from '../tools/dateTime';
+import { extractDate, sameDay } from '@Tools/dateTime';
 
-import { TEAM_MATCHUP } from '../constants/matchUpTypes';
-import { MatchUpFilters } from '../types/factoryTypes';
-import { HydratedMatchUp } from '../types/hydrated';
+// constants and types
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { MatchUpFilters } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type FilterMatchUpsArgs = MatchUpFilters & {
   matchUps: HydratedMatchUp[];
@@ -82,7 +85,7 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
   const targetStructureIds = Array.isArray(structureIds) ? structureIds.filter(Boolean) : [];
 
   return matchUps.filter((matchUp) => {
-    if (readyToScore && matchUp.matchUpType !== TEAM_MATCHUP && !matchUp.readyToScore) return false;
+    if (readyToScore && !isMatchUpEventType(TEAM_MATCHUP)(matchUp) && !matchUp.readyToScore) return false;
     if (matchUp.winningSide && hasWinningSide && ![1, 2].includes(matchUp.winningSide)) return false;
     if (isMatchUpTie !== undefined) {
       if (isMatchUpTie && !matchUp.tieMatchUps) {
@@ -138,7 +141,10 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
     if (targetMatchUpIds.length && !targetMatchUpIds.includes(matchUp.matchUpId)) {
       return false;
     }
-    if (targetMatchUpTypes.length && (!matchUp.matchUpType || !targetMatchUpTypes.includes(matchUp.matchUpType))) {
+    if (
+      targetMatchUpTypes.length &&
+      (!matchUp.matchUpType || !includesMatchUpEventType(targetMatchUpTypes, matchUp.matchUpType))
+    ) {
       return false;
     }
     if (

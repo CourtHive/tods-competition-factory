@@ -1,8 +1,9 @@
-import { getTournamentId } from '../../../global/state/globalState';
-import { findEvent } from '../../../acquire/findEvent';
+import { getTournamentId } from '@Global/state/globalState';
+import { findEvent } from '@Acquire/findEvent';
 
-import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
+// constants and types
+import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
 
 export function paramsMiddleware(tournamentRecords: TournamentRecords, params: { [key: string]: any }) {
   if (params._middleware === false) return params;

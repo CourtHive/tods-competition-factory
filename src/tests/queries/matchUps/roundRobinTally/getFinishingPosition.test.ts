@@ -1,8 +1,8 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { ROUND_ROBIN } from '../../../../constants/drawDefinitionConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
 

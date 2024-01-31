@@ -1,17 +1,17 @@
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { it, expect } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { SINGLES } from '../../../constants/eventConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { SINGLES } from '@Constants/eventConstants';
 import {
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 it.each([
   [SINGLE_ELIMINATION, 16],

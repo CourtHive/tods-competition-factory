@@ -1,11 +1,11 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { xa } from '../../../tools/objects';
 import { expect, it } from 'vitest';
 
-import { MISSING_MATCHUPS } from '../../../constants/errorConditionConstants';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 
 it('can return team statistics', () => {
   const drawSize = 8;

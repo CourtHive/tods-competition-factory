@@ -3,6 +3,7 @@ import { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetiti
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getMatchUpScheduleDetails } from '@Query/matchUp/getMatchUpScheduleDetails';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
@@ -27,15 +28,15 @@ import { unique } from '@Tools/arrays';
 import { getSide } from './getSide';
 
 // constants and types
-import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '../../types/tournamentTypes';
-import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '../../constants/policyConstants';
-import { MISSING_STRUCTURE } from '../../constants/errorConditionConstants';
-import { QUALIFYING } from '../../constants/drawDefinitionConstants';
-import { BYE } from '../../constants/matchUpStatusConstants';
-import { MIXED } from '../../constants/genderConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { SINGLES } from '../../constants/matchUpTypes';
-import { TEAM } from '../../constants/eventConstants';
+import { Participant, Tournament, Event, Structure, DrawDefinition, SeedAssignment } from '@Types/tournamentTypes';
+import { POLICY_TYPE_PARTICIPANT, POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { MIXED } from '@Constants/genderConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/eventConstants';
 import {
   ContextContent,
   ContextProfile,
@@ -46,7 +47,7 @@ import {
   PolicyDefinitions,
   ScheduleTiming,
   ScheduleVisibilityFilters,
-} from '../../types/factoryTypes';
+} from '@Types/factoryTypes';
 
 /*
   return all matchUps within a structure and its child structures
@@ -622,7 +623,7 @@ export function getAllStructureMatchUps({
 
       if (inferGender) {
         const sideGenders = matchUpWithContext.sides.map((side) => {
-          if (matchUpWithContext.matchUpType === SINGLES) return side.participant?.person?.sex;
+          if (isMatchUpEventType(SINGLES)(matchUpWithContext.matchUpType)) return side.participant?.person?.sex;
 
           if (side.participant?.individualParticipants?.length === 2) {
             const pairGenders = unique(

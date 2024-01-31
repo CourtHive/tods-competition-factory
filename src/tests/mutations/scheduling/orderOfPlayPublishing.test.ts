@@ -1,10 +1,10 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { Tournament } from '../../../types/tournamentTypes';
-import { PUBLIC } from '../../../constants/timeItemConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { Tournament } from '@Types/tournamentTypes';
+import { PUBLIC } from '@Constants/timeItemConstants';
 
 it('can publish order of play for specified days', () => {
   const startDate = '2022-01-01';

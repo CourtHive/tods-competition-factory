@@ -1,4 +1,4 @@
-import { BOTTOM_UP, TOP_DOWN, LOSER, WINNER } from '../../../../constants/drawDefinitionConstants';
+import { BOTTOM_UP, TOP_DOWN, LOSER, WINNER } from '@Constants/drawDefinitionConstants';
 
 export function doubleEliminationLinks({ mainStructure, consolationStructure, deciderStructure }) {
   const consolationMatchUps = consolationStructure.matchUps;

@@ -1,11 +1,11 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { generateRange } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '../../../constants/participantConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '../../../constants/eventConstants';
-import names from '../../../fixtures/data/names.json';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import names from '@Fixtures/data/names.json';
 
 const personData = generateRange(0, 20).map((i) => ({
   lastName: names.lastNames[i],

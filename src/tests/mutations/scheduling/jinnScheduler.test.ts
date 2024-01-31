@@ -1,15 +1,15 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
 import { constantToString } from '../../../tools/strings';
-import mocksEngine from '../../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { extractTime } from '../../../tools/dateTime';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import POLICY_SCHEDULING_NO_DAILY_LIMITS from '../../../fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '../../../constants/drawDefinitionConstants';
+import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_R16, MAIN } from '@Constants/drawDefinitionConstants';
 
 it.each([
   {

@@ -1,11 +1,11 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { getSourceRounds } from '../../../../query/drawDefinition/getSourceRounds';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { getSourceRounds } from '@Query/drawDefinition/getSourceRounds';
 import { it, expect } from 'vitest';
 
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 
 it('can correctly derive source rounds for final positions in SINGLE_ELIMINATION', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();

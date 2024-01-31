@@ -1,19 +1,19 @@
-import { getParticipantScaleItem } from '../../query/participant/getParticipantScaleItem';
-import { allTournamentMatchUps } from '../../query/matchUps/getAllTournamentMatchUps';
+import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
 import { setParticipantScaleItem } from '../participants/addScaleItems';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { matchUpSort } from '../../functions/sorters/matchUpSort';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { aggregateSets } from './aggregators';
 
-import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { DYNAMIC, RATING } from '../../constants/scaleConstants';
-import { EventTypeUnion } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ELO } from '../../constants/ratingConstants';
-import { HydratedSide } from '../../types/hydrated';
+import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DYNAMIC, RATING } from '@Constants/scaleConstants';
+import { EventTypeUnion } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ELO } from '@Constants/ratingConstants';
+import { HydratedSide } from '@Types/hydrated';
 
 export function generateDynamicRatings({
   removePriorValues = true,

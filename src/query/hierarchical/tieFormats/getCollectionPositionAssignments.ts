@@ -1,4 +1,4 @@
-import { Substitution } from '../../../types/factoryTypes';
+import { Substitution } from '@Types/factoryTypes';
 
 export function getCollectionPositionAssignments({ collectionPosition, collectionId, lineUp }): {
   assignedParticipantIds: string[];

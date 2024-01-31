@@ -1,22 +1,22 @@
-import { isNumeric, randomInt, skewedDistribution } from '../../../tools/math';
-import { generateRange, shuffleArray } from '../../../tools/arrays';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { isNumeric, randomInt, skewedDistribution } from '@Tools/math';
+import { generateRange, shuffleArray } from '@Tools/arrays';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { cityMocks, stateMocks, postalCodeMocks } from './address';
-import { isValidDateString } from '../../../tools/dateTime';
-import { countries } from '../../../fixtures/countryData';
+import { isValidDateString } from '@Tools/dateTime';
+import { countries } from '@Fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { UUID } from '../../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 import { nameMocks } from './nameMocks';
 
-import defaultRatingsParameters from '../../../fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
-import { DOUBLES_EVENT, SINGLES_EVENT } from '../../../constants/eventConstants';
-import { RANKING, RATING, SCALE } from '../../../constants/scaleConstants';
-import { ErrorType } from '../../../constants/errorConditionConstants';
-import { DOUBLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
+import { RANKING, RATING, SCALE } from '@Constants/scaleConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
+import { DOUBLES_MATCHUP } from '@Constants/matchUpTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
 
 export function generateParticipants(params): {

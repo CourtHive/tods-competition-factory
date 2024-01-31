@@ -1,27 +1,27 @@
-import { getStructureGroups } from '../../../../query/structure/getStructureGroups';
-import { coerceEven, isConvertableInteger } from '../../../../tools/math';
-import { decorateResult } from '../../../../functions/global/decorateResult';
-import { addExtension } from '../../../../mutate/extensions/addExtension';
+import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { coerceEven, isConvertableInteger } from '@Tools/math';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { generateQualifyingLink } from '../links/generateQualifyingLink';
 import structureTemplate from '../../templates/structureTemplate';
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { generateRoundRobin } from './roundRobin/roundRobin';
 import { treeMatchUps } from './eliminationTree';
 
-import POLICY_ROUND_NAMING_DEFAULT from '../../../../fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
-import { POLICY_TYPE_ROUND_NAMING } from '../../../../constants/policyConstants';
-import { ROUND_TARGET } from '../../../../constants/extensionConstants';
-import { PolicyDefinitions } from '../../../../types/factoryTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import POLICY_ROUND_NAMING_DEFAULT from '@Fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
+import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_SIZE,
   STRUCTURE_NOT_FOUND,
-} from '../../../../constants/errorConditionConstants';
-import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '../../../../constants/drawDefinitionConstants';
-import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '../../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '@Types/tournamentTypes';
 
 type GenerateQualifyingStructureArgs = {
   appliedPolicies?: PolicyDefinitions;

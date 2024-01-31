@@ -1,13 +1,13 @@
-import { countries } from '../../../fixtures/countryData';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { countries } from '@Fixtures/countryData';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { MISSING_EVENT } from '../../../constants/errorConditionConstants';
-import { COMPASS } from '../../../constants/drawDefinitionConstants';
-import { TEAM } from '../../../constants/participantConstants';
-import { DOUBLES } from '../../../constants/eventConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { TEAM } from '@Constants/participantConstants';
+import { DOUBLES } from '@Constants/eventConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 
 it('returns eventData with expected drawsData', () => {
   const drawProfiles = [{ drawSize: 4, drawType: COMPASS }];

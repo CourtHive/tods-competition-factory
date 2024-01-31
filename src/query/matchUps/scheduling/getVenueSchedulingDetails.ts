@@ -1,12 +1,12 @@
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { getGroupedRounds } from './getGroupedRounds';
-import { processAlreadyScheduledMatchUps } from '../../../mutate/matchUps/schedule/schedulers/utils/processAlreadyScheduledMatchUps';
-import { getMatchUpsToSchedule } from '../../../mutate/matchUps/schedule/schedulers/utils/getMatchUpsToSchedule';
-import { generateScheduleTimes } from '../../../mutate/matchUps/schedule/schedulers/utils/generateScheduleTimes';
-import { extractDate } from '../../../tools/dateTime';
+import { processAlreadyScheduledMatchUps } from '@Mutate/matchUps/schedule/schedulers/utils/processAlreadyScheduledMatchUps';
+import { getMatchUpsToSchedule } from '@Mutate/matchUps/schedule/schedulers/utils/getMatchUpsToSchedule';
+import { generateScheduleTimes } from '@Mutate/matchUps/schedule/schedulers/utils/generateScheduleTimes';
+import { extractDate } from '@Tools/dateTime';
 
-import { Tournament } from '../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetVenueSchedulingDetailsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };

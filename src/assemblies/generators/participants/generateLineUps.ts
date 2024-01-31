@@ -1,3 +1,4 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { getParticipants } from '@Query/participants/getParticipants';
@@ -9,25 +10,25 @@ import { generateRange } from '@Tools/arrays';
 import { isNumeric } from '@Tools/math';
 
 // constants and types
-import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '../../../types/tournamentTypes';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { FEMALE, MALE, MIXED } from '../../../constants/genderConstants';
-import { ResultType, LineUp } from '../../../types/factoryTypes';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { DESCENDING } from '../../../constants/sortingConstants';
-import { LINEUPS } from '../../../constants/extensionConstants';
-import { TEAM_EVENT } from '../../../constants/eventConstants';
-import { PAIR } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { RANKING } from '../../../constants/scaleConstants';
+import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { ResultType, LineUp } from '@Types/factoryTypes';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { DESCENDING } from '@Constants/sortingConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { TEAM_EVENT } from '@Constants/eventConstants';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { RANKING } from '@Constants/scaleConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_TIE_FORMAT,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GenerateLineUpsArgs = {
   useDefaultEventRanking?: boolean;
@@ -125,7 +126,7 @@ export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
     for (const collectionDefinition of collectionDefinitions) {
       const collectionParticipantIds: string[] = [];
       const { collectionId, matchUpCount, matchUpType, gender } = collectionDefinition;
-      const singlesMatchUp = matchUpType === SINGLES_MATCHUP;
+      const singlesMatchUp = isMatchUpEventType(SINGLES_MATCHUP)(matchUpType);
 
       generateRange(0, matchUpCount).forEach((i) => {
         const typeSort = singlesMatchUp ? singlesSort : doublesSort ?? [];

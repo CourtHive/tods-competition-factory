@@ -2,13 +2,13 @@ import { processAccessors } from '@Query/drawDefinition/processAccessors';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { IdCollections, ResultType } from '../../types/factoryTypes';
-import { HydratedParticipant } from '../../types/hydrated';
+import { IdCollections, ResultType } from '@Types/factoryTypes';
+import { HydratedParticipant } from '@Types/hydrated';
 import {
   MISSING_PARTICIPANT,
   MISSING_PARTICIPANTS,
   MISSING_POLICY_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  *

@@ -1,15 +1,15 @@
-import { getVenuesAndCourts } from '../../../../../query/venues/venuesAndCourtsGetter';
-import { getScheduleTimes } from '../../../../../query/venues/getScheduleTimes';
-import { xa } from '../../../../../tools/objects';
+import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
+import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
+import { xa } from '@Tools/objects';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
 
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
-import { ScheduleTimesResult } from '../../../../../types/factoryTypes';
-import { Tournament } from '../../../../../types/tournamentTypes';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
+import { ScheduleTimesResult } from '@Types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GenerateScheduleTimesArgs = {
   tournamentRecords?: { [key: string]: Tournament };

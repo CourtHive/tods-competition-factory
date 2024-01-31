@@ -1,8 +1,8 @@
 import { attributeFilter } from '../../tools/attributeFilter';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { MALE } from '../../constants/genderConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { MALE } from '@Constants/genderConstants';
 
 const timeStamp = '0001-01-01T00:00:00';
 const birthDate = '2026-09-04';

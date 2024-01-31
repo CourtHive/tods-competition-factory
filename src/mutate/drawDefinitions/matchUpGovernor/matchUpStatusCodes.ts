@@ -2,8 +2,8 @@ import { getPairedPreviousMatchUp } from '@Mutate/drawDefinitions/positionGovern
 import { isString } from '@Tools/objects';
 
 // types
-import { MatchUpsMap } from '../../../types/factoryTypes';
-import { MatchUp } from '../../../types/tournamentTypes';
+import { MatchUpsMap } from '@Types/factoryTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 
 type UpdateMatchUpStatusCodesArgs = {
   inContextDrawMatchUps: any[];

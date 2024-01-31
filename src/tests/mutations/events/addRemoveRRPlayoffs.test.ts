@@ -1,7 +1,7 @@
-import { getPositionsPlayedOff } from '../../../query/drawDefinition/getPositionsPlayedOff';
+import { getPositionsPlayedOff } from '@Query/drawDefinition/getPositionsPlayedOff';
 import { setSubscriptions } from '../../../global/state/globalState';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { chunkByNth } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
@@ -13,8 +13,8 @@ import {
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
-import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '../../../constants/topicConstants';
+} from '@Constants/drawDefinitionConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 
 it('cann add ROUND_ROBIN playoff structures', () => {
   const {

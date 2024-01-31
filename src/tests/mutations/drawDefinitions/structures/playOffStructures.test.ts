@@ -1,11 +1,11 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { instanceCount } from '../../../../tools/arrays';
 import { numericSort } from '../../../../tools/sorting';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '../../../../constants/resultConstants';
 import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '../../../../constants/drawDefinitionConstants';
 

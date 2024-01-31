@@ -1,9 +1,9 @@
-import tournamentEngine from '../../../../engines/syncEngine';
-import mocksEngine from '../../../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import { replaceWithBye, getOrderedDrawPositionPairs } from '../../../drawDefinitions/testingUtilities';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
 import { FIRST_MATCH_LOSER_CONSOLATION } from '../../../../../constants/drawDefinitionConstants';
 
 // tests that manual placement of a BYE in consolation structure does not prevent

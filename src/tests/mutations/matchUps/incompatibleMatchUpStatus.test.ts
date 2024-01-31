@@ -1,8 +1,8 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { it, expect } from 'vitest';
 
-import { INCOMPATIBLE_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
+import { INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 
 it('will reject WO/WO for an updated result on matchUp with downstream dependencies', () => {
   const {

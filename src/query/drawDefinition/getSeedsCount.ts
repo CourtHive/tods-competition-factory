@@ -4,9 +4,9 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isConvertableInteger } from '@Tools/math';
 
 // constants and types
-import { DrawDefinition, Event, Tournament } from '../../types/tournamentTypes';
-import { PolicyDefinitions, ResultType } from '../../types/factoryTypes';
-import { POLICY_TYPE_SEEDING } from '../../constants/policyConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import {
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
@@ -14,7 +14,7 @@ import {
   MISSING_SEEDCOUNT_THRESHOLDS,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetSeedsCountArgs = {
   policyDefinitions?: PolicyDefinitions;

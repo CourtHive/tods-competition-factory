@@ -1,12 +1,12 @@
-import { isUngrouped } from '../../../../query/entries/isUngrouped';
+import { isUngrouped } from '@Query/entries/isUngrouped';
 import { chunkArray, unique } from '../../../../tools/arrays';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 import { DOUBLES, SINGLES, TEAM } from '../../../../constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { FEMALE, MALE, MIXED } from '../../../../constants/genderConstants';
 import { QUALIFYING } from '../../../../constants/drawDefinitionConstants';
 import { ALTERNATE } from '../../../../constants/entryStatusConstants';

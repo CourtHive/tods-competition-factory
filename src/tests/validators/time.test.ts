@@ -1,4 +1,4 @@
-import { validTimePeriod } from '../../validators/time';
+import { validTimePeriod } from '@Validators/time';
 import { expect, test } from 'vitest';
 
 test('validTime', () => {

@@ -1,27 +1,19 @@
-export { setTournamentStatus } from '../../../mutate/tournaments/setTournamentStatus';
-export { removeExtension } from '../../../mutate/extensions/removeExtension';
-export { addNotes, removeNotes } from '../../../mutate/base/addRemoveNotes';
-export { addOnlineResource } from '../../../mutate/base/addOnlineResource';
-export { addExtension } from '../../../mutate/extensions/addExtension';
+export { setTournamentStatus } from '@Mutate/tournaments/setTournamentStatus';
+export { removeExtension } from '@Mutate/extensions/removeExtension';
+export { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';
+export { addOnlineResource } from '@Mutate/base/addOnlineResource';
+export { addExtension } from '@Mutate/extensions/addExtension';
 
-export {
-  setTournamentName,
-  setTournamentNotes,
-  setTournamentCategories,
-} from '../../../mutate/tournaments/tournamentDetails';
+export { setTournamentName, setTournamentNotes, setTournamentCategories } from '@Mutate/tournaments/tournamentDetails';
 
-export {
-  setTournamentDates,
-  setTournamentEndDate,
-  setTournamentStartDate,
-} from '../../../mutate/tournaments/tournamentDates';
+export { setTournamentDates, setTournamentEndDate, setTournamentStartDate } from '@Mutate/tournaments/tournamentDates';
 
 export {
   addTimeItem,
   addEventTimeItem,
   addParticipantTimeItem,
   addTournamentTimeItem,
-} from '../../../mutate/timeItems/addTimeItem';
+} from '@Mutate/timeItems/addTimeItem';
 
 export {
   addDrawDefinitionExtension,
@@ -32,4 +24,4 @@ export {
   removeEventExtension,
   removeParticipantExtension,
   removeTournamentExtension,
-} from '../../../mutate/extensions/addRemoveExtensions';
+} from '@Mutate/extensions/addRemoveExtensions';

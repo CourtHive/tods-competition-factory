@@ -1,16 +1,16 @@
-import { getLinkedTournamentIds } from '../../query/tournaments/getLinkedTournamentIds';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
+import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addVenue } from './addVenue';
 
-import { Tournament, Venue } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
+import { Tournament, Venue } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
 import {
   ErrorType,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
   VENUE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type FindVenueArgs = {
   tournamentRecords?: TournamentRecords;

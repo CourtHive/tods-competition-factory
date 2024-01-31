@@ -1,27 +1,28 @@
+import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '@Tools/dateTime';
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { allCompetitionMatchUps } from '../../../../query/matchUps/getAllCompetitionMatchUps';
-import { getMatchUpDependencies } from '../../../../query/matchUps/getMatchUpDependencies';
-import { checkRequiredParameters } from '../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { modifyParticipantMatchUpsCount } from './modifyParticipantMatchUpsCount';
+import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { checkDependenciesScheduled } from './checkDependenciesScheduled';
-import { findDrawDefinition } from '../../../../acquire/findDrawDefinition';
-import { getMatchUpIds } from '../../../../functions/global/extractors';
 import { updateTimeAfterRecovery } from './updateTimeAfterRecovery';
 import { calculateScheduleTimes } from './calculateScheduleTimes';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { getMatchUpIds } from '@Functions/global/extractors';
 import { checkRequestConflicts } from './checkRequestConflicts';
 import { processNextMatchUps } from './processNextMatchUps';
 import { addMatchUpScheduledTime } from '../scheduledTime';
 import { assignMatchUpVenue } from '../assignMatchUpVenue';
 import { checkRecoveryTime } from './checkRecoveryTime';
 import { checkDailyLimits } from './checkDailyLimits';
-import { getPersonRequests } from '../../../../query/matchUps/scheduling/getPersonRequests';
-import { extractDate, extractTime, isValidDateString, sameDay, zeroPad } from '../../../../tools/dateTime';
 
-import { DO_NOT_SCHEDULE } from '../../../../constants/requestConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { TOTAL } from '../../../../constants/scheduleConstants';
-import { INVALID_DATE, INVALID_VALUES } from '../../../../constants/errorConditionConstants';
-import { BYE, ABANDONED, DEFAULTED, RETIRED, WALKOVER, COMPLETED } from '../../../../constants/matchUpStatusConstants';
+// constants
+import { BYE, ABANDONED, DEFAULTED, RETIRED, WALKOVER, COMPLETED } from '@Constants/matchUpStatusConstants';
+import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOTAL } from '@Constants/scheduleConstants';
 import {
   AVERAGE_MATCHUP_MINUTES,
   INVALID,
@@ -31,7 +32,7 @@ import {
   SCHEDULE_DATE,
   TOURNAMENT_RECORDS,
   VALIDATE,
-} from '../../../../constants/attributeConstants';
+} from '@Constants/attributeConstants';
 
 /**
  *

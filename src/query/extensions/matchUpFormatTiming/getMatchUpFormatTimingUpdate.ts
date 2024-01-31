@@ -1,6 +1,6 @@
 import { getExtensionUpdate } from '../getExtensionUpdate';
 
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
 
 export function getMatchUpFormatTimingUpdate({ tournamentRecords }) {
   return getExtensionUpdate({

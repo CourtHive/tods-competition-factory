@@ -1,4 +1,4 @@
-import drawDefinitionConstants from '../../constants/drawDefinitionConstants';
+import drawDefinitionConstants from '@Constants/drawDefinitionConstants';
 
 const { stageOrder } = drawDefinitionConstants;
 // Sort rounds by order in which they will be played

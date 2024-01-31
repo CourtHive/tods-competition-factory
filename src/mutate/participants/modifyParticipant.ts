@@ -1,24 +1,24 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { addIndividualParticipantIds } from './addIndividualParticipantIds';
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../functions/global/extractors';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { participantRoles } from '../../constants/participantRoles';
-import { genderConstants } from '../../constants/genderConstants';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
-import { countries } from '../../fixtures/countryData';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getParticipantId } from '@Functions/global/extractors';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { participantRoles } from '@Constants/participantRoles';
+import { genderConstants } from '@Constants/genderConstants';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
+import { countries } from '@Fixtures/countryData';
 import { addParticipant } from './addParticipant';
 
-import { MODIFY_PARTICIPANTS } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/matchUpTypes';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   CANNOT_MODIFY_PARTICIPANT_TYPE,
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
-import { GROUP, INDIVIDUAL, PAIR, participantTypes } from '../../constants/participantConstants';
+} from '@Constants/errorConditionConstants';
+import { GROUP, INDIVIDUAL, PAIR, participantTypes } from '@Constants/participantConstants';
 
 export function modifyParticipant(params) {
   const {

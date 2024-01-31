@@ -1,20 +1,20 @@
-import { getAssignedParticipantIds } from '../../query/drawDefinition/getAssignedParticipantIds';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getParticipantId } from '../../functions/global/extractors';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getParticipantId } from '@Functions/global/extractors';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { refreshEntryPositions } from './refreshEntryPositions';
-import { intersection } from '../../tools/arrays';
-import { isString } from '../../tools/objects';
+import { intersection } from '@Tools/arrays';
+import { isString } from '@Tools/objects';
 
-import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '../../types/tournamentTypes';
-import { HydratedParticipant } from '../../types/hydrated';
-import { SUCCESS } from '../../constants/resultConstants';
+import { EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { HydratedParticipant } from '@Types/hydrated';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_EVENT,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
   INVALID_PARTICIPANT_ID,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type RemoveEventEntriesArgs = {
   tournamentParticipants?: HydratedParticipant[];

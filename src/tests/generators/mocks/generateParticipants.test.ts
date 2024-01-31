@@ -1,11 +1,11 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
 import { UUID } from '../../../tools/UUID';
 import { expect, it, test } from 'vitest';
 
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { PAIR } from '../../../constants/participantConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { PAIR } from '@Constants/participantConstants';
 
 it('can generate unique participants', () => {
   const defaultPersonData = generatePersonData().personData;

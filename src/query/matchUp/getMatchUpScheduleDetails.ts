@@ -1,7 +1,7 @@
 import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { completedMatchUpStatuses } from '../../constants/matchUpStatusConstants';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { attributeFilter } from '../../tools/attributeFilter';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { attributeFilter } from '@Tools/attributeFilter';
 import { scheduledMatchUpTime } from './scheduledMatchUpTime';
 import { scheduledMatchUpDate } from './scheduledMatchUpDate';
 import { matchUpAllocatedCourts } from './courtAllocations';
@@ -10,17 +10,17 @@ import { matchUpAssignedVenueId } from './venueAssignment';
 import { getVenueData } from '../venues/getVenueData';
 import { matchUpTimeModifiers } from './timeModifiers';
 import { matchUpDuration } from './matchUpDuration';
-import { findEvent } from '../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 import { matchUpCourtOrder } from './courtOrder';
 import { matchUpStartTime } from './startTime';
 import { matchUpEndTime } from './endTime';
-import { addMinutesToTimeString, extractDate, extractTime, getIsoDateString } from '../../tools/dateTime';
+import { addMinutesToTimeString, extractDate, extractTime, getIsoDateString } from '@Tools/dateTime';
 
-import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
-import { MISSING_MATCHUP } from '../../constants/errorConditionConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { TEAM } from '../../constants/eventConstants';
-import { ScheduleTiming, ScheduleVisibilityFilters } from '../../types/factoryTypes';
+import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
+import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/eventConstants';
+import { ScheduleTiming, ScheduleVisibilityFilters } from '@Types/factoryTypes';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;

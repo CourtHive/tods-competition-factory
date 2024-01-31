@@ -1,9 +1,9 @@
-import { MatchUpStatusUnion } from '../../types/tournamentTypes';
+import { MatchUpStatusUnion } from '@Types/tournamentTypes';
 import {
   nonDirectingMatchUpStatuses,
   directingMatchUpStatuses,
   activeMatchUpStatuses,
-} from '../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 export function isDirectingMatchUpStatus({ matchUpStatus }) {
   return directingMatchUpStatuses.includes(matchUpStatus);

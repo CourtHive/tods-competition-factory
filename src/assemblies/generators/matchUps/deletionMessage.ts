@@ -1,4 +1,4 @@
-import { SCHEDULED_MATCHUPS } from '../../../constants/errorConditionConstants';
+import { SCHEDULED_MATCHUPS } from '@Constants/errorConditionConstants';
 
 export function deletionMessage({ matchUpsCount = 0 }) {
   const singularPlural = matchUpsCount === 1 ? 'matchUp' : 'matchUps';

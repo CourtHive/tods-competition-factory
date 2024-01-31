@@ -1,7 +1,7 @@
 import { participantScaleItem } from '../participant/participantScaleItem';
 
-import { RANKING, RATING, SEEDING } from '../../constants/timeItemConstants';
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { RANKING, RATING, SEEDING } from '@Constants/timeItemConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function getEventProperties({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

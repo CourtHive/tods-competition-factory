@@ -1,14 +1,14 @@
-import { matchUpFormatTimes } from '../../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getScheduleTiming } from '../../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { competitionScheduleMatchUps } from '../../../../query/matchUps/competitionScheduleMatchUps';
+import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
+import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
 import { calculatePeriodLength } from '../schedulers/utils/calculatePeriodLength';
-import { getVenuesAndCourts } from '../../../../query/venues/venuesAndCourtsGetter';
-import { getMatchUpId } from '../../../../functions/global/extractors';
-import { getScheduleTimes } from '../../../../query/venues/getScheduleTimes';
-import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '../../../../tools/dateTime';
+import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
+import { getMatchUpId } from '@Functions/global/extractors';
+import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
+import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '@Tools/dateTime';
 
-import { Tournament } from '../../../../types/tournamentTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../../../constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type CalculateScheduleTimesArgs = {
   tournamentRecords: { [key: string]: Tournament };

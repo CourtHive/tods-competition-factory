@@ -1,7 +1,7 @@
 import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
-import { analyzeMatchUp } from '../../query/matchUp/analyzeMatchUp';
+import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 
-import { FORMAT_STANDARD } from '../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 function generateSetScores(setValues) {
   return setValues.map(([side1Score, side2Score, side1TiebreakScore, side2TiebreakScore], index) => {

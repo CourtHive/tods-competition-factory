@@ -6,11 +6,11 @@ import { findStructure } from '@Acquire/findStructure';
 import { randomMember } from '@Tools/arrays';
 
 // constants and types
-import { STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { DRAW } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { DRAW } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function placeQualifier(params): ResultType & { qualifierPlaced?: boolean } {
   let qualifierPlaced;

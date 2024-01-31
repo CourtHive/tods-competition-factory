@@ -1,13 +1,13 @@
-import { getPairedParticipant } from '../../query/participant/getPairedParticipant';
+import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '../participants/deleteParticipants';
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { addParticipant } from '../participants/addParticipant';
 
-import { UNGROUPED, UNPAIRED } from '../../constants/entryStatusConstants';
-import { COMPETITOR } from '../../constants/participantRoles';
-import { PAIR } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { DOUBLES } from '../../constants/eventConstants';
+import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { PAIR } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { DOUBLES } from '@Constants/eventConstants';
 import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT,
@@ -16,7 +16,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function modifyPairAssignment({
   replacementIndividualParticipantId,

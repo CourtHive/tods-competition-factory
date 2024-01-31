@@ -1,10 +1,10 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_ROUND_NAMING } from '../../../constants/policyConstants';
-import { APPLIED_POLICIES } from '../../../constants/extensionConstants';
-import { AD_HOC } from '../../../constants/drawDefinitionConstants';
+import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
+import { APPLIED_POLICIES } from '@Constants/extensionConstants';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
 
 it('can modify drawDefinition round naming policy', () => {
   const {

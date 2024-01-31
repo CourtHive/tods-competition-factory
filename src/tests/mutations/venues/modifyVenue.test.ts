@@ -1,6 +1,6 @@
-import { modifyVenue } from '../../../mutate/venues/modifyVenue';
-import { deleteVenue } from '../../../mutate/venues/deleteVenue';
-import tournamentEngine from '../../engines/syncEngine';
+import { modifyVenue } from '@Mutate/venues/modifyVenue';
+import { deleteVenue } from '@Mutate/venues/deleteVenue';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 import {
@@ -12,7 +12,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VENUE_ID,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 const court1 = {
   courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',

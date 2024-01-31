@@ -1,3 +1,4 @@
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getParticipantId } from '@Functions/global/extractors';
@@ -6,10 +7,11 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { resolveTieFormat } from './resolveTieFormat';
 
 // constants and types
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { TEAM } from '../../../constants/participantConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+import { DrawDefinition, Event, MatchUp, Participant, Structure, TieFormat, Tournament } from '@Types/tournamentTypes';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { TEAM } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   EVENT_NOT_FOUND,
   ErrorType,
@@ -17,16 +19,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
-import {
-  DrawDefinition,
-  Event,
-  MatchUp,
-  Participant,
-  Structure,
-  TieFormat,
-  Tournament,
-} from '../../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
 
 // for a given tieMatchUpId (SINGLES or DOUBLES) return:
 // the tieMatchUp, the dualMatchUp within which it occurs, an inContext copy of the dualMatchUp
@@ -85,7 +78,7 @@ export function getTieMatchUpContext({
 
   const { collectionPosition, drawPositions, collectionId, matchUpTieId, matchUpType } = inContextTieMatchUp;
 
-  if (matchUpType && ![SINGLES, DOUBLES].includes(matchUpType)) return { error: INVALID_MATCHUP };
+  if (matchUpType && !includesMatchUpEventType([SINGLES, DOUBLES], matchUpType)) return { error: INVALID_MATCHUP };
 
   const { positionAssignments } = getPositionAssignments({ structure });
   const relevantAssignments = positionAssignments?.filter((assignment) =>

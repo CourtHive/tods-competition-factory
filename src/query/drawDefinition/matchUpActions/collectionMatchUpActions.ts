@@ -1,16 +1,18 @@
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { isAvailableAction } from '../positionActions/actionPolicyUtils';
-import { getParticipantId } from '../../../functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
+import { getParticipantId } from '@Functions/global/extractors';
 
-import { completedMatchUpStatuses } from '../../../constants/matchUpStatusConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '../../../constants/matchUpTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { ASSIGN_PARTICIPANT } from '../../../constants/positionActionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { HydratedMatchUp, HydratedSide } from '../../../types/hydrated';
-import { ANY, MIXED } from '../../../constants/genderConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { MatchUp } from '../../../types/tournamentTypes';
+// constants and types
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
+import { ANY, MIXED } from '@Constants/genderConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { MatchUp } from '@Types/tournamentTypes';
 import {
   ASSIGN_TEAM_POSITION_METHOD,
   REMOVE_PARTICIPANT,
@@ -20,7 +22,7 @@ import {
   REPLACE_TEAM_POSITION_METHOD,
   SUBSTITUTION,
   SUBSTITUTION_METHOD,
-} from '../../../constants/matchUpActionConstants';
+} from '@Constants/matchUpActionConstants';
 
 export function collectionMatchUpActions({
   specifiedPolicyDefinitions,
@@ -107,11 +109,11 @@ export function collectionMatchUpActions({
 
   const assignmentAvailable =
     (sideNumber &&
-      ((matchUpType === SINGLES_MATCHUP && !existingParticipantIds?.length) ||
-        (matchUpType === DOUBLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 2))) ||
+      ((isMatchUpEventType(SINGLES_MATCHUP)(matchUpType) && !existingParticipantIds?.length) ||
+        (isMatchUpEventType(DOUBLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 2))) ||
     (!sideNumber &&
-      ((matchUpType === SINGLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 2) ||
-        (matchUpType === DOUBLES_MATCHUP && (existingParticipantIds?.length ?? 0) < 4)));
+      ((isMatchUpEventType(SINGLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 2) ||
+        (isMatchUpEventType(DOUBLES_MATCHUP)(matchUpType) && (existingParticipantIds?.length ?? 0) < 4)));
 
   // extra step to avoid edge case where individual participant is part of both teams
   const availableIds = availableParticipantIds?.filter((id) => !allParticipantIds?.includes(id));

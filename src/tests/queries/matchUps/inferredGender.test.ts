@@ -1,8 +1,8 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { DOUBLES } from '../../../constants/eventConstants';
+import { DOUBLES } from '@Constants/eventConstants';
 
 test('contextProfile can specify inferGender - works with SINGLES', () => {
   const {

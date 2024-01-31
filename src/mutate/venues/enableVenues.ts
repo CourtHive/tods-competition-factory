@@ -1,11 +1,11 @@
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { checkRequiredParameters } from '../../helpers/parameters/checkRequiredParameters';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
 
-import { DISABLED } from '../../constants/extensionConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { TOURNAMENT_RECORDS, VENUE_IDS } from '../../constants/attributeConstants';
+import { DISABLED } from '@Constants/extensionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 
 type EnableVenuesArgs = {
   tournamentRecords: TournamentRecords;

@@ -4,9 +4,9 @@ import { drawMatic } from '../drawTypes/adHoc/drawMatic/drawMatic';
 import { getParticipantId } from '@Functions/global/extractors';
 
 // constants
-import { STRUCTURE_SELECTED_STATUSES } from '../../../../constants/entryStatusConstants';
-import { MAIN } from '../../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateAdHoc(params) {
   const { tournamentRecord, drawDefinition, structureId, idPrefix, isMock, event } = params;

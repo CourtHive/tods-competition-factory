@@ -1,17 +1,17 @@
-import { generateScoreString } from '../../../../assemblies/generators/matchUps/generateScoreString';
-import { isValidMatchUpFormat } from '../../../../validators/isValidMatchUpFormat';
-import { parse } from '../../../../assemblies/generators/matchUpFormatCode/parse';
-import { isConvertableInteger } from '../../../../tools/math';
+import { generateScoreString } from '@Assemblies/generators/matchUps/generateScoreString';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { isConvertableInteger } from '@Tools/math';
 import { getHistory } from './getHistory';
 
-import { SUCCESS } from '../../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_MATCHUP_FORMAT,
   INVALID_VALUES,
   MISSING_MATCHUP,
   MISSING_MATCHUP_FORMAT,
   MISSING_VALUE,
-} from '../../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export function calculateHistoryScore(params) {
   if (!params) return { error: MISSING_VALUE };

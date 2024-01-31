@@ -1,12 +1,14 @@
-import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { getParticipantId } from '../../../functions/global/extractors';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { addParticipants } from '@Mutate/participants/addParticipants';
+import { getParticipantId } from '@Functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
 
-import { MAIN, QUALIFYING } from '../../../constants/drawDefinitionConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/eventConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { Participant } from '../../../types/tournamentTypes';
+// constants and types
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { Participant } from '@Types/tournamentTypes';
 
 export function generateEventParticipants(params) {
   const {
@@ -22,7 +24,10 @@ export function generateEventParticipants(params) {
 
   const { category, gender, eventType } = event;
 
-  const eventParticipantType = (eventType === SINGLES && INDIVIDUAL) || (eventType === DOUBLES && PAIR) || eventType;
+  const eventParticipantType =
+    (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+    (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+    eventType;
 
   const mainParticipantsCount = uniqueParticipantsCount[MAIN] || 0;
   const qualifyingParticipantsCount = uniqueParticipantsCount[QUALIFYING] || 0;

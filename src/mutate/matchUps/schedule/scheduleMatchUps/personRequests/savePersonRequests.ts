@@ -1,11 +1,11 @@
-import { checkRequiredParameters } from '../../../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../../../../extensions/addExtension';
-import { findParticipant } from '../../../../../acquire/findParticipant';
+import { findParticipant } from '@Acquire/findParticipant';
 
-import { PersonRequests, TournamentRecords } from '../../../../../types/factoryTypes';
-import { TOURNAMENT_RECORDS } from '../../../../../constants/attributeConstants';
-import { PERSON_REQUESTS } from '../../../../../constants/extensionConstants';
-import { SUCCESS } from '../../../../../constants/resultConstants';
+import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
+import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { PERSON_REQUESTS } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type SavePersonRequestsArgs = {
   tournamentRecords: TournamentRecords;

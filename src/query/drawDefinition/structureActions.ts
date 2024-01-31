@@ -2,10 +2,10 @@ import { getPlayoffStructures } from '../structure/structureGetter';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getPositionAssignments } from './positionsGetter';
 
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { MISSING_DRAW_DEFINITION } from '../../constants/errorConditionConstants';
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { TEAM } from '../../constants/matchUpTypes';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 
 type StructureActionsArgs = {
   drawDefinition: DrawDefinition;

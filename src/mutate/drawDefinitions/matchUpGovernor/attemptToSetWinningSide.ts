@@ -1,14 +1,14 @@
 import { removeDirectedParticipants } from '../../matchUps/drawPositions/removeDirectedParticipants';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToModifyScore } from './attemptToModifyScore';
 import { directParticipants } from '../../matchUps/drawPositions/directParticipants';
 import { replaceQualifier } from './replaceQualifier';
 import { placeQualifier } from './placeQualifier';
 
-import { POLICY_TYPE_PROGRESSION } from '../../../constants/policyConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';

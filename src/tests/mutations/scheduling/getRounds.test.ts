@@ -1,10 +1,10 @@
-import { mocksEngine } from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { addDays } from '../../../tools/dateTime';
 import { expect, it } from 'vitest';
 
-import { MISSING_TOURNAMENT_RECORDS } from '../../../constants/errorConditionConstants';
-import { CURTIS_CONSOLATION, ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { CURTIS_CONSOLATION, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('can generate tournament rounds and profileRounds', () => {
   let result = competitionEngine.getRounds();

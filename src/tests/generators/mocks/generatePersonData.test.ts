@@ -1,10 +1,10 @@
-import { generatePersonData } from '../../../assemblies/generators/mocks/generatePersonData';
+import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import { instanceCount, unique } from '../../../tools/arrays';
 import { numericSort } from '../../../tools/sorting';
-import namesData from '../../../fixtures/data/names.json';
+import namesData from '@Fixtures/data/names.json';
 import { it, expect } from 'vitest';
 
-import { FEMALE, MALE } from '../../../constants/genderConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 
 it('can generation personData', () => {
   let { personData } = generatePersonData();

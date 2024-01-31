@@ -1,11 +1,11 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import POLICY_POSITION_ACTIONS_UNRESTRICTED from '../../../fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
-import { POLICY_TYPE_FEED_IN } from '../../../constants/policyConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '../../../constants/drawDefinitionConstants';
+import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 test('hydrated consolation matchUps include seeding when participants advance', () => {
   const {

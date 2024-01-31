@@ -1,21 +1,21 @@
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { getEventData } from '../../query/event/getEventData';
-import { addNotice } from '../../global/state/globalState';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getEventData } from '@Query/event/getEventData';
+import { addNotice } from '@Global/state/globalState';
 
-import { Event, Tournament } from '../../types/tournamentTypes';
-import { PUBLISH_EVENT } from '../../constants/topicConstants';
-import { PolicyDefinitions } from '../../types/factoryTypes';
-import { PUBLIC } from '../../constants/timeItemConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { PUBLISH_EVENT } from '@Constants/topicConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { PUBLIC } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
   STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 export type PublishingDetail = {
   roundLimit?: number; // only applicable to structureDetails

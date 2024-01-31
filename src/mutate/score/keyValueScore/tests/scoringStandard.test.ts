@@ -2,7 +2,7 @@ import { keyValueMatchUpScore } from '../keyValueScore';
 import { stressTests } from './standardStress';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
 
 /*

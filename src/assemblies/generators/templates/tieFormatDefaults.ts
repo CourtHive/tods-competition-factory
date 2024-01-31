@@ -1,6 +1,7 @@
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { UUID } from '../../../tools/UUID';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { UUID } from '@Tools/UUID';
 
+// constants, fixtures and types
 import USTA_GOLD_TEAM_CHALLENGE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_GOLD_TEAM_CHALLENGE.json';
 import TEAM_AGGREGATION_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/TEAM_DOUBLES_3_AGGREGATION.json';
 import USTA_SOUTHERN_LEVEL_5_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_SOUTHERN_LEVEL_5.json';
@@ -11,6 +12,7 @@ import DOMINANT_DUO_MIXED_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/
 import TIME_TENNIS_DUAL_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/TIME_TENNIS_DUAL.json';
 import USTA_BREWER_CUP_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_BREWER_CUP.json';
 import USTA_OZAKI_CUP_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_OZAKI_CUP.json';
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
 import DOMINANT_DUO_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/DOMINANT_DUO.json';
 import USTA_COLLEGE_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_COLLEGE.json';
 import USTA_LEVEL_1_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_LEVEL_1.json';
@@ -18,7 +20,8 @@ import USTA_WTT_ITT_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_W
 import USTA_ZONAL_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_ZONAL.json';
 import LAVER_CUP_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/LAVER_CUP.json';
 import USTA_TOC_TIE_FORMAT from '../../../fixtures/scoring/tieFormats/USTA_TOC.json';
-import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { Event } from '@Types/tournamentTypes';
 import {
   COLLEGE_D3,
   COLLEGE_DEFAULT,
@@ -40,10 +43,7 @@ import {
   USTA_ZONAL,
   TIME_TENNIS_DUAL,
   TIME_TENNIS_PRO_CIRCUIT,
-} from '../../../constants/tieFormatConstants';
-
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { Event } from '../../../types/tournamentTypes';
+} from '@Constants/tieFormatConstants';
 
 const STANDARD = 'STANDARD';
 

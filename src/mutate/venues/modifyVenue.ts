@@ -1,21 +1,21 @@
-import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
+import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { addNotice } from '../../global/state/globalState';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { addNotice } from '@Global/state/globalState';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
 import { findVenue } from './findVenue';
 
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { Venue, Tournament } from '../../types/tournamentTypes';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { TournamentRecords } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { Venue, Tournament } from '@Types/tournamentTypes';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   COURT_NOT_FOUND,
   ErrorType,
@@ -25,7 +25,7 @@ import {
   VENUE_NOT_FOUND,
   MISSING_VENUE_ID,
   NO_VALID_ATTRIBUTES,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type ModifyVenueArgs = {
   tournamentRecords?: TournamentRecords;

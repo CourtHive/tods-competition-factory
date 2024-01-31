@@ -1,7 +1,7 @@
-import { chunkArray, instanceCount } from '../../tools/arrays';
+import { chunkArray, instanceCount } from '@Tools/arrays';
 import { setBuilder } from './setBuilder';
 import { parseSuper } from './parseSuper';
-import { isNumeric } from '../../tools/math';
+import { isNumeric } from '@Tools/math';
 
 export function handleNumeric(params) {
   let { score } = params;

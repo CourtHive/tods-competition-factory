@@ -1,6 +1,6 @@
-import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
-import { timeStringMinutes } from '../../../../../tools/dateTime';
-import { Court } from '../../../../../types/tournamentTypes';
+import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
+import { timeStringMinutes } from '@Tools/dateTime';
+import { Court } from '@Types/tournamentTypes';
 
 type GetTimeBoundaryArgs = {
   scheduleDate: string;

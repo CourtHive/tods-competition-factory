@@ -1,5 +1,5 @@
-import { POLICY_TYPE_DRAWS } from '../../../constants/policyConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
+import { POLICY_TYPE_DRAWS } from '@Constants/policyConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 
 type getDrawTypeCoercionArgs = {
   policyDefinitions?: PolicyDefinitions;

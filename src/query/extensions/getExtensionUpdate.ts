@@ -1,7 +1,7 @@
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
-import { QueueMethod, TournamentRecords } from '../../types/factoryTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { QueueMethod, TournamentRecords } from '@Types/factoryTypes';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 /**
  * Specific to deployments where both client and server are running competitionEngine.

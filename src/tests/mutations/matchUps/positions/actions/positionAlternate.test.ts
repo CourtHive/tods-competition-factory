@@ -1,6 +1,6 @@
-import { getRoundMatchUps } from '../../../../../query/matchUps/getRoundMatchUps';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../../../tools/arrays';
 import { expect, it } from 'vitest';
 

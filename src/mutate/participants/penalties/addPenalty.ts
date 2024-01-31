@@ -4,18 +4,18 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 import { addNotice } from '@Global/state/globalState';
 
 // constants and types
-import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '../../../types/tournamentTypes';
-import penaltyTemplate from '../../../assemblies/generators/templates/penaltyTemplate';
-import { TournamentRecords, ResultType } from '../../../types/factoryTypes';
-import { MODIFY_PARTICIPANTS } from '../../../constants/topicConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { Extension, Penalty, PenaltyTypeUnion, Tournament } from '@Types/tournamentTypes';
+import penaltyTemplate from '@Assemblies/generators/templates/penaltyTemplate';
+import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_PENALTY_TYPE,
   PARTICIPANT_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddPenaltyArgs = {
   refereeParticipantId?: string;

@@ -1,7 +1,7 @@
-import { findExtension } from '../../acquire/findExtension';
+import { findExtension } from '@Acquire/findExtension';
 
-import { LINEUPS } from '../../constants/extensionConstants';
-import { MISSING_DRAW_DEFINITION, MISSING_PARTICIPANT_ID } from '../../constants/errorConditionConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
+import { MISSING_DRAW_DEFINITION, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 
 export function getTeamLineUp({ drawDefinition, participantId }) {
   if (typeof drawDefinition !== 'object') return { error: MISSING_DRAW_DEFINITION };

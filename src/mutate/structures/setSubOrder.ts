@@ -5,18 +5,18 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, Structure, Tournament } from '../../types/tournamentTypes';
-import { CONTAINER } from '../../constants/drawDefinitionConstants';
-import { SUB_ORDER } from '../../constants/extensionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
-import { TEAM } from '../../constants/matchUpTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
+import { CONTAINER } from '@Constants/drawDefinitionConstants';
+import { SUB_ORDER } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  *

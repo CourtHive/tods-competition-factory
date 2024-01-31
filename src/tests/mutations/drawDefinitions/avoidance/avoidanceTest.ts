@@ -1,13 +1,13 @@
-import tournamentEngine from '../../../engines/syncEngine';
-import { mocksEngine } from '../../../..';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect } from 'vitest';
 
-import { SINGLE_ELIMINATION } from '../../../../constants/drawDefinitionConstants';
-import { POLICY_TYPE_AVOIDANCE } from '../../../../constants/policyConstants';
-import { INDIVIDUAL, PAIR } from '../../../../constants/participantConstants';
-import SEEDING_ITF from '../../../../fixtures/policies/POLICY_SEEDING_ITF';
-import { DOUBLES, SINGLES } from '../../../../constants/matchUpTypes';
-import { RANKING } from '../../../../constants/scaleConstants';
+import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { RANKING } from '@Constants/scaleConstants';
 
 /**
  *

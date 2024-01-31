@@ -1,6 +1,6 @@
-import { parse } from '../../../assemblies/generators/matchUpFormatCode/parse';
-import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
-import { analyzeSet } from '../../../query/matchUp/analyzeSet';
+import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
+import { analyzeSet } from '@Query/matchUp/analyzeSet';
 
 import {
   MISSING_MATCHUP,
@@ -9,7 +9,7 @@ import {
   INVALID_SIDE_NUMBER,
   MISSING_VALUE,
   INVALID_SET_NUMBER,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  * Work in progress: utility for scoring dialogs to submit score change

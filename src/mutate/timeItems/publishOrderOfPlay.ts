@@ -1,12 +1,12 @@
-import { resolveTournamentRecords } from '../../helpers/parameters/resolveTournamentRecords';
-import { addNotice } from '../../global/state/globalState';
-import { getTimeItem } from '../../query/base/timeItems';
+import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { addNotice } from '@Global/state/globalState';
+import { getTimeItem } from '@Query/base/timeItems';
 import { addTimeItem } from './addTimeItem';
 
-import { PUBLIC, PUBLISH, STATUS } from '../../constants/timeItemConstants';
-import { PUBLISH_ORDER_OF_PLAY } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
+import { PUBLISH_ORDER_OF_PLAY } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 export function publishOrderOfPlay(params) {
   const tournamentRecords = resolveTournamentRecords(params);

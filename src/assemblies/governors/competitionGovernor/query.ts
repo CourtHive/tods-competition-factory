@@ -1,2 +1,2 @@
-export { getLinkedTournamentIds } from '../../../query/tournaments/getLinkedTournamentIds';
-export { getTournamentIds } from '../../../query/tournaments/getTournamentIds';
+export { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
+export { getTournamentIds } from '@Query/tournaments/getTournamentIds';

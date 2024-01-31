@@ -1,5 +1,6 @@
 import { getTieMatchUpContext } from '@Query/hierarchical/tieFormats/getTieMatchUpContext';
 import { removeCollectionAssignments } from '@Mutate/events/removeCollectionAssignments';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '@Mutate/participants/deleteParticipants';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
@@ -14,15 +15,15 @@ import { ensureSideLineUps } from './ensureSideLineUps';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import POLICY_MATCHUP_ACTIONS_DEFAULT from '../../../fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
-import { LineUp, PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '../../../constants/policyConstants';
-import { INDIVIDUAL, PAIR } from '../../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SUCCESS } from '../../../constants/resultConstants';
+import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_TYPE,
@@ -32,7 +33,7 @@ import {
   MISSING_TIE_FORMAT,
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -123,7 +124,7 @@ export function assignTieMatchUpParticipantId(
   const { individualParticipantIds, participantType } = participantToAssign;
 
   // check that the participantToAssign is the correct participantType for tieMatchUp.matchUpType
-  if (matchUpType === SINGLES && participantType !== INDIVIDUAL) {
+  if (isMatchUpEventType(SINGLES)(matchUpType) && participantType !== INDIVIDUAL) {
     return { error: INVALID_PARTICIPANT_TYPE };
   }
 

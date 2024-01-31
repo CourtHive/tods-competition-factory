@@ -1,10 +1,10 @@
 import syncGlobalState from '../../../global/state/syncGlobalState';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import { setStateProvider, setSubscriptions } from '../../../global/state/globalState';
 
-import { DELETED_DRAW_IDS } from '../../../constants/topicConstants';
+import { DELETED_DRAW_IDS } from '@Constants/topicConstants';
 
 it('can set state provider', () => {
   let result: any = setStateProvider(syncGlobalState);

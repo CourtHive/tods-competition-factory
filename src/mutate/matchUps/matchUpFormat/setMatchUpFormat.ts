@@ -1,15 +1,17 @@
-import { getAllStructureMatchUps } from '../../../query/matchUps/getAllStructureMatchUps';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { getMatchUpId } from '../../../functions/global/extractors';
+import { includesMatchUpEventType } from '@Helpers/matchUpEventTypes/includesMatchUpEventType';
+import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { setMatchUpMatchUpFormat } from './setMatchUpMatchUpFormat';
-import { modifyDrawNotice, modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpId } from '@Functions/global/extractors';
 
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
-import { DOUBLES, SINGLES, TEAM } from '../../../constants/eventConstants';
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
+// constants and types
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 import {
   INVALID_EVENT_TYPE,
   INVALID_VALUES,
@@ -18,7 +20,7 @@ import {
   MISSING_TOURNAMENT_RECORD,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // external use; set matchUpFormat for a events, draws, structures or matchUp
 
@@ -72,7 +74,7 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
       result: { error: INVALID_VALUES, scheduledDates },
       stack,
     });
-  if (eventType && ![SINGLES, DOUBLES].includes(eventType))
+  if (eventType && !includesMatchUpEventType([SINGLES, DOUBLES], eventType))
     return decorateResult({ result: { error: INVALID_EVENT_TYPE }, stack });
 
   let modificationsCount = 0;

@@ -5,7 +5,7 @@ import { getFlightProfile } from '@Query/event/getFlightProfile';
 
 // constants
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { EntryStatusUnion } from '../../types/tournamentTypes';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { LUCKY_LOSER } from '@Constants/entryStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

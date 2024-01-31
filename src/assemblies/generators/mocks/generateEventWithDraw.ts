@@ -1,46 +1,43 @@
-import { automatedPlayoffPositioning } from '../../../mutate/drawDefinitions/automatedPlayoffPositioning';
-import { addPlayoffStructures } from '../../../mutate/drawDefinitions/addPlayoffStructures';
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
-import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
-import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
-import { addDrawDefinition } from '../../../mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
-import { addParticipants } from '../../../mutate/participants/addParticipants';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
-import { addEventEntries } from '../../../mutate/entries/addEventEntries';
-import { addEventTimeItem } from '../../../mutate/timeItems/addTimeItem';
-import { isValidExtension } from '../../../validators/isValidExtension';
-import { getParticipantId } from '../../../functions/global/extractors';
-import { addExtension } from '../../../mutate/extensions/addExtension';
-import { publishEvent } from '../../../mutate/publishing/publishEvent';
-import { generateRange, intersection } from '../../../tools/arrays';
-import { definedAttributes } from '../../../tools/definedAttributes';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
+import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
+import { addParticipants } from '@Mutate/participants/addParticipants';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { addEventTimeItem } from '@Mutate/timeItems/addTimeItem';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { getParticipantId } from '@Functions/global/extractors';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
+import { addExtension } from '@Mutate/extensions/addExtension';
+import { publishEvent } from '@Mutate/publishing/publishEvent';
+import { generateRange, intersection } from '@Tools/arrays';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { generateParticipants } from './generateParticipants';
-import { addFlight } from '../../../mutate/events/addFlight';
 import { processTieFormat } from './processTieFormat';
-import { coerceEven } from '../../../tools/math';
-import { UUID } from '../../../tools/UUID';
+import { addFlight } from '@Mutate/events/addFlight';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { coerceEven } from '@Tools/math';
+import { UUID } from '@Tools/UUID';
 
-import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '../../../constants/participantConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { COMPLETED } from '../../../constants/matchUpStatusConstants';
-import { SINGLES, DOUBLES } from '../../../constants/eventConstants';
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { FEMALE, MALE } from '../../../constants/genderConstants';
-import { COMPETITOR } from '../../../constants/participantRoles';
-import { SEEDING } from '../../../constants/timeItemConstants';
-import { OBJECT } from '../../../constants/attributeConstants';
-import { Participant } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import {
-  MAIN,
-  QUALIFYING,
-  ROUND_ROBIN_WITH_PLAYOFF,
-  SINGLE_ELIMINATION,
-} from '../../../constants/drawDefinitionConstants';
+// constants and types
+import { MAIN, QUALIFYING, ROUND_ROBIN_WITH_PLAYOFF, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { SINGLES, DOUBLES } from '@Constants/eventConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
+import { COMPETITOR } from '@Constants/participantRoles';
+import { SEEDING } from '@Constants/timeItemConstants';
+import { OBJECT } from '@Constants/attributeConstants';
+import { Participant } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateEventWithDraw(params) {
   const paramsCheck = checkRequiredParameters(params, [{ drawProfile: true, _ofType: OBJECT }]);
@@ -251,8 +248,8 @@ export function generateEventWithDraw(params) {
 
   const isEventParticipantType = (participant) => {
     const { participantType } = participant;
-    if (eventType === SINGLES && participantType === INDIVIDUAL) return true;
-    if (eventType === DOUBLES && participantType === PAIR) return true;
+    if (isMatchUpEventType(SINGLES)(eventType) && participantType === INDIVIDUAL) return true;
+    if (isMatchUpEventType(DOUBLES)(eventType) && participantType === PAIR) return true;
     return eventType === TEAM && participantType === TEAM;
   };
 

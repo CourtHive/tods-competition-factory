@@ -1,14 +1,14 @@
 import { getPositionedParticipants } from './getPositionedParticipants';
 import { getParticipantPlacement } from './getParticipantPlacement';
-import { makeDeepCopy } from '../../../../tools/makeDeepCopy';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { getAvoidanceConflicts } from './getAvoidanceConflicts';
 import { getSwapOptions } from './getSwapOptions';
-import { chunkArray, generateRange, randomPop } from '../../../../tools/arrays';
+import { chunkArray, generateRange, randomPop } from '@Tools/arrays';
 
-import { INVALID_ASSIGNMENT } from '../../../../constants/errorConditionConstants';
-import { PositionAssignment } from '../../../../types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { IdCollections } from '../../../../types/factoryTypes';
+import { INVALID_ASSIGNMENT } from '@Constants/errorConditionConstants';
+import { PositionAssignment } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { IdCollections } from '@Types/factoryTypes';
 
 type GeneratePositioningCandidateArgs = {
   participantIdGroups?: { [key: string]: string[] };

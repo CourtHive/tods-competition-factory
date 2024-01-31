@@ -1,8 +1,8 @@
-import { makeDeepCopy } from '../../tools/makeDeepCopy';
-import { findExtension } from '../../acquire/findExtension';
-import { isObject } from '../../tools/objects';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { findExtension } from '@Acquire/findExtension';
+import { isObject } from '@Tools/objects';
 
-import { DISABLED } from '../../constants/extensionConstants';
+import { DISABLED } from '@Constants/extensionConstants';
 
 export function getInContextCourt({ convertExtensions, ignoreDisabled, venue, court }) {
   const inContextCourt = {

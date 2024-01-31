@@ -1,12 +1,12 @@
-import { getEventPublishStatus } from '../../query/event/getEventPublishStatus';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { addNotice } from '../../global/state/globalState';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { addNotice } from '@Global/state/globalState';
 
-import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { PUBLISH_EVENT_SEEDING, UNPUBLISH_EVENT_SEEDING } from '../../constants/topicConstants';
-import { PUBLIC } from '../../constants/timeItemConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { PUBLISH_EVENT_SEEDING, UNPUBLISH_EVENT_SEEDING } from '@Constants/topicConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function publishEventSeeding({
   removePriorValues = true,

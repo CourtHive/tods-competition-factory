@@ -1,9 +1,9 @@
-import { findTournamentParticipant } from '../../acquire/findTournamentParticipant';
-import { getTimeItem } from '../../query/base/timeItems';
+import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { getTimeItem } from '@Query/base/timeItems';
 
-import { TimeItem, Tournament } from '../../types/tournamentTypes';
-import { ELEMENT_REQUIRED } from '../../constants/infoConstants';
-import { SUCCESS } from '../../constants/resultConstants';
+import { TimeItem, Tournament } from '@Types/tournamentTypes';
+import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
   INVALID_TIME_ITEM,
@@ -11,7 +11,7 @@ import {
   MISSING_TIME_ITEM,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type AddTimeItemArgs = {
   removePriorValues?: boolean;

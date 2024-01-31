@@ -1,7 +1,7 @@
-import { getFlightProfile } from '../../query/event/getFlightProfile';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { TEAM } from '../../constants/eventConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { TEAM } from '@Constants/eventConstants';
 
 /**
  * function called internally to cleanup event entries when individuals have been added to team events

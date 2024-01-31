@@ -1,11 +1,11 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
-import { COMPETITOR, OFFICIAL } from '../../../constants/participantRoles';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
+import PARTICIPANT_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { COMPETITOR, OFFICIAL } from '@Constants/participantRoles';
+import { INDIVIDUAL } from '@Constants/participantConstants';
 
 it('can retrieve and modify tournament persons', () => {
   let tournamentPersons = tournamentEngine.getTournamentPersons({

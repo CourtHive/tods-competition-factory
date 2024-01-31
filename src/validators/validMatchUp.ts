@@ -1,5 +1,5 @@
-import { isConvertableInteger } from '../tools/math';
-import { isObject } from '../tools/objects';
+import { isConvertableInteger } from '@Tools/math';
+import { isObject } from '@Tools/objects';
 
 export function validMatchUp(matchUp) {
   if (!isObject(matchUp)) return false;

@@ -1,8 +1,8 @@
 import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 
-import { DrawDefinition, Structure } from '../../types/tournamentTypes';
-import { LUCKY_DRAW } from '../../constants/drawDefinitionConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { DrawDefinition, Structure } from '@Types/tournamentTypes';
+import { LUCKY_DRAW } from '@Constants/drawDefinitionConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type IsLuckyArgs = {
   drawDefinition?: DrawDefinition;

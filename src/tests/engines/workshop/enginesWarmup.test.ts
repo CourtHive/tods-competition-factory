@@ -1,25 +1,25 @@
-import { completeDrawMatchUps } from '../../../assemblies/generators/mocks/completeDrawMatchUps';
+import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import { setGlobalLog, setMethods, setStateProvider } from '../../../global/state/globalState';
-import { deleteDrawDefinitions } from '../../../mutate/events/deleteDrawDefinitions';
-import { checkScoreHasValue } from '../../../query/matchUp/checkScoreHasValue';
-import { getParticipants } from '../../../query/participants/getParticipants';
+import { deleteDrawDefinitions } from '@Mutate/events/deleteDrawDefinitions';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { getParticipants } from '@Query/participants/getParticipants';
 import asyncGlobalState from '../../../examples/asyncEngine/asyncGlobalState';
-import * as eventGovernor from '../../../assemblies/governors/eventGovernor';
-import * as query from '../../../assemblies/governors/queryGovernor';
+import * as eventGovernor from '@Assemblies/governors/eventGovernor';
+import * as query from '@Assemblies/governors/queryGovernor';
 import { getMethods } from '../../../global/state/syncGlobalState';
-import asyncEngine from '../../../assemblies/engines/async';
-import mocksEngine from '../../../assemblies/engines/mock';
-import syncEngine from '../../../assemblies/engines/sync';
-import askEngine from '../../../assemblies/engines/ask';
+import asyncEngine from '@Assemblies/engines/async';
+import mocksEngine from '@Assemblies/engines/mock';
+import syncEngine from '@Assemblies/engines/sync';
+import askEngine from '@Assemblies/engines/ask';
 import { expect, test } from 'vitest';
 
-import { MUTATE } from '../../../constants/methodConstants';
+import { MUTATE } from '@Constants/methodConstants';
 import {
   INVALID_VALUES,
   METHOD_NOT_FOUND,
   MISSING_ASYNC_STATE_PROVIDER,
   SCORES_PRESENT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 test('sync syncEngine can set state and execute methods', () => {
   const {

@@ -8,12 +8,12 @@ import { ensureInt } from '@Tools/ensureInt';
 import { nextPowerOf2 } from '@Tools/math';
 
 // constants and types
-import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '../../../constants/errorConditionConstants';
-import POLICY_SEEDING_DEFAULT from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { PolicyDefinitions, ResultType } from '../../../types/factoryTypes';
-import { DrawTypeUnion } from '../../../types/tournamentTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
+import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
+import { DrawTypeUnion } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   AD_HOC,
   DOUBLE_ELIMINATION,
@@ -21,7 +21,7 @@ import {
   MAIN,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 export function validateAndDeriveDrawValues(params): ResultType & {
   policyDefinitions?: PolicyDefinitions;

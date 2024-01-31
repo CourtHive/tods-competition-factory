@@ -13,12 +13,12 @@ import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
-import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { FIRST_MATCHUP } from '../../../constants/drawDefinitionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { TEAM } from '../../../constants/matchUpTypes';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { TEAM } from '@Constants/matchUpTypes';
+import { MatchUpsMap } from '@Types/factoryTypes';
 import {
   BYE,
   COMPLETED,
@@ -28,8 +28,8 @@ import {
   RETIRED,
   TO_BE_PLAYED,
   WALKOVER,
-} from '../../../constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '../../../types/tournamentTypes';
+} from '@Constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type AssignMatchUpDrawPositionArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];

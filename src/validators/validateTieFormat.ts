@@ -4,9 +4,9 @@ import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_TIE_FORMAT } from '../constants/errorConditionConstants';
-import { Category, Event, GenderUnion } from '../types/tournamentTypes';
-import { ResultType } from '../types/factoryTypes';
+import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
+import { Category, Event, GenderUnion } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;

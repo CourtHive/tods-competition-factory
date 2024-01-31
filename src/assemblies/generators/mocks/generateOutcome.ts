@@ -1,14 +1,14 @@
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { generateRange, randomPop } from '../../../tools/arrays';
-import { analyzeMatchUp } from '../../../query/matchUp/analyzeMatchUp';
-import { randomInt, weightedRandom } from '../../../tools/math';
-import { analyzeSet } from '../../../query/matchUp/analyzeSet';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { generateRange, randomPop } from '@Tools/arrays';
+import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
+import { randomInt, weightedRandom } from '@Tools/math';
+import { analyzeSet } from '@Query/matchUp/analyzeSet';
 import { matchUpScore } from '../matchUps/matchUpScore';
 import { parse } from '../matchUpFormatCode/parse';
-import { getSetComplement, getTiebreakComplement } from '../../../query/matchUp/getComplement';
+import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
 
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import {
   COMPLETED,
   DEFAULTED,
@@ -20,7 +20,7 @@ import {
   matchUpStatusConstants,
   completedMatchUpStatuses,
   DOUBLE_DEFAULT,
-} from '../../../constants/matchUpStatusConstants';
+} from '@Constants/matchUpStatusConstants';
 
 // percentages rounded to the nearest whole number
 const defaultStatusProfile = {

@@ -1,9 +1,9 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { INVALID_VALUES, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 it('can modify the drawOrder of flightProfile.flights and drawDefniitions within an event', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({});

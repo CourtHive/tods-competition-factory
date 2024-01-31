@@ -1,15 +1,15 @@
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
-import { getAllDrawMatchUps } from '../../../query/matchUps/drawMatchUps';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { getMatchUpsMap } from '../../../query/matchUps/getMatchUpsMap';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
-import { getPositionAssignments } from '../../../query/drawDefinition/positionsGetter';
-import { findStructure } from '../../../acquire/findStructure';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
 import { clearDrawPosition } from './positionClear';
 
-import { MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function positionParticipantAction(params) {
   const {

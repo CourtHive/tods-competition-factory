@@ -1,14 +1,14 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { getMatchUpIds } from '../../../functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { getMatchUpIds } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 import { dateStringDaysChange, extractDate, extractTime } from '../../../tools/dateTime';
 
-import POLICY_SCHEDULING_DEFAULT from '../../../fixtures/policies/POLICY_SCHEDULING_DEFAULT';
-import { SINGLES } from '../../../constants/eventConstants';
-import { CURTIS_CONSOLATION, MODIFIED_FEED_IN_CHAMPIONSHIP } from '../../../constants/drawDefinitionConstants';
-import { INVALID_VALUES, MISSING_MATCHUP_IDS } from '../../../constants/errorConditionConstants';
+import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
+import { SINGLES } from '@Constants/eventConstants';
+import { CURTIS_CONSOLATION, MODIFIED_FEED_IN_CHAMPIONSHIP } from '@Constants/drawDefinitionConstants';
+import { INVALID_VALUES, MISSING_MATCHUP_IDS } from '@Constants/errorConditionConstants';
 
 it('can bulk reschedule matchUps that have been auto-scheduled', () => {
   const venueProfiles = [

@@ -3,9 +3,9 @@ import { getAccessorValue } from '../../tools/getAccessorValue';
 import mocksEngine from '../../assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { MALE } from '../../constants/genderConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { MALE } from '@Constants/genderConstants';
 
 test('accessorValues can target person.sex when participantType: PAIR', () => {
   const drawProfiles = [

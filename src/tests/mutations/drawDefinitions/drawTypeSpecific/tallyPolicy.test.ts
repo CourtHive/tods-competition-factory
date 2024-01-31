@@ -1,6 +1,6 @@
-import { tallyParticipantResults } from '../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import mocksEngine from '../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../engines/syncEngine';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 test('roundRobinTally policy can specify tally by games only', () => {

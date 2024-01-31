@@ -1,9 +1,9 @@
-import { findExtension } from '../../../acquire/findExtension';
-import { findPolicy } from '../../../acquire/findPolicy';
+import { findExtension } from '@Acquire/findExtension';
+import { findPolicy } from '@Acquire/findPolicy';
 
-import { POLICY_TYPE_SCHEDULING } from '../../../constants/policyConstants';
-import { SCHEDULE_TIMING } from '../../../constants/extensionConstants';
-import { Event, Tournament } from '../../../types/tournamentTypes';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
+import { Event, Tournament } from '@Types/tournamentTypes';
 
 type GetScheduleTimingArgs = {
   tournamentRecord?: Tournament;

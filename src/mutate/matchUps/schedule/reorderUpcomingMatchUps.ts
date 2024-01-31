@@ -1,14 +1,14 @@
 import { addMatchUpScheduledTime } from './scheduledTime';
-import { findDrawDefinition } from '../../../acquire/findDrawDefinition';
-import { decorateResult } from '../../../functions/global/decorateResult';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { decorateResult } from '@Functions/global/decorateResult';
 
-import { SUCCESS } from '../../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
   MODIFICATIONS_FAILED,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 /**
  * Reorders an array of time-ordered matchUps by re-assigning their times

@@ -1,12 +1,12 @@
-import { constantToString } from '../../../../tools/strings';
+import { constantToString } from '@Tools/strings';
 import { structureTemplate } from '../../templates/structureTemplate';
 import { feedInMatchUps } from '../feedInMatchUps';
 import { treeMatchUps } from './eliminationTree';
 import { feedInLinks } from '../links/feedInLinks';
 
-import { DrawLink, Structure } from '../../../../types/tournamentTypes';
-import { SUCCESS } from '../../../../constants/resultConstants';
-import { MAIN, CONSOLATION, PLAY_OFF, LOSER, TOP_DOWN } from '../../../../constants/drawDefinitionConstants';
+import { DrawLink, Structure } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MAIN, CONSOLATION, PLAY_OFF, LOSER, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 
 export function generateCurtisConsolation(params) {
   const {

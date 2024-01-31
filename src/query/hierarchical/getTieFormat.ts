@@ -1,17 +1,17 @@
 import { resolveTieFormat } from './tieFormats/resolveTieFormat';
 import { copyTieFormat } from './tieFormats/copyTieFormat';
-import { decorateResult } from '../../functions/global/decorateResult';
-import { publicFindMatchUp } from '../../acquire/findMatchUp';
-import { findStructure } from '../../acquire/findStructure';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { publicFindMatchUp } from '@Acquire/findMatchUp';
+import { findStructure } from '@Acquire/findStructure';
 
-import { SUCCESS } from '../../constants/resultConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   MISSING_DRAW_ID,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
-} from '../../constants/errorConditionConstants';
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '../../types/tournamentTypes';
+} from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat, Tournament } from '@Types/tournamentTypes';
 
 // NOTE: method exclusively for external use
 

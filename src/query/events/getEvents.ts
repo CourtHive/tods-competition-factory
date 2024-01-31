@@ -8,13 +8,13 @@ import { intersection } from '@Tools/arrays';
 import { median } from '@Tools/math';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { STRUCTURE_SELECTED_STATUSES } from '../../constants/entryStatusConstants';
-import { Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { INDIVIDUAL } from '../../constants/participantConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { ResultType } from '../../types/factoryTypes';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export type RankingStat = {
   median: number;

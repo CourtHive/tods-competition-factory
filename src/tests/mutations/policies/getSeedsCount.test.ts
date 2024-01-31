@@ -1,16 +1,16 @@
-import { getSeedsCount } from '../../../query/drawDefinition/getSeedsCount';
+import { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 import { expect, it } from 'vitest';
 
-import SEEDING_USTA from '../../../fixtures/policies/POLICY_SEEDING_DEFAULT';
-import { POLICY_TYPE_SEEDING } from '../../../constants/policyConstants';
-import { CLUSTER } from '../../../constants/drawDefinitionConstants';
+import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
+import { CLUSTER } from '@Constants/drawDefinitionConstants';
 import {
   INVALID_POLICY_DEFINITION,
   INVALID_VALUES,
   MISSING_DRAW_SIZE,
   MISSING_PARTICIPANT_COUNT,
   MISSING_SEEDCOUNT_THRESHOLDS,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 it('can accurately determine seedsCount from drawSize and participantsCount', () => {
   let seedsCount, error;

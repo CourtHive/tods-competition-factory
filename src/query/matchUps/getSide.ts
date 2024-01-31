@@ -1,4 +1,4 @@
-import { PositionAssignment, SeedAssignment } from '../../types/tournamentTypes';
+import { PositionAssignment, SeedAssignment } from '@Types/tournamentTypes';
 
 export function getSide({
   drawPositionCollectionAssignment,

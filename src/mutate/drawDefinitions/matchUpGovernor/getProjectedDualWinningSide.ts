@@ -4,10 +4,10 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants types and fixtures
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { HydratedMatchUp } from '../../../types/hydrated';
-import { MatchUpsMap } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '@Types/tournamentTypes';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type GetProjectedDualWinningSideArgs = {
   drawDefinition?: DrawDefinition;

@@ -1,9 +1,9 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
-import { toBePlayed } from '../../../fixtures/scoring/outcomes/toBePlayed';
-import { definedAttributes } from '../../../tools/definedAttributes';
-import { parseScoreString } from '../../../tools/parseScoreString';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { parseScoreString } from '@Tools/parseScoreString';
 
-import { INVALID_VALUES } from '../../../constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 /**
  *

@@ -1,4 +1,4 @@
-import { generateRange } from '../../../tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
 type CourtGeneratorArgs = {
   startTime?: string;

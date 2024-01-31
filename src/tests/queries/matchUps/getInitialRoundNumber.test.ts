@@ -1,10 +1,10 @@
-import { getInitialRoundNumber } from '../../../query/matchUps/getInitialRoundNumber';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '../../../tools/arrays';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { ROUND_ROBIN } from '../../../constants/drawDefinitionConstants';
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can accurately determine initialRoundNumber', () => {
   const drawProfiles = [

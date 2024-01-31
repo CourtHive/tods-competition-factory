@@ -1,18 +1,20 @@
-import { checkScoreHasValue } from '../matchUp/checkScoreHasValue';
-import { validMatchUps } from '../../validators/validMatchUp';
-import ratingsParameters from '../../fixtures/ratings/ratingsParameters';
-import { isConvertableInteger } from '../../tools/math';
-import { allEventMatchUps } from './getAllEventMatchUps';
-import { allTournamentMatchUps } from './getAllTournamentMatchUps';
-import { allDrawMatchUps } from './getAllDrawMatchUps';
+import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { isConvertableInteger } from '@Tools/math';
 
-import { COMPETITIVE, DECISIVE, ROUTINE } from '../../constants/statsConstants';
-import { DOUBLES, SINGLES } from '../../constants/matchUpTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { DrawDefinition, Event, Tournament, EventTypeUnion } from '../../types/tournamentTypes';
-import { ABANDONED, DEAD_RUBBER, DEFAULTED, RETIRED, WALKOVER } from '../../constants/matchUpStatusConstants';
-import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '../../constants/errorConditionConstants';
+// constants and types
+import { INVALID_VALUES, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { ABANDONED, DEAD_RUBBER, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DrawDefinition, Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
+import { COMPETITIVE, DECISIVE, ROUTINE } from '@Constants/statsConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type getPredictiveAccuracyArgs = {
   exclusionRule?: { valueAccessor: string; range: [number, number] };
@@ -131,7 +133,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
     scaleName,
   });
 
-  const marginCalc = !zoneDoubling || matchUpType === SINGLES ? zoneMargin : (zoneMargin || 0) * 2;
+  const marginCalc = !zoneDoubling || isMatchUpEventType(SINGLES)(matchUpType) ? zoneMargin : (zoneMargin || 0) * 2;
 
   const zoneData = zoneMargin
     ? relevantMatchUps

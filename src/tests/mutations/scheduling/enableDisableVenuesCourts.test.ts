@@ -1,9 +1,9 @@
-import { hasSchedule } from '../../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DISABLED } from '../../../constants/extensionConstants';
+import { DISABLED } from '@Constants/extensionConstants';
 
 it('can disable and enable courts and venues', () => {
   const startDate = '2022-09-24';

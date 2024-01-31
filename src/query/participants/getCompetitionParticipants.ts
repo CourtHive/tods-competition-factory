@@ -1,11 +1,11 @@
 import { getParticipants as participantGetter } from './getParticipants';
 
 // constants and types
-import { MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
-import { HydratedMatchUp, HydratedParticipant } from '../../types/hydrated';
-import { ParticipantMap, ResultType } from '../../types/factoryTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { MatchUp } from '../../types/tournamentTypes';
+import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
+import { ParticipantMap, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { MatchUp } from '@Types/tournamentTypes';
 
 export function getCompetitionParticipants(params): ResultType & {
   mappedMatchUps?: { [key: string]: HydratedMatchUp };

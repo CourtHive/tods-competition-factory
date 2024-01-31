@@ -1,4 +1,4 @@
-import { generateRange, randomMember } from '../../../../tools/arrays';
+import { generateRange, randomMember } from '@Tools/arrays';
 import { scoreMatchUp, enterValues } from './primitives';
 import { expect, it } from 'vitest';
 

@@ -1,12 +1,12 @@
-import tournamentEngine from '../../engines/syncEngine';
-import { matchUpSort } from '../../../functions/sorters/matchUpSort';
+import tournamentEngine from '@Engines/syncEngine';
+import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { expect } from 'vitest';
 
-import { ALTERNATE } from '../../../constants/entryStatusConstants';
-import { MAIN } from '../../../constants/drawDefinitionConstants';
-import { BYE } from '../../../constants/matchUpStatusConstants';
-import { PolicyDefinitions } from '../../../types/factoryTypes';
-import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '../../../constants/positionActionConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
+import { ASSIGN_PARTICIPANT, REMOVE_ASSIGNMENT } from '@Constants/positionActionConstants';
 
 export function getOrderedDrawPositionPairs(params?) {
   const matchUpFilters = { structureIds: [params?.structureId] };

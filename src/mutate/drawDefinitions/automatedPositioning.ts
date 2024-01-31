@@ -17,13 +17,13 @@ import { findStructure } from '@Acquire/findStructure';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
-import { PolicyDefinitions, SeedingProfile, MatchUpsMap, ResultType } from '../../types/factoryTypes';
-import { DrawDefinition, Event, PositionAssignment, Tournament } from '../../types/tournamentTypes';
-import { LUCKY_DRAW, WATERFALL } from '../../constants/drawDefinitionConstants';
-import { STRUCTURE_NOT_FOUND } from '../../constants/errorConditionConstants';
-import { DIRECT_ENTRY_STATUSES } from '../../constants/entryStatusConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
+import { PolicyDefinitions, SeedingProfile, MatchUpsMap, ResultType } from '@Types/factoryTypes';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/tournamentTypes';
+import { LUCKY_DRAW, WATERFALL } from '@Constants/drawDefinitionConstants';
+import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {

@@ -1,14 +1,15 @@
-import { getPositionAssignments } from '../../../../query/drawDefinition/positionsGetter';
-import { isCompletedStructure } from '../../../../query/drawDefinition/structureActions';
-import { generateMatchUpOutcome } from '../../../helpers/generateMatchUpOutcome';
-import { generateRange, intersection } from '../../../../tools/arrays';
-import { xa } from '../../../../tools/objects';
-import tournamentEngine from '../../../engines/syncEngine';
-import { mocksEngine } from '../../../..';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { generateRange, intersection } from '@Tools/arrays';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import { xa } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
-import { INVALID_VALUES, MISSING_VALUE } from '../../../../constants/errorConditionConstants';
+import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -19,8 +20,7 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../../constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '../../../../constants/matchUpStatusConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const scenarios = [
   {

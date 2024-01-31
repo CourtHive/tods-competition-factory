@@ -1,19 +1,19 @@
-import { getParticipants } from '../../query/participants/getParticipants';
-import { getParticipantId } from '../../functions/global/extractors';
-import { definedAttributes } from '../../tools/definedAttributes';
-import { findParticipant } from '../../acquire/findParticipant';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getParticipantId } from '@Functions/global/extractors';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { findParticipant } from '@Acquire/findParticipant';
 import { addParticipants } from './addParticipants';
-import { UUID } from '../../tools/UUID';
+import { UUID } from '@Tools/UUID';
 
-import { INDIVIDUAL, PAIR } from '../../constants/participantConstants';
-import { Participant } from '../../types/tournamentTypes';
-import { SUCCESS } from '../../constants/resultConstants';
-import { COMPETITOR, participantRoles } from '../../constants/participantRoles';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
+import { Participant } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { COMPETITOR, participantRoles } from '@Constants/participantRoles';
 import {
   INVALID_PARTICIPANT_ROLE,
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
-} from '../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // add persons to a tournamentRecord and create participants in the process
 // include ability to specify a doubles partner by personId

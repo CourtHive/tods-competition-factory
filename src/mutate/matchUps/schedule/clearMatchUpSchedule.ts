@@ -1,9 +1,9 @@
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { allTournamentMatchUps } from '../../../query/matchUps/getAllTournamentMatchUps';
-import { allDrawMatchUps } from '../../../query/matchUps/getAllDrawMatchUps';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 
-import { MATCHUP_NOT_FOUND } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ALLOCATE_COURTS,
   ASSIGN_COURT,
@@ -14,7 +14,7 @@ import {
   SCHEDULED_TIME,
   START_TIME,
   STOP_TIME,
-} from '../../../constants/timeItemConstants';
+} from '@Constants/timeItemConstants';
 
 export function clearMatchUpSchedule({
   scheduleAttributes = [

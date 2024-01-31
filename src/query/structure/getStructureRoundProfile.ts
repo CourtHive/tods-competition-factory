@@ -4,8 +4,8 @@ import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
 import { RoundMatchUpsResult, getRoundMatchUps } from '../matchUps/getRoundMatchUps';
-import { DrawDefinition, MatchUp } from '../../types/tournamentTypes';
-import { MatchUpsMap } from '../../types/factoryTypes';
+import { DrawDefinition, MatchUp } from '@Types/tournamentTypes';
+import { MatchUpsMap } from '@Types/factoryTypes';
 
 type GetStructureRoundProfileArgs = {
   drawDefinition: DrawDefinition;

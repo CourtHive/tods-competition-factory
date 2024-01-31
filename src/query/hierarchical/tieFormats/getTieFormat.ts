@@ -5,16 +5,16 @@ import { getItemTieFormat } from './getItemTieFormat';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
-import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '../../../types/tournamentTypes';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { DrawDefinition, Event, MatchUp, Structure, TieFormat } from '@Types/tournamentTypes';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   ErrorType,
   INVALID_MATCHUP,
   MISSING_DRAW_DEFINITION,
   MISSING_TIE_FORMAT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type GetTieFormatArgs = {
   drawDefinition?: DrawDefinition;

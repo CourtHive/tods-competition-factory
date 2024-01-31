@@ -1,9 +1,9 @@
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 import { mocksEngine } from '../../..';
 
-import { INCOMPLETE_SOURCE_STRUCTURE } from '../../../constants/errorConditionConstants';
-import { ROUND_ROBIN_WITH_PLAYOFF } from '../../../constants/drawDefinitionConstants';
+import { INCOMPLETE_SOURCE_STRUCTURE } from '@Constants/errorConditionConstants';
+import { ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 test('provisional positioning is possible', () => {
   const mockProfile = {

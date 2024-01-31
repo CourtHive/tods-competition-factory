@@ -1,15 +1,15 @@
 import { constantToString } from '../../../tools/strings';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import PARTICIPANT_PRIVACY_DEFAULT from '../../../fixtures/policies/POLICY_PRIVACY_DEFAULT';
-import { DIRECT_ACCEPTANCE } from '../../../constants/entryStatusConstants';
-import { FORMAT_STANDARD } from '../../../fixtures/scoring/matchUpFormats';
-import { INDIVIDUAL } from '../../../constants/participantConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import PARTICIPANT_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
-import { MISSING_EVENT, MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import {
   COMPASS,
   CONTAINER,
@@ -21,7 +21,7 @@ import {
   ROUND_ROBIN_WITH_PLAYOFF,
   VOLUNTARY_CONSOLATION,
   WATERFALL,
-} from '../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const startDate = '2021-01-01';
 const endDate = '2021-01-02';

@@ -1,7 +1,7 @@
 import { dashJoin, isDiffOne, isTiebreakScore } from './helpers';
+import { instanceCount } from '@Tools/arrays';
 import { dashMash } from './commonPatterns';
-import { instanceCount } from '../../tools/arrays';
-import { isNumeric } from '../../tools/math';
+import { isNumeric } from '@Tools/math';
 
 export function containedSets({ score, attributes, identifier }) {
   if (typeof score !== 'string') return { score, identifier };

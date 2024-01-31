@@ -1,10 +1,10 @@
-import { hasSchedule } from '../../mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
-import { validMatchUps } from '../../validators/validMatchUp';
-import { extractDate, extractTime, timeSort } from '../../tools/dateTime';
+import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { extractDate, extractTime, timeSort } from '@Tools/dateTime';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { INVALID_VALUES, MISSING_MATCHUPS } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { INVALID_VALUES, MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 
 /**
  * Retrieves the scheduled matchUps for participants.

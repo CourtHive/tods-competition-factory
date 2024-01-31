@@ -1,12 +1,12 @@
 import { addDays, generateDateRange } from '../../../tools/dateTime';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { chunkArray } from '../../../tools/arrays';
 import { expect, test } from 'vitest';
 
-import { TO_BE_PLAYED } from '../../../constants/matchUpStatusConstants';
-import { SINGLES_EVENT } from '../../../constants/eventConstants';
-import { MALE } from '../../../constants/genderConstants';
+import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { MALE } from '@Constants/genderConstants';
 
 test('supports v2 scheduler', () => {
   const startDate = '2022-08-27'; // date on which scheduling v2 was first successfully run

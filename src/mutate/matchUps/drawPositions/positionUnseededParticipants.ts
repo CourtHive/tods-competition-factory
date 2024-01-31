@@ -1,20 +1,20 @@
 import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/avoidance/randomUnseededSeparation';
-import { getStructureSeedAssignments } from '../../../query/structure/getStructureSeedAssignments';
-import { structureAssignedDrawPositions } from '../../../query/drawDefinition/positionsGetter';
-import { getAppliedPolicies } from '../../../query/extensions/getAppliedPolicies';
-import { getStageEntries } from '../../../query/drawDefinition/stageGetter';
-import { decorateResult } from '../../../functions/global/decorateResult';
-import { findExtension } from '../../../acquire/findExtension';
-import { findStructure } from '../../../acquire/findStructure';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findExtension } from '@Acquire/findExtension';
+import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
-import { shuffleArray } from '../../../tools/arrays';
+import { shuffleArray } from '@Tools/arrays';
 
-import { INSUFFICIENT_DRAW_POSITIONS } from '../../../constants/errorConditionConstants';
-import { DIRECT_ENTRY_STATUSES } from '../../../constants/entryStatusConstants';
-import { POLICY_TYPE_AVOIDANCE } from '../../../constants/policyConstants';
-import { ROUND_TARGET } from '../../../constants/extensionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { PLAY_OFF, QUALIFYING } from '../../../constants/drawDefinitionConstants';
+import { INSUFFICIENT_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
+import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
+import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   provisionalPositioning,

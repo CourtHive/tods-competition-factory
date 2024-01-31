@@ -1,9 +1,9 @@
-import tournamentEngine from '../../engines/syncEngine';
-import mocksEngine from '../../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { INVALID_MATCHUP_STATUS } from '../../../constants/errorConditionConstants';
-import { IN_PROGRESS } from '../../../constants/matchUpStatusConstants';
+import { INVALID_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
+import { IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 it('will not allow an IN_PROGRESS matchUpStatus when there are no participants', () => {
   const startDate = '2022-09-05';

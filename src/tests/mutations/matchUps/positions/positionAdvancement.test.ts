@@ -1,14 +1,14 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { positionTargets } from '../../../../query/matchUp/positionTargets';
-import { getStructureMatchUps } from '../../../../query/structure/getStructureMatchUps';
-import { setStageDrawSize } from '../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { getAllDrawMatchUps } from '../../../../query/matchUps/drawMatchUps';
-import { getDrawStructures } from '../../../../acquire/findStructure';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { feedInChampionship } from '../../drawDefinitions/primitives/feedIn';
-import { newDrawDefinition } from '../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { expect, it } from 'vitest';
 
-import { DrawDefinition } from '../../../../types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '../../../../constants/resultConstants';
 import {
   MAIN,

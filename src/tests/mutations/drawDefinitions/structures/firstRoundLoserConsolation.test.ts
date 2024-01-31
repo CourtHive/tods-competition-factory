@@ -1,11 +1,11 @@
-import { structureAssignedDrawPositions } from '../../../../query/drawDefinition/positionsGetter';
-import { getDrawStructures } from '../../../../acquire/findStructure';
-import mocksEngine from '../../../../assemblies/engines/mock';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { getDrawStructures } from '@Acquire/findStructure';
+import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '../../../../tools/arrays';
-import tournamentEngine from '../../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '../../../../fixtures/scoring/matchUpFormats';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { BYE } from '../../../../constants/matchUpStatusConstants';
 import { SINGLES } from '../../../../constants/eventConstants';
 import { ELIMINATION, FIRST_ROUND_LOSER_CONSOLATION } from '../../../../constants/drawDefinitionConstants';

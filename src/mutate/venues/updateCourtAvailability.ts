@@ -1,8 +1,8 @@
-import { generateDateRange, timeStringMinutes } from '../../tools/dateTime';
+import { generateDateRange, timeStringMinutes } from '@Tools/dateTime';
 
-import { MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { Court } from '../../types/tournamentTypes';
+import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { Court } from '@Types/tournamentTypes';
 
 // bulk update when tournament dates change
 // TODO: check to see if court is present in other linked tournaments

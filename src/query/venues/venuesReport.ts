@@ -1,16 +1,10 @@
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 import { getVenuesAndCourts } from './venuesAndCourtsGetter';
 import { allCompetitionMatchUps } from '../matchUps/getAllCompetitionMatchUps';
-import {
-  addMinutesToTimeString,
-  extractTime,
-  isValidDateString,
-  sameDay,
-  timeStringMinutes,
-} from '../../tools/dateTime';
+import { addMinutesToTimeString, extractTime, isValidDateString, sameDay, timeStringMinutes } from '@Tools/dateTime';
 
-import { TournamentRecords } from '../../types/factoryTypes';
-import { INVALID_DATE, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '../../constants/errorConditionConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { INVALID_DATE, INVALID_VALUES, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GetVenueReportArgs = {
   tournamentRecords: TournamentRecords;

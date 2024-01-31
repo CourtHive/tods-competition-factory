@@ -1,16 +1,16 @@
-import { checkRequiredParameters } from '../../../helpers/parameters/checkRequiredParameters';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
-import { findEvent } from '../../../acquire/findEvent';
+import { findEvent } from '@Acquire/findEvent';
 
-import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '../../../constants/attributeConstants';
-import { TournamentRecords } from '../../../types/factoryTypes';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
+import { TournamentRecords } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_TOURNAMENT_RECORD,
   MISSING_VALUE,
   UNABLE_TO_ASSIGN_COURT,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 type BulkUpdateCourtAssignmentsParams = {
   tournamentRecords: TournamentRecords;

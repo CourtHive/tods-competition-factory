@@ -1,9 +1,9 @@
-import { getCourtDateAvailability } from '../../../../../query/venues/getCourtDateAvailability';
-import { generateTimeSlots } from '../../../../../assemblies/generators/scheduling/generateTimeSlots';
+import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { getDateTimeBoundary } from './getTimeBoundary';
-import { extractTime, minutesDifference, timeToDate } from '../../../../../tools/dateTime';
+import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
 
-import { MISSING_VALUE } from '../../../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type GetEarliestCourtTimeArgs = {
   averageMinutes: number;

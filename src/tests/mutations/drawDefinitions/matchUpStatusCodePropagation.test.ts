@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '../../../constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 it('will properly clean up matchUpStatusCodes when removing DOUBLE_WALKOVERs', () => {
   const mockProfile = {

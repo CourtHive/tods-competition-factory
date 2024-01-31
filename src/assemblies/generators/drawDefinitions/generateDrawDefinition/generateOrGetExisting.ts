@@ -4,7 +4,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { setUpDrawGeneration } from './setUpDrawGeneration';
 
 // constants and types
-import { DrawMaticArgs, PolicyDefinitions, ResultType } from '../../../../types/factoryTypes';
+import { DrawMaticArgs, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import {
   DrawDefinition,
   DrawTypeUnion,
@@ -14,7 +14,7 @@ import {
   Participant,
   TieFormat,
   Tournament,
-} from '../../../../types/tournamentTypes';
+} from '@Types/tournamentTypes';
 
 type GenerateOrGetExisting = {
   automated?: boolean | { seedsOnly: boolean };

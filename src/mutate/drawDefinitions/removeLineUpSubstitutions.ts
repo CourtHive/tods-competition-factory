@@ -2,7 +2,7 @@ import { getCollectionPositionAssignments } from '@Query/hierarchical/tieFormats
 import { unique } from '@Tools/arrays';
 
 // types
-import { LineUp } from '../../types/factoryTypes';
+import { LineUp } from '@Types/factoryTypes';
 
 export function removeLineUpSubstitutions({ lineUp }: { lineUp: LineUp }) {
   if (!Array.isArray(lineUp)) return;

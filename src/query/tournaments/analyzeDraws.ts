@@ -3,11 +3,11 @@ import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { getStructureGroups } from '../structure/getStructureGroups';
 import { getStructureLinks } from '../drawDefinition/linkGetter';
-import { stageOrder } from '../../constants/drawDefinitionConstants';
-import { ensureInt } from '../../tools/ensureInt';
+import { stageOrder } from '@Constants/drawDefinitionConstants';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { SUCCESS } from '../../constants/resultConstants';
-import { ErrorType, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type DrawsAnalysis = {
   positionsNoOutcomes: string[];

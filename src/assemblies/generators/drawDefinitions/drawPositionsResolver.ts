@@ -1,9 +1,9 @@
-import { getDrawPosition } from '../../../functions/global/extractors';
-import { makeDeepCopy } from '../../../tools/makeDeepCopy';
-import { ensureInt } from '../../../tools/ensureInt';
-import { chunkArray, generateRange, overlap, randomPop, shuffleArray } from '../../../tools/arrays';
+import { getDrawPosition } from '@Functions/global/extractors';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { ensureInt } from '@Tools/ensureInt';
+import { chunkArray, generateRange, overlap, randomPop, shuffleArray } from '@Tools/arrays';
 
-import { MISSING_VALUE } from '../../../constants/errorConditionConstants';
+import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 /**
  *

@@ -1,7 +1,7 @@
-import { getParticipantIds } from '../../../functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
+import { getParticipantIds } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
 import { globalState } from '../../..';
-import tournamentEngine from '../../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 tournamentEngine.devContext(true);

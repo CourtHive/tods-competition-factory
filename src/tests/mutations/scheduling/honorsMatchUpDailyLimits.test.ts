@@ -1,12 +1,12 @@
-import { getMatchUpIds } from '../../../functions/global/extractors';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { getMatchUpIds } from '@Functions/global/extractors';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '../../../tools/arrays';
 import { expect, it } from 'vitest';
 
-import { INVALID_OBJECT } from '../../../constants/errorConditionConstants';
-import { SCHEDULE_LIMITS } from '../../../constants/extensionConstants';
-import { DOUBLES, SINGLES } from '../../../constants/matchUpTypes';
+import { INVALID_OBJECT } from '@Constants/errorConditionConstants';
+import { SCHEDULE_LIMITS } from '@Constants/extensionConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 it('can set and honor matchUpDailyLimits', () => {
   // ensure that tournament has exactly 16 participants

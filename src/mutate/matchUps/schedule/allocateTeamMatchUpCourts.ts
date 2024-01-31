@@ -1,16 +1,16 @@
-import { getVenuesAndCourts } from '../../../query/venues/venuesAndCourtsGetter';
+import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
-import { findDrawMatchUp } from '../../../acquire/findDrawMatchUp';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { DrawDefinition, Tournament } from '../../../types/tournamentTypes';
-import { ALLOCATE_COURTS } from '../../../constants/timeItemConstants';
-import { TEAM_MATCHUP } from '../../../constants/matchUpTypes';
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
+import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import {
   INVALID_MATCHUP,
   INVALID_VALUES,
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
-} from '../../../constants/errorConditionConstants';
+} from '@Constants/errorConditionConstants';
 
 // allocate courts for a TEAM matchUp
 type AllocateTeamMatchUpCourtsArgs = {

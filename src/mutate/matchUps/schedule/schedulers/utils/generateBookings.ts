@@ -1,14 +1,14 @@
-import { matchUpFormatTimes } from '../../../../../query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { getScheduleTiming } from '../../../../../query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { validMatchUps } from '../../../../../validators/validMatchUp';
+import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
-import { addMinutesToTimeString, extractTime } from '../../../../../tools/dateTime';
+import { addMinutesToTimeString, extractTime } from '@Tools/dateTime';
 
-import { Tournament } from '../../../../../types/tournamentTypes';
-import { BYE } from '../../../../../constants/matchUpStatusConstants';
-import { HydratedMatchUp } from '../../../../../types/hydrated';
-import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '../../../../../constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GenerateBookingsArgs = {
   tournamentRecords: { [key: string]: Tournament };

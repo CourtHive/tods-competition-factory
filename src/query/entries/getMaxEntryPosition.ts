@@ -1,4 +1,4 @@
-import { ensureInt } from '../../tools/ensureInt';
+import { ensureInt } from '@Tools/ensureInt';
 
 export function getMaxEntryPosition(params) {
   const { entries = [], entryStatus, stage } = params;

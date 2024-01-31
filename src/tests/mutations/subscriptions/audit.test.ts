@@ -1,11 +1,11 @@
 import { setSubscriptions } from '../../../global/state/globalState';
-import { findExtension } from '../../../acquire/findExtension';
-import mocksEngine from '../../../assemblies/engines/mock';
-import tournamentEngine from '../../engines/syncEngine';
+import { findExtension } from '@Acquire/findExtension';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DELETE_DRAW_DEFINITIONS } from '../../../constants/auditConstants';
-import { DRAW_DELETIONS } from '../../../constants/extensionConstants';
+import { DELETE_DRAW_DEFINITIONS } from '@Constants/auditConstants';
+import { DRAW_DELETIONS } from '@Constants/extensionConstants';
 
 it('can notify subscriber when audit information is added', () => {
   const drawProfiles = [

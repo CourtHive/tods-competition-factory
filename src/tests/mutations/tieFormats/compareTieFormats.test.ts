@@ -1,9 +1,9 @@
-import tieFormatDefaults from '../../../assemblies/generators/templates/tieFormatDefaults';
-import { compareTieFormats } from '../../../query/hierarchical/tieFormats/compareTieFormats';
+import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
+import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
 import { it, expect } from 'vitest';
 
-import { TieFormat } from '../../../types/tournamentTypes';
-import { COLLEGE_D3, COLLEGE_DEFAULT } from '../../../constants/tieFormatConstants';
+import { TieFormat } from '@Types/tournamentTypes';
+import { COLLEGE_D3, COLLEGE_DEFAULT } from '@Constants/tieFormatConstants';
 
 it('can find differences in tieFormats', () => {
   const descendant = tieFormatDefaults({ namedFormat: COLLEGE_DEFAULT });

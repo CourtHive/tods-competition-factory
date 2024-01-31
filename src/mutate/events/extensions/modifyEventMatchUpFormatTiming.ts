@@ -1,11 +1,11 @@
-import { getModifiedMatchUpFormatTiming } from '../../../query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
+import { getModifiedMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
-import { isValidMatchUpFormat } from '../../../validators/isValidMatchUpFormat';
-import { Event, Tournament } from '../../../types/tournamentTypes';
-import { ensureInt } from '../../../tools/ensureInt';
+import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
+import { Event, Tournament } from '@Types/tournamentTypes';
+import { ensureInt } from '@Tools/ensureInt';
 
-import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '../../../constants/errorConditionConstants';
-import { SINGLES } from '../../../constants/matchUpTypes';
+import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 
 type ModifyEventMatchUpFormatTimingArgs = {
   tournamentRecord: Tournament;

@@ -1,20 +1,20 @@
-import { generateDrawTypeAndModifyDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
-import { tallyParticipantResults } from '../../../../../query/matchUps/roundRobinTally/roundRobinTally';
-import { newDrawDefinition } from '../../../../../assemblies/generators/drawDefinitions/newDrawDefinition';
-import { setStageDrawSize } from '../../../../../mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { getAllStructureMatchUps } from '../../../../../query/matchUps/getAllStructureMatchUps';
-import { generateMatchUpOutcome } from '../../../../helpers/generateMatchUpOutcome';
-import { chunkArray, intersection } from '../../../../../tools/arrays';
-import { findStructure } from '../../../../../acquire/findStructure';
-import mocksEngine from '../../../../../assemblies/engines/mock';
-import tournamentEngine from '../../../../engines/syncEngine';
+import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
+import { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
+import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { chunkArray, intersection } from '@Tools/arrays';
+import { findStructure } from '@Acquire/findStructure';
 import { setsValues } from './roundRobinSetsValues';
+import mocksEngine from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
-import { allPlayoffPositionsFilled, isCompletedStructure } from '../../../../../query/drawDefinition/structureActions';
 
-import { FORMAT_STANDARD } from '../../../../../fixtures/scoring/matchUpFormats';
-import { SINGLES } from '../../../../../constants/eventConstants';
-import { DrawDefinition } from '../../../../../types/tournamentTypes';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { DrawDefinition } from '@Types/tournamentTypes';
+import { SINGLES } from '@Constants/eventConstants';
 import {
   DRAW,
   MAIN,
@@ -24,7 +24,7 @@ import {
   ROUND_OUTCOME,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
-} from '../../../../../constants/drawDefinitionConstants';
+} from '@Constants/drawDefinitionConstants';
 
 const bronzeFlight = 'Bronze Flight';
 const silverFlight = 'Silver Flight';

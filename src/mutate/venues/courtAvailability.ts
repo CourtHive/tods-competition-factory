@@ -1,17 +1,17 @@
-import { getAppliedPolicies } from '../../query/extensions/getAppliedPolicies';
-import { getScheduledCourtMatchUps } from '../../query/venues/getScheduledCourtMatchUps';
-import { minutesDifference, timeToDate } from '../../tools/dateTime';
-import { startTimeSort } from '../../validators/time';
-import { addNotice } from '../../global/state/globalState';
-import { validDateAvailability } from '../../validators/validateDateAvailability';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { getScheduledCourtMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
+import { minutesDifference, timeToDate } from '@Tools/dateTime';
+import { startTimeSort } from '@Validators/time';
+import { addNotice } from '@Global/state/globalState';
+import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { findCourt } from './findCourt';
 
-import { Availability, Tournament } from '../../types/tournamentTypes';
-import { POLICY_TYPE_SCHEDULING } from '../../constants/policyConstants';
-import { MODIFY_VENUE } from '../../constants/topicConstants';
-import { SUCCESS } from '../../constants/resultConstants';
-import { HydratedMatchUp } from '../../types/hydrated';
-import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '../../constants/errorConditionConstants';
+import { Availability, Tournament } from '@Types/tournamentTypes';
+import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
+import { MODIFY_VENUE } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
+import { ErrorType, MISSING_COURT_ID, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 type ModifyCourtAvailabilityArgs = {
   venueMatchUps?: HydratedMatchUp[];

@@ -1,7 +1,7 @@
-import { chunkArray, generateRange } from '../../../tools/arrays';
-import { numericSort } from '../../../tools/sorting';
+import { chunkArray, generateRange } from '@Tools/arrays';
+import { numericSort } from '@Tools/sorting';
 
-import { CLUSTER, WATERFALL } from '../../../constants/drawDefinitionConstants';
+import { CLUSTER, WATERFALL } from '@Constants/drawDefinitionConstants';
 
 function getDivisions({ size }) {
   const divisions: number[] = [size];

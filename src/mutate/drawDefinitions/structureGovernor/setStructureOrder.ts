@@ -3,9 +3,9 @@ import { isConvertableInteger } from '@Tools/math';
 import { numericSortValue } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '../../../constants/errorConditionConstants';
-import { SUCCESS } from '../../../constants/resultConstants';
-import { ResultType } from '../../../types/factoryTypes';
+import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function setStructureOrder({ drawDefinition, orderMap }): ResultType {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

@@ -1,8 +1,8 @@
-import mocksEngine from '../../../assemblies/engines/mock';
-import competitionEngine from '../../engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import competitionEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { INVALID_OBJECT, VENUE_EXISTS, VENUE_NOT_FOUND } from '../../../constants/errorConditionConstants';
+import { INVALID_OBJECT, VENUE_EXISTS, VENUE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 test('competitionEngine can modify venues', () => {
   const startDate = '2020-01-01';

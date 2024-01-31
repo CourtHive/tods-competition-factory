@@ -5,11 +5,11 @@ import { findStructure } from '@Acquire/findStructure';
 import { generateRange } from '@Tools/arrays';
 
 // constants and types
-import { PolicyDefinitions, SeedBlock, SeedingProfile, MatchUpsMap } from '../../../types/factoryTypes';
-import { ErrorType, MISSING_DRAW_POSITION } from '../../../constants/errorConditionConstants';
-import { DrawDefinition, Event, Structure, Tournament } from '../../../types/tournamentTypes';
-import { HydratedMatchUp, HydratedParticipant } from '../../../types/hydrated';
-import { SUCCESS } from '../../../constants/resultConstants';
+import { PolicyDefinitions, SeedBlock, SeedingProfile, MatchUpsMap } from '@Types/factoryTypes';
+import { ErrorType, MISSING_DRAW_POSITION } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type PositionSeedBlocksArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
