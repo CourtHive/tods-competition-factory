@@ -43,9 +43,7 @@ export function completeDrawMatchUps(params): {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const matchUpFormat = params.matchUpFormat || drawDefinition.matchUpFormat || event?.matchUpFormat;
-
   const sortedStructures = drawDefinition.structures.slice().sort(structureSort);
-
   let completedCount = 0;
 
   const { matchUps: firstRoundDualMatchUps, matchUpsMap } = getAllDrawMatchUps({
@@ -180,6 +178,8 @@ export function completeDrawMatchUps(params): {
     for (const matchUpId of sortedMatchUpIds) {
       if (!isNaN(completionGoal) && completedCount >= completionGoal) break;
 
+      // this is necessary to support completion of connected structures
+      // it is using matchUpsMap so it has been optimizied
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: { matchUpTypes: [DOUBLES, SINGLES] },
         afterRecoveryTimes: false,
