@@ -2,14 +2,18 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
+import { FORMAT_FAST4, FORMAT_SHORT_SETS, FORMAT_STANDARD, TIMED20 } from '@Fixtures/scoring/matchUpFormats';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 import {
+  INVALID_EVENT_TYPE,
   INVALID_VALUES,
+  MISSING_DRAW_DEFINITION,
   MISSING_DRAW_ID,
   MISSING_MATCHUP_FORMAT,
   NO_MODIFICATIONS_APPLIED,
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '@Constants/errorConditionConstants';
-import { FORMAT_FAST4, FORMAT_SHORT_SETS, FORMAT_STANDARD, TIMED20 } from '@Fixtures/scoring/matchUpFormats';
 
 it('can set and return matchUpFormat codes', () => {
   const matchUpFormat = FORMAT_STANDARD;
@@ -28,13 +32,16 @@ it('can set and return matchUpFormat codes', () => {
       ],
     },
   ];
+
+  const startDate = '2024-01-30';
   const {
     drawIds: [drawId],
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     inContext: true,
+    drawProfiles,
+    startDate,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -203,10 +210,58 @@ it('can set and return matchUpFormat codes', () => {
   });
   expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
 
-  result = tournamentEngine.setMatchUpStatus({
-    matchUpFormat: 'BOGUS',
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    structureId,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    scheduledDates: '2024-01-31',
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    eventType: TEAM_EVENT,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_EVENT_TYPE);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    force: true, // test coverage
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    scheduledDates: [startDate], // test coverage
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    stages: ['BOGUS'],
+    drawId,
+  });
+  expect(result.info).toEqual(NO_MODIFICATIONS_APPLIED);
+
+  result = tournamentEngine.setMatchUpFormat({
+    matchUpFormat: FORMAT_SHORT_SETS,
+    stageSequences: [8],
+    drawId,
+  });
+  expect(result.info).toEqual(NO_MODIFICATIONS_APPLIED);
 });

@@ -55,8 +55,8 @@ export function setMatchUpMatchUpFormat(params: SetMatchUpMatchUpFormatArgs): {
     const matchUp = result.matchUp;
     if (matchUp?.matchUpType === TEAM)
       return {
-        error: INVALID_MATCHUP,
         info: 'Cannot set matchUpFormat when { matchUpType: TEAM }',
+        error: INVALID_MATCHUP,
       };
 
     matchUp.matchUpFormat = matchUpFormat;

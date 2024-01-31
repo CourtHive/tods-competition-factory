@@ -147,8 +147,8 @@ it('can set matchUpFormat', () => {
   const matchUpId = matchUp?.matchUpId as string;
   let result = setMatchUpMatchUpFormat({
     drawDefinition,
-    matchUpId,
     matchUpFormat,
+    matchUpId,
   });
   expect(result.success).toEqual(true);
 
@@ -188,4 +188,11 @@ it('can set matchUpFormat', () => {
     matchUpFormat,
   });
   expect(result.success).toEqual(true);
+
+  // @ts-expect-error missing params
+  result = setMatchUpMatchUpFormat({
+    structureId: structure?.structureId,
+    matchUpFormat,
+  });
+  expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
 });
