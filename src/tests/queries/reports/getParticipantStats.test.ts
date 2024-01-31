@@ -1,8 +1,9 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { xa } from '../../../tools/objects';
+import { xa } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
+// constants
 import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';

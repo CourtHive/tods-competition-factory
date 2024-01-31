@@ -1,17 +1,18 @@
 import { getParticipantId } from '@Functions/global/extractors';
-import { instanceCount, unique } from '../../../tools/arrays';
+import { instanceCount, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
 import { LINEUPS } from '@Constants/extensionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { RANKING } from '@Constants/scaleConstants';
 import { ASC } from '@Constants/sortingConstants';
 import { LineUp } from '@Types/factoryTypes';
-import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
-import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';

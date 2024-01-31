@@ -235,11 +235,21 @@ it('throws error when setting matchUpFormat on TEAM events', () => {
   });
 
   const { drawDefinition, event } = tournamentEngine.getEvent({ drawId: 'did' });
+  const structureId = drawDefinition.structures[0].structureId;
 
   expect(event.eventType).toEqual(TEAM_EVENT);
 
   let result = setMatchUpMatchUpFormat({
     matchUpFormat: 'SET1-S:T10',
+    drawDefinition,
+    structureId,
+    event,
+  });
+  expect(result.error).toEqual(INVALID_EVENT_TYPE);
+
+  result = setMatchUpMatchUpFormat({
+    matchUpFormat: 'SET1-S:T10',
+    structureIds: [structureId],
     drawDefinition,
     event,
   });

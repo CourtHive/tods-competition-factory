@@ -11,11 +11,9 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/eventConstants';
 import {
   UNRECOGNIZED_MATCHUP_FORMAT,
-  STRUCTURE_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_MATCHUP,
   ErrorType,
-  MATCHUP_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
 
 type SetMatchUpMatchUpFormatArgs = {
@@ -51,42 +49,36 @@ export function setMatchUpMatchUpFormat(params: SetMatchUpMatchUpFormatArgs): {
       event,
     });
     if (result.error) return result;
-    if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
     const matchUp = result.matchUp;
+
     if (matchUp?.matchUpType === TEAM)
       return {
         info: 'Cannot set matchUpFormat when { matchUpType: TEAM }',
         error: INVALID_MATCHUP,
       };
 
-    matchUp.matchUpFormat = matchUpFormat;
-    modifyMatchUpNotice({
-      tournamentId: tournamentRecord?.tournamentId,
-      eventId: event?.eventId,
-      context: stack,
-      drawDefinition,
-      matchUp,
-    });
+    if (matchUp) {
+      matchUp.matchUpFormat = matchUpFormat;
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord?.tournamentId,
+        eventId: event?.eventId,
+        context: stack,
+        drawDefinition,
+        matchUp,
+      });
+    }
   } else if (Array.isArray(structureIds)) {
     if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
     for (const structureId of structureIds) {
       const result = findStructure({ drawDefinition, structureId });
       if (result.error) return result;
-      if (!result.structure) {
-        return { error: STRUCTURE_NOT_FOUND };
-      } else {
-        result.structure.matchUpFormat = matchUpFormat;
-      }
+      if (result.structure) result.structure.matchUpFormat = matchUpFormat;
     }
   } else if (structureId) {
     if (event?.eventType === TEAM) return { error: INVALID_EVENT_TYPE };
     const result = findStructure({ drawDefinition, structureId });
     if (result.error) return result;
-    if (!result.structure) {
-      return { error: STRUCTURE_NOT_FOUND };
-    } else {
-      result.structure.matchUpFormat = matchUpFormat;
-    }
+    if (result.structure) result.structure.matchUpFormat = matchUpFormat;
   } else if (drawDefinition) {
     drawDefinition.matchUpFormat = matchUpFormat;
   }
