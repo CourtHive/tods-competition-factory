@@ -1,4 +1,6 @@
 import { countGames, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
+import { simpleAddition } from '@Functions/reducers/simpleAddition';
+import { lengthOrZero } from '@Tools/strings';
 import { intersection } from '@Tools/arrays';
 
 // constants and types
@@ -6,6 +8,7 @@ import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
+import { safePct } from '@Tools/math';
 
 type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];
@@ -99,8 +102,8 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
     commonOpponentIds.forEach((opponentId) => {
       const opponentOutcome = opponentOutcomes[i][opponentId];
       if (opponentOutcome) {
-        const matchUpsLost = opponentOutcome.lost?.length ?? 0;
-        const matchUpsWon = opponentOutcome.won?.length ?? 0;
+        const matchUpsLost = lengthOrZero(opponentOutcome.lost);
+        const matchUpsWon = lengthOrZero(opponentOutcome.won);
 
         // TODO: collect scores vs. commonOpponent; capture opponent side for proper display
         let totalGamesVsOpponent = 0;
@@ -111,13 +114,13 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
         // iterate over outcomes vs. commonOpponent
         opponentOutcome.won?.forEach((matchDetails) => {
           const gamesResult = countGames(matchDetails);
-          const gamesCount = gamesResult.reduce((a, b) => (a ?? 0) + (b ?? 0));
+          const gamesCount = gamesResult.reduce(simpleAddition);
           const gamesWon = gamesResult[matchDetails.winningSide - 1];
           if (gamesCount) totalGamesVsOpponent += gamesCount;
           if (gamesWon) gamesWonVsOpponent += gamesWon;
 
           const setsResult = countSets(matchDetails);
-          const setsCount = setsResult.reduce((a, b) => (a ?? 0) + (b ?? 0));
+          const setsCount = setsResult.reduce(simpleAddition);
           const setsWon = setsResult[matchDetails.winningSide - 1];
           if (setsCount) totalSetsVsOpponent += setsCount;
           if (setsWon) setsWonVsOpponent += setsWon;
@@ -125,22 +128,23 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
 
         opponentOutcome.lost?.forEach((matchDetails) => {
           const gamesResult = countGames(matchDetails);
-          const gamesCount = gamesResult.reduce((a, b) => (a ?? 0) + (b ?? 0));
+          const gamesCount = gamesResult.reduce(simpleAddition);
           const gamesWon = gamesResult[1 - (matchDetails.winningSide - 1)];
           if (gamesCount) totalGamesVsOpponent += gamesCount;
           if (gamesWon) gamesWonVsOpponent += gamesWon;
 
           const setsResult = countSets(matchDetails);
-          const setsCount = setsResult.reduce((a, b) => (a ?? 0) + (b ?? 0));
+          const setsCount = setsResult.reduce(simpleAddition);
           const setsWon = setsResult[1 - (matchDetails.winningSide - 1)];
           if (setsCount) totalSetsVsOpponent += setsCount;
           if (setsWon) setsWonVsOpponent += setsWon;
         });
 
         const matchUpDenominator = matchUpsWon + matchUpsLost;
-        const matchUpPct = matchUpDenominator ? matchUpsWon / matchUpDenominator : 0;
-        const gamesPct = totalGamesVsOpponent ? gamesWonVsOpponent / totalGamesVsOpponent : 0;
-        const setsPct = totalSetsVsOpponent ? setsWonVsOpponent / totalSetsVsOpponent : 0;
+        // const matchUpPct = matchUpDenominator ? matchUpsWon / matchUpDenominator : 0;
+        const matchUpPct = safePct(matchUpsWon, matchUpDenominator, false);
+        const gamesPct = safePct(gamesWonVsOpponent, totalGamesVsOpponent, false);
+        const setsPct = safePct(setsWonVsOpponent, totalSetsVsOpponent, false);
 
         if (matchUpDenominator) {
           aggregateMatchUpWinPct += matchUpPct;

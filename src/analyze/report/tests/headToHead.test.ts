@@ -1,11 +1,12 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
+import { chunkArray, generateRange } from '@Tools/arrays';
 import { timeKeeper } from '@Global/state/globalState';
 import { participantHeadToHead } from '../headToHead';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// constants
 import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 const drawDefinitionsCount = 10;
@@ -49,11 +50,9 @@ it('can generate H2H reports with Competitors In Common', () => {
     withOpponents: true,
     withMatchUps: true,
   });
-  const twoParticipants = participantsResult.participants
-    .sort((a, b) => b.matchUps.length - a.matchUps.length)
-    .slice(0, 2);
-
+  const participants = participantsResult.participants.sort((a, b) => b.matchUps.length - a.matchUps.length);
   const mappedMatchUps = participantsResult.mappedMatchUps;
+  const twoParticipants = participants.slice(0, 2);
 
   let h2h = participantHeadToHead({
     // @ts-expect-error invalid values
@@ -72,5 +71,13 @@ it('can generate H2H reports with Competitors In Common', () => {
     const { gamesWon, gamesLost, setsWon, setsLost } = report;
     expect(gamesWon || gamesLost).not.toBeUndefined();
     expect(setsWon || setsLost).not.toBeUndefined();
+  });
+
+  // enxure code coverage
+  chunkArray(participants, 2).forEach((participants) => {
+    h2h = participantHeadToHead({
+      mappedMatchUps,
+      participants,
+    }).h2h;
   });
 });

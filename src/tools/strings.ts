@@ -17,3 +17,7 @@ export function capitalizeFirst(str) {
 export function constantToString(str) {
   return !isString(str) ? '' : capitalizeFirst(str.replace(/_/g, ' '));
 }
+
+export function lengthOrZero(value) {
+  return value?.length ?? 0;
+}
