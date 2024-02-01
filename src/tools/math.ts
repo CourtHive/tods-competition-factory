@@ -97,3 +97,9 @@ export function skewedDistribution(min: number, max: number, skew: number, step?
 
   return parseFloat(num.toFixed(significantDecimals));
 }
+
+export function safePct(numerator, denominator, round = true) {
+  return denominator && isNumeric(numerator) && isNumeric(denominator)
+    ? (round && Math.round((numerator / denominator) * 100)) || numerator / denominator
+    : 0;
+}

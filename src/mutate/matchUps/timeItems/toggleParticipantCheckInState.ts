@@ -4,10 +4,19 @@ import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';
 
+// constants and types
 import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 import { TournamentRecords } from '@Types/factoryTypes';
-import { DRAW_DEFINITION, ERROR, MATCHUP, MATCHUP_ID, PARAM, PARTICIPANT_ID } from '@Constants/attributeConstants';
+import {
+  DRAW_DEFINITION,
+  ERROR,
+  IN_CONTEXT,
+  MATCHUP,
+  MATCHUP_ID,
+  PARAM,
+  PARTICIPANT_ID,
+} from '@Constants/attributeConstants';
 
 type ToggleParticipantCheckInStateArgs = {
   tournamentRecords?: TournamentRecords;
@@ -32,7 +41,9 @@ export function toggleParticipantCheckInState(params: ToggleParticipantCheckInSt
   const { participantId, matchUpId, drawDefinition } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
-  const resolutions = resolveFromParameters(params, [{ [PARAM]: MATCHUP, [ERROR]: MATCHUP_NOT_FOUND }]);
+  const resolutions = resolveFromParameters(params, [
+    { [PARAM]: MATCHUP, attr: { [IN_CONTEXT]: true }, [ERROR]: MATCHUP_NOT_FOUND },
+  ]);
   const matchUp = resolutions.matchUp?.matchUp;
   if (!matchUp) return { error: MATCHUP_NOT_FOUND };
 

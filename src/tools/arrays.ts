@@ -210,3 +210,7 @@ export function getMissingSequenceNumbers(arr, start = 1) {
   const max = Math.max(...arr);
   return generateRange(min, max + 1).filter((n) => !arr.includes(n));
 }
+
+export function lengthOrZero(value) {
+  return (Array.isArray(value) && value.length) || 0;
+}
