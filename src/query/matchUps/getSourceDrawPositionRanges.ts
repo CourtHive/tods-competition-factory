@@ -1,12 +1,13 @@
-import { chunkArray, generateRange } from '@Tools/arrays';
 import { getMappedStructureMatchUps } from './getMatchUpsMap';
+import { chunkArray, generateRange } from '@Tools/arrays';
 import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findStructure } from '@Acquire/findStructure';
 import { getRoundMatchUps } from './getRoundMatchUps';
 import { getRangeString } from './getRangeString';
 
-import { BOTTOM_UP, CONSOLATION } from '@Constants/drawDefinitionConstants';
+// constants
 import { INVALID_STAGE, MISSING_DRAW_DEFINITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
+import { BOTTOM_UP, CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 export function getSourceDrawPositionRanges({ drawDefinition, structureId, matchUpsMap }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -17,6 +18,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId, match
 
   const { links } = drawDefinition;
   const relevantLinks = links?.filter((link) => link.target.structureId === structureId) || [];
+
   const sourceStructureIds =
     relevantLinks?.reduce((sourceStructureIds, link) => {
       const { structureId: sourceStructureId } = link.source;
@@ -24,6 +26,7 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId, match
         ? sourceStructureIds
         : sourceStructureIds.concat(sourceStructureId);
     }, []) || [];
+
   const sourceStructureProfiles = Object.assign(
     {},
     ...sourceStructureIds.map((sourceStructureId) => {
@@ -63,9 +66,11 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId, match
     let orderedPositions = firstRoundDrawPositions.slice();
 
     const sizedGroupOrder = reduceGroupedOrder({
-      roundPositionsCount: orderedPositions.length,
+      roundPositionsCount: targetRoundMatchUpsCount,
       groupedOrder,
     });
+    const reducedOrder = groupedOrder?.length && sizedGroupOrder?.length < groupedOrder.length;
+
     const groupsCount = sizedGroupOrder?.length || 1;
     if (groupsCount <= targetRoundMatchUpsCount) {
       const groupSize = firstRoundDrawPositions.length / groupsCount;
@@ -77,7 +82,9 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId, match
 
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
-    if (!sizedGroupOrder?.length && feedProfile === BOTTOM_UP) drawPositionBlocks.reverse();
+    if (reducedOrder && feedProfile === BOTTOM_UP) {
+      drawPositionBlocks.reverse();
+    }
 
     // positionInterleave describes how positions are fed from source to target
     // In double elimination, for instance:
