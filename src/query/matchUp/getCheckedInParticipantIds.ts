@@ -4,9 +4,9 @@ import { getMatchUpParticipantIds } from './getMatchUpParticipantIds';
 import { INVALID_MATCHUP, MISSING_CONTEXT, MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { CHECK_IN, CHECK_OUT } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '@Types/factoryTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TimeItem } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 /*
   takes a matchUpWithContext
@@ -22,9 +22,7 @@ export function getCheckedInParticipantIds({ matchUp }: { matchUp: HydratedMatch
   checkedInParticipantIds?: string[];
 } {
   if (!matchUp) return { error: MISSING_MATCHUP };
-  if (!matchUp.hasContext) {
-    return { error: MISSING_CONTEXT };
-  }
+  if (!matchUp.hasContext) return { error: MISSING_CONTEXT };
 
   if (!matchUp.sides || matchUp.sides.filter(Boolean).length !== 2) {
     return { error: INVALID_MATCHUP };

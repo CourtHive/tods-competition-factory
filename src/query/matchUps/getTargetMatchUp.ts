@@ -5,9 +5,10 @@ import { reduceGroupedOrder } from './reduceGroupedOrder';
 import { findExtension } from '@Acquire/findExtension';
 import { findStructure } from '@Acquire/findStructure';
 
-import { DISABLE_LINKS } from '@Constants/extensionConstants';
+// constants
 import { MISSING_TARGET_LINK, NOT_IMPLEMENTED } from '@Constants/errorConditionConstants';
 import { DRAW, BOTTOM_UP, RANDOM, TOP_DOWN } from '@Constants/drawDefinitionConstants';
+import { DISABLE_LINKS } from '@Constants/extensionConstants';
 
 export function getTargetMatchUp({
   sourceRoundMatchUpCount,
@@ -65,8 +66,8 @@ export function getTargetMatchUp({
   let targetedRoundPosition = roundPositions[calculatedRoundPosition - 1];
 
   const sizedGroupOrder = reduceGroupedOrder({
-    groupedOrder,
     roundPositionsCount: roundPositions.length,
+    groupedOrder,
   });
   const groupsCount = sizedGroupOrder?.length || 1;
   if (groupsCount <= roundPositions.length) {

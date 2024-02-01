@@ -15,6 +15,7 @@ Verion 2.0 of the Competition Factory was focused on code restructuring with sup
 - tournamentEngine.bulkScheduleMatchUps() is now tournamentEngine.bulkScheduleTournamentMatchUps()
 - tournamentEngine.getAvailablePlayoffRounds() => tournamentEngine.getAvailablePlayoffProfiles()
 - tournamentEngine.attachEventPolicies() => tournamentEngine.attachPolicies({ eventId, ... })
+- tournamentEngine.removeEventPolicy() => tournamentEngine.removePolicy({ eventId, ... })
 - competitionEngine.getParticipants() is now tournamentEngine.getCompetitionParticipants()
 - competitionEngine.competitionMatchUps() is now tournamentEngine.getCompetitionMatchUps()
 

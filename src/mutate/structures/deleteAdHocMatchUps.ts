@@ -13,6 +13,7 @@ import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 type DeleteAdHocMatchUpsArgs = {
   tournamentRecord?: Tournament;
@@ -25,7 +26,9 @@ type DeleteAdHocMatchUpsArgs = {
   structureId?: string;
   event?: Event;
 };
-export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
+export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs): ResultType & {
+  deletedMatchUpsCount?: number;
+} {
   const paramsCheck = checkRequiredParameters(params, [
     { [DRAW_DEFINITION]: true },
     {
@@ -53,9 +56,9 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
   const matchUpIdsWithScoreValue: string[] = [];
   const matchUpsToDelete =
     existingMatchUps?.filter(({ matchUpId, score, winningSide }) => {
+      if (winningSide && !removeCompleted) return false;
       if (checkScoreHasValue({ score })) {
         if (!winningSide && !removeIncomplete) return false;
-        if (winningSide && !removeCompleted) return false;
         matchUpIdsWithScoreValue.push(matchUpId);
       } else if (!removeUnAssigned) return false;
       return matchUpIds?.includes(matchUpId);
@@ -131,5 +134,5 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs) {
     });
   }
 
-  return { ...SUCCESS };
+  return { ...SUCCESS, deletedMatchUpsCount: [...matchUpIdsToDelete, ...tieMatchUpIdsToDelete].length };
 }
