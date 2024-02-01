@@ -1,4 +1,5 @@
 import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { getParticipantResults } from './getParticipantResults';
 import { getDevContext } from '@Global/state/globalState';
 import { validMatchUps } from '@Validators/validMatchUp';
@@ -39,14 +40,17 @@ export function tallyParticipantResults({
   subOrderMap,
   perPlayer,
 }: TallyParticipantResultsArgs): TallyResultType & ResultType {
-  if (!validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
+  if (!matchUps?.length || !validMatchUps(matchUps)) return { error: MISSING_MATCHUPS };
 
-  const structureIds = matchUps.reduce(
-    (structureIds, { structureId }) =>
-      structureIds.includes(structureId) ? structureIds : structureIds.concat(structureId),
-    [],
-  );
-  if (structureIds.length !== 1) return { error: INVALID_VALUES, info: 'Maximum one structureId' };
+  const structureIds = unique(matchUps.map(({ structureId }) => structureId));
+
+  if (structureIds.length !== 1) {
+    return decorateResult({
+      result: { error: INVALID_VALUES, info: 'Maximum one structureId' },
+      stack: 'tallyParticipantResults',
+      context: { structureIds },
+    });
+  }
 
   const relevantMatchUps = matchUps.filter((matchUp) => matchUp && matchUp.matchUpStatus !== BYE);
 

@@ -255,7 +255,8 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const participantsCount = inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length;
   const requiredParticipants =
     (participantsCount && participantsCount === 2) ||
-    (isTeam && isAdHoc({ structure }) && participantsCount && participantsCount >= 1) ||
+    // matchUp may be doubles or singles but if it is a tieMatchUp in a TEAM event and is adHoc and has a single participant
+    (matchUp.collectionId && isAdHoc({ structure }) && participantsCount && participantsCount >= 1) ||
     (assignedDrawPositions?.length === 2 &&
       positionAssignments
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
@@ -263,7 +264,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
-      info: 'present in participantRequiredMatchUpStatuses',
+      info: 'present in participantsRequiredMatchUpStatuses',
       context: { matchUpStatus, requiredParticipants },
       result: { error: INVALID_MATCHUP_STATUS },
     });

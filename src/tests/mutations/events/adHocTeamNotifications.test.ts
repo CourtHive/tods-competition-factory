@@ -10,7 +10,7 @@ import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { COLLEGE_DEFAULT, DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { DEFAULTED } from '@Constants/matchUpStatusConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
-import { TEAM } from '@Constants/eventConstants';
+import { SINGLES, TEAM } from '@Constants/eventConstants';
 
 // testing for generation of addMatchUps notifications for tieMatchUps in AD_HOC TEAM events
 // each scenario generates a different number of matchUps due to different tieFormats having different collectionDefinitions
@@ -53,7 +53,7 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
 
   const teamMatchUps = matchUps.filter(isMatchUpEventType(TEAM));
   const targetTeamMatchUp = teamMatchUps[0];
-  const targetTieMatchUp = targetTeamMatchUp.tieMatchUps[0];
+  const targetTieMatchUp = targetTeamMatchUp.tieMatchUps.find(isMatchUpEventType(SINGLES));
   const targetSide = targetTeamMatchUp.sides[0];
   const targetIndividualParticipant = targetSide.participant.individualParticipants[0];
   const assignmentResult = tournamentEngine.assignTieMatchUpParticipantId({
@@ -62,19 +62,40 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
     drawId,
   });
   expect(assignmentResult.success).toEqual(true);
+  expect(assignmentResult.modifiedLineUp[0].participantId).toEqual(targetIndividualParticipant.participantId);
+
+  let tieMatchUp = tournamentEngine.findMatchUp({ drawId, matchUpId: targetTieMatchUp.matchUpId }).matchUp;
+  const participantsCount = tieMatchUp.sides.reduce((count, side) => count + (side.participant ? 1 : 0), 0);
+  expect(participantsCount).toEqual(1);
 
   const statusResult = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DEFAULTED, winningSide: 1 },
-    matchUpId: targetTeamMatchUp.matchUpId,
+    matchUpId: targetTieMatchUp.matchUpId,
     drawId,
   });
   expect(statusResult.success).toEqual(true);
+  tieMatchUp = tournamentEngine.findMatchUp({ drawId, matchUpId: targetTieMatchUp.matchUpId }).matchUp;
+  expect(tieMatchUp.winningSide).toEqual(1);
 
   const teamMatchUpIds = tournamentEngine
     .allTournamentMatchUps({ matchUpFilters: { matchUpTypes: [TEAM] } })
     .matchUps.map(getMatchUpId);
 
-  const deletionResult = tournamentEngine.deleteAdHocMatchUps({ matchUpIds: teamMatchUpIds, drawId });
+  let deletionResult = tournamentEngine.deleteAdHocMatchUps({
+    matchUpIds: teamMatchUpIds,
+    drawId,
+  });
   expect(deletionResult.success).toEqual(true);
+  // only half are deleted because the other half are "incomplete" and not removed by default
+  expect(deletionResult.deletedMatchUpsCount).toEqual(scenario.expectation.added / 2);
+
+  deletionResult = tournamentEngine.deleteAdHocMatchUps({
+    matchUpIds: teamMatchUpIds,
+    removeIncomplete: true,
+    drawId,
+  });
+  expect(deletionResult.success).toEqual(true);
+  expect(deletionResult.deletedMatchUpsCount).toEqual(scenario.expectation.added / 2);
+
   expect(deletedMatchUpIds.length).toEqual(scenario.expectation.added);
 });

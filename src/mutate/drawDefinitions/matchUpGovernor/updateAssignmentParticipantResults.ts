@@ -6,6 +6,7 @@ import { addExtension } from '../../extensions/addExtension';
 import { validMatchUps } from '@Validators/validMatchUp';
 import { createSubOrderMap } from './createSubOrderMap';
 
+// constants
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUB_ORDER, TALLY } from '@Constants/extensionConstants';
@@ -30,15 +31,18 @@ export function updateAssignmentParticipantResults({
   });
   const { subOrderMap } = createSubOrderMap({ positionAssignments });
 
-  const result = tallyParticipantResults({
-    policyDefinitions,
-    matchUpFormat,
-    subOrderMap,
-    matchUps,
-  });
-  if (result.error) return result;
+  const result = matchUps.length
+    ? tallyParticipantResults({
+        policyDefinitions,
+        matchUpFormat,
+        subOrderMap,
+        matchUps,
+      })
+    : undefined;
 
-  const { participantResults, bracketComplete, report } = result;
+  if (result?.error) return result;
+
+  const { participantResults = {}, bracketComplete, report } = result ?? {};
 
   const participantIds = Object.keys(participantResults);
 
