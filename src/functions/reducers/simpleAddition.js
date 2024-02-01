@@ -1,3 +1,5 @@
+import { isNumeric } from '@Tools/math';
+
 export function simpleAddition(a, b) {
-  return (a ?? 0) + (b ?? 0);
+  return ((isNumeric(a) && a) || 0) + ((isNumeric(b) && b) || 0);
 }

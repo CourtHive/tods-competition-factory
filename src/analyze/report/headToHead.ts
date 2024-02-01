@@ -1,7 +1,6 @@
 import { countGames, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
 import { simpleAddition } from '@Functions/reducers/simpleAddition';
-import { lengthOrZero } from '@Tools/strings';
-import { intersection } from '@Tools/arrays';
+import { intersection, lengthOrZero } from '@Tools/arrays';
 
 // constants and types
 import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';

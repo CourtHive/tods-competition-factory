@@ -99,7 +99,7 @@ export function skewedDistribution(min: number, max: number, skew: number, step?
 }
 
 export function safePct(numerator, denominator, round = true) {
-  return isNumeric(numerator) && isNumeric(denominator)
+  return denominator && isNumeric(numerator) && isNumeric(denominator)
     ? (round && Math.round((numerator / denominator) * 100)) || numerator / denominator
     : 0;
 }
