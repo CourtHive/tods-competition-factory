@@ -38,7 +38,6 @@ export function toggleParticipantCheckInState(params: ToggleParticipantCheckInSt
   const tournamentId = params.tournamentId ?? params.activeTournamentId;
   const tournamentRecord = params.tournamentRecord ?? (tournamentId && params.tournamentRecords?.[tournamentId]);
 
-  const { participantId, matchUpId, drawDefinition } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const resolutions = resolveFromParameters(params, [
@@ -51,6 +50,7 @@ export function toggleParticipantCheckInState(params: ToggleParticipantCheckInSt
     matchUp,
   });
 
+  const { participantId, matchUpId, drawDefinition } = params;
   if (participantId && checkedInParticipantIds.includes(participantId)) {
     return checkOutParticipant({
       tournamentRecord,
