@@ -4,6 +4,7 @@ import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters
 import { checkOutParticipant } from './checkOutParticipant';
 import { checkInParticipant } from './checkInParticipant';
 
+// constants and types
 import { MATCHUP_NOT_FOUND, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 import { TournamentRecords } from '@Types/factoryTypes';

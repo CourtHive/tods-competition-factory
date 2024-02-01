@@ -3,6 +3,7 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
+// constants and types
 import { INVALID_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 import { CheckInOutParticipantArgs } from '@Types/factoryTypes';
 import { CHECK_IN } from '@Constants/timeItemConstants';
@@ -39,20 +40,22 @@ export function checkInParticipant(params: CheckInOutParticipantArgs) {
   if (result?.error) return result;
 
   const { checkedInParticipantIds, allRelevantParticipantIds } = result ?? {};
-
-  if (checkedInParticipantIds?.includes(participantId)) return { ...SUCCESS };
-
   if (!allRelevantParticipantIds?.includes(participantId)) return { [ERROR]: INVALID_PARTICIPANT_ID };
+
+  const confirmation = { ...SUCCESS, checkedIn: true };
+  if (checkedInParticipantIds?.includes(participantId)) return confirmation;
 
   const timeItem = {
     itemValue: participantId,
     itemType: CHECK_IN,
   };
 
-  return addMatchUpTimeItem({
+  addMatchUpTimeItem({
     tournamentRecord,
     drawDefinition,
     matchUpId,
     timeItem,
   });
+
+  return confirmation;
 }
