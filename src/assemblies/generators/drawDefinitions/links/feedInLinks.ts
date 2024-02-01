@@ -1,8 +1,9 @@
 import { getDevContext } from '@Global/state/globalState';
 import { generateRange } from '@Tools/arrays';
 
-import { Structure } from '@Types/tournamentTypes';
+// constants
 import { BOTTOM_UP, TOP_DOWN, LOSER, FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { Structure } from '@Types/tournamentTypes';
 
 type FeedInLinksArgs = {
   mainStructure: Structure;

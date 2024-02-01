@@ -1,17 +1,18 @@
 import { generateRoundRobinWithPlayOff } from './drawTypes/roundRobin/generateRoundRobinWithPlayoff';
-import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { firstRoundLoserConsolation } from './drawTypes/firstRoundLoserConsolation';
 import { generateDoubleElimination } from './drawTypes/doubleEliminattion';
 import { generateCurtisConsolation } from './drawTypes/curtisConsolation';
 import { generatePlayoffStructures } from './drawTypes/playoffStructures';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { generateRoundRobin } from './drawTypes/roundRobin/roundRobin';
 import structureTemplate from '../templates/structureTemplate';
-import { constantToString } from '@Tools/strings';
 import { feedInChampionship } from './drawTypes/feedInChamp';
 import { treeMatchUps } from './drawTypes/eliminationTree';
+import { constantToString } from '@Tools/strings';
 import { feedInMatchUps } from './feedInMatchUps';
 import { luckyDraw } from './drawTypes/luckyDraw';
 
+// constants
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -39,7 +40,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
   };
   const structureId = params.structureId || getPrefixedStructureId() || uuids?.pop();
 
-  const { appliedPolicies } = getAppliedPolicies(params);
+  const appliedPolicies = params.appliedPolicies ?? getAppliedPolicies(params);
   const feedPolicy = params.policyDefinitions?.[POLICY_TYPE_FEED_IN] || appliedPolicies?.[POLICY_TYPE_FEED_IN];
 
   // disable feeding from MAIN final unless policy specifies

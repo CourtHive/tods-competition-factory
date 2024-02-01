@@ -14,7 +14,6 @@ export function feedInChampionship(params) {
     finishingPositionOffset,
     stageSequence = 1,
     playoffAttributes,
-    policyDefinitions,
     feedsFromFinal,
     staggeredEntry,
     structureName,
@@ -30,7 +29,10 @@ export function feedInChampionship(params) {
     fmlc,
   } = params;
 
-  const feedPolicy = params.feedPolicy || policyDefinitions?.[POLICY_TYPE_FEED_IN];
+  const feedPolicy =
+    params.feedPolicy ||
+    params.policyDefinitions?.[POLICY_TYPE_FEED_IN] ||
+    params.appliedPolicies?.[POLICY_TYPE_FEED_IN];
 
   const mainParams = {
     finishingPositionOffset,
