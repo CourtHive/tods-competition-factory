@@ -81,13 +81,6 @@ export function getSourceDrawPositionRanges({ drawDefinition, structureId, match
 
     let drawPositionBlocks = chunkArray(orderedPositions, chunkSize);
 
-    /*
-    const reducedOrder = groupedOrder?.length && sizedGroupOrder?.length < groupedOrder.length;
-    if (reducedOrder && feedProfile === BOTTOM_UP) {
-      drawPositionBlocks.reverse();
-    }
-    */
-
     // positionInterleave describes how positions are fed from source to target
     // In double elimination, for instance:
     //  - roundNumber: 1 has positions fed top down from source roundNumber: 1
