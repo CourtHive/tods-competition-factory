@@ -1,14 +1,16 @@
 import { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';
-import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getMatchUpParticipantIds } from '@Query/matchUp/getMatchUpParticipantIds';
 import { resolveFromParameters } from '@Helpers/parameters/resolveFromParameters';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { addMatchUpTimeItem } from './matchUpTimeItems';
 
+// constants and types
+import { INVALID_ACTION, INVALID_PARTICIPANT_ID, PARTICIPANT_NOT_CHECKED_IN } from '@Constants/errorConditionConstants';
 import { activeMatchUpStatuses, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { CheckInOutParticipantArgs } from '@Types/factoryTypes';
 import { CHECK_OUT } from '@Constants/timeItemConstants';
-import { INVALID_ACTION, INVALID_PARTICIPANT_ID, PARTICIPANT_NOT_CHECKED_IN } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION,
   IN_CONTEXT,
@@ -45,10 +47,9 @@ export function checkOutParticipant(params: CheckInOutParticipantArgs) {
     return { error: INVALID_ACTION };
   }
 
-  const getCheckedResult = getCheckedInParticipantIds({
-    matchUp,
-  });
+  const getCheckedResult = getCheckedInParticipantIds({ matchUp });
   if (getCheckedResult?.error) return getCheckedResult;
+
   const { checkedInParticipantIds, allRelevantParticipantIds } = getCheckedResult ?? {};
 
   if (!allRelevantParticipantIds?.includes(participantId)) {
@@ -79,10 +80,12 @@ export function checkOutParticipant(params: CheckInOutParticipantArgs) {
     itemType: CHECK_OUT,
   };
 
-  return addMatchUpTimeItem({
+  addMatchUpTimeItem({
     tournamentRecord,
     drawDefinition,
     matchUpId,
     timeItem,
   });
+
+  return { ...SUCCESS, checkedOut: true };
 }

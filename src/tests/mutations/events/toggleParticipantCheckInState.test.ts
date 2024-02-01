@@ -3,14 +3,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 it('can toggle participant check-in state', () => {
-  const drawProfiles = [
-    {
-      drawSize: 8,
-    },
-  ];
+  const drawProfiles = [{ drawSize: 8 }];
   const {
     drawIds: [drawId],
     tournamentRecord,
@@ -39,6 +36,7 @@ it('can toggle participant check-in state', () => {
     matchUpId: matchUp.matchUpId,
     drawId,
   });
+  expect(result.checkedIn).toEqual(true);
   expect(result.success).toEqual(true);
 
   ({
@@ -57,6 +55,7 @@ it('can toggle participant check-in state', () => {
     matchUpId: matchUp.matchUpId,
     drawId,
   });
+  expect(result.checkedIn).toEqual(true);
   expect(result.success).toEqual(true);
 
   ({
@@ -75,6 +74,7 @@ it('can toggle participant check-in state', () => {
     matchUpId: matchUp.matchUpId,
     drawId,
   });
+  expect(result.checkedOut).toEqual(true);
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.toggleParticipantCheckInState({
@@ -82,6 +82,7 @@ it('can toggle participant check-in state', () => {
     matchUpId: matchUp.matchUpId,
     drawId,
   });
+  expect(result.checkedIn).toEqual(true);
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.toggleParticipantCheckInState({
@@ -90,15 +91,7 @@ it('can toggle participant check-in state', () => {
     tournamentId,
     drawId,
   });
-  expect(result.success).toEqual(true);
-
-  // do it a second time for testing code coverage
-  result = tournamentEngine.toggleParticipantCheckInState({
-    matchUpId: matchUp.matchUpId,
-    participantId: participantIds[1],
-    tournamentId,
-    drawId,
-  });
+  expect(result.checkedOut).toEqual(true);
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage
@@ -108,6 +101,17 @@ it('can toggle participant check-in state', () => {
     tournamentId,
     drawId,
   });
+  expect(result.checkedIn).toEqual(true);
+  expect(result.success).toEqual(true);
+
+  // do it a second time for testing code coverage
+  result = tournamentEngine.toggleParticipantCheckInState({
+    participantId: participantIds[1],
+    matchUpId: matchUp.matchUpId,
+    tournamentId,
+    drawId,
+  });
+  expect(result.checkedOut).toEqual(true);
   expect(result.success).toEqual(true);
 
   // do it a second time for testing code coverage

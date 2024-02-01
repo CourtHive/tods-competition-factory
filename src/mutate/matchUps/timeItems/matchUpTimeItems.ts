@@ -1,10 +1,11 @@
-import { addTimeItem } from '../../timeItems/addTimeItem';
 import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { addTimeItem } from '../../timeItems/addTimeItem';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
+// constants and types
+import { DrawDefinition, Event, TimeItem, Tournament } from '@Types/tournamentTypes';
 import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { DrawDefinition, Event, TimeItem, Tournament } from '@Types/tournamentTypes';
 
 /*
   generic function to addMatchUpTimeItem
