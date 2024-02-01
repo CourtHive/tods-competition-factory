@@ -1,6 +1,6 @@
+import { isAvailableAction } from '@Query/drawDefinition/positionActions/actionPolicyUtils';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
-import { isAvailableAction } from '../positionActions/actionPolicyUtils';
-import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getParticipantId } from '@Functions/global/extractors';
 
 // constants and types

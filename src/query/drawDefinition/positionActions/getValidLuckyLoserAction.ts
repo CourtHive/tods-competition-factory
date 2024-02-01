@@ -4,6 +4,7 @@ import { getStructureMatchUps } from '../../structure/getStructureMatchUps';
 import { getParticipantId } from '@Functions/global/extractors';
 import { findStructure } from '@Acquire/findStructure';
 
+// constants and types
 import { DrawDefinition, Event, Participant, PositionAssignment, Structure } from '@Types/tournamentTypes';
 import { LUCKY_PARTICIPANT, LUCKY_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';

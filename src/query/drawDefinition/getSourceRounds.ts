@@ -5,6 +5,7 @@ import { generateRange } from '@Tools/arrays';
 import { numericSort } from '@Tools/sorting';
 import { ensureInt } from '@Tools/ensureInt';
 
+// constants and types
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { RoundProfile } from '@Types/factoryTypes';
 import {

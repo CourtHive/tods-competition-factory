@@ -1,16 +1,17 @@
-import { getSourceStructureIdsAndRelevantLinks } from '../../structure/getSourceStructureIdsAndRelevantLinks';
-import { findExtension } from '@Acquire/findExtension';
-import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
-import { getPositionAssignments } from '../positionsGetter';
+import { getSourceStructureIdsAndRelevantLinks } from '@Query/structure/getSourceStructureIdsAndRelevantLinks';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { isCompletedStructure } from '../structureActions';
+import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
+import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
+import { POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { TALLY } from '@Constants/extensionConstants';
 import { HydratedParticipant } from '@Types/hydrated';
-import { QUALIFYING_PARTICIPANT, QUALIFYING_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
-import { POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
 
 export function getValidQualifiersAction({
   /*

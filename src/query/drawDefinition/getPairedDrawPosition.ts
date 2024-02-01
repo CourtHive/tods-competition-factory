@@ -1,6 +1,8 @@
-import { HydratedMatchUp } from '@Types/hydrated';
-import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 import { getInitialRoundNumber } from '../matchUps/getInitialRoundNumber';
+import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
+
+// types
+import { HydratedMatchUp } from '@Types/hydrated';
 
 // defaults to finding the paired drawPosition in the initial roundNumber in which the drawPosition occurs
 // for feed-in rounds fed drawPositions will not initially have a paired drawPosition

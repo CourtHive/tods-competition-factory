@@ -2,6 +2,7 @@ import { getPlayoffStructures } from '../structure/structureGetter';
 import { getStructureMatchUps } from '../structure/getStructureMatchUps';
 import { getPositionAssignments } from './positionsGetter';
 
+// constants and types
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Structure } from '@Types/tournamentTypes';

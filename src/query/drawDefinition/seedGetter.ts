@@ -8,6 +8,7 @@ import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from '@Acquire/findStructure';
 import { isLucky } from './isLucky';
 
+// constants and types
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
 import { CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '@Constants/drawDefinitionConstants';
 import { INVALID_SEED_POSITION, MISSING_STRUCTURE } from '@Constants/errorConditionConstants';

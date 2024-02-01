@@ -1,7 +1,8 @@
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
-import { getEntryProfile } from './getEntryProfile';
 import { findStructure } from '@Acquire/findStructure';
+import { getEntryProfile } from './getEntryProfile';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';

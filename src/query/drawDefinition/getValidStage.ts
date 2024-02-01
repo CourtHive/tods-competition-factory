@@ -1,6 +1,7 @@
 import { getStageDrawPositionsCount } from './getStageDrawPositions';
 import { stageExists } from './stageGetter';
 
+// constants
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 export function getValidStage({ stage, drawDefinition }) {

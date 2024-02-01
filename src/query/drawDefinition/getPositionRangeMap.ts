@@ -1,5 +1,6 @@
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
 
+// constants
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 
 export function getPositionRangeMap({ playoffGroups, drawDefinition, structureId }) {

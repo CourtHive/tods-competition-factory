@@ -1,12 +1,13 @@
-import { chunkArray, generateRange } from '@Tools/arrays';
 import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
-import { getDrawStructures } from '@Acquire/findStructure';
 import { getPositionAssignments } from './positionsGetter';
-import { numericSort } from '@Tools/sorting';
+import { chunkArray, generateRange } from '@Tools/arrays';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { getSourceRounds } from './getSourceRounds';
 import { getStructureLinks } from './linkGetter';
+import { numericSort } from '@Tools/sorting';
 
+// constants and types
 import { CONTAINER, FIRST_MATCHUP, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
