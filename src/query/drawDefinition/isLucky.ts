@@ -1,5 +1,6 @@
 import { getRoundMatchUps } from '../matchUps/getRoundMatchUps';
 
+// constants and types
 import { DrawDefinition, Structure } from '@Types/tournamentTypes';
 import { LUCKY_DRAW } from '@Constants/drawDefinitionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';

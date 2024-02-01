@@ -1,5 +1,6 @@
 import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
 import { ENTRY_PROFILE } from '@Constants/extensionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 

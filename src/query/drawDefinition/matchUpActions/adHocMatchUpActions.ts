@@ -1,14 +1,15 @@
 import { getEventAlternateParticipantIds } from './getEventAlternateParticipantids';
-import { getParticipantId } from '@Functions/global/extractors';
 import { checkScoreHasValue } from '../../matchUp/checkScoreHasValue';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { getParticipantId } from '@Functions/global/extractors';
 import { getFlightProfile } from '../../event/getFlightProfile';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { unique } from '@Tools/arrays';
 
+// constants and types
+import { ALTERNATE, DIRECT_ENTRY_STATUSES, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '@Constants/matchUpActionConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { HydratedParticipant } from '@Types/hydrated';
-import { ALTERNATE, DIRECT_ENTRY_STATUSES, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 
 export function adHocMatchUpActions({
   restrictAdHocRoundParticipants,

@@ -1,11 +1,12 @@
-import { getAllStructureMatchUps } from '../../matchUps/getAllStructureMatchUps';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { overlap } from '@Tools/arrays';
 
-import { HydratedParticipant } from '@Types/hydrated';
+// constants and types
 import { SWAP_PARTICIPANTS, SWAP_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { DrawDefinition, Event, PositionAssignment, Structure } from '@Types/tournamentTypes';
+import { HydratedParticipant } from '@Types/hydrated';
 
 type GetValidSwapActionArgs = {
   tournamentParticipants?: HydratedParticipant[];

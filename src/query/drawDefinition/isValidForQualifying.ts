@@ -1,10 +1,11 @@
+import { getStructureLinks } from './linkGetter';
 import { intersection } from '@Tools/arrays';
 import { isString } from '@Tools/objects';
-import { getStructureLinks } from './linkGetter';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// constants
 import { BOTTOM_UP, RANDOM, TOP_DOWN, WATERFALL } from '@Constants/drawDefinitionConstants';
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function isValidForQualifying({ structureId, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

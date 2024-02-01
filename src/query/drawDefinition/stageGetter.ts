@@ -4,11 +4,12 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 import { getEntryProfile } from './getEntryProfile';
 
-import { ROUND_TARGET, TALLY } from '@Constants/extensionConstants';
-import { ErrorType } from '@Constants/errorConditionConstants';
+// constants and types
 import { POSITION, CONTAINER, PLAY_OFF, validStages } from '@Constants/drawDefinitionConstants';
 import { ALTERNATE, FEED_IN, WILDCARD, DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { DrawDefinition, DrawLink, EntryStatusUnion } from '@Types/tournamentTypes';
+import { ROUND_TARGET, TALLY } from '@Constants/extensionConstants';
+import { ErrorType } from '@Constants/errorConditionConstants';
 
 export function stageExists({ stage, drawDefinition }) {
   const { entryProfile } = getEntryProfile({ drawDefinition });

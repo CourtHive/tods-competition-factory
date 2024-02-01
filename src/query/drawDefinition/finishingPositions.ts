@@ -1,5 +1,6 @@
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED } from '@Constants/matchUpStatusConstants';
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';

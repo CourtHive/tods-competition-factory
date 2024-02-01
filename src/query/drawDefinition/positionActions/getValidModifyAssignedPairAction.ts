@@ -1,5 +1,6 @@
 import { definedAttributes } from '@Tools/definedAttributes';
 
+// constants
 import { MODIFY_PAIR_ASSIGNMENT, MODIFY_PAIR_ASSIGNMENT_METHOD } from '@Constants/positionActionConstants';
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 

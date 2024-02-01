@@ -1,16 +1,17 @@
 import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { getStageEntries } from './stageGetter';
-import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
+import { allDrawMatchUps } from '../matchUps/getAllDrawMatchUps';
+import { getStageEntries } from './stageGetter';
 
-import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '@Constants/policyConstants';
+// constants and types
 import { MAIN, PLAY_OFF, QUALIFYING, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_VOLUNTARY_CONSOLATION } from '@Constants/policyConstants';
 import { UNGROUPED, WITHDRAWN } from '@Constants/entryStatusConstants';
 import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedSide } from '@Types/hydrated';
-import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   Event,

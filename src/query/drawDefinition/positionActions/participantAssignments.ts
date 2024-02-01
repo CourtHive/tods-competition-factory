@@ -1,11 +1,12 @@
+import { getNumericSeedValue } from '@Query/drawDefinition/getNumericSeedValue';
+import { getNextSeedBlock } from '@Query/drawDefinition/seedGetter';
 import { getParticipantId } from '@Functions/global/extractors';
+import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { getDrawMatchUps } from '../../matchUps/drawMatchUps';
-import { getNumericSeedValue } from '../getNumericSeedValue';
 import { unique } from '@Tools/arrays';
-import { getNextSeedBlock } from '../seedGetter';
 
+// constants and types
 import { DrawDefinition, Event, PositionAssignment } from '@Types/tournamentTypes';
 import { PolicyDefinitions, SeedingProfile } from '@Types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';

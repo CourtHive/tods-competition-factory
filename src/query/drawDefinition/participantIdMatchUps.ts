@@ -2,6 +2,7 @@ import { getAllDrawMatchUps } from '../matchUps/drawMatchUps';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { unique } from '@Tools/arrays';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Participant } from '@Types/tournamentTypes';
 

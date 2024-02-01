@@ -1,6 +1,7 @@
 import { eligibleEntryStage } from '../positionActions/getValidAlternatesAction';
 import { getParticipantId } from '@Functions/global/extractors';
 
+// constants
 import { ALTERNATE } from '@Constants/entryStatusConstants';
 
 export function getEventAlternateParticipantIds({ eventEntries, structure }) {
