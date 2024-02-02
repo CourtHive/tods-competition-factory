@@ -1,19 +1,20 @@
+import { getOrderedDrawPositionPairs, replaceWithBye } from '@Tests/mutations/drawDefinitions/testingUtilities';
+import { generateFMLC } from '@Tests/mutations/drawDefinitions/primitives/firstMatchLoserConsolation';
+import { verifyStructure } from '@Tests/mutations/drawDefinitions/primitives/verifyStructure';
+import { verifyMatchUps } from '@Tests/mutations/drawDefinitions/primitives/verifyMatchUps';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { verifyStructure } from '../../primitives/verifyStructure';
-import { verifyMatchUps } from '../../primitives/verifyMatchUps';
-import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
-import { getOrderedDrawPositionPairs, replaceWithBye } from '../../testingUtilities';
 
+// constants
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
 import { SINGLES } from '@Constants/eventConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
-const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedMainFinal: true } };
+const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedFromMainFinal: true } };
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION with double-byes in consolation 17/32', () => {
   const drawSize = 32;

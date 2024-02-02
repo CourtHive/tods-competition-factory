@@ -1,15 +1,16 @@
+import { completeMatchUp, verifyMatchUps } from '@Tests/mutations/drawDefinitions/primitives/verifyMatchUps';
+import { generateFMLC } from '@Tests/mutations/drawDefinitions/primitives/firstMatchLoserConsolation';
+import { verifyStructure } from '@Tests/mutations/drawDefinitions/primitives/verifyStructure';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
-import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
-import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { publicFindDrawMatchUp } from '@Acquire/findDrawMatchUp';
-import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
-import { verifyStructure } from '../../primitives/verifyStructure';
+import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { expect, it } from 'vitest';
 
+// constants
+import { BYE, RETIRED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
-import { BYE, RETIRED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('can generate FIRST_MATCH_LOSER_CONSOLATION', () => {
   const participantsCount = 30;
@@ -313,7 +314,7 @@ it('can direct winners and losers drawSize: 4 with NO BYEs', () => {
 
   let result;
 
-  const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedMainFinal: true } };
+  const policyDefinitions = { [POLICY_TYPE_FEED_IN]: { feedFromMainFinal: true } };
   const genResult = generateFMLC({
     participantsCount,
     policyDefinitions,
