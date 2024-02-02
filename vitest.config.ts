@@ -51,6 +51,7 @@ export default defineConfig({
       '@Mutate': new URL('./src/mutate', import.meta.url).pathname,
       '@Server': new URL('./src/server', import.meta.url).pathname,
       '@Query': new URL('./src/query', import.meta.url).pathname,
+      '@Tests': new URL('./src/tests', import.meta.url).pathname,
       '@Tools': new URL('./src/tools', import.meta.url).pathname,
       '@Types': new URL('./src/types', import.meta.url).pathname,
     },
