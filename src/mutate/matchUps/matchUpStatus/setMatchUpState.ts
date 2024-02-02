@@ -127,6 +127,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
   const { matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
     nextMatchUps: true,
+    tournamentRecord,
     inContext: true,
     drawDefinition,
     matchUpsMap,
