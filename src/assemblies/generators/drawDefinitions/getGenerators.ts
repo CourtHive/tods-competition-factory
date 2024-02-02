@@ -44,7 +44,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
   const feedPolicy = params.policyDefinitions?.[POLICY_TYPE_FEED_IN] || appliedPolicies?.[POLICY_TYPE_FEED_IN];
 
   // disable feeding from MAIN final unless policy specifies
-  params.skipRounds = params.skipRounds || (drawSize <= 4 && (feedPolicy?.feedMainFinal ? 0 : 1)) || 0;
+  params.skipRounds = params.skipRounds || (drawSize <= 4 && (feedPolicy?.feedFromMainFinal ? 0 : 1)) || 0;
 
   const structureName = params.structureName ?? playoffAttributes?.['0']?.name ?? constantToString(MAIN);
 

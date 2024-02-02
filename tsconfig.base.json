@@ -38,6 +38,7 @@
       "@Mutate/*": ["./src/mutate/*"],
       "@Server/*": ["./src/server/*"],
       "@Query/*": ["./src/query/*"],
+      "@Tests/*": ["./src/tests/*"],
       "@Tools/*": ["./src/tools/*"],
       "@Types/*": ["./src/types/*"]
     },

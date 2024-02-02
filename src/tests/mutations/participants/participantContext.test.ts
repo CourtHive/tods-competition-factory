@@ -2,10 +2,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants and fixtures
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
 import { ALTERNATE } from '@Constants/entryStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 test('hydrated consolation matchUps include seeding when participants advance', () => {
   const {
@@ -14,7 +15,7 @@ test('hydrated consolation matchUps include seeding when participants advance', 
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
     policyDefinitions: {
-      [POLICY_TYPE_FEED_IN]: { feedMainFinal: true },
+      [POLICY_TYPE_FEED_IN]: { feedFromMainFinal: true },
     },
     drawProfiles: [
       {
