@@ -2,6 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { SINGLES_EVENT } from '@Constants/eventConstants';
 
@@ -60,7 +61,9 @@ it('can publish only specific rounds of AD_HOC structures', () => {
   expect(result.success).toEqual(true);
   expect(Object.keys(result.eventData.drawsData[0].structures[0].roundMatchUps)).toEqual(['1', '2']);
 
-  expect(result.eventData.eventInfo.publish.drawDetails[drawId].structureDetails[structureId].roundLimit).toEqual(2);
+  expect(
+    result.eventData.eventInfo.publishState.status.drawDetails[drawId].structureDetails[structureId].roundLimit,
+  ).toEqual(2);
 
   result = tournamentEngine.publishEvent({
     drawDetails: {

@@ -3,6 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { COMPASS } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/participantConstants';
@@ -14,14 +15,13 @@ it('returns eventData with expected drawsData', () => {
   const {
     eventIds: [eventId],
     drawIds: [drawId],
-    tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    setState: true,
     drawProfiles,
   });
 
-  tournamentEngine.setState(tournamentRecord);
-
-  let result = tournamentEngine.modifyDrawName({
+  let result = tournamentEngine.devContext(true).modifyDrawName({
     drawName: 'This is a Draw',
     eventId,
     drawId,
@@ -34,9 +34,27 @@ it('returns eventData with expected drawsData', () => {
   result = tournamentEngine.getEventData();
   expect(result.error).toEqual(MISSING_EVENT);
 
-  const { eventData } = tournamentEngine.getEventData({ eventId });
+  let eventData = tournamentEngine.getEventData({ eventId }).eventData;
   expect(eventData.drawsData[0].structures.length).toEqual(2);
   expect(eventData.drawsData[0].updatedAt).not.toBeUndefined();
+
+  eventData = tournamentEngine.getEventData({ eventId, usePublishState: true }).eventData;
+  expect(eventData.eventInfo.published).toEqual(false);
+  expect(eventData.drawsData).toBeUndefined();
+
+  result = tournamentEngine.publishEvent({ eventId });
+  expect(result.success).toEqual(true);
+
+  eventData = tournamentEngine.getEventData({ eventId, usePublishState: true }).eventData;
+  expect(eventData.eventInfo.published).toEqual(true);
+  expect(eventData.drawsData.length).toEqual(1);
+
+  result = tournamentEngine.unPublishEvent({ eventId });
+  expect(result.success).toEqual(true);
+
+  eventData = tournamentEngine.getEventData({ eventId, usePublishState: true }).eventData;
+  expect(eventData.eventInfo.published).toEqual(false);
+  expect(eventData.drawsData).toBeUndefined();
 });
 
 it('returns eventData when there is no drawsData', () => {

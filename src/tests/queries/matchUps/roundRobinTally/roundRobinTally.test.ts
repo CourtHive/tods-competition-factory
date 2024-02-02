@@ -2,18 +2,19 @@ import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRo
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { findExtension } from '@Acquire/findExtension';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
+import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { SINGLES, TEAM } from '@Constants/eventConstants';
 import { TALLY } from '@Constants/extensionConstants';
-import { FORMAT_SHORT_SETS, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
-import { MISSING_DRAW_POSITION, MISSING_STRUCTURE_ID } from '@Constants/errorConditionConstants';
-import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 it('can recalculate participantResults when outcomes are removed', () => {
   const drawProfiles = [

@@ -11,10 +11,11 @@ import { generateRange } from '@Tools/arrays';
 // constants and types
 import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
+import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
-import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedParticipant } from '@Types/hydrated';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -54,7 +55,8 @@ export function getEventData(params: GetEventDataArgs): {
   const { tournamentId, endDate } = tournamentRecord;
 
   const publishStatus = getEventPublishStatus({ event, status });
-  const { publishState } = getPublishState({ event });
+  const publishState = getPublishState({ event }).publishState ?? {};
+  const eventPublished = !!publishState?.status?.published;
 
   const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
@@ -79,15 +81,7 @@ export function getEventData(params: GetEventDataArgs): {
     return structureDetails[structureId]?.published;
   };
 
-  const drawFilter = ({ drawId }) => {
-    if (!usePublishState) return true;
-    if (publishStatus.drawDetails) {
-      return publishStatus.drawDetails[drawId]?.publishingDetail?.published;
-    } else if (publishStatus.drawIds) {
-      return publishStatus.drawIds.includes(drawId);
-    }
-    return true;
-  };
+  const drawFilter = ({ drawId }) => (!usePublishState ? true : getDrawIsPublished({ publishStatus, drawId }));
 
   const roundLimitMapper = ({ drawId, structure }) => {
     if (!usePublishState) return structure;
@@ -109,43 +103,46 @@ export function getEventData(params: GetEventDataArgs): {
   };
 
   const drawDefinitions = event.drawDefinitions || [];
-  const drawsData = drawDefinitions
-    .filter(drawFilter)
-    .map((drawDefinition) =>
-      (({ drawInfo, structures }) => ({
-        ...drawInfo,
-        structures,
-      }))(
-        getDrawData({
-          allParticipantResults: params.allParticipantResults,
-          context: { eventId, tournamentId, endDate },
-          includePositionAssignments,
-          tournamentParticipants,
-          noDeepCopy: true,
-          policyDefinitions,
-          tournamentRecord,
-          usePublishState,
-          drawDefinition,
-          publishStatus,
-          sortConfig,
-          event,
-        }),
-      ),
-    )
-    .map(({ structures, ...drawData }) => {
-      const filteredStructures = structures
-        ?.filter(
-          ({ stage, structureId }) =>
-            structureFilter({ structureId, drawId: drawData.drawId }) &&
-            stageFilter({ stage, drawId: drawData.drawId }),
-        )
-        .map((structure) => roundLimitMapper({ drawId: drawData.drawId, structure }));
-      return {
-        ...drawData,
-        structures: filteredStructures,
-      };
-    })
-    .filter((drawData) => drawData.structures?.length);
+  const drawsData =
+    !usePublishState || eventPublished
+      ? drawDefinitions
+          .filter(drawFilter)
+          .map((drawDefinition) =>
+            (({ drawInfo, structures }) => ({
+              ...drawInfo,
+              structures,
+            }))(
+              getDrawData({
+                allParticipantResults: params.allParticipantResults,
+                context: { eventId, tournamentId, endDate },
+                includePositionAssignments,
+                tournamentParticipants,
+                noDeepCopy: true,
+                policyDefinitions,
+                tournamentRecord,
+                usePublishState,
+                drawDefinition,
+                publishStatus,
+                sortConfig,
+                event,
+              }),
+            ),
+          )
+          .map(({ structures, ...drawData }) => {
+            const filteredStructures = structures
+              ?.filter(
+                ({ stage, structureId }) =>
+                  structureFilter({ structureId, drawId: drawData.drawId }) &&
+                  stageFilter({ stage, drawId: drawData.drawId }),
+              )
+              .map((structure) => roundLimitMapper({ drawId: drawData.drawId, structure }));
+            return {
+              ...drawData,
+              structures: filteredStructures,
+            };
+          })
+          .filter((drawData) => drawData.structures?.length)
+      : undefined;
 
   const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
   const venues = tournamentRecord.venues || [];
@@ -196,7 +193,7 @@ export function getEventData(params: GetEventDataArgs): {
   };
 
   eventData.eventInfo.publishState = publishState;
-  eventData.eventInfo.publish = publishStatus;
+  eventData.eventInfo.published = publishState?.status?.published;
 
   return { ...SUCCESS, eventData, participants: tournamentParticipants };
 }

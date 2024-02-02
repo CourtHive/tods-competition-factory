@@ -1,12 +1,17 @@
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
-import { getDrawData } from '@Query/drawDefinition/getDrawData';
-import eliminationEvent from './eliminationMock.json';
-import roundRobinEvent from './roundRobinMock.json';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import { tournamentEngine } from 'src';
 import { expect, it } from 'vitest';
-import { DrawDefinition } from '@Types/tournamentTypes';
+
+// types
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+
+const drawId = 'did';
 
 it('can extract elimination structures', () => {
-  const drawDefinition = eliminationEvent.drawDefinitions[0] as DrawDefinition;
+  mocksEngine.generateTournamentRecord({ drawProfiles: [{ drawId, drawSize: 32, seedsCount: 8 }], setState: true });
+  const drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
   const { structureGroups, allStructuresLinked } = getStructureGroups({
     drawDefinition,
   });
@@ -15,28 +20,40 @@ it('can extract elimination structures', () => {
 });
 
 it('can extract round robin structures', () => {
-  const drawDefinition = roundRobinEvent.drawDefinitions[0] as DrawDefinition;
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId, drawSize: 32, drawType: ROUND_ROBIN, seedsCount: 8 }],
+    setState: true,
+  });
+  const {
+    drawDefinition,
+    event: { eventId },
+  } = tournamentEngine.getEvent({ drawId });
   const { structureGroups, allStructuresLinked } = getStructureGroups({
     drawDefinition,
   });
   expect(allStructuresLinked).toEqual(true);
   expect(structureGroups.length).toEqual(1);
 
-  const result = getDrawData({ drawDefinition });
+  let result = tournamentEngine.getDrawData({ drawId });
   expect(result.structures?.length).toEqual(1);
   expect(result.drawInfo.drawActive).toEqual(false);
   expect(result.drawInfo.drawCompleted).toEqual(false);
   expect(result.drawInfo.drawGenerated).toEqual(true);
   expect(result.structures?.length).toEqual(1);
-});
 
-/*
-it('can extract compass structures', () => {
-  const event = JSON.parse(roundRobin);
+  result = tournamentEngine.getDrawData({ drawId, usePublishState: true });
+  expect(result.structures).toBeUndefined();
 
-  const drawDefinition = event.drawDefinitions[0];
-  const { structureGroups, allStructuresLinked } = getStructureGroups({ drawDefinition });
-  expect(allStructuresLinked).toEqual(true);
-  expect(structureGroups.length).toEqual(1);
+  let event = tournamentEngine.getEvent({ drawId }).event;
+  let publishStatus = getEventPublishStatus({ event });
+  expect(publishStatus).toBeUndefined();
+
+  result = tournamentEngine.publishEvent({ eventId });
+  expect(result.success).toEqual(true);
+  event = tournamentEngine.getEvent({ drawId }).event;
+  publishStatus = getEventPublishStatus({ event });
+  expect(publishStatus.drawDetails[drawId].publishingDetail.published).toEqual(true);
+
+  result = tournamentEngine.getDrawData({ drawId, usePublishState: true });
+  expect(result.structures).toBeDefined();
 });
-*/

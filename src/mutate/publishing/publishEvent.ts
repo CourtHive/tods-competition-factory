@@ -5,6 +5,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { getEventData } from '@Query/event/getEventData';
 import { addNotice } from '@Global/state/globalState';
 
+// constants and types
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
