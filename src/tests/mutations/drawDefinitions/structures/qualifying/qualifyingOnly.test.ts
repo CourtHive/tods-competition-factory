@@ -4,6 +4,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// constants
+import { DRAW_ID_EXISTS, INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
+import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { ENTRY_PROFILE } from '@Constants/extensionConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
@@ -18,9 +22,6 @@ import {
   SINGLE_ELIMINATION,
   WINNER,
 } from '@Constants/drawDefinitionConstants';
-import { DRAW_ID_EXISTS, INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
-import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
-import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])('will generate a drawDefinition with no matchUps', (drawType) => {
   const result = mocksEngine.generateTournamentRecord({
@@ -53,6 +54,7 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   setSubscriptions({ subscriptions });
 
   let result = mocksEngine.generateTournamentRecord({
+    setState: true,
     drawProfiles: [
       {
         ignoreDefaults: true,
@@ -67,12 +69,9 @@ it('can generate QUALIFYING structures when no MAIN structure is specified', () 
   });
 
   const {
-    tournamentRecord,
     drawIds: [drawId],
   } = result;
-
-  tournamentEngine.setState(tournamentRecord);
-  const eventResult = tournamentEngine.getEvent({ drawId });
+  const eventResult = tournamentEngine.devContext(true).getEvent({ drawId });
   let drawDefinition = eventResult.drawDefinition;
   const event = eventResult.event;
   expect(drawDefinition.entries.length).toEqual(16);

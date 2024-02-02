@@ -3,13 +3,14 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants and fixtures
+import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import PARTICIPANT_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL } from '@Constants/participantConstants';
-import { SINGLES } from '@Constants/matchUpTypes';
 import { ROUND_NAMING_POLICY } from './roundNamingPolicy';
-import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
 import {
   COMPASS,
   CONTAINER,
@@ -163,7 +164,7 @@ it('can generate payload for publishing a Round Robin with Playoffs', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.drawDetails[drawId].publishingDetail).toEqual({ published: true });
+  expect(eventData.eventInfo.publishState.status.drawDetails[drawId].publishingDetail).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -301,7 +302,9 @@ it('can generate payload for publishing a compass draw', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.drawDetails[drawDefinition.drawId].publishingDetail).toEqual({ published: true });
+  expect(eventData.eventInfo.publishState.status.drawDetails[drawDefinition.drawId].publishingDetail).toEqual({
+    published: true,
+  });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -425,7 +428,7 @@ it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', (
   expect(publishSuccess).toEqual(true);
 
   const { drawId } = drawDefinition;
-  expect(eventData.eventInfo.publish.drawDetails[drawId].publishingDetail).toEqual({ published: true });
+  expect(eventData.eventInfo.publishState.status.drawDetails[drawId].publishingDetail).toEqual({ published: true });
 
   expect(eventData.eventInfo.eventId).toEqual(eventId);
   expect(eventData.eventInfo.eventName).toEqual(eventName);
@@ -506,7 +509,7 @@ it('can filter out unPublished draws when publishing event', () => {
     eventId,
   });
   expect(publishSuccess).toEqual(true);
-  expect(eventData.eventInfo.publish.drawDetails[drawId].publishingDetail).toEqual({ published: true });
+  expect(eventData.eventInfo.publishState.status.drawDetails[drawId].publishingDetail).toEqual({ published: true });
 
   result = tournamentEngine.unPublishEvent();
   expect(result.error).toEqual(MISSING_EVENT);

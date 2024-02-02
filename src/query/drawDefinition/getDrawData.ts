@@ -3,7 +3,10 @@ import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAs
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { tallyParticipantResults } from '@Assemblies/governors/queryGovernor';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { getPublishState } from '@Query/publishing/getPublishState';
 import { structureSort } from '@Functions/sorters/structureSort';
 import { findStructure } from '@Acquire/findStructure';
 import { findExtension } from '@Acquire/findExtension';
@@ -14,6 +17,7 @@ import { xa } from '@Tools/objects';
 import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '@Constants/errorConditionConstants';
 import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
 import { TALLY } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -29,6 +33,7 @@ import {
   WALKOVER,
 } from '@Constants/matchUpStatusConstants';
 
+// NOTE: if { usePublishState: true } then { eventPublished } or { event } must be provided
 export function getDrawData(params): {
   structures?: any[];
   success?: boolean;
@@ -42,8 +47,8 @@ export function getDrawData(params): {
     tournamentRecord,
     inContext = true,
     usePublishState,
+    status = PUBLIC,
     drawDefinition,
-    publishStatus,
     noDeepCopy,
     sortConfig,
     context,
@@ -65,9 +70,10 @@ export function getDrawData(params): {
     drawDefinition,
   });
 
-  if (!allStructuresLinked) {
-    return { error: UNLINKED_STRUCTURES };
-  }
+  if (!allStructuresLinked) return { error: UNLINKED_STRUCTURES };
+
+  const publishStatus = params?.publishStatus ?? getEventPublishStatus({ event, status });
+  const eventPublished = params.eventPublished ?? !!getPublishState({ event }).publishState?.status?.published;
 
   let drawActive = false;
   let participantPlacements = false; // if any positionAssignments include a participantId
@@ -226,9 +232,17 @@ export function getDrawData(params): {
     (completed, structure) => completed && structure.structureCompleted,
     true,
   );
+  drawInfo.drawPublished = usePublishState
+    ? eventPublished && getDrawIsPublished({ publishStatus, drawId: drawInfo.drawId })
+    : undefined;
 
   return {
-    structures: noDeepCopy ? structures : makeDeepCopy(structures, false, true),
+    structures:
+      !usePublishState || drawInfo.drawPublished
+        ? noDeepCopy
+          ? structures
+          : makeDeepCopy(structures, false, true)
+        : undefined,
     drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
   };
