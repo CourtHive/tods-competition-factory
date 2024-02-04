@@ -25,18 +25,18 @@ export function allDrawMatchUps(params: GetMatchUpsArgs) {
     event,
   } = params;
 
-  const { eventId, eventName, eventType, category, gender, matchUpFormat } = event ?? {};
+  const { eventId, eventName, endDate, eventType, category, gender, matchUpFormat } = event ?? {};
   const additionalContext = {
     ...context,
-    eventId,
+    surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+    indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
+    matchUpFormat,
     eventType,
     eventName,
     category,
+    eventId,
+    endDate,
     gender,
-    matchUpFormat,
-    indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-    surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
-    endDate: event?.endDate,
   };
 
   let groupInfo;

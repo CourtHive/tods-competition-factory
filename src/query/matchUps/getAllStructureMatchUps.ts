@@ -382,7 +382,7 @@ export function getAllStructureMatchUps({
       collectionDefinition?.matchUpType ||
       structure?.matchUpType ||
       drawDefinition?.matchUpType ||
-      (event?.eventType !== TEAM && event?.eventType);
+      (!isMatchUpEventType(TEAM)(event?.eventType) && event?.eventType);
 
     const matchUpStatus = isCollectionBye ? BYE : matchUp.matchUpStatus;
     const { schedule, endDate } = getMatchUpScheduleDetails({
