@@ -27,7 +27,7 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
     event,
   } = params;
   if (!event) return { error: MISSING_EVENT };
-  const { eventId, eventName, endDate, category, gender, matchUpFormat } = event;
+  const { eventId, eventName, endDate, eventType, category, gender, matchUpFormat } = event ?? {};
 
   const additionalContext = {
     ...context,
@@ -38,9 +38,10 @@ export function allEventMatchUps(params: GetMatchUpsArgs) {
       tournamentId: tournamentRecord?.tournamentId,
       matchUpFormat,
       eventName,
+      eventType,
       category,
-      gender,
       eventId,
+      gender,
     }),
   };
   if (endDate) additionalContext.endDate = endDate;

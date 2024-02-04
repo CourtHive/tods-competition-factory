@@ -31,17 +31,20 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   } = params;
 
   if (!event) return { error: MISSING_EVENT };
-  const { eventId, eventName, endDate } = event;
+  const { eventId, eventName, endDate, eventType, category, gender } = event ?? {};
 
   const additionalContext = {
     ...context,
     ...definedAttributes({
-      eventId,
-      eventName,
-      endDate: endDate ?? tournamentRecord?.endDate,
-      tournamentId: tournamentId ?? tournamentRecord?.tournamentId,
-      indoorOutDoor: event.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
       surfaceCategory: event.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      indoorOutDoor: event.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
+      tournamentId: tournamentId ?? tournamentRecord?.tournamentId,
+      endDate: endDate ?? tournamentRecord?.endDate,
+      eventName,
+      eventType,
+      category,
+      eventId,
+      gender,
     }),
   };
 

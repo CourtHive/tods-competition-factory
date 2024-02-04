@@ -28,17 +28,20 @@ export function drawMatchUps({
   context,
   event,
 }: GetMatchUpsArgs) {
-  const { eventId, eventName, endDate } = event ?? {};
+  const { eventId, eventName, endDate, eventType, category, gender } = event ?? {};
 
   const additionalContext = {
     ...context,
     ...definedAttributes({
-      eventId,
-      eventName,
+      surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
       endDate: endDate ?? event?.endDate ?? tournamentRecord?.endDate,
       tournamentId: tournamentId ?? tournamentRecord?.tournamentId,
-      indoorOutDoor: event?.indoorOutdoor ?? tournamentRecord?.indoorOutdoor,
-      surfaceCategory: event?.surfaceCategory ?? tournamentRecord?.surfaceCategory,
+      eventName,
+      eventType,
+      category,
+      eventId,
+      gender,
     }),
   };
 

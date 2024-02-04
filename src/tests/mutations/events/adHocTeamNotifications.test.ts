@@ -8,6 +8,7 @@ import { expect, it } from 'vitest';
 // constants
 import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { COLLEGE_DEFAULT, DOMINANT_DUO } from '@Constants/tieFormatConstants';
+import { SCORES_PRESENT } from '@Constants/errorConditionConstants';
 import { DEFAULTED } from '@Constants/matchUpStatusConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { SINGLES, TEAM } from '@Constants/eventConstants';
@@ -88,6 +89,12 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
   expect(deletionResult.success).toEqual(true);
   // only half are deleted because the other half are "incomplete" and not removed by default
   expect(deletionResult.deletedMatchUpsCount).toEqual(scenario.expectation.added / 2);
+
+  deletionResult = tournamentEngine.deleteAdHocMatchUps({
+    matchUpIds: teamMatchUpIds,
+    drawId,
+  });
+  expect(deletionResult.error).toEqual(SCORES_PRESENT);
 
   deletionResult = tournamentEngine.deleteAdHocMatchUps({
     matchUpIds: teamMatchUpIds,

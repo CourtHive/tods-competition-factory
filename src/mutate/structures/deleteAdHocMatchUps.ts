@@ -10,8 +10,8 @@ import { xa } from '@Tools/objects';
 
 // constants and types
 import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 
@@ -134,9 +134,7 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs): ResultType
     });
   }
 
-  if (matchUpIds.length && matchUpIdsToDelete.length !== matchUpIds.length) {
-    return { error: SCORES_PRESENT };
-  }
+  if (!matchUpIdsToDelete.length && matchUpIds.length) return { error: SCORES_PRESENT };
 
   return { ...SUCCESS, deletedMatchUpsCount: [...matchUpIdsToDelete, ...tieMatchUpIdsToDelete].length };
 }
