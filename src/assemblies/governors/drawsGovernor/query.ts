@@ -4,7 +4,6 @@ export { getDrawParticipantRepresentativeIds } from '@Query/drawDefinition/getDr
 export { getValidGroupSizes } from '@Assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 export { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
 export { getAvailablePlayoffProfiles } from '@Query/drawDefinition/getAvailablePlayoffProfiles';
-export { getSeedingThresholds } from '@Query/drawDefinition/getSeedBlocks';
 export { getParticipantIdFinishingPositions } from '@Query/drawDefinition/finishingPositions';
 export { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 export { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
@@ -14,8 +13,10 @@ export { getPositionsPlayedOff } from '@Query/drawDefinition/getPositionsPlayedO
 export { getDrawTypeCoercion } from '@Generators/drawDefinitions/getDrawTypeCoercion';
 export { getPositionAssignments } from '@Query/structure/getPositionAssignments';
 export { isValidForQualifying } from '@Query/drawDefinition/isValidForQualifying';
+export { getSeedingThresholds } from '@Query/drawDefinition/getSeedBlocks';
 export { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 export { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 export { checkValidEntries } from '@Validators/checkValidEntries';
 export { getDrawDefinitionTimeItem } from '@Query/base/timeItems';
 export { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+export { addGoesTo } from '@Query/matchUps/addGoesTo';
