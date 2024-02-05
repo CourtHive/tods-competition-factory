@@ -1,10 +1,11 @@
-import { addEventExtension } from '../extensions/addRemoveExtensions';
-import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { addEventExtension } from '@Mutate/extensions/addRemoveExtensions';
+import { deleteDrawDefinitions } from '@Mutate/events/deleteDrawDefinitions';
 import { refreshEventDrawOrder } from './refreshEventDrawOrder';
-import { deleteDrawDefinitions } from '../events/deleteDrawDefinitions';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
+// constants
 import { MISSING_DRAW_ID, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 
 export function deleteFlightAndFlightDraw({ autoPublish = true, tournamentRecord, auditData, drawId, event, force }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

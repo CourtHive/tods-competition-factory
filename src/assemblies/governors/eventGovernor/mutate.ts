@@ -1,11 +1,11 @@
-export { deleteFlightProfileAndFlightDraws } from '@Mutate/drawDefinitions/deleteFlightProfileAndFlightDraws';
+export { deleteFlightProfileAndFlightDraws } from '@Mutate/events/deleteFlightProfileAndFlightDraws';
 export { modifyEventMatchUpFormatTiming } from '@Mutate/events/extensions/modifyEventMatchUpFormatTiming';
 export { removeEventMatchUpFormatTiming } from '@Mutate/events/extensions/removeEventMatchUpFormatTiming';
 export { setEventDates, setEventEndDate, setEventStartDate } from '@Mutate/events/setEventDates';
-export { deleteFlightAndFlightDraw } from '@Mutate/drawDefinitions/deleteFlightAndFlightDraw';
-export { refreshEventDrawOrder } from '@Mutate/drawDefinitions/refreshEventDrawOrder';
+export { deleteFlightAndFlightDraw } from '@Mutate/events/deleteFlightAndFlightDraw';
+export { refreshEventDrawOrder } from '@Mutate/events/refreshEventDrawOrder';
 export { modifyPairAssignment } from '@Mutate/drawDefinitions/modifyPairAssignment';
-export { updateDrawIdsOrder } from '@Mutate/drawDefinitions/updateDrawIdsOrder';
+export { updateDrawIdsOrder } from '@Mutate/events/updateDrawIdsOrder';
 export { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 export { deleteDrawDefinitions } from '@Mutate/events/deleteDrawDefinitions';
 export { assignSeedPositions } from '@Mutate/events/assignSeedPositions';

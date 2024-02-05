@@ -1,8 +1,9 @@
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { updateDrawIdsOrder } from './updateDrawIdsOrder';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// constants
 import { MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function refreshEventDrawOrder({ tournamentRecord, event }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

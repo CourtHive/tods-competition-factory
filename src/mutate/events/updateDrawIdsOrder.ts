@@ -1,8 +1,9 @@
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { intersection, unique } from '@Tools/arrays';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// constants
 import { INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 /**
  *
