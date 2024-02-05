@@ -1,4 +1,4 @@
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { findVenue } from '../../../query/venues/findVenue';
 
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';

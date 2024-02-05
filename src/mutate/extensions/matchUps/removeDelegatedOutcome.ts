@@ -1,4 +1,4 @@
-import { removeExtension } from '../../extensions/removeExtension';
+import { removeExtension } from '../removeExtension';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 import { DELEGATED_OUTCOME } from '@Constants/extensionConstants';

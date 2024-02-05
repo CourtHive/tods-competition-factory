@@ -5,7 +5,7 @@ import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
 import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { dateValidation, validTimeString } from '@Validators/regex';
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { assignMatchUpVenue } from './assignMatchUpVenue';

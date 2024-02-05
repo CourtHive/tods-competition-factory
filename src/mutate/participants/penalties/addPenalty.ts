@@ -97,10 +97,9 @@ function penaltyAdd({
     penaltyCode,
     penaltyType,
     matchUpId,
-    notes,
-
-    issuedAt,
     createdAt,
+    issuedAt,
+    notes,
   });
 
   if (Array.isArray(extensions)) {

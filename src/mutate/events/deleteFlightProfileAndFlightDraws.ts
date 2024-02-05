@@ -1,6 +1,6 @@
 import { removeEventExtension } from '../extensions/addRemoveExtensions';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
-import { deleteDrawDefinitions } from '../events/deleteDrawDefinitions';
+import { deleteDrawDefinitions } from './deleteDrawDefinitions';
 
 import { FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';

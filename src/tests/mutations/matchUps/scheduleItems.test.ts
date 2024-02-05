@@ -1,5 +1,5 @@
 import { getMatchUpScheduleDetails } from '@Query/matchUp/getMatchUpScheduleDetails';
-import { resetMatchUpTimeItems } from '@Mutate/matchUps/timeItems/matchUpTimeItems';
+import { resetMatchUpTimeItems } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { matchUpDuration } from '@Query/matchUp/matchUpDuration';
