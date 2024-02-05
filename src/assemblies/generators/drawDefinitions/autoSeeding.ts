@@ -1,7 +1,8 @@
-import { generateSeedingScaleItems } from '../../assemblies/generators/drawDefinitions/generateSeedingScaleItems';
+import { generateSeedingScaleItems } from '@Assemblies/generators/drawDefinitions/generateSeedingScaleItems';
 import { getEntriesAndSeedsCount } from '@Query/entries/getEntriesAndSeedsCount';
 import { getScaledEntries } from '@Query/event/getScaledEntries';
 
+// constants and types
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { StageTypeUnion } from '@Types/tournamentTypes';
 
