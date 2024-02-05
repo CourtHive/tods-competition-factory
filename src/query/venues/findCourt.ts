@@ -1,8 +1,9 @@
 import { getLinkedTournamentIds } from '@Query/tournaments/getLinkedTournamentIds';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { addVenue } from './addVenue';
+import { addVenue } from '../../mutate/venues/addVenue';
 
+// constants and types
 import { Court, Tournament, Venue } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {

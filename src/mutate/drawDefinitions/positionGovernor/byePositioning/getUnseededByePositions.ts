@@ -3,7 +3,7 @@ import { getSeedPattern, getValidSeedBlocks } from '@Query/drawDefinition/seedGe
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { chunkArray, shuffleArray, unique } from '@Tools/arrays';
 import { numericSort } from '@Tools/sorting';
-import { getSeedBlocks } from '../getSeedBlocks';
+import { getSeedBlocks } from '../../../../query/drawDefinition/getSeedBlocks';
 
 import { CLUSTER, CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
 

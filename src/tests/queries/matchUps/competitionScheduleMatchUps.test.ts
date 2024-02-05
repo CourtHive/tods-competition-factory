@@ -1,5 +1,5 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { xa } from '@Tools/objects';
 import { instanceCount, unique } from '@Tools/arrays';

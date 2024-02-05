@@ -1,14 +1,15 @@
-import { addIndividualParticipants } from '@Mutate/participants/addIndividualParticipants';
-import { addNationalityCode } from '@Mutate/participants/addNationalityCode';
-import { getScaleValues } from '../participant/getScaleValues';
+import { addIndividualParticipants } from '@Query/participants/addIndividualParticipants';
+import { addNationalityCode } from '@Query/participants/addNationalityCode';
+import { getScaleValues } from '@Query/participant/getScaleValues';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { isObject } from '@Tools/objects';
 import { getTimeItem } from '../base/timeItems';
+import { isObject } from '@Tools/objects';
 
+// constants and types
+import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { Tournament } from '@Types/tournamentTypes';
 import { ParticipantMap } from '@Types/factoryTypes';
-import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '@Constants/participantConstants';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',

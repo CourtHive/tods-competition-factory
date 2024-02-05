@@ -2,7 +2,7 @@ import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutat
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { addTimeItem } from '@Mutate/timeItems/addTimeItem';
-import { addGoesTo } from './matchUpGovernor/addGoesTo';
+import { addGoesTo } from '../../query/matchUps/addGoesTo';
 import { xa } from '@Tools/objects';
 
 // constants and types

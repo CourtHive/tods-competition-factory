@@ -1,4 +1,4 @@
-import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
+import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/processNextMatchUps';
 
 import {
   BYE,

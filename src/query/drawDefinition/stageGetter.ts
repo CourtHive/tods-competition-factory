@@ -1,12 +1,12 @@
 import { modifyEntryProfile } from '@Mutate/drawDefinitions/entryGovernor/modifyEntryProfile';
 import { findExtension } from '@Acquire/findExtension';
 import { findStructure } from '@Acquire/findStructure';
-import { numericSort } from '@Tools/sorting';
 import { getEntryProfile } from './getEntryProfile';
+import { numericSort } from '@Tools/sorting';
 
 // constants and types
-import { POSITION, CONTAINER, PLAY_OFF, validStages } from '@Constants/drawDefinitionConstants';
 import { ALTERNATE, FEED_IN, WILDCARD, DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { POSITION, CONTAINER, PLAY_OFF, validStages } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition, DrawLink, EntryStatusUnion } from '@Types/tournamentTypes';
 import { ROUND_TARGET, TALLY } from '@Constants/extensionConstants';
 import { ErrorType } from '@Constants/errorConditionConstants';

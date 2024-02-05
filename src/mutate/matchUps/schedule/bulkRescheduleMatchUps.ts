@@ -3,7 +3,7 @@ import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps'
 import { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
 import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { hasSchedule } from './scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../query/matchUp/hasSchedule';
 import { addMatchUpScheduledDate } from './scheduleItems';
 import { addMatchUpScheduledTime } from './scheduledTime';
 import {

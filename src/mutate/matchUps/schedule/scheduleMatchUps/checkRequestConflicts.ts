@@ -1,4 +1,4 @@
-import { getIndividualParticipants } from './getIndividualParticipants';
+import { getIndividualParticipants } from '../../../../query/matchUp/getIndividualParticipants';
 import { addMinutes, extractDate, extractTime, sameDay, timeToDate } from '@Tools/dateTime';
 
 import { DO_NOT_SCHEDULE } from '@Constants/requestConstants';

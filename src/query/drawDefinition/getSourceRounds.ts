@@ -1,4 +1,4 @@
-import { getFinishingPositionSourceRoundsMap } from '@Mutate/drawDefinitions/structureGovernor/structureUtils';
+import { getFinishingPositionSourceRoundsMap } from '@Query/structure/structureUtils';
 import { getStructureRoundProfile } from '../structure/getStructureRoundProfile';
 import { getPositionsPlayedOff } from './getPositionsPlayedOff';
 import { generateRange } from '@Tools/arrays';

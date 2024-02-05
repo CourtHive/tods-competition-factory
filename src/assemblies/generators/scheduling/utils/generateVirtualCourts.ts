@@ -1,8 +1,9 @@
 import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { isValidDateString, timeStringMinutes } from '@Tools/dateTime';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants
 import { INVALID_BOOKINGS, INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function generateVirtualCourts(params) {

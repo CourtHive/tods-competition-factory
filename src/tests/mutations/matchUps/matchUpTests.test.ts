@@ -27,6 +27,8 @@ import {
   UNRECOGNIZED_MATCHUP_FORMAT,
 } from '@Constants/errorConditionConstants';
 
+const FORMAT_TIMED_10_1 = 'SET1-S:T10';
+
 it('can return matchUps from an SINGLE_ELIMINATION structure', () => {
   const drawDefinition: DrawDefinition = newDrawDefinition();
   setStageDrawSize({ drawDefinition, stage: MAIN, drawSize: 16 });
@@ -146,7 +148,7 @@ it('can set matchUpFormat', () => {
     structure,
   });
 
-  const matchUpFormat = 'SET1-S:T10';
+  const matchUpFormat = FORMAT_TIMED_10_1;
   const matchUp = upcomingMatchUps?.[0];
   expect(matchUp?.matchUpFormat).toEqual(undefined);
 
@@ -240,7 +242,7 @@ it('throws error when setting matchUpFormat on TEAM events', () => {
   expect(event.eventType).toEqual(TEAM_EVENT);
 
   let result = setMatchUpMatchUpFormat({
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     drawDefinition,
     structureId,
     event,
@@ -248,7 +250,7 @@ it('throws error when setting matchUpFormat on TEAM events', () => {
   expect(result.error).toEqual(INVALID_EVENT_TYPE);
 
   result = setMatchUpMatchUpFormat({
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     structureIds: [structureId],
     drawDefinition,
     event,
@@ -256,14 +258,14 @@ it('throws error when setting matchUpFormat on TEAM events', () => {
   expect(result.error).toEqual(INVALID_EVENT_TYPE);
 
   result = setMatchUpMatchUpFormat({
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     matchUpId: 'match-1-1',
     drawDefinition,
   });
   expect(result.error).toEqual(INVALID_MATCHUP);
 
   result = setMatchUpMatchUpFormat({
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     matchUpId: 'match-x-y',
     drawDefinition,
   });
@@ -271,14 +273,14 @@ it('throws error when setting matchUpFormat on TEAM events', () => {
 
   result = setMatchUpMatchUpFormat({
     structureId: 'bogusStructureId',
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     drawDefinition,
   });
   expect(result.error).toEqual(STRUCTURE_NOT_FOUND);
 
   result = setMatchUpMatchUpFormat({
     structureIds: ['bogusStructureId'],
-    matchUpFormat: 'SET1-S:T10',
+    matchUpFormat: FORMAT_TIMED_10_1,
     drawDefinition,
   });
   expect(result.error).toEqual(STRUCTURE_NOT_FOUND);

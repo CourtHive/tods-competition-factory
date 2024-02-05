@@ -5,10 +5,11 @@ import { findParticipant } from '@Acquire/findParticipant';
 import { addParticipants } from './addParticipants';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
+import { COMPETITOR, participantRoles } from '@Constants/participantRoles';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { COMPETITOR, participantRoles } from '@Constants/participantRoles';
 import {
   INVALID_PARTICIPANT_ROLE,
   INVALID_VALUES,

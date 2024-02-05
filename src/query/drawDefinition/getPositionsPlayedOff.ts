@@ -1,4 +1,4 @@
-import { roundValueRanges } from '@Mutate/drawDefinitions/structureGovernor/structureUtils';
+import { roundValueRanges } from '@Query/structure/structureUtils';
 import { getStructureRoundProfile } from '@Query/structure/getStructureRoundProfile';
 import { numericSort } from '@Tools/sorting';
 import { unique } from '@Tools/arrays';

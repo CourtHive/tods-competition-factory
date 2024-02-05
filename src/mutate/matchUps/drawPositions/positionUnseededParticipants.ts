@@ -1,4 +1,4 @@
-import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/avoidance/randomUnseededSeparation';
+import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/randomUnseededSeparation';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';

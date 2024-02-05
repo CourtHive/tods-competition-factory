@@ -1,14 +1,15 @@
 import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
-import { validMatchUps } from '@Validators/validMatchUp';
-import { calculatePeriodLength } from './calculatePeriodLength';
-import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
 import { addMinutesToTimeString, extractTime } from '@Tools/dateTime';
+import { calculatePeriodLength } from './calculatePeriodLength';
+import { validMatchUps } from '@Validators/validMatchUp';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 
-import { Tournament } from '@Types/tournamentTypes';
-import { BYE } from '@Constants/matchUpStatusConstants';
-import { HydratedMatchUp } from '@Types/hydrated';
+// constants and types
 import { MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GenerateBookingsArgs = {
   tournamentRecords: { [key: string]: Tournament };

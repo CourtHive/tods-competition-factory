@@ -1,7 +1,7 @@
-import { addParticipantGroupings } from '@Mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
-import { addUpcomingMatchUps } from '@Mutate/drawDefinitions/matchUpGovernor/addUpcomingMatchUps';
+import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
 import { getContextContent } from '@Query/hierarchical/getContextContent';
+import { addUpcomingMatchUps } from '@Query/matchUp/addUpcomingMatchUps';
 import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getDrawStructures } from '@Acquire/findStructure';

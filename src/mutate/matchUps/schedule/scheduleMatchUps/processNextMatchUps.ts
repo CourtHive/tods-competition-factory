@@ -1,4 +1,4 @@
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '@Query/matchUp/getIndividualParticipantIds';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { unique } from '@Tools/arrays';
 

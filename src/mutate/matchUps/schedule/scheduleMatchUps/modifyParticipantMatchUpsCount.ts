@@ -1,5 +1,5 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '../../../../query/matchUp/getIndividualParticipantIds';
 import { overlap } from '@Tools/arrays';
 
 import { TOTAL } from '@Constants/scheduleConstants';

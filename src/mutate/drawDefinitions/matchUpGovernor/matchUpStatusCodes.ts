@@ -1,4 +1,4 @@
-import { getPairedPreviousMatchUp } from '@Mutate/drawDefinitions/positionGovernor/getPairedPreviousMatchup';
+import { getPairedPreviousMatchUp } from '@Query/matchUps/getPairedPreviousMatchup';
 import { isString } from '@Tools/objects';
 
 // types

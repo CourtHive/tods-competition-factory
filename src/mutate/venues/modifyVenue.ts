@@ -9,7 +9,7 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addNotice } from '@Global/state/globalState';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
-import { findVenue } from './findVenue';
+import { findVenue } from '../../query/venues/findVenue';
 
 // constants and types
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';

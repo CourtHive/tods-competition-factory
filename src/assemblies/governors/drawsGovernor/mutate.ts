@@ -28,7 +28,7 @@ export { pruneDrawDefinition } from '@Mutate/drawDefinitions/pruneDrawDefinition
 export { assignDrawPosition } from '@Mutate/drawDefinitions/assignDrawPosition';
 export { deleteAdHocMatchUps } from '@Mutate/structures/deleteAdHocMatchUps';
 export { removeRoundMatchUps } from '@Mutate/structures/removeRoundMatchUps';
-export { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+export { addGoesTo } from '@Query/matchUps/addGoesTo';
 export { updateTeamLineUp } from '@Mutate/drawDefinitions/updateTeamLineUp';
 export { addAdHocMatchUps } from '@Mutate/structures/addAdHocMatchUps';
 export { modifyDrawName } from '@Mutate/drawDefinitions/modifyDrawName';

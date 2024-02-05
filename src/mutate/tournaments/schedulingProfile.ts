@@ -6,11 +6,11 @@ import { getEventIdsAndDrawIds } from '@Query/tournaments/getEventIdsAndDrawIds'
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '@Acquire/findExtension';
 
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { SCHEDULING_PROFILE } from '@Constants/extensionConstants';
 import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '@Types/tournamentTypes';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 type GetSchedulingProfileArgs = {
   tournamentRecords?: TournamentRecords;

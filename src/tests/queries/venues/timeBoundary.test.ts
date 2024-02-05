@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { getDateTimeBoundary } from '@Mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '@Generators/scheduling/utils/getTimeBoundary';
 
 test('time boundaries for startTime / endTime correctly deduced', () => {
   const date = '2023-09-18';

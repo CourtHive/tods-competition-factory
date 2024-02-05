@@ -1,8 +1,9 @@
 import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
 import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
-import { getDateTimeBoundary } from './getTimeBoundary';
 import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
+import { getDateTimeBoundary } from './getTimeBoundary';
 
+// constants
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type GetEarliestCourtTimeArgs = {

@@ -1,5 +1,5 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { getIndividualParticipantIds } from './getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '../../../../query/matchUp/getIndividualParticipantIds';
 import { unique } from '@Tools/arrays';
 
 // constants

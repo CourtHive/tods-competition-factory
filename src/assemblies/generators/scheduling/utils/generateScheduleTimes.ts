@@ -1,12 +1,12 @@
 import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
 import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
-import { xa } from '@Tools/objects';
 import { calculatePeriodLength } from './calculatePeriodLength';
 import { getDateTimeBoundary } from './getTimeBoundary';
 import { generateBookings } from './generateBookings';
+import { xa } from '@Tools/objects';
 
+// constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-
 import { ScheduleTimesResult } from '@Types/factoryTypes';
 import { Tournament } from '@Types/tournamentTypes';
 import { HydratedMatchUp } from '@Types/hydrated';

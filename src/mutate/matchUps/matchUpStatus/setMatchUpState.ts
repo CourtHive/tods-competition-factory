@@ -1,4 +1,4 @@
-import { getProjectedDualWinningSide } from '@Mutate/drawDefinitions/matchUpGovernor/getProjectedDualWinningSide';
+import { getProjectedDualWinningSide } from '@Query/matchUp/getProjectedDualWinningSide';
 import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGovernor/noDownstreamDependencies';
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';

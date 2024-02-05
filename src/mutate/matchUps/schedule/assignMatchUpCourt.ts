@@ -1,4 +1,4 @@
-import { findCourt } from '../../venues/findCourt';
+import { findCourt } from '../../../query/venues/findCourt';
 import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
 import { assignMatchUpVenue } from './assignMatchUpVenue';
 

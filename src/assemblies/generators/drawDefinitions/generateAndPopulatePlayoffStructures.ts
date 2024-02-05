@@ -6,7 +6,7 @@ import { directParticipants } from '@Mutate/matchUps/drawPositions/directPartici
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
-import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { getSourceRounds } from '@Query/drawDefinition/getSourceRounds';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';

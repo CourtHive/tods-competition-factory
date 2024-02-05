@@ -3,10 +3,10 @@ import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDraw
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getAttributeGroupings } from '@Query/participants/getAttributeGrouping';
-import { generatePositioningCandidate } from './generatePositioningCandidate';
+import { generatePositioningCandidate } from '../../../query/drawDefinition/avoidance/generatePositioningCandidate';
 import { deriveExponent, isPowerOf2, nearestPowerOf2 } from '@Tools/math';
-import { getUnplacedParticipantIds } from './getUnplacedParticipantIds';
-import { addParticipantGroupings } from './addParticipantGroupings';
+import { getUnplacedParticipantIds } from '../../../query/drawDefinition/avoidance/getUnplacedParticipantIds';
+import { addParticipantGroupings } from '../../../query/drawDefinition/avoidance/addParticipantGroupings';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { chunkArray, generateRange } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';

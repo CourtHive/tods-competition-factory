@@ -1,4 +1,4 @@
-import { getDateTimeBoundary } from '@Mutate/matchUps/schedule/schedulers/utils/getTimeBoundary';
+import { getDateTimeBoundary } from '@Generators/scheduling/utils/getTimeBoundary';
 import { getCourtDateAvailability } from './getCourtDateAvailability';
 import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
