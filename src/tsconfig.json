@@ -1,3 +1,4 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
+  "exclude": ["src/**/scratch/**", "**/*tsconfig*/**"],
 }

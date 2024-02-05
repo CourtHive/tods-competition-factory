@@ -69,6 +69,7 @@
   },
   "scripts": {
     "commits": "git log $(git describe --tags --abbrev=0)..HEAD --oneline --no-merges --pretty=format:'%s: %h' | sed '/factory/d'",
+    "deptree": "dep-tree entropy src/index.ts",
     "release": "npm run release:patch",
     "release:alpha": "npm run commits && npm version $(semver $npm_package_version -i premajor --preid alpha) && npm publish --tag alpha",
     "minor:alpha": "npm run commits && npm version $(semver $npm_package_version -i preminor --preid alpha) && npm publish --tag alpha",
@@ -115,6 +116,7 @@
     "@babel/preset-typescript": "7.23.3",
     "@commitlint/cli": "18.6.0",
     "@commitlint/config-conventional": "18.6.0",
+    "@dep-tree/cli": "^0.19.3",
     "@nestjs/class-transformer": "0.4.0",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/cli": "10.3.0",
