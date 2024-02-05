@@ -3,7 +3,7 @@ import courtTemplate from '@Assemblies/generators/templates/courtTemplate';
 import { modifyCourtAvailability } from './courtAvailability';
 import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { findCourt } from './findCourt';
+import { findCourt } from '../../query/venues/findCourt';
 
 // constants and types
 import { TournamentRecords, ResultType } from '@Types/factoryTypes';

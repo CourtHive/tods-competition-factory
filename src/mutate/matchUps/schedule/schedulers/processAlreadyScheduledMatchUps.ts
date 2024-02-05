@@ -1,8 +1,9 @@
-import { modifyParticipantMatchUpsCount } from '../../scheduleMatchUps/modifyParticipantMatchUpsCount';
-import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
+import { modifyParticipantMatchUpsCount } from '@Mutate/matchUps/schedule/scheduleMatchUps/modifyParticipantMatchUpsCount';
+import { updateTimeAfterRecovery } from '@Mutate/matchUps/schedule/scheduleMatchUps/updateTimeAfterRecovery';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { hasSchedule } from '../../scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 
+// constants and types
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 

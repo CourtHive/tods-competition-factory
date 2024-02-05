@@ -3,7 +3,7 @@ import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPo
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
-import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { validateTieFormat } from '@Validators/validateTieFormat';

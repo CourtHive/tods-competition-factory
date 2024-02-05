@@ -4,7 +4,7 @@ export { getDrawParticipantRepresentativeIds } from '@Query/drawDefinition/getDr
 export { getValidGroupSizes } from '@Assemblies/generators/drawDefinitions/drawTypes/roundRobin/roundRobin';
 export { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
 export { getAvailablePlayoffProfiles } from '@Query/drawDefinition/getAvailablePlayoffProfiles';
-export { getSeedingThresholds } from '@Mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+export { getSeedingThresholds } from '@Query/drawDefinition/getSeedBlocks';
 export { getParticipantIdFinishingPositions } from '@Query/drawDefinition/finishingPositions';
 export { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 export { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';

@@ -1,4 +1,4 @@
-import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { visualizeScheduledMatchUps } from './testUtilities/visualizeScheduledMatchUps';
 import { extractTime, timeStringMinutes } from '@Tools/dateTime';
 import competitionEngine from '../engines/syncEngine';

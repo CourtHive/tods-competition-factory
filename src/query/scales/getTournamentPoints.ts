@@ -1,33 +1,30 @@
-import { getPolicyDefinitions } from '../extensions/getAppliedPolicies';
-import { addExtension } from '@Mutate/extensions/addExtension';
-import { getParticipants } from '../participants/getParticipants';
-import { getTargetElement } from './getTargetElement';
-import { getAwardProfile } from './getAwardProfile';
-import { getAwardPoints } from './getAwardPoints';
+import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getTargetElement } from '@Query/scales/getTargetElement';
+import { getAwardProfile } from '@Query/scales/getAwardProfile';
+import { getAwardPoints } from '@Query/scales/getAwardPoints';
 import { unique } from '@Tools/arrays';
 
+// constants and types
+import { MISSING_POLICY_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { ParticipantFilters, PolicyDefinitions } from '@Types/factoryTypes';
 import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { RANKING_POINTS } from '@Constants/extensionConstants';
-import { Tournament } from '@Types/tournamentTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MISSING_POLICY_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
-import { ParticipantFilters, PolicyDefinitions } from '@Types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 type GetTournamentPointsArgs = {
   participantFilters?: ParticipantFilters;
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
-  saveRankings?: boolean;
   level?: number;
 };
 export function getTournamentPoints({
   participantFilters,
   policyDefinitions,
   tournamentRecord,
-  saveRankings,
   level,
 }: GetTournamentPointsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -239,15 +236,6 @@ export function getTournamentPoints({
         }
       }
     }
-  }
-
-  if (saveRankings) {
-    // possibly also ensure ranking policy is part of applied policies
-    const extension = {
-      name: RANKING_POINTS,
-      value: { personPoints, teamPoints, pairPoints },
-    };
-    addExtension({ element: tournamentRecord, extension });
   }
 
   return {

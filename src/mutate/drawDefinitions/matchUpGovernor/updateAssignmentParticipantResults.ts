@@ -4,7 +4,7 @@ import { modifyDrawNotice } from '../../notifications/drawNotifications';
 import { removeExtension } from '../../extensions/removeExtension';
 import { addExtension } from '../../extensions/addExtension';
 import { validMatchUps } from '@Validators/validMatchUp';
-import { createSubOrderMap } from './createSubOrderMap';
+import { createSubOrderMap } from '../../../query/structure/createSubOrderMap';
 
 // constants
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';

@@ -4,7 +4,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { intersection, overlap } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 
-import { getPairedPreviousMatchUp } from '../positionGovernor/getPairedPreviousMatchup';
+import { getPairedPreviousMatchUp } from '../../../query/matchUps/getPairedPreviousMatchup';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 
 import { pushGlobalLog } from '@Functions/global/globalLog';

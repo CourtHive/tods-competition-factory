@@ -1,9 +1,5 @@
 import { it, expect } from 'vitest';
-import {
-  getSeedBlocks,
-  getSeedGroups,
-  getSeedingThresholds,
-} from '@Mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+import { getSeedBlocks, getSeedGroups, getSeedingThresholds } from '@Query/drawDefinition/getSeedBlocks';
 
 it('can generate seedBlocks, seedGroups and seedingThresholds', () => {
   const roundRobinGroupsCount = 8;

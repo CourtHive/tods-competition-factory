@@ -1,5 +1,5 @@
 import { getDrawId, getParticipantId } from '@Functions/global/extractors';
-import { addScheduleItem } from '@Mutate/participants/addScheduleItem';
+import { addScheduleItem } from '@Query/matchUps/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
 import { structureSort } from '@Functions/sorters/structureSort';

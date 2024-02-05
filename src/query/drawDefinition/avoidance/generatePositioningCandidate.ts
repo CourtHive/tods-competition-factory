@@ -1,10 +1,11 @@
 import { getPositionedParticipants } from './getPositionedParticipants';
-import { getParticipantPlacement } from './getParticipantPlacement';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { getAvoidanceConflicts } from './getAvoidanceConflicts';
-import { getSwapOptions } from './getSwapOptions';
 import { chunkArray, generateRange, randomPop } from '@Tools/arrays';
+import { getParticipantPlacement } from './getParticipantPlacement';
+import { getAvoidanceConflicts } from './getAvoidanceConflicts';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { getSwapOptions } from './getSwapOptions';
 
+// constants and types
 import { INVALID_ASSIGNMENT } from '@Constants/errorConditionConstants';
 import { PositionAssignment } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';

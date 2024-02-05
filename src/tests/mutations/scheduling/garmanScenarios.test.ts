@@ -1,4 +1,4 @@
-import { hasSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { getParticipantId } from '@Functions/global/extractors';
 import { intersection, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';

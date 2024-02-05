@@ -1,5 +1,6 @@
 import { attributeFilter } from '@Tools/attributeFilter';
 
+// types
 import { HydratedParticipant } from '@Types/hydrated';
 
 export function addIndividualParticipants({ participantMap, template }) {

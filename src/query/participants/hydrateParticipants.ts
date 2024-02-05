@@ -1,5 +1,5 @@
-import { addParticipantGroupings } from '@Mutate/drawDefinitions/positionGovernor/avoidance/addParticipantGroupings';
-import { addNationalityCode } from '@Mutate/participants/addNationalityCode';
+import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
+import { addNationalityCode } from '@Query/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 

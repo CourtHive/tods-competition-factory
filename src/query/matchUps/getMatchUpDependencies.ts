@@ -3,9 +3,9 @@
  * Optionally builds up an exhaustive map of all potential participantIds for each matchUpId
  */
 
-import { getIndividualParticipantIds } from '@Mutate/matchUps/schedule/scheduleMatchUps/getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '@Query/matchUp/getIndividualParticipantIds';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
-import { addGoesTo } from '@Mutate/drawDefinitions/matchUpGovernor/addGoesTo';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { allDrawMatchUps } from './getAllDrawMatchUps';

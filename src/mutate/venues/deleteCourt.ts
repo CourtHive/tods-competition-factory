@@ -5,7 +5,7 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { addNotice } from '@Global/state/globalState';
-import { findCourt } from './findCourt';
+import { findCourt } from '../../query/venues/findCourt';
 
 import { COURT_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';

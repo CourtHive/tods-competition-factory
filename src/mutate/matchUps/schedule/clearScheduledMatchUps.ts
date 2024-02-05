@@ -1,6 +1,6 @@
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { hasSchedule } from './scheduleMatchUps/hasSchedule';
+import { hasSchedule } from '../../../query/matchUp/hasSchedule';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { isObject } from '@Tools/objects';
 

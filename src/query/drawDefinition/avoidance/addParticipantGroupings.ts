@@ -1,8 +1,9 @@
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants and types
+import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { ParticipantsProfile } from '@Types/factoryTypes';
 import { Participant } from '@Types/tournamentTypes';
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 
 type AddParticipantGroupingsArgs = {
   participantsProfile?: ParticipantsProfile;

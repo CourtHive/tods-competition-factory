@@ -1,10 +1,11 @@
+import { processAlreadyScheduledMatchUps } from '@Mutate/matchUps/schedule/schedulers/processAlreadyScheduledMatchUps';
+import { getMatchUpsToSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/getMatchUpsToSchedule';
+import { generateScheduleTimes } from '@Generators/scheduling/utils/generateScheduleTimes';
 import { getScheduledRoundsDetails } from './getScheduledRoundsDetails';
 import { getGroupedRounds } from './getGroupedRounds';
-import { processAlreadyScheduledMatchUps } from '@Mutate/matchUps/schedule/schedulers/utils/processAlreadyScheduledMatchUps';
-import { getMatchUpsToSchedule } from '@Mutate/matchUps/schedule/schedulers/utils/getMatchUpsToSchedule';
-import { generateScheduleTimes } from '@Mutate/matchUps/schedule/schedulers/utils/generateScheduleTimes';
 import { extractDate } from '@Tools/dateTime';
 
+// types
 import { Tournament } from '@Types/tournamentTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
 

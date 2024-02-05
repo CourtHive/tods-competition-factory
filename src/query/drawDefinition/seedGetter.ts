@@ -1,8 +1,8 @@
-import { getSeedBlocks, getSeedGroups } from '@Mutate/drawDefinitions/positionGovernor/getSeedBlocks';
+import { getSeedBlocks, getSeedGroups } from '@Query/drawDefinition/getSeedBlocks';
 import { getPositionAssignments, structureAssignedDrawPositions } from './positionsGetter';
 import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { chunkArray, generateRange, shuffleArray } from '@Tools/arrays';
 import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { chunkArray, generateRange, shuffleArray } from '@Tools/arrays';
 import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getNumericSeedValue } from './getNumericSeedValue';
 import { findStructure } from '@Acquire/findStructure';

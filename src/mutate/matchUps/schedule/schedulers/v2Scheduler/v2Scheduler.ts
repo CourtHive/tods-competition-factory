@@ -10,11 +10,11 @@ import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSc
 import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
 import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { generateVirtualCourts } from '../utils/generateVirtualCourts';
-import { getEarliestCourtTime } from '../utils/getEarliestCourtTime';
+import { generateVirtualCourts } from '../../../../../assemblies/generators/scheduling/utils/generateVirtualCourts';
+import { getEarliestCourtTime } from '../../../../../assemblies/generators/scheduling/utils/getEarliestCourtTime';
 import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { auditAutoScheduling } from '../auditAutoScheduling';
-import { generateBookings } from '../utils/generateBookings';
+import { generateBookings } from '../../../../../assemblies/generators/scheduling/utils/generateBookings';
 import { addMinutesToTimeString, extractDate, sameDay, timeStringMinutes, timeToDate, zeroPad } from '@Tools/dateTime';
 
 import { HydratedCourt, HydratedMatchUp } from '@Types/hydrated';

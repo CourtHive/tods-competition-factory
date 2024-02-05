@@ -6,7 +6,7 @@ import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
 import { isNumeric } from '@Tools/math';
-import { findVenue } from './findVenue';
+import { findVenue } from '../../query/venues/findVenue';
 import { UUID } from '@Tools/UUID';
 
 // constants and types

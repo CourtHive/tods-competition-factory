@@ -1,8 +1,9 @@
-import { xa } from '@Tools/objects';
 import { findExtension } from '@Acquire/findExtension';
 import { instanceCount } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
+import { xa } from '@Tools/objects';
 
+// constants
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { SUB_ORDER } from '@Constants/extensionConstants';
 

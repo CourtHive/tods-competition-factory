@@ -3,15 +3,15 @@ import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 import { findStructure } from '@Acquire/findStructure';
 import { isConvertableInteger } from '@Tools/math';
-import { getSeedGroups } from './getSeedBlocks';
+import { getSeedGroups } from '../../../query/drawDefinition/getSeedBlocks';
 import { generateRange } from '@Tools/arrays';
 
 // constants and types
+import { ErrorType, SEEDSCOUNT_GREATER_THAN_DRAW_SIZE, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { PolicyDefinitions, SeedingProfile } from '@Types/factoryTypes';
 import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ErrorType, SEEDSCOUNT_GREATER_THAN_DRAW_SIZE, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 type InitializeStructureSeedAssignmentsArgs = {
   appliedPolicies?: PolicyDefinitions;

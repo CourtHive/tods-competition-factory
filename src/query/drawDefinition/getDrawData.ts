@@ -1,4 +1,4 @@
-import { createSubOrderMap } from '@Mutate/drawDefinitions/matchUpGovernor/createSubOrderMap';
+import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { tallyParticipantResults } from '@Assemblies/governors/queryGovernor';

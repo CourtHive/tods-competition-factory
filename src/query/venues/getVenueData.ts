@@ -1,5 +1,5 @@
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { findVenue } from '@Mutate/venues/findVenue';
+import { findVenue } from '@Query/venues/findVenue';
 import { getCourtInfo } from './getCourtInfo';
 
 import { Tournament } from '@Types/tournamentTypes';
