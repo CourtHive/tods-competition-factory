@@ -3,7 +3,7 @@ import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { convertTime, extractDate, validTimeValue } from '@Tools/dateTime';
 
 import { SUCCESS } from '@Constants/resultConstants';

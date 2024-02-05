@@ -1,7 +1,7 @@
 import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 

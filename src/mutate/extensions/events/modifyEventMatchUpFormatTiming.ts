@@ -1,5 +1,5 @@
 import { getModifiedMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
-import { modifyMatchUpFormatTiming } from '../../matchUps/extensions/modifyMatchUpFormatTiming';
+import { modifyMatchUpFormatTiming } from '../matchUps/modifyMatchUpFormatTiming';
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { ensureInt } from '@Tools/ensureInt';

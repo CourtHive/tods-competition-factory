@@ -1,11 +1,11 @@
 export { calculateScheduleTimes } from '@Mutate/matchUps/schedule/scheduleMatchUps/calculateScheduleTimes';
-export { removeEventMatchUpFormatTiming } from '@Mutate/events/extensions/removeEventMatchUpFormatTiming';
+export { removeEventMatchUpFormatTiming } from '@Mutate/extensions/events/removeEventMatchUpFormatTiming';
 export { bulkScheduleTournamentMatchUps } from '@Mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
 export { generateVirtualCourts } from '@Generators/scheduling/utils/generateVirtualCourts';
-export { toggleParticipantCheckInState } from '@Mutate/matchUps/timeItems/toggleParticipantCheckInState';
+export { toggleParticipantCheckInState } from '@Mutate/timeItems/matchUps/toggleParticipantCheckInState';
 export { removeMatchUpCourtAssignment } from '@Mutate/matchUps/schedule/removeMatchUpCourtAssignment';
 export { proAutoSchedule } from '@Mutate/matchUps/schedule/schedulers/proScheduler/proAutoSchedule';
-export { modifyMatchUpFormatTiming } from '@Mutate/matchUps/extensions/modifyMatchUpFormatTiming';
+export { modifyMatchUpFormatTiming } from '@Mutate/extensions/matchUps/modifyMatchUpFormatTiming';
 export { bulkUpdateCourtAssignments } from '@Mutate/matchUps/schedule/bulkUpdateCourtAssignments';
 export { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 export { scheduleMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/scheduleMatchUps';

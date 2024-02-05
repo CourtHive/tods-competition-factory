@@ -1,5 +1,5 @@
 import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
-import { addMatchUpTimeItem } from '../timeItems/matchUpTimeItems';
+import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';

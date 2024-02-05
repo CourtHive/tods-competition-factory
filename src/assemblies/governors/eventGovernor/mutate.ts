@@ -1,6 +1,6 @@
 export { deleteFlightProfileAndFlightDraws } from '@Mutate/events/deleteFlightProfileAndFlightDraws';
-export { modifyEventMatchUpFormatTiming } from '@Mutate/events/extensions/modifyEventMatchUpFormatTiming';
-export { removeEventMatchUpFormatTiming } from '@Mutate/events/extensions/removeEventMatchUpFormatTiming';
+export { modifyEventMatchUpFormatTiming } from '@Mutate/extensions/events/modifyEventMatchUpFormatTiming';
+export { removeEventMatchUpFormatTiming } from '@Mutate/extensions/events/removeEventMatchUpFormatTiming';
 export { setEventDates, setEventEndDate, setEventStartDate } from '@Mutate/events/setEventDates';
 export { deleteFlightAndFlightDraw } from '@Mutate/events/deleteFlightAndFlightDraw';
 export { refreshEventDrawOrder } from '@Mutate/events/refreshEventDrawOrder';

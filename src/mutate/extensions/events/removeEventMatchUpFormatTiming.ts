@@ -1,5 +1,5 @@
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { removeEventExtension } from '../../extensions/addRemoveExtensions';
+import { removeEventExtension } from '../addRemoveExtensions';
 import { findEvent } from '@Acquire/findEvent';
 
 import { EVENT_ID, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';

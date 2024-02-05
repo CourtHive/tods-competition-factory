@@ -1,4 +1,4 @@
-import { addExtension } from '../../extensions/addExtension';
+import { addExtension } from '../addExtension';
 import { findExtension } from '@Acquire/findExtension';
 import { findEvent } from '@Acquire/findEvent';
 
