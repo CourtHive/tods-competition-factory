@@ -1241,8 +1241,7 @@ const {
   endDate,
 
   hostCountryCode,
-  tournamentContacts,
-  tournamentAddresses,
+  tournamentStatus,
 } = tournamentInfo;
 ```
 
