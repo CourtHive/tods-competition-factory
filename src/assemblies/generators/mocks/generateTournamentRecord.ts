@@ -1,19 +1,20 @@
 import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
-import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
-import { formatDate, isValidDateString } from '@Tools/dateTime';
+import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { addTournamentParticipants } from './addTournamentParticipants';
-import { isValidExtension } from '@Validators/isValidExtension';
-import { cycleMutationStatus } from '@Global/state/globalState';
-import { generateVenues } from '@Mutate/venues/generateVenues';
 import { generateEventWithFlights } from './generateEventWithFlights';
 import { generateScheduledRounds } from './generateScheduledRounds';
-import { definedAttributes } from '@Tools/definedAttributes';
+import { formatDate, isValidDateString } from '@Tools/dateTime';
 import { generateEventWithDraw } from './generateEventWithDraw';
+import { cycleMutationStatus } from '@Global/state/globalState';
+import { isValidExtension } from '@Validators/isValidExtension';
+import { generateVenues } from '@Mutate/venues/generateVenues';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { Extension } from '@Types/tournamentTypes';
 import { addEvent } from '@Mutate/events/addEvent';
 import { randomPop } from '@Tools/arrays';
 
+// constants and fixtures
 import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '@Constants/resultConstants';

@@ -34,7 +34,6 @@ it.each([syncEngine, asyncEngine])(
         }
       } else if (
         [
-          'getTournamentPublishStatus',
           'stringifyMatchUpFormat',
           'getEventPublishStatus',
           'getDrawTypeCoercion',

@@ -127,7 +127,9 @@ it('can publish order of play for specified days', () => {
   result = competitionEngine.getState();
   tournamentRecord = Object.values(result.tournamentRecords)[0] as Tournament;
   expect(tournamentRecord.timeItems?.length).toEqual(3);
-  expect(tournamentRecord.timeItems?.[2].itemValue).toEqual({ [PUBLIC]: {} });
+  expect(tournamentRecord.timeItems?.[2].itemValue).toEqual({
+    [PUBLIC]: { status: { published: false, publishedEventIds: [] } },
+  });
 
   result = competitionEngine.unPublishOrderOfPlay();
   expect(result.success).toEqual(true);
@@ -135,5 +137,7 @@ it('can publish order of play for specified days', () => {
   result = competitionEngine.getState();
   tournamentRecord = Object.values(result.tournamentRecords)[0] as Tournament;
   expect(tournamentRecord.timeItems?.length).toEqual(2);
-  expect(tournamentRecord.timeItems?.[1].itemValue).toEqual({ [PUBLIC]: {} });
+  expect(tournamentRecord.timeItems?.[1].itemValue).toEqual({
+    [PUBLIC]: { status: { published: false, publishedEventIds: [] } },
+  });
 });

@@ -8,7 +8,7 @@ import POLICY_PRIVACY_STAFF from '@Fixtures/policies/POLICY_PRIVACY_STAFF';
 import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '@Types/tournamentTypes';
 
-export function getTournamentInfo(params?: { tournamentRecord: Tournament }): {
+export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePublishState?: boolean }): {
   tournamentInfo?: any;
   error?: ErrorType;
 } {
