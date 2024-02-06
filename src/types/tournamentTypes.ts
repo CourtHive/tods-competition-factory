@@ -35,9 +35,12 @@ export interface Tournament {
   tournamentName?: string;
   tournamentOtherIds?: UnifiedTournamentID[];
   tournamentRank?: string;
+  tournamentStatus?: TournamentStatusUnion;
   updatedAt?: Date | string;
   venues?: Venue[];
 }
+
+export type TournamentStatusUnion = 'ABANDONDED' | 'CANCELLED' | 'ACTIVE' | 'COMPLETED';
 
 export interface Organisation {
   onlineResources?: OnlineResource[];
