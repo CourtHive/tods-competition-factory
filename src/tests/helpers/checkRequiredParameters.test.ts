@@ -43,11 +43,9 @@ import {
 } from '@Constants/attributeConstants';
 
 it('can check required parameters', () => {
-  // @ts-expect-error missing param
   let result = checkRequiredParameters();
   expect(result.error).toEqual(INVALID_VALUES);
 
-  // @ts-expect-error missing param
   result = checkRequiredParameters({});
   expect(result.valid).toEqual(true);
 
@@ -55,7 +53,6 @@ it('can check required parameters', () => {
     participantId: 'participantId',
     matchUpId: 'matchUpId',
   };
-  // @ts-expect-error missing param
   result = checkRequiredParameters(params);
   expect(result.valid).toEqual(true);
 
@@ -117,10 +114,10 @@ it('can check required parameters', () => {
   expect(result.error).toEqual(MISSING_MATCHUPS);
 
   result = checkRequiredParameters({}, [{ [EVENT_ID]: true }]);
-  expect(result.error).toEqual(MISSING_EVENT);
-
-  result = checkRequiredParameters({}, [{ event: true }]);
   expect(result.error).toEqual(EVENT_NOT_FOUND);
+
+  result = checkRequiredParameters({}, [{ [EVENT]: true }]);
+  expect(result.error).toEqual(MISSING_EVENT);
 });
 
 it('can check for one of multiple possible parameters', () => {

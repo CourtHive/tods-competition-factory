@@ -56,7 +56,7 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
         },
       };
     } else if (Array.isArray(drawIds) && drawIds?.length) {
-      const eventDrawIds = event.drawDefinitions?.map(getDrawId) || [];
+      const eventDrawIds = event.drawDefinitions?.map(getDrawId) ?? [];
       for (const drawId of drawIds) {
         if (!isString(drawId)) return { error: INVALID_VALUES };
         if (!eventDrawIds.includes(drawId)) return { error: DRAW_DEFINITION_NOT_FOUND };

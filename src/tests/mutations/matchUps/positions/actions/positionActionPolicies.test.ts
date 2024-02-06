@@ -11,10 +11,10 @@ import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/dra
 import POLICY_POSITION_ACTIONS_DISABLED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_DISABLED';
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import {
-  EVENT_NOT_FOUND,
   EXISTING_POLICY_TYPE,
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
+  MISSING_EVENT,
   MISSING_STRUCTURE_ID,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
@@ -244,7 +244,7 @@ it('can disable actions for a specified structure', () => {
     structureId: mainStructure.structureId,
     drawPosition,
   });
-  expect(result.error).toEqual(EVENT_NOT_FOUND);
+  expect(result.error).toEqual(MISSING_EVENT);
 
   result = tournamentEngine.positionActions({
     structureId: mainStructure.structureId,

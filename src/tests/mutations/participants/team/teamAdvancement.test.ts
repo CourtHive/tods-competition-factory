@@ -1,19 +1,20 @@
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
-import { findExtension } from '@Acquire/findExtension';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { setSubscriptions } from '@Global/state/globalState';
+import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
-import { SWAP_PARTICIPANTS } from '@Constants/positionActionConstants';
-import { EXISTING_PARTICIPANT, TEAM_NOT_FOUND } from '@Constants/errorConditionConstants';
-import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
-import { INDIVIDUAL } from '@Constants/participantConstants';
-import { LINEUPS } from '@Constants/extensionConstants';
+// constants
 import { TEAM_DOUBLES_3_AGGREGATION, USTA_BREWER_CUP, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
 import { COMPLETED, DOUBLE_WALKOVER, IN_PROGRESS, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
+import { EXISTING_PARTICIPANT, TEAM_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { SWAP_PARTICIPANTS } from '@Constants/positionActionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { LINEUPS } from '@Constants/extensionConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {

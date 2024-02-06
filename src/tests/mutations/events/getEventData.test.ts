@@ -4,7 +4,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // constants
-import { MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { COMPASS } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/participantConstants';
 import { DOUBLES } from '@Constants/eventConstants';
@@ -32,7 +32,7 @@ it('returns eventData with expected drawsData', () => {
   expect(drawDefinition.updatedAt).not.toBeUndefined();
 
   result = tournamentEngine.getEventData();
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   let eventData = tournamentEngine.getEventData({ eventId }).eventData;
   expect(eventData.drawsData[0].structures.length).toEqual(2);
