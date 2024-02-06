@@ -1,4 +1,4 @@
-import { getTransformations, tidyScore } from '../scoreParser';
+import { getTransformations, tidyScore } from '@Helpers/scoreParser/scoreParser';
 import { expect, it } from 'vitest';
 
 const validPatterns = false;
