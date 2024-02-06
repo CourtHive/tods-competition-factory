@@ -4,6 +4,8 @@ title: Migration 1.x to 2.x
 
 Verion 2.0 of the Competition Factory was focused on code restructuring with support for [Tree Shaking](https://developer.mozilla.org/en-US/docs/Glossary/Tree_shaking). Factory engines were consolidated and duplicated code was eliminated. There were very few API changes, and backwards capability for the majority of 1.x functions is provided by `tournamentEngine` and `competitionEngine` exports that are constructed as [Custom Engines](/docs/engines/custom-engines).
 
+When using `tournamentEngine` and `competitionEngine` exports for backwards compatability in a single project it is recommended to invoke `competitionEngine.setTournamentId(tournamentId)` to set a primary tournamentRecord after each `competitionEngine.setState()` where multiple tournamentRecords are added to state.
+
 ## API changes
 
 ### tournamentEngine and competitionEngine
