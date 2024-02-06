@@ -54,8 +54,8 @@ dependencies:
     specifier: 0.18.0
     version: 0.18.0(@types/react@18.2.54)(react@18.2.0)
   tods-competition-factory:
-    specifier: 2.0.19
-    version: 2.0.19
+    specifier: 2.0.20
+    version: 2.0.20
 
 packages:
 
@@ -10145,8 +10145,8 @@ packages:
     engines: {node: '>=18.17.1 < 21'}
     dev: false
 
-  /tods-competition-factory@2.0.19:
-    resolution: {integrity: sha512-qQzvBuAlP87aqH5Z20q4y//L81loanB1zyCRWF0ZsWmizU7YhR0r/1/gR/O88LwabFg5wx+u4qWTaGw9NXE72g==}
+  /tods-competition-factory@2.0.20:
+    resolution: {integrity: sha512-h6m711iS/0QmcoTvCxSfXAg8X1/abSheMmQAqwl+wd7sJ5vvLlj8nfE/xP/jZXUlDX7GXMel5gtswwpiG9tQkQ==}
     engines: {node: '>=18.17.1 < 21'}
     dev: false
 
