@@ -1,12 +1,15 @@
+import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
-import { modifyDrawNotice, modifyMatchUpNotice } from '../notifications/drawNotifications';
 
+// constants and types
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { TimeItem } from '@Types/tournamentTypes';
+import { HydratedSide } from '@Types/hydrated';
 import {
   ASSIGN_COURT,
   ASSIGN_VENUE,
@@ -15,7 +18,6 @@ import {
   SCHEDULED_TIME,
   ALLOCATE_COURTS,
 } from '@Constants/timeItemConstants';
-import { TimeItem } from '@Types/tournamentTypes';
 
 export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDefinition }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -44,7 +46,7 @@ export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDe
       structure.seedAssignments = [];
     }
 
-    const { matchUps: inContextMatchUps } = getAllStructureMatchUps({
+    const { matchUps: inContextMatchUps, isRoundRobin } = getAllStructureMatchUps({
       afterRecoveryTimes: false,
       inContext: true,
       matchUpsMap,
@@ -53,17 +55,15 @@ export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDe
 
     // reset all matchUps to initial state
     for (const inContextMatchUp of inContextMatchUps) {
-      const { matchUpId, roundNumber, sides } = inContextMatchUp;
+      const { matchUpId, roundNumber } = inContextMatchUp;
+      const sides: HydratedSide[] = inContextMatchUp.sides || [];
       const matchUp = getRawMatchUp(matchUpId);
       if (matchUp) {
         delete matchUp.extensions;
         delete matchUp.notes;
 
-        if (matchUp.matchUpStatus !== BYE) {
-          Object.assign(matchUp, toBePlayed);
-        }
-
-        if (roundNumber && roundNumber > 1 && matchUp.drawPositions) {
+        if (matchUp.matchUpStatus !== BYE) Object.assign(matchUp, toBePlayed);
+        if (roundNumber && roundNumber > 1 && matchUp.drawPositions?.length && !isRoundRobin) {
           const fedDrawPositions = sides
             ?.map(({ drawPosition, participantFed }) => !participantFed && drawPosition)
             .filter(Boolean);
