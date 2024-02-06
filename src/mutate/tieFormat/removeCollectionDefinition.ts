@@ -5,7 +5,7 @@ import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieForm
 import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';

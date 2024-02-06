@@ -1,7 +1,7 @@
 const extractor = (object) => (attr) => object[attr];
 
-export const getMatchUpIds = (o = []) => o.map(getMatchUpId).filter(Boolean);
-export const getParticipantIds = (o = []) => o.map(getParticipantId).filter(Boolean);
+export const getMatchUpIds = (o: any[] = []) => o.map(getMatchUpId).filter(Boolean);
+export const getParticipantIds = (o: any[] = []) => o.map(getParticipantId).filter(Boolean);
 
 export const getParticipantId = (o = {}) => extractor(o)('participantId');
 export const getDrawPosition = (o = {}) => extractor(o)('drawPosition');

@@ -10,7 +10,7 @@ import {
   STATUS_RETIREMENT,
   STATUS_SUSPENDED,
   STATUS_INTERRUPTED,
-} from '../constants';
+} from '../../../helpers/keyValueScore/constants';
 
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });

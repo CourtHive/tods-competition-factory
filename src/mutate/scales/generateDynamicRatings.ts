@@ -1,6 +1,6 @@
 import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '../../helpers/matchUpFormatCode/parse';
 import { setParticipantScaleItem } from '../participants/addScaleItems';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';

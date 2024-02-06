@@ -1,4 +1,4 @@
-import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types

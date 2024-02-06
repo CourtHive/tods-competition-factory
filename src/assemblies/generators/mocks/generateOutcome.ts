@@ -4,7 +4,7 @@ import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 import { randomInt, weightedRandom } from '@Tools/math';
 import { analyzeSet } from '@Query/matchUp/analyzeSet';
 import { matchUpScore } from '../matchUps/matchUpScore';
-import { parse } from '../matchUpFormatCode/parse';
+import { parse } from '../../../helpers/matchUpFormatCode/parse';
 import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
 
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';

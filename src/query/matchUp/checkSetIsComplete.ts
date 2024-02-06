@@ -1,4 +1,4 @@
-import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '../../helpers/matchUpFormatCode/parse';
 
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 

@@ -1,4 +1,4 @@
-import { parse } from '../../assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '../../helpers/matchUpFormatCode/parse';
 import { instanceCount } from '@Tools/arrays';
 
 import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';

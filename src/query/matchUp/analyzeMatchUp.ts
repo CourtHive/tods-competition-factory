@@ -1,4 +1,4 @@
-import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { instanceCount } from '@Tools/arrays';
 import { analyzeSet } from './analyzeSet';
 

@@ -6,7 +6,7 @@ export { eventConstants } from './eventConstants';
 export { extensionConstants } from './extensionConstants';
 export { flightConstants } from './flightConstants';
 export { genderConstants } from './genderConstants';
-export { keyValueConstants } from '../mutate/score/keyValueScore/constants';
+export { keyValueConstants } from '../helpers/keyValueScore/constants';
 export { matchUpActionConstants } from './matchUpActionConstants';
 export { matchUpTypes } from './matchUpTypes';
 export { participantConstants, participantTypes } from './participantConstants';

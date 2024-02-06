@@ -1,4 +1,4 @@
-import { keyValueMatchUpScore } from '../keyValueScore';
+import { keyValueMatchUpScore } from '@Helpers/keyValueScore/keyValueScore';
 
 export const TIEBREAK_CLOSER = { value: 'space' };
 
