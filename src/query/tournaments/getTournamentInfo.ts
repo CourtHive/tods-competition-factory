@@ -1,4 +1,6 @@
 import { getParticipants } from '@Query/participants/getParticipants';
+import { getPublishState } from '@Query/publishing/getPublishState';
+import { extractEventInfo } from '@Query/event/extractEventInfo';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
@@ -10,6 +12,7 @@ import { Tournament } from '@Types/tournamentTypes';
 
 export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePublishState?: boolean }): {
   tournamentInfo?: any;
+  eventInfo?: any[];
   error?: ErrorType;
 } {
   const { tournamentRecord } = params ?? {};
@@ -63,8 +66,21 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
 
   if (tournamentContacts) tournamentInfo.tournamentContacts = tournamentContacts;
 
+  const publishState = getPublishState({ tournamentRecord })?.publishState;
+  const publishedEventIds = publishState?.tournament?.status?.publishedEventIds || [];
+  const eventInfo: any[] = [];
+
+  for (const event of tournamentRecord.events || []) {
+    if (publishedEventIds.includes(event.eventId)) {
+      const info = extractEventInfo({ event }).eventInfo;
+      if (info) eventInfo.push(info);
+    }
+  }
+
+  tournamentInfo.eventInfo = eventInfo;
+
   return {
-    ...SUCCESS,
     tournamentInfo: makeDeepCopy(tournamentInfo, false, true),
+    ...SUCCESS,
   };
 }

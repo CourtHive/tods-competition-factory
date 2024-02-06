@@ -19,7 +19,7 @@ type GetPublishStateArgs = {
   drawIds?: string[];
   eventId?: string;
   drawId?: string;
-  event: Event;
+  event?: Event;
 };
 
 export function getPublishState(params: GetPublishStateArgs): ResultType & { publishState?: any } {
