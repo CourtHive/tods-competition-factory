@@ -1,12 +1,12 @@
 import { getPositionAssignments, structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { generatePositioningCandidate } from '@Query/drawDefinition/avoidance/generatePositioningCandidate';
+import { getUnplacedParticipantIds } from '@Query/drawDefinition/avoidance/getUnplacedParticipantIds';
+import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getAttributeGroupings } from '@Query/participants/getAttributeGrouping';
-import { generatePositioningCandidate } from '../../../query/drawDefinition/avoidance/generatePositioningCandidate';
 import { deriveExponent, isPowerOf2, nearestPowerOf2 } from '@Tools/math';
-import { getUnplacedParticipantIds } from '../../../query/drawDefinition/avoidance/getUnplacedParticipantIds';
-import { addParticipantGroupings } from '../../../query/drawDefinition/avoidance/addParticipantGroupings';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { chunkArray, generateRange } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
@@ -57,9 +57,7 @@ export function randomUnseededSeparation({
   // entries, // entries for the specific stage of drawDefinition
   event,
 }: RandomUnseededDistribution) {
-  if (!avoidance) {
-    return { error: MISSING_AVOIDANCE_POLICY };
-  }
+  if (!avoidance) return { error: MISSING_AVOIDANCE_POLICY };
   const { candidatesCount = 1, policyAttributes, targetDivisions } = avoidance;
   let { roundsToSeparate } = avoidance;
 
@@ -126,9 +124,7 @@ export function randomUnseededSeparation({
     participants,
   });
 
-  if (allGroups.error) {
-    return decorateResult({ result: allGroups, stack });
-  }
+  if (allGroups.error) return decorateResult({ result: allGroups, stack });
 
   const participantIdGroups = Object.assign(
     {},
