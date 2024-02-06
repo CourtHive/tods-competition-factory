@@ -1,17 +1,18 @@
-import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
-import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
-import { removeDrawPositionAssignment } from '../../drawDefinitions/removeDrawPositionAssignment';
+import { conditionallyDisableLinkPositioning } from '@Mutate/drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
+import { addPositionActionTelemetry } from '@Mutate/drawDefinitions/positionGovernor/addPositionActionTelemetry';
+import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
+import { removeDrawPositionAssignment } from '@Mutate/drawDefinitions/removeDrawPositionAssignment';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { updateSideLineUp } from '@Mutate/matchUps/lineUps/updateSideLineUp';
+import { resetLineUps } from '@Mutate/matchUps/lineUps/resetLineUps';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { updateSideLineUp } from '../lineUps/updateSideLineUp';
 import { findStructure } from '@Acquire/findStructure';
-import { assignDrawPosition } from './positionAssignment';
-import { resetLineUps } from '../lineUps/resetLineUps';
-import { modifyDrawNotice, modifyPositionAssignmentsNotice } from '../../notifications/drawNotifications';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
+// constants
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
@@ -93,13 +94,13 @@ export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, 
       matchUp.drawPositions?.some((drawPosition) => drawPositions.includes(drawPosition)),
     );
     const structureMatchUps = getAllStructureMatchUps({
-      structure,
       matchUpFilters: { matchUpTypes: [TEAM_MATCHUP] },
+      structure,
     }).matchUps;
 
     inContextTargetMatchUps.forEach((inContextTargetMatchUp) => {
       (inContextTargetMatchUp.sides || []).forEach((inContextSide) => {
-        const drawPosition = inContextSide?.drawPosition;
+        const drawPosition: number = inContextSide?.drawPosition;
         if (drawPositions.includes(drawPosition)) {
           const teamParticipantId = inContextSide.participantId;
           const matchUp = structureMatchUps.find(({ matchUpId }) => matchUpId === inContextTargetMatchUp.matchUpId);

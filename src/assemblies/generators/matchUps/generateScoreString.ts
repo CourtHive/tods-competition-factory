@@ -1,4 +1,4 @@
-import { parse } from '../matchUpFormatCode/parse';
+import { parse } from '../../../helpers/matchUpFormatCode/parse';
 import { isNumeric } from '@Tools/math';
 
 import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';

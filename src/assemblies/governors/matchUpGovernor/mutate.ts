@@ -6,6 +6,7 @@ export { removeTieMatchUpParticipantId } from '@Mutate/matchUps/lineUps/removeTi
 export { removeMatchUpSideParticipant } from '@Mutate/matchUps/sides/removeMatchUpSideParticipant';
 export { enableTieAutoCalc } from '@Mutate/drawDefinitions/matchUpGovernor/enableTieAutoCalc';
 export { removeDelegatedOutcome } from '@Mutate/extensions/matchUps/removeDelegatedOutcome';
+export { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 export { substituteParticipant } from '@Mutate/drawDefinitions/substituteParticipant';
 export { checkOutParticipant } from '@Mutate/timeItems/matchUps/checkOutParticipant';
 export { disableTieAutoCalc } from '@Mutate/extensions/matchUps/disableTieAutoCalc';
@@ -15,7 +16,6 @@ export { resetMatchUpLineUps } from '@Mutate/matchUps/lineUps/resetMatchUpLineUp
 export { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatus';
 export { bulkMatchUpStatusUpdate } from '@Mutate/events/bulkMatchUpStatusUpdate';
 export { setDelegatedOutcome } from '@Mutate/drawDefinitions/setDelegatedOutcome';
-export { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
 export { resetAdHocMatchUps } from '@Mutate/structures/resetAdHocMatchUps';
 export { setOrderOfFinish } from '@Mutate/drawDefinitions/setOrderOfFinish';
 export { publicFindMatchUp as findMatchUp } from '@Acquire/findMatchUp';

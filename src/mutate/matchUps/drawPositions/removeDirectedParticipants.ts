@@ -2,7 +2,7 @@ import { includesMatchUpStatuses } from '@Mutate/drawDefinitions/matchUpGovernor
 import { removeSubsequentRoundsParticipant } from './removeSubsequentRoundsParticipant';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';

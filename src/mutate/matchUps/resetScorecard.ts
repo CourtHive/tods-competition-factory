@@ -1,6 +1,6 @@
 import { compareTieFormats } from '@Query/hierarchical/tieFormats/compareTieFormats';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isActiveDownstream } from '@Query/drawDefinition/isActiveDownstream';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';

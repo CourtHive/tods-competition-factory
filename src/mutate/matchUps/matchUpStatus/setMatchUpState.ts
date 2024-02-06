@@ -6,7 +6,7 @@ import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventTyp
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems';
 import { swapWinnerLoser } from '@Mutate/matchUps/drawPositions/swapWinnerLoser';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { ensureSideLineUps } from '@Mutate/matchUps/lineUps/ensureSideLineUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';

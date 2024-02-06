@@ -5,6 +5,7 @@ import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedPart
 import { getValidModifyAssignedPairAction } from './getValidModifyAssignedPairAction';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { matchUpActions } from '@Query/drawDefinition/matchUpActions/matchUpActions';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getValidLuckyLosersAction } from './getValidLuckyLoserAction';
@@ -14,7 +15,6 @@ import { getParticipants } from '@Query/participants/getParticipants';
 import { getValidAssignmentActions } from './participantAssignments';
 import { getValidQualifiersAction } from './getValidQualifiersAction';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { matchUpActions } from '../matchUpActions/matchUpActions';
 import { getValidSwapAction } from './getValidSwapAction';
 import { findStructure } from '@Acquire/findStructure';
 import {

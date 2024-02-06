@@ -8,10 +8,17 @@ export type HydratedVenue = {
   [key: string]: any;
 } & Venue;
 
+/*
 export type HydratedMatchUp = MatchUp & {
   [key: string | number]: any;
   sides?: HydratedSide[];
 };
+*/
+
+export interface HydratedMatchUp extends MatchUp {
+  [key: string | number]: any;
+  sides?: HydratedSide[];
+}
 
 export type HydratedParticipant = {
   individualParticipants?: HydratedParticipant[];

@@ -1,6 +1,6 @@
 import { attemptToModifyScore } from '@Mutate/drawDefinitions/matchUpGovernor/attemptToModifyScore';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';

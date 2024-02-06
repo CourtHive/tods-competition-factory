@@ -18,5 +18,6 @@ export { getTeamLineUp } from '@Query/drawDefinition/getTeamLineUp';
 export { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 export { checkValidEntries } from '@Validators/checkValidEntries';
 export { getDrawDefinitionTimeItem } from '@Query/base/timeItems';
+export { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 export { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 export { addGoesTo } from '@Query/matchUps/addGoesTo';

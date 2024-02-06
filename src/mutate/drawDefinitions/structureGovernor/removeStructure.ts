@@ -1,13 +1,14 @@
+import { deleteMatchUpsNotice, modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { xa } from '@Tools/objects';
 import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '@Acquire/findStructure';
-import { deleteMatchUpsNotice, modifyDrawNotice } from '../../notifications/drawNotifications';
+import { xa } from '@Tools/objects';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
@@ -20,6 +21,7 @@ import {
   SCORES_PRESENT,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type RemoveStructureArgs = {
   tournamentRecord: Tournament;
@@ -108,8 +110,8 @@ export function removeStructure({ tournamentRecord, drawDefinition, structureId,
       structureId: idBeingRemoved,
       drawDefinition,
     });
-    const { matchUps } = getAllStructureMatchUps({ structure });
-    const matchUpIds = getMatchUpIds(matchUps);
+    const matchUps: HydratedMatchUp[] = getAllStructureMatchUps({ structure }).matchUps;
+    const matchUpIds: string[] = getMatchUpIds(matchUps);
     removedMatchUpIds.push(...matchUpIds);
 
     drawDefinition.links =

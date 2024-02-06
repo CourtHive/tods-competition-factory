@@ -1,9 +1,9 @@
-import { keyValueScore } from '../keyValueScore';
+import { keyValueScore } from '../../../helpers/keyValueScore/keyValueScore';
 import { expect, it } from 'vitest';
 
 import { INCOMPLETE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { FORMAT_STANDARD, TIMED20 } from '@Fixtures/scoring/matchUpFormats';
-import { OUTCOME_COMPLETE } from '../constants';
+import { OUTCOME_COMPLETE } from '../../../helpers/keyValueScore/constants';
 
 function enterKeyValues(params) {
   const { matchUpFormat, shiftFirst, valuePairs } = params;

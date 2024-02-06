@@ -1,7 +1,7 @@
 import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
-import { lastSetFormatIsTimed } from '@Assemblies/generators/matchUpFormatCode/lastSetFormatisTimed';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/tieMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { lastSetFormatIsTimed } from '@Query/matchUp/lastSetFormatisTimed';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';

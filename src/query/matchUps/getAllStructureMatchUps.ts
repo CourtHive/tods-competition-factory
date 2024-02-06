@@ -10,7 +10,7 @@ import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getContextContent } from '@Query/hierarchical/getContextContent';
-import { parse } from '@Assemblies/generators/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { getOrderedDrawPositions } from './getOrderedDrawPositions';
 import { getCollectionAssignment } from './getCollectionAssignment';
 import { getExitProfiles } from '@Query/drawDefinition/getExitProfile';
@@ -315,6 +315,7 @@ export function getAllStructureMatchUps({
   return {
     collectionPositionMatchUps,
     roundMatchUps,
+    isRoundRobin,
     roundProfile,
     matchUpsMap,
     matchUps,

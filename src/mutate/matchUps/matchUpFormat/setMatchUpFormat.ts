@@ -123,21 +123,23 @@ export function setMatchUpFormat(params: SetMatchUpStatusArgs) {
       }
 
       const matchUps: MatchUp[] =
-        (force || scheduledDates) &&
-        getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
-          structure,
-        }).matchUps;
+        ((force || scheduledDates) &&
+          getAllStructureMatchUps({
+            matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+            structure,
+          }).matchUps) ??
+        [];
 
       const inContextMatchUps: HydratedMatchUp[] =
-        scheduledDates &&
-        getAllStructureMatchUps({
-          matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
-          contextFilters: { scheduledDates },
-          afterRecoveryTimes: false,
-          inContext: true,
-          structure,
-        }).matchUps;
+        (scheduledDates &&
+          getAllStructureMatchUps({
+            matchUpFilters: { matchUpStatuses: [TO_BE_PLAYED] },
+            contextFilters: { scheduledDates },
+            afterRecoveryTimes: false,
+            inContext: true,
+            structure,
+          }).matchUps) ??
+        [];
 
       if (matchUps?.length) {
         const matchUpIdsToModify = inContextMatchUps ? inContextMatchUps.map(getMatchUpId) : matchUps.map(getMatchUpId);

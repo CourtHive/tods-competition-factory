@@ -1,4 +1,4 @@
-import { keyValueMatchUpScore } from '../keyValueScore';
+import { keyValueMatchUpScore } from '../../../helpers/keyValueScore/keyValueScore';
 import { expect, it } from 'vitest';
 
 import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from '@Fixtures/scoring/matchUpFormats';

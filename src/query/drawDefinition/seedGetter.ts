@@ -1,12 +1,12 @@
-import { getSeedBlocks, getSeedGroups } from '@Query/drawDefinition/getSeedBlocks';
 import { getPositionAssignments, structureAssignedDrawPositions } from './positionsGetter';
-import { getStructureSeedAssignments } from '../structure/getStructureSeedAssignments';
-import { getAllStructureMatchUps } from '../matchUps/getAllStructureMatchUps';
+import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
+import { getSeedBlocks, getSeedGroups } from '@Query/drawDefinition/getSeedBlocks';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { getNumericSeedValue } from '@Query/drawDefinition/getNumericSeedValue';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { chunkArray, generateRange, shuffleArray } from '@Tools/arrays';
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
-import { getNumericSeedValue } from './getNumericSeedValue';
+import { isLucky } from '@Query/drawDefinition/isLucky';
 import { findStructure } from '@Acquire/findStructure';
-import { isLucky } from './isLucky';
 
 // constants and types
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
@@ -68,7 +68,7 @@ export function getValidSeedBlocks({
     .sort((a, b) => a - b);
   const uniqueDrawPositionsByRound = roundNumbers
     .map((roundNumber) => {
-      const roundDrawPositions = roundMatchUps[roundNumber]
+      const roundDrawPositions: any[] = roundMatchUps[roundNumber]
         .map((matchUp) => matchUp.drawPositions)
         .flat(Infinity)
         .filter(Boolean);
@@ -81,7 +81,7 @@ export function getValidSeedBlocks({
     .filter((f) => f.length)
     .reverse();
 
-  const firstRoundDrawPositions = uniqueDrawPositionsByRound.pop();
+  const firstRoundDrawPositions = uniqueDrawPositionsByRound.pop() ?? [];
   const firstRoundDrawPositionOffset = (firstRoundDrawPositions && Math.min(...firstRoundDrawPositions) - 1) || 0;
 
   seedingProfile = seedingProfile ?? appliedPolicies?.seeding?.seedingProfile;
@@ -170,7 +170,7 @@ export function getValidSeedBlocks({
     blocks.forEach((block) => validSeedBlocks.push(block));
   }
 
-  const seedDrawPositions = validSeedBlocks.flatMap((seedBlock) => seedBlock.drawPositions);
+  const seedDrawPositions: any[] = validSeedBlocks.flatMap((seedBlock) => seedBlock.drawPositions);
   const validSeedPositions = seedDrawPositions.reduce((result, drawPosition) => {
     return firstRoundDrawPositions?.includes(drawPosition) && result;
   }, true);
