@@ -1,10 +1,12 @@
-import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
-import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
-import { getTournamentInfo } from '../tournaments/getTournamentInfo';
-import { getDrawMatchUps } from '../matchUps/drawMatchUps';
+import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
+import { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
+import { extractEventInfo } from '@Query/event/extractEventInfo';
+import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 
+// constants
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
-import { getEventPublishStatus } from './getEventPublishStatus';
 
 export function getAllEventData({ tournamentRecord, policyDefinitions }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -20,33 +22,7 @@ export function getAllEventData({ tournamentRecord, policyDefinitions }) {
 
   const eventsData = events.map((event) => {
     const { eventId } = event;
-    const eventInfo = (({
-      eventId,
-      eventName,
-      eventType,
-      eventLevel,
-      surfaceCategory,
-      matchUpFormat,
-      category,
-      gender,
-      startDate,
-      endDate,
-      ballType,
-      discipline,
-    }) => ({
-      eventId,
-      eventName,
-      eventType,
-      eventLevel,
-      surfaceCategory,
-      matchUpFormat,
-      category,
-      gender,
-      startDate,
-      endDate,
-      ballType,
-      discipline,
-    }))(event);
+    const eventInfo = extractEventInfo({ event }).eventInfo;
 
     const scheduleTiming = getScheduleTiming({
       tournamentRecord,

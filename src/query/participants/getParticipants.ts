@@ -1,11 +1,12 @@
-import { getMatchUpDependencies } from '../matchUps/getMatchUpDependencies';
+import { getParticipantEntries } from '@Query/participants/getParticipantEntries';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { filterParticipants } from '@Query/participants/filterParticipants';
+import { getParticipantMap } from '@Query/participants/getParticipantMap';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { attributeFilter } from '@Tools/attributeFilter';
-import { getParticipantEntries } from './getParticipantEntries';
-import { filterParticipants } from './filterParticipants';
-import { getParticipantMap } from './getParticipantMap';
 import { isObject } from '@Tools/objects';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD, ErrorType } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
 import { MatchUp, Tournament } from '@Types/tournamentTypes';

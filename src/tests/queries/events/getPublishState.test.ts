@@ -12,7 +12,9 @@ import {
 } from '@Constants/errorConditionConstants';
 
 it('should return the publish state of all events', () => {
+  const tournamentId = 'tid';
   mocksEngine.generateTournamentRecord({
+    tournamentAttributes: { tournamentId },
     drawProfiles: [
       { eventId: 'e1', drawId: 'e1-d1', drawSize: 4 },
       { eventId: 'e2', drawId: 'e2-d1', drawSize: 4 },
@@ -40,6 +42,7 @@ it('should return the publish state of all events', () => {
     e3: { status: { published: false } },
     e4: { status: { published: false } },
     e5: { status: { published: false } },
+    tournament: { status: { published: false, publishedEventIds: [] } },
   });
 
   let pubResult = tournamentEngine.publishEvent({ eventId: 'e1' });
@@ -140,7 +143,7 @@ it('should return the publish state of all events', () => {
   publishState = tournamentEngine.getPublishState().publishState;
   expect(publishState['e3-d1'].status.published).toEqual(true);
   expect(Object.keys(publishState).map((key) => [key, publishState[key]?.status.published])).toEqual([
-    ['tournament', undefined],
+    ['tournament', true],
     ['e1', false],
     ['e2', false],
     ['e3', true],
@@ -166,7 +169,7 @@ test('calling getPublishState directly', () => {
   // just for test coverage
   // @ts-expect-error missing params
   result = getPublishState({ tournamentRecord: { tournamentId: 'tid' } });
-  expect(result.publishState.tournament).toBeUndefined();
+  // expect(result.publishState.tournament).toBeUndefined();
 
   const tournamentRecord: any = {
     events: [{ eventId: 'e6' }],

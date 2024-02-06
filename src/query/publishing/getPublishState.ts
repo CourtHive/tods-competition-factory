@@ -19,7 +19,7 @@ type GetPublishStateArgs = {
   drawIds?: string[];
   eventId?: string;
   drawId?: string;
-  event: Event;
+  event?: Event;
 };
 
 export function getPublishState(params: GetPublishStateArgs): ResultType & { publishState?: any } {
@@ -74,17 +74,30 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
     return { ...SUCCESS, publishState };
   }
 
+  const publishedEventIds: string[] = [];
+  let tournamentPublished = false;
   const publishState: any = {};
+
   const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
-  publishState.tournament = pubStatus;
+  publishState.tournament = pubStatus ?? {};
+
   for (const event of tournamentRecord?.events ?? []) {
     const pubStatus: any = getPubStatus({ event });
     publishState[event.eventId] = pubStatus;
+    if (pubStatus.status.published) {
+      publishedEventIds.push(event.eventId);
+      tournamentPublished = true;
+    }
     for (const { drawId } of event.drawDefinitions ?? []) {
       const published = pubStatus.status?.publishedDrawIds?.includes(drawId);
       if (published) publishState[drawId] = { status: { published } };
     }
   }
+
+  if (tournamentRecord) {
+    publishState.tournament.status = { published: tournamentPublished, publishedEventIds };
+  }
+
   return { ...SUCCESS, publishState };
 }
 

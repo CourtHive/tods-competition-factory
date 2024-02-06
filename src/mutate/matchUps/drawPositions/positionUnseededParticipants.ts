@@ -1,20 +1,21 @@
-import { randomUnseededSeparation } from '../../drawDefinitions/positionGovernor/randomUnseededSeparation';
+import { randomUnseededSeparation } from '@Mutate/drawDefinitions/positionGovernor/randomUnseededSeparation';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findExtension } from '@Acquire/findExtension';
 import { findStructure } from '@Acquire/findStructure';
-import { assignDrawPosition } from './positionAssignment';
 import { shuffleArray } from '@Tools/arrays';
 
+// constants
 import { INSUFFICIENT_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
+import { PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { POLICY_TYPE_AVOIDANCE } from '@Constants/policyConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function positionUnseededParticipants({
   provisionalPositioning,

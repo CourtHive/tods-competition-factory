@@ -4,9 +4,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// constants, fixtures and types
 import { RANKING, RATING, SEEDING } from '@Constants/scaleConstants';
-import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { ADD_SCALE_ITEMS } from '@Constants/topicConstants';
 import { SINGLES_EVENT } from '@Constants/eventConstants';
 import { ScaleAttributes } from '@Types/factoryTypes';

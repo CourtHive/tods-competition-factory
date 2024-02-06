@@ -22,12 +22,13 @@ import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/to
 import { LUCKY_DRAW, WATERFALL } from '@Constants/drawDefinitionConstants';
 import { STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '@Types/hydrated';
 
 // TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
+  participants?: HydratedParticipant[];
   appliedPolicies?: PolicyDefinitions;
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
@@ -45,30 +46,29 @@ type AutomatedPositioningArgs = {
   drawSize?: number;
   event?: Event;
 };
-export function automatedPositioning({
-  applyPositioning = true,
-  provisionalPositioning,
-  inContextDrawMatchUps,
-  multipleStructures,
-  placeByes = true,
-  tournamentRecord,
-  appliedPolicies,
-  placementGroup,
-  drawDefinition,
-  seedingProfile,
-  structureId,
-  matchUpsMap,
-  seedLimit,
-  seedsOnly,
-  drawType,
-  drawSize,
-  event,
-}: AutomatedPositioningArgs): ResultType & {
+export function automatedPositioning(params: AutomatedPositioningArgs): ResultType & {
   positionAssignments?: PositionAssignment[];
   positioningReport?: { [key: string]: any }[];
   success?: boolean;
   conflicts?: any[];
 } {
+  let { drawDefinition } = params;
+  const {
+    applyPositioning = true,
+    provisionalPositioning,
+    multipleStructures,
+    placeByes = true,
+    tournamentRecord,
+    placementGroup,
+    seedingProfile,
+    structureId,
+    seedLimit,
+    seedsOnly,
+    drawType,
+    drawSize,
+    event,
+  } = params;
+
   const positioningReport: any[] = [];
 
   //-----------------------------------------------------------
@@ -98,13 +98,13 @@ export function automatedPositioning({
   const structure = result.structure;
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  if (!appliedPolicies) {
-    appliedPolicies = getAppliedPolicies({
+  const appliedPolicies =
+    params.appliedPolicies ||
+    getAppliedPolicies({
       drawDefinition,
       structure,
       event,
     })?.appliedPolicies;
-  }
 
   const { qualifiersCount } = getQualifiersCount({
     stageSequence: structure.stageSequence,
@@ -127,15 +127,15 @@ export function automatedPositioning({
 
   if (!entries?.length && !qualifiersCount) return handleSuccessCondition({ ...SUCCESS });
 
-  matchUpsMap = matchUpsMap ?? getMatchUpsMap({ drawDefinition });
+  const matchUpsMap = params.matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
-  if (!inContextDrawMatchUps) {
-    ({ matchUps: inContextDrawMatchUps } = getAllDrawMatchUps({
+  const inContextDrawMatchUps =
+    params.inContextDrawMatchUps ??
+    getAllDrawMatchUps({
       inContext: true,
       drawDefinition,
       matchUpsMap,
-    }));
-  }
+    })?.matchUps;
 
   let unseededByePositions = [];
 
@@ -151,12 +151,15 @@ export function automatedPositioning({
 
   positioningReport.push({ validSeedBlocks });
 
-  const participants = tournamentRecord
-    ? getParticipants({
-        withIndividualParticipants: true,
-        tournamentRecord,
-      })?.participants
-    : [];
+  const participants =
+    params.participants ||
+    (tournamentRecord
+      ? getParticipants({
+          withIndividualParticipants: true,
+          convertExtensions: true,
+          tournamentRecord,
+        })?.participants
+      : []);
 
   if (getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL) {
     // since WATERFALL attempts to place ALL participants
