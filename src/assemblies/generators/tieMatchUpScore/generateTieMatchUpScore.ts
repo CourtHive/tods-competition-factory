@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getGroupValueGroups } from '@Query/hierarchical/tieFormats/getGroupValueGroups';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { evaluateCollectionResult } from './evaluateCollectionResult';

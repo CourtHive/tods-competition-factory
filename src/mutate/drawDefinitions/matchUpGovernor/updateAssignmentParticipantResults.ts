@@ -1,10 +1,10 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
-import { modifyDrawNotice } from '../../notifications/drawNotifications';
-import { removeExtension } from '../../extensions/removeExtension';
-import { addExtension } from '../../extensions/addExtension';
+import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
+import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { validMatchUps } from '@Validators/validMatchUp';
-import { createSubOrderMap } from '../../../query/structure/createSubOrderMap';
 
 // constants
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';

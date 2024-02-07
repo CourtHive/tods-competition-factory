@@ -1,9 +1,10 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getParticipantId } from '@Functions/global/extractors';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('round robins with timed formats will default to game based when no indicator', () => {

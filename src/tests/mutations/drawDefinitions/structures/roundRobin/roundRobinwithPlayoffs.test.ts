@@ -1,6 +1,6 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';

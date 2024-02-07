@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';

@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { findExtension } from '@Acquire/findExtension';
