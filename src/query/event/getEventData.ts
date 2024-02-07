@@ -7,12 +7,15 @@ import { getVenueData } from '@Query/venues/getVenueData';
 import { isConvertableInteger } from '@Tools/math';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
+import { findEvent } from '@Acquire/findEvent';
 
 // constants and types
-import { ErrorType, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { EVENT_NOT_FOUND, ErrorType } from '@Constants/errorConditionConstants';
 import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { Event, Tournament } from '@Types/tournamentTypes';
+import { ANY_OF } from '@Constants/attributeConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -25,8 +28,9 @@ type GetEventDataArgs = {
   sortConfig?: StructureSortConfig;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
+  eventId?: string;
   status?: string;
-  event: Event;
+  event?: Event;
 };
 
 export function getEventData(params: GetEventDataArgs): {
@@ -37,19 +41,26 @@ export function getEventData(params: GetEventDataArgs): {
 } {
   const {
     includePositionAssignments,
-    tournamentRecord: t,
     participantsProfile,
     policyDefinitions,
     usePublishState,
     status = PUBLIC,
     sortConfig,
-    event: e,
   } = params;
-  const tournamentRecord = makeDeepCopy(t, false, true);
-  const event = makeDeepCopy(e, false, true);
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
+  const paramsCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+    { [ANY_OF]: { event: false, eventId: false } },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const tournamentRecord = makeDeepCopy(params.tournamentRecord, false, true);
+  const foundEvent = !params.event ? findEvent({ tournamentRecord, eventId: params.eventId }).event : undefined;
+  const event = params.event
+    ? makeDeepCopy(params.event, false, true)
+    : (foundEvent && makeDeepCopy(foundEvent, false, true)) || undefined;
+
+  if (!event) return { error: EVENT_NOT_FOUND };
 
   const { eventId } = event;
   const { tournamentId, endDate } = tournamentRecord;

@@ -1,4 +1,4 @@
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
 import { allPlayoffPositionsFilled } from '@Query/drawDefinition/structureActions';
 import mocksEngine from '@Assemblies/engines/mock';
@@ -6,6 +6,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { generateRange } from '@Tools/arrays';
 import { expect } from 'vitest';
 
+// constants and fixtures
 import { MAIN, PLAY_OFF, POSITION, WATERFALL, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLES_EVENT } from '@Constants/eventConstants';

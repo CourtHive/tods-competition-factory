@@ -2,10 +2,10 @@ export { getMatchUpFormatTimingUpdate } from '@Query/extensions/matchUpFormatTim
 export { getEventMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getEventMatchUpFormatTiming';
 export { getModifiedMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getModifiedMatchUpTiming';
 export { getMatchUpFormatTiming } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+export { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 export { getParticipantResults } from '@Query/matchUps/roundRobinTally/getParticipantResults';
 export { getMatchUpDailyLimitsUpdate } from '@Query/extensions/getMatchUpDailyLimitsUpdate';
 export { participantScheduledMatchUps } from '@Query/matchUps/participantScheduledMatchUps';
-export { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
 export { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
 export { getMatchUpCompetitiveProfile } from '@Query/matchUp/getMatchUpCompetitiveProfile';
 export { getCheckedInParticipantIds } from '@Query/matchUp/getCheckedInParticipantIds';

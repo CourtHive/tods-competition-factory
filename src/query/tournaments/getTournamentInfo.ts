@@ -70,7 +70,7 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
   const publishedEventIds = publishState?.tournament?.status?.publishedEventIds || [];
   const eventInfo: any[] = [];
 
-  for (const event of tournamentRecord.events || []) {
+  for (const event of tournamentRecord.events ?? []) {
     if (publishedEventIds.includes(event.eventId)) {
       const info = extractEventInfo({ event }).eventInfo;
       if (info) eventInfo.push(info);

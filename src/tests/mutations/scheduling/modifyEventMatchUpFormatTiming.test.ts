@@ -3,11 +3,12 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants and fixtures
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import POLICY_SCORING_USTA from '@Fixtures/policies/POLICY_SCORING_USTA';
+import { EVENT_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SCHEDULE_TIMING } from '@Constants/extensionConstants';
-import { EVENT_NOT_FOUND, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 const SHORT4TB10 = 'SET1-S:4/TB10';
 
@@ -28,7 +29,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   result = tournamentEngine.removeEventMatchUpFormatTiming({
     tournamentRecord,
   });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.removeEventMatchUpFormatTiming({
     tournamentRecord,
@@ -38,7 +39,7 @@ it('can modify event timing for matchUpFormat codes', () => {
 
   // @ts-expect-error missing eventId
   result = removeEventMatchUpFormatTiming({ tournamentRecord });
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = removeEventMatchUpFormatTiming({
     eventId: eventId2,
@@ -113,7 +114,7 @@ it('can modify event timing for matchUpFormat codes', () => {
   expect(methods[0].params.extension.value.matchUpAverageTimes.length).toEqual(2);
 
   result = tournamentEngine.removeEventMatchUpFormatTiming({});
-  expect(result.error).toEqual(MISSING_EVENT);
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   result = tournamentEngine.removeEventMatchUpFormatTiming({
     eventId: 'unknownEventId',

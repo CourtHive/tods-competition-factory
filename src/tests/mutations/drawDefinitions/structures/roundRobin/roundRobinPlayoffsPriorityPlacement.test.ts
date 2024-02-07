@@ -1,5 +1,5 @@
 import { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
-import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/roundRobinTally';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
 import { chunkArray, intersection } from '@Tools/arrays';
@@ -9,6 +9,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { setsValues } from './roundRobinSetsValues';
 import { expect, it } from 'vitest';
 
+// constants
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLES } from '@Constants/eventConstants';
 import {

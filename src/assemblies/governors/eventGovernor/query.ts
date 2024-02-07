@@ -1,4 +1,3 @@
-export { bulkUpdatePublishedEventIds } from '@Query/event/bulkUpdatePublishedEventIds';
 export { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
 export { getEventStructures } from '@Query/structure/structureGetter';
 export { getEventProperties } from '@Query/event/getEventProperties';

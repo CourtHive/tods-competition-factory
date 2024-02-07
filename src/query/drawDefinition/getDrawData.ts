@@ -1,11 +1,11 @@
-import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { tallyParticipantResults } from '@Assemblies/governors/queryGovernor';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
+import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
 import { getPublishState } from '@Query/publishing/getPublishState';
 import { structureSort } from '@Functions/sorters/structureSort';
 import { findStructure } from '@Acquire/findStructure';
