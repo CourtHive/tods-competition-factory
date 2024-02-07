@@ -36,7 +36,7 @@ export function notifySubscribers(params?: NotifySubscribersArgs) {
 
   for (const topic of [...topics].sort(topicSort)) {
     const notices = getNotices({ topic });
-    if (notices) callListener({ topic, notices });
+    if (notices?.length) callListener({ topic, notices });
   }
 
   if (mutationStatus && timeStamp && topics.includes(MUTATIONS)) {

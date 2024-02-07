@@ -1,5 +1,3 @@
-import { Tournament } from '@Types/tournamentTypes';
-import { SUCCESS } from '@Constants/resultConstants';
 import {
   CallListenerArgs,
   DeleteNoticeArgs,
@@ -8,6 +6,10 @@ import {
   ImplemtationGlobalStateTypes,
   Notice,
 } from './globalState';
+
+// constants and types
+import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import {
   INVALID_TOURNAMENT_RECORD,
   INVALID_VALUES,
@@ -115,14 +117,19 @@ export function removeTournamentRecord(tournamentId) {
   return { success: true };
 }
 
-export function setSubscriptions(params) {
+export function setSubscriptions(params: any) {
   if (typeof params.subscriptions !== 'object') return { error: INVALID_VALUES };
+
   Object.keys(params.subscriptions).forEach((subscription) => {
     syncGlobalState.subscriptions[subscription] = params.subscriptions[subscription];
   });
+
   return { ...SUCCESS };
 }
-export function setMethods(params) {
+
+export function setMethods(params: { [key: string]: any }) {
+  if (typeof params !== 'object') return { error: INVALID_VALUES };
+
   Object.keys(params).forEach((methodName) => {
     if (typeof params[methodName] !== 'function') return;
     syncGlobalState.methods[methodName] = params[methodName];
@@ -136,16 +143,11 @@ export function cycleMutationStatus() {
   return status;
 }
 
-export function addNotice({ topic, payload, key }: Notice) {
-  if (typeof topic !== 'string' || typeof payload !== 'object') {
-    return;
-  }
-
+export function addNotice({ topic, payload, key }: Notice, isGlobalSubscription?: boolean) {
+  if (typeof topic !== 'string' || typeof payload !== 'object') return;
+  // if there is a notice then the state has been modified, regardless of whether there is a subscription
   if (!syncGlobalState.disableNotifications) syncGlobalState.modified = true;
-
-  if (syncGlobalState.disableNotifications || !syncGlobalState.subscriptions[topic]) {
-    return;
-  }
+  if (syncGlobalState.disableNotifications || (!syncGlobalState.subscriptions[topic] && !isGlobalSubscription)) return;
 
   if (key) {
     syncGlobalState.notices = syncGlobalState.notices.filter(
@@ -163,8 +165,7 @@ export function getMethods() {
 }
 
 export function getNotices({ topic }: GetNoticesArgs) {
-  const notices = syncGlobalState.notices.filter((notice) => notice.topic === topic).map((notice) => notice.payload);
-  return notices.length && notices;
+  return syncGlobalState.notices.filter((notice) => notice.topic === topic).map((notice) => notice.payload);
 }
 
 export function deleteNotices() {
@@ -182,11 +183,11 @@ export function getTopics(): { topics: string[] } {
   return { topics };
 }
 
-export function callListener({ topic, notices }: CallListenerArgs) {
+export function callListener({ topic, notices }: CallListenerArgs, globalSubscriptions?: any) {
   const method = syncGlobalState.subscriptions[topic];
-  if (method && typeof method === 'function') {
-    method(notices);
-  }
+  if (method && typeof method === 'function') method(notices);
+  const globalMethod = globalSubscriptions?.[topic];
+  if (globalMethod && typeof globalMethod === 'function') globalMethod(notices);
 }
 
 export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {

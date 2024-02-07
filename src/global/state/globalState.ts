@@ -1,7 +1,9 @@
 import syncGlobalState from './syncGlobalState';
 import { intersection } from '@Tools/arrays';
 
+// constants and types
 import { TournamentRecords, ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   ErrorType,
   INVALID_VALUES,
@@ -44,7 +46,8 @@ export type DevContextType =
   | boolean;
 
 type GlobalStateTypes = {
-  tournamentFactoryVersion: string; // version of tournamentFactory
+  globalSubscriptions: { [key: string]: any };
+  globalMethods: { [key: string]: any };
   deepCopyAttributes: DeepCopyType;
   devContext?: DevContextType; // devContext is used to control logging
   timers: timersType; // timers are used to track elapsed time for methods
@@ -54,22 +57,23 @@ type GlobalStateTypes = {
 
 export type ImplemtationGlobalStateTypes = {
   tournamentRecords: TournamentRecords;
+  subscriptions: { [key: string]: any };
   methods: { [key: string]: any };
   disableNotifications: boolean;
   tournamentId?: string;
-  subscriptions: any;
   notices: Notice[];
   modified: boolean;
 };
 
 const globalState: GlobalStateTypes = {
-  tournamentFactoryVersion: '0.0.0',
   timers: { default: { elapsedTime: 0 } },
+  globalSubscriptions: {},
   deepCopyAttributes: {
     stringify: [],
     ignore: [],
     toJSON: [],
   },
+  globalMethods: [],
   deepCopy: true,
 };
 
@@ -245,11 +249,30 @@ export function deepCopyEnabled() {
   };
 }
 
+export function setGlobalSubscriptions(params: any) {
+  if (!params?.subscriptions) return { error: MISSING_VALUE, info: 'missing subscriptions' };
+
+  Object.keys(params.subscriptions).forEach((subscription) => {
+    globalState.globalSubscriptions[subscription] = params.subscriptions[subscription];
+  });
+
+  return { ...SUCCESS };
+}
+
 export function setSubscriptions(params: any) {
   if (!params?.subscriptions) return { error: MISSING_VALUE, info: 'missing subscriptions' };
-  return _globalStateProvider.setSubscriptions({
-    subscriptions: params.subscriptions,
+  return _globalStateProvider.setSubscriptions({ subscriptions: params.subscriptions });
+}
+
+export function setGlobalMethods(params?: { [key: string]: any }) {
+  if (!params) return { error: MISSING_VALUE, info: 'missing method declarations' };
+  if (typeof params !== 'object') return { error: INVALID_VALUES };
+  Object.keys(params).forEach((methodName) => {
+    if (typeof params[methodName] !== 'function') return;
+    globalState.globalMethods[methodName] = params[methodName];
   });
+
+  return { ...SUCCESS };
 }
 
 export function setMethods(params?: { [key: string]: any }) {
@@ -263,7 +286,9 @@ export function cycleMutationStatus() {
 }
 
 export function addNotice(notice: Notice) {
-  return _globalStateProvider.addNotice(notice);
+  if (typeof notice?.topic !== 'string') return;
+  const isGlobalSubscription = globalState.globalSubscriptions[notice.topic];
+  return _globalStateProvider.addNotice(notice, isGlobalSubscription);
 }
 
 export type GetNoticesArgs = {
@@ -271,7 +296,7 @@ export type GetNoticesArgs = {
 };
 
 export function getMethods(): { [key: string]: any } {
-  return _globalStateProvider.getMethods();
+  return { ...globalState.globalMethods, ..._globalStateProvider.getMethods() };
 }
 
 export function getNotices(params: GetNoticesArgs): string[] {
@@ -299,7 +324,7 @@ export type CallListenerArgs = {
   topic: string;
 };
 export async function callListener(payload) {
-  return _globalStateProvider.callListener(payload);
+  return _globalStateProvider.callListener(payload, globalState.globalSubscriptions);
 }
 
 export function getTournamentId() {

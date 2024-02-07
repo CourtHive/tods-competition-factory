@@ -1,5 +1,5 @@
-import { addExtension } from './addExtension';
 import { extensionConstants } from '@Constants/extensionConstants';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { findExtension } from '@Acquire/findExtension';
 
 const { FACTORY } = extensionConstants;

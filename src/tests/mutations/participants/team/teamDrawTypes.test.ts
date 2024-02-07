@@ -1,8 +1,10 @@
 import { setSubscriptions } from '@Global/state/syncGlobalState';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+// constants
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TALLY } from '@Constants/extensionConstants';
 import { TEAM } from '@Constants/eventConstants';
@@ -15,7 +17,6 @@ import {
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
 } from '@Constants/drawDefinitionConstants';
-import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {
