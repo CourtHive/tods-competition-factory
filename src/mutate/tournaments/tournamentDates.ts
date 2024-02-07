@@ -1,31 +1,40 @@
-import { clearScheduledMatchUps } from '../matchUps/schedule/clearScheduledMatchUps';
+import { clearScheduledMatchUps } from '@Mutate/matchUps/schedule/clearScheduledMatchUps';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { updateCourtAvailability } from '../venues/updateCourtAvailability';
-import { dateValidation } from '@Validators/regex';
+import { updateCourtAvailability } from '@Mutate/venues/updateCourtAvailability';
 import { addNotice } from '@Global/state/globalState';
+import { generateDateRange } from '@Tools/dateTime';
+import { dateValidation } from '@Validators/regex';
 
+// constants and types
+import { INVALID_DATE, INVALID_VALUES, SCHEDULE_NOT_CLEARED } from '@Constants/errorConditionConstants';
+import { ANY_OF, INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
-import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import {
-  INVALID_DATE,
-  INVALID_VALUES,
-  MISSING_DATE,
-  MISSING_TOURNAMENT_RECORD,
-  SCHEDULE_NOT_CLEARED,
-} from '@Constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { ResultType } from '@Types/factoryTypes';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;
   startDate?: string;
   endDate?: string;
 };
-export function setTournamentDates({ tournamentRecord, startDate, endDate }: SetTournamentDatesArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if ((startDate && !dateValidation.test(startDate)) || (endDate && !dateValidation.test(endDate)))
-    return { error: INVALID_DATE };
+export function setTournamentDates(params: SetTournamentDatesArgs): ResultType & {
+  unscheduledMatchUpIds?: string[];
+  datesRemoved?: string[];
+  datesAdded?: string[];
+} {
+  const { tournamentRecord, startDate, endDate } = params;
 
-  if (!startDate && !endDate) return { error: MISSING_DATE };
+  const paramsCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true },
+    {
+      [ANY_OF]: { startDate: false, endDate: false },
+      [INVALID]: INVALID_DATE,
+      [VALIDATE]: (value) => dateValidation.test(value),
+    },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
 
   if (endDate && startDate && new Date(endDate) < new Date(startDate)) return { error: INVALID_VALUES };
 
@@ -38,8 +47,17 @@ export function setTournamentDates({ tournamentRecord, startDate, endDate }: Set
     checkScheduling = true;
   }
 
+  const initialDateRange = generateDateRange(tournamentRecord.startDate, tournamentRecord.endDate);
   if (startDate) tournamentRecord.startDate = startDate;
   if (endDate) tournamentRecord.endDate = endDate;
+  const resultingDateRange = generateDateRange(tournamentRecord.startDate, tournamentRecord.endDate);
+  const datesRemoved = initialDateRange.filter((date) => !resultingDateRange.includes(date));
+  const datesAdded = resultingDateRange.filter((date) => !initialDateRange.includes(date));
+
+  for (const event of tournamentRecord.events ?? []) {
+    if (startDate && event.startDate && new Date(startDate) > new Date(event.startDate)) event.startDate = startDate;
+    if (endDate && event.endDate && new Date(endDate) < new Date(event.endDate)) event.endDate = endDate;
+  }
 
   // if there is a startDate specified after current endDate, endDate must be set to startDate
   if (startDate && tournamentRecord.endDate && new Date(startDate) > new Date(tournamentRecord.endDate)) {
@@ -60,7 +78,7 @@ export function setTournamentDates({ tournamentRecord, startDate, endDate }: Set
     payload: { startDate, endDate },
   });
 
-  return { ...SUCCESS, unscheduledMatchUpIds };
+  return { ...SUCCESS, unscheduledMatchUpIds, datesAdded, datesRemoved };
 }
 
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
