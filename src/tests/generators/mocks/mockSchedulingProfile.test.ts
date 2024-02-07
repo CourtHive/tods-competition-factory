@@ -1,31 +1,36 @@
-import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
+import { visualizeScheduledMatchUps } from '@Tests/testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '@Query/matchUp/hasSchedule';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { extractDate } from '@Tools/dateTime';
-import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// fixtures
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
 
 it('can schedule all matchUps in first round with only drawId', () => {
-  const drawId = 'drawId';
   const venueId = 'venueId';
+  const drawId = 'drawId';
+
   const startTime = '08:00';
   const endTime = '20:00';
-  const startDate = extractDate(new Date().toISOString());
+
   const drawProfiles = [{ idPrefix: 'm', drawId, drawSize: 32 }];
+  const startDate = extractDate(new Date().toISOString());
+
   const venueProfiles = [
     {
-      venueId,
-      venueName: 'Venue',
-      venueAbbreviation: 'VNU',
       courtNames: ['One', 'Two', 'Three'],
       courtIds: ['c1', 'c2', 'c3'],
+      venueAbbreviation: 'VNU',
+      venueName: 'Venue',
       courtsCount: 8,
       startTime,
       endTime,
+      venueId,
     },
   ];
+
   const schedulingProfile = [
     {
       scheduleDate: startDate,
@@ -40,16 +45,17 @@ it('can schedule all matchUps in first round with only drawId', () => {
       ],
     },
   ];
-  const { tournamentRecord, schedulerResult } = mocksEngine.generateTournamentRecord({
+
+  const { schedulerResult } = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
     autoSchedule: true,
     schedulingProfile,
+    setState: true,
     venueProfiles,
     drawProfiles,
     startDate,
   });
 
-  tournamentEngine.setState(tournamentRecord);
   expect(Object.values(schedulerResult.matchUpScheduleTimes).length).toEqual(24);
 
   const { matchUps } = tournamentEngine.allCompetitionMatchUps();

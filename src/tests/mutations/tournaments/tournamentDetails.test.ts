@@ -3,8 +3,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { IN_PROGRESS } from '@Constants/tournamentConstants';
-import { INVALID_VALUES, MISSING_DATE } from '@Constants/errorConditionConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -15,7 +16,7 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   expect(endDate).not.toBeUndefined();
 
   let result = tournamentEngine.setTournamentStartDate();
-  expect(result.error).toEqual(MISSING_DATE);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   const newStartDate = dateStringDaysChange(endDate, 1);
   result = tournamentEngine.setTournamentStartDate({ startDate: newStartDate });
@@ -25,7 +26,7 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   expect(tournamentInfo.endDate).toEqual(newStartDate);
 
   result = tournamentEngine.setTournamentEndDate();
-  expect(result.error).toEqual(MISSING_DATE);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   const newEndDate = dateStringDaysChange(newStartDate, 7);
   result = tournamentEngine.setTournamentEndDate({ endDate: newEndDate });
