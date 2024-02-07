@@ -1,10 +1,11 @@
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { generateRange } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { globalState, mocksEngine } from '../../..';
+import tournamentEngine from '@Engines/syncEngine';
+import { generateRange } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
+// constants
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';

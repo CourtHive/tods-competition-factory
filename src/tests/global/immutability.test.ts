@@ -1,8 +1,9 @@
+import tournamentEngine from '@Tests/engines/syncEngine';
 import { dateStringDaysChange } from '@Tools/dateTime';
-import tournamentEngine from '../engines/syncEngine';
-import mocksEngine from '../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
+// constants
 import { FACTORY } from '@Constants/extensionConstants';
 
 test('setting deepCopy option to false will allow source objects to be modified', () => {

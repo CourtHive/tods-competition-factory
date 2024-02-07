@@ -1,9 +1,10 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import queryEngine from '@Engines/queryEngine';
 import { unique } from '@Tools/arrays';
-import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
+// constants
 import { FACTORY } from '@Constants/extensionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
