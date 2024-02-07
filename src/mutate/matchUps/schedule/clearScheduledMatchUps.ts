@@ -1,7 +1,9 @@
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { hasSchedule } from '../../../query/matchUp/hasSchedule';
-import { getMatchUpId } from '@Functions/global/extractors';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
+import { findEvent } from '@Acquire/findEvent';
 import { isObject } from '@Tools/objects';
 
 // constants and types
@@ -91,31 +93,46 @@ function clearSchedules({
       tournamentRecord,
     }).matchUps ?? [];
 
-  const relevantMatchUpIds = inContextMatchUps
-    .filter(
-      (matchUp) =>
-        matchUp.matchUpStatus &&
-        !ignoreMatchUpStatuses.includes(matchUp.matchUpStatus) &&
-        hasSchedule({ schedule: matchUp.schedule, scheduleAttributes }) &&
-        (!venueIds?.length || venueIds.includes(matchUp.schedule.venueId)),
-    )
-    .map(getMatchUpId);
+  const drawMatchUpIds = {};
 
-  const matchUps =
-    allTournamentMatchUps({
-      tournamentRecord,
-      inContext: false,
-    }).matchUps ?? [];
+  inContextMatchUps.forEach(({ matchUpStatus, schedule, drawId, matchUpId }) => {
+    if (
+      (!matchUpStatus || !ignoreMatchUpStatuses.includes(matchUpStatus)) &&
+      hasSchedule({ schedule, scheduleAttributes }) &&
+      (!venueIds?.length || venueIds.includes(schedule.venueId))
+    ) {
+      if (!drawMatchUpIds[drawId]) drawMatchUpIds[drawId] = [];
+      drawMatchUpIds[drawId].push(matchUpId);
+    }
+  });
 
+  const tournamentId = tournamentRecord.tournamentId;
   let clearedScheduleCount = 0;
-  for (const matchUp of matchUps) {
-    if (relevantMatchUpIds.includes(matchUp.matchUpId)) {
-      matchUp.timeItems = (matchUp.timeItems ?? []).filter(
-        (timeItem) =>
+
+  for (const drawId in drawMatchUpIds) {
+    const { event, drawDefinition } = findEvent({ tournamentRecord, drawId });
+    const drawMatchUps =
+      allDrawMatchUps({ drawDefinition, matchUpFilters: { matchUpIds: drawMatchUpIds[drawId] } }).matchUps ?? [];
+
+    for (const matchUp of drawMatchUps) {
+      let modified = false;
+      matchUp.timeItems = (matchUp.timeItems ?? []).filter((timeItem) => {
+        const preserve =
           timeItem?.itemType &&
-          ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, SCHEDULED_DATE, SCHEDULED_TIME].includes(timeItem?.itemType),
-      );
-      clearedScheduleCount += 1;
+          ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, SCHEDULED_DATE, SCHEDULED_TIME].includes(timeItem?.itemType);
+        if (!preserve) modified = true;
+        return preserve;
+      });
+      if (modified) {
+        modifyMatchUpNotice({
+          context: 'clear schedules',
+          eventId: event?.eventId,
+          drawDefinition,
+          tournamentId,
+          matchUp,
+        });
+        clearedScheduleCount += 1;
+      }
     }
   }
 
