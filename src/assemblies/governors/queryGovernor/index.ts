@@ -6,6 +6,7 @@ export * from '../competitionGovernor/query';
 export * from '../participantGovernor/query';
 export * from '../tournamentGovernor/query';
 export * from '../tieFormatGovernor/query';
+export * from '../publishingGovernor/query';
 export * from '../scheduleGovernor/query';
 export * from '../entriesGovernor/query';
 export * from '../matchUpGovernor/query';
