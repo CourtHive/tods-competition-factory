@@ -11,7 +11,7 @@ type MethodsObject = {
   { [key]: function | MethodObject}
 }
 
-engine.importMethods(methods: MethodsObject, traverse?: boolean | string[], maxDepth?: number);
+engine.importMethods(methods: MethodsObject, traverse: boolean | string[], maxDepth: number, global?: boolean);
 ```
 
 ---

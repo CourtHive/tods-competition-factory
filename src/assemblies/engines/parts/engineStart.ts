@@ -5,7 +5,7 @@
  */
 
 import { newTournamentRecord } from '@Assemblies/generators/tournamentRecords/newTournamentRecord';
-import { importMethods } from '@Assemblies/engines/parts/importMethods';
+import { methodImporter } from '@Assemblies/engines/parts/methodImporter';
 import { processResult } from '@Assemblies/engines/parts/processResult';
 import { factoryVersion } from '@Functions/global/factoryVersion';
 import {
@@ -30,8 +30,8 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { FactoryEngine } from '@Types/factoryTypes';
 
 export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
-  engine.importMethods = (methods, collections, depth) =>
-    importMethods(engine, engineInvoke, methods, collections, depth);
+  engine.importMethods = (methods, collections, depth, global) =>
+    methodImporter(engine, engineInvoke, methods, collections, depth, global);
   engine.getTournament = (params?) => getTournament(params);
   engine.getState = (params?) =>
     getState({
