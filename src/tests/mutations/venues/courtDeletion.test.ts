@@ -1,4 +1,4 @@
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '@Assemblies/engines/mock';
 import { extractTime } from '@Tools/dateTime';
 import tournamentEngine from '@Engines/syncEngine';

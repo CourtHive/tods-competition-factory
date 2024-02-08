@@ -7,7 +7,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { instanceCount, intersection } from '@Tools/arrays';
 import { validUpdate } from '@Validators/validUpdate';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import {
   addMatchUpsNotice,
   deleteMatchUpsNotice,

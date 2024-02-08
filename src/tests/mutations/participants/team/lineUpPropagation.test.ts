@@ -1,4 +1,4 @@
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { setSubscriptions } from '@Global/state/globalState';
 import { generateTeamTournament } from './generateTestTeamTournament';
 import { findExtension } from '@Acquire/findExtension';

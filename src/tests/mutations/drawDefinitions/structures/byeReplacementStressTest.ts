@@ -1,7 +1,7 @@
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '@Functions/global/extractors';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '@Assemblies/engines/mock';
 import { shuffleArray } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';

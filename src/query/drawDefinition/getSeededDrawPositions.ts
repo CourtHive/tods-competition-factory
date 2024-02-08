@@ -1,5 +1,5 @@
 import { chunkArray } from '@Tools/arrays';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';

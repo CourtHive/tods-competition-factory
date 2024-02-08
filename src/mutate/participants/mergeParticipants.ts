@@ -1,5 +1,5 @@
 import { addNotice, getTopics } from '@Global/state/globalState';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { deepMerge } from '@Tools/deepMerge';
 
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

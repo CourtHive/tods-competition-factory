@@ -6,7 +6,7 @@ import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinitio
 import { isValidExtension } from '@Validators/isValidExtension';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
 import { generateRange } from '@Tools/arrays';
 

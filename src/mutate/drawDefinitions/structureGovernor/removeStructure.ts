@@ -7,7 +7,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpIds } from '@Functions/global/extractors';
 import { resequenceStructures } from './resequenceStructures';
 import { findStructure } from '@Acquire/findStructure';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants and types
 import { CANNOT_REMOVE_MAIN_STRUCTURE, SCORES_PRESENT, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';

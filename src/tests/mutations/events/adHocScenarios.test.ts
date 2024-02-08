@@ -4,7 +4,7 @@ import { intersection, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';

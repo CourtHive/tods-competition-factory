@@ -1,6 +1,8 @@
+import { isFunction } from './objects';
 import { isNumeric } from './math';
 
-import { INVALID_VALUES } from '../constants/errorConditionConstants';
+// constants
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 /**
  *
@@ -150,8 +152,7 @@ export function JSON2CSV(arrayOfJSON?, config?): any {
           '';
 
         const mappedValue = valuesMap[columnName]?.[value] || value;
-        const fxValue =
-          typeof functionMap[columnName] === 'function' ? functionMap[columnName](mappedValue) : mappedValue;
+        const fxValue = isFunction(functionMap[columnName]) ? functionMap[columnName](mappedValue) : mappedValue;
         columnsMap[columnName] = withDelimiter(fxValue);
         if (fxValue) {
           columnValueCounts[columnIndex] = (columnValueCounts[columnIndex] || 0) + 1;

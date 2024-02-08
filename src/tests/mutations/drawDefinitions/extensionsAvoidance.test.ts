@@ -1,4 +1,4 @@
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { chunkArray } from '@Tools/arrays';

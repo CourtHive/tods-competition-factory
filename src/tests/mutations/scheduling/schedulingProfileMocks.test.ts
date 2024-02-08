@@ -1,6 +1,6 @@
 import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
 import { intersection, unique } from '@Tools/arrays';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { constantToString } from '@Tools/strings';
 import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
