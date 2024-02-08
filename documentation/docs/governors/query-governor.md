@@ -790,7 +790,6 @@ const {
     scheduleAnalysis: {
       scheduledMinutesDifference // optional - scheduling conflicts determined by scheduledTime difference between matchUps
     },
-    usePublishState,  // optional boolean
     withDraws, // optional - defaults to true if any other context options are specified
     withEvents, // optional - defaults to true if any other context options are specified
     withIndividualParticipants, // optional - boolean or attributeFilter template - include hydrated individualParticiapnts for TEAM/PAIR participants

@@ -1,26 +1,27 @@
-import { matchUpFormatTimes } from '../extensions/matchUpFormatTiming/getMatchUpFormatTiming';
-import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
-import { definedAttributes } from '@Tools/definedAttributes';
-import { attributeFilter } from '@Tools/attributeFilter';
-import { scheduledMatchUpTime } from './scheduledMatchUpTime';
-import { scheduledMatchUpDate } from './scheduledMatchUpDate';
-import { matchUpAllocatedCourts } from './courtAllocations';
-import { matchUpAssignedCourtId } from './courtAssignment';
-import { matchUpAssignedVenueId } from './venueAssignment';
-import { getVenueData } from '../venues/getVenueData';
-import { matchUpTimeModifiers } from './timeModifiers';
-import { matchUpDuration } from './matchUpDuration';
-import { findEvent } from '@Acquire/findEvent';
-import { matchUpCourtOrder } from './courtOrder';
-import { matchUpStartTime } from './startTime';
-import { matchUpEndTime } from './endTime';
 import { addMinutesToTimeString, extractDate, extractTime, getIsoDateString } from '@Tools/dateTime';
+import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { scheduledMatchUpTime } from '@Query/matchUp/scheduledMatchUpTime';
+import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
+import { matchUpAllocatedCourts } from '@Query/matchUp/courtAllocations';
+import { matchUpAssignedCourtId } from '@Query/matchUp/courtAssignment';
+import { matchUpAssignedVenueId } from '@Query/matchUp/venueAssignment';
+import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
+import { matchUpDuration } from '@Query/matchUp/matchUpDuration';
+import { matchUpCourtOrder } from '@Query/matchUp/courtOrder';
+import { matchUpStartTime } from '@Query/matchUp/startTime';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { getVenueData } from '@Query/venues/getVenueData';
+import { attributeFilter } from '@Tools/attributeFilter';
+import { matchUpEndTime } from '@Query/matchUp/endTime';
+import { findEvent } from '@Acquire/findEvent';
 
+// constants and types
+import { ScheduleTiming, ScheduleVisibilityFilters } from '@Types/factoryTypes';
 import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
-import { ScheduleTiming, ScheduleVisibilityFilters } from '@Types/factoryTypes';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
