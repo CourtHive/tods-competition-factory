@@ -1,5 +1,6 @@
 import { generateRange, intersection, overlap, unique } from '@Tools/arrays';
 
+// constants and types
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { StructureProfile } from '@Types/factoryTypes';
 import {
