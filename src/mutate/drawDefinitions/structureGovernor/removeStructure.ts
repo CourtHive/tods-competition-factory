@@ -11,7 +11,7 @@ import { xa } from '@Tools/objects';
 
 // constants and types
 import { CANNOT_REMOVE_MAIN_STRUCTURE, SCORES_PRESENT, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -26,38 +26,22 @@ type RemoveStructureArgs = {
 };
 
 export function removeStructure(params: RemoveStructureArgs) {
-  const { tournamentRecord, drawDefinition, structureId, event, force } = params;
+  const { tournamentRecord, drawDefinition, structureId, event } = params;
   const checkParams = checkRequiredParameters(params, [{ drawDefinition: true, structureId: true }]);
   if (checkParams.error) return checkParams;
 
   const structures = drawDefinition.structures ?? [];
-
   const structure = structures.find((structure) => structure.structureId === structureId);
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
-
-  // TODO: if structure being rmoved is qualifying structure, ensure no source structures have scored matchUps
-  const structureMatchUps = getAllStructureMatchUps({ structure }).matchUps;
-  const scoresPresent = structureMatchUps.some(({ score }) => checkScoreHasValue({ score }));
-
-  if (scoresPresent) {
-    const appliedPolicies = getAppliedPolicies({
-      tournamentRecord,
-      drawDefinition,
-      structure,
-      event,
-    })?.appliedPolicies;
-
-    const allowDeletionWithScoresPresent =
-      force ?? appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent?.structures;
-
-    if (!allowDeletionWithScoresPresent) return { error: SCORES_PRESENT };
-  }
 
   const mainStageSequence1 = structures.find(({ stage, stageSequence }) => stage === MAIN && stageSequence === 1);
   const isMainStageSequence1 = structureId === mainStageSequence1?.structureId;
   const qualifyingStructureIds = structures.filter(({ stage }) => stage === QUALIFYING).map(xa('structureId'));
   if (isMainStageSequence1 && !qualifyingStructureIds.length) return { error: CANNOT_REMOVE_MAIN_STRUCTURE };
   const isQualifyingStructure = qualifyingStructureIds.includes(structureId);
+
+  const policyResult = policyCheck({ isQualifyingStructure, structure, ...params });
+  if (policyResult?.error) return policyResult;
 
   const { structureIdsToRemove, relatedStructureIdsMap } = getIdsToRemove({
     qualifyingStructureIds,
@@ -105,6 +89,52 @@ export function removeStructure(params: RemoveStructureArgs) {
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
   return { ...SUCCESS, removedMatchUpIds, removedStructureIds };
+}
+
+function policyCheck({
+  isQualifyingStructure,
+  tournamentRecord,
+  drawDefinition,
+  structureId,
+  structure,
+  event,
+  force,
+}: RemoveStructureArgs & { structure: Structure; isQualifyingStructure: boolean }) {
+  const structureIdsToFilter: string[] = [structureId];
+
+  if (isQualifyingStructure) {
+    // if structure being rmoved is qualifying structure, ensure no source structures have scored matchUps
+    const getSourceLink = (structureId) =>
+      drawDefinition.links?.find((link) => link.target.structureId === structureId);
+    let sourceStructureId = getSourceLink(structureId)?.source.structureId;
+    while (sourceStructureId) {
+      structureIdsToFilter.push(sourceStructureId);
+      sourceStructureId = getSourceLink(sourceStructureId)?.source.structureId;
+    }
+  }
+
+  const relevantMatchUps = getAllDrawMatchUps({
+    matchUpFilters: { structureIds: structureIdsToFilter },
+    drawDefinition,
+  }).matchUps;
+
+  const scoresPresent = relevantMatchUps?.some(({ score }) => checkScoreHasValue({ score }));
+
+  if (scoresPresent) {
+    const appliedPolicies = getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      structure,
+      event,
+    })?.appliedPolicies;
+
+    const allowDeletionWithScoresPresent =
+      force ?? appliedPolicies?.[POLICY_TYPE_SCORING]?.allowDeletionWithScoresPresent?.structures;
+
+    if (!allowDeletionWithScoresPresent) return { error: SCORES_PRESENT };
+  }
+
+  return { ...SUCCESS };
 }
 
 function removeReferencesToRemovedMatchUps({ removedMatchUpIds, drawDefinition }) {
