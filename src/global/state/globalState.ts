@@ -1,5 +1,7 @@
+import { isFunction, isObject } from '@Tools/objects';
 import syncGlobalState from './syncGlobalState';
 import { intersection } from '@Tools/arrays';
+import { isNumeric } from '@Tools/math';
 
 // constants and types
 import { TournamentRecords, ResultType } from '@Types/factoryTypes';
@@ -394,4 +396,30 @@ export function globalLog(log: any, engine?: string) {
   } else {
     console.log(engine, log);
   }
+}
+
+export function setStateMethods(submittedMethods, traverse, maxDepth, global) {
+  if (!isObject(submittedMethods)) return { error: INVALID_VALUES };
+  if (!isNumeric) maxDepth = 1;
+
+  const collectionFilter = Array.isArray(traverse) ? traverse : [];
+  const methods = {};
+  const attrWalker = (obj, depth = 0) => {
+    Object.keys(obj).forEach((key) => {
+      if (isFunction(obj[key])) {
+        methods[key] = obj[key];
+      } else if (
+        isObject(obj[key]) &&
+        (traverse === true || collectionFilter?.includes(key)) &&
+        (maxDepth === undefined || depth < maxDepth)
+      ) {
+        attrWalker(obj[key], depth + 1);
+      }
+    });
+  };
+  attrWalker(submittedMethods);
+
+  global ? setGlobalMethods(methods) : setMethods(methods);
+
+  return { methods };
 }
