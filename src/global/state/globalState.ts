@@ -206,7 +206,7 @@ export function timeKeeper(action: string = 'reset', timer: string = 'default'):
 }
 
 export function setGlobalLog(loggingFx?: any) {
-  if (typeof loggingFx === 'function') {
+  if (isFunction(loggingFx)) {
     globalState.globalLog = loggingFx;
   } else {
     delete globalState.globalLog;
@@ -270,7 +270,7 @@ export function setGlobalMethods(params?: { [key: string]: any }) {
   if (!params) return { error: MISSING_VALUE, info: 'missing method declarations' };
   if (typeof params !== 'object') return { error: INVALID_VALUES };
   Object.keys(params).forEach((methodName) => {
-    if (typeof params[methodName] !== 'function') return;
+    if (!isFunction(params[methodName])) return;
     globalState.globalMethods[methodName] = params[methodName];
   });
 
@@ -373,7 +373,7 @@ export type HandleCaughtErrorArgs = {
 
 export function handleCaughtError({ engineName, methodName, params, err }: HandleCaughtErrorArgs) {
   const caughtErrorHandler =
-    (typeof _globalStateProvider.handleCaughtError === 'function' && _globalStateProvider.handleCaughtError) ||
+    (isFunction(_globalStateProvider.handleCaughtError) && _globalStateProvider.handleCaughtError) ||
     syncGlobalState.handleCaughtError;
 
   return caughtErrorHandler({

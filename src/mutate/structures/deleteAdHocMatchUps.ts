@@ -6,7 +6,7 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getAdHocStructureDetails } from './getAdHocStructureDetails';
 import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants and types
 import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';

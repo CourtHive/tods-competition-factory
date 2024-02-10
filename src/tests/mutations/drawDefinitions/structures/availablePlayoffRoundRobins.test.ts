@@ -4,7 +4,7 @@ import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome
 import { generateRange, intersection } from '@Tools/arrays';
 import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';

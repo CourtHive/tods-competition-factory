@@ -3,7 +3,7 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { decorateResult } from '@Functions/global/decorateResult';
 import { addTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { addGoesTo } from '../../query/matchUps/addGoesTo';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants and types
 import { EXISTING_STRUCTURE, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';

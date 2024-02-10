@@ -1,5 +1,6 @@
 import { deepCopyEnabled, getProvider } from '@Global/state/globalState';
 import { isDateObject } from './dateTime';
+import { isFunction } from './objects';
 
 export function makeDeepCopy(
   sourceObject, // arbitrary JSON object; functions will be stripped.
@@ -18,7 +19,7 @@ export function makeDeepCopy(
   if (
     (!deepCopy?.enabled && !internalUse) ||
     typeof sourceObject !== 'object' ||
-    typeof sourceObject === 'function' ||
+    isFunction(sourceObject) ||
     sourceObject === null ||
     (typeof deepCopy?.threshold === 'number' && iteration >= deepCopy.threshold)
   ) {
@@ -32,16 +33,16 @@ export function makeDeepCopy(
       !internalUse ||
       !ignore ||
       (Array.isArray(ignore) && !ignore.includes(key)) ||
-      (typeof ignore === 'function' && !ignore(key)),
+      (isFunction(ignore) && !ignore(key)),
   );
 
   const stringifyValue = (key, value) => {
-    targetObject[key] = typeof value?.toString === 'function' ? value.toString() : JSON.stringify(value);
+    targetObject[key] = isFunction(value?.toString) ? value.toString() : JSON.stringify(value);
   };
 
   for (const key of sourceObjectKeys) {
     const value = sourceObject[key];
-    const modulated = typeof modulate === 'function' ? modulate(value) : undefined;
+    const modulated = isFunction(modulate) ? modulate(value) : undefined;
     if (modulated !== undefined) {
       targetObject[key] = modulated;
     } else if (convertExtensions && key === 'extensions' && Array.isArray(value)) {
@@ -51,7 +52,7 @@ export function makeDeepCopy(
       targetObject[key] = [];
     } else if (Array.isArray(stringify) && stringify.includes(key)) {
       stringifyValue(key, value);
-    } else if (Array.isArray(toJSON) && toJSON.includes(key) && typeof value?.toJSON === 'function') {
+    } else if (Array.isArray(toJSON) && toJSON.includes(key) && isFunction(value?.toJSON)) {
       targetObject[key] = value.toJSON();
     } else if (value === null) {
       targetObject[key] = undefined;

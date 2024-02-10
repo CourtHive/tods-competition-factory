@@ -1,7 +1,7 @@
 import { findExtension } from '@Acquire/findExtension';
 import { instanceCount } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';

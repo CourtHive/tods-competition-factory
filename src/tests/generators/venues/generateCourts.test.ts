@@ -1,5 +1,5 @@
 import { generateCourts } from '@Assemblies/generators/venues/generateCourts';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';

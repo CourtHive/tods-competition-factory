@@ -1,5 +1,5 @@
 import tournamentEngine from '../engines/syncEngine';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '../../assemblies/engines/mock';
 import { numericSort } from '@Tools/sorting';
 import { it, expect } from 'vitest';

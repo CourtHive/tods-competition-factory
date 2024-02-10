@@ -1,6 +1,6 @@
 import { addDays, generateDateRange } from '@Tools/dateTime';
 import { chunkArray, intersection } from '@Tools/arrays';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';

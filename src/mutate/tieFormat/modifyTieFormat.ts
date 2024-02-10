@@ -7,7 +7,7 @@ import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { validateTieFormat } from '@Validators/validateTieFormat';
 import { numericSortValue } from '@Tools/arrays';
-import { xa } from '@Tools/objects';
+import { xa } from '@Tools/extractAttributes';
 
 // constants and types
 import { DrawDefinition, Event, TieFormat, Tournament } from '@Types/tournamentTypes';

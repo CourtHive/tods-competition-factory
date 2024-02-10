@@ -1,8 +1,9 @@
-import { xa } from '@Tools/objects';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
+// constants
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
@@ -38,6 +39,8 @@ it('can generate TEAM events', () => {
       ],
     },
   ];
+
+  tournamentEngine.devContext(true);
 
   const {
     eventIds: [eventId],

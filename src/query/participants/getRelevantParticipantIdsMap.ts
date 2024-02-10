@@ -1,13 +1,9 @@
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
-import { Tournament } from '@Types/tournamentTypes';
+import { isFunction } from '@Tools/objects';
 
-/**
- * @param {object=} tournamentRecord - optional - either tournamentRecord or tournamentRecords must be provided
- * @param {object=} tournamentRecords - optional - either tournamentRecord or tournamentRecords must be provided
- * @param {function} processParticipantId - optional - function which is called for each participantId
- * @returns { [participantId]: [relevantParticipantId] } - a map of all PAIR/TEAM/GROUP participantIds to which participantId belongs
- */
+// types
+import { Tournament } from '@Types/tournamentTypes';
 
 type GetRelevantParticipantIdsArgs = {
   tournamentRecords?: { [key: string]: Tournament };
@@ -34,7 +30,7 @@ export function getRelevantParticipantIdsMap({
   const relevantParticipantIdsMap = Object.assign(
     {},
     ...allParticipants.map(({ participantId, participantType, individualParticipantIds }) => {
-      typeof processParticipantId === 'function' && processParticipantId(participantId);
+      isFunction(processParticipantId) && processParticipantId(participantId);
 
       const individualParticipantIdObjects = (individualParticipantIds || []).map((relevantParticipantId) => ({
         participantType: INDIVIDUAL,
