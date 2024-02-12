@@ -11,6 +11,7 @@ export function getSideRatings({ tournamentParticipants, adHocRatings, eventType
       const individualParticipantIds = tournamentParticipants?.find(
         (participant) => participant.participantId === participantId,
       )?.individualParticipantIds;
+
       return !individualParticipantIds
         ? defaultRating * 2
         : individualParticipantIds?.map((participantId) => adHocRatings[participantId] || defaultRating);

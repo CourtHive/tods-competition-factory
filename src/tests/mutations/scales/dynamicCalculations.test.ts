@@ -1,8 +1,9 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import scaleEngine from '@Engines/scaleEngine';
-import { mocksEngine } from '../../..';
 import { expect, test } from 'vitest';
 
+// constants and fixtures
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { NTRP, UTR, WTN } from '@Constants/ratingConstants';
 import { DYNAMIC } from '@Constants/scaleConstants';

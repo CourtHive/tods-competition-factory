@@ -501,18 +501,17 @@ export type DrawMaticArgs = {
   salted?: number | boolean;
   participantIds?: string[];
   encounterValue?: number;
-  sameTeamValue?: number;
+  sameTeamValue?: number; // only required if not present in ratingsParameters.ts
+  scaleAccessor?: string;
   maxIterations?: number;
   matchUpIds?: string[];
   structure?: Structure;
   roundsCount?: number;
   structureId?: string;
+  scaleName?: string; // can be custom rating name to seed dynamic ratings
   idPrefix?: string;
   isMock?: boolean;
   event: Event;
-
-  scaleAccessor?: string;
-  scaleName?: string; // custom rating name to seed dynamic ratings
 };
 
 export type ResultType = {

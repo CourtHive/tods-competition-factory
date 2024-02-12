@@ -1,12 +1,13 @@
 import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { parse } from '../../helpers/matchUpFormatCode/parse';
 import { setParticipantScaleItem } from '../participants/addScaleItems';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { aggregateSets } from './aggregators';
 
+// constants and types
 import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { DYNAMIC, RATING } from '@Constants/scaleConstants';
@@ -15,14 +16,9 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { ELO } from '@Constants/ratingConstants';
 import { HydratedSide } from '@Types/hydrated';
 
-export function generateDynamicRatings({
-  removePriorValues = true,
-  tournamentRecord,
-  ratingType = ELO,
-  considerGames,
-  matchUpIds,
-  asDynamic,
-}) {
+export function generateDynamicRatings(params) {
+  const { removePriorValues = true, tournamentRecord, ratingType = ELO, considerGames, matchUpIds, asDynamic } = params;
+
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUPS };
   if (typeof ratingType !== 'string') return { error: INVALID_VALUES, ratingType };
@@ -33,13 +29,16 @@ export function generateDynamicRatings({
   const modifiedScaleValues = {};
 
   const matchUps =
+    params.matchUps ??
     allTournamentMatchUps({
       matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
       tournamentRecord,
       inContext: true,
-    }).matchUps ?? [];
+    }).matchUps ??
+    [];
 
   matchUps.sort(matchUpSort);
+
   for (const matchUp of matchUps) {
     const { endDate, matchUpFormat, score, sides, winningSide } = matchUp;
 

@@ -1,6 +1,7 @@
-import { parse } from '../../../helpers/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { isNumeric } from '@Tools/math';
 
+// constants
 import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import {
   ABANDONED,

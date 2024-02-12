@@ -1,14 +1,15 @@
+import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
-import { generateRange, randomPop } from '@Tools/arrays';
 import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
+import { generateRange, randomPop } from '@Tools/arrays';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { randomInt, weightedRandom } from '@Tools/math';
 import { analyzeSet } from '@Query/matchUp/analyzeSet';
 import { matchUpScore } from '../matchUps/matchUpScore';
-import { parse } from '../../../helpers/matchUpFormatCode/parse';
-import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
 
-import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+// constants and fixtures
 import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import {
   COMPLETED,
   DEFAULTED,

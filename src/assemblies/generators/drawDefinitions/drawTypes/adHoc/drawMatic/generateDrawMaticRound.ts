@@ -1,11 +1,14 @@
+import { generateDynamicRatings } from '@Mutate/scales/generateDynamicRatings';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 import { findStructure } from '@Acquire/findStructure';
 import { getPairingsData } from './getPairingsData';
 import { getEncounters } from './getEncounters';
 import { getPairings } from './getPairings';
 import { isObject } from '@Tools/objects';
+import { unique } from '@Tools/arrays';
 
 // constants and types
+import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event, Tournament } from '@Types/tournamentTypes';
 import { TEAM } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
@@ -16,7 +19,6 @@ import {
   NO_CANDIDATES,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, MatchUp, Structure, EventTypeUnion, Event, Tournament } from '@Types/tournamentTypes';
 
 // this should be in policyDefinitions
 const ENCOUNTER_VALUE = 100;
@@ -35,6 +37,7 @@ type GenerateDrawMaticRoundArgs = {
   eventType?: EventTypeUnion;
   salted?: number | boolean;
   participantIds?: string[];
+  dynamicRatings?: boolean;
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
@@ -68,6 +71,7 @@ export function generateDrawMaticRound({
   ignoreLastRoundNumber,
   iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
   tournamentRecord,
+  dynamicRatings,
   participantIds,
   drawDefinition,
   adHocRatings,
@@ -89,15 +93,31 @@ export function generateDrawMaticRound({
   }
   if (!isObject(structure)) return { error: MISSING_STRUCTURE };
 
-  if (!participantIds?.length) {
-    return { error: MISSING_PARTICIPANT_IDS };
-  }
+  if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
 
   // create valueObject for each previous encounter within the structure
   const consideredMatchUps = [...(iterationMatchUps ?? []), ...(structure?.matchUps ?? [])];
   const { encounters } = getEncounters({ matchUps: consideredMatchUps });
 
   const tournamentParticipants = tournamentRecord?.participants ?? [];
+  if (dynamicRatings) {
+    const roundNumbers: number[] = unique(
+      structure?.matchUps ? structure.matchUps.map(({ roundNumber }) => roundNumber) : [],
+    );
+    const lastRoundNumber = Math.max(...roundNumbers, 0);
+    if (lastRoundNumber) {
+      // generate dynamic ratings from results of prior round matchUps
+      const matchUpIds = structure?.matchUps
+        ?.filter(({ roundNumber }) => roundNumber === lastRoundNumber)
+        .map(({ matchUpId }) => matchUpId);
+      generateDynamicRatings({
+        ratingType: scaleName || event?.category?.ratingType,
+        tournamentRecord,
+        asDynamic: true,
+        matchUpIds,
+      });
+    }
+  }
 
   const { valueObjects } = getValueObjects({
     tournamentParticipants,

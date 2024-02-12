@@ -1,6 +1,7 @@
-import { parse } from '../../helpers/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { instanceCount } from '@Tools/arrays';
 
+// constants and types
 import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { Score } from '@Types/tournamentTypes';
 
