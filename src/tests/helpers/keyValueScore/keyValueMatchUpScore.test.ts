@@ -1,6 +1,7 @@
-import { keyValueMatchUpScore } from '../../../helpers/keyValueScore/keyValueScore';
+import { keyValueMatchUpScore } from '@Helpers/keyValueScore/keyValueScore';
 import { expect, it } from 'vitest';
 
+// fixtures
 import { FORMAT_STANDARD, FORMAT_ATP_DOUBLES } from '@Fixtures/scoring/matchUpFormats';
 
 function scoreMatchUp(params) {

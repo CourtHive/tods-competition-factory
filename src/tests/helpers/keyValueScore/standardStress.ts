@@ -2,6 +2,7 @@ import { generateRange, randomMember } from '@Tools/arrays';
 import { scoreMatchUp, enterValues } from './primitives';
 import { expect, it } from 'vitest';
 
+// constants
 import {
   SCORE_TEST_KEYS,
   OUTCOME_ABANDONED,
@@ -10,7 +11,7 @@ import {
   STATUS_RETIREMENT,
   STATUS_SUSPENDED,
   STATUS_INTERRUPTED,
-} from '../../../helpers/keyValueScore/constants';
+} from '@Helpers/keyValueScore/constants';
 
 export function stressTests({ matchUpFormat, setTo, games2Win = 2 }) {
   singleSetStressTests({ matchUpFormat, setTo });

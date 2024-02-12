@@ -1,5 +1,6 @@
-import { parse } from '../../helpers/matchUpFormatCode/parse';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 
+// constants
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type CheckSetIsCompleteArgs = {

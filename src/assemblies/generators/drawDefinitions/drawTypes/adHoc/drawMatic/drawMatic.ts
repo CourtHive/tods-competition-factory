@@ -1,17 +1,14 @@
 import { generateDrawMaticRound, DrawMaticRoundResult } from './generateDrawMaticRound';
-import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import { getParticipantIds } from './getParticipantIds';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { getAdHocRatings } from './getAdHocRatings';
 import { generateRange } from '@Tools/arrays';
-import { isObject } from '@Tools/objects';
 
 // types and constants
 import { INVALID_DRAW_DEFINITION, INVALID_VALUES, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
-import { DrawMaticArgs, ScaleAttributes, ResultType } from '@Types/factoryTypes';
-import { Structure, EventTypeUnion, MatchUp } from '@Types/tournamentTypes';
 import { AD_HOC, stageOrder } from '@Constants/drawDefinitionConstants';
-import { DYNAMIC, RATING } from '@Constants/scaleConstants';
-import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { DrawMaticArgs, ResultType } from '@Types/factoryTypes';
+import { Structure, MatchUp } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
 export function drawMatic(
@@ -27,9 +24,6 @@ export function drawMatic(
   if (structureResult.error) return structureResult;
 
   const adHocRatings = getAdHocRatings(params);
-
-  // TODO: update dynamic ratings based on matchUps present from last played round
-  // use scaleEngine.generateDynamicRatings(); see dynamicCalculations.test.ts
 
   const isMock = params.tournamentRecord?.isMock ?? params.isMock;
   const eventType = params.eventType ?? params.event?.eventType;
@@ -60,60 +54,6 @@ export function drawMatic(
   }
 
   return { ...SUCCESS, matchUps, roundResults };
-}
-
-type GetScaleValueArgs = {
-  scaleAccessor?: string;
-  eventType?: EventTypeUnion;
-  scaleType?: string;
-  scaleName: string;
-  participant: any;
-};
-
-function getScaleValue({ scaleType = RATING, scaleAccessor, participant, scaleName, eventType }: GetScaleValueArgs) {
-  const scaleAttributes: ScaleAttributes = {
-    eventType: eventType ?? SINGLES_EVENT,
-    scaleType,
-    scaleName,
-  };
-  const result =
-    participant &&
-    participantScaleItem({
-      scaleAttributes,
-      participant,
-    });
-
-  const scaleValue = result?.scaleItem?.scaleValue;
-  return scaleAccessor && isObject(scaleValue) ? scaleValue[scaleAccessor] : scaleValue;
-}
-
-function getAdHocRatings(params) {
-  const { tournamentRecord, participantIds, scaleAccessor, scaleName, eventType, adHocRatings = {} } = params;
-
-  const tournamentParticipants = tournamentRecord.participants ?? [];
-  for (const participantId of participantIds ?? []) {
-    const participant = tournamentParticipants?.find((participant) => participant.participantId === participantId);
-    // first see if there is already a dynamic value
-    let scaleValue = getScaleValue({
-      scaleName: `${scaleName}.${DYNAMIC}`,
-      scaleAccessor,
-      participant,
-      eventType,
-    });
-    // if no dynamic value found and a seeding scaleValue is provided...
-    if (!scaleValue && scaleName) {
-      scaleValue = getScaleValue({
-        scaleAccessor,
-        participant,
-        scaleName,
-        eventType,
-      });
-    }
-
-    if (scaleValue && !adHocRatings[participantId]) adHocRatings[participantId] = scaleValue;
-  }
-
-  return adHocRatings;
 }
 
 function getAdHocStructure(params): ResultType & { structure?: Structure } {

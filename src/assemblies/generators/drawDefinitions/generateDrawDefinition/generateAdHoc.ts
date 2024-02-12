@@ -46,12 +46,14 @@ export function generateAdHoc(params) {
 }
 
 function automateAdHoc(params) {
-  const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName } = params.drawMatic ?? {};
+  const { restrictEntryStatus, generateMatchUps, structureId, matchUpIds, scaleName, scaleAccessor } =
+    params.drawMatic ?? {};
 
   const result = drawMatic({
     ...params,
     eventType: params.drawMatic?.eventType ?? params.matchUpType,
     generateMatchUps: generateMatchUps ?? true,
+    scaleAccessor: scaleAccessor ?? params.scaleAccessor, // custom rating name to seed dynamic ratings
     scaleName: scaleName ?? params.scaleName, // custom rating name to seed dynamic ratings
     participantIds: params.participantIds,
     roundsCount: params.roundsCount,

@@ -1,9 +1,10 @@
-import { keyValueMatchUpScore } from '../../../helpers/keyValueScore/keyValueScore';
+import { keyValueMatchUpScore } from '@Helpers/keyValueScore/keyValueScore';
 import { stressTests } from './standardStress';
 import { expect, it } from 'vitest';
 
-import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+// constants and fixtures
 import { TIEBREAK_CLOSER, scoreMatchUp, enterValues } from './primitives';
+import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 /*
   NOTE:

@@ -501,7 +501,8 @@ export type DrawMaticArgs = {
   salted?: number | boolean;
   participantIds?: string[];
   encounterValue?: number;
-  sameTeamValue?: number;
+  sameTeamValue?: number; // only required if not present in ratingsParameters.ts
+  scaleAccessor?: string;
   maxIterations?: number;
   matchUpIds?: string[];
   structure?: Structure;
