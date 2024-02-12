@@ -23,7 +23,7 @@ type SwapRoundsArgs = {
   event?: Event;
 };
 
-export function swapRounds(params: SwapRoundsArgs) {
+export function swapAdHocRounds(params: SwapRoundsArgs) {
   const check = checkRoundsArgs(params, [
     {
       roundNumbers: true,

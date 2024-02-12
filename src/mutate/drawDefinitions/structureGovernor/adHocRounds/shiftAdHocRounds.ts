@@ -22,7 +22,7 @@ type ShiftRoundsArgs = {
   structureId: string;
 };
 
-export function shiftRounds(params: ShiftRoundsArgs) {
+export function shiftAdHocRounds(params: ShiftRoundsArgs) {
   const check = checkRoundsArgs(params, [
     {
       targetRoundNumber: true,

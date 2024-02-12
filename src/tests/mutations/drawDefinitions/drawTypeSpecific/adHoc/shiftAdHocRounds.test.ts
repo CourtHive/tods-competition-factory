@@ -1,3 +1,4 @@
+/* eslint-disable sonarjs/no-duplicate-string */
 import { setSubscriptions } from '@Global/state/syncGlobalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
@@ -15,15 +16,52 @@ import {
 } from '@Constants/errorConditionConstants';
 
 const scenarios: any[] = [
-  { drawType: SINGLE_ELIMINATION, drawSize: 8 },
+  { drawType: SINGLE_ELIMINATION, drawSize: 8, targetRoundNumber: 3, roundNumber: 2 },
   {
-    swapRounds: [2, 4],
+    targetRoundNumber: 4,
+    roundNumber: 2,
+
+    drawType: AD_HOC,
+    automated: false,
+    roundsCount: 4,
+    drawSize: 0,
+  },
+  {
     drawType: AD_HOC,
     automated: true,
     roundsCount: 4,
     drawSize: 5,
+
+    targetRoundNumber: 4,
+    roundNumber: 2,
+
     expectation: {
-      modifiedMatchUpsCount: 4,
+      modifiedMatchUpsCount: 6,
+      matchUpIds: [
+        ['drawId-m-1-0', 'drawId-m-1-1'],
+        ['drawId-m-2-0', 'drawId-m-2-1'],
+        ['drawId-m-3-0', 'drawId-m-3-1'],
+        ['drawId-m-4-0', 'drawId-m-4-1'],
+      ],
+      shiftedMatchUpIds: [
+        ['drawId-m-1-0', 'drawId-m-1-1'],
+        ['drawId-m-3-0', 'drawId-m-3-1'],
+        ['drawId-m-4-0', 'drawId-m-4-1'],
+        ['drawId-m-2-0', 'drawId-m-2-1'],
+      ],
+    },
+  },
+  {
+    drawType: AD_HOC,
+    automated: true,
+    roundsCount: 4,
+    drawSize: 5,
+
+    targetRoundNumber: 2,
+    roundNumber: 4,
+
+    expectation: {
+      modifiedMatchUpsCount: 6,
       matchUpIds: [
         ['drawId-m-1-0', 'drawId-m-1-1'],
         ['drawId-m-2-0', 'drawId-m-2-1'],
@@ -33,16 +71,10 @@ const scenarios: any[] = [
       shiftedMatchUpIds: [
         ['drawId-m-1-0', 'drawId-m-1-1'],
         ['drawId-m-4-0', 'drawId-m-4-1'],
-        ['drawId-m-3-0', 'drawId-m-3-1'],
         ['drawId-m-2-0', 'drawId-m-2-1'],
+        ['drawId-m-3-0', 'drawId-m-3-1'],
       ],
     },
-  },
-  {
-    drawType: AD_HOC,
-    automated: false,
-    roundsCount: 4,
-    drawSize: 0,
   },
 ];
 
@@ -51,7 +83,7 @@ const getIdMap = (matchUps) =>
     round.map((matchUp) => matchUp.matchUpId),
   );
 
-test.each(scenarios)('can swap AD_HOC rounds', (scenario) => {
+test.each(scenarios)('can shift AD_HOC rounds', (scenario) => {
   let modifiedMatchUpsCount = 0;
   setSubscriptions({
     subscriptions: { [MODIFY_MATCHUP]: (matchUps) => (modifiedMatchUpsCount += matchUps?.length || 0) },
@@ -87,15 +119,52 @@ test.each(scenarios)('can swap AD_HOC rounds', (scenario) => {
   }
 
   const structureId = mainStructure.structureId;
-  let result = tournamentEngine.swapRounds();
+  let result = tournamentEngine.shiftAdHocRounds();
   expect(result.error).toEqual(MISSING_DRAW_DEFINITION);
-  result = tournamentEngine.swapRounds({ drawId });
+  result = tournamentEngine.shiftAdHocRounds({ drawId });
   expect(result.error).toEqual(MISSING_STRUCTURE_ID);
-  result = tournamentEngine.swapRounds({ drawId, structureId });
+  result = tournamentEngine.shiftAdHocRounds({ drawId, structureId });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = tournamentEngine.swapRounds({
-    roundNumbers: [0, 100],
+  if (scenario.drawType === AD_HOC && scenario.drawSize > 0) {
+    result = tournamentEngine.shiftAdHocRounds({
+      roundNumber: scenario.roundNumber,
+      targetRoundNumber: 100,
+      structureId,
+      drawId,
+    });
+
+    expect(result.error).toEqual(INVALID_VALUES);
+  }
+
+  result = tournamentEngine.shiftAdHocRounds({
+    roundNumber: scenario.roundNumber,
+    targetRoundNumber: 0,
+    structureId,
+    drawId,
+  });
+
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.shiftAdHocRounds({
+    roundNumber: scenario.roundNumber,
+    targetRoundNumber: 'y',
+    structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.shiftAdHocRounds({
+    targetRoundNumber: scenario.targetRoundNumber,
+    roundNumber: 'x',
+    structureId,
+    drawId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.shiftAdHocRounds({
+    targetRoundNumber: scenario.targetRoundNumber,
+    roundNumber: scenario.roundNumber,
     structureId,
     drawId,
   });
@@ -106,27 +175,6 @@ test.each(scenarios)('can swap AD_HOC rounds', (scenario) => {
   // drawSize of 0 does not support swapping rounds
   if (scenario.drawSize === 0) return expect(result.error).toEqual(MISSING_MATCHUPS);
 
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  result = tournamentEngine.swapRounds({
-    roundNumbers: [1, 2, 3],
-    structureId,
-    drawId,
-  });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  result = tournamentEngine.swapRounds({
-    roundNumbers: ['a', 'b'],
-    structureId,
-    drawId,
-  });
-  expect(result.error).toEqual(INVALID_VALUES);
-
-  result = tournamentEngine.swapRounds({
-    roundNumbers: scenario.swapRounds,
-    structureId,
-    drawId,
-  });
   expect(result.success).toEqual(true);
 
   if (scenario.expectation?.modifiedMatchUpsCount)
