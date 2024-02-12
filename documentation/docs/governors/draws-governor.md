@@ -453,6 +453,35 @@ engine.setSubOrder({
 
 ---
 
+## shiftAdHocRounds
+
+Move `roundNumber` to `targetRoundNumber`.
+
+```js
+tournamentEngine.shiftAdHocRounds({
+  targetRoundNumber,
+  roundNumber,
+  structureId,
+  drawId,
+});
+```
+
+---
+
+## swapAdHocRounds
+
+Swap `roundNumbers`. Must provide an array of two valid `roundNumbers`.
+
+```js
+tournamentEngine.swapAdHocRounds({
+  roundNumbers: [2, 4],
+  structureId,
+  drawId,
+});
+```
+
+---
+
 ## swapDrawPositionAssignments
 
 Swaps the `participantIds` of two `drawPositions`.
