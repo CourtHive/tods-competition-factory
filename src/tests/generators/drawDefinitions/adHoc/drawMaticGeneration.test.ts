@@ -1,11 +1,11 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import { generateRange, unique } from '@Tools/arrays';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 
-import tournamentEngine from '@Engines/syncEngine';
-
+// constants
 import { EXISTING_MATCHUP_ID, INVALID_VALUES, MISSING_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';

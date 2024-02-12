@@ -23,7 +23,7 @@ export function drawMatic(
   const idsResult = getParticipantIds(params);
   if (idsResult.error) return idsResult;
 
-  const structureResult = getStructure(params);
+  const structureResult = getAdHocStructure(params);
   if (structureResult.error) return structureResult;
 
   const adHocRatings = getAdHocRatings(params);
@@ -116,7 +116,7 @@ function getAdHocRatings(params) {
   return adHocRatings;
 }
 
-function getStructure(params): ResultType & { structure?: Structure } {
+function getAdHocStructure(params): ResultType & { structure?: Structure } {
   if (params.structureId) return params.structureId;
 
   const drawDefinition = params.drawDefinition;

@@ -52,12 +52,12 @@ function automateAdHoc(params) {
     ...params,
     eventType: params.drawMatic?.eventType ?? params.matchUpType,
     generateMatchUps: generateMatchUps ?? true,
+    scaleName: scaleName ?? params.scaleName, // custom rating name to seed dynamic ratings
     participantIds: params.participantIds,
     roundsCount: params.roundsCount,
     restrictEntryStatus,
     structureId,
     matchUpIds,
-    scaleName, // custom rating name to seed dynamic ratings
   });
   if (result.error) return result;
 

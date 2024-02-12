@@ -507,12 +507,10 @@ export type DrawMaticArgs = {
   structure?: Structure;
   roundsCount?: number;
   structureId?: string;
+  scaleName?: string; // can be custom rating name to seed dynamic ratings
   idPrefix?: string;
   isMock?: boolean;
   event: Event;
-
-  scaleAccessor?: string;
-  scaleName?: string; // custom rating name to seed dynamic ratings
 };
 
 export type ResultType = {
