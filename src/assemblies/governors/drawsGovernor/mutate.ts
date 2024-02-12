@@ -11,6 +11,8 @@ export { swapDrawPositionAssignments } from '@Mutate/drawDefinitions/swapDrawPos
 export { modifySeedAssignment } from '@Mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
 export { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
 export { setStructureOrder } from '@Mutate/drawDefinitions/structureGovernor/setStructureOrder';
+export { shiftRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/shiftRounds';
+export { swapRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/swapRounds';
 export { attachQualifyingStructure } from '@Mutate/drawDefinitions/attachQualifyingStructure';
 export { renameStructures } from '@Mutate/drawDefinitions/structureGovernor/renameStructures';
 export { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
