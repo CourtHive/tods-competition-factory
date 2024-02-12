@@ -4,7 +4,9 @@ export { withdrawParticipantAtDrawPosition } from '@Mutate/drawDefinitions/withd
 export { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
 export { luckyLoserDrawPositionAssignment } from '@Mutate/drawDefinitions/luckyLoserDrawPositionAssignment';
 export { alternateDrawPositionAssignment } from '@Mutate/drawDefinitions/alternateDrawPositionAssignment';
+export { shiftAdHocRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/shiftAdHocRounds';
 export { setPositionAssignments } from '@Mutate/drawDefinitions/positionGovernor/setPositionAssignments';
+export { swapAdHocRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/swapAdHocRounds';
 export { qualifierDrawPositionAssignment } from '@Mutate/drawDefinitions/qualifierDrawPositionAssignment';
 export { removeDrawPositionAssignment } from '@Mutate/drawDefinitions/removeDrawPositionAssignment';
 export { swapDrawPositionAssignments } from '@Mutate/drawDefinitions/swapDrawPositionAssignments';
