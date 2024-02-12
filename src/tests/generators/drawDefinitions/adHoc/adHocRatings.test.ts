@@ -65,7 +65,7 @@ it.each(scenarios)('can generate level based rounds with WTN', (scenario) => {
   expect(participants.every(({ ratings }) => ratings.SINGLES?.[0]?.scaleValue?.[valueAccessor])).toEqual(true);
 });
 
-it.each(scenarios)('will update adHocRatings', (scenario) => {
+it.each(scenarios)('will update adHocRatings and use DYNAMIC ratings for subsequent round generation', (scenario) => {
   const drawId = 'drawId';
   const drawSize = 32;
 
