@@ -74,17 +74,7 @@ const { matchUps } = engine.generateAdHocRounds({
   matchUpIds, // optional - if matchUpIds are not specified UUIDs are generated
   newRound, // optional - boolean defaults to false - whether to auto-increment to next roundNumber
   drawId, // required - drawId of drawDefinition in which target structure is found
-};
-
-export function generateAdHocRounds(params: GenerateAdHocRoundsArgs): ResultType & { matchUps?: MatchUp[] } {
-  const matchUps: MatchUp[] = [];
-  const { roundsCount = 1, drawDefinition, matchUpsCount, structureId, idPrefix, isMock, event } = params;
-  let roundNumber;
-
-  const idsResult = getParticipantIds(params);
-  if (idsResult.error) return idsResult;
-
-})
+});
 ```
 
 ---
