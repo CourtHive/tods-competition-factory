@@ -1,17 +1,19 @@
 import { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
-import { validateAndDeriveDrawValues } from '@Generators/drawDefinitions/validateAndDeriveDrawValues';
 import { getDrawFormat } from '@Generators/drawDefinitions/getDrawFormat';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { generateOrGetExisting } from './generateOrGetExisting';
 import { qualifyingGeneration } from './qualifyingGeneration';
 import { constantToString } from '@Tools/strings';
+import {
+  getFilteredEntries,
+  validateAndDeriveDrawValues,
+} from '@Generators/drawDefinitions/validateAndDeriveDrawValues';
 
 // constants and types
-import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { GenerateDrawDefinitionArgs, ResultType } from '@Types/factoryTypes';
-import { DrawDefinition, Entry } from '@Types/tournamentTypes';
+import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
 export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): ResultType & {
@@ -36,10 +38,7 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
     tournamentRecord,
   });
 
-  const eventEntries =
-    event?.entries?.filter(
-      (entry: Entry) => entry.entryStatus && [...STRUCTURE_SELECTED_STATUSES, QUALIFIER].includes(entry.entryStatus),
-    ) ?? [];
+  const eventEntries = getFilteredEntries(event?.entries) ?? [];
 
   const validDerivedResult = validateAndDeriveDrawValues({
     ...params, // order is important here
