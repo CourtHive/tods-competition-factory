@@ -19,7 +19,7 @@ type GenerateAdHocMatchUpsArgs = {
     participantIds: [string | undefined, string | undefined];
   }[];
   ignoreLastRoundNumber?: boolean;
-  restrictMatchUpsCount?: boolean;
+  restrictMatchUpsCount?: boolean; // defaults to true
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   matchUpsCount?: number; // number of matchUps to be generated
@@ -67,8 +67,8 @@ export function generateAdHocMatchUps(params: GenerateAdHocMatchUpsArgs): {
     return { error: INVALID_VALUES, info: 'matchUpsCount or pairings error' };
   }
 
-  if (matchUpsCount && matchUpsCount > 25) {
-    return { error: INVALID_VALUES, info: 'matchUpsCount must be less than 25' };
+  if (matchUpsCount && params.restrictMatchUpsCount !== false && matchUpsCount > 32) {
+    return { error: INVALID_VALUES, info: 'matchUpsCount must be less than 33' };
   }
 
   if (roundNumber && !params.ignoreLastRoundNumber && roundNumber - 1 > (lastRoundNumber || 0)) {
