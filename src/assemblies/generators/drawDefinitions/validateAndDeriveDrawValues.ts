@@ -12,7 +12,7 @@ import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '@Constants/pol
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '@Constants/errorConditionConstants';
 import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
-import { DrawTypeUnion } from '@Types/tournamentTypes';
+import { DrawTypeUnion, Entry } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   AD_HOC,
@@ -22,6 +22,7 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '@Constants/drawDefinitionConstants';
+import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 
 export function validateAndDeriveDrawValues(params): ResultType & {
   policyDefinitions?: PolicyDefinitions;
@@ -36,7 +37,7 @@ export function validateAndDeriveDrawValues(params): ResultType & {
   const enforceGender = getEnforceGender({ ...params, policyDefinitions, appliedPolicies });
   const consideredEntries = getConsideredEntries(params);
 
-  const entriesAreValid = checkEntriesAreValid({ ...params, appliedPolicies });
+  const entriesAreValid = checkEntriesAreValid({ ...params, consideredEntries, appliedPolicies });
   if (entriesAreValid?.error) return decorateResult({ result: entriesAreValid, stack });
 
   const drawSize = getDerivedDrawSize({ ...params, consideredEntries });
@@ -93,10 +94,17 @@ function getDrawType(params): ResultType & { drawType?: DrawTypeUnion } {
   return { drawType: coercedDrawType.drawType };
 }
 
-function getConsideredEntries({ considerEventEntries = true, drawEntries, eventEntries, qualifyingOnly }) {
-  return ((qualifyingOnly && []) || drawEntries || (considerEventEntries ? eventEntries : [])).filter(
-    ({ entryStage }) => !entryStage || entryStage === MAIN,
+export function getFilteredEntries(entries?: Entry[]) {
+  return entries?.filter(
+    (entry) => entry.entryStatus && [...STRUCTURE_SELECTED_STATUSES, QUALIFIER].includes(entry.entryStatus),
   );
+}
+function getConsideredEntries({ considerEventEntries = true, drawEntries, eventEntries, qualifyingOnly }) {
+  return (
+    (qualifyingOnly && []) ||
+    getFilteredEntries(drawEntries) ||
+    (considerEventEntries ? eventEntries : [])
+  ).filter(({ entryStage }) => !entryStage || entryStage === MAIN);
 }
 
 function getPolicies(params) {
