@@ -41,8 +41,8 @@ export function getParticipantIds(params): ResultType & { participantIds?: strin
     return { error: INVALID_VALUES, info: 'Not enough participants for roundsCount' };
   }
 
-  if (params.roundsCount && params.roundsCount > 25) {
-    return { error: INVALID_VALUES, info: 'roundsCount must be less than 25' };
+  if (params.roundsCount && params.restrictRoundsCount !== false && params.roundsCount > 31) {
+    return { error: INVALID_VALUES, info: 'roundsCount must be less than 32' };
   }
 
   return { participantIds };
