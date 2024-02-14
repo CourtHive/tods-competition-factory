@@ -99,7 +99,6 @@
     "prepublishOnly": "./addVersion $npm_package_version && pinst --disable",
     "postpublish": "pinst --enable",
     "doc:publish": "cd documentation && GIT_USER=CourtHive USE_SSH=true pnpm docpub",
-    "generate-types": "quicktype -s schema src/global/schema/tournament.schema.json -o src/types/tournamentFromSchema.ts --just-types -t Tournament",
     "shakeable": "npx agadoo dist/tods-competition-factory.cjs.min.js",
     "check-types": "tsc --noEmit"
   },
@@ -168,7 +167,6 @@
     "pinst": "3.0.0",
     "prettier": "3.2.5",
     "prettier-eslint": "16.3.0",
-    "quicktype": "23.0.82",
     "reflect-metadata": "0.2.1",
     "rimraf": "5.0.5",
     "rollup": "4.10.0",
