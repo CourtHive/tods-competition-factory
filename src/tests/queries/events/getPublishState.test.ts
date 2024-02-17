@@ -162,12 +162,10 @@ test('calling getPublishState directly', () => {
   result = getPublishState({ tournamentRecord: {} });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  // @ts-expect-error missing params
   result = getPublishState({ tournamentRecord: { tournamentId: 'tid' }, eventId: 'boo' });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   // just for test coverage
-  // @ts-expect-error missing params
   result = getPublishState({ tournamentRecord: { tournamentId: 'tid' } });
   // expect(result.publishState.tournament).toBeUndefined();
 
@@ -175,7 +173,6 @@ test('calling getPublishState directly', () => {
     events: [{ eventId: 'e6' }],
     tournamentId: 'tid',
   };
-  // @ts-expect-error missing params
   result = getPublishState({ tournamentRecord });
   expect(result.publishState.e6.status.published).toEqual(false);
 
@@ -192,7 +189,6 @@ test('calling getPublishState directly', () => {
     },
   ];
 
-  // @ts-expect-error missing params
   result = getPublishState({ tournamentRecord });
   expect(result.publishState.e6.status.published).toEqual(true);
 });
