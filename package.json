@@ -115,7 +115,7 @@
     "@babel/preset-typescript": "7.23.3",
     "@commitlint/cli": "18.6.1",
     "@commitlint/config-conventional": "18.6.2",
-    "@dep-tree/cli": "0.19.8",
+    "@dep-tree/cli": "0.19.9",
     "@nestjs/class-transformer": "0.4.0",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/cli": "10.3.2",
