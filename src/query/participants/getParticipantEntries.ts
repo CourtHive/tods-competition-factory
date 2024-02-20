@@ -97,7 +97,9 @@ export function getParticipantEntries(params) {
     const publishedSeeding = publishStatuses?.status?.publishedSeeding;
 
     if (withEvents || withSeeding || withRankingProfile) {
-      const extensionConversions = convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions)) : {};
+      const extensionConversions = convertExtensions
+        ? Object.assign({}, ...extensionsToAttributes(extensions ?? []))
+        : {};
 
       derivedEventInfo[eventId] = {
         ...extensionConversions,

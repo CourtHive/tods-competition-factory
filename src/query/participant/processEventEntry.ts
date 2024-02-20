@@ -14,7 +14,7 @@ export function processEventEntry({
   const { entryStatus, entryStage, entryPosition, extensions } = entry;
 
   const entryExtensions =
-    extensions?.length && convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions)) : {};
+    extensions?.length && convertExtensions ? Object.assign({}, ...extensionsToAttributes(extensions ?? [])) : {};
 
   const attributes = Object.assign(entryExtensions, {
     entryPosition,

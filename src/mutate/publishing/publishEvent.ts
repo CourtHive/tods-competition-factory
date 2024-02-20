@@ -3,7 +3,7 @@ import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getEventData } from '@Query/event/getEventData';
-import { addNotice } from '@Global/state/globalState';
+import { addNotice, getTopics } from '@Global/state/globalState';
 
 // constants and types
 import { Event, Tournament } from '@Types/tournamentTypes';
@@ -37,8 +37,9 @@ export type DrawPublishingDetails = {
 type PublishEventType = {
   includePositionAssignments?: boolean; // include positionAssignments in eventData
   policyDefinitions?: PolicyDefinitions;
-  removePriorValues?: boolean;
   tournamentRecord: Tournament;
+  removePriorValues?: boolean;
+  returnEventData?: boolean;
   drawIds?: string[];
   status?: string;
   event?: Event;
@@ -202,18 +203,25 @@ export function publishEvent(params: PublishEventType) {
     event,
   });
 
-  const { eventData } = getEventData({
-    includePositionAssignments,
-    usePublishState: true,
-    tournamentRecord,
-    policyDefinitions,
-    event,
-  });
+  const { topics } = getTopics();
+  const notify = topics.includes(PUBLISH_EVENT);
 
-  addNotice({
-    payload: { eventData, tournamentId: tournamentRecord.tournamentId },
-    topic: PUBLISH_EVENT,
-  });
+  const eventData =
+    notify || params.returnEventData
+      ? getEventData({
+          includePositionAssignments,
+          usePublishState: true,
+          tournamentRecord,
+          policyDefinitions,
+          event,
+        })?.eventData
+      : undefined;
+
+  notify &&
+    addNotice({
+      payload: { eventData, tournamentId: tournamentRecord.tournamentId },
+      topic: PUBLISH_EVENT,
+    });
 
   return { ...SUCCESS, eventData };
 }
