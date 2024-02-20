@@ -6,7 +6,11 @@ export { addExtension } from '@Mutate/extensions/addExtension';
 
 export { setTournamentName, setTournamentNotes, setTournamentCategories } from '@Mutate/tournaments/tournamentDetails';
 
-export { setTournamentDates, setTournamentEndDate, setTournamentStartDate } from '@Mutate/tournaments/tournamentDates';
+export {
+  setTournamentDates,
+  setTournamentEndDate,
+  setTournamentStartDate,
+} from '@Mutate/tournaments/setTournamentDates';
 
 export {
   addTimeItem,

@@ -55,8 +55,16 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   const datesAdded = resultingDateRange.filter((date) => !initialDateRange.includes(date));
 
   for (const event of tournamentRecord.events ?? []) {
-    if (startDate && event.startDate && new Date(startDate) > new Date(event.startDate)) event.startDate = startDate;
-    if (endDate && event.endDate && new Date(endDate) < new Date(event.endDate)) event.endDate = endDate;
+    // if event startDate is earlier than tournament startDate, coerce event startDate to tournament startDate
+    if (startDate && event.startDate && new Date(event.startDate) < new Date(startDate)) event.startDate = startDate;
+    // if event startDate is later than tournament endDate, coerce event startDate to tournament startDate or endDate
+    if (endDate && event.startDate && new Date(event.startDate) > new Date(endDate))
+      event.startDate = startDate ?? endDate;
+    // if event endDate is greater than tournament endDate, coerce event endDate to tournament endDate
+    if (endDate && event.endDate && new Date(event.endDate) > new Date(endDate)) event.endDate = endDate;
+    // if tournament startDate is greater than event endDate, coerce event endDate to tournament endDate or startDate
+    if (startDate && event.endDate && new Date(event.endDate) < new Date(startDate))
+      event.endDate = endDate ?? startDate;
   }
 
   // if there is a startDate specified after current endDate, endDate must be set to startDate
