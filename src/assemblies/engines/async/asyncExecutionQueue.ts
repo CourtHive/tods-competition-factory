@@ -45,7 +45,7 @@ export async function asyncExecutionQueue(engine: FactoryEngine, directives: Dir
   const timeStamp = Date.now();
 
   const mutationStatus = getMutationStatus({ timeStamp });
-  notifySubscribersAsync({ directives, mutationStatus, timeStamp });
+  await notifySubscribersAsync({ directives, mutationStatus, timeStamp });
   deleteNotices();
 
   const success = results.every((r) => r.success);
