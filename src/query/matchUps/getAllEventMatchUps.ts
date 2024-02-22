@@ -1,12 +1,12 @@
 import { getScheduleTiming } from '../extensions/matchUpFormatTiming/getScheduleTiming';
-import { definedAttributes } from '@Tools/definedAttributes';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
 import { getContextContent } from '../hierarchical/getContextContent';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getAllDrawMatchUps } from './drawMatchUps';
 
+import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { GetMatchUpsArgs } from '@Types/factoryTypes';
-import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 
 export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;
