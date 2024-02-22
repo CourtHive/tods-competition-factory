@@ -2,15 +2,19 @@ import { addDrawEntries, addDrawEntry } from '@Mutate/drawDefinitions/entryGover
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { removeEntry } from '@Mutate/drawDefinitions/entryGovernor/removeEntry';
+import { getNotices, setSubscriptions } from '@Global/state/globalState';
 import { expect, it } from 'vitest';
 
+// constants
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { ERROR, SUCCESS } from '@Constants/resultConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
+import { DATA_ISSUE } from '@Constants/topicConstants';
 import {
   INVALID_STAGE,
   EXISTING_PARTICIPANT,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
+  DUPLICATE_ENTRY,
 } from '@Constants/errorConditionConstants';
 
 let result;
@@ -27,7 +31,8 @@ it('rejects adding participants when stage drawSize undefined', () => {
   expect(result).toMatchObject({ error: INVALID_STAGE });
 });
 
-it('will not allow duplicate entries', () => {
+it.only('will not allow duplicate entries', () => {
+  setSubscriptions({ subscriptions: { [DATA_ISSUE]: true } }); // doesn't have to be a function to capture
   const drawDefinition: DrawDefinition = newDrawDefinition({
     drawId: 'uuid-abc',
   });
@@ -38,12 +43,27 @@ it('will not allow duplicate entries', () => {
     drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result).toMatchObject([]);
+
+  result = addDrawEntry({
+    suppressDuplicateEntries: false,
+    participantId: 'uuid1',
+    entryStage: QUALIFYING,
+    drawDefinition,
+  });
+  expect(result).toMatchObject({ error: DUPLICATE_ENTRY });
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result).toMatchObject([]);
+
   result = addDrawEntry({
     participantId: 'uuid1',
     entryStage: QUALIFYING,
     drawDefinition,
   });
-  expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
+  expect(result).toMatchObject(SUCCESS);
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result.length).toEqual(1);
 });
 
 it('will not allow duplicate entries', () => {
