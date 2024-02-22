@@ -1,19 +1,20 @@
 import { getDrawId, getParticipantId } from '@Functions/global/extractors';
-import { addScheduleItem } from '@Query/matchUps/addScheduleItem';
 import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
 import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { structureSort } from '@Functions/sorters/structureSort';
 import { processEventEntry } from '../participant/processEventEntry';
-import { timeSort, timeStringMinutes } from '@Tools/dateTime';
 import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
+import { addScheduleItem } from '@Query/matchUps/addScheduleItem';
+import { structureSort } from '@Functions/sorters/structureSort';
+import { getPublishState } from '../publishing/getPublishState';
+import { timeSort, timeStringMinutes } from '@Tools/dateTime';
 import { extensionsToAttributes } from '@Tools/makeDeepCopy';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { stringSort } from '@Functions/sorters/stringSort';
-import { getPublishState } from '../publishing/getPublishState';
 import { getFlightProfile } from '../event/getFlightProfile';
 import { processSides } from '../matchUps/processSides';
 import { isObject } from '@Tools/objects';
 
+// constants and types
 import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
@@ -247,7 +248,7 @@ export function getParticipantEntries(params) {
           // IMPORTANT NOTE!
           // id is the pair, team or individual participant currently being processed
           // whereas participantId is the id of the entry into the draw
-          const addDrawEntry = (id) => {
+          const addParticipantDrawEntry = (id) => {
             if (participantMap[id].draws?.[drawId]) return;
 
             const includeSeeding = withSeeding && seedingPublished;
@@ -313,12 +314,12 @@ export function getParticipantEntries(params) {
           };
 
           if (![UNGROUPED, UNPAIRED].includes(entryStatus)) {
-            addDrawEntry(participantId);
+            addParticipantDrawEntry(participantId);
 
             const individualParticipantIds = participantMap[participantId].participant.individualParticipantIds || [];
 
             // add for individualParticipantIds when participantType is TEAM/PAIR
-            individualParticipantIds?.forEach(addDrawEntry);
+            individualParticipantIds?.forEach(addParticipantDrawEntry);
           }
         }
 
