@@ -57,7 +57,7 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs): ResultType
   const matchUpsToDelete =
     existingMatchUps?.filter(({ matchUpId, score, winningSide }) => {
       if (winningSide && !removeCompleted) return false;
-      if (checkScoreHasValue({ score })) {
+      if (winningSide || checkScoreHasValue({ score })) {
         if (!winningSide && !removeIncomplete) return false;
         matchUpIdsWithScoreValue.push(matchUpId);
       } else if (!removeUnAssigned) return false;
