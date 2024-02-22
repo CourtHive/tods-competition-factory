@@ -4,9 +4,10 @@ import { getContextContent } from '../hierarchical/getContextContent';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getAllDrawMatchUps } from './drawMatchUps';
 
+// constants and types
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';
-import { HydratedMatchUp } from '@Types/hydrated';
 import { GetMatchUpsArgs } from '@Types/factoryTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 export function allEventMatchUps(params: GetMatchUpsArgs) {
   let { participants = [], contextContent, participantMap } = params;

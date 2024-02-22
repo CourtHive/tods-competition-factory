@@ -8,6 +8,10 @@ export const ANACHRONISM = {
   message: 'Chronological error; time violation.',
   code: 'ANACHRONISM',
 };
+export const DUPLICATE_ENTRY = {
+  message: 'Duplicate entry',
+  code: 'DUPLICATE_ENTRY',
+};
 export const CANNOT_REMOVE_MAIN_STRUCTURE = {
   message: 'Cannot remove main structure',
   code: 'ERR_CANNOT_REMOVE_MAIN_STRUCTURE',
@@ -791,6 +795,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
   DRAW_SIZE_MISMATCH,
+  DUPLICATE_ENTRY,
   DUPLICATE_VALUE,
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
   ENTRY_STATUS_NOT_ALLOWED_IN_STAGE,

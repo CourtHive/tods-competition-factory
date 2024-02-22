@@ -5,10 +5,10 @@
 
 import { getIndividualParticipantIds } from '@Query/matchUp/getIndividualParticipantIds';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
-import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { allCompetitionMatchUps } from './getAllCompetitionMatchUps';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { allDrawMatchUps } from './getAllDrawMatchUps';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { findEvent } from '@Acquire/findEvent';
 
 // constants and types

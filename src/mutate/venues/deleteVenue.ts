@@ -1,10 +1,11 @@
-import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { addNotice } from '@Global/state/globalState';
 
+// constants and types
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';
 import { Tournament, Venue } from '@Types/tournamentTypes';
 import { DELETE_VENUE } from '@Constants/topicConstants';

@@ -4,6 +4,7 @@ export const ADD_PARTICIPANTS = 'addParticipants';
 export const ADD_SCALE_ITEMS = 'addScaleItems';
 export const ADD_VENUE = 'addVenue';
 export const AUDIT = 'audit';
+export const DATA_ISSUE = 'dataIssue';
 export const DELETE_PARTICIPANTS = 'deleteParticipants';
 export const DELETE_VENUE = 'deleteVenue';
 export const DELETED_DRAW_IDS = 'deletedDrawIds';
@@ -33,6 +34,7 @@ export const topicConstants = {
   ADD_SCALE_ITEMS,
   ADD_VENUE,
   AUDIT,
+  DATA_ISSUE,
   DELETE_PARTICIPANTS,
   DELETE_VENUE,
   DELETED_DRAW_IDS,
