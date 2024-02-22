@@ -31,7 +31,7 @@ it('rejects adding participants when stage drawSize undefined', () => {
   expect(result).toMatchObject({ error: INVALID_STAGE });
 });
 
-it.only('will not allow duplicate entries', () => {
+it('will not allow duplicate entries', () => {
   setSubscriptions({ subscriptions: { [DATA_ISSUE]: true } }); // doesn't have to be a function to capture
   const drawDefinition: DrawDefinition = newDrawDefinition({
     drawId: 'uuid-abc',
