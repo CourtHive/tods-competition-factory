@@ -1,9 +1,10 @@
-import { assignMatchUpCourt } from './assignMatchUpCourt';
-import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { decorateResult } from '@Functions/global/decorateResult';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
+import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { assignMatchUpCourt } from './assignMatchUpCourt';
 
+// constants
 import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/matchUpTypes';
 import {

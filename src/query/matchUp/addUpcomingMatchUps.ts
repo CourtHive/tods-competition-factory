@@ -110,6 +110,7 @@ export function addUpcomingMatchUps({ drawDefinition, inContextDrawMatchUps }) {
           if (loserMatchUp && firstMatchUp && loserPotentials.length < 2) {
             loserPotentials.push({ bye: true, tbd: true }); // tbd: true indiciates that for FMLC, WO/DEF could propagate a player
           }
+
           if (winnerPotentials?.length && winnerMatchUp) {
             // -----------------------------------------------------
             // when targetMatchUpIds are not present in source data

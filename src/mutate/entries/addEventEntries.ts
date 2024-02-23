@@ -29,6 +29,7 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
+import { unique } from '@Tools/arrays';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -36,8 +37,9 @@ import {
 
 type AddEventEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
-  drawDefinition?: DrawDefinition;
+  suppressDuplicateEntries?: boolean;
   entryStatus?: EntryStatusUnion;
+  drawDefinition?: DrawDefinition;
   autoEntryPositions?: boolean;
   tournamentRecord: Tournament;
   entryStageSequence?: number;
@@ -54,10 +56,10 @@ type AddEventEntriesArgs = {
 
 export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   const {
+    suppressDuplicateEntries = true,
     entryStatus = DIRECT_ACCEPTANCE,
     autoEntryPositions = true,
     enforceGender = true,
-    participantIds = [],
     entryStageSequence,
     policyDefinitions,
     entryStage = MAIN,
@@ -72,6 +74,11 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   } = params;
 
   const stack = 'addEventEntries';
+
+  if (!Array.isArray(params.participantIds))
+    return decorateResult({ result: { error: INVALID_PARTICIPANT_IDS }, stack });
+
+  const participantIds = unique(params.participantIds ?? []);
 
   if (!event) return { error: MISSING_EVENT };
   if (!participantIds?.length) {
@@ -198,6 +205,7 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   if (drawId && !isUngrouped(entryStage)) {
     const result = addDrawEntries({
       participantIds: validParticipantIds,
+      suppressDuplicateEntries,
       autoEntryPositions,
       entryStageSequence,
       ignoreStageSpace,

@@ -5,14 +5,15 @@ import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
-import { findEvent } from '@Acquire/findEvent';
 import { filterMatchUps } from '../../filterMatchUps';
+import { findEvent } from '@Acquire/findEvent';
 
+// constant and types
+import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
-import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 /**
  *

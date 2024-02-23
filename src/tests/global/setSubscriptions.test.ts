@@ -1,8 +1,10 @@
 import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngine from '../engines/syncEngine';
-import * as tools from '../../assemblies/tools';
+import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 
+// constants and types
+import { ADD_MATCHUPS, ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { MatchUp, Participant } from '@Types/tournamentTypes';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
@@ -68,14 +70,14 @@ it('can delay notifications to subscribers', () => {
   const allMatchUps: MatchUp[] = [];
 
   const subscriptions = {
-    addMatchUps: (payload) => {
+    [ADD_MATCHUPS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ matchUps }) => {
           allMatchUps.push(...matchUps);
         });
       }
     },
-    addParticipants: (payload) => {
+    [ADD_PARTICIPANTS]: (payload) => {
       if (Array.isArray(payload)) {
         payload.forEach(({ participants }) => {
           allParticipants.push(...participants);

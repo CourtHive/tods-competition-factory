@@ -3,10 +3,10 @@ import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
 import { getParticipantId } from '@Functions/global/extractors';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 
-// constants
+// constants and types
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { LUCKY_LOSER } from '@Constants/entryStatusConstants';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -16,6 +16,7 @@ import {
 } from '@Constants/errorConditionConstants';
 
 export function addDrawEntries({
+  suppressDuplicateEntries = true,
   autoEntryPositions = true,
   entryStageSequence,
   ignoreStageSpace,
@@ -41,6 +42,7 @@ export function addDrawEntries({
   if (drawDefinition) {
     const result = addEntries({
       stageSequence: entryStageSequence,
+      suppressDuplicateEntries,
       autoEntryPositions,
       stage: entryStage,
       ignoreStageSpace,

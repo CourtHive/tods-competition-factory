@@ -7,11 +7,13 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { definedAttributes } from '@Tools/definedAttributes';
+import { addNotice } from '@Global/state/globalState';
 
 // constants and types
 import { AD_HOC, MAIN, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE, LUCKY_LOSER } from '@Constants/entryStatusConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
+import { DATA_ISSUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_STAGE,
@@ -22,22 +24,25 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   INVALID_VALUES,
+  DUPLICATE_ENTRY,
 } from '@Constants/errorConditionConstants';
 import {
   DrawDefinition,
   Entry,
   EntryStatusUnion,
+  Event,
   Extension,
   Participant,
   StageTypeUnion,
 } from '@Types/tournamentTypes';
 
 type AddDrawEntryArgs = {
+  suppressDuplicateEntries?: boolean;
   entryStatus?: EntryStatusUnion;
   drawDefinition: DrawDefinition;
   entryStageSequence?: number;
-  ignoreStageSpace?: boolean;
   entryStage?: StageTypeUnion;
+  ignoreStageSpace?: boolean;
   participant?: Participant;
   extensions?: Extension[];
   entryPosition?: number;
@@ -45,10 +50,12 @@ type AddDrawEntryArgs = {
   participantId: string;
   roundTarget?: number;
   drawType?: string;
+  event?: Event;
 };
 
 export function addDrawEntry(params: AddDrawEntryArgs) {
   const {
+    suppressDuplicateEntries = true,
     entryStatus = DIRECT_ACCEPTANCE,
     entryStageSequence,
     entryStage = MAIN,
@@ -60,6 +67,7 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     extensions,
     extension,
     drawType,
+    event,
   } = params;
 
   const stack = 'addDrawEntry';
@@ -99,12 +107,28 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
       drawDefinition,
       entryStage,
     });
-  const invalidEntry =
-    entryStatus !== LUCKY_LOSER &&
-    entryStage !== VOLUNTARY_CONSOLATION &&
-    participantInEntries({ drawDefinition, participantId });
 
-  if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
+  const duplicateEntry = participantInEntries({ participantId, drawDefinition });
+  // duplicate entries are NOT invalide for LUCKY_LOSER or VOLUNTARY_CONSOLATION
+  const invalidEntry = entryStatus !== LUCKY_LOSER && entryStage !== VOLUNTARY_CONSOLATION && duplicateEntry;
+  if (invalidEntry) {
+    if (suppressDuplicateEntries) {
+      addNotice({
+        payload: {
+          drawId: drawDefinition.drawId,
+          eventId: event?.eventId,
+          error: DUPLICATE_ENTRY,
+          participantId,
+        },
+        topic: DATA_ISSUE,
+      });
+      return { ...SUCCESS };
+    } else {
+      return decorateResult({ result: { error: DUPLICATE_ENTRY }, context: { participantId }, stack });
+    }
+  }
+
+  if (invalidLuckyLoser || invalidVoluntaryConsolation) {
     return decorateResult({
       context: { invalidEntry, invalidLuckyLoser, invalidVoluntaryConsolation },
       result: { error: EXISTING_PARTICIPANT },
@@ -140,29 +164,33 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
 }
 
 type AddDrawEntriesArgs = {
+  suppressDuplicateEntries?: boolean;
   entryStatus?: EntryStatusUnion;
   drawDefinition: DrawDefinition;
   autoEntryPositions?: boolean;
   ignoreStageSpace?: boolean;
   participantIds: string[];
   stageSequence?: number;
-  extension?: Extension;
   stage?: StageTypeUnion;
+  extension?: Extension;
   roundTarget?: number;
+  event?: Event;
 };
 
 export function addDrawEntries(params: AddDrawEntriesArgs) {
   const stack = 'addDrawEntries';
   const {
+    suppressDuplicateEntries = true,
     entryStatus = DIRECT_ACCEPTANCE,
     stage = MAIN,
     autoEntryPositions = true,
     ignoreStageSpace,
-    drawDefinition,
     participantIds,
+    drawDefinition,
     stageSequence,
     roundTarget,
     extension,
+    event,
   } = params;
 
   if (!stage) return { error: MISSING_STAGE };
@@ -194,6 +222,9 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
   if (!ignoreStageSpace && stage !== VOLUNTARY_CONSOLATION && positionsAvailable < participantIds.length)
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
+  const duplicateEntries: string[] = [];
+  const drawId = drawDefinition.drawId;
+  const eventId = event?.eventId;
   const participantIdsNotAdded = participantIds.reduce((notAdded: string[], participantId) => {
     const invalidLuckyLoser =
       entryStatus === LUCKY_LOSER && participantInEntries({ participantId, drawDefinition, entryStatus });
@@ -204,16 +235,39 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
         drawDefinition,
         participantId,
       });
-    const invalidEntry =
-      entryStatus !== LUCKY_LOSER &&
-      stage !== VOLUNTARY_CONSOLATION &&
-      participantInEntries({ drawDefinition, participantId });
 
-    if (invalidEntry || invalidLuckyLoser || invalidVoluntaryConsolation) {
+    const duplicateEntry = participantInEntries({ participantId, drawDefinition });
+    const invalidEntry = entryStatus !== LUCKY_LOSER && stage !== VOLUNTARY_CONSOLATION && duplicateEntry;
+
+    if (invalidEntry) {
+      duplicateEntries.push(participantId);
+      if (suppressDuplicateEntries) {
+        addNotice({
+          payload: {
+            error: DUPLICATE_ENTRY,
+            participantId,
+            eventId,
+            drawId,
+          },
+          topic: DATA_ISSUE,
+        });
+      }
+    }
+
+    if (invalidLuckyLoser || invalidVoluntaryConsolation) {
       return notAdded.concat(participantId);
     }
+
     return notAdded;
   }, []);
+
+  if (duplicateEntries.length && suppressDuplicateEntries) {
+    return decorateResult({
+      context: { eventId, drawId, duplicateEntries },
+      result: { error: DUPLICATE_ENTRY },
+      stack,
+    });
+  }
 
   participantIds
     .filter((participantId) => participantId && !participantIdsNotAdded.includes(participantId))
@@ -245,10 +299,11 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
 
   modifyDrawNotice({ drawDefinition });
 
-  return participantIdsNotAdded?.length
+  return participantIdsNotAdded?.length || duplicateEntries?.length
     ? {
         info: 'some participantIds could not be added',
         participantIdsNotAdded,
+        duplicateEntries,
         ...SUCCESS,
       }
     : { ...SUCCESS };

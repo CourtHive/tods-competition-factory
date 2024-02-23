@@ -19,6 +19,7 @@ import {
 type GenerateOrGetExisting = {
   automated?: boolean | { seedsOnly: boolean };
   policyDefinitions?: PolicyDefinitions;
+  suppressDuplicateEntries?: boolean;
   appliedPolicies?: PolicyDefinitions;
   tournamentRecord: Tournament;
   matchUpType?: EventTypeUnion;

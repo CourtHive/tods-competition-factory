@@ -1,6 +1,8 @@
 import { allTournamentMatchUps } from './getAllTournamentMatchUps';
 
+// constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import {
   MatchUpFilters,
@@ -60,5 +62,5 @@ export function allCompetitionMatchUps({
     })
     .flat();
 
-  return { matchUps: competitionMatchUps };
+  return { ...SUCCESS, matchUps: competitionMatchUps };
 }
