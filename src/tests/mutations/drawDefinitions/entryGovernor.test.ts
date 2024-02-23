@@ -1,8 +1,8 @@
 import { addDrawEntries, addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
+import { deleteNotices, getNotices, setSubscriptions } from '@Global/state/globalState';
 import { removeEntry } from '@Mutate/drawDefinitions/entryGovernor/removeEntry';
-import { getNotices, setSubscriptions } from '@Global/state/globalState';
 import { expect, it } from 'vitest';
 
 // constants
@@ -12,7 +12,6 @@ import { DrawDefinition } from '@Types/tournamentTypes';
 import { DATA_ISSUE } from '@Constants/topicConstants';
 import {
   INVALID_STAGE,
-  EXISTING_PARTICIPANT,
   PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE,
   DUPLICATE_ENTRY,
 } from '@Constants/errorConditionConstants';
@@ -64,9 +63,11 @@ it('will not allow duplicate entries', () => {
   expect(result).toMatchObject(SUCCESS);
   result = getNotices({ topic: DATA_ISSUE });
   expect(result.length).toEqual(1);
+  deleteNotices();
 });
 
 it('will not allow duplicate entries', () => {
+  setSubscriptions({ subscriptions: { [DATA_ISSUE]: true } }); // doesn't have to be a function to capture
   const drawDefinition: DrawDefinition = newDrawDefinition({
     drawId: 'uuid-abc',
   });
@@ -77,21 +78,42 @@ it('will not allow duplicate entries', () => {
     drawDefinition,
   });
   expect(result).toMatchObject(SUCCESS);
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result.length).toEqual(0);
+
   result = addDrawEntry({
+    suppressDuplicateEntries: false,
     participantId: 'uuid1',
     entryStage: MAIN,
     drawDefinition,
   });
-  expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
+  expect(result).toMatchObject({ error: DUPLICATE_ENTRY });
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result.length).toEqual(0);
 
   // now test to ensure participant cannot be added to two stages
+  result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
+  result = addDrawEntry({
+    suppressDuplicateEntries: false,
+    participantId: 'uuid1',
+    entryStage: QUALIFYING,
+    drawDefinition,
+  });
+  expect(result).toMatchObject({ error: DUPLICATE_ENTRY });
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result.length).toEqual(0);
+
   result = setStageDrawSize({ drawDefinition, stage: QUALIFYING, drawSize: 4 });
   result = addDrawEntry({
     participantId: 'uuid1',
     entryStage: QUALIFYING,
     drawDefinition,
   });
-  expect(result).toMatchObject({ error: EXISTING_PARTICIPANT });
+  expect(result).toMatchObject(SUCCESS);
+  result = getNotices({ topic: DATA_ISSUE });
+  expect(result.length).toEqual(1);
+
+  deleteNotices();
 });
 
 it('adds partitipants to stage until stage drawPositions filled', () => {

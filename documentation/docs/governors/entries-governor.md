@@ -12,6 +12,7 @@ Bulk add an array of `participantIds` to a specific **stage** of a draw with a s
 
 ```js
 engine.addDrawEntries({
+  suppressDuplicateEntries, // do not throw error on duplicates; instead notify to DATA_ISSUE subscribers
   ignoreStageSpace, // optional boolean to disable checking available positions
   entryStageSequence, // optional - applies to qualifying
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
@@ -39,6 +40,7 @@ a participant with `entryStatus: DIRECT_ACCEPTANCE`.
 
 ```js
 engine.addEventEntries({
+  suppressDuplicateEntries, // do not throw error on duplicates; instead notify to DATA_ISSUE subscribers
   entryStatus: ALTERNATE, // optional; defaults to DIRECT_ACCEPTANCE
   entryStage: MAIN, // optional; defaults to MAIN
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments

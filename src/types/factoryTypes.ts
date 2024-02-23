@@ -451,6 +451,7 @@ export type GenerateDrawDefinitionArgs = {
   automated?: boolean | { seedsOnly: boolean };
   playoffAttributes?: PlayoffAttributes;
   policyDefinitions?: PolicyDefinitions;
+  appliedPolicies?: PolicyDefinitions;
   voluntaryConsolation?: {
     structureAbbreviation?: string;
     structureName?: string;

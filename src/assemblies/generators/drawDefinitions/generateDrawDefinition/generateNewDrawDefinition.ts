@@ -23,6 +23,7 @@ export function generateNewDrawDefinition(params): ResultType & {
   const drawDefinition = drawTypeResult.drawDefinition;
 
   const {
+    suppressDuplicateEntries = true,
     ignoreStageSpace,
     appliedPolicies,
     qualifyingOnly,
@@ -38,7 +39,14 @@ export function generateNewDrawDefinition(params): ResultType & {
   const positioningReports: any[] = [];
   let conflicts: any[] = [];
 
-  const addResult = addEntries({ ignoreStageSpace, drawDefinition, drawEntries, drawType, entries });
+  const addResult = addEntries({
+    suppressDuplicateEntries,
+    ignoreStageSpace,
+    drawDefinition,
+    drawEntries,
+    drawType,
+    entries,
+  });
   if (addResult.error) return addResult;
 
   // temporary until seeding is supported in LUCKY_DRAW
@@ -82,6 +90,7 @@ function addEntries(params) {
       ...entry,
       ignoreStageSpace: ignoreStageSpace ?? drawType === AD_HOC,
       entryStage: entry.entryStage ?? MAIN,
+      event: params.event,
       drawDefinition,
       drawType,
     };

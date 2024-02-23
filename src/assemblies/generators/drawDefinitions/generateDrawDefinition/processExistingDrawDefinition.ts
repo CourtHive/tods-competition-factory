@@ -13,8 +13,15 @@ export function processExistingDrawDefinition(params): ResultType & {
   drawDefinition?: any;
 } {
   const drawDefinition = params.drawDefinition;
-  const { existingQualifyingPlaceholderStructureId, drawEntries, appliedPolicies, structureId, idPrefix, isMock } =
-    params;
+  const {
+    existingQualifyingPlaceholderStructureId,
+    appliedPolicies,
+    drawEntries,
+    structureId,
+    idPrefix,
+    isMock,
+    event,
+  } = params;
 
   const qualifyingProfiles = params.qualifyingProfiles;
   const qualifyingResult = qualifyingProfiles?.length
@@ -75,19 +82,20 @@ export function processExistingDrawDefinition(params): ResultType & {
   });
   if (result.error) return result;
 
-  addEntries({ drawDefinition, drawEntries });
+  addEntries({ drawDefinition, drawEntries, event });
   const qResult = processQualifyingDetails({ mainStructure, qualifyingDetails, drawDefinition });
   if (qResult.error) return qResult;
 
   return { drawDefinition, structureId };
 }
 
-function addEntries({ drawDefinition, drawEntries }) {
+function addEntries({ drawDefinition, drawEntries, event }) {
   for (const entry of (drawEntries ?? []).filter(({ entryStage }) => entryStage === QUALIFYING)) {
     const entryData = {
       ...entry,
       entryStage: entry.entryStage ?? MAIN,
       drawDefinition,
+      event,
     };
     // ignore errors (EXITING_PARTICIPANT)
     addDrawEntry(entryData);
