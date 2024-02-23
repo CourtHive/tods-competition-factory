@@ -12,36 +12,46 @@ All engine methods may be passed the additional parameter `{ delayNotify: true }
 
 ```js
 const subscriptions = {
-  audit: (payload) => {}, // payload = [{ action: '', payload: {} }]
+  [topicConstants.AUDIT]: (payload) => {},
 
-  addMatchUps: (payload) => {}, // payload = [{ matchUps }]
-  deletedMatchUpIds: (payload) => {}, // payload = [{ matchUpIds }]
-  modifyMatchUp: (payload) => {}, // payload = [{ matchUp }]
-  updateInContextMatchUp: (payload) => {} // = [{ matchUp }]
+  [topicConstants.ADD_MATCHUPS]: (payload) => {},
+  [topicConstants.DELETED_MATCHUP_IDS]: (payload) => {},
+  [topicConstants.MODIFY_MATCHUP]: (payload) => {},
 
-  publishEvent: (payload) => (), // payload = [{ eventData }]
-  unPublishEvent: (payload) => (), // payload = [{ eventId }]
+  // factory will use generated or generate inContextMatchUp (for updating public site)
+  // this can be used on client but may not have all participantContext options
+  [topicConstants.UPDATE_INCONTEXT_MATCHUP]: (payload) => {},
 
-  publishEventSeeding: (payload) => (), // payload
-  unPublishEventSeeding: (payload) => (), // payload
+  [topicConstants.PUBLISH_EVENT]: (payload) => {},
+  [topicConstants.UNPUBLISH_EVENT]: (payload) => {},
 
-  publishOrderOfPlay: (payload) => (), // payload
-  unPublishOrderOfPlay: (payload) => (), // payload
+  [topicConstants.PUBLISH_EVENT_SEEDING]: (payload) => {},
+  [topicConstants.UNPUBLISH_EVENT_SEEDING]: (payload) => (),
 
-  addVenue: (payload) => (), // payload [{ venue }]
-  modifyVenue: (payload) => (), // payload [{ venue }]
-  deleteVenue: (payload) => (), // payload [{ venueId }]
+  [topicConstants.PUBLISH_ORDER_OF_PLAY]: (payload) => {},
+  [topicConstants.UNPUBLISH_ORDER_OF_PLAY]: (payload) => (),
 
-  addParticipants: (payload) => () // payload [{ participants }]
-  modifyParticipants: (payload) => () // payload [{ participants }]
-  deleteParticipants: (payload) => () // payload [{ participantIds }]
+  [topicConstants.ADD_VENUE]: (payload) => {},
+  [topicConstants.MODIFY_VENUE]: (payload) => {},
+  [topicConstants.DELETE_VENUE]: (payload) => {},
 
-  modifyPositionAssignments: (payload) => () // pauload [{ positionAssignments, tournamentId, eventId, drawId, structureId}]
-  modifySeedAssignments: (payload) => () // pauload [{ seedAssignments, tournamentId, eventId, drawId, structureId}]
+  [topicConstants.add_participants]: (payload) => {},
+  [topicConstants.MODIFY_PARTICIPANTS]: (payload) => {},
+  [topicConstants.DELETE_PARTICIPANTS]: (payload) => {},
 
-  addDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
-  modifyDrawDefinitions: (payload) => (), // payload = [{ drawDefinition }]
-  deletedDrawIds: (payload) => (), // payload = [{ drawId }]
+  [topicConstants.MODIFY_POSITION_ASSIGNMENTS]: (payload) => {},
+  [topicConstants.MODIFY_SEED_ASSIGNMENTS]: (payload) => {},
+
+  [topicConstants.ADD_DRAW_DEFINITION]: (payload) => {},
+  [topicConstants.MODIFY_DRAW_DEFINITION]: (payload) => {},
+  [topicConstants.DELETED_DRAW_IDS]: (payload) => {},
+
+  [topicConstants.MODIFY_TOURNAMENT_DETAIL]: (payload) => {},
+  [topicContants.ADD_SCALE_ITEMS]: (payload) => {},
+  [topicConstants.DATA_ISSUE]: (payload) => {},
+
+  // to notify of all mutations { methods, params }
+  [topicConstants.MUTATIONS]: (payload) => {},
 };
 ```
 
