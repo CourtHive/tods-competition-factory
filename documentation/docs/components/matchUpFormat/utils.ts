@@ -3,8 +3,7 @@
  * @param start Start of the range
  * @param end End of the range
  */
-export const range = (start, end) =>
-  Array.from({ length: end + 1 - start }, (v, k) => k + start);
+export const range = (start, end) => Array.from({ length: end + 1 - start }, (v, k) => k + start);
 
 /**
  * Finds possible tiebreak options based on the matchUp configuration
