@@ -20,13 +20,12 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   };
 
   const setsUpdate = (matchUpFormat) => updateMatchUpFormat(matchUpFormat);
-  const hasFinalSet =
-    matchUpFormatParsed && !!matchUpFormatParsed.finalSetFormat;
+  const hasFinalSet = matchUpFormatParsed && !!matchUpFormatParsed.finalSetFormat;
 
   const scoringFormatChanged = (e) => {
     const key = e && e.target && e.target.value;
     const matchUpFormat = defaultMatchUpFormats.find(
-      (defaultMatchUpFormat) => defaultMatchUpFormat.key === key
+      (defaultMatchUpFormat) => defaultMatchUpFormat.key === key,
     )?.format;
     const matchUpFormatParsed = matchUpFormatCode.parse(matchUpFormat);
     updateMatchUpFormat(matchUpFormatParsed);
@@ -35,11 +34,8 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const activeMatchUpFormat = () => {
     return (
       defaultMatchUpFormats.reduce(
-        (p, c) =>
-          c.format === matchUpFormatCode.stringify(matchUpFormatParsed)
-            ? c.key
-            : p,
-        undefined
+        (p, c) => (c.format === matchUpFormatCode.stringify(matchUpFormatParsed) ? c.key : p),
+        undefined,
       ) || 'custom'
     );
   };
@@ -47,12 +43,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const renderCustomScoring = () => {
     return (
       <>
-        <Grid
-          container
-          direction="row"
-          justify="flex-start"
-          className={classes.row}
-        >
+        <Grid container direction="row" justify="flex-start" className={classes.row}>
           <Grid item>
             <SetFormatSelector
               matchUpFormatParsed={matchUpFormatParsed}
@@ -102,14 +93,9 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
   const renderPreDefinedScoring = () => {
     return (
       <>
-        <FormControl
-          style={{ minWidth: 120, width: '100%', margin: 0, padding: 0 }}
-        >
+        <FormControl style={{ minWidth: 120, width: '100%', margin: 0, padding: 0 }}>
           <InputLabel>{'Scoring'}</InputLabel>
-          <MuiSelect
-            value={activeMatchUpFormat()}
-            onChange={scoringFormatChanged}
-          >
+          <MuiSelect value={activeMatchUpFormat()} onChange={scoringFormatChanged}>
             {defaultMatchUpFormats.map(renderMatchUpFormat)}
           </MuiSelect>
         </FormControl>
@@ -119,12 +105,7 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
 
   return (
     <>
-      <Grid
-        justify-content="flex-start"
-        className={classes.row}
-        direction="row"
-        container
-      >
+      <Grid justify-content="flex-start" className={classes.row} direction="row" container>
         <Grid item className={classes.minimums}>
           {renderPreDefinedScoring()}
         </Grid>

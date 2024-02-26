@@ -130,14 +130,8 @@ export function matchUpFormats() {
       format: 'SET1-S:T10',
     },
   ];
-  const lookup = (key) =>
-    formats.reduce(
-      (p: any, c) => (c.key === key ? c.format : p),
-      defaultMatchUpFormat
-    );
-  const sortedFormats = formats.sort((a, b) =>
-    a.name > b.name ? 1 : a.name < b.name ? -1 : 0
-  );
+  const lookup = (key) => formats.reduce((p: any, c) => (c.key === key ? c.format : p), defaultMatchUpFormat);
+  const sortedFormats = formats.sort((a, b) => (a.name > b.name ? 1 : a.name < b.name ? -1 : 0));
 
   return { formats: sortedFormats, lookup, default: defaultMatchUpFormat };
 }

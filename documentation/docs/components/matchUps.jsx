@@ -2,9 +2,7 @@ import React from 'react';
 import RenderJSON from './RenderJSON';
 
 export const MatchUps = ({ data }) => {
-  const matchUpsCount = Array.isArray(data)
-    ? data.length
-    : (data && data.matchUpsCount) || 0;
+  const matchUpsCount = Array.isArray(data) ? data.length : (data && data.matchUpsCount) || 0;
 
   return (
     <div>

@@ -19,9 +19,7 @@ const useStyles = makeStyles(() => ({
 
 const Configurator = () => {
   const classes = useStyles();
-  const [matchUpFormatParsed, setMatchUpFormatParsed] = useState(
-    matchUpFormatCode.parse('SET3-S:6/TB7')
-  );
+  const [matchUpFormatParsed, setMatchUpFormatParsed] = useState(matchUpFormatCode.parse('SET3-S:6/TB7'));
 
   const handleOnChange = (value) => setMatchUpFormatParsed(value);
 
@@ -34,10 +32,7 @@ const Configurator = () => {
         <Typography variant="h5" component="h3" style={{ color: 'blue' }}>
           {matchUpFormatCode.stringify(matchUpFormatParsed)}
         </Typography>
-        <MatchUpFormatForm
-          matchUpFormatParsed={matchUpFormatParsed}
-          onChange={handleOnChange}
-        />
+        <MatchUpFormatForm matchUpFormatParsed={matchUpFormatParsed} onChange={handleOnChange} />
       </Paper>
     </>
   );
