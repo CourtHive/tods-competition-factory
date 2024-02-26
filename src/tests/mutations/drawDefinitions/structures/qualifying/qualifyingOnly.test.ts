@@ -294,7 +294,6 @@ it('can generate only qualifying structure for eventType: TEAM', () => {
   expect(completedMatchUps.length).toEqual(48);
 
   const { participants } = tournamentEngine.getParticipants();
-  //expect(participants.length).toEqual(80);
   const teamParticipants = participants.filter(({ participantType }) => participantType === TEAM);
   expect(teamParticipants.length).toEqual(16);
   const individualParticipants = participants.filter(({ participantType }) => participantType === INDIVIDUAL);
