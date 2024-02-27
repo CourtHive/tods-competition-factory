@@ -77,16 +77,16 @@ it('can add and read timeItems from events', async () => {
   result = tournamentEngine.addDrawDefinitionTimeItem({ drawId, timeItem });
   expect(result.success).toEqual(true);
 
-  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getDrawDefinitionTimeItem({
-    drawId,
+  let { timeItem: retrievedTimeItem, info } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_CONTENT,
+    drawId,
   });
   expect(retrievedTimeItem.itemValue).toEqual(itemValue);
   expect(info).toEqual(undefined);
 
-  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getDrawDefinitionTimeItem({
-    drawId,
+  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getTimeItem({
     itemType: 'MODIFICATION.OTHER',
+    drawId,
   }));
   expect(retrievedTimeItem).toEqual(undefined);
   expect(info).toEqual(NOT_FOUND);

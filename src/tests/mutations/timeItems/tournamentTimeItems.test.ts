@@ -19,19 +19,19 @@ it('can add and read timeItems from events', () => {
   tournamentEngine.setState(tournamentRecord);
 
   let timeItem: any = undefined;
-  let result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  let result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.error).toEqual(MISSING_TIME_ITEM);
 
   timeItem = {
     itemType: MODIFICATION,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   timeItem = {
     itemType: MODIFICATION_CONTENT,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.error).toEqual(INVALID_TIME_ITEM);
 
   let itemValue = timeStamp1;
@@ -39,14 +39,14 @@ it('can add and read timeItems from events', () => {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   timeItem = {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({
+  result = tournamentEngine.addTimeItem({
     timeItem,
   });
   expect(result.success).toEqual(true);
@@ -56,14 +56,14 @@ it('can add and read timeItems from events', () => {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   let {
     timeItem: retrievedTimeItem,
     previousItems,
     info,
-  } = tournamentEngine.getTournamentTimeItem({
+  } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_CONTENT,
     returnPreviousValues: true,
   });
@@ -73,9 +73,9 @@ it('can add and read timeItems from events', () => {
 
   ({
     timeItem: retrievedTimeItem,
-    info,
     previousItems,
-  } = tournamentEngine.getTournamentTimeItem({
+    info,
+  } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_OTHER,
   }));
   expect(retrievedTimeItem).toEqual(undefined);
@@ -96,14 +96,14 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  let result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  let result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   timeItem = {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({
+  result = tournamentEngine.addTimeItem({
     timeItem,
     duplicateValues: false,
   });
@@ -114,14 +114,14 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemType: MODIFICATION_CONTENT,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   let {
     timeItem: retrievedTimeItem,
     previousItems,
     info,
-  } = tournamentEngine.getTournamentTimeItem({
+  } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_CONTENT,
     returnPreviousValues: true,
   });
@@ -136,7 +136,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemType: MODIFICATION_OTHER,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   itemValue = '2021-01-02T00:00';
@@ -144,7 +144,7 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemType: MODIFICATION_OTHER,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({
+  result = tournamentEngine.addTimeItem({
     timeItem,
     duplicateValues: false,
   });
@@ -155,14 +155,14 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemType: MODIFICATION_OTHER,
     itemValue,
   };
-  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  result = tournamentEngine.addTimeItem({ timeItem });
   expect(result.success).toEqual(true);
 
   ({
     timeItem: retrievedTimeItem,
     previousItems,
     info,
-  } = tournamentEngine.getTournamentTimeItem({
+  } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_OTHER,
     returnPreviousValues: true,
   }));
