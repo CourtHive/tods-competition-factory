@@ -1,8 +1,8 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { deriveElement } from './deriveElement';
 
 // constants and types
-import { Event, TimeItem, Tournament } from '@Types/tournamentTypes';
-import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
+import { DrawDefinition, Event, TimeItem, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -12,7 +12,6 @@ import {
   MISSING_PARTICIPANT_ID,
   MISSING_TIME_ITEMS,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
   NOT_FOUND,
 } from '@Constants/errorConditionConstants';
 
@@ -26,18 +25,20 @@ type TimeItemResult = {
 
 type TimeItemArgs = {
   returnPreviousValues?: boolean;
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
   itemSubTypes?: string[];
+  participantId?: string;
   itemType: string;
+  event?: Event;
   element: any;
 };
 
-export function getTimeItem({
-  returnPreviousValues,
-  itemSubTypes,
-  itemType,
-  element,
-}: TimeItemArgs): TimeItemResult & ResultType {
-  if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
+export function getTimeItem(params: TimeItemArgs): TimeItemResult & ResultType {
+  const { returnPreviousValues, itemSubTypes, itemType } = params;
+  const element = deriveElement(params);
+  if (element.error) return element;
+
   if (itemSubTypes && !Array.isArray(itemSubTypes)) return { error: INVALID_VALUES, context: { itemSubTypes } };
   if (!Array.isArray(element.timeItems)) return { error: MISSING_TIME_ITEMS };
 
