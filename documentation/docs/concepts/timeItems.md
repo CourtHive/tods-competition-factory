@@ -35,7 +35,7 @@ itemType: 'SCHEDULE.TIME.SCHEDULED',
 itemType: 'SCHEDULE.TIME.START',
 itemType: 'SCHEDULE.TIME.STOP',
 itemType: 'SCHEDULE.TIME.RESUME',
-itemType: 'SCHEDULE.TIME.END,
+itemType: 'SCHEDULE.TIME.END',
 ```
 
 ## Internal usage
@@ -52,18 +52,6 @@ In most cases **timeItems** are used internally by the various Competition Facto
 
 ## Other use cases
 
-Competition Factory defines methods for adding and retrieving arbitrary **timeItems** for the tournament record, event, and drawDefinitions.
-
-```js
-engine.addTournamentTimeItem({ timeItem });
-engine.addEventTimeItem({ eventId, timeItem });
-engine.addDrawDefinitionTimeItem({ drawId, timeItem });
-
-engine.getTournamentTimeItem({ itemType, itemSubTypes });
-engine.getEventTimeItem({ eventId, itemType, itemSubTypes });
-engine.getDrawDefinitionTimeItem({ drawId, itemType, itemSubTypes });
-```
-
 ### Ranking and Ratings
 
 Sometimes a tournament organizer may want to fetch player Rankings and Ratings from a remote service. In such scenarios it is desireable to both capture a time stamp for when the last retrieval occurred and be able to query an event's **timeItems** to be able to display the value.
@@ -75,13 +63,13 @@ const timeItem = {
   itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
   itemValue: '2021-01-01T00:00',
 };
-engine.addEventTimeItem({ eventId, timeItem });
+engine.addTimeItem({ eventId, timeItem });
 ```
 
 #### Retrieving a timeITem from an event
 
 ```js
-const { timeItem: retrievedTimeItem, message } = engine.getEventTimeItem({
+const { timeItem: retrievedTimeItem, message } = engine.getTimeItem({
   itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
   eventId,
 });

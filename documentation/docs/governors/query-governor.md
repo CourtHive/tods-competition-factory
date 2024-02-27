@@ -460,13 +460,28 @@ const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 
 ---
 
-## getEventTimeItem
+## getTimeItem
 
 ```js
-const { timeItem } = engine.getEventTimeItem({
+const { timeItem } = engine.getTimeItem({
   itemType: ADD_SCALE_ITEMS,
   itemSubTypes: [SEEDING], // optional
-  eventId,
+  participantId, // optional
+  eventId, // optional
+  drawId, // optional
+});
+```
+
+Or call without engine:
+
+```js
+getTimeItem({
+  tournamentRecord, // optional
+  drawDefinition, // optional
+  itemSubTypes, // optional
+  itemType, // required
+  element, // optional - arbitrary element, e.g. participant
+  event, // optional
 });
 ```
 
