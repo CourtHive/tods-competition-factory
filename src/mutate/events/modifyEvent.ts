@@ -1,15 +1,16 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { isObject, isString } from '@Tools/objects';
 import { setEventDates } from './setEventDates';
 import { unique } from '@Tools/arrays';
 
 // constants and types
-import { INVALID_VALUES, MISSING_EVENT, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ANY, MIXED } from '@Constants/genderConstants';
+import { OBJECT } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -41,28 +42,14 @@ type ModifyEventArgs = {
 };
 
 export function modifyEvent(params: ModifyEventArgs): ResultType {
-  const { tournamentRecord, eventUpdates, eventId, event } = params;
+  const paramsCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true, eventId: true, event: true },
+    { eventUpdates: true, _ofType: OBJECT },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { tournamentRecord, eventUpdates, event } = params;
   const stack = 'modifyEvent';
-
-  if (!tournamentRecord)
-    return decorateResult({
-      result: { error: MISSING_TOURNAMENT_RECORD },
-      stack,
-    });
-
-  if (!isString(eventId))
-    return decorateResult({
-      result: { error: MISSING_EVENT },
-      context: { eventId },
-      stack,
-    });
-
-  if (!isObject(eventUpdates))
-    return decorateResult({
-      result: { error: INVALID_VALUES },
-      context: { eventUpdates },
-      stack,
-    });
 
   if (eventUpdates.startDate || eventUpdates.endDate) {
     const result = setEventDates({

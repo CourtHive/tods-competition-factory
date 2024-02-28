@@ -4,13 +4,18 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// constants
+import { EVENT_NOT_FOUND, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
+import { addDays } from '@Tools/dateTime';
 
 it('supports modifying event gender, name and eventType', () => {
   const drawSize = 16;
+  const startDate = '2024-02-01';
+  const endDate = '2024-02-29';
 
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  mocksEngine.generateTournamentRecord({
     eventProfiles: [
       {
         drawProfiles: [{ drawSize, uniqueParticipants: true }],
@@ -34,9 +39,23 @@ it('supports modifying event gender, name and eventType', () => {
         gender: MALE,
       },
     ],
+    setState: true,
+    startDate,
+    endDate,
   });
 
-  tournamentEngine.setState(tournamentRecord);
+  let result = tournamentEngine.modifyEvent();
+  expect(result.error).toEqual(EVENT_NOT_FOUND);
+  result = tournamentEngine.modifyEvent({ eventId: MIXED });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = tournamentEngine.modifyEvent({
+    eventId: MIXED,
+    eventUpdates: { startDate: addDays(startDate), endDate: addDays(endDate, -1) },
+  });
+  expect(result.success).toEqual(true);
+  const event = tournamentEngine.getEvent({ eventId: MIXED }).event;
+  expect(event.startDate).toEqual(addDays(startDate));
+  expect(event.endDate).toEqual(addDays(endDate, -1));
 
   const participants = tournamentEngine.getParticipants({
     withEvents: true,
@@ -81,6 +100,7 @@ it('supports modifying event gender, name and eventType', () => {
         eventUpdates: { eventName: updatedEventName, gender },
         eventId,
       });
+      if (!!result.success !== expectation) console.log({ result, profile, expectation });
       expect(!!result.success).toEqual(expectation);
       const updatedEvent = tournamentEngine.getEvent(profile).event;
       expect(updatedEvent.eventName).toEqual(updatedEventName);
