@@ -1,8 +1,10 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { deriveElement } from '@Query/base/deriveElement';
+import { isObject, isString } from '@Tools/objects';
 import { getTimeItem } from '@Query/base/timeItems';
 
-import { TimeItem, Tournament } from '@Types/tournamentTypes';
-import { ELEMENT_REQUIRED } from '@Constants/infoConstants';
+// constants and types
+import { DrawDefinition, Event, TimeItem, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -14,66 +16,64 @@ import {
 } from '@Constants/errorConditionConstants';
 
 type AddTimeItemArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
   removePriorValues?: boolean;
   duplicateValues?: boolean;
+  participantId?: string;
   creationTime?: boolean;
   timeItem: TimeItem;
+  event?: Event;
   element: any;
 };
+
 export function addTimeItem(params: AddTimeItemArgs) {
-  const { duplicateValues = true, creationTime = true, removePriorValues, timeItem, element } = params;
+  const { duplicateValues = true, creationTime = true, removePriorValues, timeItem } = params;
   if (!timeItem) return { error: MISSING_TIME_ITEM };
-  if (!element) return { error: MISSING_VALUE, info: ELEMENT_REQUIRED };
 
-  const timeItemAttributes = timeItem && Object.keys(timeItem);
-  const requiredAttributes = ['itemType', 'itemValue'];
+  const element = deriveElement(params);
+  if (element.error) return element;
+
   const validTimeItem =
-    requiredAttributes.filter((attribute) => timeItemAttributes.includes(attribute)).length ===
-    requiredAttributes.length;
-
+    isObject(timeItem) && isString(timeItem.itemType) && Object.keys(timeItem).includes('itemValue');
   if (!validTimeItem) return { error: INVALID_TIME_ITEM };
 
   if (!element.timeItems) {
     element.timeItems = [];
-  } else {
-    // check if timeItem with equivalent value already exists
-    const { itemType, itemSubTypes, itemValue } = timeItem;
-    const existingTimeItem =
-      itemType &&
-      getTimeItem({
-        itemSubTypes,
-        itemType,
-        element,
-      })?.timeItem;
-    if (
-      existingTimeItem &&
-      JSON.stringify(existingTimeItem?.itemValue) === JSON.stringify(itemValue) &&
-      !duplicateValues
-    ) {
-      return { ...SUCCESS };
-    }
+  } else if (hasEquivalentTimeItem({ element, duplicateValues, timeItem })) {
+    return { ...SUCCESS };
   }
 
-  if (timeItem.itemSubTypes && !timeItem.itemSubTypes.length) {
-    delete timeItem.itemSubTypes;
-  }
+  if (timeItem.itemSubTypes && !timeItem.itemSubTypes.length) delete timeItem.itemSubTypes;
 
   if (creationTime) {
     const createdAt = new Date().toISOString();
     Object.assign(timeItem, { createdAt });
   }
 
-  if (removePriorValues) {
-    element.timeItems = element.timeItems.filter(({ itemType }) => timeItem.itemType !== itemType);
-  }
+  if (removePriorValues) element.timeItems = element.timeItems.filter(({ itemType }) => timeItem.itemType !== itemType);
 
   // if priorValues are being remvoed and there is no new itemValue, do not add by pushing
   const doNotAdd = removePriorValues && !timeItem.itemValue;
-  if (!doNotAdd) {
-    element.timeItems.push(timeItem);
-  }
+  if (!doNotAdd) element.timeItems.push(timeItem);
 
   return { ...SUCCESS };
+}
+
+function hasEquivalentTimeItem({ element, duplicateValues, timeItem }) {
+  // check if timeItem with equivalent value already exists
+  const { itemType, itemSubTypes, itemValue } = timeItem;
+  const existingTimeItem =
+    itemType &&
+    getTimeItem({
+      itemSubTypes,
+      itemType,
+      element,
+    })?.timeItem;
+
+  return (
+    existingTimeItem && JSON.stringify(existingTimeItem?.itemValue) === JSON.stringify(itemValue) && !duplicateValues
+  );
 }
 
 type AddParticipantTimeItemArgs = {
@@ -84,6 +84,7 @@ type AddParticipantTimeItemArgs = {
   participantId: string;
   timeItem: TimeItem;
 };
+
 export function addParticipantTimeItem({
   creationTime = true,
   removePriorValues,

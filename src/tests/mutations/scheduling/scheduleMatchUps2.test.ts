@@ -6,6 +6,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { ASSIGN_COURT, SCHEDULED_DATE, SCHEDULED_TIME, ASSIGN_VENUE, START_TIME } from '@Constants/timeItemConstants';
 import { DELETE_VENUE, MODIFY_VENUE } from '@Constants/topicConstants';
 import { SINGLES } from '@Constants/eventConstants';
 import {
@@ -16,7 +18,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   MISSING_VENUE_ID,
 } from '@Constants/errorConditionConstants';
-import { ASSIGN_COURT, SCHEDULED_DATE, SCHEDULED_TIME, ASSIGN_VENUE, START_TIME } from '@Constants/timeItemConstants';
 
 tournamentEngine.devContext({ addVenue: true });
 
@@ -134,7 +135,7 @@ it('can add events, venues, and schedule matchUps and modify drawDefinition.upda
     date: d200101,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
-  expect(scheduleTimes.length).toEqual(18);
+  expect(scheduleTimes?.length).toEqual(18);
 
   ({ tournamentRecord } = tournamentEngine.getTournament());
   const tournamentId = tournamentRecord.unifiedTournamentId?.tournamentId || tournamentRecord.tournamentId;
@@ -521,7 +522,7 @@ it('adds venueId to matchUp.schedule when court is assigned', () => {
     date,
   };
   const { scheduleTimes } = getScheduleTimes(timingParameters);
-  expect(scheduleTimes.length).toEqual(18);
+  expect(scheduleTimes?.length).toEqual(18);
 
   ({ tournamentRecord } = tournamentEngine.getTournament());
   const tournamentId = tournamentRecord.unifiedTournamentId?.tournamentId || tournamentRecord.tournamentId;

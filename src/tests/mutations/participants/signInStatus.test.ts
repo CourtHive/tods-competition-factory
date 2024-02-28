@@ -3,6 +3,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import queryEngine from '@Engines/queryEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { SIGNED_IN, SIGNED_OUT, SIGN_IN_STATUS } from '@Constants/participantConstants';
 import {
   INVALID_VALUES,
@@ -62,10 +63,10 @@ it('can sign participants in and out', () => {
   });
   expect(result.error).toEqual(PARTICIPANT_NOT_FOUND);
 
-  let { timeItem, previousItems } = tournamentEngine.getParticipantTimeItem({
-    participantId,
+  let { timeItem, previousItems } = tournamentEngine.getTimeItem({
     returnPreviousValues: true,
     itemType: SIGN_IN_STATUS,
+    participantId,
   });
   expect(previousItems.length).toEqual(0);
   expect(timeItem.itemValue).toEqual(SIGNED_IN);
@@ -87,10 +88,10 @@ it('can sign participants in and out', () => {
   });
   expect(result).toEqual(SIGNED_IN);
 
-  ({ timeItem, previousItems } = tournamentEngine.getParticipantTimeItem({
-    participantId,
+  ({ timeItem, previousItems } = tournamentEngine.getTimeItem({
     returnPreviousValues: true,
     itemType: SIGN_IN_STATUS,
+    participantId,
   }));
   expect(previousItems.length).toEqual(2);
   expect(timeItem.itemValue).toEqual(SIGNED_IN);

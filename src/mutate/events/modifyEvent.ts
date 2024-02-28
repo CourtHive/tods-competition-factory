@@ -1,6 +1,7 @@
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isObject, isString } from '@Tools/objects';
+import { setEventDates } from './setEventDates';
 import { unique } from '@Tools/arrays';
 
 // constants and types
@@ -24,6 +25,8 @@ type ModifyEventArgs = {
   eventUpdates: {
     eventType?: EventTypeUnion;
     gender?: GenderUnion;
+    startDate?: string;
+    endDate?: string;
     /**
      TODO: logic to determine if category can be changed
      Considerations:
@@ -37,7 +40,8 @@ type ModifyEventArgs = {
   event: Event;
 };
 
-export function modifyEvent({ tournamentRecord, eventUpdates, eventId, event }: ModifyEventArgs): ResultType {
+export function modifyEvent(params: ModifyEventArgs): ResultType {
+  const { tournamentRecord, eventUpdates, eventId, event } = params;
   const stack = 'modifyEvent';
 
   if (!tournamentRecord)
@@ -45,18 +49,30 @@ export function modifyEvent({ tournamentRecord, eventUpdates, eventId, event }: 
       result: { error: MISSING_TOURNAMENT_RECORD },
       stack,
     });
+
   if (!isString(eventId))
     return decorateResult({
       result: { error: MISSING_EVENT },
       context: { eventId },
       stack,
     });
+
   if (!isObject(eventUpdates))
     return decorateResult({
       result: { error: INVALID_VALUES },
       context: { eventUpdates },
       stack,
     });
+
+  if (eventUpdates.startDate || eventUpdates.endDate) {
+    const result = setEventDates({
+      startDate: eventUpdates.startDate,
+      endDate: eventUpdates.endDate,
+      tournamentRecord,
+      event,
+    });
+    if (result.error) return decorateResult({ result, stack });
+  }
 
   const enteredParticipantIds: string[] =
     event?.entries

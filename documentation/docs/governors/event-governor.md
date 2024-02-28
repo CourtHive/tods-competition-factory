@@ -177,6 +177,8 @@ event.modifyEvent({
     eventGender, // optional - must validate against current event entries, if any
     eventType, // optional - must validate against current event entries, if any
     eventName, // optional
+    startDate, // optional
+    endDate, // optional
   },
   eventId,
 });

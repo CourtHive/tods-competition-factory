@@ -34,6 +34,39 @@ engine.addEventExtension({
 
 ---
 
+## addTimeItem
+
+When calling via an engine, `participant` will be resolved from `participantId`, `drawDefinition`will be resovled from`drawId`, `event`will be resolved from`eventId`, and `tournamentRecord` will be present. Method will only attach `timeItem` to one element.
+
+```js
+engine.addTimeItem({
+  removePriorValues, // boolean; prior values with equivalent `itemType` will be removed
+  duplicateValues, // boolean; allow duplicate values
+  participantId, // optional; resolves to participant
+  creationTime, // optional timestamp adds `createdAt` value
+  timeItem, // required; { itemType, itemValue, itemSubTypes, itemDate }
+  eventId, // optional; resolves to event
+  drawId, // optional; resolves to drawDefinition
+});
+```
+
+When calling directly without an engine. Attaches to first element encountered in params: `element, drawDefinition, event, tournamentRecord`.
+
+```js
+addTimeItem({
+  removePriorValues, // boolean; prior values with equivalent `itemType` will be removed
+  tournamentRecord, // optional
+  duplicateValues, // boolean; allow duplicate values
+  drawDefinition, // optional
+  creationTime, // optional
+  timeItem, // required; { itemType, itemValue, itemSubTypes, itemDate }
+  element, // optional if event, drawDefinition or tournamentRecord provided
+  event, // optional
+});
+```
+
+---
+
 ## addTournamentExtension
 
 ```js
