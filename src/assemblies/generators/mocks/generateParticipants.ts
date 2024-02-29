@@ -1,14 +1,16 @@
 import { isNumeric, randomInt, skewedDistribution } from '@Tools/math';
+import { cityMocks, stateMocks, postalCodeMocks } from './address';
 import { generateRange, shuffleArray } from '@Tools/arrays';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { cityMocks, stateMocks, postalCodeMocks } from './address';
+import { genParticipantId } from './genParticipantId';
 import { isValidDateString } from '@Tools/dateTime';
-import { countries } from '@Fixtures/countryData';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
-import { UUID } from '@Tools/UUID';
+import { countries } from '@Fixtures/countryData';
 import { nameMocks } from './nameMocks';
+import { UUID } from '@Tools/UUID';
 
+// constants and fixtures
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
@@ -17,7 +19,6 @@ import { ErrorType } from '@Constants/errorConditionConstants';
 import { DOUBLES_MATCHUP } from '@Constants/matchUpTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
-import { genParticipantId } from './genParticipantId';
 
 export function generateParticipants(params): {
   participants?: any[];
