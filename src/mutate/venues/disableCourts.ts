@@ -2,9 +2,10 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addExtension } from '../extensions/addExtension';
 
+// constants
+import { COURT_IDS, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { DISABLED } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { COURT_IDS, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 type DisableCourtsArgs = {
   tournamentRecords: any;

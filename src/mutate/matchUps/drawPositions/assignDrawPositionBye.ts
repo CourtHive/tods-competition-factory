@@ -4,6 +4,7 @@ import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureD
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
@@ -123,6 +124,13 @@ export function assignDrawPositionBye({
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
 
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
+
   // ########## gather reusable data for performance optimization ###########
   const inContextDrawMatchUps =
     getAllDrawMatchUps({
@@ -166,6 +174,7 @@ export function assignDrawPositionBye({
     return successNotice({
       assignedParticipantId,
       isPositionAction,
+      appliedPolicies,
       drawDefinition,
       drawPosition,
       structureId,
@@ -218,6 +227,7 @@ export function assignDrawPositionBye({
   return successNotice({
     assignedParticipantId,
     isPositionAction,
+    appliedPolicies,
     drawDefinition,
     drawPosition,
     structureId,
@@ -225,7 +235,15 @@ export function assignDrawPositionBye({
   });
 }
 
-function successNotice({ assignedParticipantId, isPositionAction, drawDefinition, drawPosition, structureId, stack }) {
+function successNotice({
+  assignedParticipantId,
+  isPositionAction,
+  appliedPolicies,
+  drawDefinition,
+  drawPosition,
+  structureId,
+  stack,
+}) {
   if (isPositionAction) {
     const positionAction = {
       removedParticipantId: assignedParticipantId,
@@ -233,7 +251,7 @@ function successNotice({ assignedParticipantId, isPositionAction, drawDefinition
       structureId,
       name: stack,
     };
-    addPositionActionTelemetry({ drawDefinition, positionAction });
+    addPositionActionTelemetry({ appliedPolicies, drawDefinition, positionAction });
   }
 
   return decorateResult({ result: { ...SUCCESS }, stack });

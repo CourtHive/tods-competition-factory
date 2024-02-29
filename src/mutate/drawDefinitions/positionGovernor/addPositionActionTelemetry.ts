@@ -2,15 +2,28 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { findExtension } from '@Acquire/findExtension';
 
-// constants
-import { AUDIT_POSITION_ACTIONS } from '@Constants/extensionConstants';
+// constants and types
+import { POSITION_ACTIONS } from '@Constants/extensionConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
+import { PolicyDefinitions } from '@Types/factoryTypes';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
 // TODO: consider adding timestamp attribute to positionAction object
-export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
+
+type AddPositionActionTelemetry = {
+  appliedPolicies?: PolicyDefinitions;
+  positionAction: any;
+  drawDefinition: any;
+};
+
+export function addPositionActionTelemetry(params: AddPositionActionTelemetry) {
+  const { appliedPolicies, positionAction, drawDefinition } = params;
+
+  // true by default
+  if (appliedPolicies?.audit?.[POSITION_ACTIONS] === false) return;
+
   const { extension } = findExtension({
-    name: AUDIT_POSITION_ACTIONS,
+    name: POSITION_ACTIONS,
     element: drawDefinition,
   });
 
@@ -36,8 +49,8 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
   }
 
   const updatedExtension = {
-    name: AUDIT_POSITION_ACTIONS,
     value: existingValue.concat(positionAction),
+    name: POSITION_ACTIONS,
   };
 
   addExtension({ element: drawDefinition, extension: updatedExtension });

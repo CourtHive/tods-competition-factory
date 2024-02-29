@@ -20,7 +20,6 @@ import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 // constants and types
 import { DrawDefinition, Event, MatchUp, TieFormat, Tournament } from '@Types/tournamentTypes';
 import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -284,17 +283,15 @@ export function removeCollectionDefinition({
 
   modifyDrawNotice({ drawDefinition, eventId: event?.eventId });
 
-  if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
-    const auditData = definedAttributes({
-      drawId: drawDefinition?.drawId,
-      action: stack,
-      collectionId,
-      structureId,
-      matchUpId,
-      eventId,
-    });
-    tieFormatTelemetry({ drawDefinition, auditData });
-  }
+  const auditData = definedAttributes({
+    drawId: drawDefinition?.drawId,
+    action: stack,
+    collectionId,
+    structureId,
+    matchUpId,
+    eventId,
+  });
+  tieFormatTelemetry({ appliedPolicies, drawDefinition, auditData });
 
   return {
     tieFormat: prunedTieFormat,

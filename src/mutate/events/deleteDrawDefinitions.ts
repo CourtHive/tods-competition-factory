@@ -4,20 +4,21 @@ import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfil
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
-import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
-import { decorateResult } from '@Functions/global/decorateResult';
 import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawStructures } from '@Acquire/findStructure';
-import { addNotice } from '@Global/state/globalState';
 import { publishEvent } from '../publishing/publishEvent';
 import { addExtension } from '../extensions/addExtension';
+import { addNotice } from '@Global/state/globalState';
 import { findExtension } from '@Acquire/findExtension';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findEvent } from '@Acquire/findEvent';
 
+// constants and types
 import { MISSING_TOURNAMENT_RECORD, SCORES_PRESENT } from '@Constants/errorConditionConstants';
 import { DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
@@ -233,11 +234,8 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
     });
   }
 
-  drawIds.forEach((drawId) => {
-    deleteDrawNotice({ drawId });
-  });
-
-  addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData });
+  drawIds.forEach((drawId) => deleteDrawNotice({ drawId }));
+  addDrawDeletionTelemetry({ appliedPolicies, event, deletedDrawsDetail, auditData });
 
   if (autoPublish && publishedDrawsDeleted) {
     const result = publishEvent({
@@ -252,7 +250,10 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   return { ...SUCCESS };
 }
 
-function addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData }) {
+function addDrawDeletionTelemetry({ appliedPolicies, event, deletedDrawsDetail, auditData }) {
+  // true by default
+  if (appliedPolicies?.audit?.[DRAW_DELETIONS] === false) return;
+
   const { extension } = findExtension({
     name: DRAW_DELETIONS,
     element: event,
@@ -260,8 +261,8 @@ function addDrawDeletionTelemetry({ event, deletedDrawsDetail, auditData }) {
 
   const deletionData = { ...auditData, deletedDrawsDetail };
   const updatedExtension = {
-    name: DRAW_DELETIONS,
     value: Array.isArray(extension?.value) ? extension?.value.concat(deletionData) : [deletionData],
+    name: DRAW_DELETIONS,
   };
   addExtension({ element: event, extension: updatedExtension });
 }

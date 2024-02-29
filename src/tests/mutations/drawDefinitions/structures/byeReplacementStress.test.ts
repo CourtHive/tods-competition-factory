@@ -5,7 +5,7 @@ import { expect, it, test } from 'vitest';
 import fs from 'fs';
 import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 
-import { AUDIT_POSITION_ACTIONS } from '@Constants/extensionConstants';
+import { POSITION_ACTIONS } from '@Constants/extensionConstants';
 import {
   COMPASS,
   CURTIS_CONSOLATION,
@@ -113,7 +113,7 @@ test.each([
         const { tournamentRecord } = tournamentEngine.getTournament();
         const { drawId } = tournamentRecord.events[0].drawDefinitions[0];
         const { extension: positionActions } = tournamentEngine.findExtension({
-          name: AUDIT_POSITION_ACTIONS,
+          name: POSITION_ACTIONS,
           discover: ['drawDefinition'],
           drawId,
         });

@@ -36,8 +36,8 @@ export function setMatchUpDailyLimits(params: SetMatchUpDailyLimitsArgs): Result
   for (const currentTournamentId of tournamentIds) {
     const tournamentRecord = tournamentRecords[currentTournamentId];
     const result = addExtension({
-      element: tournamentRecord,
       extension: { name: SCHEDULE_LIMITS, value: { dailyLimits } },
+      element: tournamentRecord,
     });
     if (result.error) return result;
   }

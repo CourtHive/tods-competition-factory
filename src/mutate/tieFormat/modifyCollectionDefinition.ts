@@ -14,7 +14,6 @@ import { intersection } from '@Tools/arrays';
 
 // constants and types
 import { INVALID_VALUES, MISSING_VALUE, NOT_FOUND, NOT_IMPLEMENTED } from '@Constants/errorConditionConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 import { genderConstants } from '@Constants/genderConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
@@ -330,17 +329,15 @@ export function modifyCollectionDefinition({
 
   if (!result.error) {
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
-    if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
-      const auditData = definedAttributes({
-        collectionDefinition: targetCollectionDefinition,
-        drawId: drawDefinition?.drawId,
-        action: stack,
-        structureId,
-        matchUpId,
-        eventId,
-      });
-      tieFormatTelemetry({ drawDefinition, auditData });
-    }
+    const auditData = definedAttributes({
+      collectionDefinition: targetCollectionDefinition,
+      drawId: drawDefinition?.drawId,
+      action: stack,
+      structureId,
+      matchUpId,
+      eventId,
+    });
+    tieFormatTelemetry({ appliedPolicies, drawDefinition, auditData });
   }
 
   return decorateResult({ result: { ...result, modifications }, stack });

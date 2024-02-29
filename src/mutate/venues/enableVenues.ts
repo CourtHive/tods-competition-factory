@@ -2,10 +2,11 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeExtension } from '../extensions/removeExtension';
 
+// constants and types
+import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 import { DISABLED } from '@Constants/extensionConstants';
 import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { TOURNAMENT_RECORDS, VENUE_IDS } from '@Constants/attributeConstants';
 
 type EnableVenuesArgs = {
   tournamentRecords: TournamentRecords;
