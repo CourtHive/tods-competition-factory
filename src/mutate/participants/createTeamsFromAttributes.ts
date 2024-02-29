@@ -4,13 +4,14 @@ import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '@Acquire/findExtension';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
+import { MISSING_TOURNAMENT_RECORD, NO_PARTICIPANTS_GENERATED } from '@Constants/errorConditionConstants';
 import { GROUPING_ATTRIBUTE } from '@Constants/extensionConstants';
 import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
 import { Tournament } from '@Types/tournamentTypes';
-import { MISSING_TOURNAMENT_RECORD, NO_PARTICIPANTS_GENERATED } from '@Constants/errorConditionConstants';
 
 /**
  *

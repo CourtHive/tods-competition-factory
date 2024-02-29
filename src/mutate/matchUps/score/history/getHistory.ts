@@ -1,8 +1,9 @@
 import { findExtension } from '@Acquire/findExtension';
 
+// constants
+import { ErrorType, NOT_FOUND } from '@Constants/errorConditionConstants';
 import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ErrorType, NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function getHistory({ matchUp }): {
   undoHistory?: any[];

@@ -36,8 +36,8 @@ export function addPositionActionTelemetry({ drawDefinition, positionAction }) {
   }
 
   const updatedExtension = {
-    name: AUDIT_POSITION_ACTIONS,
     value: existingValue.concat(positionAction),
+    name: AUDIT_POSITION_ACTIONS,
   };
 
   addExtension({ element: drawDefinition, extension: updatedExtension });

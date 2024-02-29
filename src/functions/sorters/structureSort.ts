@@ -1,5 +1,6 @@
 import { findExtension } from '@Acquire/findExtension';
 
+// constants and types
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { Structure } from '@Types/tournamentTypes';

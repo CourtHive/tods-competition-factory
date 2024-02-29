@@ -4,9 +4,10 @@ import { removeExtension } from '../extensions/removeExtension';
 import { addExtension } from '../extensions/addExtension';
 import { findExtension } from '@Acquire/findExtension';
 
+// constants
+import { COURT_IDS, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { DISABLED } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { COURT_IDS, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 
 export function enableCourts(params) {
   const tournamentRecords = resolveTournamentRecords(params);
