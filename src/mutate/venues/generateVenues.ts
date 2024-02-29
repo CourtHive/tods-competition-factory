@@ -1,17 +1,19 @@
 import { generateDateRange, formatDate } from '@Tools/dateTime';
-import { UUID } from '@Tools/UUID';
 import { addCourts } from './addCourt';
 import { addVenue } from './addVenue';
+import { UUID } from '@Tools/UUID';
 
+// types
 import { Tournament } from '@Types/tournamentTypes';
 
 type GenerateVenuesArgs = {
+  ignoreExistingVenues?: boolean;
   tournamentRecord: Tournament;
   venueProfiles: any[];
   uuids?: string[];
 };
 
-export function generateVenues({ tournamentRecord, venueProfiles, uuids }: GenerateVenuesArgs) {
+export function generateVenues({ tournamentRecord, ignoreExistingVenues, venueProfiles, uuids }: GenerateVenuesArgs) {
   const { startDate, endDate } = tournamentRecord;
   const venueIds: string[] = [];
 
@@ -36,7 +38,10 @@ export function generateVenues({ tournamentRecord, venueProfiles, uuids }: Gener
       venueId,
     };
     const result = addVenue({ tournamentRecord, venue: newVenue });
-    if (result.error) return result;
+    if (result.error) {
+      if (ignoreExistingVenues) continue;
+      return result;
+    }
 
     venueIds.push(venueId);
 
@@ -51,20 +56,22 @@ export function generateVenues({ tournamentRecord, venueProfiles, uuids }: Gener
         })),
       );
 
-    const addResult = addCourts({
-      dateAvailability: dateAvailability || generatedDateAvailability,
-      tournamentRecord,
-      courtTimings,
-      courtsCount,
-      courtNames,
-      startTime,
-      idPrefix,
-      courtIds,
-      endTime,
-      venueId,
-      dates,
-    });
-    if (addResult.error) return addResult;
+    if (courtsCount || courtNames) {
+      const addResult = addCourts({
+        dateAvailability: dateAvailability || generatedDateAvailability,
+        tournamentRecord,
+        courtTimings,
+        courtsCount,
+        courtNames,
+        startTime,
+        idPrefix,
+        courtIds,
+        endTime,
+        venueId,
+        dates,
+      });
+      if (addResult.error) return addResult;
+    }
   }
 
   return venueIds;

@@ -577,6 +577,18 @@ export interface TeamCompetitor {
   updatedAt?: Date | string;
 }
 
+export interface Team {
+  gender?: GenderEnum;
+  homeVenueIds?: string[];
+  nativeTeamName?: string;
+  otherTeamNames?: string[];
+  parentOrganisationId?: string;
+  personIds?: string[];
+  previousTeamNames?: string[];
+  teamId: string;
+  teamName?: string;
+}
+
 export interface CollectionAssignment {
   collectionId: string;
   collectionPosition: number;
@@ -1041,6 +1053,7 @@ export interface Participant {
   contacts?: Contact[];
   createdAt?: Date | string;
   extensions?: Extension[];
+  homeVenueIds?: string[]; // only releveant when participantType is TEAM
   individualParticipantIds?: string[];
   isMock?: boolean;
   notes?: string;

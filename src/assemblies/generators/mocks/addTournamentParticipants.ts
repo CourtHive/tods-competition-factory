@@ -38,12 +38,12 @@ export function addTournamentParticipants({
   const teamKey = participantsProfile?.teamKey;
 
   const participants = generateParticipants({
-    uuids,
-    ...participantsProfile,
     consideredDate: startDate,
+    ...participantsProfile,
     participantsCount,
     participantType,
     gendersCount,
+    uuids,
   }).participants as Participant[];
 
   let addedCount = 0;

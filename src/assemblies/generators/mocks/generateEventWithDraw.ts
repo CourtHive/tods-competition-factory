@@ -15,12 +15,13 @@ import { getParticipantId } from '@Functions/global/extractors';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
+import { generateParticipants } from './generateParticipants';
 import { generateRange, intersection } from '@Tools/arrays';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { generateParticipants } from './generateParticipants';
 import { processTieFormat } from './processTieFormat';
 import { addFlight } from '@Mutate/events/addFlight';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { isObject } from '@Tools/objects';
 import { coerceEven } from '@Tools/math';
 import { UUID } from '@Tools/UUID';
 
@@ -92,7 +93,7 @@ export function generateEventWithDraw(params) {
   const participantType = eventType === DOUBLES ? PAIR : INDIVIDUAL;
 
   const tieFormat =
-    (typeof drawProfile.tieFormat === 'object' && drawProfile.tieFormat) ||
+    (isObject(drawProfile.tieFormat) && drawProfile.tieFormat) ||
     (eventType === TEAM &&
       tieFormatDefaults({
         event: { eventId, category, gender },

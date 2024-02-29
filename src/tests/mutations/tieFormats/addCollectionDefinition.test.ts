@@ -237,10 +237,10 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
 
   // test adding to tieFormat on drawDefinition
   let result = tournamentEngine.addCollectionDefinition({
+    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06'],
     collectionDefinition,
     structureId,
     drawId,
-    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06'],
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(result.addedMatchUps.length).toEqual(6); // because one matchUp was completed already
@@ -434,11 +434,11 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
 
   // test adding to tieFormat on drawDefinition
   result = tournamentEngine.addCollectionDefinition({
+    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06'],
     updateInProgressMatchUps: false,
     collectionDefinition,
     structureId,
     drawId,
-    uuids: ['a01', 'a02', 'a03', 'a04', 'a05', 'a06'],
   });
   expect(result.tieFormat.winCriteria.valueGoal).toEqual(7);
   expect(result.addedMatchUps.length).toEqual(6); // because one matchUp was in progress

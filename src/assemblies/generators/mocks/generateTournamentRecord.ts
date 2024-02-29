@@ -9,6 +9,7 @@ import { generateEventWithDraw } from './generateEventWithDraw';
 import { cycleMutationStatus } from '@Global/state/globalState';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { generateVenues } from '@Mutate/venues/generateVenues';
+import { processLeagueProfiles } from './processLeagueProfiles';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { Extension } from '@Types/tournamentTypes';
 import { addEvent } from '@Mutate/events/addEvent';
@@ -16,9 +17,9 @@ import { randomPop } from '@Tools/arrays';
 
 // constants and fixtures
 import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '@Constants/resultConstants';
-import { PolicyDefinitions } from '@Types/factoryTypes';
 
 const mockTournamentNames = [
   'Generated Tournament',
@@ -30,6 +31,7 @@ const mockTournamentNames = [
 ];
 
 type GenerateTournamentRecordArgs = {
+  participantsProfile?: ParticipantsProfile;
   scheduleCompletedMatchUps?: boolean;
   tournamentExtensions?: Extension[];
   policyDefinitions: PolicyDefinitions;
@@ -88,6 +90,8 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     endDate,
   });
 
+  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
+
   // attach any valid tournamentExtensions
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
     const extensions = tournamentExtensions.filter((extension) => isValidExtension({ extension }));
@@ -104,15 +108,36 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     }
   }
 
-  const result = addTournamentParticipants({
-    tournamentRecord,
-    ...params,
-  });
-  if (!result.success) return result;
+  // if there are leagueProfiles but no other profiles, then skip adding participants
+  // leagueProfiles will generate participants and teams and events
+  if (
+    !params?.leagueProfiles?.length ||
+    params.eventProfiles?.length ||
+    params.drawProfiles?.length ||
+    params.participantsProfile
+  ) {
+    const result = addTournamentParticipants({
+      tournamentRecord,
+      ...params,
+    });
+    if (!result.success) return result;
+  }
 
   const allUniqueParticipantIds: string[] = [],
     eventIds: string[] = [],
     drawIds: string[] = [];
+
+  if (params.leagueProfiles) {
+    const result = processLeagueProfiles({
+      allUniqueParticipantIds,
+      tournamentRecord,
+      ...params,
+      eventIds,
+      venueIds,
+      drawIds,
+    });
+    if (result?.error) return result;
+  }
 
   if (params.drawProfiles) {
     const result = processDrawProfiles({
@@ -137,8 +162,6 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     });
     if (result?.error) return result;
   }
-
-  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
 
   const { scheduledRounds = undefined, schedulerResult = {} } = schedulingProfile
     ? scheduleRounds({ ...params, tournamentRecord })
