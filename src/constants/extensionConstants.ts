@@ -1,6 +1,5 @@
 export const ACTIVE_SUSPENSION = 'activeSuspension';
 export const APPLIED_POLICIES = 'appliedPolicies';
-export const AUDIT_POSITION_ACTIONS = 'positionActions';
 export const CONTEXT = 'context';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLED = 'disabled';
@@ -19,6 +18,7 @@ export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
 export const MATCHUP_HISTORY = 'matchUpHistory';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const PERSON_REQUESTS = 'personRequests';
+export const POSITION_ACTIONS = 'positionActions';
 export const RANKING_POINTS = 'rankingPoints';
 export const REGISTRATION = 'registration';
 export const ROUND_TARGET = 'roundTarget';
@@ -33,7 +33,6 @@ export const TIE_FORMAT_MODIFICATIONS = 'tieFormatModification';
 export const extensionConstants = {
   ACTIVE_SUSPENSION,
   APPLIED_POLICIES,
-  AUDIT_POSITION_ACTIONS,
   CONTEXT, // used to capture, e.g. context in which a venue was added
   DELEGATED_OUTCOME,
   DISABLED,
@@ -51,6 +50,7 @@ export const extensionConstants = {
   MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
+  POSITION_ACTIONS,
   RANKING_POINTS, // for attaching points awarded to tournamentRecord
   ROUND_TARGET,
   SCHEDULE_LIMITS,

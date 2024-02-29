@@ -1,12 +1,12 @@
 import { addMatchUpsNotice, modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { generateCollectionMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
 import { validateCollectionDefinition } from '@Validators/validateCollectionDefinition';
-import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
 import { getTieFormat } from '@Query/hierarchical/tieFormats/getTieFormat';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { tieFormatTelemetry } from '@Mutate/tieFormat/tieFormatTelemetry';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { validateTieFormat } from '@Validators/validateTieFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
@@ -15,7 +15,6 @@ import { UUID } from '@Tools/UUID';
 
 // constants and types
 import { CANNOT_MODIFY_TIEFORMAT, DUPLICATE_VALUE, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -277,17 +276,15 @@ export function addCollectionDefinition({
     return { error: MISSING_DRAW_DEFINITION };
   }
 
-  if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
-    const auditData = definedAttributes({
-      drawId: drawDefinition?.drawId,
-      collectionDefinition,
-      action: stack,
-      structureId,
-      matchUpId,
-      eventId,
-    });
-    tieFormatTelemetry({ drawDefinition, auditData });
-  }
+  const auditData = definedAttributes({
+    drawId: drawDefinition?.drawId,
+    collectionDefinition,
+    action: stack,
+    structureId,
+    matchUpId,
+    eventId,
+  });
+  tieFormatTelemetry({ appliedPolicies, drawDefinition, auditData });
 
   return {
     tieFormat: prunedTieFormat,

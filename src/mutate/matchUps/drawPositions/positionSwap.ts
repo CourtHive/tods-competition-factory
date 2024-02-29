@@ -6,6 +6,7 @@ import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDraw
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { updateSideLineUp } from '@Mutate/matchUps/lineUps/updateSideLineUp';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { resetLineUps } from '@Mutate/matchUps/lineUps/resetLineUps';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
@@ -27,9 +28,7 @@ import {
 export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, drawPositions, structureId, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
-  if (drawPositions?.length !== 2) {
-    return { error: INVALID_VALUES, drawPositions };
-  }
+  if (drawPositions?.length !== 2) return { error: INVALID_VALUES, drawPositions };
 
   const matchUpsMap = getMatchUpsMap({ drawDefinition });
 
@@ -41,6 +40,13 @@ export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, 
 
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
+
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
 
   let result;
   if (structure.structureType === CONTAINER) {
@@ -75,7 +81,7 @@ export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, 
     drawPositions,
     structureId,
   };
-  addPositionActionTelemetry({ drawDefinition, positionAction });
+  addPositionActionTelemetry({ appliedPolicies, drawDefinition, positionAction });
 
   modifyPositionAssignmentsNotice({
     tournamentId: tournamentRecord?.tournamentId,

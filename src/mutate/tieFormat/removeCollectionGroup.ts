@@ -10,7 +10,6 @@ import { definedAttributes } from '@Tools/definedAttributes';
 // constants and types
 import { DrawDefinition, Event, MatchUp, Tournament } from '@Types/tournamentTypes';
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { TIE_FORMAT_MODIFICATIONS } from '@Constants/extensionConstants';
 
 type RemoveCollectionGroupArgs = {
   updateInProgressMatchUps?: boolean;
@@ -94,17 +93,15 @@ export function removeCollectionGroup({
 
   if (!result.error) {
     const { appliedPolicies } = getAppliedPolicies({ tournamentRecord });
-    if (appliedPolicies?.audit?.[TIE_FORMAT_MODIFICATIONS]) {
-      const auditData = definedAttributes({
-        drawId: drawDefinition?.drawId,
-        collectionGroupNumber,
-        action: stack,
-        structureId,
-        matchUpId,
-        eventId,
-      });
-      tieFormatTelemetry({ drawDefinition, auditData });
-    }
+    const auditData = definedAttributes({
+      drawId: drawDefinition?.drawId,
+      collectionGroupNumber,
+      action: stack,
+      structureId,
+      matchUpId,
+      eventId,
+    });
+    tieFormatTelemetry({ appliedPolicies, drawDefinition, auditData });
   }
 
   return decorateResult({

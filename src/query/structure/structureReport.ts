@@ -13,7 +13,7 @@ import { SEEDING } from '@Constants/scaleConstants';
 import { Participant, Side, Tournament } from '@Types/tournamentTypes';
 import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
-import { AUDIT_POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
 
 type GetStructureReportsArgs = {
   tournamentRecord: Tournament;
@@ -231,5 +231,5 @@ export function getStructureReports({
 }
 
 function getPositionManipulations({ extensions }) {
-  return extensions?.find(({ name }) => name === AUDIT_POSITION_ACTIONS)?.value?.slice(1);
+  return extensions?.find(({ name }) => name === POSITION_ACTIONS)?.value?.slice(1);
 }

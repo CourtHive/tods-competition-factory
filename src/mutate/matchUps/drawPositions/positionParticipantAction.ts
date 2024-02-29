@@ -1,13 +1,15 @@
 import { conditionallyDisableLinkPositioning } from '../../drawDefinitions/positionGovernor/conditionallyDisableLinkPositioning';
+import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
-import { addPositionActionTelemetry } from '../../drawDefinitions/positionGovernor/addPositionActionTelemetry';
-import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
-import { findStructure } from '@Acquire/findStructure';
 import { assignDrawPosition } from './positionAssignment';
+import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
 
+// constants
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
@@ -27,6 +29,13 @@ export function positionParticipantAction(params) {
   const stack = 'positionParticipantAction';
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
+
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
 
   let { inContextDrawMatchUps, matchUpsMap } = params;
 
@@ -65,9 +74,7 @@ export function positionParticipantAction(params) {
     if (!result.success) {
       return decorateResult({ result, stack });
     }
-    return successNotice({
-      removedParticipantId,
-    });
+    return successNotice({ appliedPolicies, removedParticipantId });
   }
 
   const result = clearDrawPosition({
@@ -95,9 +102,9 @@ export function positionParticipantAction(params) {
   });
   if (!assignResult.success) return decorateResult({ result: assignResult, stack });
 
-  return successNotice({ removedParticipantId });
+  return successNotice({ appliedPolicies, removedParticipantId });
 
-  function successNotice({ removedParticipantId }) {
+  function successNotice({ appliedPolicies, removedParticipantId }) {
     const { structure } = findStructure({ drawDefinition, structureId });
     conditionallyDisableLinkPositioning({
       drawPositions: [drawPosition],
@@ -110,7 +117,7 @@ export function positionParticipantAction(params) {
       structureId,
     };
 
-    addPositionActionTelemetry({ drawDefinition, positionAction });
+    addPositionActionTelemetry({ appliedPolicies, drawDefinition, positionAction });
 
     return decorateResult({
       context: { removedParticipantId },

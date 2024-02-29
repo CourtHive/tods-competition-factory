@@ -12,10 +12,6 @@ Extensions can exist on any attribute within a TODS `tournamentRecord`. Each ext
 
 Regularly attached to `tournamentRecords`, `events` and `drawDefinitions`; can also be attached to `structures`. Many factory methods will check for policies which are "in scope", meaning within the object hierarchy. Policies can be attached at any time programmatically; they are attached automatically to `drawDefinitions` if any `policyDefinitions` are passed to `generateDrawDefinition()`.
 
-### AUDIT_POSITION_ACTIONS
-
-When no external auditing service is available, `positionAction` telemetry can be stored on the `tournamentRecord`.
-
 ### DELEGATED_OUTCOME
 
 Used to capture `matchUp` outcomes which are not "official", meaning they may have been sourced from a third party application for the purposes of display prior to the entry of an official result.
@@ -71,6 +67,10 @@ Stores a record of participant representatives present as witnesses during the m
 ### PERSON_REQUESTS
 
 Captures scheduling requests. Consumed by the scheduler to attempt to accommodate participants; can be used to simply capture and display scheduling requests.
+
+### POSITION_ACTIONS
+
+When no external auditing service is available, `positionAction` telemetry can be stored on the `tournamentRecord`.
 
 ### RANKING_POINTS
 

@@ -4,6 +4,7 @@ import { addPositionActionTelemetry } from './positionGovernor/addPositionAction
 import { clearDrawPosition } from '@Mutate/matchUps/drawPositions/positionClear';
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { modifyEntriesStatus } from '@Mutate/entries/modifyEntriesStatus';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { destroyPairEntry } from '@Mutate/entries/destroyPairEntry';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findStructure } from '@Acquire/findStructure';
@@ -23,6 +24,13 @@ export function removeDrawPositionAssignment(params): ResultType & { participant
 
   const { participantId } = result;
   const { drawPosition, event, structureId } = params;
+
+  const appliedPolicies =
+    getAppliedPolicies({
+      tournamentRecord,
+      drawDefinition,
+      event,
+    }).appliedPolicies ?? {};
 
   if ([ALTERNATE, WITHDRAWN].includes(entryStatus) && participantId) {
     const { tournamentRecord } = params;
@@ -85,7 +93,7 @@ export function removeDrawPositionAssignment(params): ResultType & { participant
     entryStatus,
     structureId,
   };
-  addPositionActionTelemetry({ drawDefinition, positionAction });
+  addPositionActionTelemetry({ appliedPolicies, drawDefinition, positionAction });
 
   return result;
 }
