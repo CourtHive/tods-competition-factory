@@ -5,12 +5,13 @@ import { generateParticipants } from './generateParticipants';
 import { getParticipantsCount } from './getParticipantsCount';
 import { generateRange } from '@Tools/arrays';
 
-import { Participant, Tournament } from '@Types/tournamentTypes';
+// constants and types
 import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
+import { Participant, Tournament } from '@Types/tournamentTypes';
 import { ParticipantsProfile } from '@Types/factoryTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
-import { SUCCESS } from '@Constants/resultConstants';
 import { genParticipantId } from './genParticipantId';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type AddTournamentParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -37,12 +38,12 @@ export function addTournamentParticipants({
   const teamKey = participantsProfile?.teamKey;
 
   const participants = generateParticipants({
-    uuids,
-    ...participantsProfile,
     consideredDate: startDate,
+    ...participantsProfile,
     participantsCount,
     participantType,
     gendersCount,
+    uuids,
   }).participants as Participant[];
 
   let addedCount = 0;

@@ -1,10 +1,11 @@
 import tieFormatDefaults from '../templates/tieFormatDefaults';
 import { processTieFormat } from './processTieFormat';
 
+// constants
+import { FEMALE, MIXED, OTHER, MALE, ANY } from '@Constants/genderConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, TEAM } from '@Constants/eventConstants';
-import { FEMALE, MIXED, OTHER, MALE, ANY } from '@Constants/genderConstants';
 
 export function getParticipantsCount({ participantsProfile, eventProfiles, drawProfiles }) {
   let { participantsCount, participantType = INDIVIDUAL } = participantsProfile || {};

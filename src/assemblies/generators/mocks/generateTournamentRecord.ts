@@ -9,6 +9,7 @@ import { generateEventWithDraw } from './generateEventWithDraw';
 import { cycleMutationStatus } from '@Global/state/globalState';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { generateVenues } from '@Mutate/venues/generateVenues';
+import { processLeagueProfiles } from './processLeagueProfiles';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { Extension } from '@Types/tournamentTypes';
 import { addEvent } from '@Mutate/events/addEvent';
@@ -16,57 +17,60 @@ import { randomPop } from '@Tools/arrays';
 
 // constants and fixtures
 import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
 import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { SUCCESS } from '@Constants/resultConstants';
 
 const mockTournamentNames = [
-  'Mock Tournament',
-  'CourtHive Challenge',
-  'Racket Rally',
   'Generated Tournament',
-  'Factory Follies',
+  'CourtHive Challenge',
   'Open Competition',
+  'Factory Follies',
+  'Mock Tournament',
+  'Racket Rally',
 ];
 
 type GenerateTournamentRecordArgs = {
+  participantsProfile?: ParticipantsProfile;
   scheduleCompletedMatchUps?: boolean;
   tournamentExtensions?: Extension[];
+  policyDefinitions: PolicyDefinitions;
   completeAllMatchUps?: boolean;
+  tournamentAttributes?: any;
+  ratingsParameters?: any;
   tournamentName?: string;
+  schedulingProfile?: any;
   autoSchedule?: boolean;
+  leagueProfiles?: any[];
+  eventProfiles?: any[];
+  venueProfiles?: any[];
+  drawProfiles?: any[];
   startDate?: string;
   endDate?: string;
   uuids?: string[];
-
-  [key: string]: any;
 };
 
 export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
-  let { tournamentAttributes, startDate, endDate } = params ?? {};
+  let { startDate, endDate } = params ?? {};
   const {
     tournamentName = randomPop(mockTournamentNames),
     ratingsParameters = defaultRatingsParameters,
-    scheduleCompletedMatchUps,
     tournamentExtensions,
-    matchUpStatusProfile,
-    completeAllMatchUps,
-    participantsProfile,
-    autoEntryPositions,
-    hydrateCollections,
-    randomWinningSide,
     policyDefinitions,
     schedulingProfile,
-    periodLength,
-    autoSchedule,
-    eventProfiles,
     venueProfiles,
-    drawProfiles,
     uuids,
   } = params ?? {};
+
   if ((startDate && !isValidDateString(startDate)) || (endDate && !isValidDateString(endDate)))
     return { error: INVALID_DATE };
 
-  if (eventProfiles && !Array.isArray(eventProfiles)) return { error: INVALID_VALUES };
+  if (
+    (params.leagueProfiles && !Array.isArray(params.leagueProfiles)) ||
+    (params.eventProfiles && !Array.isArray(params.eventProfiles)) ||
+    (params.drawProfiles && !Array.isArray(params.drawProfiles))
+  )
+    return { error: INVALID_VALUES };
 
   if (!startDate) {
     const tournamentDate = new Date();
@@ -78,14 +82,15 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  if (typeof tournamentAttributes !== 'object') tournamentAttributes = {};
   const tournamentRecord = newTournamentRecord({
-    ...tournamentAttributes,
+    ...(params.tournamentAttributes ?? {}),
     tournamentName,
     isMock: true,
     startDate,
     endDate,
   });
+
+  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
 
   // attach any valid tournamentExtensions
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
@@ -103,114 +108,64 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     }
   }
 
-  const result = addTournamentParticipants({
-    participantsProfile,
-    tournamentRecord,
-    eventProfiles,
-    drawProfiles,
-    startDate,
-    uuids,
-  });
-  if (!result.success) return result;
+  // if there are leagueProfiles but no other profiles, then skip adding participants
+  // leagueProfiles will generate participants and teams and events
+  if (
+    !params?.leagueProfiles?.length ||
+    params.eventProfiles?.length ||
+    params.drawProfiles?.length ||
+    params.participantsProfile
+  ) {
+    const result = addTournamentParticipants({
+      tournamentRecord,
+      ...params,
+    });
+    if (!result.success) return result;
+  }
 
   const allUniqueParticipantIds: string[] = [],
     eventIds: string[] = [],
     drawIds: string[] = [];
 
-  if (Array.isArray(drawProfiles)) {
-    let drawIndex = 0;
-    for (const drawProfile of drawProfiles) {
-      let result = generateEventWithDraw({
-        allUniqueParticipantIds,
-        matchUpStatusProfile,
-        completeAllMatchUps,
-        autoEntryPositions,
-        hydrateCollections,
-        participantsProfile,
-        randomWinningSide,
-        ratingsParameters,
-        tournamentRecord,
-        isMock: true,
-        drawProfile,
-        startDate,
-        drawIndex,
-        uuids,
-      });
-      if (result.error) return result;
-
-      const { drawId, eventId, event, uniqueParticipantIds } = result;
-
-      result = addEvent({
-        suppressNotifications: false,
-        internalUse: true,
-        tournamentRecord,
-        event,
-      });
-      if (result.error) return result;
-
-      if (drawId) drawIds.push(drawId);
-      eventIds.push(eventId);
-
-      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-      drawIndex += 1;
-    }
-  }
-
-  if (eventProfiles) {
-    let eventIndex = 0;
-    for (const eventProfile of eventProfiles) {
-      const result = generateEventWithFlights({
-        allUniqueParticipantIds,
-        matchUpStatusProfile,
-        participantsProfile,
-        completeAllMatchUps,
-        autoEntryPositions,
-        hydrateCollections,
-        randomWinningSide,
-        ratingsParameters,
-        tournamentRecord,
-        eventProfile,
-        eventIndex,
-        startDate,
-        uuids,
-      });
-      if (result.error) return result;
-
-      const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
-
-      if (generatedDrawIds) drawIds.push(...generatedDrawIds);
-      eventIds.push(eventId);
-
-      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-      eventIndex += 1;
-    }
-  }
-
-  const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
-
-  let scheduledRounds;
-  let schedulerResult = {};
-  if (schedulingProfile) {
-    const result = generateScheduledRounds({
-      schedulingProfile,
+  if (params.leagueProfiles) {
+    const result = processLeagueProfiles({
+      allUniqueParticipantIds,
       tournamentRecord,
+      ...params,
+      eventIds,
+      venueIds,
+      drawIds,
     });
-    if (result.error) return result;
-    scheduledRounds = result.scheduledRounds;
-
-    if (autoSchedule) {
-      const { tournamentId } = tournamentRecord;
-      const tournamentRecords = { [tournamentId]: tournamentRecord };
-
-      schedulerResult = scheduleProfileRounds({
-        scheduleCompletedMatchUps,
-        tournamentRecords,
-        periodLength,
-      });
-    }
+    if (result?.error) return result;
   }
+
+  if (params.drawProfiles) {
+    const result = processDrawProfiles({
+      allUniqueParticipantIds,
+      ratingsParameters,
+      tournamentRecord,
+      ...params,
+      eventIds,
+      drawIds,
+    });
+    if (result?.error) return result;
+  }
+
+  if (params.eventProfiles) {
+    const result = processEventProfiles({
+      allUniqueParticipantIds,
+      ratingsParameters,
+      tournamentRecord,
+      ...params,
+      eventIds,
+      drawIds,
+    });
+    if (result?.error) return result;
+  }
+
+  const { scheduledRounds = undefined, schedulerResult = {} } = schedulingProfile
+    ? scheduleRounds({ ...params, tournamentRecord })
+    : {};
 
   // clear globalState modified flag;
   cycleMutationStatus();
@@ -224,4 +179,80 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     venueIds,
     drawIds,
   });
+}
+
+function processDrawProfiles(params) {
+  const { tournamentRecord, drawProfiles, allUniqueParticipantIds, eventIds, drawIds } = params;
+  let drawIndex = 0;
+  for (const drawProfile of drawProfiles) {
+    let result = generateEventWithDraw({
+      allUniqueParticipantIds,
+      tournamentRecord,
+      drawProfile,
+      drawIndex,
+      ...params,
+    });
+    if (result.error) return result;
+
+    const { drawId, eventId, event, uniqueParticipantIds } = result;
+
+    result = addEvent({
+      suppressNotifications: false,
+      internalUse: true,
+      tournamentRecord,
+      event,
+    });
+    if (result.error) return result;
+
+    if (drawId) drawIds.push(drawId);
+    eventIds.push(eventId);
+
+    if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+    drawIndex += 1;
+  }
+}
+
+function processEventProfiles(params) {
+  const { eventProfiles, allUniqueParticipantIds, eventIds, drawIds } = params;
+
+  let eventIndex = 0;
+  for (const eventProfile of eventProfiles) {
+    const result = generateEventWithFlights({ ...params, eventIndex, eventProfile });
+    if (result.error) return result;
+
+    const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
+
+    if (generatedDrawIds) drawIds.push(...generatedDrawIds);
+    eventIds.push(eventId);
+
+    if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+    eventIndex += 1;
+  }
+}
+
+function scheduleRounds(params): { scheduledRounds?: any; schedulerResult?: any } {
+  const { schedulingProfile, tournamentRecord, autoSchedule, periodLength, scheduleCompletedMatchUps } = params;
+  const result = generateScheduledRounds({
+    schedulingProfile,
+    tournamentRecord,
+  });
+  if (result.error) return result;
+  const scheduledRounds = result.scheduledRounds;
+
+  if (autoSchedule) {
+    const { tournamentId } = tournamentRecord;
+    const tournamentRecords = { [tournamentId]: tournamentRecord };
+
+    const schedulerResult = scheduleProfileRounds({
+      scheduleCompletedMatchUps,
+      tournamentRecords,
+      periodLength,
+    });
+
+    return { schedulerResult, scheduledRounds };
+  }
+
+  return { scheduledRounds };
 }

@@ -1,8 +1,9 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
+import { UUID } from '@Tools/UUID';
 
+// constants and fixtures
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';

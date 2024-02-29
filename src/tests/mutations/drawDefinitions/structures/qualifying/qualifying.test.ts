@@ -2,12 +2,14 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
-import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
+// constants and fixtures
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { DRAW, FEED_IN, MAIN, POSITION, QUALIFYING, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
@@ -25,14 +27,13 @@ import {
   SWAP_PARTICIPANTS,
   WITHDRAW_PARTICIPANT,
 } from '@Constants/positionActionConstants';
-import { DRAW, FEED_IN, MAIN, POSITION, QUALIFYING, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('will throw an error for incorrect qualifyingStructures', () => {
   const result = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        drawSize: 16,
         qualifyingProfiles: [{ drawSize: 16, qualifyingPositions: 4 }],
+        drawSize: 16,
       },
     ],
   });
