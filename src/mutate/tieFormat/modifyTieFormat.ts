@@ -15,6 +15,7 @@ import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
 type ModifyTieFormatArgs = {
+  considerations?: { collectionName?: boolean; collectionOrder?: boolean };
   updateInProgressMatchUps?: boolean;
   tieFormatComparison?: boolean;
   tournamentRecord: Tournament;
@@ -32,6 +33,7 @@ export function modifyTieFormat({
   tieFormatComparison,
   modifiedTieFormat,
   tournamentRecord,
+  considerations,
   drawDefinition,
   structureId,
   matchUpId,
@@ -64,6 +66,7 @@ export function modifyTieFormat({
   const comparison = compareTieFormats({
     descendant: modifiedTieFormat,
     ancestor: tieFormat,
+    considerations,
   });
   if (comparison.invalid) {
     return decorateResult({
