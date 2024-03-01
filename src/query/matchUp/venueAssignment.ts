@@ -1,13 +1,10 @@
-import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
+import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 
+// constants and types
 import { ASSIGN_VENUE } from '@Constants/timeItemConstants';
+import { ScheduledMatchUpArgs } from '@Types/factoryTypes';
 
-export function matchUpAssignedVenueId({
-  visibilityThreshold,
-  timeStamp,
-  schedule,
-  matchUp,
-}: import('./scheduledMatchUpArgs').ScheduledMatchUpArgs) {
+export function matchUpAssignedVenueId({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
   const { itemValue: venueId, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({
     timeItems: matchUp?.timeItems || [],
     itemType: ASSIGN_VENUE,

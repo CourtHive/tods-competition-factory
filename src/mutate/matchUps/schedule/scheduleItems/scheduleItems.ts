@@ -2,12 +2,14 @@ import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, va
 import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from '@Mutate/matchUps/schedule/scheduledTime';
 import { addMatchUpScheduledDate } from '@Mutate/matchUps/schedule/scheduleItems/addMatchUpScheduledDate';
 import { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTeamMatchUpCourts';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
 import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
+import { setMatchUpHomeParticipant } from './setMatchUpHomeParticipant';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
@@ -15,10 +17,12 @@ import { findParticipant } from '@Acquire/findParticipant';
 import { validTimeString } from '@Validators/regex';
 import { isConvertableInteger } from '@Tools/math';
 import { ensureInt } from '@Tools/ensureInt';
+import { isString } from '@Tools/objects';
 
 // constants and types
 import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME, COURT_ORDER } from '@Constants/timeItemConstants';
 import { DrawDefinition, Event, TimeItem } from '@Types/tournamentTypes';
+import { OBJECT, OF_TYPE } from '@Constants/attributeConstants';
 import { AddScheduleAttributeArgs } from '@Types/factoryTypes';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { OFFICIAL } from '@Constants/participantRoles';
@@ -32,8 +36,6 @@ import {
   INVALID_STOP_TIME,
   INVALID_END_TIME,
   INVALID_TIME,
-  MISSING_DRAW_DEFINITION,
-  MISSING_VALUE,
   ANACHRONISM,
   INVALID_VALUES,
   ErrorType,
@@ -65,31 +67,38 @@ type AddMatchUpScheduleItemsArgs = {
   event?: Event;
 };
 
-export function addMatchUpScheduleItems({
-  errorOnAnachronism = false,
-  checkChronology = true,
-  matchUpDependencies,
-  inContextMatchUps,
-  removePriorValues,
-  tournamentRecords,
-  tournamentRecord,
-  drawDefinition,
-  disableNotice,
-  drawMatchUps,
-  matchUpId,
-  schedule,
-  event,
-}: AddMatchUpScheduleItemsArgs): {
+export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
   error?: ErrorType;
   success?: boolean;
   warnings?: any[];
   info?: any;
 } {
-  if (!schedule) return { error: MISSING_VALUE, info: 'Missing schedule' };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
   const stack = 'addMatchUpScheduleItems';
+
+  const paramsCheck = checkRequiredParameters(
+    params,
+    [
+      { drawDefinition: true, matchUpId: true },
+      { schedule: true, [OF_TYPE]: OBJECT },
+    ],
+    stack,
+  );
+  if (paramsCheck.error) return paramsCheck;
+
+  let { matchUpDependencies, inContextMatchUps } = params;
+  const {
+    errorOnAnachronism = false,
+    checkChronology = true,
+    removePriorValues,
+    tournamentRecords,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    drawMatchUps,
+    matchUpId,
+    schedule,
+    event,
+  } = params;
   let matchUp, warning;
 
   if (!drawMatchUps) {
@@ -106,6 +115,7 @@ export function addMatchUpScheduleItems({
     courtIds,
     courtOrder,
     resumeTime,
+    homeParticipantId,
     scheduledDate,
     scheduledTime,
     startTime,
@@ -279,6 +289,17 @@ export function addMatchUpScheduleItems({
       matchUp,
     });
     if (result?.error) return decorateResult({ result, stack, context: { timeModifiers } });
+  }
+
+  if (isString(homeParticipantId)) {
+    setMatchUpHomeParticipant({
+      disableNotice: true,
+      homeParticipantId,
+      removePriorValues,
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+    });
   }
 
   if (!disableNotice) {

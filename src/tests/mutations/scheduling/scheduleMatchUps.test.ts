@@ -3,6 +3,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { ASSIGN_COURT, END_TIME, RESUME_TIME, START_TIME, STOP_TIME } from '@Constants/timeItemConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { OFFICIAL } from '@Constants/participantRoles';
 import {
@@ -19,7 +21,6 @@ import {
   MISSING_VALUE,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { ASSIGN_COURT, END_TIME, RESUME_TIME, START_TIME, STOP_TIME } from '@Constants/timeItemConstants';
 
 it('can add events, venues, and schedule matchUps', () => {
   let startDate = '2020-01-01';
@@ -336,7 +337,7 @@ it('can add events, venues, and schedule matchUps', () => {
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   startDate = '2020-01-02';
   result = tournamentEngine.setTournamentStartDate({ startDate });

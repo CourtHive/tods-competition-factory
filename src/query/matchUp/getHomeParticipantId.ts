@@ -1,17 +1,17 @@
 import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 
 // constants and types
-import { ASSIGN_COURT } from '@Constants/timeItemConstants';
+import { HOME_PARTICIPANT_ID } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from '@Types/factoryTypes';
 
-export function matchUpAssignedCourtId({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
-  const { itemValue: courtId, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({
+export function getHomeParticipantId({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
+  const { itemValue: homeParticipantId, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({
     timeItems: matchUp?.timeItems || [],
-    itemType: ASSIGN_COURT,
+    itemType: HOME_PARTICIPANT_ID,
     visibilityThreshold,
   });
 
   return !schedule || (itemTimeStamp && timeStamp && new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())
-    ? { courtId }
+    ? { homeParticipantId }
     : schedule;
 }
