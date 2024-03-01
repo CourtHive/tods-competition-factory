@@ -8,7 +8,7 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { TieFormat } from '@Types/tournamentTypes';
 
 type CompareTieFormatsArgs = {
-  considerations?: any;
+  considerations?: { collectionName?: boolean; collectionOrder?: boolean };
   ancestor: TieFormat;
   descendant: any;
 };
@@ -62,7 +62,6 @@ export function compareTieFormats({ considerations = {}, descendant, ancestor }:
   );
 
   descendantDifferences.collectionsValue = getCollectionsValue(descendantCollectionDefinitions);
-
   ancestorDifferences.collectionsValue = getCollectionsValue(ancestorCollectionDefinitions);
 
   descendantDifferences.groupsCount =
@@ -141,10 +140,12 @@ function getCollectionsValue(definitions) {
       setValue,
     };
 
-    const valueKeys = Object.keys(valueAssignments).filter((key) => ![undefined, null].includes(valueAssignments[key]));
-    if (valueKeys.length !== 1) {
-      invalidValues.push({ collectionId });
-    }
+    const valueKeys = Object.keys(valueAssignments).filter(
+      (key) =>
+        ![undefined, null].includes(valueAssignments[key]) &&
+        (!Array.isArray(valueAssignments[key]) || valueAssignments[key].length > 0),
+    );
+    if (valueKeys.length !== 1) invalidValues.push({ collectionId });
 
     const valueKey = valueKeys[0];
     if (valueKey) {
@@ -155,16 +156,13 @@ function getCollectionsValue(definitions) {
 
     totalMatchUps += matchUpCount;
 
-    if (collectionValueProfiles)
+    if (collectionValueProfiles?.length)
       return total + collectionValueProfiles.reduce((total, profile) => total + profile.value, 0);
 
     if (matchUpCount) {
       if (isConvertableInteger(matchUpValue)) return total + matchUpValue * matchUpCount;
-
       if (isConvertableInteger(scoreValue)) return total + scoreValue * matchUpCount;
-
       if (isConvertableInteger(setValue)) return total + setValue * matchUpCount;
-
       return total + collectionValue;
     }
 
