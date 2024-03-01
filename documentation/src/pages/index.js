@@ -1,10 +1,10 @@
-import React from 'react';
-import clsx from 'clsx';
-import Layout from '@theme/Layout';
-import Link from '@docusaurus/Link';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import styles from './styles.module.css';
+import Link from '@docusaurus/Link';
+import Layout from '@theme/Layout';
+import React from 'react';
+import clsx from 'clsx';
 
 const features = [
   {
@@ -13,8 +13,8 @@ const features = [
     imageLink: 'https://itftennis.atlassian.net/wiki/spaces/TODS/overview',
     description: (
       <>
-        The Competition Factory consumes, produces, and generates ITF standard
-        TODS documents (a JSON format) and ensures that all mutations are valid.
+        The Competition Factory consumes, produces, and generates ITF standard TODS documents (a JSON format) and
+        ensures that all mutations are valid.
       </>
     ),
   },
@@ -24,10 +24,8 @@ const features = [
     imageLink: 'https://courthive.github.io/TMX/#/',
     description: (
       <>
-        Based on years of experience running thousands of events for numerous
-        governing bodies, Competition Factory now powers the tournament
-        management platform of the USTA and the Intercollegiate Tennis
-        Association.
+        Based on years of experience running thousands of events for numerous governing bodies, Competition Factory now
+        powers the tournament management platform of the USTA and the Intercollegiate Tennis Association.
       </>
     ),
   },
@@ -36,9 +34,8 @@ const features = [
     imageUrl: 'img/vitest-logo.svg',
     description: (
       <>
-        Written in 100% TypeScript following a Test Driven Development process
-        utilizing Vitest. More than 500 test files and ~2000 total tests cover
-        more than 96% of the code base.
+        Written in 100% TypeScript following a Test Driven Development process utilizing Vitest. More than 500 test
+        files and ~2000 total tests cover more than 96% of the code base.
       </>
     ),
   },
@@ -51,10 +48,7 @@ function handleOnClick(imageLink) {
 function Feature({ imageLink, imageUrl, title, description }) {
   const imgUrl = useBaseUrl(imageUrl);
   return (
-    <div
-      className={clsx('col col--4', styles.feature)}
-      onClick={() => handleOnClick(imageLink)}
-    >
+    <div className={clsx('col col--4', styles.feature)} onClick={() => handleOnClick(imageLink)}>
       {imgUrl && (
         <div className="text--center">
           <img className={styles.featureImage} src={imgUrl} alt={title} />
@@ -70,10 +64,7 @@ export default function Home() {
   const context = useDocusaurusContext();
   const { siteConfig = {} } = context;
   return (
-    <Layout
-      title={`${siteConfig.title}`}
-      description="Tournament Management Components"
-    >
+    <Layout title={`${siteConfig.title}`} description="Tournament Management Components">
       <header className={clsx('hero hero--primary', styles.heroBanner)}>
         <div className="container">
           <h1 className="hero__title">{siteConfig.title}</h1>
@@ -81,10 +72,7 @@ export default function Home() {
           <div className={styles.buttons}>
             <Link
               style={{ color: 'lightgreen' }}
-              className={clsx(
-                'button button--outline button--secondary button--lg',
-                styles.getStarted
-              )}
+              className={clsx('button button--outline button--secondary button--lg', styles.getStarted)}
               to={useBaseUrl('docs/')}
             >
               Get Started
