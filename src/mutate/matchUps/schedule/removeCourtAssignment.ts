@@ -1,9 +1,11 @@
-import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findEvent } from '@Acquire/findEvent';
 
+// constants
+import { ALLOCATE_COURTS, ASSIGN_COURT } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   MATCHUP_NOT_FOUND,
@@ -11,7 +13,6 @@ import {
   MISSING_MATCHUP_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { ALLOCATE_COURTS, ASSIGN_COURT } from '@Constants/timeItemConstants';
 
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 

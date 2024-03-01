@@ -1,19 +1,20 @@
+import { addMatchUpScheduledDate } from '@Mutate/matchUps/schedule/scheduleItems/addMatchUpScheduledDate';
 import { getMatchUpScheduleDetails } from '@Query/matchUp/getMatchUpScheduleDetails';
 import { resetMatchUpTimeItems } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { matchUpDuration } from '@Query/matchUp/matchUpDuration';
 import { publicFindDrawMatchUp } from '@Acquire/findDrawMatchUp';
-import { mocksEngine } from '../../..';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import {
   addMatchUpEndTime,
   addMatchUpResumeTime,
-  addMatchUpScheduledDate,
   addMatchUpStartTime,
   addMatchUpStopTime,
-} from '@Mutate/matchUps/schedule/scheduleItems';
+} from '@Mutate/matchUps/schedule/scheduleItems/scheduleItems';
 
+// constants
 import { DOUBLES } from '@Constants/eventConstants';
 import { ERROR } from '@Constants/resultConstants';
 

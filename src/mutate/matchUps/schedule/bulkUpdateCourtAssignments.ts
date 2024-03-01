@@ -2,6 +2,7 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { assignMatchUpCourt } from './assignMatchUpCourt';
 import { findEvent } from '@Acquire/findEvent';
 
+// constants and types
 import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { TournamentRecords } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';

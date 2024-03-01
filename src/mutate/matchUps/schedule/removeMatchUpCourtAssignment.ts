@@ -1,10 +1,11 @@
 import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
+import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
-import { assignMatchUpCourt } from './assignMatchUpCourt';
 
+// contstants
 import { MISSING_DRAW_DEFINITION, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';

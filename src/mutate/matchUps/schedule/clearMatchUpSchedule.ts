@@ -1,7 +1,8 @@
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 
+// constants
 import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
