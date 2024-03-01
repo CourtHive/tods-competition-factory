@@ -1,3 +1,4 @@
+export { setMatchUpHomeParticipantId } from '@Mutate/matchUps/schedule/scheduleItems/setMatchUpHomeParticipantId';
 export { calculateScheduleTimes } from '@Mutate/matchUps/schedule/scheduleMatchUps/calculateScheduleTimes';
 export { addMatchUpScheduledDate } from '@Mutate/matchUps/schedule/scheduleItems/addMatchUpScheduledDate';
 export { removeEventMatchUpFormatTiming } from '@Mutate/extensions/events/removeEventMatchUpFormatTiming';

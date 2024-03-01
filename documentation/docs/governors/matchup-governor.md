@@ -40,6 +40,7 @@ engine.addMatchUpOfficial({
 ```js
 const resumeTime = '2020-01-01T09:00:00Z';
 engine.addMatchUpResumeTime({
+  removePriorValues, // optional boolean
   disableNotice, // when disabled subscribers will not be notified
   resumeTime,
   matchUpId,
@@ -54,6 +55,7 @@ engine.addMatchUpResumeTime({
 ```js
 const scheduledDate = '2020-01-01';
 engine.addMatchUpScheduledDate({
+  removePriorValues, // optional boolean
   disableNotice, // when disabled subscribers will not be notified
   scheduledDate,
   matchUpId,
@@ -68,6 +70,7 @@ engine.addMatchUpScheduledDate({
 ```js
 const scheduledTime = '08:00';
 engine.addMatchUpScheduledTime({
+  removePriorValues, // optional boolean
   disableNotice, // when disabled subscribers will not be notified
   scheduledTime,
   matchUpId,
@@ -83,6 +86,8 @@ Convenience function to add several schedule items at once.
 
 ```js
 engine.addMatchUpScheduleItems({
+  checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
+  removePriorValues, // optional boolean
   matchUpId,
   drawId,
   schedule: {
@@ -459,6 +464,22 @@ engine.setMatchUpFormat({
   eventId, // optional
   drawIds, // optional - ['drawId1', 'drawId2']
   stages, // optional - ['MAIN', 'CONSOLATION']
+});
+```
+
+---
+
+## setMatchUpHomeParticipantId
+
+Value `homeParticipantId` will appear in hydrated `matchUps.schedule`.
+
+```js
+engine.setMatchUpHomeParticipantId({
+  disableNotice, // when disabled subscribers will not be notified
+  homeParticipantId, // empty string ('') will remove
+  removePriorValues, // optional boolean
+  matchUpId,
+  drawId,
 });
 ```
 

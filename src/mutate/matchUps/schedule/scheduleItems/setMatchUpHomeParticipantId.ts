@@ -4,7 +4,7 @@ import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems'
 import { AddScheduleAttributeArgs, ResultType } from '@Types/factoryTypes';
 import { HOME_PARTICIPANT_ID } from '@Constants/timeItemConstants';
 
-export function setMatchUpHomeParticipant(
+export function setMatchUpHomeParticipantId(
   params: AddScheduleAttributeArgs & { homeParticipantId?: string },
 ): ResultType {
   const {

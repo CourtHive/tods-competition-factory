@@ -1,4 +1,5 @@
 import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, validTimeValue } from '@Tools/dateTime';
+import { setMatchUpHomeParticipantId } from '@Mutate/matchUps/schedule/scheduleItems/setMatchUpHomeParticipantId';
 import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from '@Mutate/matchUps/schedule/scheduledTime';
 import { addMatchUpScheduledDate } from '@Mutate/matchUps/schedule/scheduleItems/addMatchUpScheduledDate';
 import { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTeamMatchUpCourts';
@@ -9,7 +10,6 @@ import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems'
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
-import { setMatchUpHomeParticipant } from './setMatchUpHomeParticipant';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
@@ -292,7 +292,7 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
   }
 
   if (isString(homeParticipantId)) {
-    setMatchUpHomeParticipant({
+    setMatchUpHomeParticipantId({
       disableNotice: true,
       homeParticipantId,
       removePriorValues,
