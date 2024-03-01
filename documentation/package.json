@@ -44,6 +44,6 @@
     ]
   },
   "resolutions": {
-    "axios": "1.6.7"
+    "axios": "0.28.0"
   }
 }
