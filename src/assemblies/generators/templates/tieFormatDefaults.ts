@@ -72,12 +72,12 @@ const namedFormats = {
   [COLLEGE_DEFAULT]: {
     hydrate: true,
     doubles: {
-      matchUpFormat: FORMAT_STANDARD,
-      matchUpCount: 3,
+      matchUpFormat: 'SET1-S:6/TB7',
       collectionValue: 1,
+      matchUpCount: 3,
     },
     singles: {
-      matchUpFormat: 'SET1-S:6/TB7',
+      matchUpFormat: FORMAT_STANDARD,
       matchUpCount: 6,
       matchUpValue: 1,
     },
