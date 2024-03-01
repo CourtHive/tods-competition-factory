@@ -1,9 +1,10 @@
-import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
-import { findVenue } from '../../../query/venues/findVenue';
+import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
+import { findVenue } from '@Query/venues/findVenue';
 
+// constants and types
+import { MISSING_TOURNAMENT_RECORD, MISSING_MATCHUP_ID } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
 import { ASSIGN_VENUE } from '@Constants/timeItemConstants';
-import { MISSING_TOURNAMENT_RECORD, MISSING_MATCHUP_ID } from '@Constants/errorConditionConstants';
 
 type AssignMatchUpVenueArgs = {
   tournamentRecords?: { [key: string]: Tournament };

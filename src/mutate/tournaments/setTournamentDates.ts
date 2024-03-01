@@ -29,9 +29,9 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   const paramsCheck = checkRequiredParameters(params, [
     { tournamentRecord: true },
     {
+      [VALIDATE]: (value) => dateValidation.test(value),
       [ANY_OF]: { startDate: false, endDate: false },
       [INVALID]: INVALID_DATE,
-      [VALIDATE]: (value) => dateValidation.test(value),
     },
   ]);
   if (paramsCheck.error) return paramsCheck;

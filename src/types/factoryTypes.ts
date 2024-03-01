@@ -539,3 +539,10 @@ export type MatchUpsMap = {
 };
 
 export type Tally = [number, number];
+
+export type ScheduledMatchUpArgs = {
+  visibilityThreshold?: string;
+  timeStamp?: string;
+  schedule?: any;
+  matchUp: any;
+};

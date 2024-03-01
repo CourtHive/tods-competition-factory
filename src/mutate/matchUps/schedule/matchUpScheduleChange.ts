@@ -1,8 +1,8 @@
+import { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTeamMatchUpCourts';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
-import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
+import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { assignMatchUpCourt } from './assignMatchUpCourt';
 
 // constants
 import { SUCCESS } from '@Constants/resultConstants';

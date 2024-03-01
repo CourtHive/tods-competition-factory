@@ -22,6 +22,7 @@ import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
+import { getHomeParticipantId } from './getHomeParticipantId';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
@@ -90,12 +91,13 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
   if ((!eventIds || eventIds.includes(matchUp.eventId)) && (!drawIds || drawIds.includes(matchUp.drawId))) {
     const scheduleSource = { matchUp, visibilityThreshold };
     const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
+    const { homeParticipantId } = getHomeParticipantId(scheduleSource);
     const { scheduledTime } = scheduledMatchUpTime(scheduleSource);
+    const { timeModifiers } = matchUpTimeModifiers(scheduleSource);
     let { scheduledDate } = scheduledMatchUpDate(scheduleSource);
     const { venueId } = matchUpAssignedVenueId(scheduleSource);
     const { courtId } = matchUpAssignedCourtId(scheduleSource);
     const { courtOrder } = matchUpCourtOrder(scheduleSource);
-    const { timeModifiers } = matchUpTimeModifiers(scheduleSource);
 
     let timeAfterRecovery, averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes, typeChangeTimeAfterRecovery;
 
@@ -161,6 +163,7 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
       isoDateString,
 
       allocatedCourts,
+      homeParticipantId,
       timeModifiers,
       venueAbbreviation,
       venueName,

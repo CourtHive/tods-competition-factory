@@ -1,8 +1,9 @@
-import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
+import { bulkScheduleTournamentMatchUps } from '@Mutate/matchUps/schedule/bulkScheduleTournamentMatchUps';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { bulkScheduleTournamentMatchUps } from './bulkScheduleTournamentMatchUps';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { getMatchUpId } from '@Functions/global/extractors';
 
+// constants and types
 import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { Tournament } from '@Types/tournamentTypes';

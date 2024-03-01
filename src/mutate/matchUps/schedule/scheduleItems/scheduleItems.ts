@@ -1,22 +1,29 @@
-import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from './scheduledTime';
+import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, validTimeValue } from '@Tools/dateTime';
+import { setMatchUpHomeParticipantId } from '@Mutate/matchUps/schedule/scheduleItems/setMatchUpHomeParticipantId';
+import { addMatchUpScheduledTime, addMatchUpTimeModifiers } from '@Mutate/matchUps/schedule/scheduledTime';
+import { addMatchUpScheduledDate } from '@Mutate/matchUps/schedule/scheduleItems/addMatchUpScheduledDate';
+import { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTeamMatchUpCourts';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
+import { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
+import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
-import { allocateTeamMatchUpCourts } from './allocateTeamMatchUpCourts';
 import { getParticipants } from '@Query/participants/getParticipants';
-import { dateValidation, validTimeString } from '@Validators/regex';
-import { addMatchUpTimeItem } from '../../timeItems/matchUps/matchUpTimeItems';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { assignMatchUpCourt } from './assignMatchUpCourt';
-import { assignMatchUpVenue } from './assignMatchUpVenue';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findParticipant } from '@Acquire/findParticipant';
+import { validTimeString } from '@Validators/regex';
 import { isConvertableInteger } from '@Tools/math';
 import { ensureInt } from '@Tools/ensureInt';
-import { convertTime, extractDate, extractTime, formatDate, getIsoDateString, validTimeValue } from '@Tools/dateTime';
+import { isString } from '@Tools/objects';
 
 // constants and types
-import { AddScheduleAttributeArgs, ResultType } from '@Types/factoryTypes';
+import { START_TIME, STOP_TIME, RESUME_TIME, END_TIME, COURT_ORDER } from '@Constants/timeItemConstants';
+import { DrawDefinition, Event, TimeItem } from '@Types/tournamentTypes';
+import { OBJECT, OF_TYPE } from '@Constants/attributeConstants';
+import { AddScheduleAttributeArgs } from '@Types/factoryTypes';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { OFFICIAL } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -28,25 +35,13 @@ import {
   EXISTING_END_TIME,
   INVALID_STOP_TIME,
   INVALID_END_TIME,
-  INVALID_DATE,
   INVALID_TIME,
-  MISSING_DRAW_DEFINITION,
-  MISSING_VALUE,
   ANACHRONISM,
   INVALID_VALUES,
   ErrorType,
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import {
-  START_TIME,
-  STOP_TIME,
-  RESUME_TIME,
-  END_TIME,
-  SCHEDULED_DATE,
-  COURT_ORDER,
-} from '@Constants/timeItemConstants';
-import { DrawDefinition, Event, TimeItem } from '@Types/tournamentTypes';
 
 function timeDate(value, scheduledDate) {
   const time = validTimeString.test(value) ? value : extractTime(value);
@@ -72,31 +67,38 @@ type AddMatchUpScheduleItemsArgs = {
   event?: Event;
 };
 
-export function addMatchUpScheduleItems({
-  errorOnAnachronism = false,
-  checkChronology = true,
-  matchUpDependencies,
-  inContextMatchUps,
-  removePriorValues,
-  tournamentRecords,
-  tournamentRecord,
-  drawDefinition,
-  disableNotice,
-  drawMatchUps,
-  matchUpId,
-  schedule,
-  event,
-}: AddMatchUpScheduleItemsArgs): {
+export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
   error?: ErrorType;
   success?: boolean;
   warnings?: any[];
   info?: any;
 } {
-  if (!schedule) return { error: MISSING_VALUE, info: 'Missing schedule' };
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
   const stack = 'addMatchUpScheduleItems';
+
+  const paramsCheck = checkRequiredParameters(
+    params,
+    [
+      { drawDefinition: true, matchUpId: true },
+      { schedule: true, [OF_TYPE]: OBJECT },
+    ],
+    stack,
+  );
+  if (paramsCheck.error) return paramsCheck;
+
+  let { matchUpDependencies, inContextMatchUps } = params;
+  const {
+    errorOnAnachronism = false,
+    checkChronology = true,
+    removePriorValues,
+    tournamentRecords,
+    tournamentRecord,
+    drawDefinition,
+    disableNotice,
+    drawMatchUps,
+    matchUpId,
+    schedule,
+    event,
+  } = params;
   let matchUp, warning;
 
   if (!drawMatchUps) {
@@ -113,6 +115,7 @@ export function addMatchUpScheduleItems({
     courtIds,
     courtOrder,
     resumeTime,
+    homeParticipantId,
     scheduledDate,
     scheduledTime,
     startTime,
@@ -288,6 +291,17 @@ export function addMatchUpScheduleItems({
     if (result?.error) return decorateResult({ result, stack, context: { timeModifiers } });
   }
 
+  if (isString(homeParticipantId)) {
+    setMatchUpHomeParticipantId({
+      disableNotice: true,
+      homeParticipantId,
+      removePriorValues,
+      tournamentRecord,
+      drawDefinition,
+      matchUpId,
+    });
+  }
+
   if (!disableNotice) {
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
@@ -301,6 +315,7 @@ export function addMatchUpScheduleItems({
   return warning ? { ...SUCCESS, warnings: [warning] } : { ...SUCCESS };
 }
 
+/*
 export function addMatchUpScheduledDate({
   scheduledDate: dateToSchedule,
   removePriorValues,
@@ -337,6 +352,7 @@ export function addMatchUpScheduledDate({
     timeItem,
   });
 }
+*/
 
 export function addMatchUpCourtOrder({
   removePriorValues,

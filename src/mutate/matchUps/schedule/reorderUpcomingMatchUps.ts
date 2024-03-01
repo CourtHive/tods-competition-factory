@@ -1,7 +1,8 @@
-import { addMatchUpScheduledTime } from './scheduledTime';
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 
+// constants
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_DEFINITION_NOT_FOUND,

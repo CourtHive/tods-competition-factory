@@ -1,14 +1,14 @@
+import { jinnScheduler } from '@Mutate/matchUps/schedule/schedulers/jinnScheduler/jinnScheduler';
+import { v2Scheduler } from '@Mutate/matchUps/schedule/schedulers/v2Scheduler/v2Scheduler';
+import { clearScheduledMatchUps } from '@Mutate/matchUps/schedule/clearScheduledMatchUps';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { getMatchUpDailyLimits } from '@Query/extensions/getMatchUpDailyLimits';
+import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
-import { getSchedulingProfile } from '../../tournaments/schedulingProfile';
-import { jinnScheduler } from './schedulers/jinnScheduler/jinnScheduler';
-import { v2Scheduler } from './schedulers/v2Scheduler/v2Scheduler';
-import { clearScheduledMatchUps } from './clearScheduledMatchUps';
 import { extractDate, isValidDateString } from '@Tools/dateTime';
 
 // constants and types

@@ -1,7 +1,8 @@
-import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
+import { latestVisibleTimeItemValue } from '@Query/matchUp/latestVisibleTimeItemValue';
 
+// constants and types
+import { ScheduledMatchUpArgs } from '@Types/factoryTypes';
 import { COURT_ORDER } from '@Constants/timeItemConstants';
-import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
 
 export function matchUpCourtOrder({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
   const { itemValue: courtOrder, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({

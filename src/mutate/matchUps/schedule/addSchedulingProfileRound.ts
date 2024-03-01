@@ -1,13 +1,14 @@
 import { getCompetitionDateRange } from '@Query/tournaments/getCompetitionDateRange';
+import { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isValidDateString, sameDay } from '@Tools/dateTime';
 import { findExtension } from '@Acquire/findExtension';
-import { setSchedulingProfile } from '../../tournaments/schedulingProfile';
 import { isObject } from '@Tools/objects';
 
+// constants
+import { EXISTING_ROUND, INVALID_DATE } from '@Constants/errorConditionConstants';
 import { SCHEDULING_PROFILE } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { EXISTING_ROUND, INVALID_DATE } from '@Constants/errorConditionConstants';
 
 export function addSchedulingProfileRound({ tournamentRecords, scheduleDate, venueId, round }) {
   if (!isValidDateString(scheduleDate)) {

@@ -1,7 +1,8 @@
 import { latestVisibleTimeItemValue } from './latestVisibleTimeItemValue';
 
+// constants and types
 import { SCHEDULED_TIME } from '@Constants/timeItemConstants';
-import { ScheduledMatchUpArgs } from './scheduledMatchUpArgs';
+import { ScheduledMatchUpArgs } from '@Types/factoryTypes';
 
 export function scheduledMatchUpTime({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
   const { itemValue: scheduledTime, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({

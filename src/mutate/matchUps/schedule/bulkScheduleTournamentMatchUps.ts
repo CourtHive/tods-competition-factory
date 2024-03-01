@@ -1,9 +1,11 @@
-import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
-import { addMatchUpScheduleItems } from './scheduleItems';
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems/scheduleItems';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
 
+// constants and types
+import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -12,7 +14,6 @@ import {
   MISSING_TOURNAMENT_RECORD,
   ErrorType,
 } from '@Constants/errorConditionConstants';
-import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 type BulkScheduleMachUpsArgs = {
   tournamentRecords?: { [key: string]: Tournament };
