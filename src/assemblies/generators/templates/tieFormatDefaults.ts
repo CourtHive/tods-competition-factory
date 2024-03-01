@@ -57,9 +57,9 @@ const namedFormats = {
   [COLLEGE_D3]: {
     hydrate: true,
     doubles: {
+      matchUpFormat: 'SET1-S:8/TB7@7',
       matchUpCount: 3,
       matchUpValue: 1,
-      matchUpFormat: 'SET1-S:8/TB7@7',
     },
     singles: {
       matchUpFormat: FORMAT_STANDARD,
@@ -72,14 +72,14 @@ const namedFormats = {
   [COLLEGE_DEFAULT]: {
     hydrate: true,
     doubles: {
+      matchUpFormat: FORMAT_STANDARD,
       matchUpCount: 3,
       collectionValue: 1,
-      matchUpFormat: FORMAT_STANDARD,
     },
     singles: {
+      matchUpFormat: 'SET1-S:6/TB7',
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: FORMAT_STANDARD,
     },
     tieFormatName: COLLEGE_DEFAULT,
     valueGoal: 4,
@@ -87,14 +87,14 @@ const namedFormats = {
   [COLLEGE_JUCO]: {
     hydrate: true,
     doubles: {
+      matchUpFormat: 'SET1-S:8/TB7',
       matchUpCount: 3,
       matchUpValue: 1,
-      matchUpFormat: 'SET1-S:8/TB7',
     },
     singles: {
+      matchUpFormat: FORMAT_STANDARD,
       matchUpCount: 6,
       matchUpValue: 1,
-      matchUpFormat: FORMAT_STANDARD,
     },
     tieFormatName: COLLEGE_JUCO,
     valueGoal: 5,
