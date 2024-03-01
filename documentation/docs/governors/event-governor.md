@@ -222,6 +222,7 @@ Both modifies the `tieFormat` on the target `event`, `drawDefinition`, `structur
 
 ```js
 engine.modifyTieFormat({
+  considerations, // optional { collectionName?: boolean; collectionOrder?: boolean };
   modifiedTieFormat, // will be compared to existing tieFormat that is targeted and differences calculated
   structureId, // required if modifying tieFormat for a structure
   matchUpId, // required if modifying tieFormat for a matchUp

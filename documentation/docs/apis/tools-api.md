@@ -47,10 +47,6 @@ const {
 
 ---
 
-## compareTieFormats
-
----
-
 ## countValues
 
 ---

@@ -41,6 +41,18 @@ engine.addCollectionGroup({
 
 ---
 
+## compareTieFormats
+
+```js
+engine.compareTieFormats({
+  considerations, // optional { collectionName?: boolean; collectionOrder?: boolean };
+  ancestor: tieFormat1,
+  descendant: tieFormat2,
+});
+```
+
+---
+
 ## modifyCollectionDefinition
 
 Modifies the `collectionName` and/or `matchUpFormat` for targeted `collectionId` within the `tieFormat` specified by `eventId`, `drawId`, `structureId` or `matchUpId`.
@@ -73,6 +85,7 @@ Both modifies the `tieFormat` on the target `event`, `drawDefinition`, `structur
 
 ```js
 engine.modifyTieFormat({
+  considerations, // optional { collectionName?: boolean; collectionOrder?: boolean };
   modifiedTieFormat, // will be compared to existing tieFormat that is targeted and differences calculated
   tournamentId, // required
   structureId, // required if modifying tieFormat for a structure
