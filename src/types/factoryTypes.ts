@@ -460,7 +460,7 @@ export type GenerateDrawDefinitionArgs = {
   enforceMinimumDrawSize?: boolean;
   ignoreAllowedDrawTypes?: boolean;
   qualifyingPlaceholder?: boolean;
-  considerEventEntries?: boolean;
+  considerEventEntries?: boolean; // defaults to true; look for entries in event.entries when drawEntries not provided
   seedingProfile?: SeedingProfile;
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;

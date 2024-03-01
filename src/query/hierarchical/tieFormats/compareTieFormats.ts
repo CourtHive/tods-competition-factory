@@ -3,13 +3,14 @@ import { stringSort } from '@Functions/sorters/stringSort';
 import { isConvertableInteger } from '@Tools/math';
 import { difference, unique } from '@Tools/arrays';
 
-import { TieFormat } from '@Types/tournamentTypes';
+// constants and types
 import { SUCCESS } from '@Constants/resultConstants';
+import { TieFormat } from '@Types/tournamentTypes';
 
 type CompareTieFormatsArgs = {
   considerations?: any;
-  descendant: TieFormat;
   ancestor: TieFormat;
+  descendant: any;
 };
 
 export function compareTieFormats({ considerations = {}, descendant, ancestor }: CompareTieFormatsArgs) {
