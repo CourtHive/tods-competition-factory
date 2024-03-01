@@ -169,7 +169,7 @@ export function modifyCollectionDefinition({
     });
 
   const value = collectionValue ?? matchUpValue ?? scoreValue ?? setValue;
-  if (collectionValueProfiles) {
+  if (collectionValueProfiles?.length) {
     const result = validateCollectionValueProfiles({
       matchUpCount: matchUpCount ?? sourceCollectionDefinition?.matchUpCount ?? 0,
       collectionValueProfiles,

@@ -20,7 +20,7 @@ function getOrderedTieFormat({ tieFormat, orderMap }) {
     if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   });
 
-  orderedTieFormat.collectionDefinitions.sort(
+  orderedTieFormat.collectionDefinitions?.sort(
     (a, b) => numericSortValue(a.collectionOrder) - numericSortValue(b.collectionOrder),
   );
 

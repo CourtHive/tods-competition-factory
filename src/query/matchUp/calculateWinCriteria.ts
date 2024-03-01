@@ -44,7 +44,7 @@ export function calculateWinCriteria({
       continue;
     } else if (typeof collectionValue === 'number' && isConvertableInteger(collectionValue)) {
       valueTotal += collectionValue;
-    } else if (collectionValueProfiles?.length) {
+    } else if (Array.isArray(collectionValueProfiles) && collectionValueProfiles?.length) {
       for (const collectionValueProfile of collectionValueProfiles) {
         valueTotal += collectionValueProfile.matchUpValue;
       }
