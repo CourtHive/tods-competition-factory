@@ -339,7 +339,7 @@ function processMatchUp({
     const side1Value = gamesWonSide1 * side2ConvertedRating;
     const side2Value = gamesWonSide2 * side1ConvertedRating;
     participantResults[side1?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
-    participantResults[side2?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
+    participantResults[side2?.participantId].pressureScores.push(fixed2(side2Value / (side1Value + side2Value)));
   }
 
   if (!isTieMatchUp) {
