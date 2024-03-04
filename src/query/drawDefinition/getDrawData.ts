@@ -48,6 +48,8 @@ export function getDrawData(params): {
     inContext = true,
     usePublishState,
     status = PUBLIC,
+    pressureRating,
+    refreshResults,
     drawDefinition,
     noDeepCopy,
     sortConfig,
@@ -146,11 +148,12 @@ export function getDrawData(params): {
           };
         });
 
-        if (!participantResults?.length && matchUps.length && params.allParticipantResults) {
+        if (matchUps.length && ((!participantResults?.length && params.allParticipantResults) || refreshResults)) {
           const { subOrderMap } = createSubOrderMap({ positionAssignments });
           const result = tallyParticipantResults({
             matchUpFormat: structure.matchUpFormat,
             policyDefinitions,
+            pressureRating,
             subOrderMap,
             matchUps,
           });
@@ -182,14 +185,14 @@ export function getDrawData(params): {
 
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
           const activeMatchUpStatus = [
+            DOUBLE_WALKOVER,
+            DOUBLE_DEFAULT,
+            IN_PROGRESS,
             COMPLETED,
             CANCELLED,
             DEFAULTED,
             RETIRED,
             WALKOVER,
-            IN_PROGRESS,
-            DOUBLE_DEFAULT,
-            DOUBLE_WALKOVER,
           ].includes(matchUp.matchUpStatus);
           return active || activeMatchUpStatus || !!matchUp.winningSide || !!matchUp.score?.scoreStringSide1;
         }, false);

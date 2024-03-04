@@ -1,5 +1,7 @@
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { convertRange } from './convertRange';
 
+// constants
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ELO } from '@Constants/ratingConstants';
 
@@ -24,6 +26,7 @@ const eloConfig = {
   kDefault,
 };
 
+/**
 export function getRatingDelta({ ratings = ratingsParameters, ratingType, rating, delta }) {
   const ratingParameters = ratings?.[ratingType];
   const decimalPlaces = ratingParameters.decimalsCount || 0;
@@ -31,8 +34,21 @@ export function getRatingDelta({ ratings = ratingsParameters, ratingType, rating
   if (parseFloat(newRating) < 0) newRating = rating;
   return newRating;
 }
+ */
 
-export function calculateNewRatings(params?) {
+type CalculateNewRatings = {
+  winnerCountables: number;
+  loserCountables: number;
+  maxCountables: number;
+  ratingRange: number[];
+  winnerRating: number;
+  loserRating: number;
+  ratingType: string;
+  countables: number;
+  ratings: any;
+};
+
+export function calculateNewRatings(params: CalculateNewRatings) {
   let { winnerRating, loserRating, ratingRange } = params;
   const {
     ratings = ratingsParameters,
@@ -59,10 +75,6 @@ export function calculateNewRatings(params?) {
     if (!inRange(ratingRange, winnerRating)) winnerRating = ratingParameters.defaultInitialization;
     if (!inRange(ratingRange, loserRating)) loserRating = ratingParameters.defaultInitialization;
   }
-
-  // convert one rating range to another rating range
-  const convertRange = ({ value, sourceRange, targetRange }) =>
-    ((value - sourceRange[0]) * (targetRange[1] - targetRange[0])) / (sourceRange[1] - sourceRange[0]) + targetRange[0];
 
   // convert inbound ratings from ratingType into ELO
   const convertedWinnerRating = convertRange({
