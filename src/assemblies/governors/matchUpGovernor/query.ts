@@ -20,6 +20,7 @@ export { getMatchUpDailyLimits } from '@Query/extensions/getMatchUpDailyLimits';
 export { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
 export { getPredictiveAccuracy } from '@Query/matchUps/getPredictiveAccuracy';
 export { calculateWinCriteria } from '@Query/matchUp/calculateWinCriteria';
+export { getHomeParticipantId } from '@Query/matchUp/getHomeParticipantId';
 export { tournamentMatchUps } from '@Query/matchUps/getTournamentMatchUps';
 export { getMatchUpContextIds } from '@Query/matchUp/getMatchUpContextIds';
 export { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';

@@ -303,6 +303,14 @@ const {
 
 ---
 
+## getHomeParticipantId
+
+```js
+const { homeParticipantId } = engine.getHomeParticipantId({ matchUp });
+```
+
+---
+
 ## modifyMatchUpFormatTiming
 
 ```js
