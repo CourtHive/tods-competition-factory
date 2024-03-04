@@ -9,6 +9,8 @@ import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constan
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { getConvertedRating } from '@Query/participant/getConvertedRating';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { ELO } from '@Constants/ratingConstants';
 
 type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
@@ -268,6 +270,7 @@ function checkInitializeParticipant(participantResults, participantId) {
       pointsLost: 0,
       pointsWon: 0,
       pressureScores: [],
+      ratingVariation: [],
       retirements: 0,
       setsLost: 0,
       setsWon: 0,
@@ -340,6 +343,13 @@ function processMatchUp({
     const side2Value = gamesWonSide2 * side1ConvertedRating;
     participantResults[side1?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
     participantResults[side2?.participantId].pressureScores.push(fixed2(side2Value / (side1Value + side2Value)));
+    const highRange = Math.max(...ratingsParameters[ELO].range);
+    participantResults[side1?.participantId].ratingVariation.push(
+      fixed2((side1ConvertedRating - side2ConvertedRating) / highRange),
+    );
+    participantResults[side2?.participantId].ratingVariation.push(
+      fixed2((side2ConvertedRating - side1ConvertedRating) / highRange),
+    );
   }
 
   if (!isTieMatchUp) {
