@@ -4,6 +4,8 @@ import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
 import { WITHDRAWN } from '@Constants/entryStatusConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 
+const personalCircumstance = 'Personal circumstance';
+
 export const POLICY_SCORING_USTA = {
   [POLICY_TYPE_SCORING]: {
     requireAllPositionsAssigned: false,
@@ -199,7 +201,7 @@ export const POLICY_SCORING_USTA = {
         },
         {
           matchUpStatusCodeDisplay: 'Wo [pc]',
-          label: 'Personal circumstance',
+          label: personalCircumstance,
           matchUpStatusCode: 'W3',
         },
         {
@@ -231,7 +233,7 @@ export const POLICY_SCORING_USTA = {
         },
         {
           matchUpStatusCodeDisplay: 'Ret [pc]',
-          label: 'Personal circumstance',
+          label: personalCircumstance,
           matchUpStatusCode: 'RC',
         },
         {
@@ -262,7 +264,7 @@ export const POLICY_SCORING_USTA = {
         },
         {
           matchUpStatusCodeDisplay: 'Wd [pc]',
-          label: 'Personal circumstance',
+          label: personalCircumstance,
           matchUpStatusCode: 'WD.PC',
         },
         {
