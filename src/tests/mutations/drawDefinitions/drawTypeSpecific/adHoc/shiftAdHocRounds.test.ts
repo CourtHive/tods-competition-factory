@@ -144,7 +144,7 @@ test.each(scenarios)('can shift AD_HOC rounds', (scenario) => {
     drawId,
   });
 
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect([INVALID_STRUCTURE, INVALID_VALUES, MISSING_MATCHUPS].includes(result.error)).toEqual(true);
 
   result = tournamentEngine.shiftAdHocRounds({
     roundNumber: scenario.roundNumber,

@@ -8,10 +8,12 @@ import { ensureInt } from '@Tools/ensureInt';
 import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
+import { getConvertedRating } from '@Query/participant/getConvertedRating';
 
 type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
   participantIds?: string[];
+  pressureRating?: string;
   matchUpFormat?: string;
   perPlayer?: number;
   tallyPolicy?: any;
@@ -19,6 +21,7 @@ type GetParticipantResultsArgs = {
 
 export function getParticipantResults({
   participantIds,
+  pressureRating,
   matchUpFormat,
   tallyPolicy,
   perPlayer,
@@ -160,11 +163,13 @@ export function getParticipantResults({
             matchUpFormat: tieMatchUp.matchUpFormat,
             matchUpStatus: tieMatchUp.matchUpStatus,
             score: tieMatchUp.score,
+            sides: tieMatchUp.sides,
             winningParticipantId,
             losingParticipantId,
+            manualGamesOverride,
             participantResults,
             isTieMatchUp: true,
-            manualGamesOverride,
+            pressureRating,
             tallyPolicy,
             winningSide,
           });
@@ -183,13 +188,18 @@ export function getParticipantResults({
           manualGamesOverride,
           losingParticipantId,
           participantResults,
+          pressureRating,
           matchUpStatus,
           tallyPolicy,
           winningSide,
           score,
+          sides,
         });
       }
     }
+
+    const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
+    const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
 
     if (manualGamesOverride) {
       const side1participantId = sides?.find(({ sideNumber }) => sideNumber === 1)?.participantId;
@@ -197,9 +207,6 @@ export function getParticipantResults({
 
       checkInitializeParticipant(participantResults, side1participantId);
       checkInitializeParticipant(participantResults, side2participantId);
-
-      const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
-      const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
 
       if (side1participantId) {
         participantResults[side1participantId].gamesWon += gamesWonSide1;
@@ -260,6 +267,7 @@ function checkInitializeParticipant(participantResults, participantId) {
       matchUpsWon: 0,
       pointsLost: 0,
       pointsWon: 0,
+      pressureScores: [],
       retirements: 0,
       setsLost: 0,
       setsWon: 0,
@@ -304,18 +312,35 @@ function processScore({ manualGamesOverride, participantResults, score, sides })
 
 function processMatchUp({
   winningParticipantId,
+  manualGamesOverride,
   losingParticipantId,
   participantResults,
-  manualGamesOverride,
+  pressureRating,
   matchUpFormat,
   matchUpStatus,
   isTieMatchUp,
   tallyPolicy,
   winningSide,
   score,
+  sides,
 }) {
   const winningSideIndex = winningSide && winningSide - 1;
   const losingSideIndex = 1 - winningSideIndex;
+
+  if (pressureRating) {
+    const fixed2 = (value: number) => parseFloat(Number(Math.round(value * 1000) / 1000).toFixed(2));
+    const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
+    const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
+    // calculate gamesWon times opponent rating
+    const side1 = sides.find(({ sideNumber }) => sideNumber === 1);
+    const side2 = sides.find(({ sideNumber }) => sideNumber === 2);
+    const side1ConvertedRating = getConvertedRating({ ratings: side1?.participant?.ratings }).convertedRating;
+    const side2ConvertedRating = getConvertedRating({ ratings: side2?.participant?.ratings }).convertedRating;
+    const side1Value = gamesWonSide1 * side2ConvertedRating;
+    const side2Value = gamesWonSide2 * side1ConvertedRating;
+    participantResults[side1?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
+    participantResults[side2?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
+  }
 
   if (!isTieMatchUp) {
     processOutcome({
