@@ -20,17 +20,14 @@ export function calculatePressureRatings({ participantResults, sides, score }) {
     participantResults[side1?.participantId].pressureScores.push(side1pressure);
     participantResults[side2?.participantId].pressureScores.push(side2pressure);
     const highRange = Math.max(...ratingsParameters[ELO].range);
-    participantResults[side1?.participantId].ratingVariation.push(
-      fixedDecimals((side1ConvertedRating - side2ConvertedRating) / highRange),
-    );
-    participantResults[side2?.participantId].ratingVariation.push(
-      fixedDecimals((side2ConvertedRating - side1ConvertedRating) / highRange),
-    );
+    const side1Variation = fixedDecimals((side2ConvertedRating - side1ConvertedRating) / highRange);
+    const side2Variation = fixedDecimals((side1ConvertedRating - side2ConvertedRating) / highRange);
+    participantResults[side1?.participantId].ratingVariation.push(side1Variation);
+    participantResults[side2?.participantId].ratingVariation.push(side2Variation);
   }
 }
 
 export function getSideValues({ side1ConvertedRating, side2ConvertedRating, score }) {
-  const lowSide = side1ConvertedRating > side2ConvertedRating ? 2 : 1;
   const highRating = side1ConvertedRating > side2ConvertedRating ? side1ConvertedRating : side2ConvertedRating;
   const lowRating = side1ConvertedRating > side2ConvertedRating ? side2ConvertedRating : side1ConvertedRating;
   const ratingsDifference = Math.abs(side1ConvertedRating - side2ConvertedRating);
@@ -41,6 +38,7 @@ export function getSideValues({ side1ConvertedRating, side2ConvertedRating, scor
   const lowSideBump = discount * ratingsDifference;
   const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
   const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
+  const lowSide = side1ConvertedRating > side2ConvertedRating ? 2 : 1;
   const side1value = gamesWonSide1 * (lowRating + (lowSide === 1 ? lowSideBump : 0));
   const side2value = gamesWonSide2 * (lowRating + (lowSide === 2 ? lowSideBump : 0));
   const combinedValues = side1value + side2value;

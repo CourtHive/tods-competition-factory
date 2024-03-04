@@ -116,9 +116,9 @@ export function calculateNewRatings(params: CalculateNewRatings) {
   const updatedWinnerRating = invertedScale
     ? ratingRange[0] - convertedUpdatedWinnerRating
     : convertedUpdatedWinnerRating;
-  let newWinnerRating = parseFloat(parseFloat(updatedWinnerRating).toFixed(decimalPlaces));
+  let newWinnerRating = parseFloat(updatedWinnerRating.toFixed(decimalPlaces));
   const updatedLoserRating = invertedScale ? ratingRange[0] - convertedUpdatedLoserRating : convertedUpdatedLoserRating;
-  let newLoserRating = parseFloat(parseFloat(updatedLoserRating).toFixed(decimalPlaces));
+  let newLoserRating = parseFloat(updatedLoserRating.toFixed(decimalPlaces));
 
   //  if expected winner && percentageDifference > threshold don't change ratings
   const percentageDifference = Math.max(...ratingRange)
