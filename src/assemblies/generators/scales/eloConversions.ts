@@ -1,5 +1,7 @@
-import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { convertRange } from './convertRange';
+
+// constants and fixtures
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { ELO } from '@Constants/ratingConstants';
 
 export function getRatingConvertedToELO({ sourceRatingType, sourceRating }) {
@@ -18,6 +20,7 @@ export function getRatingConvertedFromELO({ targetRatingType, sourceRating }) {
   const decimalPlaces = ratingsParameters[targetRatingType].decimalsCount || 0;
   const targetRatingRange = ratingsParameters[targetRatingType].range;
   const invertedScale = targetRatingRange[0] > targetRatingRange[1];
+  const maxTargetRatingRange = Math.max(...targetRatingRange);
   const eloRatingRange = ratingsParameters[ELO].range;
 
   const result = convertRange({
@@ -25,6 +28,6 @@ export function getRatingConvertedFromELO({ targetRatingType, sourceRating }) {
     sourceRange: eloRatingRange,
     value: sourceRating,
   });
-  const convertedRating = parseFloat(parseFloat(result).toFixed(decimalPlaces));
-  return invertedScale ? targetRatingRange[0] - convertedRating : convertedRating;
+  const convertedRating = parseFloat(result.toFixed(decimalPlaces));
+  return invertedScale ? maxTargetRatingRange - convertedRating : convertedRating;
 }

@@ -1,6 +1,10 @@
 // convert one rating range to another rating range
 export function convertRange({ value, sourceRange, targetRange }) {
+  const minSourceRange = Math.min(...sourceRange);
+  const maxSourceRange = Math.max(...sourceRange);
+  const minTargetRange = Math.min(...targetRange);
+  const maxTargetRange = Math.max(...targetRange);
   return (
-    ((value - sourceRange[0]) * (targetRange[1] - targetRange[0])) / (sourceRange[1] - sourceRange[0]) + targetRange[0]
+    ((value - minSourceRange) * (maxTargetRange - minTargetRange)) / (maxSourceRange - minSourceRange) + minTargetRange
   );
 }
