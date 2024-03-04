@@ -39,13 +39,15 @@ export function getConvertedRating(params: GetConvertedRatingArgs) {
     params.ratings[matchUpType][0];
   if (sourceRatings[0] === targetRatingType) return sourceRatingObject;
 
+  const sourceRatingType = sourceRatingObject.scaleName;
+
   const accessor = ratingsParameters[sourceRatingObject.scaleName].accessor;
-  const value = accessor ? sourceRatingObject.scaleValue[accessor] : sourceRatingObject.scaleValue;
-  const eloValue = getRatingConvertedToELO({ sourceRatingType: sourceRatingObject.scaleName, sourceRating: value });
+  const sourceRating = accessor ? sourceRatingObject.scaleValue[accessor] : sourceRatingObject.scaleValue;
+  const eloValue = getRatingConvertedToELO({ sourceRatingType, sourceRating });
   const convertedRating = getRatingConvertedFromELO({
     targetRatingType: targetRatingType,
     sourceRating: eloValue,
   });
 
-  return { convertedRating };
+  return { convertedRating, sourceRating };
 }

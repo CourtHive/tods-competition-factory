@@ -337,8 +337,8 @@ function processMatchUp({
     // calculate gamesWon times opponent rating
     const side1 = sides.find(({ sideNumber }) => sideNumber === 1);
     const side2 = sides.find(({ sideNumber }) => sideNumber === 2);
-    const side1ConvertedRating = getConvertedRating({ ratings: side1?.participant?.ratings }).convertedRating;
-    const side2ConvertedRating = getConvertedRating({ ratings: side2?.participant?.ratings }).convertedRating;
+    const { convertedRating: side1ConvertedRating } = getConvertedRating({ ratings: side1?.participant?.ratings });
+    const { convertedRating: side2ConvertedRating } = getConvertedRating({ ratings: side2?.participant?.ratings });
     const side1Value = gamesWonSide1 * side2ConvertedRating;
     const side2Value = gamesWonSide2 * side1ConvertedRating;
     participantResults[side1?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
