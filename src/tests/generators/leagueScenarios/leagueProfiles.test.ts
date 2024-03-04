@@ -4,8 +4,8 @@ import { expect, it } from 'vitest';
 
 // constants
 import { COLLEGE_DEFAULT } from '@Constants/tieFormatConstants';
-import { MALE } from '@Constants/genderConstants';
 import { TEAM } from '@Constants/participantConstants';
+import { MALE } from '@Constants/genderConstants';
 
 it('can generate Teams and venues from leagueProfiles', () => {
   const startDate = '2022-01-01';

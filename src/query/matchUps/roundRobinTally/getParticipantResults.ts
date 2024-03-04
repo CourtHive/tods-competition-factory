@@ -1,4 +1,5 @@
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
+import { calculatePressureRatings } from './calculatePressureRatings';
 import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '@Tools/arrays';
@@ -8,9 +9,6 @@ import { ensureInt } from '@Tools/ensureInt';
 import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
-import { getConvertedRating } from '@Query/participant/getConvertedRating';
-import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
-import { ELO } from '@Constants/ratingConstants';
 
 type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
@@ -164,6 +162,7 @@ export function getParticipantResults({
           processMatchUp({
             matchUpFormat: tieMatchUp.matchUpFormat,
             matchUpStatus: tieMatchUp.matchUpStatus,
+            matchUpType: tieMatchUp.matchUpType,
             score: tieMatchUp.score,
             sides: tieMatchUp.sides,
             winningParticipantId,
@@ -185,6 +184,7 @@ export function getParticipantResults({
       } else {
         processMatchUp({
           matchUpFormat: matchUp.matchUpFormat ?? matchUpFormat,
+          matchUpType: matchUp.matchUpType,
           isTieMatchUp: undefined,
           winningParticipantId,
           manualGamesOverride,
@@ -322,6 +322,7 @@ function processMatchUp({
   matchUpFormat,
   matchUpStatus,
   isTieMatchUp,
+  matchUpType,
   tallyPolicy,
   winningSide,
   score,
@@ -330,26 +331,8 @@ function processMatchUp({
   const winningSideIndex = winningSide && winningSide - 1;
   const losingSideIndex = 1 - winningSideIndex;
 
-  if (pressureRating) {
-    const fixed2 = (value: number) => parseFloat(Number(Math.round(value * 1000) / 1000).toFixed(2));
-    const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
-    const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
-    // calculate gamesWon times opponent rating
-    const side1 = sides.find(({ sideNumber }) => sideNumber === 1);
-    const side2 = sides.find(({ sideNumber }) => sideNumber === 2);
-    const { convertedRating: side1ConvertedRating } = getConvertedRating({ ratings: side1?.participant?.ratings });
-    const { convertedRating: side2ConvertedRating } = getConvertedRating({ ratings: side2?.participant?.ratings });
-    const side1Value = gamesWonSide1 * side2ConvertedRating;
-    const side2Value = gamesWonSide2 * side1ConvertedRating;
-    participantResults[side1?.participantId].pressureScores.push(fixed2(side1Value / (side1Value + side2Value)));
-    participantResults[side2?.participantId].pressureScores.push(fixed2(side2Value / (side1Value + side2Value)));
-    const highRange = Math.max(...ratingsParameters[ELO].range);
-    participantResults[side1?.participantId].ratingVariation.push(
-      fixed2((side1ConvertedRating - side2ConvertedRating) / highRange),
-    );
-    participantResults[side2?.participantId].ratingVariation.push(
-      fixed2((side2ConvertedRating - side1ConvertedRating) / highRange),
-    );
+  if (pressureRating && matchUpType === SINGLES) {
+    calculatePressureRatings({ participantResults, sides, score });
   }
 
   if (!isTieMatchUp) {
