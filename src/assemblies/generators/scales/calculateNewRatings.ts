@@ -7,7 +7,7 @@ import { ELO } from '@Constants/ratingConstants';
 
 // see footnote #3 here:
 // http://fivethirtyeight.com/features/serena-williams-and-the-difference-between-all-time-great-and-greatest-of-all-time/
-const k538 = (countables) => 250 / Math.pow(countables + 5, 0.4);
+const k538 = (countables = 0) => 250 / Math.pow(countables + 5, 0.4);
 const kDefault = () => 1;
 
 // win multipier is scaled by % countables won
@@ -40,16 +40,16 @@ type CalculateNewRatings = {
   winnerCountables: number;
   loserCountables: number;
   maxCountables: number;
-  ratingRange: number[];
+  ratingRange?: number[];
   winnerRating: number;
+  countables?: number;
   loserRating: number;
   ratingType: string;
-  countables: number;
-  ratings: any;
+  ratings?: any;
 };
 
 export function calculateNewRatings(params: CalculateNewRatings) {
-  let { winnerRating, loserRating, ratingRange } = params;
+  let { winnerRating, loserRating } = params;
   const {
     ratings = ratingsParameters,
     winnerCountables = 1,
@@ -61,7 +61,7 @@ export function calculateNewRatings(params: CalculateNewRatings) {
   const ratingParameters = ratings?.[ratingType];
   if (!ratingParameters) return { error: MISSING_VALUE };
 
-  ratingRange = ratingParameters.range || ratingRange;
+  const ratingRange = ratingParameters.range || params.ratingRange;
   winnerRating = winnerRating || ratingParameters.defaultInitialization;
   loserRating = loserRating || ratingParameters.defaultInitialization;
 

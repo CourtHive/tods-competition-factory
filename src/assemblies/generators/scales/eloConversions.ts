@@ -17,7 +17,7 @@ export function getRatingConvertedToELO({ sourceRatingType, sourceRating }) {
 export function getRatingConvertedFromELO({ targetRatingType, sourceRating }) {
   const decimalPlaces = ratingsParameters[targetRatingType].decimalsCount || 0;
   const targetRatingRange = ratingsParameters[targetRatingType].range;
-  const invertedScale = targetRatingType[0] > targetRatingType[1];
+  const invertedScale = targetRatingRange[0] > targetRatingRange[1];
   const eloRatingRange = ratingsParameters[ELO].range;
 
   const result = convertRange({

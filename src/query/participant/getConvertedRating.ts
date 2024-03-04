@@ -1,4 +1,4 @@
-import { getRatingConvertedFromELO, getRatingConvertedToELO } from '@Mutate/scales/eloConversionts';
+import { getRatingConvertedFromELO, getRatingConvertedToELO } from '@Generators/scales/eloConversions';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 
