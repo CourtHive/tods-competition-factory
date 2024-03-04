@@ -1,11 +1,13 @@
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { convertRange } from './convertRange';
 
+// constants
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ELO } from '@Constants/ratingConstants';
 
 // see footnote #3 here:
 // http://fivethirtyeight.com/features/serena-williams-and-the-difference-between-all-time-great-and-greatest-of-all-time/
-const k538 = (countables) => 250 / Math.pow(countables + 5, 0.4);
+const k538 = (countables = 0) => 250 / Math.pow(countables + 5, 0.4);
 const kDefault = () => 1;
 
 // win multipier is scaled by % countables won
@@ -24,6 +26,7 @@ const eloConfig = {
   kDefault,
 };
 
+/**
 export function getRatingDelta({ ratings = ratingsParameters, ratingType, rating, delta }) {
   const ratingParameters = ratings?.[ratingType];
   const decimalPlaces = ratingParameters.decimalsCount || 0;
@@ -31,9 +34,22 @@ export function getRatingDelta({ ratings = ratingsParameters, ratingType, rating
   if (parseFloat(newRating) < 0) newRating = rating;
   return newRating;
 }
+ */
 
-export function calculateNewRatings(params?) {
-  let { winnerRating, loserRating, ratingRange } = params;
+type CalculateNewRatings = {
+  winnerCountables: number;
+  loserCountables: number;
+  maxCountables: number;
+  ratingRange?: number[];
+  winnerRating: number;
+  countables?: number;
+  loserRating: number;
+  ratingType: string;
+  ratings?: any;
+};
+
+export function calculateNewRatings(params: CalculateNewRatings) {
+  let { winnerRating, loserRating } = params;
   const {
     ratings = ratingsParameters,
     winnerCountables = 1,
@@ -45,7 +61,7 @@ export function calculateNewRatings(params?) {
   const ratingParameters = ratings?.[ratingType];
   if (!ratingParameters) return { error: MISSING_VALUE };
 
-  ratingRange = ratingParameters.range || ratingRange;
+  const ratingRange = ratingParameters.range || params.ratingRange;
   winnerRating = winnerRating || ratingParameters.defaultInitialization;
   loserRating = loserRating || ratingParameters.defaultInitialization;
 
@@ -59,10 +75,6 @@ export function calculateNewRatings(params?) {
     if (!inRange(ratingRange, winnerRating)) winnerRating = ratingParameters.defaultInitialization;
     if (!inRange(ratingRange, loserRating)) loserRating = ratingParameters.defaultInitialization;
   }
-
-  // convert one rating range to another rating range
-  const convertRange = ({ value, sourceRange, targetRange }) =>
-    ((value - sourceRange[0]) * (targetRange[1] - targetRange[0])) / (sourceRange[1] - sourceRange[0]) + targetRange[0];
 
   // convert inbound ratings from ratingType into ELO
   const convertedWinnerRating = convertRange({

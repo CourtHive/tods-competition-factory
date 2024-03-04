@@ -17,6 +17,7 @@ import { TEAM } from '@Constants/matchUpTypes';
 type TallyParticipantResultsArgs = {
   policyDefinitions?: PolicyDefinitions;
   generateReport?: boolean;
+  pressureRating?: string;
   matchUpFormat?: string;
   perPlayer?: number;
   subOrderMap?: any;
@@ -35,6 +36,7 @@ type TallyResultType = {
 export function tallyParticipantResults({
   policyDefinitions,
   generateReport,
+  pressureRating,
   matchUpFormat,
   matchUps = [],
   subOrderMap,
@@ -74,6 +76,7 @@ export function tallyParticipantResults({
   );
   const { participantResults } = getParticipantResults({
     matchUps: consideredMatchUps,
+    pressureRating,
     matchUpFormat,
     tallyPolicy,
     perPlayer,

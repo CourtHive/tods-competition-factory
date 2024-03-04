@@ -28,6 +28,8 @@ type GetEventDataArgs = {
   sortConfig?: StructureSortConfig;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
+  refreshResults?: boolean;
+  pressureRating?: boolean;
   eventId?: string;
   status?: string;
   event?: Event;
@@ -126,6 +128,8 @@ export function getEventData(params: GetEventDataArgs): {
               getDrawData({
                 allParticipantResults: params.allParticipantResults,
                 context: { eventId, tournamentId, endDate },
+                pressureRating: params.pressureRating,
+                refreshResults: params.refreshResults,
                 includePositionAssignments,
                 tournamentParticipants,
                 noDeepCopy: true,

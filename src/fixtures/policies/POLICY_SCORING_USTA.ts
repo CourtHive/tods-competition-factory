@@ -1,6 +1,8 @@
+import { ABANDONED, CANCELLED, DEFAULTED, INCOMPLETE, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
-import { MAIN } from '@Constants/drawDefinitionConstants';
 import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
+import { WITHDRAWN } from '@Constants/entryStatusConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 export const POLICY_SCORING_USTA = {
   [POLICY_TYPE_SCORING]: {
@@ -95,6 +97,186 @@ export const POLICY_SCORING_USTA = {
         matchUpFormat: 'SET1-S:T20',
       },
     ],
+    matchUpStatusCodes: {
+      [ABANDONED]: [
+        {
+          matchUpStatusCodeDisplay: 'Abandoned',
+          label: 'Abandoned match',
+          matchUpStatusCode: 'OA',
+        },
+      ],
+      [CANCELLED]: [
+        {
+          matchUpStatusCodeDisplay: 'Unplayed or Cancelled',
+          label: 'Cancelled match',
+          matchUpStatusCode: 'OC',
+        },
+      ],
+      [INCOMPLETE]: [
+        {
+          matchUpStatusCodeDisplay: 'Incomplete',
+          label: 'Incomplete match',
+          matchUpStatusCode: 'OI',
+        },
+      ],
+      [DEFAULTED]: [
+        {
+          description: 'Disqualification for cause or ineligibility',
+          label: 'Disqualification (ineligibility)',
+          matchUpStatusCodeDisplay: 'Def [dq]',
+          matchUpStatusCode: 'DQ',
+        },
+        {
+          description: 'Misconduct before or between matches',
+          label: 'Misconduct',
+          matchUpStatusCodeDisplay: 'Def [cond]',
+          matchUpStatusCode: 'DM',
+        },
+        {
+          description: 'Failure to start match because of adult discipline',
+          label: 'Fail. (adult discipline)',
+          matchUpStatusCodeDisplay: 'Def [ad]',
+          matchUpStatusCode: 'D5',
+        },
+        {
+          description:
+            'Refusal to start match for reason other than adult discipline, injury, illness, or personal circumstance. ' +
+            '(After the Referee has conclusively confirmed that a player refuses to play a match, the Referee need not ' +
+            'wait until the scheduled time of the match to records the result.)',
+          label: 'Refusal to start match',
+          matchUpStatusCodeDisplay: 'Def [refsl]',
+          matchUpStatusCode: 'D4',
+        },
+        {
+          label: 'Not showing up',
+          matchUpStatusCodeDisplay: 'Def [ns]',
+          matchUpStatusCode: 'D6',
+        },
+        {
+          description:
+            'Lateness for match including, but not limited to, intending to play but mistakenly arriving at the ' +
+            'wrong time, location, or without proper equipment',
+          label: 'Lateness for match',
+          matchUpStatusCodeDisplay: 'Score + Def [late]',
+          matchUpStatusCode: 'D7',
+        },
+        {
+          label: 'Double default',
+          matchUpStatusCodeDisplay: 'Def/Def',
+          matchUpStatusCode: 'DD',
+        },
+        {
+          description:
+            'Refusal to continue playing a match for reason other than injury, illness, personal circumstance, or ' +
+            'adult discipline',
+          label: 'Refusal to continue match',
+          matchUpStatusCodeDisplay: 'Def [refsl]',
+          matchUpStatusCode: 'D9',
+        },
+        {
+          description: 'Default for receiving an injection, IV, or supplemental oxygen',
+          label: 'Default (PEDs)',
+          matchUpStatusCodeDisplay: 'Def [med]',
+          matchUpStatusCode: 'DI',
+        },
+        {
+          description: 'Default under Point Penalty System',
+          label: 'Default (Point Penalty System)',
+          matchUpStatusCodeDisplay: 'Def [pps]',
+          matchUpStatusCode: 'DP',
+        },
+      ],
+      [WALKOVER]: [
+        {
+          matchUpStatusCodeDisplay: 'Wo [inj]',
+          matchUpStatusCode: 'W1',
+          label: 'Injury',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wo [ill]',
+          matchUpStatusCode: 'W2',
+          label: 'Illness',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wo [pc]',
+          label: 'Personal circumstance',
+          matchUpStatusCode: 'W3',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wo/Wo',
+          matchUpStatusCode: 'WOWO',
+          label: 'Double walkover',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wo [Tae]',
+          label: 'Tournament Administrative Error',
+          matchUpStatusCode: 'W4',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wo/Withdrawn',
+          matchUpStatusCode: 'W5',
+          label: 'Withdrawn',
+        },
+      ],
+      [RETIRED]: [
+        {
+          matchUpStatusCodeDisplay: 'Ret [inj]',
+          matchUpStatusCode: 'RJ',
+          label: 'Injury',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Ret [ill]',
+          matchUpStatusCode: 'RI',
+          label: 'Illness',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Ret [pc]',
+          label: 'Personal circumstance',
+          matchUpStatusCode: 'RC',
+        },
+        {
+          description: 'Retirement because of adult discipline',
+          label: 'Ret. (adult discipline)',
+          matchUpStatusCodeDisplay: 'Ret [ad]',
+          matchUpStatusCode: 'RD',
+        },
+        {
+          description:
+            'A player who retires from a match remains eligible for consolations, place playoffs, doubles and ' +
+            'subsequent round robin matches',
+          matchUpStatusCodeDisplay: 'Ret [elg]',
+          label: 'Ret. (eligible)',
+          matchUpStatusCode: 'RU',
+        },
+      ],
+      [WITHDRAWN]: [
+        {
+          matchUpStatusCodeDisplay: 'Wd [inj]',
+          matchUpStatusCode: 'WD.INJ',
+          label: 'Injury',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wd [ill]',
+          matchUpStatusCode: 'WD.ILL',
+          label: 'Illness',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wd [pc]',
+          label: 'Personal circumstance',
+          matchUpStatusCode: 'WD.PC',
+        },
+        {
+          matchUpStatusCodeDisplay: 'Wd/Wd',
+          matchUpStatusCode: 'WD.WD',
+          label: 'Double withdrawal',
+        },
+        {
+          label: 'Tournament Administrative Error',
+          matchUpStatusCodeDisplay: 'Wd [Tae]',
+          matchUpStatusCode: 'WD.TAE',
+        },
+      ],
+    },
   },
 };
 

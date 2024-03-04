@@ -1,8 +1,9 @@
 import { stringify } from '@Helpers/matchUpFormatCode/stringify';
 import { parse } from '@Helpers/matchUpFormatCode/parse';
+import { isString } from '@Tools/objects';
 
 export function isValidMatchUpFormat({ matchUpFormat }: { matchUpFormat: string }): boolean {
-  if (typeof matchUpFormat !== 'string') return false;
+  if (!isString(matchUpFormat) || matchUpFormat === '') return false;
   const parsedFormat = parse(matchUpFormat);
 
   const setParts = matchUpFormat.match(/-S:([1-9])+\/TB([0-9]{1,2})@?([1-9]?)*/);

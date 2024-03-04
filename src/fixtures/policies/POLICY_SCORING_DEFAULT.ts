@@ -1,11 +1,8 @@
+import { ABANDONED, CANCELLED, DEFAULTED, INCOMPLETE, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
-import { MAIN } from '@Constants/drawDefinitionConstants';
 import { FORMAT_STANDARD } from '../scoring/matchUpFormats';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
-/**
- * without a SCORING_POLICY which sets { requireAllPositionsAssigned: false },  all stage:MAIN, stageSequence:1 drawPositions must be assigned **BEFORE** scoring is enabled,
- * scoring is enabled in consolation and compass/playoff structures when not all drawPositions have been filled
- */
 export const POLICY_SCORING_DEFAULT = {
   [POLICY_TYPE_SCORING]: {
     defaultMatchUpFormat: FORMAT_STANDARD,
@@ -13,6 +10,10 @@ export const POLICY_SCORING_DEFAULT = {
       drawDefinitions: false,
       structures: false,
     },
+    /**
+     * without a SCORING_POLICY which sets { requireAllPositionsAssigned: false },  all stage:MAIN, stageSequence:1 drawPositions must be assigned **BEFORE** scoring is enabled,
+     * scoring is enabled in consolation and compass/playoff structures when not all drawPositions have been filled
+     */
     requireAllPositionsAssigned: false,
     processCodes: {
       incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],
@@ -25,6 +26,21 @@ export const POLICY_SCORING_DEFAULT = {
           },
         },
       },
+    },
+    /**
+     * matchUpFormats are used to define and potentially limit the formats available for scoring matchUps
+     */
+    matchUpFormats: [],
+    /**
+     * matchUpStatusCodes are used to refiine the interpretation of matchUpStatus
+     */
+    matchUpStatusCodes: {
+      [ABANDONED]: [],
+      [CANCELLED]: [],
+      [DEFAULTED]: [],
+      [INCOMPLETE]: [],
+      [RETIRED]: [],
+      [WALKOVER]: [],
     },
   },
 };

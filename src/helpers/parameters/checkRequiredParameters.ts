@@ -32,6 +32,7 @@ import {
   COURT_IDS,
   DRAW_DEFINITION,
   DRAW_ID,
+  ERROR,
   EVENT,
   EVENT_ID,
   INVALID,
@@ -127,7 +128,7 @@ export function checkRequiredParameters(
 
   const error =
     params?.[errorParam] === undefined
-      ? errors[errorParam] || INVALID_VALUES
+      ? errors[errorParam] || paramError[ERROR] || INVALID_VALUES
       : (paramError[VALIDATE] && paramError[INVALID]) || INVALID_VALUES;
 
   const param = errorParam ?? (paramError[ONE_OF] && Object.keys(paramError[ONE_OF]).join(', '));
@@ -173,11 +174,12 @@ function findParamError(params, requiredParams) {
 
     const invalidParam = booleanParams.find((param) => {
       const invalidValidationFunction = _validate && !isFunction(_validate); // validate is specified but not a function
-      const faliedTypeCheck = params[param] && !_validate && invalidType(params, param, _ofType); // param is present, no validation function provided, and invalid type
-      const paramNotPresent = attrs[param] && !params[param]; // attrs[param] boolean value is true and param is not present
+      const faliedTypeCheck = params[param] !== undefined && !_validate && invalidType(params, param, _ofType); // param is present, no validation function provided, and invalid type
+      const paramNotPresent = attrs[param] && [undefined, null].includes(params[param]); // attrs[param] boolean value is true and param is not present
       const invalid = invalidValidationFunction || faliedTypeCheck || paramNotPresent;
 
-      const hasError = invalid || (_validate && params[param] && !checkValidation(params[param], _validate));
+      const hasError =
+        invalid || (_validate && params[param] !== undefined && !checkValidation(params[param], _validate));
       if (hasError) {
         errorParam = param;
         paramInfo = _info;

@@ -1,4 +1,4 @@
-import { generateDynamicRatings } from '@Mutate/scales/generateDynamicRatings';
+import { generateDynamicRatings } from '@Generators/scales/generateDynamicRatings';
 import { generateAdHocMatchUps } from '../generateAdHocMatchUps';
 import { findStructure } from '@Acquire/findStructure';
 import { getPairingsData } from './getPairingsData';

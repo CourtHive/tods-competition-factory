@@ -1,5 +1,5 @@
-import { calculateNewRatings } from '@Mutate/scales/calculateNewRatings';
-import { generateDynamicRatings } from '@Mutate/scales/generateDynamicRatings';
+import { calculateNewRatings } from '@Generators/scales/calculateNewRatings';
+import { generateDynamicRatings } from '@Generators/scales/generateDynamicRatings';
 
 const governor = {
   calculateNewRatings,

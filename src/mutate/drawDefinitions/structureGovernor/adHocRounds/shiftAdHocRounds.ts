@@ -23,13 +23,7 @@ type ShiftRoundsArgs = {
 };
 
 export function shiftAdHocRounds(params: ShiftRoundsArgs) {
-  const check = checkRoundsArgs(params, [
-    {
-      targetRoundNumber: true,
-      roundNumber: true,
-      [OF_TYPE]: NUMBER,
-    },
-  ]);
+  const check = checkRoundsArgs(params, [{ targetRoundNumber: true, roundNumber: true, [OF_TYPE]: NUMBER }]);
   if (check.error) return check;
 
   const { structure, roundMatchUps, roundNumbers } = check;
