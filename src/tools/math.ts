@@ -103,3 +103,7 @@ export function safePct(numerator, denominator, round = true) {
     ? (round && Math.round((numerator / denominator) * 100)) || numerator / denominator
     : 0;
 }
+
+export function fixedDecimals(value: number, to = 2) {
+  return parseFloat(Number(Math.round(value * 1000) / 1000).toFixed(to));
+}
