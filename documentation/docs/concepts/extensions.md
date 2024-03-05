@@ -28,6 +28,10 @@ In certain conditions, when allowed by positioning policies, participants may ha
 
 When manual scoring is enabled for TEAM `matchUps`, the automatic calculation of TEAM results is disabled by the presence of this extension.
 
+### DISPLAY
+
+Specific to client applications. Storage of display preferences for e.g. an `event`, a `drawDefinition`, or a `structure`.
+
 ### DRAW_DELETIONS
 
 When no external auditing service is available, `drawDefinitions` which are deleted can be stored on the `tournamentRecord`.

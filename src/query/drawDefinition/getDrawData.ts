@@ -18,7 +18,7 @@ import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '@Consta
 import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
-import { TALLY } from '@Constants/extensionConstants';
+import { DISPLAY, TALLY } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
@@ -66,6 +66,8 @@ export function getDrawData(params): {
     drawType,
     drawId,
   }))(drawDefinition);
+
+  drawInfo.display = findExtension({ element: drawDefinition, name: DISPLAY }).extension?.value;
 
   let mainStageSeedAssignments, qualificationStageSeedAssignments;
   const { allStructuresLinked, sourceStructureIds, hasDrawFeedProfile, structureGroups } = getStructureGroups({
@@ -134,15 +136,12 @@ export function getDrawData(params): {
         });
 
         let participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
+          const participantResult = findExtension({ element: assignment, name: TALLY })?.extension?.value;
           const { drawPosition, participantId } = assignment;
-          const { extension } = findExtension({
-            element: assignment,
-            name: TALLY,
-          });
           participantPlacements = true;
 
           return {
-            participantResult: extension?.value,
+            participantResult,
             participantId,
             drawPosition,
           };
@@ -179,6 +178,7 @@ export function getDrawData(params): {
             }))(structure)
           : {};
 
+        structureInfo.display = findExtension({ element: structure, name: DISPLAY }).extension?.value;
         structureInfo.sourceStructureIds = sourceStructureIds[structureId];
         structureInfo.hasDrawFeedProfile = hasDrawFeedProfile[structureId];
         structureInfo.positionAssignments = positionAssignments;

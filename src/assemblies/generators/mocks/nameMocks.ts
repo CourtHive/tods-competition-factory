@@ -1,5 +1,5 @@
 import { generateRange, shuffleArray } from '@Tools/arrays';
-import namesData from '../../../fixtures/data/teams.json';
+import namesData from '@Fixtures/data/teams.json';
 
 export function nameMocks({ nameRoot = 'TEAM', count = 1 } = {}) {
   const shuffledTeamNames = shuffleArray(namesData);

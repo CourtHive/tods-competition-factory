@@ -19,6 +19,8 @@ import { ANY_OF } from '@Constants/attributeConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
+import { DISPLAY } from '@Constants/extensionConstants';
+import { findExtension } from '@Acquire/findExtension';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -199,6 +201,11 @@ export function getEventData(params: GetEventDataArgs): {
     ballType,
     discipline,
   }))(event);
+
+  eventInfo.display = findExtension({
+    element: event,
+    name: DISPLAY,
+  }).extension?.value;
 
   const eventData = {
     tournamentInfo,

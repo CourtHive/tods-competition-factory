@@ -40,10 +40,10 @@ dependencies:
     version: 0.20.2(react-dom@18.2.0)(react@18.2.0)
   mdx-mermaid:
     specifier: 2.0.0
-    version: 2.0.0(mermaid@10.8.0)(react@18.2.0)(unist-util-visit@4.1.2)
+    version: 2.0.0(mermaid@10.9.0)(react@18.2.0)(unist-util-visit@4.1.2)
   mermaid:
-    specifier: 10.8.0
-    version: 10.8.0
+    specifier: 10.9.0
+    version: 10.9.0
   react:
     specifier: ^18.2.0
     version: 18.2.0
@@ -6998,6 +6998,13 @@ packages:
       tiny-warning: 1.0.3
     dev: false
 
+  /katex@0.16.9:
+    resolution: {integrity: sha512-fsSYjWS0EEOwvy81j3vRA8TEAhQhKiqO+FQaKWp0m39qwOzHVBgAUBIXWj1pB+O2W3fIpNa6Y9KSKCVbfPhyAQ==}
+    hasBin: true
+    dependencies:
+      commander: 8.3.0
+    dev: false
+
   /keycode@2.2.1:
     resolution: {integrity: sha512-Rdgz9Hl9Iv4QKi8b0OlCRQEzp4AgVxyCtz5S/+VIHezDmrDhkp2N2TqBWOLz0/gbeREXOOiI9/4b8BY9uw2vFg==}
     dev: false
@@ -7396,14 +7403,14 @@ packages:
     resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
     dev: false
 
-  /mdx-mermaid@2.0.0(mermaid@10.8.0)(react@18.2.0)(unist-util-visit@4.1.2):
+  /mdx-mermaid@2.0.0(mermaid@10.9.0)(react@18.2.0)(unist-util-visit@4.1.2):
     resolution: {integrity: sha512-vmkh4yg/EgkhAWxdFsyol5Tgk9aTnM16njgGIYk3R3SdbejPt8YV+HRYycAOstR1TJefMNAmjAyqkRjukLP7qg==}
     peerDependencies:
       mermaid: '>=8.11.0'
       react: ^16.8.4 || ^17.0.0 || ^18.0.0
       unist-util-visit: ^4.1.0
     dependencies:
-      mermaid: 10.8.0
+      mermaid: 10.9.0
       react: 18.2.0
       unist-util-visit: 4.1.2
     optionalDependencies:
@@ -7447,8 +7454,8 @@ packages:
     engines: {node: '>= 8'}
     dev: false
 
-  /mermaid@10.8.0:
-    resolution: {integrity: sha512-9CzfSreRjdDJxX796+jW4zjEq0DVw5xVF0nWsqff8OTbrt+ml0TZ5PyYUjjUZJa2NYxYJZZXewEquxGiM8qZEA==}
+  /mermaid@10.9.0:
+    resolution: {integrity: sha512-swZju0hFox/B/qoLKK0rOxxgh8Cf7rJSfAUc1u8fezVihYMvrJAS45GzAxTVf4Q+xn9uMgitBcmWk7nWGXOs/g==}
     dependencies:
       '@braintree/sanitize-url': 6.0.4
       '@types/d3-scale': 4.0.4
@@ -7461,6 +7468,7 @@ packages:
       dayjs: 1.11.10
       dompurify: 3.0.5
       elkjs: 0.9.1
+      katex: 0.16.9
       khroma: 2.0.0
       lodash-es: 4.17.21
       mdast-util-from-markdown: 1.3.1

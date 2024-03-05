@@ -5,6 +5,7 @@ export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLED = 'disabled';
 export const DISABLE_LINKS = 'disableLinks';
 export const DISABLE_AUTO_CALC = 'disableAutoCalc';
+export const DISPLAY = 'display';
 export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
 export const ENTRY_PROFILE = 'entryProfile';
@@ -38,6 +39,7 @@ export const extensionConstants = {
   DISABLED,
   DISABLE_LINKS,
   DISABLE_AUTO_CALC,
+  DISPLAY,
   DRAW_DELETIONS,
   DRAW_PROFILE,
   ENTRY_PROFILE, // used for drawGeneration; not relevant for anonymized tournaments
