@@ -90,7 +90,8 @@ export function analyzeScore({
       (winningSide && irregularEnding) ||
       (!winningSide &&
         !calculatedWinningSide &&
-        (![COMPLETED, DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus) || timed)));
+        (![COMPLETED, DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus) ||
+          (timed && relevantMatchUpStatus === COMPLETED))));
 
   return { valid };
 }
