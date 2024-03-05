@@ -63,12 +63,13 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     disableAutoCalc,
     enableAutoCalc,
     drawDefinition,
-    matchUpFormat,
     matchUpId,
     schedule,
     event,
     notes,
   } = params;
+
+  const matchUpFormat = params.matchUpFormat || params.outcome?.matchUpFormat;
 
   const { policy } = findPolicy({
     policyType: POLICY_TYPE_SCORING,

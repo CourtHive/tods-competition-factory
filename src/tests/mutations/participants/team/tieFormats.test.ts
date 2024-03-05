@@ -91,8 +91,8 @@ test('timed sets can be COMPLETED with tied score', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
-        eventType: TEAM,
         tieFormatName: tieFormatConstants.USTA_TOC,
+        eventType: TEAM,
         drawSize: 2,
       },
     ],
