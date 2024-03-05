@@ -24,10 +24,13 @@ import { SUCCESS } from '@Constants/resultConstants';
 const mockTournamentNames = [
   'Generated Tournament',
   'CourtHive Challenge',
+  'Replication Crisis',
   'Open Competition',
   'Factory Follies',
   'Mock Tournament',
+  'Atomic Culture',
   'Racket Rally',
+  'Stats Fail',
 ];
 
 type GenerateTournamentRecordArgs = {
