@@ -5,6 +5,7 @@ import { MAIN } from '@Constants/drawDefinitionConstants';
 
 export const POLICY_SCORING_DEFAULT = {
   [POLICY_TYPE_SCORING]: {
+    processCodes: { incompleteAssignmentsOnDefault: ['RANKING.IGNORE'] },
     defaultMatchUpFormat: FORMAT_STANDARD,
     allowDeletionWithScoresPresent: {
       drawDefinitions: false,
@@ -15,9 +16,7 @@ export const POLICY_SCORING_DEFAULT = {
      * scoring is enabled in consolation and compass/playoff structures when not all drawPositions have been filled
      */
     requireAllPositionsAssigned: false,
-    processCodes: {
-      incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],
-    },
+    allowChangePropagation: false, // changes to winningSide will propagate to all "downstream" matchUps in the structure
     stage: {
       [MAIN]: {
         stageSequence: {

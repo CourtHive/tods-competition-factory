@@ -1,7 +1,7 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
 import { instanceCount, unique } from '@Tools/arrays';
-import { numericSort } from '@Tools/sorting';
 import namesData from '@Fixtures/data/names.json';
+import { numericSort } from '@Tools/sorting';
 import { it, expect } from 'vitest';
 
 import { FEMALE, MALE } from '@Constants/genderConstants';
