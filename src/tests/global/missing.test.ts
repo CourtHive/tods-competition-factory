@@ -102,6 +102,7 @@ it.each([syncEngine, asyncEngine])(
           'getPublishState',
           'setTournamentId',
           'getScaleValues',
+          'analyzeScore',
           'devContext',
           'reset',
         ].includes(method);

@@ -3,7 +3,7 @@ import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
-import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { ABANDONED, COMPLETED } from '@Constants/matchUpStatusConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 
@@ -42,7 +42,7 @@ test('team ROUND_robin with 3 teams', () => {
   };
   let tieMatchUp = matchUp.tieMatchUps[0];
   result = tournamentEngine.setMatchUpStatus({
-    outcome: { score: tieScore, matchUpStatus: COMPLETED },
+    outcome: { score: tieScore, matchUpStatus: ABANDONED },
     matchUpId: tieMatchUp.matchUpId,
     drawId: tieMatchUp.drawId,
   });
@@ -64,6 +64,6 @@ test('team ROUND_robin with 3 teams', () => {
     drawId,
     matchUpId: tieMatchUp.matchUpId,
   }).matchUp;
-  expect(tieMatchUp.matchUpStatus).toEqual(COMPLETED);
+  expect(tieMatchUp.matchUpStatus).toEqual(ABANDONED);
   expect(tieMatchUp.winningSide).toBeUndefined();
 });

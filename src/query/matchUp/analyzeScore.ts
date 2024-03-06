@@ -2,7 +2,7 @@ import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { instanceCount } from '@Tools/arrays';
 
 // constants and types
-import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { COMPLETED, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { Score } from '@Types/tournamentTypes';
 
 type AnalyzeScoreArgs = {
@@ -39,6 +39,7 @@ export function analyzeScore({
   const matchUpScoringFormat = matchUpFormat ? parse(matchUpFormat) : undefined;
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
+  const timed = matchUpScoringFormat?.setFormat?.timed || matchUpScoringFormat?.finalSetFormat?.timed;
 
   const bestOf = matchUpScoringFormat?.bestOf;
   const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
@@ -83,11 +84,15 @@ export function analyzeScore({
       setsWinCounts.indexOf(maxSetsCount) + 1) ||
     undefined;
 
-  const valid =
+  const valid = !!(
     validSets &&
     ((winningSide && winningSideSetsCount > losingSideSetsCount && winningSide === calculatedWinningSide) ||
-      (!winningSide && !calculatedWinningSide) ||
-      irregularEnding);
+      (winningSide && irregularEnding) ||
+      (!winningSide &&
+        !calculatedWinningSide &&
+        (![COMPLETED, DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus) ||
+          (timed && relevantMatchUpStatus === COMPLETED))))
+  );
 
   return { valid };
 }

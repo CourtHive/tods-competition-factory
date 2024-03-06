@@ -5,16 +5,16 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
 // constants
-import { ABANDONED, CANCELLED, COMPLETED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { ABANDONED, CANCELLED, COMPLETED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 
 export function attemptToModifyScore(params) {
-  const { dualWinningSideChange, matchUpStatusCodes, matchUpStatus, structure, matchUp } = params;
+  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
     // in the case that CANCELLED or ABANDONED causes TEAM participant to advance
-    ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualWinningSideChange);
+    ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualMatchUp);
 
   const stack = 'attemptToModifyScore';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
@@ -28,10 +28,11 @@ export function attemptToModifyScore(params) {
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
 
+  const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
-    matchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+    matchUpStatus: updatedMatchUpStatus,
     context: stack,
     removeScore,
   });
