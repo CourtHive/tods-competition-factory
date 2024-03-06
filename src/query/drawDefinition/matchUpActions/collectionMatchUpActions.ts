@@ -80,7 +80,7 @@ export function collectionMatchUpActions({
     (drawMatchUp) => drawMatchUp.matchUpId === inContextMatchUp.matchUpTieId,
   );
   const availableIndividualParticipants = inContextDualMatchUp?.sides?.map((side: any) =>
-    side.participant?.individualParticipants.filter(
+    side?.participant?.individualParticipants?.filter(
       ({ participantId, person }) =>
         !existingParticipantIds?.includes(participantId) &&
         (!gender ||
