@@ -1,11 +1,11 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { getDevContext } from '@Global/state/globalState';
-import { modifyMatchUpScore } from '../score/modifyMatchUpScore';
 
 /**
- * for FMLC 2nd round matchUps test whether it if a first loss for both participants
+ * for FMLC 2nd round matchUps test whether it works if a first loss for both participants
  */
 export function swapWinnerLoser(params) {
   const { tournamentRecord, inContextMatchUp, structure, drawDefinition } = params;
