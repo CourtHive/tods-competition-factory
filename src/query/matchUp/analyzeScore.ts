@@ -84,14 +84,15 @@ export function analyzeScore({
       setsWinCounts.indexOf(maxSetsCount) + 1) ||
     undefined;
 
-  const valid =
+  const valid = !!(
     validSets &&
     ((winningSide && winningSideSetsCount > losingSideSetsCount && winningSide === calculatedWinningSide) ||
       (winningSide && irregularEnding) ||
       (!winningSide &&
         !calculatedWinningSide &&
         (![COMPLETED, DEFAULTED, RETIRED, WALKOVER].includes(relevantMatchUpStatus) ||
-          (timed && relevantMatchUpStatus === COMPLETED))));
+          (timed && relevantMatchUpStatus === COMPLETED))))
+  );
 
   return { valid };
 }

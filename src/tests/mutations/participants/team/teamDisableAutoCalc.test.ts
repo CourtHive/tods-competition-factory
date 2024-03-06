@@ -2,9 +2,10 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
-import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { TALLY } from '@Constants/extensionConstants';
 
 it('supports disabling and then re-enabling auto-Calc', () => {

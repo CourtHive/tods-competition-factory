@@ -1,13 +1,14 @@
+import { completeMatchUp, verifyMatchUps } from '@Tests/mutations/drawDefinitions/primitives/verifyMatchUps';
+import { generateFMLC } from '@Tests/mutations/drawDefinitions/primitives/firstMatchLoserConsolation';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { completeMatchUp, verifyMatchUps } from '../../primitives/verifyMatchUps';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { generateFMLC } from '../../primitives/firstMatchLoserConsolation';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { instanceCount } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { BYE } from '@Constants/matchUpStatusConstants';
+// constants
 import { MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 import SEEDING_USTA from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import SEEDING_ITF from '@Fixtures/policies/POLICY_SEEDING_ITF';
