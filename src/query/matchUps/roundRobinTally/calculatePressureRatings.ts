@@ -12,7 +12,7 @@ export function calculatePressureRatings({ participantResults, sides, score }) {
   const side2 = sides.find(({ sideNumber }) => sideNumber === 2);
   const side1ratings = side1?.participant?.ratings;
   const side2ratings = side2?.participant?.ratings;
-  if (side1ratings[SINGLES] && side2ratings[SINGLES]) {
+  if (side1ratings?.[SINGLES] && side2ratings?.[SINGLES]) {
     const targetRatingType = ELO;
     const { convertedRating: side1ConvertedRating } = getConvertedRating({ ratings: side1ratings, targetRatingType });
     const { convertedRating: side2ConvertedRating } = getConvertedRating({ ratings: side2ratings, targetRatingType });
