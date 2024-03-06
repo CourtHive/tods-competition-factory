@@ -161,7 +161,7 @@ export function getDrawData(params): {
             participantPlacements = true;
 
             return {
-              participantResult: participantId && result.participantResults[participantId],
+              participantResult: participantId && result?.participantResults?.[participantId],
               participantId,
               drawPosition,
             };
