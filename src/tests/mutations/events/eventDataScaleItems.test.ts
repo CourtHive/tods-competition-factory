@@ -90,7 +90,7 @@ test('ratings values should be present on tournamentParticipants in getEventData
     tournamentRecord,
     eventId,
   }));
-  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).toBeUndefined();
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.ratings).toBeDefined();
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].sides[0].participant.timeItems).toBeUndefined();
   expect(participants.every(({ person }) => !person.addresses)).toEqual(true);
 
