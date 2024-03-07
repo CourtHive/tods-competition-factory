@@ -135,7 +135,7 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
     lineUps: [],
     drawId,
   });
-  expect(result.error).toEqual(INVALID_MATCHUP);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.applyLineUps({
     matchUpId: singlesMatchUpId,
