@@ -13,6 +13,7 @@ const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScori
 export function generateTeamTournament(params?) {
   const {
     drawType = SINGLE_ELIMINATION,
+    attachScoringPolicy = true,
     drawProfilesCount = 1,
     doublesCount = 1,
     singlesCount = 2,
@@ -62,8 +63,8 @@ export function generateTeamTournament(params?) {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: attachScoringPolicy ? policyDefinitions : undefined,
     participantsProfile: { idPrefix: 'xxx' },
-    policyDefinitions,
     eventProfiles,
   });
 

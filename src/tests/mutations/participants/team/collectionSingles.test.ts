@@ -8,7 +8,6 @@ import { expect, it } from 'vitest';
 import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
-import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import {
   EXISTING_OUTCOME,
@@ -29,10 +28,9 @@ const getMatchUp = (id, inContext?) => {
   });
   return matchUp;
 };
-const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
-  const { tournamentRecord, drawId } = generateTeamTournament({ policyDefinitions });
+  const { tournamentRecord, drawId } = generateTeamTournament({ attachScoringPolicy: false });
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
@@ -72,6 +70,9 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
       singlesMatchUp.collectionPosition,
     );
   });
+
+  const matchUp = tournamentEngine.findMatchUp({ matchUpId, drawId }).matchUp;
+  expect(matchUp.sides.map(({ participant }) => participant).length).toEqual(2);
 
   // score the SINGLES matchUp
   let { outcome } = mocksEngine.generateOutcomeFromScoreString({
