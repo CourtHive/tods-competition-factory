@@ -3,22 +3,21 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants and fixtures
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/matchUpTypes';
-import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('will remove redundant tieFormat on matchUp with no results', () => {
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        eventType: TEAM,
-        drawSize: 4,
-      },
-    ],
+    drawProfiles: [{ eventType: TEAM, drawSize: 4 }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

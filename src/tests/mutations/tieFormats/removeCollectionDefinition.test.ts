@@ -7,9 +7,12 @@ import { expect, it, test } from 'vitest';
 // constants
 import { COLLEGE_D3, USTA_BREWER_CUP } from '@Constants/tieFormatConstants';
 import { NO_MODIFICATIONS_APPLIED } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/eventConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can remove a collectionDefinition from a drawDefinition tieFormat', () => {
   const deletedMatchUpIds: string[] = [];
@@ -194,6 +197,7 @@ it('deleted collectionDefinitions are not removed from inProgress matchUps', () 
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 4, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -344,6 +348,7 @@ test('removing collection when matchUps are scored and team participant has adva
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 4, eventType: TEAM }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);
@@ -450,6 +455,8 @@ test('removing collection when matchUps are scored and team participant has adva
 
 test('removing collectionDefinition will not recalculate score or remove advanced winner if there is a manual scoring override', () => {
   let result = tournamentEngine.setState(disableCalcTournamentRecord);
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.attachPolicies({ policyDefinitions });
   expect(result.success).toEqual(true);
 
   const matchUpId = '919dfd11-9434-4d1d-80c4-f46c8837f7b5';

@@ -1,3 +1,4 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
@@ -6,29 +7,44 @@ import { addParticipant } from '@Mutate/participants/addParticipant';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { instanceCount } from '@Tools/arrays';
 
-// constants
+// constants and types
+import { ARRAY, DRAW_DEFINITION, MATCHUP_ID, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
+import { DrawDefinition, Event, TeamCompetitor, Tournament } from '@Types/tournamentTypes';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
-  DRAW_DEFINITION_NOT_FOUND,
   INVALID_MATCHUP,
   INVALID_PARTICIPANT_TYPE,
   INVALID_VALUES,
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_POSITIONS,
-  MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
   VALUE_UNCHANGED,
 } from '@Constants/errorConditionConstants';
 
-export function applyLineUps({ tournamentRecord, drawDefinition, matchUpId, lineUps, event }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
-  if (typeof matchUpId !== 'string') return { error: INVALID_MATCHUP };
-  if (!Array.isArray(lineUps)) return { error: INVALID_VALUES, lineUps };
+type ApplyLineUps = {
+  tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
+  lineUps: TeamCompetitor[];
+  matchUpId: string;
+  event: Event;
+};
+
+export function applyLineUps(params: ApplyLineUps) {
+  const { tournamentRecord, drawDefinition, matchUpId, lineUps, event } = params;
   const stack = 'applyLineUps';
+
+  const paramsCheck = checkRequiredParameters(
+    params,
+    [
+      { [TOURNAMENT_RECORD]: true, [DRAW_DEFINITION]: true, [MATCHUP_ID]: true },
+      { lineUps: true, [OF_TYPE]: ARRAY },
+    ],
+    stack,
+  );
+  if (paramsCheck.error) return paramsCheck;
 
   const tournamentParticipants = tournamentRecord.participants || [];
   let result = findDrawMatchUp({

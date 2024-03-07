@@ -3,10 +3,14 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { USTA_BREWER_CUP } from '@Constants/tieFormatConstants';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { DOUBLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can remove collectionGroups from tieFormats', () => {
   const {
@@ -80,6 +84,7 @@ it('can remove collectionGroups and recalculate score in matchUps which are in p
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 8, tieFormatName: USTA_BREWER_CUP, eventType: TEAM }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

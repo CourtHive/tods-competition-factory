@@ -8,11 +8,14 @@ import { expect, it } from 'vitest';
 import { DOMINANT_DUO_MIXED, USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
 import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { LINEUPS } from '@Constants/extensionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { RANKING } from '@Constants/scaleConstants';
 import { ASC } from '@Constants/sortingConstants';
 import { LineUp } from '@Types/factoryTypes';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can generate lineUps for TEAM events', () => {
   const categoryName = '18U';
@@ -204,6 +207,7 @@ it('can generate lineUps for TEAM events', () => {
   } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     participantsProfile,
+    policyDefinitions,
     drawProfiles: [
       {
         category: { ageCategoryCode: categoryName },

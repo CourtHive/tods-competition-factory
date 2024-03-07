@@ -1,17 +1,22 @@
 import { generateRange, shuffleArray } from '@Tools/arrays';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { mocksEngine } from '../../../..';
 import { expect, test } from 'vitest';
 
+// constants
+import { INVALID_MATCHUP, INVALID_VALUES, VALUE_UNCHANGED } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
-import { INVALID_MATCHUP, INVALID_VALUES, VALUE_UNCHANGED } from '@Constants/errorConditionConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 test('groupValue can be used in tieFormats and lineUps can be applied after scoring is completed', () => {
   const mockProfile = {
-    tournamentName: 'Brewer',
     drawProfiles: [{ drawSize: 4, tieFormatName: 'USTA_BREWER_CUP', eventType: 'TEAM' }],
+    tournamentName: 'Brewer',
+    policyDefinitions,
   };
 
   const {
@@ -130,7 +135,7 @@ test('groupValue can be used in tieFormats and lineUps can be applied after scor
     lineUps: [],
     drawId,
   });
-  expect(result.error).toEqual(INVALID_MATCHUP);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.applyLineUps({
     matchUpId: singlesMatchUpId,

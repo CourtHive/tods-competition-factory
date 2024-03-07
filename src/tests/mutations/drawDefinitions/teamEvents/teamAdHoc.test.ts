@@ -1,14 +1,19 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { generateDateRange } from '@Tools/dateTime';
-import { mocksEngine, tournamentEngine } from '../../../..';
+import tournamentEngine from '@Engines/syncEngine';
 import { queryEngine } from '@Engines/queryEngine';
 import { hav } from '@Tools/objects';
 import { expect, it } from 'vitest';
 
+// constants
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/eventConstants';
-import { COMPLETED } from '@Constants/matchUpStatusConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', () => {
   const tournamentId = 't1';
@@ -22,6 +27,7 @@ it('can assign participants to SINGLES/DOUBLES matchUps in TEAM AdHoc events', (
     ],
     participantsProfile: { idPrefix: 'ptcpt' },
     tournamentAttributes: { tournamentId },
+    policyDefinitions,
     setState: true,
   });
   expect(result.success).toEqual(true);

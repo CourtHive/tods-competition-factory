@@ -9,6 +9,7 @@ import { expect, it } from 'vitest';
 import { ADD_MATCHUPS, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
 import { COLLEGE_DEFAULT, DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { SCORES_PRESENT } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { DEFAULTED } from '@Constants/matchUpStatusConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { SINGLES, TEAM } from '@Constants/eventConstants';
@@ -19,6 +20,8 @@ const scenarios = [
   { drawProfile: { tieFormatName: COLLEGE_DEFAULT, drawSize: 4 }, expectation: { added: 20 } },
   { drawProfile: { tieFormatName: DOMINANT_DUO, drawSize: 4 }, expectation: { added: 8 } },
 ];
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HOC TEAM events', (scenario) => {
   const addedMatchUpIds: string[] = [];
@@ -44,6 +47,7 @@ it.each(scenarios)('generates addMatchUps notifications for tieMatchUps in AD_HO
     drawProfiles: [
       { ...scenario.drawProfile, drawType: AD_HOC, automated: true, eventType: TEAM, roundsCount: 1, drawId },
     ],
+    policyDefinitions,
     setState: true,
   });
   expect(result.success).toEqual(true);

@@ -2,10 +2,12 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
-import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 const SET1T20 = 'SET1-S:T20';
 const tieFormats = {
@@ -243,6 +245,8 @@ const scenarios = [
   },
 ].filter(({ scenarioNumber }) => scenarioNumber !== 0);
 
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
+
 test.each(scenarios)(
   'tieFormat scoreValue works with winCriteria: aggregateValue',
   ({ secondRoundDrawPositions, matchUpStatusGoal, collectionValues, scoreGoal, tieFormat, outcome }) => {
@@ -250,13 +254,8 @@ test.each(scenarios)(
       tournamentRecord,
       drawIds: [drawId],
     } = mocksEngine.generateTournamentRecord({
-      drawProfiles: [
-        {
-          eventType: TEAM,
-          drawSize: 4,
-          tieFormat,
-        },
-      ],
+      drawProfiles: [{ eventType: TEAM, drawSize: 4, tieFormat }],
+      policyDefinitions,
     });
 
     tournamentEngine.setState(tournamentRecord);
@@ -397,13 +396,8 @@ test.each(outcomeScenarios)('aggregateValue works with matchUpValue', (scenario)
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        eventType: TEAM,
-        drawSize: 4,
-        tieFormat,
-      },
-    ],
+    drawProfiles: [{ eventType: TEAM, drawSize: 4, tieFormat }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);
