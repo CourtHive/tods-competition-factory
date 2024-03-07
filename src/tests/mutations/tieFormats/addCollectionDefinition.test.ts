@@ -3,11 +3,15 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
 import { FIRST_ROUND_LOSER_CONSOLATION, MAIN, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { INVALID_CATEGORY } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COLLEGE_D3 } from '@Constants/tieFormatConstants';
 import { TEAM } from '@Constants/eventConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 const MIXED_DOUBLES = 'Mixed Doubles';
 const PRO_SET = 'SET1-S:8/TB7@7';
@@ -140,6 +144,7 @@ it('can add collectionDefinitions to tieFormat in a structure', () => {
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles: [
       {
         drawType: FIRST_ROUND_LOSER_CONSOLATION,
@@ -355,6 +360,7 @@ it('added collectionDefinitions do not appear in inProgress matchUps', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 4, eventType: TEAM, tieFormatName: COLLEGE_D3 }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

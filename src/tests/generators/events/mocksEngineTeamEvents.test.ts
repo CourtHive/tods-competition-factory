@@ -5,8 +5,11 @@ import { expect, it } from 'vitest';
 
 // constants
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 /**
  * mocksEngine
@@ -21,22 +24,14 @@ import { COMPLETED } from '@Constants/matchUpStatusConstants';
  */
 it('can generate TEAM events', () => {
   const nationalityCodesCount = 10;
-  const participantsProfile = {
-    participantsCount: 100,
-    nationalityCodesCount,
-  };
+  const participantsProfile = { participantsCount: 100, nationalityCodesCount };
 
   const drawSize = 8;
   const eventProfiles = [
     {
-      eventType: TEAM,
+      drawProfiles: [{ drawSize, drawName: 'Main Draw' }],
       eventName: 'Test Team Event',
-      drawProfiles: [
-        {
-          drawSize,
-          drawName: 'Main Draw',
-        },
-      ],
+      eventType: TEAM,
     },
   ];
 
@@ -48,6 +43,7 @@ it('can generate TEAM events', () => {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     participantsProfile,
+    policyDefinitions,
     eventProfiles,
   });
   expect(eventId).not.toBeUndefined();

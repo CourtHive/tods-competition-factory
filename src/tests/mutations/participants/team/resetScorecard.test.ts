@@ -6,6 +6,7 @@ import { expect, test } from 'vitest';
 // constants
 import { MODIFY_DRAW_DEFINITION, MODIFY_MATCHUP } from '@Constants/topicConstants';
 import { USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { TEAM } from '@Constants/matchUpTypes';
 import {
@@ -18,6 +19,7 @@ import {
 
 // reusable
 test('can clear TEAM matchUp "scorecards"', () => {
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   const firstMatchUpTieMatchUpScoringLog: any[] = [];
   const firstMatchUpScoringLog: string[] = [];
   const modifiedMatchUpLog: any[] = [];
@@ -47,13 +49,8 @@ test('can clear TEAM matchUp "scorecards"', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [
-      {
-        tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
-        eventType: TEAM,
-        drawSize: 4,
-      },
-    ],
+    drawProfiles: [{ tieFormatName: USTA_GOLD_TEAM_CHALLENGE, eventType: TEAM, drawSize: 4 }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

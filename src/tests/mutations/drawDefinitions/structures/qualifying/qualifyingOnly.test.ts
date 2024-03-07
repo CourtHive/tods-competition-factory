@@ -22,6 +22,7 @@ import {
   SINGLE_ELIMINATION,
   WINNER,
 } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 it.each([ROUND_ROBIN, SINGLE_ELIMINATION, undefined])('will generate a drawDefinition with no matchUps', (drawType) => {
   const result = mocksEngine.generateTournamentRecord({
@@ -258,8 +259,10 @@ it.each([
 );
 
 it('can generate only qualifying structure for eventType: TEAM', () => {
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   let result = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
+    policyDefinitions,
     drawProfiles: [
       {
         eventType: TEAM_EVENT,

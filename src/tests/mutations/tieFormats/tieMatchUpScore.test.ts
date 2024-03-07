@@ -2,8 +2,12 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// constants
 import { DOUBLES, SINGLES, TEAM_MATCHUP } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak sets', () => {
   const tieFormat = {
@@ -33,6 +37,7 @@ it('calculates tieMatchUpScore properly with 1 point per game won and tiebreak s
   };
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 2, eventType: TEAM_EVENT, tieFormat }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

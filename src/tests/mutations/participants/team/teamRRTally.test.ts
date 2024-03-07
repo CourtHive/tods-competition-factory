@@ -1,7 +1,9 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
+// constants
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
@@ -15,10 +17,12 @@ Demonstrate that tieMatchUps can be tallied
 */
 
 it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   const {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles: [
       {
         tieFormatName: DOMINANT_DUO,

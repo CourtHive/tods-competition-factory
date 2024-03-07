@@ -1,17 +1,21 @@
 import { getAwardProfile } from '@Query/scales/getAwardProfile';
 import { awardProfileLevelLines } from './awardProfileExamples';
-import tournamentEngine from '@Engines/syncEngine';
 import { finishingPositionSort } from './awardTestUtils';
+import { mocksEngine } from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
 import scaleEngine from '@Engines/scaleEngine';
-import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
+// constants
+import { POLICY_TYPE_RANKING_POINTS, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 
+const scoringPolicy = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
+
 it('generates points for lines in team matchUps', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    policyDefinitions: scoringPolicy,
     completeAllMatchUps: true,
     eventProfiles: [
       {

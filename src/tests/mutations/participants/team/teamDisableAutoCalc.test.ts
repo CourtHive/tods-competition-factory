@@ -3,13 +3,17 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // constants
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { TALLY } from '@Constants/extensionConstants';
 
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
+
 it('supports disabling and then re-enabling auto-Calc', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     eventProfiles: [
       {
         // completionGoal of 5 will compelte 1 DOUBLES in each first round TEAM matchUp
@@ -80,6 +84,7 @@ it('supports disabling and then re-enabling auto-Calc', () => {
 
 it('disabled auto calc with manually advanced team will not advance calculated winner on scoring', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     eventProfiles: [
       {
         // completionGoal of 5 will compelte 1 DOUBLES in each first round TEAM matchUp
@@ -157,6 +162,7 @@ it('disabled auto calc with manually advanced team will not advance calculated w
 
 it('will properly tally team games when automated scoring is disabled', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     eventProfiles: [
       {
         eventType: TEAM_EVENT,

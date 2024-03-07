@@ -2,13 +2,16 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
-import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 test('changing scores after playoffs generated in team round robin with playoffs', () => {
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   const structureOptions = {
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight' },
@@ -16,6 +19,7 @@ test('changing scores after playoffs generated in team round robin with playoffs
     ],
   };
   const mockProfile = {
+    policyDefinitions,
     drawProfiles: [
       {
         drawType: ROUND_ROBIN_WITH_PLAYOFF,

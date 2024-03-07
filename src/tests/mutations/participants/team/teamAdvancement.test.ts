@@ -13,6 +13,7 @@ import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/dra
 import { EXISTING_PARTICIPANT, TEAM_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SWAP_PARTICIPANTS } from '@Constants/positionActionConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { LINEUPS } from '@Constants/extensionConstants';
 
@@ -37,6 +38,8 @@ const scenarios = [
   { drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5, expectLineUps: true, tieFormatTest: true, scoreStringSide1: '7-0' },
   { drawType: FIRST_MATCH_LOSER_CONSOLATION, drawSize: 8, singlesCount: 6, doublesCount: 3, valueGoal: 5 },
 ];
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it.each(scenarios)('can advance teamParticipants', (scenario) => {
   const expectLineUps = scenario.expectLineUps;
@@ -288,6 +291,7 @@ test('tieFormat with scoreValue calculation', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles: [
       {
         tieFormatName: TEAM_DOUBLES_3_AGGREGATION,
@@ -371,6 +375,7 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
+    policyDefinitions,
     drawProfiles: [
       {
         tieFormatName: USTA_GOLD_TEAM_CHALLENGE,
@@ -399,13 +404,8 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
   };
 
   let { matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
-    contextFilters: {
-      stages: [MAIN],
-    },
-    matchUpFilters: {
-      matchUpTypes: [TEAM],
-      roundNumbers: [1],
-    },
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+    contextFilters: { stages: [MAIN] },
   });
 
   expect(firstRoundDualMatchUps.length).toEqual(2);
@@ -424,13 +424,8 @@ test('properly removes advanced team at 9-0 in USTA_GOLD', () => {
   });
 
   ({ matchUps: firstRoundDualMatchUps } = tournamentEngine.allTournamentMatchUps({
-    contextFilters: {
-      stages: [MAIN],
-    },
-    matchUpFilters: {
-      matchUpTypes: [TEAM],
-      roundNumbers: [1],
-    },
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+    contextFilters: { stages: [MAIN] },
   }));
 
   firstRoundDualMatchUps.forEach((dualMatchUp) => {
@@ -778,6 +773,7 @@ it('can set score of TEAM matchUps', () => {
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 8, eventType: TEAM }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

@@ -5,6 +5,7 @@ import { expect, it } from 'vitest';
 
 // constants
 import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TALLY } from '@Constants/extensionConstants';
 import { TEAM } from '@Constants/eventConstants';
@@ -44,6 +45,8 @@ const scenarios = [
   { drawType: ROUND_ROBIN, matchUpsCount: 12 },
 ];
 
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
+
 it.each(scenarios)('can generate all drawTypes for eventType: TEAM', (scenario) => {
   const { drawType, matchUpsCount } = scenario;
   const {
@@ -52,6 +55,7 @@ it.each(scenarios)('can generate all drawTypes for eventType: TEAM', (scenario) 
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ eventType: TEAM, drawSize: 8, drawType }],
+    policyDefinitions,
   });
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
@@ -202,6 +206,7 @@ it('handles TEAM ROUND_ROBIN tallyParticipants', () => {
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ eventType: TEAM, drawSize: 8, drawType: ROUND_ROBIN }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

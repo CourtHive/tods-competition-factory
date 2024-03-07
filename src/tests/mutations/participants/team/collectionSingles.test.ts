@@ -1,11 +1,14 @@
-import { getParticipantId } from '@Functions/global/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
+import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import {
   EXISTING_OUTCOME,
@@ -15,7 +18,6 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getMatchUp = (id, inContext?) => {
@@ -27,9 +29,10 @@ const getMatchUp = (id, inContext?) => {
   });
   return matchUp;
 };
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
-  const { tournamentRecord, drawId } = generateTeamTournament();
+  const { tournamentRecord, drawId } = generateTeamTournament({ policyDefinitions });
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });

@@ -5,8 +5,11 @@ import { expect, it } from 'vitest';
 
 // constants
 import { MISSING_MATCHUPS } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('can return team statistics', () => {
   const drawSize = 8;
@@ -14,6 +17,7 @@ it('can return team statistics', () => {
     drawProfiles: [{ eventType: TEAM_EVENT, drawSize }],
     completeAllMatchUps: true,
     randomWinningSide: true,
+    policyDefinitions,
   }).tournamentRecord;
 
   tournamentEngine.setState(tournamentRecord);

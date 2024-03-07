@@ -1,10 +1,14 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
 
+// constants and fixtures
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
-import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
+
+const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 export function generateTeamTournament(params?) {
   const {
@@ -59,6 +63,7 @@ export function generateTeamTournament(params?) {
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
     participantsProfile: { idPrefix: 'xxx' },
+    policyDefinitions,
     eventProfiles,
   });
 

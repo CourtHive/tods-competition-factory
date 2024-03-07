@@ -3,15 +3,13 @@ import tournamentEngine from '@Engines/syncEngine';
 import { test, expect } from 'vitest';
 
 // constants
+import { INVALID_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
-import { INVALID_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 
 test('scoring policy can specify that participants are NOT required for scoring', () => {
   const drawId = 'drawId';
-  const policyDefinitions = {
-    [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false },
-  };
+  const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
   mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawId, idPrefix: 'm', drawSize: 2, automated: false }], // don't assign participants: { automated: false }
     policyDefinitions,
