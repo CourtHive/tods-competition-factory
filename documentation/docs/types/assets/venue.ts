@@ -1,17 +1,13 @@
 export const venue = {
-  addresses:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"address\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
-  contacts:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"contact\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
-  courts:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"court\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  addresses: '{\\"type\\":\\"object\\",\\"object\\":\\"address\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  contacts: '{\\"type\\":\\"object\\",\\"object\\":\\"contact\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  courts: '{\\"type\\":\\"object\\",\\"object\\":\\"court\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   onlineResources:
     '{\\"type\\":\\"object\\",\\"object\\":\\"onlineResource\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   parentOrganisationId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   roles:
     '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. courts, sign-in, hospitality\\"}',
-  subVenueIds:
-    '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  subVenueIds: '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   venueAbbreviation: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   venueId: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\"}',
   venueName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
