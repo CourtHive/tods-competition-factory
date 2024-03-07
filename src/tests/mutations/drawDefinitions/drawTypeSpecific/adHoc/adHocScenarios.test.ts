@@ -3,8 +3,8 @@ import { validMatchUp, validMatchUps } from '@Validators/validMatchUp';
 import { intersection, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { expect, it, test } from 'vitest';
 import { xa } from '@Tools/extractAttributes';
+import { expect, it, test } from 'vitest';
 
 // constants
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
@@ -17,6 +17,7 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
 } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;
@@ -67,17 +68,16 @@ test('adHoc matchUpActions can restrict adHoc round participants to diallow recu
   tournamentEngine.devContext(true);
   const participantsCount = 28;
 
+  const policyDefinitions = {
+    [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false },
+  };
   const roundsCount = 3;
   const {
     tournamentRecord,
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
-    eventProfiles: [
-      {
-        participantsProfile: { participantsCount },
-        eventType: SINGLES_EVENT,
-      },
-    ],
+    eventProfiles: [{ participantsProfile: { participantsCount }, eventType: SINGLES_EVENT }],
+    policyDefinitions,
   });
 
   tournamentEngine.setState(tournamentRecord);

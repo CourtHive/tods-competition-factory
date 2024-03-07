@@ -2,10 +2,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants
+import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
-import { COMPLETED, IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 
 const SET1T20 = 'SET1-S:T20';
 const tieFormats = {

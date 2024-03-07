@@ -19,10 +19,10 @@ export function attemptToModifyScore(params) {
 
   const stack = 'attemptToModifyScore';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
-  const isAdHocMatchUp = isAdHoc({ structure });
+  const hasAdHocSides = isAdHoc({ structure }) && matchUp?.sides?.every((side) => side.participantId);
   const validToScore =
     isCollectionMatchUp ||
-    isAdHocMatchUp ||
+    hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
 

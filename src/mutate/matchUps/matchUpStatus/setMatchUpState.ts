@@ -502,7 +502,7 @@ function checkParticipants({
 
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
-      info: 'present in participantsRequiredMatchUpStatuses',
+      info: 'matchUpStatus requires assigned participants',
       context: { matchUpStatus, requiredParticipants },
       result: { error: INVALID_MATCHUP_STATUS },
     });
