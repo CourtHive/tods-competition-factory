@@ -7,6 +7,7 @@ import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 // constants
 import { ABANDONED, CANCELLED, COMPLETED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
   const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp } = params;
@@ -20,11 +21,12 @@ export function attemptToModifyScore(params) {
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const isAdHocMatchUp = isAdHoc({ structure });
   const validToScore =
-    isCollectionMatchUp || isAdHocMatchUp || drawPositionsAssignedParticipantIds({ structure, matchUp });
+    isCollectionMatchUp ||
+    isAdHocMatchUp ||
+    drawPositionsAssignedParticipantIds({ structure, matchUp }) ||
+    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
 
-  if (!validToScore) {
-    return { error: MISSING_ASSIGNMENTS };
-  }
+  if (!validToScore) return { error: MISSING_ASSIGNMENTS };
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
 

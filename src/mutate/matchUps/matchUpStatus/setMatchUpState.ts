@@ -24,6 +24,7 @@ import { validateScore } from '@Validators/validateScore';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
+import { isObject } from '@Tools/objects';
 
 // constants and types
 import { DrawDefinition, Event, MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
@@ -31,6 +32,7 @@ import { POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING } from '@Constants/policyC
 import { DISABLE_AUTO_CALC } from '@Constants/extensionConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/matchUpTypes';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
@@ -246,31 +248,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     }
   }
 
-  const positionAssignments = !matchUp?.sides
-    ? getPositionAssignments({
-        drawDefinition,
-        structureId,
-      }).positionAssignments
-    : [];
-
-  const participantsCount = inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length;
-  const requiredParticipants =
-    (participantsCount && participantsCount === 2) ||
-    // matchUp may be doubles or singles but if it is a tieMatchUp in a TEAM event and is adHoc and has a single participant
-    (matchUp.collectionId && isAdHoc({ structure }) && participantsCount && participantsCount >= 1) ||
-    (assignedDrawPositions?.length === 2 &&
-      positionAssignments
-        ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
-        .every((assignment) => assignment.participantId));
-
-  if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
-    return decorateResult({
-      info: 'present in participantsRequiredMatchUpStatuses',
-      context: { matchUpStatus, requiredParticipants },
-      result: { error: INVALID_MATCHUP_STATUS },
-    });
-  }
-
   const appliedPolicies =
     getAppliedPolicies({
       policyTypes: [POLICY_TYPE_PROGRESSION, POLICY_TYPE_SCORING],
@@ -279,9 +256,18 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       event,
     })?.appliedPolicies ?? {};
 
-  if (typeof params.policyDefinitions === 'object') {
-    Object.assign(appliedPolicies, params.policyDefinitions);
-  }
+  if (isObject(params.policyDefinitions)) Object.assign(appliedPolicies, params.policyDefinitions);
+
+  const participantCheck = checkParticipants({
+    assignedDrawPositions,
+    inContextMatchUp,
+    appliedPolicies,
+    drawDefinition,
+    matchUpStatus,
+    structure,
+    matchUp,
+  });
+  if (participantCheck?.error) return participantCheck;
 
   const qualifyingMatch = inContextMatchUp?.stage === QUALIFYING && inContextMatchUp.finishingRound === 1;
   const qualifierAdvancing = qualifyingMatch && winningSide;
@@ -483,4 +469,44 @@ function applyMatchUpValues(params) {
   }
 
   return result;
+}
+
+function checkParticipants({
+  assignedDrawPositions,
+  inContextMatchUp,
+  appliedPolicies,
+  drawDefinition,
+  matchUpStatus,
+  structure,
+  matchUp,
+}) {
+  if (appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false) return { ...SUCCESS };
+
+  const participantsCount = inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length;
+
+  const positionAssignments = !matchUp?.sides
+    ? getPositionAssignments({
+        structureId: structure?.structureId,
+        drawDefinition,
+      }).positionAssignments
+    : [];
+
+  const requiredParticipants =
+    (participantsCount && participantsCount === 2) ||
+    // matchUp may be doubles or singles but if it is a tieMatchUp in a TEAM event and is adHoc and has a single participant
+    (matchUp.collectionId && isAdHoc({ structure }) && participantsCount && participantsCount >= 1) ||
+    (assignedDrawPositions?.length === 2 &&
+      positionAssignments
+        ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
+        .every((assignment) => assignment.participantId));
+
+  if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
+    return decorateResult({
+      info: 'present in participantsRequiredMatchUpStatuses',
+      context: { matchUpStatus, requiredParticipants },
+      result: { error: INVALID_MATCHUP_STATUS },
+    });
+  }
+
+  return { ...SUCCESS };
 }
