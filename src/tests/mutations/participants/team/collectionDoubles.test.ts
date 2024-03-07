@@ -1,11 +1,13 @@
-import { getParticipantId } from '@Functions/global/extractors';
 import { generateTeamTournament } from './generateTestTeamTournament';
+import { getParticipantId } from '@Functions/global/extractors';
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
+import { intersection } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// constants
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, TEAM } from '@Constants/matchUpTypes';
 import { LINEUPS } from '@Constants/extensionConstants';
@@ -15,7 +17,6 @@ import {
   MISSING_PARTICIPANT_ID,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 // reusable
 const getDoublesMatchUp = (id, inContext?) => {
@@ -122,7 +123,7 @@ it('can both assign and remove individualParticipants in DOUBLES matchUps that a
 });
 
 it('An EXISTING_OUTCOME will prevent removal of individualParticipants in DOUBLES matchUps that are part of team events', () => {
-  const { tournamentRecord, drawId } = generateTeamTournament();
+  const { tournamentRecord, drawId } = generateTeamTournament({ attachScoringPolicy: false });
   tournamentEngine.setState(tournamentRecord);
 
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });

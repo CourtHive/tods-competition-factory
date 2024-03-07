@@ -10,7 +10,7 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp } = params;
+  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -18,15 +18,13 @@ export function attemptToModifyScore(params) {
     ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualMatchUp);
 
   const stack = 'attemptToModifyScore';
-  // const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const hasAdHocSides = isAdHoc({ structure }) && matchUp?.sides?.every((side) => side.participantId);
   const validToScore =
-    // isCollectionMatchUp ||
     hasAdHocSides ||
-    drawPositionsAssignedParticipantIds({ structure, matchUp }) ||
+    drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
 
-  if (!validToScore) return { error: MISSING_ASSIGNMENTS };
+  if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 
   const removeScore = [WALKOVER].includes(matchUpStatus);
 
@@ -41,11 +39,12 @@ export function attemptToModifyScore(params) {
   return decorateResult({ result, stack });
 }
 
-function drawPositionsAssignedParticipantIds({ structure, matchUp }) {
+function drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) {
   const { drawPositions } = matchUp;
   const { positionAssignments } = structureAssignedDrawPositions({ structure });
   const assignedParticipantIds = positionAssignments?.filter((assignment) => {
     return drawPositions?.includes(assignment.drawPosition) && assignment.participantId;
   });
-  return assignedParticipantIds?.length === 2;
+  const bothSidesPresent = inContextMatchUp?.sides?.every((side) => side.participantId);
+  return assignedParticipantIds?.length === 2 || bothSidesPresent;
 }

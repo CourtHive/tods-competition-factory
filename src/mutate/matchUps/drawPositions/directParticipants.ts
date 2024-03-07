@@ -13,9 +13,10 @@ import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
 export function directParticipants(params) {
+  const stack = 'directParticipants';
   const result = attemptToModifyScore(params);
 
-  if (result.error) return result;
+  if (result.error) return decorateResult({ result, stack });
   const matchUpStatusIsValid = isDirectingMatchUpStatus({
     matchUpStatus: params.matchUpStatus,
   });
@@ -37,7 +38,6 @@ export function directParticipants(params) {
     event,
   } = params;
 
-  const stack = 'directParticipants';
   const isCollectionMatchUp = Boolean(matchUp.collectionId);
   const isAdHocMatchUp = isAdHoc({ structure });
   let drawPositions = matchUp.drawPositions;
