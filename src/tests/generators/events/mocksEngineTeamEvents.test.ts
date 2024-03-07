@@ -107,15 +107,15 @@ it('can generate TEAM events', () => {
   expect(positionedParticipantIds.length).toEqual(drawSize);
 
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: COMPLETED,
     scoreString: '6-1 6-1',
     winningSide: 1,
-    matchUpStatus: COMPLETED,
   });
   const { matchUpId } = singlesMatchUps[0];
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 

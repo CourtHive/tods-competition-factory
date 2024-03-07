@@ -12,10 +12,15 @@ export const POLICY_SCORING_DEFAULT = {
       structures: false,
     },
     /**
+     * requireParticipantsForScoring is used to specify that both participants must be present before a matchUp can be scored
+     * TODO: the converse is that a scored matchUp cannot have participants removed
+     */
+    requireParticipantsForScoring: false,
+    /**
      * without a SCORING_POLICY which sets { requireAllPositionsAssigned: false },  all stage:MAIN, stageSequence:1 drawPositions must be assigned **BEFORE** scoring is enabled,
      * scoring is enabled in consolation and compass/playoff structures when not all drawPositions have been filled
      */
-    requireAllPositionsAssigned: false,
+    requireAllPositionsAssigned: undefined, // default is true; NOT required when value is false
     allowChangePropagation: false, // changes to winningSide will propagate to all "downstream" matchUps in the structure
     stage: {
       [MAIN]: {
