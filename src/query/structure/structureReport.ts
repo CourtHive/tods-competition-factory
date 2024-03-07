@@ -1,19 +1,20 @@
 import { getTieFormatDesc } from '../hierarchical/tieFormats/getTieFormatDescription';
 import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
 import { getAccessorValue } from '@Tools/getAccessorValue';
-import { findExtension } from '@Acquire/findExtension';
 import { getDetailsWTN } from '../scales/getDetailsWTN';
+import { findExtension } from '@Acquire/findExtension';
 import { getTimeItem } from '../base/timeItems';
 import { getAvgWTN } from '../scales/getAvgWTN';
 
+// constants and types
+import { POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
+import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { MISSING_TOURNAMENT_ID } from '@Constants/errorConditionConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { Participant, Side, Tournament } from '@Types/tournamentTypes';
 import { ADD_SCALE_ITEMS } from '@Constants/topicConstants';
 import { HydratedParticipant } from '@Types/hydrated';
 import { SEEDING } from '@Constants/scaleConstants';
-import { Participant, Side, Tournament } from '@Types/tournamentTypes';
-import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
-import { POSITION_ACTIONS, DRAW_DELETIONS, FLIGHT_PROFILE } from '@Constants/extensionConstants';
 
 type GetStructureReportsArgs = {
   tournamentRecord: Tournament;
@@ -28,7 +29,10 @@ export function getStructureReports({
 }: GetStructureReportsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
 
+  const mainStructures: any[] = [];
+  const structureManipulations = {};
   const eventStructureReports = {};
+  const flightReports: any[] = [];
 
   const extensionValues = Object.assign(
     {},
@@ -61,8 +65,17 @@ export function getStructureReports({
     return timeItem?.itemValue?.scaleBasis;
   };
 
+  const updateStructureManipulations = ({ positionManipulations }) => {
+    positionManipulations?.forEach((action) => {
+      const { structureId, name } = action;
+      const drawPositions = action.drawPositions || [action.drawPosition];
+      if (!structureManipulations[structureId]) structureManipulations[structureId] = [];
+      structureManipulations[structureId].push(`${name}: ${drawPositions.join('/')}`);
+    });
+  };
+
   const tournamentStructureData = tournamentRecord?.events?.flatMap(
-    ({ timeItems: eventTimeItems, drawDefinitions = [], extensions, eventType, eventId, category }) => {
+    ({ timeItems: eventTimeItems, drawDefinitions = [], extensions, eventType, eventName, eventId, category }) => {
       const flightProfile = extensions?.find((x) => x.name === FLIGHT_PROFILE);
       const flightNumbers = flightProfile?.value?.flights?.map((flight) => ({
         [flight.drawId]: flight.flightNumber,
@@ -96,6 +109,7 @@ export function getStructureReports({
               timeItems: drawTimeItems,
               extensions,
               structures,
+              drawName,
               drawType,
               drawId,
             } = dd;
@@ -107,10 +121,9 @@ export function getStructureReports({
 
             const seedingBasis = getSeedingBasis(drawTimeItems) || eventSeedingBasis;
 
-            const positionManipulations = getPositionManipulations({
-              extensions,
-            });
+            const positionManipulations = getPositionManipulations({ extensions });
             const manipulationsCount = positionManipulations?.length || 0;
+            updateStructureManipulations({ positionManipulations });
 
             eventStructureReports[eventId].totalPositionManipulations += manipulationsCount;
             eventStructureReports[eventId].generatedDrawsCount += 1;
@@ -128,6 +141,7 @@ export function getStructureReports({
                     )
                   : undefined;
 
+                if (s.stage === MAIN) mainStructures.push({ eventName, drawName, structureId: s.structureId });
                 const winningSide = finalMatchUp?.sides?.find(
                   (side: any) => side.sideNumber === finalMatchUp.winningSide,
                 ) as Side & { participant?: Participant };
@@ -224,9 +238,15 @@ export function getStructureReports({
     },
   );
 
+  mainStructures.forEach(({ eventName, drawName, structureId }) => {
+    if (structureManipulations[structureId]?.length)
+      flightReports.push({ eventName, drawName, actions: structureManipulations[structureId] });
+  });
+
   return {
     eventStructureReports: Object.values(eventStructureReports),
     structureReports: tournamentStructureData,
+    flightReports,
   };
 }
 

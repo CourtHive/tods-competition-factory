@@ -1,13 +1,16 @@
+import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
+import structureTemplate from '@Assemblies/generators/templates/structureTemplate';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
-import { coerceEven, isConvertableInteger } from '@Tools/math';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { coerceEven, isConvertableInteger } from '@Tools/math';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { generateQualifyingLink } from '../links/generateQualifyingLink';
-import structureTemplate from '../../templates/structureTemplate';
-import { constantToString } from '@Tools/strings';
 import { generateRoundRobin } from './roundRobin/roundRobin';
+import { constantToString } from '@Tools/strings';
 import { treeMatchUps } from './eliminationTree';
 
+// constants, fixtures and types
+import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '@Types/tournamentTypes';
+import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
 import POLICY_ROUND_NAMING_DEFAULT from '@Fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
@@ -20,8 +23,6 @@ import {
   MISSING_DRAW_SIZE,
   STRUCTURE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '@Types/tournamentTypes';
 
 type GenerateQualifyingStructureArgs = {
   appliedPolicies?: PolicyDefinitions;
