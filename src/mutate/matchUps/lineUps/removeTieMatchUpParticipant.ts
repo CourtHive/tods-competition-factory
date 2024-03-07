@@ -14,9 +14,9 @@ import { ensureSideLineUps } from './ensureSideLineUps';
 
 // constants and types
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
@@ -85,9 +85,12 @@ export function removeTieMatchUpParticipantId(
   );
   if (!side) return decorateResult({ result: { error: PARTICIPANT_NOT_FOUND }, stack });
 
+  const scoringPolicy = params.policyDefinitions?.[POLICY_TYPE_SCORING] ?? appliedPolicies?.[POLICY_TYPE_SCORING];
+
   if (
     !side.substitutions?.length &&
-    (checkScoreHasValue({ score: inContextTieMatchUp?.score }) || inContextTieMatchUp?.winningSide)
+    (checkScoreHasValue({ score: inContextTieMatchUp?.score }) || inContextTieMatchUp?.winningSide) &&
+    !(scoringPolicy?.requireParticipantsForScoring === false)
   )
     return decorateResult({ result: { error: EXISTING_OUTCOME }, stack });
 
