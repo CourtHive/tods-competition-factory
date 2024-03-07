@@ -1,11 +1,12 @@
 import { findExtension } from '@Acquire/findExtension';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
+import { instanceCount } from '@Tools/arrays';
 import * as tools from '@Assemblies/tools';
 import { expect, it } from 'vitest';
 import fs from 'fs';
 
+// constants
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { DOUBLES_EVENT } from '@Constants/eventConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
