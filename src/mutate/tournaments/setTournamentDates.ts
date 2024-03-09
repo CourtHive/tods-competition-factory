@@ -80,10 +80,9 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   const unscheduledMatchUpIds = checkScheduling && removeInvalidScheduling({ tournamentRecord })?.unscheduledMatchUpIds;
 
   updateCourtAvailability({ tournamentRecord });
-
   addNotice({
+    payload: { tournamentId: tournamentRecord.tournamentId, startDate, endDate },
     topic: MODIFY_TOURNAMENT_DETAIL,
-    payload: { startDate, endDate },
   });
 
   return { ...SUCCESS, unscheduledMatchUpIds, datesAdded, datesRemoved };
