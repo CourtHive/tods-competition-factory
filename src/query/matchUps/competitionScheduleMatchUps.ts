@@ -61,7 +61,8 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   // PUBLISH.STATUS is attached at the tournament level by `publishOrderOfPlay`
   const tournamentPublishStatus = usePublishState
     ? getTournamentTimeItem({
-        tournamentRecord: tournamentRecords[activeTournamentId ?? getTournamentId()],
+        tournamentRecord:
+          tournamentRecords[activeTournamentId ?? getTournamentId() ?? Object.keys(tournamentRecords)[0]],
         itemType: `${PUBLISH}.${STATUS}`,
       }).timeItem?.itemValue?.[status]
     : undefined;
