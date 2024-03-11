@@ -12,15 +12,15 @@ export function setTournamentName({ tournamentRecord, promotionalName, tournamen
 
   const detailUpdates: any = { tournamentId };
 
-  if (tournamentName) {
+  if (tournamentName && tournamentName !== tournamentRecord.tournamentName) {
     tournamentRecord.tournamentName = tournamentName;
     detailUpdates.tournamentName = tournamentName;
   }
-  if (promotionalName) {
+  if (promotionalName && promotionalName !== tournamentRecord.promotionalName) {
     tournamentRecord.promotionalName = promotionalName;
     detailUpdates.promotionalName = promotionalName;
   }
-  if (formalName) {
+  if (formalName && formalName !== tournamentRecord.formalName) {
     tournamentRecord.formalName = formalName;
     detailUpdates.formalName = formalName;
   }
