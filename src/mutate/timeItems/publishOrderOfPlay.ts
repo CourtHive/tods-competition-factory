@@ -3,10 +3,11 @@ import { addNotice } from '@Global/state/globalState';
 import { getTimeItem } from '@Query/base/timeItems';
 import { addTimeItem } from './addTimeItem';
 
+// constants
+import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 import { PUBLISH_ORDER_OF_PLAY } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 
 export function publishOrderOfPlay(params) {
   const tournamentRecords = resolveTournamentRecords(params);

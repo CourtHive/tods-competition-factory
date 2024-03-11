@@ -78,9 +78,6 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
   let tournamentPublished = false;
   const publishState: any = {};
 
-  const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
-  publishState.tournament = pubStatus ?? {};
-
   for (const event of tournamentRecord?.events ?? []) {
     const pubStatus: any = getPubStatus({ event });
     publishState[event.eventId] = pubStatus;
@@ -95,6 +92,8 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
   }
 
   if (tournamentRecord) {
+    const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
+    publishState.tournament = pubStatus ?? {};
     publishState.tournament.status = { published: tournamentPublished, publishedEventIds };
   }
 

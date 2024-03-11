@@ -143,13 +143,13 @@ it('should return the publish state of all events', () => {
   publishState = tournamentEngine.getPublishState().publishState;
   expect(publishState['e3-d1'].status.published).toEqual(true);
   expect(Object.keys(publishState).map((key) => [key, publishState[key]?.status.published])).toEqual([
-    ['tournament', true],
     ['e1', false],
     ['e2', false],
     ['e3', true],
     ['e3-d1', true], // drawIds for published draws are included in publishState
     ['e4', false],
     ['e5', false],
+    ['tournament', true],
   ]);
 });
 
