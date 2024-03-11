@@ -34,7 +34,14 @@ export function setTournamentName({ tournamentRecord, promotionalName, tournamen
   }
 
   if (Object.keys(detailUpdates).length > 1) {
-    addNotice({ topic: MODIFY_TOURNAMENT_DETAIL, payload: { tournamentId, ...detailUpdates } });
+    addNotice({
+      topic: MODIFY_TOURNAMENT_DETAIL,
+      payload: {
+        parentOrganisation: tournamentRecord.parentOrganisation,
+        tournamentId,
+        ...detailUpdates,
+      },
+    });
   }
 
   return { ...SUCCESS };

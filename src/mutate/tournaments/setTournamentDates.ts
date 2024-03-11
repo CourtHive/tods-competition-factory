@@ -81,7 +81,12 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
 
   updateCourtAvailability({ tournamentRecord });
   addNotice({
-    payload: { tournamentId: tournamentRecord.tournamentId, startDate, endDate },
+    payload: {
+      parentOrganisation: tournamentRecord.parentOrganisation,
+      tournamentId: tournamentRecord.tournamentId,
+      startDate,
+      endDate,
+    },
     topic: MODIFY_TOURNAMENT_DETAIL,
   });
 
