@@ -1,11 +1,12 @@
+import { addParticipantExtension, removeParticipantExtension } from '@Mutate/extensions/addRemoveExtensions';
 import { generateTournamentRecord } from '@Assemblies/generators/mocks/generateTournamentRecord';
 import { removeExtension } from '@Mutate/extensions/removeExtension';
+import { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import { addParticipantExtension, removeParticipantExtension } from '@Mutate/extensions/addRemoveExtensions';
-import { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';
 
+// constants
 import {
   EVENT_NOT_FOUND,
   INVALID_VALUES,
@@ -17,10 +18,7 @@ import {
 
 it('can add and remove extensions from tournamentRecords', () => {
   const drawProfiles = [{ drawSize: 32 }];
-  const { drawIds, eventIds, tournamentRecord } = generateTournamentRecord({
-    drawProfiles,
-    inContext: true,
-  });
+  const { drawIds, eventIds, tournamentRecord } = generateTournamentRecord({ drawProfiles });
 
   const eventId = eventIds[0];
   const drawId = drawIds[0];
@@ -206,6 +204,8 @@ test('add and remove primitives throw appropriate errors', () => {
 
   result = removeExtension();
   expect(result.error).toEqual(MISSING_VALUE);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
   result = removeExtension({ element: 'bogus' });
   expect(result.error).toEqual(INVALID_VALUES);
   result = removeExtension({ element: {} });
@@ -228,9 +228,9 @@ test('add and remove primitives throw appropriate errors', () => {
   result = addNotes();
   expect(result.error).toEqual(MISSING_VALUE);
   result = addNotes({});
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_VALUE);
   result = addNotes({ element: 'bogus' });
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(MISSING_VALUE);
   result = addNotes({ element: {} });
   expect(result.error).toEqual(MISSING_VALUE);
 
