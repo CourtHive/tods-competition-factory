@@ -1,13 +1,14 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { addNotice, getTopics } from '@Global/state/globalState';
 
+// constants
+import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_PARTICIPANT_ID,
   MISSING_TOURNAMENT_RECORD,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { SUCCESS } from '@Constants/resultConstants';
-import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 export function modifyParticipantOtherName({ tournamentRecord, participantId, participantOtherName }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
