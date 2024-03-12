@@ -116,7 +116,6 @@ export function getParticipantEntries(params) {
       for (const entry of entries) {
         const { participantId } = entry;
         if (!participantId || !participantMap[participantId]) continue; // handle bad data
-        console.log(participantMap[participantId]);
 
         // get event ranking; this is the same for pairs, teams and all individual participants
         const ranking = getRanking({ eventType, scaleNames, participantId });
