@@ -304,13 +304,13 @@ export function generateParticipants(params): {
       participantType: INDIVIDUAL,
       participantName,
       person: {
-        addresses: [address],
         personId: personId || (personIds?.length && personIds[participantIndex]) || UUID(),
+        birthDate: isValidDateString(birthDate) ? birthDate : undefined,
+        addresses: [address],
         standardFamilyName,
         standardGivenName,
         nationalityCode,
         extensions,
-        birthDate: isValidDateString(birthDate) ? birthDate : undefined,
         sex,
       },
     });

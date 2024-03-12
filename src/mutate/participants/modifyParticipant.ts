@@ -5,11 +5,15 @@ import { getParticipantId } from '@Functions/global/extractors';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { participantRoles } from '@Constants/participantRoles';
 import { genderConstants } from '@Constants/genderConstants';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addNotice } from '@Global/state/globalState';
+import { isValidDateString } from '@Tools/dateTime';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { countries } from '@Fixtures/countryData';
 import { addParticipant } from './addParticipant';
+import { isString } from '@Tools/objects';
 
+// constants
+import { GROUP, INDIVIDUAL, PAIR, participantTypes } from '@Constants/participantConstants';
 import { MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/matchUpTypes';
@@ -18,7 +22,6 @@ import {
   MISSING_PARTICIPANT,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { GROUP, INDIVIDUAL, PAIR, participantTypes } from '@Constants/participantConstants';
 
 export function modifyParticipant(params) {
   const {
@@ -62,9 +65,8 @@ export function modifyParticipant(params) {
   if (contacts) newValues.contacts = contacts;
   if (onlineResources) newValues.onlineResources = onlineResources;
 
-  if (participantName && typeof participantName === 'string') newValues.participantName = participantName;
-  if (participantOtherName && typeof participantOtherName === 'string')
-    newValues.participantOtherName = participantOtherName;
+  if (participantOtherName && isString(participantOtherName)) newValues.participantOtherName = participantOtherName;
+  if (participantName && isString(participantName)) newValues.participantName = participantName;
 
   if (Array.isArray(individualParticipantIds)) {
     const { participants: individualParticipants } = getParticipants({
@@ -76,7 +78,7 @@ export function modifyParticipant(params) {
     if (allIndividualParticipantIds) {
       // check that all new individualParticipantIds exist and are { participantType: INDIVIDUAL }
       const updatedIndividualParticipantIds = individualParticipantIds.filter(
-        (participantId) => typeof participantId === 'string' && allIndividualParticipantIds.includes(participantId),
+        (participantId) => isString(participantId) && allIndividualParticipantIds.includes(participantId),
       );
 
       if (
@@ -150,28 +152,26 @@ function generatePairParticipantName({ individualParticipants, newValues }) {
 
 function updatePerson({ updateParticipantName, existingParticipant, newValues, person }) {
   const newPersonValues: any = {};
-  const { standardFamilyName, standardGivenName, nationalityCode, personId, sex } = person;
+  const { standardFamilyName, standardGivenName, nationalityCode, personId, birthdate, tennisId, sex } = person;
   if (sex && Object.keys(genderConstants).includes(sex)) newPersonValues.sex = sex;
 
   let personNameModified;
-  if (personId && typeof personId === 'string') {
-    newPersonValues.personId = personId;
-  }
+  if (isString(personId)) newPersonValues.personId = personId;
 
   if (
     nationalityCode &&
-    typeof nationalityCode === 'string' &&
+    isString(nationalityCode) &&
     (validNationalityCode(nationalityCode) || nationalityCode === '') // empty string to remove value
   ) {
     newPersonValues.nationalityCode = nationalityCode;
   }
 
-  if (standardFamilyName && typeof standardFamilyName === 'string' && standardFamilyName.length > 1) {
+  if (standardFamilyName && typeof isString(standardFamilyName) && standardFamilyName.length > 1) {
     newPersonValues.standardFamilyName = standardFamilyName;
     personNameModified = true;
   }
 
-  if (standardGivenName && typeof standardGivenName === 'string' && standardGivenName.length > 1) {
+  if (standardGivenName && typeof isString(standardGivenName) && standardGivenName.length > 1) {
     newPersonValues.standardGivenName = standardGivenName;
     personNameModified = true;
   }
@@ -179,6 +179,18 @@ function updatePerson({ updateParticipantName, existingParticipant, newValues, p
   if (personNameModified && updateParticipantName) {
     const participantName = `${newPersonValues.standardGivenName} ${newPersonValues.standardFamilyName}`;
     newValues.participantName = participantName;
+  }
+
+  if (birthdate && isValidDateString(birthdate)) {
+    // TODO: validate that birthdate is not in the future
+    // TODO: validate that birthdate is valid for event categories where participant is entered
+    // TODO: validate that birthdate is valid for all tournamentCategories
+    newPersonValues.birthdate = birthdate;
+  }
+
+  if (tennisId && isString(tennisId)) {
+    // TODO: validate format of the tennisId
+    newPersonValues.tennisId = tennisId;
   }
 
   Object.assign(existingParticipant.person, newPersonValues);
