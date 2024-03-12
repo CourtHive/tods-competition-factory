@@ -81,7 +81,7 @@ export function getParticipantEntries(params) {
   const derivedDrawInfo: any = {};
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
-    participantMap[participantId].participant?.rankings?.[eventType]?.find((ranking) =>
+    participantMap[participantId]?.participant?.rankings?.[eventType]?.find((ranking) =>
       scaleNames.includes(ranking.scaleName),
     )?.scaleValue;
 
@@ -116,6 +116,7 @@ export function getParticipantEntries(params) {
       for (const entry of entries) {
         const { participantId } = entry;
         if (!participantId || !participantMap[participantId]) continue; // handle bad data
+        console.log(participantMap[participantId]);
 
         // get event ranking; this is the same for pairs, teams and all individual participants
         const ranking = getRanking({ eventType, scaleNames, participantId });
@@ -236,6 +237,7 @@ export function getParticipantEntries(params) {
             (eventPublishedSeeding?.drawIds?.length === 0 || eventPublishedSeeding?.drawIds?.includes(drawId)));
 
         for (const entry of relevantEntries) {
+          if (!participantMap[entry.participantId]) continue; // handle bad data
           const { entryStatus, entryStage, entryPosition, participantId } = entry;
 
           // get event ranking
@@ -249,7 +251,7 @@ export function getParticipantEntries(params) {
           // id is the pair, team or individual participant currently being processed
           // whereas participantId is the id of the entry into the draw
           const addParticipantDrawEntry = (id) => {
-            if (participantMap[id].draws?.[drawId]) return;
+            if (!participantMap[id] || participantMap[id].draws?.[drawId]) return;
 
             const includeSeeding = withSeeding && seedingPublished;
 
