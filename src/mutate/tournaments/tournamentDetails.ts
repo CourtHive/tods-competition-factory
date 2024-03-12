@@ -1,5 +1,5 @@
+import { addNotes, removeNotes } from '../base/addRemoveNotes';
 import { addNotice } from '@Global/state/globalState';
-import { addNotes } from '../base/addRemoveNotes';
 
 // constants
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
@@ -49,14 +49,36 @@ export function setTournamentName({ tournamentRecord, promotionalName, tournamen
 
 export function setTournamentNotes({ tournamentRecord, notes }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  return addNotes({ element: tournamentRecord, notes });
+
+  const result = notes ? addNotes({ element: tournamentRecord, notes }) : removeNotes({ element: tournamentRecord });
+  if (result.error) return result;
+
+  addNotice({
+    topic: MODIFY_TOURNAMENT_DETAIL,
+    payload: {
+      parentOrganisation: tournamentRecord.parentOrganisation,
+      tournamentId: tournamentRecord.tournamentId,
+      notes: notes ?? '',
+    },
+  });
+
+  return { ...SUCCESS };
 }
 
 export function setTournamentCategories({ tournamentRecord, categories }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  categories = (categories || []).filter((category) => {
-    return category.categoryName && category.type;
-  });
+  categories = (categories || []).filter((category) => category.categoryName && category.type);
+  // TODO: remove duplicates and include any existing event categories
   tournamentRecord.tournamentCategories = categories;
+
+  addNotice({
+    topic: MODIFY_TOURNAMENT_DETAIL,
+    payload: {
+      parentOrganisation: tournamentRecord.parentOrganisation,
+      tournamentId: tournamentRecord.tournamentId,
+      categories,
+    },
+  });
+
   return { ...SUCCESS };
 }

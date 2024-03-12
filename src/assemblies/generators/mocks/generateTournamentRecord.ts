@@ -37,7 +37,7 @@ type GenerateTournamentRecordArgs = {
   participantsProfile?: ParticipantsProfile;
   scheduleCompletedMatchUps?: boolean;
   tournamentExtensions?: Extension[];
-  policyDefinitions: PolicyDefinitions;
+  policyDefinitions?: PolicyDefinitions;
   completeAllMatchUps?: boolean;
   tournamentAttributes?: any;
   ratingsParameters?: any;

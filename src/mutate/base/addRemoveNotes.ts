@@ -1,22 +1,21 @@
-import { SUCCESS } from '@Constants/resultConstants';
+import { isObject, isString } from '@Tools/objects';
+
+// constants
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function addNotes(params?) {
-  if (typeof params !== 'object') return { error: MISSING_VALUE };
-  if (typeof params.element !== 'object') return { error: INVALID_VALUES };
-  if (!params.notes) return { error: MISSING_VALUE };
-
-  if (typeof params.notes !== 'string' && !params.notes?.testing) return { error: INVALID_VALUES };
-
+  if (!isObject(params) || !params.notes) return { error: MISSING_VALUE };
+  if (!isObject(params.element)) return { error: INVALID_VALUES };
+  if (!isString(params.notes) && !params.notes?.testing) return { error: INVALID_VALUES };
   Object.assign(params.element, { notes: params.notes });
 
   return { ...SUCCESS };
 }
 
 export function removeNotes(params?) {
-  if (typeof params !== 'object') return { error: MISSING_VALUE };
-  if (typeof params.element !== 'object') return { error: INVALID_VALUES };
-
+  if (!isObject(params)) return { error: MISSING_VALUE };
+  if (!isObject(params.element)) return { error: INVALID_VALUES };
   if (params.element.notes) delete params.element.notes;
 
   return { ...SUCCESS };
