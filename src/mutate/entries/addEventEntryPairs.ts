@@ -7,6 +7,9 @@ import { intersection } from '@Tools/arrays';
 import { addEventEntries } from './addEventEntries';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
+import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { ALTERNATE } from '@Constants/entryStatusConstants';
@@ -19,8 +22,6 @@ import {
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
-import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 
 /**
  * Add PAIR participant to an event
