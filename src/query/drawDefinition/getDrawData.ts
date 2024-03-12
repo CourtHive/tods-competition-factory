@@ -147,7 +147,11 @@ export function getDrawData(params): {
           };
         });
 
-        if (matchUps.length && ((!participantResults?.length && params.allParticipantResults) || refreshResults)) {
+        if (
+          matchUps.length &&
+          ((!participantResults?.length && params.allParticipantResults) || // don't override existing participantResults, unless { refreshresults: true }
+            (refreshResults && !structure.structures)) // cannot refresh for round roubins
+        ) {
           const { subOrderMap } = createSubOrderMap({ positionAssignments });
           const result = tallyParticipantResults({
             matchUpFormat: structure.matchUpFormat,
@@ -156,6 +160,7 @@ export function getDrawData(params): {
             subOrderMap,
             matchUps,
           });
+
           participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
             const { drawPosition, participantId } = assignment;
             participantPlacements = true;
