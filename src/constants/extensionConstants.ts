@@ -3,8 +3,8 @@ export const APPLIED_POLICIES = 'appliedPolicies';
 export const CONTEXT = 'context';
 export const DELEGATED_OUTCOME = 'delegatedOutcome';
 export const DISABLED = 'disabled';
-export const DISABLE_LINKS = 'disableLinks';
 export const DISABLE_AUTO_CALC = 'disableAutoCalc';
+export const DISABLE_LINKS = 'disableLinks';
 export const DISPLAY = 'display';
 export const DRAW_DELETIONS = 'drawDeletions';
 export const DRAW_PROFILE = 'drawProfile';
@@ -54,6 +54,7 @@ export const extensionConstants = {
   PERSON_REQUESTS,
   POSITION_ACTIONS,
   RANKING_POINTS, // for attaching points awarded to tournamentRecord
+  REGISTRATION,
   ROUND_TARGET,
   SCHEDULE_LIMITS,
   SCHEDULE_TIMING,
@@ -68,9 +69,11 @@ export const extensionConstants = {
 export const internalExtensions = [
   DELEGATED_OUTCOME,
   DISABLED,
+  DISABLE_AUTO_CALC,
   DISABLE_LINKS,
   FLIGHT_PROFILE,
   LINEUPS,
+  LINKED_TOURNAMENTS,
   MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
@@ -80,4 +83,5 @@ export const internalExtensions = [
   SCHEDULING_PROFILE,
   SUB_ORDER,
   TALLY,
+  TIE_FORMAT_MODIFICATIONS,
 ];
