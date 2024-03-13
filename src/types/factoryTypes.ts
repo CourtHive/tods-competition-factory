@@ -501,6 +501,8 @@ export type DrawMaticArgs = {
   eventType?: EventTypeUnion;
   salted?: number | boolean;
   participantIds?: string[];
+  dynamicRatings?: boolean;
+  refreshDynamic?: boolean;
   encounterValue?: number;
   sameTeamValue?: number; // only required if not present in ratingsParameters.ts
   scaleAccessor?: string;

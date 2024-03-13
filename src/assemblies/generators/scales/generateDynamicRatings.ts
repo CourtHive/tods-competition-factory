@@ -1,21 +1,24 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addDynamicRatings } from '@Mutate/participants/scaleItems/addDynamicRatings';
 import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
+import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { aggregateSets } from './aggregators';
 
-// constants and types
-import { INVALID_VALUES, MISSING_MATCHUPS, MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+// constants, fixtures and types
+import { ARRAY, ERROR, OF_TYPE, TOURNAMENT_RECORD, VALIDATE } from '@Constants/attributeConstants';
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { MISSING_MATCHUP_IDS } from '@Constants/errorConditionConstants';
+import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { DYNAMIC, RATING } from '@Constants/scaleConstants';
 import { EventTypeUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import { ELO } from '@Constants/ratingConstants';
 import { HydratedSide } from '@Types/hydrated';
-import { ResultType } from '@Types/factoryTypes';
 
 export function generateDynamicRatings(params): ResultType & {
   modifiedScaleValues?: { [key: string]: number };
@@ -23,20 +26,26 @@ export function generateDynamicRatings(params): ResultType & {
   outputScaleName?: string;
   ratingType?: string;
 } {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true },
+    { matchUpIds: true, [OF_TYPE]: ARRAY, [ERROR]: MISSING_MATCHUP_IDS },
+    { ratingType: false, [VALIDATE]: (value) => ratingsParameters[value] },
+  ]);
+
+  if (paramsCheck.error) return paramsCheck;
+
   const {
-    updateParticipantRatings,
-    removePriorValues = true,
+    updateParticipantRatings, // modify tournamentRecord.participants with new scaleItems
+    removePriorValues = true, // remove prior scaleItems for the same scaleName
     tournamentRecord,
-    ratingType = ELO,
-    considerGames,
-    matchUpIds,
-    asDynamic,
+    ratingType = ELO, // default to ELO when not provided
+    refreshDynamic, // ignore previously calculated values
+    considerGames, // when true, consider games; otherwise consider sets
+    drawDefinition,
+    matchUpIds, // matchUpIds to process for ratings when params.matchUps not provided
+    asDynamic, // when true, return dynamic scaleName; otherwise return ratingType
   } = params;
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUPS };
-  if (typeof ratingType !== 'string') return { error: INVALID_VALUES, ratingType };
-  if (!ratingsParameters[ratingType]) return { error: INVALID_VALUES };
   const ratingParameter = ratingsParameters[ratingType];
   const { accessor } = ratingParameter;
 
@@ -44,6 +53,13 @@ export function generateDynamicRatings(params): ResultType & {
 
   const matchUps =
     params.matchUps ??
+    (refreshDynamic && // when { refreshDynamic: true } use allDrawMatchUps
+      allDrawMatchUps({
+        drawDefinition,
+        tournamentRecord,
+        inContext: true,
+        matchUpFilters: { matchUpStatuses: completedMatchUpStatuses },
+      })) ??
     allTournamentMatchUps({
       matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
       tournamentRecord,
@@ -92,17 +108,24 @@ export function generateDynamicRatings(params): ResultType & {
       ...Object.values(sideParticipantIds)
         .flat()
         .map((participantId) => {
-          const { scaleItem: dynamicScaleItem } = getParticipantScaleItem({
-            scaleAttributes: dynamicScaleAttributes,
-            tournamentRecord,
-            participantId,
-          });
-          const { scaleItem } = getParticipantScaleItem({
+          const existingModifiedScaleValue = modifiedScaleValues[participantId];
+          const useDynamic = !refreshDynamic || !existingModifiedScaleValue;
+
+          const dynamicScaleItem = useDynamic
+            ? getParticipantScaleItem({
+                scaleAttributes: dynamicScaleAttributes,
+                tournamentRecord,
+                participantId,
+              }).scaleItem
+            : undefined;
+
+          const scaleItem = getParticipantScaleItem({
             tournamentRecord,
             scaleAttributes,
             participantId,
-          });
+          }).scaleItem;
 
+          // this is for the case of no pre-existing scaleItem
           const scaleValue = accessor ? { [accessor]: undefined } : undefined;
 
           return (

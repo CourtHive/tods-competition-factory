@@ -33,6 +33,7 @@ const { matchUps, participantIdPairings, iterations, candidatesCount, modifiedSc
 
   updateParticipantRatings, // optional boolean; attach modifiedScaleValues to participants
   dynamicRatings, // optional boolean - generate dynamic ratings from previous round results
+  refreshDynamic, // optional boolean - ignore previously generated dynamic values
   scaleAccessor, // optional - string to access value within scaleValue, e.g. 'wtnRating'
   scaleName, // optional - custom rating name to seed dynamic ratings
 
