@@ -1,6 +1,9 @@
 import { setParticipantScaleItem } from './addScaleItems';
 
 // constants
+import { SUCCESS } from '@Constants/resultConstants';
+
+// constants
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 
 export function addDynamicRatings({ tournamentRecord, modifiedScaleValues, removePriorValues }) {
@@ -14,4 +17,6 @@ export function addDynamicRatings({ tournamentRecord, modifiedScaleValues, remov
     });
     if (result.error) return result;
   }
+
+  return { ...SUCCESS };
 }
