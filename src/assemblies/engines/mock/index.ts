@@ -1,4 +1,4 @@
-import { deleteNotices, setDevContext, setDeepCopy } from '@Global/state/globalState';
+import { deleteNotices, setDevContext, setDeepCopy, getDevContext } from '@Global/state/globalState';
 import { notifySubscribers } from '@Global/state/notifySubscribers';
 import * as mocksGovernor from '@Assemblies/governors/mocksGovernor';
 import { factoryVersion } from '@Functions/global/factoryVersion';
@@ -45,24 +45,32 @@ export const mocksEngine = (() => {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((method) => {
         engine[method] = (params) => {
-          try {
+          if (getDevContext()) {
             const invocationResult = engineInvoke(governor[method], params);
             if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
               setState(invocationResult.tournamentRecord);
             }
             return invocationResult;
-          } catch (err) {
-            let error;
-            if (typeof err === 'string') {
-              error = err.toUpperCase();
-            } else if (err instanceof Error) {
-              error = err.message;
+          } else {
+            try {
+              const invocationResult = engineInvoke(governor[method], params);
+              if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
+                setState(invocationResult.tournamentRecord);
+              }
+              return invocationResult;
+            } catch (err) {
+              let error;
+              if (typeof err === 'string') {
+                error = err.toUpperCase();
+              } else if (err instanceof Error) {
+                error = err.message;
+              }
+              console.log('ERROR', {
+                params: JSON.stringify(params),
+                method,
+                error,
+              });
             }
-            console.log('ERROR', {
-              params: JSON.stringify(params),
-              method,
-              error,
-            });
           }
         };
       });
