@@ -23,7 +23,7 @@ export function drawMatic(
   const structureResult = getAdHocStructure(params);
   if (structureResult.error) return structureResult;
 
-  const adHocRatings = getAdHocRatings(params);
+  let adHocRatings = getAdHocRatings(params);
 
   const isMock = params.tournamentRecord?.isMock ?? params.isMock;
   const eventType = params.eventType ?? params.event?.eventType;
@@ -46,6 +46,7 @@ export function drawMatic(
     if (result.error) return result;
 
     const { matchUps: roundMatchUps, ...roundResult } = result;
+    if (roundResult.modifiedScaleValues) adHocRatings = roundResult.modifiedScaleValues;
     roundResults.push({ ...roundResult, iteration, matchUpsCount: roundMatchUps?.length });
     roundNumber = (roundResult?.roundNumber ?? 1) + 1;
     if (roundMatchUps?.length) {
