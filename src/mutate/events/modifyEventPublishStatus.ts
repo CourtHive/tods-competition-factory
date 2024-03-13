@@ -10,7 +10,7 @@ type ModifyEventPublishStatus = {
   statusObject: { [key: string]: any };
   removePriorValues?: boolean;
   status?: string;
-  event: Event;
+  event?: Event;
 };
 
 export function modifyEventPublishStatus({
