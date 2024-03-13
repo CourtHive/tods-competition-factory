@@ -25,6 +25,7 @@ const { matchUps, participantIdPairings, iterations, candidatesCount, modifiedSc
   restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
   enableDoubleRobin, // optional - allows roundsCount <= (drawSize - 1) * 2
   generateMatchUps, // optional - defaults to true; when false only returns { participantIdPairings }
+  minimizeDelta, // boolean - force minimum delta in ratings; good for first round
   participantIds, // optional array of [participantId] to restrict enteredParticipantIds which appear in generated round
   maxIterations, // optional - defaults to 5000; can be used to set a limit on processing overhead
   structureId, // optional; if no structureId is specified find the latest AD_HOC stage which has matchUps
