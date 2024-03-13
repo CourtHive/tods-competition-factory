@@ -40,6 +40,7 @@ const policyDefinitions = Object.assign({}, ROUND_NAMING_POLICY, PARTICIPANT_PRI
 const { eventData } = engine.publishEvent({
   removePriorValues, // optional boolean - when true will delete prior timeItems
   policyDefinitions, // optional - e.g. participant privacy policy (if not already attached)
+  eventDataParams, // optional - params to pass to `getEventData`
 
   drawIdsToRemove, // optional - drawIds to remove from drawIds already published
   drawIdsToAdd, // optional - drawIds to add to drawIds already published

@@ -92,6 +92,7 @@ Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tour
 ```js
 engine.deleteDrawDefinitions({
   autoPublish, // optional - defaults to true.
+  eventDataParams, // optional - params to pass to `getEventData` for regeneration of remaining draws
   auditData, // object with attributes to be added to drawDeletions extension
   drawIds: [drawId],
   eventId,

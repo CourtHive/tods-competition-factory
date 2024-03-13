@@ -33,6 +33,7 @@ import { AUDIT } from '@Constants/topicConstants';
 type DeleteDrawDefinitionArgs = {
   policyDefinitions?: PolicyDefinitions;
   tournamentRecord: Tournament;
+  eventDataParams?: any;
   autoPublish?: boolean;
   drawIds?: string[];
   auditData?: any;
@@ -239,6 +240,7 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
 
   if (autoPublish && publishedDrawsDeleted) {
     const result = publishEvent({
+      ...params.eventDataParams,
       drawIdsToRemove: drawIds,
       policyDefinitions,
       tournamentRecord,

@@ -32,6 +32,7 @@ export function generateParticipants(params): {
     ratingsParameters = defaultRatingsParameters,
     valuesInstanceLimit,
     consideredDate,
+    categories,
     category,
 
     nationalityCodesCount,
@@ -326,7 +327,7 @@ export function generateParticipants(params): {
       if (country?.label) participant.person.countryName = country.label;
     }
 
-    if (category) {
+    const processCategory = (category) => {
       const singlesRanking = singlesRankings[participantIndex];
       const doublesRanking = doublesRankings[participantIndex];
 
@@ -362,7 +363,10 @@ export function generateParticipants(params): {
         participant,
         category,
       });
-    }
+    };
+
+    if (category) processCategory(category);
+    if (Array.isArray(categories)) categories.forEach((category) => processCategory(category));
 
     return participant;
   }
