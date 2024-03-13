@@ -1,9 +1,11 @@
 import { decorateResult } from '@Functions/global/decorateResult';
+import { addNotice } from '@Global/state/globalState';
 import { intersection } from '@Tools/arrays';
 import { isObject } from '@Tools/objects';
 
 // constants and types
 import { DrawDefinition, Event, OnlineResource, Tournament } from '@Types/tournamentTypes';
+import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -90,8 +92,14 @@ export function addOnlineResource({
     venue.onlineResources.push(onlineResource);
   } else {
     if (!tournamentRecord.onlineResources) tournamentRecord.onlineResources = [];
-
     tournamentRecord.onlineResources.push(onlineResource);
+    addNotice({
+      payload: {
+        onlineResources: tournamentRecord.onlineResources,
+        tournamentId: tournamentRecord.tournamentId,
+      },
+      topic: MODIFY_TOURNAMENT_DETAIL,
+    });
   }
 
   return { ...SUCCESS };
