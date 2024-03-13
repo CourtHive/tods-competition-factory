@@ -40,6 +40,7 @@ type GenerateDrawMaticRoundArgs = {
   participantIds?: string[];
   dynamicRatings?: boolean;
   refreshDynamic?: boolean;
+  minimizeDelta?: boolean;
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
@@ -59,6 +60,7 @@ export type DrawMaticRoundResult = {
   participantIdPairings?: string[][];
   candidatesCount?: number;
   outputScaleName?: string;
+  deltaCandidate?: any;
   roundNumber?: number;
   matchUps?: MatchUp[];
   iterations?: number;
@@ -67,36 +69,34 @@ export type DrawMaticRoundResult = {
   maxDiff?: number;
 };
 
-export function generateDrawMaticRound({
-  encounterValue = ENCOUNTER_VALUE,
-  sameTeamValue = SAME_TEAM_VALUE,
-  maxIterations = MAX_ITERATIONS,
-  updateParticipantRatings,
-  generateMatchUps = true,
-  ignoreLastRoundNumber,
-  iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
-  tournamentRecord,
-  dynamicRatings,
-  refreshDynamic,
-  participantIds,
-  drawDefinition,
-  adHocRatings,
-  salted = 0.5,
-  roundNumber,
-  structureId,
-  matchUpIds,
-  eventType,
-  structure,
-  scaleName,
-  idPrefix,
-  isMock,
-  event,
-}: GenerateDrawMaticRoundArgs): ResultType & DrawMaticRoundResult {
+export function generateDrawMaticRound(params: GenerateDrawMaticRoundArgs): ResultType & DrawMaticRoundResult {
+  const {
+    encounterValue = ENCOUNTER_VALUE,
+    sameTeamValue = SAME_TEAM_VALUE,
+    maxIterations = MAX_ITERATIONS,
+    updateParticipantRatings,
+    generateMatchUps = true,
+    ignoreLastRoundNumber,
+    iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
+    tournamentRecord,
+    dynamicRatings,
+    refreshDynamic,
+    participantIds,
+    drawDefinition,
+    roundNumber,
+    structureId,
+    matchUpIds,
+    eventType,
+    scaleName,
+    idPrefix,
+    isMock,
+    salted,
+    event,
+  } = params;
+
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
-  if (!structure) {
-    structure = findStructure({ drawDefinition, structureId }).structure;
-  }
+  if (!params.structure && !structureId) return { error: STRUCTURE_NOT_FOUND };
+  const structure = params.structure || findStructure({ drawDefinition, structureId }).structure;
   if (!isObject(structure)) return { error: MISSING_STRUCTURE };
 
   if (!participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
@@ -150,15 +150,16 @@ export function generateDrawMaticRound({
     participantIds,
   });
 
-  const params = {
-    // if { dynamicRatings } then modifiedScaleValues will be used to modify valueObjects
-    adHocRatings: modifiedScaleValues || adHocRatings,
+  // if { dynamicRatings } then modifiedScaleValues will be used to modify valueObjects
+  const adHocRatings = Object.values(modifiedScaleValues).length ? modifiedScaleValues : params.adHocRatings;
+  const paringParams = {
     tournamentParticipants,
     possiblePairings,
-    drawDefinition,
     participantIds,
     uniquePairings,
+    drawDefinition,
     maxIterations,
+    adHocRatings,
     deltaObjects,
     valueObjects,
     eventType,
@@ -167,7 +168,7 @@ export function generateDrawMaticRound({
     salted,
   };
 
-  const { candidatesCount, participantIdPairings, iterations, candidate } = getPairings(params);
+  const { candidatesCount, participantIdPairings, deltaCandidate, iterations, candidate } = getPairings(paringParams);
 
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
@@ -199,6 +200,7 @@ export function generateDrawMaticRound({
     participantIdPairings,
     modifiedScaleValues,
     candidatesCount,
+    deltaCandidate,
     ...SUCCESS,
     iterations,
     matchUps,

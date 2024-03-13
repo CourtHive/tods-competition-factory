@@ -67,6 +67,25 @@ addTimeItem({
 
 ---
 
+## addOnlineResource
+
+Attach an online resource to specified element. When no other ids are provided, will attach to `tournamentRecord`.
+
+```js
+engine.addOnlineResource({
+  onlineResource, // required { identifier, resourceType, resourceSubType, ... }
+  organisationId, // optional
+  participantId, // optional
+  personId, // optional
+  courtId, // optional
+  venueId, // optional
+  eventId, // optional
+  drawId, // optional
+});
+```
+
+---
+
 ## addTournamentExtension
 
 ```js
@@ -105,6 +124,25 @@ engine.orderCollectionDefinitions({
   matchUpId, // required if modifying tieFormat for a matchUp
   eventId, // required if modifying tieFormat for a event
   drawId, // required if modifying tieFormat for a drawDefinition or a structure
+});
+```
+
+---
+
+## removeOnlineResource
+
+Remove an online resource from specified element. When no other ids are provided, will remove from `tournamentRecord`.
+
+```js
+engine.removeOnlineResource({
+  onlineResource, // only requires { identifier, resourceType, resourceSubType }
+  organisationId, // optional
+  participantId, // optional
+  personId, // optional
+  courtId, // optional
+  venueId, // optional
+  eventId, // optional
+  drawId, // optional
 });
 ```
 

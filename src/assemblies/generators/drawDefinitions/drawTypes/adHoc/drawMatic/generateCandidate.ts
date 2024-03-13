@@ -122,6 +122,7 @@ type RoundCandiateArgs = {
   deltaObjects: any;
   valueObjects: any;
 };
+
 function roundCandidate({
   valueSortedPairings,
   stipulated = [],
@@ -184,7 +185,7 @@ function roundCandidate({
     return delta > p ? delta : p;
   }, 0);
 
-  // determine the greatest delta in the candidate's pairings
+  // determine the greatest diff in the candidate's pairings
   const maxDiff = participantIdPairings.reduce((p, c) => {
     const [p1, p2] = c.participantIds;
     const hash = pairingHash(p1, p2);

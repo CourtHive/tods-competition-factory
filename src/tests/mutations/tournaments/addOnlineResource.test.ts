@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 import {
   COURT_NOT_FOUND,
   INVALID_OBJECT,
-  MISSING_VALUE,
+  INVALID_VALUES,
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
   VENUE_NOT_FOUND,
@@ -43,16 +43,20 @@ it('supports adding onlineResources', () => {
   result = tournamentEngine.addOnlineResource({ onlineResource });
   expect(result.success).toEqual(true);
 
-  const tournament = tournamentEngine.getTournament().tournamentRecord;
+  let tournament = tournamentEngine.getTournament().tournamentRecord;
   expect(tournament.onlineResources.length).toEqual(1);
 
+  result = tournamentEngine.removeOnlineResource({ onlineResource });
+  tournament = tournamentEngine.getTournament().tournamentRecord;
+  expect(tournament.onlineResources.length).toEqual(0);
+
   result = tournamentEngine.addOnlineResource();
-  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.error).toEqual(INVALID_OBJECT);
 
   result = tournamentEngine.addOnlineResource({
     onlineResource: { identifier: 'x' },
   });
-  expect(result.error).toEqual(INVALID_OBJECT);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.addOnlineResource({
     onlineResource,

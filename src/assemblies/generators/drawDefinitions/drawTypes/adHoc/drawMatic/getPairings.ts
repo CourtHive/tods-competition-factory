@@ -2,18 +2,21 @@ import { getParticipantPairingValues } from './getParticipantPairingValues';
 import { generateCandidate } from './generateCandidate';
 import { getSideRatings } from './getSideRatings';
 
-export function getPairings({
-  tournamentParticipants,
-  adHocRatings = {},
-  possiblePairings, // participant keyed; provides array of possible opponents
-  uniquePairings, // hashes of all possible participantId pairings
-  maxIterations,
-  deltaObjects, // difference in rating between paired participants
-  valueObjects, // calculated value of a pairing of participants, used for sorting pairings
-  eventType,
-  scaleName,
-  salted,
-}) {
+export function getPairings(params) {
+  const {
+    tournamentParticipants,
+    adHocRatings = {},
+    possiblePairings, // participant keyed; provides array of possible opponents
+    uniquePairings, // hashes of all possible participantId pairings
+    maxIterations,
+    minimizeDelta, // useful for the first round
+    deltaObjects, // difference in rating between paired participants
+    valueObjects, // calculated value of a pairing of participants, used for sorting pairings
+    eventType,
+    scaleName,
+    salted,
+  } = params;
+
   // modify valueObjects by ratings ratingsDifference squared
   // update deltaObjects to reflect the current difference between participant's ratings
   uniquePairings.forEach((pairing) => {
@@ -61,7 +64,7 @@ export function getPairings({
     valueObjects,
   });
 
-  const { participantIdPairings } = candidate;
+  const { participantIdPairings } = minimizeDelta ? deltaCandidate : candidate;
 
   return {
     participantIdPairings,

@@ -26,12 +26,14 @@ export function generateParticipants(params): {
   error?: ErrorType;
 } {
   let {
-    rankingRange, // range of ranking positions to generate
     scaledParticipantsCount, // number of participants to assign rankings/ratings
+    rankingRange, // range of ranking positions to generate
   } = params;
+
   const {
     ratingsParameters = defaultRatingsParameters,
     valuesInstanceLimit,
+    ratingsValues = [],
     consideredDate,
     categories,
     category,
@@ -108,7 +110,14 @@ export function generateParticipants(params): {
   };
 
   if (isObject(category)) {
-    const result = genRatings({ category, scaledParticipantsCount, ratingsParameters, participantType, rankingRange });
+    const result = genRatings({
+      scaledParticipantsCount,
+      ratingsParameters,
+      participantType,
+      ratingsValues,
+      rankingRange,
+      category,
+    });
     assignResult(result);
   }
   if (Array.isArray(categories)) {
@@ -117,6 +126,7 @@ export function generateParticipants(params): {
         scaledParticipantsCount,
         ratingsParameters,
         participantType,
+        ratingsValues,
         rankingRange,
         category,
       });
@@ -341,7 +351,7 @@ function addScaleItem({ scaleValue: itemValue, participant, eventType, scaleType
 }
 
 function genRatings(params) {
-  const { category, scaledParticipantsCount, ratingsParameters, participantType } = params;
+  const { category, scaledParticipantsCount, ratingsParameters, participantType, ratingsValues = [] } = params;
   const rankingRange = category.rankingRange || params.rankingRange || [1, 1000];
   const doublesRankings = {},
     singlesRankings = {},
@@ -399,11 +409,12 @@ function genRatings(params) {
     };
 
     const inverted = range[0] > range[1];
-    const skew = inverted ? 2 : 0.5;
+    const skew = inverted ? 2 : 0.7;
     const [min, max] = range.slice().sort();
-    const generateRatings = () =>
-      generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
-        .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
+    const generateRatings = () => {
+      const ratingsBucket = generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
+        .map(() => skewedDistribution(min, max, skew, step, decimalsCount));
+      return ratingsBucket
         .filter((rating) => (!ratingMax || rating <= ratingMax) && (!ratingMin || rating >= ratingMin))
         .slice(0, scaledParticipantsCount || randomInt(20, 30))
         .map((scaleValue) => {
@@ -415,10 +426,12 @@ function genRatings(params) {
                 getAttributes(attributes),
               );
         });
+    };
 
-    singlesRatings[scaleName] = generateRatings();
+    const generatedRatings = generateRatings();
+    singlesRatings[scaleName] = [...ratingsValues, ...generatedRatings];
     if ([PAIR, TEAM].includes(participantType)) {
-      doublesRatings[scaleName] = generateRatings();
+      doublesRatings[scaleName] = [...ratingsValues, ...generatedRatings];
     }
   }
 

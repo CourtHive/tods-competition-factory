@@ -2,11 +2,14 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isFunction, isObject } from '@Tools/objects';
 import { intersection } from '@Tools/arrays';
 
+// constants and types
+import { IDENTIFIER, RESOURCE_SUB_TYPE, RESOURCE_TYPE } from '@Constants/resourceConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
   EVENT_NOT_FOUND,
   INVALID_EVENT_TYPE,
+  INVALID_OBJECT,
   INVALID_VALUES,
   MISSING_COURT_ID,
   MISSING_DRAW_DEFINITION,
@@ -28,6 +31,7 @@ import {
   MISSING_TOURNAMENT_RECORDS,
   MISSING_VALUE,
 } from '@Constants/errorConditionConstants';
+
 import {
   ARRAY,
   COURT_ID,
@@ -47,6 +51,7 @@ import {
   MESSAGE,
   OBJECT,
   ONE_OF,
+  ONLINE_RESOURCE,
   PARTICIPANT,
   PARTICIPANT_ID,
   POLICY_DEFINITIONS,
@@ -74,6 +79,8 @@ type RequiredParams = {
 
 const validators = {
   [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
+  [ONLINE_RESOURCE]: (value) =>
+    intersection(Object.keys(value), [RESOURCE_SUB_TYPE, RESOURCE_TYPE, IDENTIFIER]).length === 3,
 };
 
 const errors = {
@@ -87,6 +94,7 @@ const errors = {
   [STRUCTURE_ID]: MISSING_STRUCTURE_ID,
   [MATCHUP_IDS]: MISSING_MATCHUP_IDS,
   [PARTICIPANT]: MISSING_PARTICIPANT,
+  [ONLINE_RESOURCE]: INVALID_OBJECT,
   [EVENT_TYPE]: INVALID_EVENT_TYPE,
   [STRUCTURES]: MISSING_STRUCTURES,
   [MATCHUP_ID]: MISSING_MATCHUP_ID,
@@ -106,6 +114,7 @@ const paramTypes = {
   [POLICY_DEFINITIONS]: OBJECT,
   [TOURNAMENT_RECORD]: OBJECT,
   [DRAW_DEFINITION]: OBJECT,
+  [ONLINE_RESOURCE]: OBJECT,
   [SCHEDULE_DATES]: ARRAY,
   [PARTICIPANT]: OBJECT,
   [MATCHUP_IDS]: ARRAY,
