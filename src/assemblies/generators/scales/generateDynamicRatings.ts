@@ -1,6 +1,6 @@
+import { addDynamicRatings } from '@Mutate/participants/scaleItems/addDynamicRatings';
 import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
-import { setParticipantScaleItem } from '../../../mutate/participants/addScaleItems';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { calculateNewRatings } from './calculateNewRatings';
@@ -15,9 +15,23 @@ import { EventTypeUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ELO } from '@Constants/ratingConstants';
 import { HydratedSide } from '@Types/hydrated';
+import { ResultType } from '@Types/factoryTypes';
 
-export function generateDynamicRatings(params) {
-  const { removePriorValues = true, tournamentRecord, ratingType = ELO, considerGames, matchUpIds, asDynamic } = params;
+export function generateDynamicRatings(params): ResultType & {
+  modifiedScaleValues?: { [key: string]: number };
+  processedMatchUpIds?: string[];
+  outputScaleName?: string;
+  ratingType?: string;
+} {
+  const {
+    updateParticipantRatings,
+    removePriorValues = true,
+    tournamentRecord,
+    ratingType = ELO,
+    considerGames,
+    matchUpIds,
+    asDynamic,
+  } = params;
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!Array.isArray(matchUpIds)) return { error: MISSING_MATCHUPS };
@@ -37,6 +51,9 @@ export function generateDynamicRatings(params) {
     }).matchUps ??
     [];
 
+  const dynamicScaleName = `${ratingType}.${DYNAMIC}`;
+  const outputScaleName = asDynamic ? dynamicScaleName : ratingType;
+
   matchUps.sort(matchUpSort);
 
   for (const matchUp of matchUps) {
@@ -50,7 +67,6 @@ export function generateDynamicRatings(params) {
       scaleType: RATING,
     };
 
-    const dynamicScaleName = `${ratingType}.${DYNAMIC}`;
     const dynamicScaleAttributes = {
       scaleName: dynamicScaleName,
       eventType: matchUpType,
@@ -71,7 +87,6 @@ export function generateDynamicRatings(params) {
       }),
     );
 
-    const outputScaleName = asDynamic ? dynamicScaleName : ratingType;
     const scaleItemMap = Object.assign(
       {},
       ...Object.values(sideParticipantIds)
@@ -149,35 +164,19 @@ export function generateDynamicRatings(params) {
           : newLoserRating;
         scaleItemMap[winnerParticipantId].scaleValue = newWinnerScaleValue;
         scaleItemMap[loserParticipantId].scaleValue = newLoserScaleValue;
-
-        let result = setParticipantScaleItem({
-          participantId: winnerParticipantId,
-          removePriorValues,
-          tournamentRecord,
-          scaleItem: {
-            ...scaleItemMap[winnerParticipantId],
-            scaleName: outputScaleName,
-          },
-        });
-        if (result.error) return result;
-
-        result = setParticipantScaleItem({
-          participantId: loserParticipantId,
-          removePriorValues,
-          tournamentRecord,
-          scaleItem: {
-            ...scaleItemMap[loserParticipantId],
-            scaleName: outputScaleName,
-          },
-        });
-        if (result.error) return result;
+        scaleItemMap[winnerParticipantId].scaleName = outputScaleName;
+        scaleItemMap[loserParticipantId].scaleName = outputScaleName;
       }
     }
 
     Object.assign(modifiedScaleValues, scaleItemMap);
+
+    if (updateParticipantRatings) {
+      addDynamicRatings({ tournamentRecord, modifiedScaleValues, removePriorValues });
+    }
   }
 
   const processedMatchUpIds = matchUps.map(({ matchUpId }) => matchUpId);
 
-  return { ...SUCCESS, modifiedScaleValues, processedMatchUpIds };
+  return { ...SUCCESS, modifiedScaleValues, outputScaleName, processedMatchUpIds };
 }

@@ -1,14 +1,7 @@
+import { MISSING_PARTICIPANT_IDS, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SCALE } from '@Constants/timeItemConstants';
-import { MISSING_PARTICIPANT_IDS, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed automatically if tournamentEngine.setState()
- * @param {string[]} participantIds
- * @param {string} scaleAttributes - { scaleType, scaleName, eventType }
- * @returns {boolean} { success: true } or { error }
- */
 export function removeParticipantsScaleItems({ tournamentRecord, scaleAttributes, participantIds }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participantIds) return { error: MISSING_PARTICIPANT_IDS };

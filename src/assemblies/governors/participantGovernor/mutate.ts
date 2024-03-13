@@ -1,7 +1,7 @@
 export { modifyPersonRequests } from '@Mutate/matchUps/schedule/scheduleMatchUps/personRequests/modifyPersonRequests';
 export { removePersonRequests } from '@Mutate/matchUps/schedule/scheduleMatchUps/personRequests/removePersonRequests';
 export { addPersonRequests } from '@Mutate/matchUps/schedule/scheduleMatchUps/personRequests/addPersonRequests';
-export { setParticipantScaleItems, setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+export { setParticipantScaleItems, setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
 export { modifyIndividualParticipantIds } from '@Mutate/participants/modifyIndividualParticipantIds';
 export { createTeamsFromParticipantAttributes } from '@Mutate/participants/createTeamsFromAttributes';
 export { modifyParticipantsSignInStatus } from '@Mutate/participants/modifyParticipantsSignInStatus';
@@ -9,6 +9,7 @@ export { addIndividualParticipantIds } from '@Mutate/participants/addIndividualP
 export { modifyParticipantOtherName } from '@Mutate/participants/modifyParticipantOtherName';
 export { regenerateParticipantNames } from '@Mutate/participants/regenerateParticipantNames';
 export { publicFindParticipant as findParticipant } from '@Acquire/publicFindParticipant';
+export { addDynamicRatings } from '@Mutate/participants/scaleItems/addDynamicRatings';
 export { createGroupParticipant } from '@Mutate/participants/createGroupParticipant';
 export { modifyParticipantName } from '@Mutate/participants/modifyParticipantName';
 export { scaledTeamAssignment } from '@Mutate/participants/scaledTeamAssignment';

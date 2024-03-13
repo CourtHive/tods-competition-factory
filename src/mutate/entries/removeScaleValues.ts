@@ -1,4 +1,4 @@
-import { removeParticipantsScaleItems } from '../participants/removeScaleItems';
+import { removeParticipantsScaleItems } from '../participants/scaleItems/removeScaleItems';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getParticipantId } from '@Functions/global/extractors';
 import { mustBeAnArray } from '@Tools/mustBeAnArray';
@@ -6,15 +6,6 @@ import { getFlightProfile } from '@Query/event/getFlightProfile';
 
 import { INVALID_VALUES, MISSING_EVENT } from '@Constants/errorConditionConstants';
 
-/**
- *
- * @param {object} tournamentRecord - passed automatically if tournamentEngine.setState()
- * @param {string} eventId - resolves to event
- * @param {string} drawId - OPTIONAL - resolves drawDefinition - scopes participants to clear to drawDefinition.entries or flightProfile.flight.drawEntries
- * @param {string} scaleAttributes - { scaleType, scaleName, eventType }
- * @param {string} stage - OPTIONAL - filter event or draw entries by stage
- * @returns {boolean} { success: true } or { error }
- */
 export function removeScaleValues({
   tournamentRecord,
   scaleAttributes,

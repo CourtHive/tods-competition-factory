@@ -87,9 +87,13 @@ it.each(scenarios)('will update adHocRatings and use DYNAMIC ratings for subsequ
   });
 
   const generationResult = tournamentEngine.drawMatic({
+    updateParticipantRatings: true,
     dynamicRatings: true,
     drawId,
   });
+  const modifiedScaleValues: any[] = Object.values(generationResult.roundResults[0].modifiedScaleValues);
+  expect(modifiedScaleValues.length).toEqual(drawSize);
+  expect(modifiedScaleValues[0].scaleValue).toBeDefined();
   expect(generationResult.success).toEqual(true);
   const addResult = tournamentEngine.addAdHocMatchUps({
     matchUps: generationResult.matchUps,
