@@ -13,6 +13,7 @@ export const MATCHUP_IDS = 'matchUpIds';
 export const POLICY_TYPE = 'policyType';
 export const STRUCTURES = 'structures';
 export const MATCHUP_ID = 'matchUpId';
+export const EVENT_TYPE = 'eventType';
 export const IN_CONTEXT = 'inContext';
 export const STRUCTURE = 'structure';
 export const COURT_IDS = 'courtIds';
