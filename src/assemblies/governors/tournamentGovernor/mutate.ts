@@ -1,4 +1,5 @@
 export { setTournamentStatus } from '@Mutate/tournaments/setTournamentStatus';
+export { removeOnlineResource } from '@Mutate/base/removeOnlineResource';
 export { removeExtension } from '@Mutate/extensions/removeExtension';
 export { addNotes, removeNotes } from '@Mutate/base/addRemoveNotes';
 export { addOnlineResource } from '@Mutate/base/addOnlineResource';

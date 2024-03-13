@@ -1,13 +1,12 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { addNotice } from '@Global/state/globalState';
 
 // constants and types
 import { IDENTIFIER, RESOURCE_SUB_TYPE, RESOURCE_TYPE } from '@Constants/resourceConstants';
-import { DrawDefinition, Event, OnlineResource, Tournament } from '@Types/tournamentTypes';
-import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { DrawDefinition, OnlineResource, Tournament } from '@Types/tournamentTypes';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '@Types/factoryTypes';
 import {
   COURT_NOT_FOUND,
   INVALID_PARTICIPANT,
@@ -16,8 +15,8 @@ import {
   VENUE_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
 
-type AddOnlineResourceArgs = {
-  onlineResource: OnlineResource;
+type RemoveOnlineResourceArgs = {
+  onlineResource: OnlineResource; // only identifier, resourceType, resourceSubType
   drawDefinition?: DrawDefinition;
   tournamentRecord: Tournament;
   organisationId?: string;
@@ -27,8 +26,7 @@ type AddOnlineResourceArgs = {
   venueId?: string;
   event?: Event;
 };
-
-export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
+export function removeOnlineResource(params: RemoveOnlineResourceArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ tournamentRecord: true, onlineResource: true }]);
   if (paramsCheck.error) return paramsCheck;
 
@@ -38,7 +36,7 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
     if (tournamentRecord.parentOrganisation?.parentOrganisationId !== organisationId) {
       return decorateResult({ result: { error: NOT_FOUND } });
     }
-    mergeResource({ element: tournamentRecord.parentOrganisation, onlineResource });
+    removeResource({ element: tournamentRecord.parentOrganisation, onlineResource });
   } else if (participantId || personId) {
     const participant = (tournamentRecord.participants ?? []).find(
       (p) => (personId && p.person?.personId === personId) || p.participantId === participantId,
@@ -56,22 +54,22 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
         // both personId and participantId were provided and person does not match found participant
         return decorateResult({ result: { error: INVALID_PARTICIPANT } });
       }
-      mergeResource({ element: participant.person, onlineResource });
+      removeResource({ element: participant.person, onlineResource });
     } else {
-      mergeResource({ element: participant, onlineResource });
+      removeResource({ element: participant, onlineResource });
     }
   } else if (courtId) {
     const court = (tournamentRecord.venues ?? [])
       .filter((v) => !venueId || v.venueId === venueId)
       .flatMap((v) => (v.courts ?? []).filter((c) => c.courtId === courtId))?.[0];
     if (!court) return decorateResult({ result: { error: COURT_NOT_FOUND } });
-    mergeResource({ element: court, onlineResource });
+    removeResource({ element: court, onlineResource });
   } else if (venueId) {
     const venue = (tournamentRecord.venues ?? []).find((v) => v.venueId === venueId);
     if (!venue) return decorateResult({ result: { error: VENUE_NOT_FOUND } });
-    mergeResource({ element: venue, onlineResource });
+    removeResource({ element: venue, onlineResource });
   } else {
-    mergeResource({ element: tournamentRecord, onlineResource });
+    removeResource({ element: tournamentRecord, onlineResource });
     addNotice({
       payload: {
         onlineResources: tournamentRecord.onlineResources,
@@ -84,16 +82,14 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
   return { ...SUCCESS };
 }
 
-function mergeResource({ element, onlineResource }: { element: any; onlineResource: OnlineResource }) {
+function removeResource({ element, onlineResource }) {
   const onlineResources = (element.onlineResources ?? []).filter(
     (resource) =>
-      resource?.[RESOURCE_SUB_TYPE] !== onlineResource[RESOURCE_SUB_TYPE] &&
-      resource?.[RESOURCE_TYPE] !== onlineResource[RESOURCE_TYPE] &&
-      resource?.[IDENTIFIER] !== onlineResource[IDENTIFIER],
+      !(
+        resource?.[RESOURCE_SUB_TYPE] === onlineResource[RESOURCE_SUB_TYPE] &&
+        resource?.[RESOURCE_TYPE] === onlineResource[RESOURCE_TYPE] &&
+        resource?.[IDENTIFIER] === onlineResource[IDENTIFIER]
+      ),
   );
-  onlineResources.push(onlineResource);
-
   element.onlineResources = onlineResources;
-
-  return { ...SUCCESS };
 }

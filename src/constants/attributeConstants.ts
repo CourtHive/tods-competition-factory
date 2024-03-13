@@ -1,6 +1,7 @@
 export const TOURNAMENT_RECORDS = 'tournamentRecords';
 export const POLICY_DEFINITIONS = 'policyDefinitions';
 export const TOURNAMENT_RECORD = 'tournamentRecord';
+export const ONLINE_RESOURCE = 'onlineResource';
 export const DRAW_DEFINITION = 'drawDefinition';
 export const MATCHUP_FORMAT = 'matchUpFormat';
 export const PARTICIPANT_ID = 'participantId';
