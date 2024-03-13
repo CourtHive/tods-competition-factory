@@ -11,7 +11,7 @@ import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/error
 import { EVENT, OBJECT, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
-import { PolicyDefinitions } from '@Types/factoryTypes';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
@@ -48,7 +48,7 @@ type PublishEventType = {
   drawIdsToAdd?: string[];
 };
 
-export function publishEvent(params: PublishEventType) {
+export function publishEvent(params: PublishEventType): ResultType & { eventData?: any } {
   const paramsCheck = checkRequiredParameters(params, [
     { [TOURNAMENT_RECORD]: true, [EVENT]: true },
     { eventDataParams: false, [OF_TYPE]: OBJECT },

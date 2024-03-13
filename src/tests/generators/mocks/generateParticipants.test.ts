@@ -1,8 +1,9 @@
 import { generatePersonData } from '@Assemblies/generators/mocks/generatePersonData';
+import { setDevContext } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
-import { UUID } from '@Tools/UUID';
 import { expect, it, test } from 'vitest';
+import { UUID } from '@Tools/UUID';
 
 import { FEMALE, MALE } from '@Constants/genderConstants';
 import { PAIR } from '@Constants/participantConstants';
@@ -163,4 +164,17 @@ it('can accept custom personData', () => {
 
   expect(participants[0].person.iocNationalityCode).not.toBeUndefined();
   expect(participants[0].person.countryName).not.toBeUndefined();
+});
+
+it('can generate participants with both UTR and WTN ratings', () => {
+  setDevContext(true);
+  const result = mocksEngine.generateParticipants({
+    scaleAllParticipants: true,
+    participantsCount: 10,
+    categories: [
+      { ratingType: 'UTR', ratingMin: 10, ratingMax: 12 },
+      { ratingType: 'WTN', ratingMin: 10, ratingMax: 14 },
+    ],
+  });
+  expect(result.participants[0].timeItems.length).toEqual(2);
 });

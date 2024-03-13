@@ -7,6 +7,7 @@ import { isValidDateString } from '@Tools/dateTime';
 import { generateAddress } from './generateAddress';
 import { generatePersons } from './generatePersons';
 import { countries } from '@Fixtures/countryData';
+import { isObject } from '@Tools/objects';
 import { nameMocks } from './nameMocks';
 import { UUID } from '@Tools/UUID';
 
@@ -32,6 +33,7 @@ export function generateParticipants(params): {
     ratingsParameters = defaultRatingsParameters,
     valuesInstanceLimit,
     consideredDate,
+    categories,
     category,
 
     nationalityCodesCount,
@@ -93,80 +95,33 @@ export function generateParticipants(params): {
   const { nationalityCodes: personNationalityCodes, persons: mockedPersons } = result;
 
   // generated arrays of rankings and ratings to be attached as scaleItems
-  let doublesRankings: any[] = [],
-    singlesRankings: any[] = [],
-    singlesRatings: any[] = [],
-    doublesRatings: any[] = [];
+  const doublesRankings = {},
+    singlesRankings = {},
+    singlesRatings = {},
+    doublesRatings = {};
 
-  if (typeof category === 'object') {
-    const { categoryName, ageCategoryCode, ratingType } = category;
-    if ((categoryName || ageCategoryCode) && !ratingType) {
-      const [start, end] = rankingRange || [];
-      singlesRankings = shuffleArray(generateRange(start, end)).slice(0, scaledParticipantsCount || randomInt(20, 30));
+  const assignResult = (result) => {
+    Object.assign(doublesRankings, result.doublesRankings);
+    Object.assign(singlesRankings, result.singlesRankings);
+    Object.assign(doublesRatings, result.doublesRatings);
+    Object.assign(singlesRatings, result.singlesRatings);
+  };
 
-      if ([PAIR, TEAM].includes(participantType)) {
-        const [start, end] = rankingRange || [];
-        doublesRankings = shuffleArray(generateRange(start, end)).slice(
-          0,
-          scaledParticipantsCount || randomInt(20, 30),
-        );
-      }
-    }
-
-    if (ratingType && ratingsParameters[ratingType]) {
-      // ratingAttributes allows selected attributes of ratingParameters to be overridden
-      const { ratingMax, ratingMin, ratingAttributes } = category;
-
-      const ratingParameters = {
-        ...ratingsParameters[ratingType],
-        ...(ratingAttributes || {}),
-      };
-
-      const { attributes = {}, decimalsCount, accessors, range, step } = ratingParameters;
-
-      const getAttributes = (attributes) => {
-        const generatedAttributes = {};
-
-        const attributeKeys = Object.keys(attributes || {});
-        for (const attribute of attributeKeys) {
-          const attributeValue = attributes[attribute];
-
-          if (typeof attributeValue === 'object' && attributeValue.generator) {
-            const { range } = attributeValue;
-            const [min, max] = range.slice().sort();
-
-            generatedAttributes[attribute] = randomInt(min, max);
-          } else {
-            generatedAttributes[attribute] = attributeValue;
-          }
-        }
-
-        return generatedAttributes;
-      };
-
-      const inverted = range[0] > range[1];
-      const skew = inverted ? 2 : 0.5;
-      const [min, max] = range.slice().sort();
-      const generateRatings = () =>
-        generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
-          .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
-          .filter((rating) => (!ratingMax || rating <= ratingMax) && (!ratingMin || rating >= ratingMin))
-          .slice(0, scaledParticipantsCount || randomInt(20, 30))
-          .map((scaleValue) => {
-            return !accessors
-              ? scaleValue
-              : Object.assign(
-                  {},
-                  ...accessors.map((accessor) => ({ [accessor]: scaleValue })),
-                  getAttributes(attributes),
-                );
-          });
-
-      singlesRatings = generateRatings();
-      if ([PAIR, TEAM].includes(participantType)) {
-        doublesRatings = generateRatings();
-      }
-    }
+  if (isObject(category)) {
+    const result = genRatings({ category, scaledParticipantsCount, ratingsParameters, participantType, rankingRange });
+    assignResult(result);
+  }
+  if (Array.isArray(categories)) {
+    categories.forEach((category) => {
+      const result = genRatings({
+        scaledParticipantsCount,
+        ratingsParameters,
+        participantType,
+        rankingRange,
+        category,
+      });
+      assignResult(result);
+    });
   }
 
   const countryCodes = countries.filter((country) =>
@@ -326,9 +281,10 @@ export function generateParticipants(params): {
       if (country?.label) participant.person.countryName = country.label;
     }
 
-    if (category) {
-      const singlesRanking = singlesRankings[participantIndex];
-      const doublesRanking = doublesRankings[participantIndex];
+    const processCategory = (category) => {
+      const scaleName = category.categoryName || category.ratingType || category.ageCategoryCode;
+      const singlesRanking = singlesRankings[scaleName]?.[participantIndex];
+      const doublesRanking = doublesRankings[scaleName]?.[participantIndex];
 
       addScaleItem({
         scaleValue: singlesRanking,
@@ -345,8 +301,8 @@ export function generateParticipants(params): {
         category,
       });
 
-      const singlesRating = singlesRatings[participantIndex];
-      const doublesRating = doublesRatings[participantIndex];
+      const singlesRating = singlesRatings[scaleName]?.[participantIndex];
+      const doublesRating = doublesRatings[scaleName]?.[participantIndex];
 
       addScaleItem({
         scaleValue: singlesRating,
@@ -362,6 +318,12 @@ export function generateParticipants(params): {
         participant,
         category,
       });
+    };
+
+    if (Array.isArray(categories)) {
+      categories.forEach((category) => processCategory(category));
+    } else if (category) {
+      processCategory(category);
     }
 
     return participant;
@@ -376,4 +338,89 @@ function addScaleItem({ scaleValue: itemValue, participant, eventType, scaleType
     if (!participant.timeItems) participant.timeItems = [];
     participant.timeItems.push(timeItem);
   }
+}
+
+function genRatings(params) {
+  const { category, scaledParticipantsCount, ratingsParameters, participantType } = params;
+  const rankingRange = category.rankingRange || params.rankingRange || [1, 1000];
+  const doublesRankings = {},
+    singlesRankings = {},
+    singlesRatings = {},
+    doublesRatings = {};
+
+  const { categoryName, ageCategoryCode, ratingType } = category;
+  const scaleName = category.categoryName || category.ratingType || category.ageCategoryCode;
+
+  if ((categoryName || ageCategoryCode) && !ratingType) {
+    const [start, end] = rankingRange || [];
+    singlesRankings[scaleName] = shuffleArray(generateRange(start, end)).slice(
+      0,
+      scaledParticipantsCount || randomInt(20, 30),
+    );
+
+    if ([PAIR, TEAM].includes(participantType)) {
+      const [start, end] = rankingRange || [];
+      doublesRankings[scaleName] = shuffleArray(generateRange(start, end)).slice(
+        0,
+        scaledParticipantsCount || randomInt(20, 30),
+      );
+    }
+  }
+
+  if (ratingType && ratingsParameters[ratingType]) {
+    // ratingAttributes allows selected attributes of ratingParameters to be overridden
+    const { ratingMax, ratingMin, ratingAttributes } = category;
+
+    const ratingParameters = {
+      ...ratingsParameters[ratingType],
+      ...(ratingAttributes || {}),
+    };
+
+    const { attributes = {}, decimalsCount, accessors, range, step } = ratingParameters;
+
+    const getAttributes = (attributes) => {
+      const generatedAttributes = {};
+
+      const attributeKeys = Object.keys(attributes || {});
+      for (const attribute of attributeKeys) {
+        const attributeValue = attributes[attribute];
+
+        if (typeof attributeValue === 'object' && attributeValue.generator) {
+          const { range } = attributeValue;
+          const [min, max] = range.slice().sort();
+
+          generatedAttributes[attribute] = randomInt(min, max);
+        } else {
+          generatedAttributes[attribute] = attributeValue;
+        }
+      }
+
+      return generatedAttributes;
+    };
+
+    const inverted = range[0] > range[1];
+    const skew = inverted ? 2 : 0.5;
+    const [min, max] = range.slice().sort();
+    const generateRatings = () =>
+      generateRange(0, 2000) // overgenerate because filter and restricted range will impact final count
+        .map(() => skewedDistribution(min, max, skew, step, decimalsCount))
+        .filter((rating) => (!ratingMax || rating <= ratingMax) && (!ratingMin || rating >= ratingMin))
+        .slice(0, scaledParticipantsCount || randomInt(20, 30))
+        .map((scaleValue) => {
+          return !accessors
+            ? scaleValue
+            : Object.assign(
+                {},
+                ...accessors.map((accessor) => ({ [accessor]: scaleValue })),
+                getAttributes(attributes),
+              );
+        });
+
+    singlesRatings[scaleName] = generateRatings();
+    if ([PAIR, TEAM].includes(participantType)) {
+      doublesRatings[scaleName] = generateRatings();
+    }
+  }
+
+  return { singlesRankings, doublesRankings, singlesRatings, doublesRatings };
 }

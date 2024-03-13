@@ -100,6 +100,7 @@ const { participants } = mocksEngine.generateParticipants({
   uuids, // optional array of uuids to use as participantIds
 
   category, // participant age and category scaleItems will be generated
+  categories, // optional - for generating multiple ratings per participant
   consideredDate, // date from which category ageMaxDate and ageMinDate should be calculated (typically tournament.startDate or .endDate)
   rankingRankge, // optional - range within which ranking numbers should be generated for specified category (non-rating)
   scaledParticipantsCount, // optional - number of participants to assign rankings/ratings - defaults to ~25
