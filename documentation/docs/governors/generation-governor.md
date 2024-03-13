@@ -20,7 +20,7 @@ Inspired by the work of the Constantine who runs spectacular D3 College Tennis e
 :::
 
 ```js
-const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.drawMatic({
+const { matchUps, participantIdPairings, iterations, candidatesCount, modifiedScaleValues } = engine.drawMatic({
   restrictRoundsCount, // optional boolean defaults to true; set to false for unlimited roundsCount
   restrictEntryStatus, // optional - only allow STRUCTURE_SELECTED_STATUSES
   enableDoubleRobin, // optional - allows roundsCount <= (drawSize - 1) * 2
@@ -31,6 +31,8 @@ const { matchUps, participantIdPairings, iterations, candidatesCount } = engine.
   matchUpIds, // optional array of uuids to be used when generating matchUps
   eventType, // optional - override eventType of event within which draw appears; e.g. to force use of SINGLES ratings in DOUBLES events
 
+  updateParticipantRatings, // optional boolean; attach modifiedScaleValues to participants
+  dynamicRatings, // optional boolean - generate dynamic ratings from previous round results
   scaleAccessor, // optional - string to access value within scaleValue, e.g. 'wtnRating'
   scaleName, // optional - custom rating name to seed dynamic ratings
 
