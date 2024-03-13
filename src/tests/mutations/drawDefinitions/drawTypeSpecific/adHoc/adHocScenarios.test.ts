@@ -10,6 +10,7 @@ import { expect, it, test } from 'vitest';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { REMOVE_PARTICIPANT } from '@Constants/matchUpActionConstants';
+import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import {
   INVALID_VALUES,
@@ -17,7 +18,6 @@ import {
   MISSING_STRUCTURE_ID,
   MISSING_VALUE,
 } from '@Constants/errorConditionConstants';
-import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 test('generateDrawDefinition can generate specified number of rounds', () => {
   const participantsCount = 28;
@@ -507,7 +507,7 @@ test('adHoc matchUps can be deleted by roundNumber', () => {
   });
   expect(addResult.success).toEqual(true);
 
-  generationResult = tournamentEngine.drawMatic({ drawId, roundsCount: 2 });
+  generationResult = tournamentEngine.drawMatic({ drawId, roundsCount: 2, dynamicRatings: true });
   expect(generationResult.success).toEqual(true);
   expect(generationResult.roundResults.length).toEqual(2);
   expect(generationResult.roundResults[1].roundNumber).toEqual(5);

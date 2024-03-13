@@ -28,6 +28,7 @@ const MAX_ITERATIONS = 4000;
 
 type GenerateDrawMaticRoundArgs = {
   adHocRatings?: { [key: string]: number };
+  updateParticipantRatings?: boolean;
   ignoreLastRoundNumber?: boolean;
   restrictEntryStatus?: boolean;
   iterationMatchUps?: MatchUp[];
@@ -53,8 +54,10 @@ type GenerateDrawMaticRoundArgs = {
 };
 
 export type DrawMaticRoundResult = {
+  modifiedScaleValues?: { [key: string]: number };
   participantIdPairings?: string[][];
   candidatesCount?: number;
+  outputScaleName?: string;
   roundNumber?: number;
   matchUps?: MatchUp[];
   iterations?: number;
@@ -67,6 +70,7 @@ export function generateDrawMaticRound({
   encounterValue = ENCOUNTER_VALUE,
   sameTeamValue = SAME_TEAM_VALUE,
   maxIterations = MAX_ITERATIONS,
+  updateParticipantRatings,
   generateMatchUps = true,
   ignoreLastRoundNumber,
   iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
@@ -100,6 +104,8 @@ export function generateDrawMaticRound({
   const { encounters } = getEncounters({ matchUps: consideredMatchUps });
 
   const tournamentParticipants = tournamentRecord?.participants ?? [];
+  let modifiedScaleValues: { [key: string]: number } = {};
+
   if (dynamicRatings) {
     const roundNumbers: number[] = unique(
       structure?.matchUps ? structure.matchUps.map(({ roundNumber }) => roundNumber) : [],
@@ -110,12 +116,16 @@ export function generateDrawMaticRound({
       const matchUpIds = structure?.matchUps
         ?.filter(({ roundNumber }) => roundNumber === lastRoundNumber)
         .map(({ matchUpId }) => matchUpId);
-      generateDynamicRatings({
+      const result = generateDynamicRatings({
         ratingType: scaleName || event?.category?.ratingType,
+        updateParticipantRatings,
         tournamentRecord,
         asDynamic: true,
         matchUpIds,
       });
+      if (result.error) return result;
+
+      if (result.modifiedScaleValues) modifiedScaleValues = result.modifiedScaleValues;
     }
   }
 
@@ -137,13 +147,14 @@ export function generateDrawMaticRound({
   });
 
   const params = {
+    // if { dynamicRatings } then modifiedScaleValues will be used to modify valueObjects
+    adHocRatings: modifiedScaleValues || adHocRatings,
     tournamentParticipants,
     possiblePairings,
     drawDefinition,
     participantIds,
     uniquePairings,
     maxIterations,
-    adHocRatings,
     deltaObjects,
     valueObjects,
     eventType,
@@ -182,6 +193,7 @@ export function generateDrawMaticRound({
   return {
     roundNumber: generatedRoundNumber,
     participantIdPairings,
+    modifiedScaleValues,
     candidatesCount,
     ...SUCCESS,
     iterations,

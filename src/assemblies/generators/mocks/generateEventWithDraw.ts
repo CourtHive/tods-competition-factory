@@ -4,7 +4,7 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
-import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
 import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { addParticipants } from '@Mutate/participants/addParticipants';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';

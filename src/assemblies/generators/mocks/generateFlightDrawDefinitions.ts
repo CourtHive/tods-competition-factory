@@ -1,6 +1,6 @@
 import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
 import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
-import { setParticipantScaleItem } from '@Mutate/participants/addScaleItems';
+import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
 import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 import { isValidExtension } from '@Validators/isValidExtension';
