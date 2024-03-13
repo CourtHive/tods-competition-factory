@@ -39,6 +39,7 @@ type GenerateDrawMaticRoundArgs = {
   salted?: number | boolean;
   participantIds?: string[];
   dynamicRatings?: boolean;
+  refreshDynamic?: boolean;
   encounterValue?: number;
   sameTeamValue?: number;
   maxIterations?: number;
@@ -76,6 +77,7 @@ export function generateDrawMaticRound({
   iterationMatchUps, // necessary when called iteratively and matchUps are not yet added to structure
   tournamentRecord,
   dynamicRatings,
+  refreshDynamic,
   participantIds,
   drawDefinition,
   adHocRatings,
@@ -121,6 +123,8 @@ export function generateDrawMaticRound({
         updateParticipantRatings,
         tournamentRecord,
         asDynamic: true,
+        refreshDynamic,
+        drawDefinition,
         matchUpIds,
       });
       if (result.error) return result;
