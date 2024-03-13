@@ -13,6 +13,7 @@ export { addDynamicRatings } from '@Mutate/participants/scaleItems/addDynamicRat
 export { createGroupParticipant } from '@Mutate/participants/createGroupParticipant';
 export { modifyParticipantName } from '@Mutate/participants/modifyParticipantName';
 export { scaledTeamAssignment } from '@Mutate/participants/scaledTeamAssignment';
+export { removeRatings } from '@Mutate/participants/scaleItems/removeRatings';
 export { removePenalty } from '@Mutate/participants/penalties/removePenalty';
 export { modifyPenalty } from '@Mutate/participants/penalties/modifyPenalty';
 export { deleteParticipants } from '@Mutate/participants/deleteParticipants';
