@@ -377,7 +377,11 @@ result = engine.removePersonRequests({
 Remove specified ratings from participants.
 
 ```js
-engine.removeRatings({ scaleName });
+engine.removeRatings({
+  ratingType, // e.g. WTN, UTR
+  asDynamic, // optional boolean; remove DYNAMIC version of specified scaleName
+  eventType, // SINGLES or DOUBLES
+});
 ```
 
 ---
