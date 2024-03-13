@@ -4,15 +4,18 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // constants and fixtures
+import { INVALID_EVENT_TYPE } from '@Constants/errorConditionConstants';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { UTR, WTN } from '@Constants/ratingConstants';
 import { DYNAMIC } from '@Constants/scaleConstants';
+import { SINGLES } from '@Constants/eventConstants';
 
 const scenarios = [
-  { category: { ratingType: UTR, ratingMin: 10, ratingMax: 12 }, diffTolerance: 2 },
-  { category: { ratingType: WTN, ratingMin: 10, ratingMax: 12 }, diffTolerance: 2 },
-  { category: { ratingType: UTR, ratingMin: 7, ratingMax: 10 }, diffTolerance: 3 },
+  { category: { ratingType: UTR, ratingMin: 10, ratingMax: 12 }, diffTolerance: 2, attachMatchUps: true },
+  { category: { ratingType: WTN, ratingMin: 10, ratingMax: 12 }, diffTolerance: 2, attachMatchUps: true },
+  { category: { ratingType: UTR, ratingMin: 7, ratingMax: 10 }, diffTolerance: 3, attachMatchUps: true },
+  { category: { ratingType: UTR, ratingMin: 7, ratingMax: 10 }, diffTolerance: 3, attachMatchUps: false },
 ];
 
 it.each(scenarios)('can generate level based rounds with WTN', (scenario) => {
@@ -86,23 +89,76 @@ it.each(scenarios)('will update adHocRatings and use DYNAMIC ratings for subsequ
     ],
   });
 
-  const generationResult = tournamentEngine.drawMatic({
+  let generationResult = tournamentEngine.drawMatic({
     updateParticipantRatings: true,
     dynamicRatings: true,
     drawId,
   });
-  const modifiedScaleValues: any[] = Object.values(generationResult.roundResults[0].modifiedScaleValues);
+  let modifiedScaleValues: any[] = Object.values(generationResult.roundResults[0].modifiedScaleValues);
   expect(modifiedScaleValues.length).toEqual(drawSize);
   expect(modifiedScaleValues[0].scaleValue).toBeDefined();
   expect(generationResult.success).toEqual(true);
-  const addResult = tournamentEngine.addAdHocMatchUps({
-    matchUps: generationResult.matchUps,
+
+  if (scenario.attachMatchUps) {
+    const addResult = tournamentEngine.addAdHocMatchUps({
+      matchUps: generationResult.matchUps,
+      drawId,
+    });
+    expect(addResult.success).toEqual(true);
+  }
+
+  let participants = tournamentEngine.getParticipants({ withScaleValues: true }).participants;
+  expect(participants.every((p) => p.timeItems[1].itemType.split('.').reverse()[0] === DYNAMIC));
+
+  const valueAccessor = ratingsParameters[scenario.category.ratingType].accessor;
+  const participantDynamics = participants.map((p) => p.timeItems[1].itemValue?.[valueAccessor]);
+  generationResult = tournamentEngine.drawMatic({
+    updateParticipantRatings: true,
+    refreshDynamic: true,
+    dynamicRatings: true,
     drawId,
   });
-  expect(addResult.success).toEqual(true);
+  modifiedScaleValues = Object.values(generationResult.roundResults[0].modifiedScaleValues);
+  expect(modifiedScaleValues.length).toEqual(drawSize);
+  expect(modifiedScaleValues[0].scaleValue).toBeDefined();
+  participants = tournamentEngine.getParticipants({ withScaleValues: true }).participants;
+  const updatedDynamics = participants.map((p) => p.timeItems[1].itemValue?.[valueAccessor]);
+  expect(updatedDynamics).toEqual(participantDynamics);
 
-  const participants = tournamentEngine.getParticipants({ withScaleValues: true }).participants;
-  expect(participants.every((p) => p.timeItems[1].itemType.split('.').reverse()[0] === DYNAMIC));
+  generationResult = tournamentEngine.drawMatic({
+    updateParticipantRatings: true,
+    refreshDynamic: false,
+    dynamicRatings: true,
+    drawId,
+  });
+  modifiedScaleValues = Object.values(generationResult.roundResults[0].modifiedScaleValues);
+
+  if (scenario.attachMatchUps) {
+    expect(modifiedScaleValues.length).toEqual(0); // no modifiedScaleValues because previous round had no completed matchUps
+  } else {
+    // when { refreshDynamic: false } and drawMatic is called iteratively, modifiedScaleValues will be returned
+    // and THE MODIFICATIONS WILL BE ITERATING OVER THE SAME RESULTS
+    expect(modifiedScaleValues.length).toEqual(drawSize);
+    participants = tournamentEngine.getParticipants({ withScaleValues: true }).participants;
+    const updatedDynamics = participants.map((p) => p.timeItems[1].itemValue?.[valueAccessor]);
+    expect(updatedDynamics).not.toEqual(participantDynamics);
+
+    let result = tournamentEngine.removeRatings({
+      ratingType: scenario.category.ratingType,
+      asDynamic: true,
+    });
+    expect(result.error).toEqual(INVALID_EVENT_TYPE);
+
+    result = tournamentEngine.removeRatings({
+      ratingType: scenario.category.ratingType,
+      eventType: SINGLES,
+      asDynamic: true,
+    });
+    expect(result.success).toEqual(true);
+    participants = tournamentEngine.getParticipants({ withScaleValues: true }).participants;
+    // all prior dynamic ratings are expected to have been removed
+    expect(participants.every(({ timeItems }) => timeItems.length === 1)).toEqual(true);
+  }
 });
 
 it('will accept adHocRatings at generation time', () => {
