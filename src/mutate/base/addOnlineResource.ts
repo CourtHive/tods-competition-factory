@@ -74,6 +74,7 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
     mergeResource({ element: tournamentRecord, onlineResource });
     addNotice({
       payload: {
+        parentOrganisation: tournamentRecord.parentOrganisation,
         onlineResources: tournamentRecord.onlineResources,
         tournamentId: tournamentRecord.tournamentId,
       },

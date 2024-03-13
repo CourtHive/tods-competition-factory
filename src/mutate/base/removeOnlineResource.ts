@@ -72,6 +72,7 @@ export function removeOnlineResource(params: RemoveOnlineResourceArgs) {
     removeResource({ element: tournamentRecord, onlineResource });
     addNotice({
       payload: {
+        parentOrganisation: tournamentRecord.parentOrganisation,
         onlineResources: tournamentRecord.onlineResources,
         tournamentId: tournamentRecord.tournamentId,
       },
