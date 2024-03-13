@@ -52,19 +52,19 @@ export function generateDynamicRatings(params): ResultType & {
   const modifiedScaleValues = {};
 
   const matchUps =
-    params.matchUps ??
-    (refreshDynamic && // when { refreshDynamic: true } use allDrawMatchUps
-      allDrawMatchUps({
-        drawDefinition,
+    (params.matchUps ||
+      (refreshDynamic && // when { refreshDynamic: true } use allDrawMatchUps
+        allDrawMatchUps({
+          drawDefinition,
+          tournamentRecord,
+          inContext: true,
+          matchUpFilters: { matchUpStatuses: completedMatchUpStatuses },
+        }).matchUps) ||
+      allTournamentMatchUps({
+        matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
         tournamentRecord,
         inContext: true,
-        matchUpFilters: { matchUpStatuses: completedMatchUpStatuses },
-      })) ??
-    allTournamentMatchUps({
-      matchUpFilters: { matchUpIds, matchUpStatuses: completedMatchUpStatuses },
-      tournamentRecord,
-      inContext: true,
-    }).matchUps ??
+      }).matchUps) ??
     [];
 
   const dynamicScaleName = `${ratingType}.${DYNAMIC}`;
@@ -109,7 +109,7 @@ export function generateDynamicRatings(params): ResultType & {
         .flat()
         .map((participantId) => {
           const existingModifiedScaleValue = modifiedScaleValues[participantId];
-          const useDynamic = !refreshDynamic || !existingModifiedScaleValue;
+          const useDynamic = !refreshDynamic || existingModifiedScaleValue;
 
           const dynamicScaleItem = useDynamic
             ? getParticipantScaleItem({

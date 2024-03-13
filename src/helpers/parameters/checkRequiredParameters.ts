@@ -2,9 +2,11 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isFunction, isObject } from '@Tools/objects';
 import { intersection } from '@Tools/arrays';
 
+import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
   EVENT_NOT_FOUND,
+  INVALID_EVENT_TYPE,
   INVALID_VALUES,
   MISSING_COURT_ID,
   MISSING_DRAW_DEFINITION,
@@ -35,6 +37,7 @@ import {
   ERROR,
   EVENT,
   EVENT_ID,
+  EVENT_TYPE,
   INVALID,
   MATCHUP,
   MATCHUPS,
@@ -69,6 +72,10 @@ type RequiredParams = {
   resolve?: any;
 }[];
 
+const validators = {
+  [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
+};
+
 const errors = {
   [TOURNAMENT_RECORDS]: MISSING_TOURNAMENT_RECORDS,
   [TOURNAMENT_RECORD]: MISSING_TOURNAMENT_RECORD,
@@ -80,6 +87,7 @@ const errors = {
   [STRUCTURE_ID]: MISSING_STRUCTURE_ID,
   [MATCHUP_IDS]: MISSING_MATCHUP_IDS,
   [PARTICIPANT]: MISSING_PARTICIPANT,
+  [EVENT_TYPE]: INVALID_EVENT_TYPE,
   [STRUCTURES]: MISSING_STRUCTURES,
   [MATCHUP_ID]: MISSING_MATCHUP_ID,
   [STRUCTURE]: MISSING_STRUCTURE,
@@ -179,7 +187,9 @@ function findParamError(params, requiredParams) {
       const invalid = invalidValidationFunction || faliedTypeCheck || paramNotPresent;
 
       const hasError =
-        invalid || (_validate && params[param] !== undefined && !checkValidation(params[param], _validate));
+        invalid ||
+        (_validate && params[param] !== undefined && !checkValidation(params[param], _validate)) ||
+        (validators[param] && !validators[param](params[param]));
       if (hasError) {
         errorParam = param;
         paramInfo = _info;

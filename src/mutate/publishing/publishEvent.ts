@@ -1,22 +1,19 @@
-import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
+import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { getEventData } from '@Query/event/getEventData';
 import { addNotice, getTopics } from '@Global/state/globalState';
+import { getEventData } from '@Query/event/getEventData';
 
 // constants and types
+import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { EVENT, OBJECT, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-  STRUCTURE_NOT_FOUND,
-} from '@Constants/errorConditionConstants';
 
 export type PublishingDetail = {
   roundLimit?: number; // only applicable to structureDetails
@@ -40,6 +37,7 @@ type PublishEventType = {
   tournamentRecord: Tournament;
   removePriorValues?: boolean;
   returnEventData?: boolean;
+  eventDataParams?: any;
   drawIds?: string[];
   status?: string;
   event?: Event;
@@ -51,6 +49,12 @@ type PublishEventType = {
 };
 
 export function publishEvent(params: PublishEventType) {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true, [EVENT]: true },
+    { eventDataParams: false, [OF_TYPE]: OBJECT },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
   const {
     includePositionAssignments,
     removePriorValues,
@@ -62,9 +66,6 @@ export function publishEvent(params: PublishEventType) {
     drawIdsToAdd,
   } = params;
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
-
   // publishing will draw on scoring policy, round naming policy and participant (privacy) policy
   const { appliedPolicies } = getAppliedPolicies({ tournamentRecord, event });
   const policyDefinitions = {
@@ -72,7 +73,7 @@ export function publishEvent(params: PublishEventType) {
     ...params.policyDefinitions,
   };
 
-  const eventDrawIds = event.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
+  const eventDrawIds = event?.drawDefinitions?.map(({ drawId }) => drawId) ?? [];
 
   const keyedDrawIds = params.drawDetails ? Object.keys(params.drawDetails) : [];
   const specifiedDrawIds = keyedDrawIds.length ? [] : params.drawIds;
@@ -138,7 +139,7 @@ export function publishEvent(params: PublishEventType) {
 
       if (structureIdsToAdd.length || structureIdsToRemove.length) {
         const drawStructureIds = (
-          event.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
+          event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
         ).map(({ structureId }) => structureId);
         const structureIdsToValidate = (structureIdsToAdd ?? []).concat(structureIdsToRemove ?? []);
         const invalidStructureIds = structureIdsToValidate.filter(
@@ -164,7 +165,7 @@ export function publishEvent(params: PublishEventType) {
       }
 
       const drawStages = (
-        event.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
+        event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === drawId)?.structures ?? []
       ).map(({ stage }) => stage as string);
 
       if (stagesToAdd.length) {
@@ -210,6 +211,7 @@ export function publishEvent(params: PublishEventType) {
     notify || params.returnEventData
       ? getEventData({
           includePositionAssignments,
+          ...params.eventDataParams,
           usePublishState: true,
           tournamentRecord,
           policyDefinitions,

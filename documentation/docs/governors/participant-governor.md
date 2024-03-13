@@ -372,6 +372,20 @@ result = engine.removePersonRequests({
 
 ---
 
+## removeRatings
+
+Remove specified ratings from participants.
+
+```js
+engine.removeRatings({
+  ratingType, // e.g. WTN, UTR
+  asDynamic, // optional boolean; remove DYNAMIC version of specified scaleName
+  eventType, // SINGLES or DOUBLES
+});
+```
+
+---
+
 ## scaledTeamAssignment
 
 Assigns individual participants to teams using a waterfall pattern; removes UNGROUPED entries as appropriate for TEAM events. May be called with either `individualParticipantIds` and `scaleAttributes` or with an array of `scaledParticipants`.
