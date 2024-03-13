@@ -119,7 +119,7 @@ export function generateDrawMaticRound({
         ?.filter(({ roundNumber }) => roundNumber === lastRoundNumber)
         .map(({ matchUpId }) => matchUpId);
       const result = generateDynamicRatings({
-        ratingType: scaleName || event?.category?.ratingType,
+        ratingType: scaleName ?? event?.category?.ratingType,
         updateParticipantRatings,
         tournamentRecord,
         asDynamic: true,
