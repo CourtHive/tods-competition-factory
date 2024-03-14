@@ -16,6 +16,7 @@ export { policyConstants } from './policyConstants';
 export { positionActionConstants } from './positionActionConstants';
 export { ratingConstants } from './ratingConstants';
 export { requestConstants } from './requestConstants';
+export { resourceContants } from './resourceConstants';
 export { resultConstants } from './resultConstants';
 export { scaleConstants } from './scaleConstants';
 export { scheduleConstants } from './scheduleConstants';
