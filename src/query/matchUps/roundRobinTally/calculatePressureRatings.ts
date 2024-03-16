@@ -17,8 +17,8 @@ export function calculatePressureRatings({ participantResults, sides, score }) {
     const { convertedRating: side1ConvertedRating } = getConvertedRating({ ratings: side1ratings, targetRatingType });
     const { convertedRating: side2ConvertedRating } = getConvertedRating({ ratings: side2ratings, targetRatingType });
     const { side1pressure, side2pressure } = getSideValues({ side1ConvertedRating, side2ConvertedRating, score });
-    participantResults[side1?.participantId].pressureScores.push(side1pressure);
-    participantResults[side2?.participantId].pressureScores.push(side2pressure);
+    side1pressure && participantResults[side1?.participantId].pressureScores.push(side1pressure);
+    side2pressure && participantResults[side2?.participantId].pressureScores.push(side2pressure);
     const highRange = Math.max(...ratingsParameters[ELO].range);
     const side1Variation = fixedDecimals((side2ConvertedRating - side1ConvertedRating) / highRange);
     const side2Variation = fixedDecimals((side1ConvertedRating - side2ConvertedRating) / highRange);
@@ -39,10 +39,11 @@ export function getSideValues({ side1ConvertedRating, side2ConvertedRating, scor
   const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
   const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
   const lowSide = side1ConvertedRating > side2ConvertedRating ? 2 : 1;
-  const side1value = gamesWonSide1 * (lowRating + (lowSide === 1 ? lowSideBump : 0));
-  const side2value = gamesWonSide2 * (lowRating + (lowSide === 2 ? lowSideBump : 0));
+  const side1value = (gamesWonSide1 || 0) * (lowRating + (lowSide === 1 ? lowSideBump : 0));
+  const side2value = (gamesWonSide2 || 0) * (lowRating + (lowSide === 2 ? lowSideBump : 0));
   const combinedValues = side1value + side2value;
-  const side1pressure = fixedDecimals(side1value / combinedValues);
-  const side2pressure = fixedDecimals(side2value / combinedValues);
+  const side1pressure = combinedValues ? fixedDecimals(side1value / combinedValues) : 0;
+  const side2pressure = combinedValues ? fixedDecimals(side2value / combinedValues) : 0;
+
   return { side1pressure, side2pressure };
 }
