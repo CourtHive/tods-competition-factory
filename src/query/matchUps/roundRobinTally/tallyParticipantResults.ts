@@ -93,6 +93,8 @@ export function tallyParticipantResults({
     subOrderMap,
   });
 
+  if (pressureRating) addPressureOrder({ participantResults });
+
   // do not add groupOrder if bracket is not complete
   if (bracketComplete && groupOrder) {
     report = groupOrderReport;
@@ -155,4 +157,22 @@ export function tallyParticipantResults({
   }
 
   return result;
+}
+
+function addPressureOrder({ participantResults }) {
+  const sum = (values) => values.reduce((total, value) => total + parseFloat(value), 0);
+  const avg = (values) => parseFloat((sum(values) / values.length).toFixed(2));
+  const pressureOrder = Object.keys(participantResults)
+    .map((participantId) => {
+      const participantResult = participantResults[participantId];
+      const { pressureScores } = participantResult;
+      const averagePressure = pressureScores?.length ? avg(pressureScores) : 0;
+      return { participantId, averagePressure };
+    })
+    .sort((a, b) => (b.averagePressure || 0) - (a.averagePressure || 0))
+    .map((results, i) => ({ ...results, order: i + 1 }));
+
+  for (const item of pressureOrder) {
+    participantResults[item.participantId].pressureOrder = item.order;
+  }
 }
