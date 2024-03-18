@@ -1,6 +1,7 @@
 export { nearestPowerOf2, nextPowerOf2, isPowerOf2, isOdd, isConvertableInteger, isNumeric } from '@Tools/math';
 export { visualizeScheduledMatchUps } from '../../tests/testHarness/testUtilities/visualizeScheduledMatchUps';
 export { hasAttributeValues, createMap, generateHashCode, undefinedToNull } from '@Tools/objects';
+export { matchUpScheduleSort } from '@Functions/sorters/matchUpScheduleSorter';
 export { structureSort } from '../../functions/sorters/structureSort';
 export { matchUpSort } from '../../functions/sorters/matchUpSort';
 export { dehydrateMatchUps } from '@Mutate/tournaments/dehydrate';
