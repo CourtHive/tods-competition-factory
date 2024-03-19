@@ -33,9 +33,7 @@ export function renameStructures({ drawDefinition, structureDetails }: RenameStr
 
   for (const structure of drawDefinition.structures || []) {
     const structureName = detailMap[structure.structureId];
-    if (structureName) {
-      structure.structureName = structureName;
-    }
+    if (structureName) structure.structureName = structureName;
   }
 
   return { ...SUCCESS };
