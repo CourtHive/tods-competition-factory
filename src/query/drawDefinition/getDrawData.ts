@@ -17,8 +17,9 @@ import { xa } from '@Tools/extractAttributes';
 import { ErrorType, MISSING_DRAW_DEFINITION, UNLINKED_STRUCTURES } from '@Constants/errorConditionConstants';
 import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
-import { PUBLIC } from '@Constants/timeItemConstants';
 import { DISPLAY, TALLY } from '@Constants/extensionConstants';
+import { PUBLIC_DISPLAY } from '@Constants/displayConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
@@ -183,7 +184,8 @@ export function getDrawData(params): {
             }))(structure)
           : {};
 
-        structureInfo.display = findExtension({ element: structure, name: DISPLAY }).extension?.value;
+        const displaySettings = findExtension({ element: structure, name: DISPLAY }).extension?.value;
+        structureInfo.display = displaySettings?.[PUBLIC_DISPLAY] ?? displaySettings;
         structureInfo.sourceStructureIds = sourceStructureIds[structureId];
         structureInfo.hasDrawFeedProfile = hasDrawFeedProfile[structureId];
         structureInfo.positionAssignments = positionAssignments;
