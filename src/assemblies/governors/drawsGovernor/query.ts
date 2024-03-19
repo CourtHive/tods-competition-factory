@@ -19,5 +19,6 @@ export { getSeedsCount } from '@Query/drawDefinition/getSeedsCount';
 export { checkValidEntries } from '@Validators/checkValidEntries';
 export { getDrawDefinitionTimeItem } from '@Query/base/timeItems';
 export { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+export { getDrawStructures } from '@Acquire/findStructure';
 export { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 export { addGoesTo } from '@Query/matchUps/addGoesTo';
