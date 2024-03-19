@@ -1,13 +1,14 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
+import { instanceCount } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
+// constants
+import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 import { MODIFY_PAIR_ASSIGNMENT } from '@Constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { DOUBLES_EVENT } from '@Constants/eventConstants';
-import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 
 test('postionAction for replacing participant within PAIR', () => {
   const participantsCount = 10;
