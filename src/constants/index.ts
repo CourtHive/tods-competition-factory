@@ -1,5 +1,6 @@
 export { auditConstants } from './auditConstants';
 export { drawDefinitionConstants } from './drawDefinitionConstants';
+export { displayConstants } from './displayConstants';
 export { entryStatusConstants } from './entryStatusConstants';
 export { errorConditionConstants } from './errorConditionConstants';
 export { eventConstants } from './eventConstants';
