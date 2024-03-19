@@ -438,8 +438,8 @@ it('disallows invalid entryTypes for TEAM events', () => {
     eventId,
   });
   expect(result.success).toEqual(true);
-  // no entry was added because individualParticipantId was already part of a team
-  expect(result.addedEntriesCount).toEqual(0);
+  expect(result.removedEntriesCount).toEqual(1);
+  expect(result.addedEntriesCount).toEqual(1);
 
   let entries = tournamentEngine.getEvent({ eventId }).event.entries;
   expect(entries.length).toEqual(4);

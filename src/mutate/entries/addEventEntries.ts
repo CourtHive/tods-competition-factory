@@ -22,6 +22,7 @@ import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { ANY, MIXED } from '@Constants/genderConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { unique } from '@Tools/arrays';
 import {
   EVENT_NOT_FOUND,
   INVALID_PARTICIPANT_IDS,
@@ -29,7 +30,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
-import { unique } from '@Tools/arrays';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -269,10 +269,11 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
     });
   }
 
-  const addedEntriesCount = addedParticipantIdEntries.length - removedEntries.length;
+  const addedEntriesCount = addedParticipantIdEntries.length;
+  const removedEntriesCount = removedEntries.length;
 
   return decorateResult({
-    result: { ...SUCCESS, addedEntriesCount },
+    result: { ...SUCCESS, addedEntriesCount, removedEntriesCount },
     stack,
     info,
   });
