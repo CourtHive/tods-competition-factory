@@ -40,7 +40,17 @@ export function adHocMatchUpActions({
 }) {
   const validActions: any = [];
 
-  const roundMatchUps = (structure?.matchUps ?? []).filter(({ roundNumber }) => roundNumber === matchUp.roundNumber);
+  const matchUps = structure?.matchUps ?? [];
+  const opponentSide = matchUp.sides?.find((side) => side.sideNumber !== sideNumber);
+  const side = matchUp.sides?.find((side) => side.sideNumber === sideNumber);
+  const sideParticipantId = side?.participantId;
+  const otherRoundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber !== matchUp.roundNumber);
+  const roundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber === matchUp.roundNumber);
+
+  const getMatchUpPairing = (matchUp) => matchUp.sides.map(getParticipantId);
+  const notThisMatchUp = ({ matchUpId }) => matchUpId !== matchUp.matchUpId;
+  const participantPairings = matchUps.filter(notThisMatchUp).map(getMatchUpPairing);
+
   const enteredParticipantIds =
     drawDefinition?.entries
       ?.filter(({ entryStatus }) => entryStatus && DIRECT_ENTRY_STATUSES.includes(entryStatus))
@@ -126,7 +136,6 @@ export function adHocMatchUpActions({
   }
 
   if (!checkScoreHasValue(matchUp) && sideNumber) {
-    const side = matchUp.sides?.find((side) => side.sideNumber === sideNumber);
     if (side?.participantId) {
       validActions.push({
         payload: { drawId, matchUpId, structureId, sideNumber },
