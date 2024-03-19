@@ -2,18 +2,15 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
-import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { COMPASS, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 it('can rename structures', () => {
   const {
-    tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawType: COMPASS, drawSize: 32 }],
+    setState: true,
   });
-
-  let result = tournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
 
   let { drawDefinition } = tournamentEngine.getEvent({ drawId });
   let structureMap = Object.assign(
@@ -39,7 +36,7 @@ it('can rename structures', () => {
     structureId,
   }));
 
-  result = tournamentEngine.renameStructures({ drawId, structureDetails });
+  const result = tournamentEngine.renameStructures({ drawId, structureDetails });
   expect(result.success).toEqual(true);
 
   drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
@@ -51,4 +48,36 @@ it('can rename structures', () => {
   );
 
   expect(Object.values(structureMap)).toEqual(newNames);
+});
+
+it('can rename contained structures', () => {
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawType: ROUND_ROBIN, drawSize: 32 }],
+    setState: true,
+  });
+
+  let { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const getStructureMap = (structure) =>
+    structure.structures.reduce((groups, { structureId, structureName }) => {
+      groups[structureId] = {
+        structureName,
+        structureId,
+      };
+      return groups;
+    }, {});
+  const newNames = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
+  const structureDetails = Object.keys(getStructureMap(drawDefinition.structures[0])).map((structureId, i) => ({
+    structureName: newNames[i],
+    structureId,
+  }));
+
+  const result = tournamentEngine.renameStructures({ drawId, structureDetails });
+  expect(result.success).toEqual(true);
+
+  drawDefinition = tournamentEngine.getEvent({ drawId }).drawDefinition;
+  const structureMap = getStructureMap(drawDefinition.structures[0]);
+
+  expect(Object.values(structureMap).map((s: any) => s.structureName)).toEqual(newNames);
 });
