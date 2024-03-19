@@ -1,3 +1,4 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { getParticipantId } from '@Functions/global/extractors';
 import { addParticipants } from '../participants/addParticipants';
@@ -9,6 +10,8 @@ import { UUID } from '@Tools/UUID';
 
 // constants and types
 import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { INVALID_EVENT_TYPE, INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
+import { EVENT, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
@@ -16,12 +19,6 @@ import { ALTERNATE } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { DOUBLES } from '@Constants/matchUpTypes';
-import {
-  INVALID_EVENT_TYPE,
-  INVALID_PARTICIPANT_IDS,
-  MISSING_EVENT,
-  MISSING_TOURNAMENT_RECORD,
-} from '@Constants/errorConditionConstants';
 
 /**
  * Add PAIR participant to an event
@@ -38,18 +35,21 @@ type AddEventEntryPairsArgs = {
   uuids?: string[];
   event: Event;
 };
-export function addEventEntryPairs({
-  allowDuplicateParticipantIdPairs,
-  entryStage = MAIN,
-  entryStatus = ALTERNATE,
-  participantIdPairs = [],
-  tournamentRecord,
-  drawDefinition,
-  event,
-  uuids,
-}: AddEventEntryPairsArgs) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
+export function addEventEntryPairs(params: AddEventEntryPairsArgs) {
+  const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORD]: true, [EVENT]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const {
+    allowDuplicateParticipantIdPairs,
+    entryStatus = ALTERNATE,
+    participantIdPairs = [],
+    entryStage = MAIN,
+    tournamentRecord,
+    drawDefinition,
+    event,
+    uuids,
+  } = params;
+
   if (event.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
 
   const existingParticipantIdPairs: string[][] = [];
@@ -68,10 +68,10 @@ export function addEventEntryPairs({
   const invalidParticipantIdPairs = participantIdPairs.filter((pair) => {
     // invalid if not two participantIds
     if (pair.length !== 2) return true;
-    // invalid if either participantId does not exist
-    if (!genderMap.has(pair[0]) || !genderMap.has(pair[1])) return true;
     // NOT invalid if event.gender is ANY or no gender is specified
     if (!event.gender || event.gender === ANY) return false;
+    // invalid if either participantId does not exist in genderMap
+    if (!genderMap.has(pair[0]) || !genderMap.has(pair[1])) return true;
 
     const participantGenders = pair.map((id) => genderMap.get(id));
     // invalid if event.gender is MALE/FEMALE and both participants do not match
