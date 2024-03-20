@@ -11,8 +11,9 @@ it.each([syncEngine, asyncEngine])(
         [
           'getParticipantResults',
           'generateEventWithDraw',
-          'extractAttributes',
+          'newTournamentRecord',
           'hasAttributeValues',
+          'extractAttributes',
           'chunkSizeProfile',
           'undefinedToNull',
           'hasAttributes',
