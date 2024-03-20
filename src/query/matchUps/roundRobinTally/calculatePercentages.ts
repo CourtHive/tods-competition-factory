@@ -34,9 +34,8 @@ export function calculatePercentages({ participantResults, matchUpFormat, tallyP
     let gamesPct = Math.round((gamesWon / gamesTotal) * 1000) / 1000;
     if (gamesPct === Infinity || isNaN(gamesPct)) gamesPct = 0;
 
-    let pointsPct =
-      Math.round((participantResults[participantId].pointsWon / participantResults[participantId].pointsLost) * 1000) /
-      1000;
+    const pointsTotal = participantResults[participantId].pointsWon + participantResults[participantId].pointsLost;
+    let pointsPct = Math.round((participantResults[participantId].pointsWon / pointsTotal) * 1000) / 1000;
     if (pointsPct === Infinity || isNaN(pointsPct)) pointsPct = 0;
 
     participantResults[participantId].setsWon = setsWon;
