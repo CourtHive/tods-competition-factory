@@ -8,8 +8,12 @@ import { unique } from '@Tools/arrays';
 // constants and types
 import { ALTERNATE, DIRECT_ENTRY_STATUSES, UNGROUPED, UNPAIRED, WITHDRAWN } from '@Constants/entryStatusConstants';
 import { ASSIGN_SIDE_METHOD, REMOVE_PARTICIPANT, REMOVE_SIDE_METHOD } from '@Constants/matchUpActionConstants';
-import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { HydratedParticipant } from '@Types/hydrated';
+import {
+  ASSIGN_PARTICIPANT,
+  SWAP_ADHOC_PARTICIPANT_METHOD,
+  SWAP_PARTICIPANTS,
+} from '@Constants/positionActionConstants';
 
 export function adHocMatchUpActions({
   restrictAdHocRoundParticipants,
@@ -40,7 +44,11 @@ export function adHocMatchUpActions({
 }) {
   const validActions: any = [];
 
-  const roundMatchUps = (structure?.matchUps ?? []).filter(({ roundNumber }) => roundNumber === matchUp.roundNumber);
+  const matchUps = structure?.matchUps ?? [];
+  const side = matchUp.sides?.find((side) => side.sideNumber === sideNumber);
+  const sideParticipantId = side?.participantId;
+  const roundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber === matchUp.roundNumber);
+
   const enteredParticipantIds =
     drawDefinition?.entries
       ?.filter(({ entryStatus }) => entryStatus && DIRECT_ENTRY_STATUSES.includes(entryStatus))
@@ -125,13 +133,49 @@ export function adHocMatchUpActions({
     });
   }
 
-  if (!checkScoreHasValue(matchUp) && sideNumber) {
-    const side = matchUp.sides?.find((side) => side.sideNumber === sideNumber);
-    if (side?.participantId) {
+  if (!checkScoreHasValue(matchUp) && sideNumber && sideParticipantId) {
+    validActions.push({
+      payload: { drawId, matchUpId, structureId, sideNumber },
+      method: REMOVE_SIDE_METHOD,
+      type: REMOVE_PARTICIPANT,
+    });
+
+    const getMatchUpPairing = (matchUp) => matchUp.sides.map(getParticipantId);
+    const notThisMatchUp = ({ matchUpId }) => matchUpId !== matchUp.matchUpId;
+    const noScoreValue = (matchUp) => !checkScoreHasValue(matchUp);
+    const opponentParticipantId = matchUp.sides?.find((side) => side.sideNumber !== sideNumber)?.participantId;
+    const otherRoundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber !== matchUp.roundNumber);
+    const otherRoundParticipantPairings = otherRoundMatchUps.filter(notThisMatchUp).map(getMatchUpPairing);
+    const otherOpponents = [
+      opponentParticipantId,
+      ...otherRoundParticipantPairings.filter((pairing) => pairing.includes(sideParticipantId)).flat(),
+    ].filter(Boolean);
+    const notPreviousOpponent = (id) => !otherOpponents.flat().includes(id);
+
+    const availableSwaps = roundMatchUps
+      .filter(noScoreValue)
+      .filter(notThisMatchUp)
+      .map(getMatchUpPairing)
+      .flat()
+      .filter(notPreviousOpponent);
+
+    if (availableSwaps.length) {
+      const swappableParticipants = tournamentParticipants
+        ?.filter((participant) => availableSwaps.includes(participant.participantId))
+        .map((participant) => makeDeepCopy(participant, undefined, true));
       validActions.push({
-        payload: { drawId, matchUpId, structureId, sideNumber },
-        method: REMOVE_SIDE_METHOD,
-        type: REMOVE_PARTICIPANT,
+        payload: {
+          participantIds: [sideParticipantId],
+          roundNumber: matchUp.roundNumber,
+          structureId,
+          sideNumber,
+          matchUpId,
+          drawId,
+        },
+        swappableParticipantIds: availableSwaps,
+        method: SWAP_ADHOC_PARTICIPANT_METHOD,
+        type: SWAP_PARTICIPANTS,
+        swappableParticipants,
       });
     }
   }

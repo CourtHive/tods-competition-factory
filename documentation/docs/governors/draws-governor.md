@@ -20,6 +20,22 @@ engine.addAdHocMatchUps({
 
 ---
 
+## adHocPositionSwap
+
+Swaps `participant` assignments in two unscored `matchUps` that are part of the same `roundNumber` in and AD_HOC `structure`.
+This method and one of the two `participantIds` are returned in `validActions` by `positionActions` which calls `adHocMatchUpActions`, meaning this method is not normally called directly.
+
+```js
+engine.adHocPositionSwap({
+  participantIds,
+  structureId,
+  roundNumber,
+  drawId,
+});
+```
+
+---
+
 ## addPlayoffStructures
 
 Adds playoff structures to an existing drawDefinition.

@@ -8,6 +8,7 @@ export const PARTICIPANT_ID = 'participantId';
 export const SCHEDULE_DATES = 'scheduleDates';
 export const TOURNAMENT_ID = 'tournamentId';
 export const SCHEDULE_DATE = 'scheduleDate';
+export const ROUND_NUMBER = 'roundNumber';
 export const STRUCTURE_ID = 'structureId';
 export const PARTICIPANT = 'participant';
 export const MATCHUP_IDS = 'matchUpIds';

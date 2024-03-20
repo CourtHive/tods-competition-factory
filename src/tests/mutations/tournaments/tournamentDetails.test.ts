@@ -4,7 +4,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 // constants
-import { INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { IN_PROGRESS } from '@Constants/tournamentConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
@@ -16,7 +16,7 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   expect(endDate).not.toBeUndefined();
 
   let result = tournamentEngine.setTournamentStartDate();
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_DATE);
 
   const newStartDate = dateStringDaysChange(endDate, 1);
   result = tournamentEngine.setTournamentStartDate({ startDate: newStartDate });
@@ -26,7 +26,7 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   expect(tournamentInfo.endDate).toEqual(newStartDate);
 
   result = tournamentEngine.setTournamentEndDate();
-  expect(result.error).toEqual(INVALID_VALUES);
+  expect(result.error).toEqual(INVALID_DATE);
 
   const newEndDate = dateStringDaysChange(newStartDate, 7);
   result = tournamentEngine.setTournamentEndDate({ endDate: newEndDate });
