@@ -178,6 +178,7 @@ export function generateEventWithFlights(params) {
       randomWinningSide,
       tournamentRecord,
       drawProfiles,
+      isMock,
       event,
     });
     if (drawDefinitionResult.error) return drawDefinitionResult;

@@ -1,5 +1,5 @@
 import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
-import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
+import { createTournamentRecord } from '../tournamentRecords/createTournamentRecord';
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventWithFlights } from './generateEventWithFlights';
@@ -50,6 +50,7 @@ type GenerateTournamentRecordArgs = {
   drawProfiles?: any[];
   startDate?: string;
   endDate?: string;
+  isMock?: boolean;
   uuids?: string[];
 };
 
@@ -64,6 +65,8 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     venueProfiles,
     uuids,
   } = params ?? {};
+
+  const isMock = params?.isMock === false ? undefined : true;
 
   if ((startDate && !isValidDateString(startDate)) || (endDate && !isValidDateString(endDate)))
     return { error: INVALID_DATE };
@@ -85,12 +88,12 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  const tournamentRecord = newTournamentRecord({
+  const tournamentRecord = createTournamentRecord({
     ...(params.tournamentAttributes ?? {}),
     tournamentName,
-    isMock: true,
     startDate,
     endDate,
+    isMock,
   });
 
   const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles, uuids }) : [];
@@ -99,7 +102,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
   if (tournamentExtensions?.length && Array.isArray(tournamentExtensions)) {
     const extensions = tournamentExtensions.filter((extension) => isValidExtension({ extension }));
 
-    if (extensions?.length) Object.assign(tournamentRecord, { extensions, isMock: true });
+    if (extensions?.length) Object.assign(tournamentRecord, { extensions, isMock });
   }
 
   if (typeof policyDefinitions === 'object') {

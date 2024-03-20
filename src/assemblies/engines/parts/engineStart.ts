@@ -1,10 +1,4 @@
-/**
- * Starts the engine by initializing its methods and properties.
- * @param engine - The FactoryEngine object.
- * @param engineInvoke - The engineInvoke object.
- */
-
-import { newTournamentRecord } from '@Assemblies/generators/tournamentRecords/newTournamentRecord';
+import { createTournamentRecord } from '@Generators/tournamentRecords/createTournamentRecord';
 import { methodImporter } from '@Assemblies/engines/parts/methodImporter';
 import { processResult } from '@Assemblies/engines/parts/processResult';
 import { factoryVersion } from '@Functions/global/factoryVersion';
@@ -49,7 +43,7 @@ export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
   };
   engine.getDevContext = (contextCriteria) => getDevContext(contextCriteria);
   engine.newTournamentRecord = (params = {}) => {
-    const result = newTournamentRecord(params);
+    const result = createTournamentRecord(params);
     const tournamentId = result.tournamentId;
     if (result.error) return result;
     setTournamentRecord(result);
