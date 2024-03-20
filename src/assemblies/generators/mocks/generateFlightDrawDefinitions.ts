@@ -1,20 +1,21 @@
-import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
-import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
-import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
-import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
+import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
+import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { xa } from '@Tools/extractAttributes';
 import { completeDrawMatchUps } from './completeDrawMatchUps';
+import { xa } from '@Tools/extractAttributes';
 import { generateRange } from '@Tools/arrays';
 
+// constants
+import { DRAW_DEFINITION_NOT_FOUND, ErrorType, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SEEDING } from '@Constants/scaleConstants';
-import { DRAW_DEFINITION_NOT_FOUND, ErrorType, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
-import { MAIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 export function generateFlightDrawDefinitions({
   matchUpStatusProfile,
@@ -22,6 +23,7 @@ export function generateFlightDrawDefinitions({
   randomWinningSide,
   tournamentRecord,
   drawProfiles,
+  isMock,
   event,
 }): {
   drawIds?: string[];
@@ -76,10 +78,10 @@ export function generateFlightDrawDefinitions({
           matchUpType: eventType,
           seedingScaleName,
           tournamentRecord,
-          isMock: true,
           drawEntries,
           drawName,
           drawId,
+          isMock,
           event,
           stage,
         });
@@ -109,8 +111,8 @@ export function generateFlightDrawDefinitions({
             ...drawProfile.withPlayoffs,
             tournamentRecord,
             drawDefinition,
-            isMock: true,
             structureId,
+            isMock,
             event,
           });
           if (result?.error) return result;

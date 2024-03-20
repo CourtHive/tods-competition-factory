@@ -31,11 +31,12 @@ export function modifyTournamentRecord(params) {
     randomWinningSide,
     schedulingProfile,
     tournamentRecord,
+    autoSchedule,
     eventProfiles,
     periodLength,
     venueProfiles,
-    autoSchedule,
     drawProfiles,
+    isMock,
     uuids,
   } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -165,6 +166,7 @@ export function modifyTournamentRecord(params) {
             randomWinningSide,
             tournamentRecord,
             drawProfiles,
+            isMock,
             event,
           });
           if (result.error) return result;
