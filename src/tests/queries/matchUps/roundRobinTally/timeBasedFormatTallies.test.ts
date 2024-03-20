@@ -34,14 +34,12 @@ it('round robins with timed formats will default to game based when no indicator
 });
 
 it('round robins with points based timed formats to tally points not games', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20P' }],
     completeAllMatchUps: true,
     randomWinningSide: true,
-    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, matchUpFormat: 'SET1-S:T20P' }],
+    setState: true,
   });
-
-  const result = tournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   // Expect thhere to be a single set in every matchUp
@@ -54,7 +52,9 @@ it('round robins with points based timed formats to tally points not games', () 
   }).positionAssignments;
 
   const p1Result = positionAssignments[0].extensions[0].value;
-  const { gamesWon, gamesLost, pointsWon, pointsLost } = p1Result;
+  const { gamesWon, gamesLost, pointsWon, pointsLost, pointsPct } = p1Result;
+  const pct = Math.round((pointsWon / (pointsWon + pointsLost)) * 1000) / 1000;
+  expect(pointsPct).toEqual(pct);
   expect(pointsWon + pointsLost).toBeGreaterThan(1);
   expect(gamesWon + gamesLost).toEqual(0);
 });
