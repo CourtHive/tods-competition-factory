@@ -1,1 +1,1 @@
-export { newTournamentRecord } from '@Generators/tournamentRecords/newTournamentRecord';
+export { createTournamentRecord } from '@Generators/tournamentRecords/createTournamentRecord';

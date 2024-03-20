@@ -1,5 +1,5 @@
 import { scheduleProfileRounds } from '@Mutate/matchUps/schedule/scheduleProfileRounds';
-import { newTournamentRecord } from '../tournamentRecords/newTournamentRecord';
+import { createTournamentRecord } from '../tournamentRecords/createTournamentRecord';
 import { attachPolicies } from '@Mutate/extensions/policies/attachPolicies';
 import { addTournamentParticipants } from './addTournamentParticipants';
 import { generateEventWithFlights } from './generateEventWithFlights';
@@ -88,7 +88,7 @@ export function generateTournamentRecord(params: GenerateTournamentRecordArgs) {
     endDate = formatDate(tournamentDate.setDate(tournamentDate.getDate() + 7));
   }
 
-  const tournamentRecord = newTournamentRecord({
+  const tournamentRecord = createTournamentRecord({
     ...(params.tournamentAttributes ?? {}),
     tournamentName,
     startDate,

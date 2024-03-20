@@ -9,9 +9,9 @@ it.each([syncEngine, asyncEngine])(
     for (const method of engineMethods) {
       if (
         [
+          'createTournamentRecord',
           'getParticipantResults',
           'generateEventWithDraw',
-          'newTournamentRecord',
           'hasAttributeValues',
           'extractAttributes',
           'chunkSizeProfile',
