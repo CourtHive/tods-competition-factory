@@ -145,8 +145,8 @@ export function checkRequiredParameters(
 
   const error =
     params?.[errorParam] === undefined
-      ? errors[errorParam] || paramError[ERROR] || INVALID_VALUES
-      : (paramError[VALIDATE] && paramError[INVALID]) || INVALID_VALUES;
+      ? errors[errorParam] || paramError[ERROR] || paramError[INVALID] || INVALID_VALUES
+      : (paramError[VALIDATE] && (paramError[ERROR] || paramError[INVALID])) || INVALID_VALUES;
 
   const param = errorParam ?? (paramError[ONE_OF] && Object.keys(paramError[ONE_OF]).join(', '));
   return decorateResult({
