@@ -14,6 +14,7 @@ import { findStructure } from '@Acquire/findStructure';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants
+import { SWAP_PARTICIPANT_METHOD } from '@Constants/positionActionConstants';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TEAM_EVENT } from '@Constants/eventConstants';
@@ -77,7 +78,7 @@ export function swapDrawPositionAssignments({ tournamentRecord, drawDefinition, 
 
   conditionallyDisableLinkPositioning({ structure, drawPositions });
   const positionAction = {
-    name: 'swapDrawPositionAssignments',
+    name: SWAP_PARTICIPANT_METHOD,
     drawPositions,
     structureId,
   };

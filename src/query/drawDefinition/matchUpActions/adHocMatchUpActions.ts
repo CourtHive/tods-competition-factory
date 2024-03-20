@@ -164,7 +164,14 @@ export function adHocMatchUpActions({
         ?.filter((participant) => availableSwaps.includes(participant.participantId))
         .map((participant) => makeDeepCopy(participant, undefined, true));
       validActions.push({
-        payload: { drawId, matchUpId, structureId, sideNumber, roundNumber: matchUp.roundNumber },
+        payload: {
+          participantIds: [sideParticipantId],
+          roundNumber: matchUp.roundNumber,
+          structureId,
+          sideNumber,
+          matchUpId,
+          drawId,
+        },
         swappableParticipantIds: availableSwaps,
         method: SWAP_ADHOC_PARTICIPANT_METHOD,
         type: SWAP_PARTICIPANTS,

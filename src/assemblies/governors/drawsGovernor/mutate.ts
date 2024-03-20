@@ -21,6 +21,7 @@ export { addVoluntaryConsolationStage } from '@Mutate/events/addVoluntaryConsola
 export { swapDrawPositionAssignments } from '@Mutate/matchUps/drawPositions/positionSwap';
 export { removeSeededParticipant } from '@Mutate/drawDefinitions/removeSeededParticipant';
 export { addQualifyingStructure } from '@Mutate/drawDefinitions/addQualifyingStructure';
+export { adHocPositionSwap } from '@Mutate/matchUps/drawPositions/adHocPositionSwap';
 export { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
 export { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
 export { modifyDrawDefinition } from '@Mutate/drawDefinitions/modifyDrawDefinition';

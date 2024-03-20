@@ -1,11 +1,11 @@
 export const QUALIFYING_PARTICIPANT_METHOD = 'qualifierDrawPositionAssignment';
 export const WITHDRAW_PARTICIPANT_METHOD = 'withdrawParticipantAtDrawPosition';
 export const ALTERNATE_PARTICIPANT_METHOD = 'alternateDrawPositionAssignment';
-export const SWAP_ADHOC_PARTICIPANT_METHOD = 'swapAdHocMatchUpAssignments';
 export const LUCKY_PARTICIPANT_METHOD = 'luckyLoserDrawPositionAssignment';
 export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';
 export const MODIFY_PAIR_ASSIGNMENT_METHOD = 'modifyPairAssignment';
+export const SWAP_ADHOC_PARTICIPANT_METHOD = 'adHocPositionSwap';
 export const ADD_NICKNAME_METHOD = 'modifyParticipantOtherName';
 export const ASSIGN_PARTICIPANT_METHOD = 'assignDrawPosition';
 export const REMOVE_SEED_METHOD = 'removeSeededParticipant';

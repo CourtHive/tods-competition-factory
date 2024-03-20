@@ -4,7 +4,9 @@ import { expect, test } from 'vitest';
 
 // constants
 import { SWAP_PARTICIPANTS } from '@Constants/positionActionConstants';
+import { INVALID_PARTICIPANT_IDS, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { randomPop } from '@Tools/arrays';
 
 test('adHocMatchUpActions', () => {
   const drawId = 'did';
@@ -32,8 +34,15 @@ test('adHocMatchUpActions', () => {
     },
   ];
 
-  const result = tournamentEngine.executionQueue(methods);
+  let result = tournamentEngine.executionQueue(methods);
   expect(result.success).toBe(true);
   const swapAction = result.results[0].validActions.find((action) => action.type === SWAP_PARTICIPANTS);
   expect([9, 10].includes(swapAction.swappableParticipantIds.length)).toBe(true);
+  const swappableParticipantId = randomPop(swapAction.swappableParticipantIds);
+  const { method, payload } = swapAction;
+  result = tournamentEngine[method](payload);
+  expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+  payload.participantIds.push(swappableParticipantId);
+  result = tournamentEngine[method](payload);
+  expect(result.success).toBe(true);
 });
