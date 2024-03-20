@@ -5,9 +5,11 @@ import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { isString } from '@Tools/objects';
 
-// constants
+// constants and types
 import { INVALID_PARTICIPANT_IDS, INVALID_STRUCTURE, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   DRAW_DEFINITION,
   INVALID,
@@ -17,7 +19,16 @@ import {
   VALIDATE,
 } from '@Constants/attributeConstants';
 
-export function adHocPositionSwap(params) {
+type AdHocPositionSwapArgs = {
+  drawDefinition: DrawDefinition;
+  tournamentRecord: Tournament;
+  participantIds: string[];
+  structureId: string;
+  roundNumber: number;
+  event: Event;
+};
+
+export function adHocPositionSwap(params: AdHocPositionSwapArgs): ResultType {
   const paramsCheck = checkRequiredParameters(params, [
     { [DRAW_DEFINITION]: true, [STRUCTURE_ID]: true, [MATCHUP_ID]: true },
     { [ROUND_NUMBER]: true, [VALIDATE]: (value) => Number.isInteger(value) && value > 0 },
@@ -48,7 +59,7 @@ export function adHocPositionSwap(params) {
 
   // swap the participantIds in the two matchUps
   for (const matchUp of targetMatchUps) {
-    const side = matchUp?.sides?.find((side) => params.participantIds.includes(side.participantId));
+    const side = matchUp?.sides?.find((side: any) => params.participantIds.includes(side?.participantId));
     if (side) {
       const swappedParticipantId = params.participantIds.find((id) => id !== side?.participantId);
       side.participantId = swappedParticipantId;
