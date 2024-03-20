@@ -1,6 +1,7 @@
 export const QUALIFYING_PARTICIPANT_METHOD = 'qualifierDrawPositionAssignment';
 export const WITHDRAW_PARTICIPANT_METHOD = 'withdrawParticipantAtDrawPosition';
 export const ALTERNATE_PARTICIPANT_METHOD = 'alternateDrawPositionAssignment';
+export const SWAP_ADHOC_PARTICIPANT_METHOD = 'swapAdHocMatchUpAssignments';
 export const LUCKY_PARTICIPANT_METHOD = 'luckyLoserDrawPositionAssignment';
 export const REMOVE_ASSIGNMENT_METHOD = 'removeDrawPositionAssignment';
 export const SWAP_PARTICIPANT_METHOD = 'swapDrawPositionAssignments';
