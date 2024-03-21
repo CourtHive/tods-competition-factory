@@ -187,9 +187,10 @@ See [Round Robin Tally Policy](/docs/policies/tallyPolicy).
     pointsPct: 0,
     result: '3/1',
     games: '36/12',
-    rankOrder: 1,
+    provisionalOrder: 1, // order when ROUND_ROBIN groups are incomplete;
+    groupOrder: 1, // order including manually entered 'subOrder' (for statistical ties)
+    rankOrder: 1, // order without manually entered 'subOrder'
     GEMscore: 30003000075000000,
-    groupOrder: 1,
   },
 };
 ```
