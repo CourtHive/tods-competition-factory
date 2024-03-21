@@ -5,7 +5,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
 // constants
-import { ABANDONED, CANCELLED, COMPLETED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { ABANDONED, CANCELLED, COMPLETED, DEFAULTED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
@@ -17,8 +17,13 @@ export function attemptToModifyScore(params) {
     // in the case that CANCELLED or ABANDONED causes TEAM participant to advance
     ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualMatchUp);
 
+  const participantsCount =
+    matchUp?.sides?.map((side) => side.participantId).filter(Boolean).length ||
+    inContextMatchUp?.sides?.map((side) => side.participantId).filter(Boolean).length;
+
   const stack = 'attemptToModifyScore';
-  const hasAdHocSides = isAdHoc({ structure }) && matchUp?.sides?.every((side) => side.participantId);
+  const hasAdHocSides =
+    (isAdHoc({ structure }) && participantsCount === 1) || (matchUpStatus === DEFAULTED && participantsCount);
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
