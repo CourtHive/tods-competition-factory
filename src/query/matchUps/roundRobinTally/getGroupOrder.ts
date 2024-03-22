@@ -51,9 +51,9 @@ const headToHeadTallyDirectives = [
 const GEMScoreValueMap = {
   matchUpsPct: 20,
   tieMatchUpsPct: 16,
-  setsPct: 12,
-  gamesPct: 8,
   pointsPct: 4,
+  gamesPct: 8,
+  setsPct: 12,
 };
 
 /**
