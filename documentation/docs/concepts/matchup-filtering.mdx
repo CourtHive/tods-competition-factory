@@ -1,0 +1,62 @@
+---
+title: matchUp filtering
+---
+
+Every public factory method which returns `matchUps` supports the `matchUpFilters` and `contextFilters` parameters.
+The underlying `filterMatchUps` method is also exposed for direct use via the `matchUpsGovernor`.
+
+## matchUpFilters
+
+```js
+const matchUpFilters = {
+  matchUpFormat: 'SET3-S:6/TB7-F:TB10',
+  excludeMatchUpStatuses: [],
+  hasParticipantsCount: 2,
+  isCollectionMatchUp: [],
+  hasWinningSide: true,
+  isMatchUpTie: false,
+  matchUpStatuses: [],
+  matchUpFormats: [],
+  roundPositions: [],
+  collectionIds: [],
+  roundNumbers: [],
+  matchUpIds: [],
+  roundNames: [],
+
+  filterMatchUpTypes = true,
+  filterMatchUpIds = true,
+};
+```
+
+## contextFilters
+
+Only function on `matchUps` which are `inContext`.
+
+```js
+const contextFilters = {
+  scheduledDate: '2024-04-01',
+  processContext: true,
+  readyToScore: true,
+  stageSequences: [],
+  scheduledDates: [],
+  participantIds: [],
+  tournamentIds: [],
+  matchUpTypes: [],
+  structureIds: [],
+  courtIds: [],
+  eventIds: [],
+  venueIds: [],
+  drawIds: [],
+  stages: [],
+};
+```
+
+## filterMatchUps
+
+The `matchUpFilters` options listed above are direct attributes of `filterMatchUps`.
+
+```js
+import { matchUpsGovernor } from 'tods-competition-factory';
+matchUpsGovernor.filterMatchUps({ matchUps, ...matchUpFilters });
+matchUpsGovernor.filterMatchUps({ matchUps, ...contextFilters, processContext: true });
+```

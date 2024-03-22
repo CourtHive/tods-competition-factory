@@ -1,14 +1,15 @@
 import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
+import { bulkScheduleMatchUps } from '@Mutate/matchUps/schedule/bulkScheduleMatchUps';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { validMatchUps } from '@Validators/validMatchUp';
-import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
 import { isObject } from '@Tools/objects';
 
-import { Tournament } from '@Types/tournamentTypes';
-import { HydratedMatchUp } from '@Types/hydrated';
+// constants and types
 import { INVALID_VALUES, MISSING_CONTEXT } from '@Constants/errorConditionConstants';
 import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { Tournament } from '@Types/tournamentTypes';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 

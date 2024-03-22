@@ -7,6 +7,7 @@ import { getCompetitionMatchUps } from './getCompetitionMatchUps';
 import { getTournamentId } from '@Global/state/globalState';
 import { getTournamentTimeItem } from '../base/timeItems';
 
+// constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { MatchUpFilters, TournamentRecords } from '@Types/factoryTypes';
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
