@@ -36,6 +36,7 @@ module.exports = {
           matchUps: [
             'concepts/matchup-overview',
             'concepts/matchup-context',
+            'concepts/matchup-filtering',
             'concepts/tieMatchUp',
             'concepts/lineUp',
             'concepts/tieFormat',
