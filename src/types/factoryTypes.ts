@@ -415,6 +415,7 @@ export type AddScheduleAttributeArgs = {
 export type MatchUpFilters = {
   matchUpStatuses?: MatchUpStatusUnion[];
   excludeMatchUpStatuses?: string[];
+  hasParticipantsCount?: number;
   isCollectionMatchUp?: boolean;
   matchUpFormats?: string[];
   roundPositions?: number[];
