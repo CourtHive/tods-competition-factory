@@ -146,10 +146,8 @@ type GetValidGroupSizesArgs = {
   groupSizeLimit?: number;
   drawSize: number;
 };
-export function getValidGroupSizes({
-  drawSize,
-  groupSizeLimit = 10,
-}: GetValidGroupSizesArgs): ResultType & { validGroupSizes?: number[] } {
+export function getValidGroupSizes(params: GetValidGroupSizesArgs): ResultType & { validGroupSizes?: number[] } {
+  const { groupSizeLimit = 10, drawSize = 0 } = params ?? {};
   const validGroupSizes = generateRange(3, groupSizeLimit + 1).filter((groupSize) => {
     const groupsCount = Math.ceil(drawSize / groupSize);
     const byesCount = groupsCount * groupSize - drawSize;
