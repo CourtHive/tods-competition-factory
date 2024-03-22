@@ -1,15 +1,16 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
 import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { getMatchUpIds } from '@Functions/global/extractors';
-import { xa } from '@Tools/extractAttributes';
 import { instanceCount, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import { xa } from '@Tools/extractAttributes';
 import { expect, test } from 'vitest';
 
+// constants
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
-import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 
 const sst = 'schedule.scheduledTime';
 const d210505 = '2021-05-05';
