@@ -9,15 +9,16 @@ test('roundRobinTally policy can specify tally by games only', () => {
     tournamentName: 'Round Robin Points',
     policyDefinitions: {
       roundRobinTally: {
-	groupOrderKey: 'gamesPct',
+        GEMscore: [ 'gamesPct', 'pointsRatio' ],
         headToHead: { disabled: false },
-        disqualifyDefaults: true,
-        disqualifyWalkovers: true,
-        setsCreditForDefaults: true,
-        setsCreditForWalkovers: true,
-        gamesCreditForDefaults: true,
+        groupOrderKey: 'gamesPct',
         gamesCreditForWalkovers: true,
-	GEMscore: [ 'gamesPct', 'pointsRatio' ],
+        gamesCreditForDefaults: true,
+        setsCreditForWalkovers: true,
+        setsCreditForDefaults: true,
+        // NOTE: at present "walkovers" and "defaults" are sub sorts within tied groups, but participants are not entirely disqualified
+        // disqualifyDefaults: true, // TODO: implement and test => disqualified participants are pushed to the bottom of the group order
+        // disqualifyWalkovers: true, //TODO: implement and test =>  disqualified participants are pushed to the bottom of the group order
       },
     },
 

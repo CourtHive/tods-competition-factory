@@ -33,8 +33,6 @@ const roundRobinTally = {
     { attribute: 'gamesPct', idsFilter: true, disbleHeadToHead: false },
     { attribute: 'pointsPct', idsFilter: true, disbleHeadToHead: false },
   ],
-  disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
-  disqualifyWalkovers: true, // disqualified participants are pushed to the bottom of the group order
   excludeMatchUpStatuses: [], // matchUpStatuses to exclude from calculations, e.g. ABANDONED, INCOMPLETE
   setsCreditForDefaults: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent DEFAULT
   setsCreditForWalkovers: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent WALKOVER
