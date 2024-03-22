@@ -36,3 +36,4 @@ export { getRounds } from '@Query/matchUps/scheduling/getRounds';
 export { getMatchUpType } from '@Query/matchUp/getMatchUpType';
 export { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 export { drawMatchUps } from '@Query/matchUps/getDrawMatchUps';
+export { filterMatchUps } from '@Query/filterMatchUps';
