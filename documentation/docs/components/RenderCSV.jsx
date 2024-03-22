@@ -25,7 +25,7 @@ export const RenderCSV = ({ data, rowJoiner, tableHeight = '300px' }) => {
         {rows.slice(1).map((row, i) => (
           <tr key={i}>
             {row.split(',').map((column, c) => (
-              <td style="white-space:nowrap" key={`${i}-${c}`}>
+              <td style={{ whiteSpace: 'nowrap' }} key={`${i}-${c}`}>
                 {column}
               </td>
             ))}
