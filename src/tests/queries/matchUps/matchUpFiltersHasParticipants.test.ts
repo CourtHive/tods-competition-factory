@@ -14,7 +14,7 @@ test('hasParticipantsCount value filters matchUps', () => {
     setState: true,
   });
 
-  let matchUps = tournamentEngine.allCompetitionMatchUps({
+  const matchUps = tournamentEngine.allCompetitionMatchUps({
     nextMatchUps: true,
     inContext: true,
   }).matchUps;
