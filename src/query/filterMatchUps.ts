@@ -17,11 +17,13 @@ type FilterMatchUpsArgs = MatchUpFilters & {
 };
 
 export function filterMatchUps(params: FilterMatchUpsArgs) {
+  if (!Array.isArray(params.matchUps)) return [];
   const {
     matchUps,
 
-    isCollectionMatchUp,
     excludeMatchUpStatuses,
+    hasParticipantsCount,
+    isCollectionMatchUp,
     matchUpStatuses,
     hasWinningSide,
     matchUpFormats,
@@ -32,6 +34,9 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
     roundNumbers,
     matchUpIds,
     roundNames,
+
+    filterMatchUpTypes = true,
+    filterMatchUpIds = true,
 
     // only applies to inContext matchUps and only when processContext boolean is true
     stageSequences,
@@ -48,9 +53,6 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
     venueIds,
     drawIds,
     stages,
-
-    filterMatchUpIds = true,
-    filterMatchUpTypes = true,
   } = params;
 
   const targetParticipantIds = Array.isArray(participantIds) ? participantIds.filter(Boolean) : [];
@@ -196,8 +198,11 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
         return false;
       }
 
+      const matchUpParticipantIds = matchUp.sides?.map(({ participantId }) => participantId).filter(Boolean) ?? [];
+      if (hasParticipantsCount && matchUpParticipantIds.length < hasParticipantsCount) {
+        return false;
+      }
       if (targetParticipantIds.length) {
-        const matchUpParticipantIds = matchUp.sides?.map(({ participantId }) => participantId).filter(Boolean) ?? [];
         const containsTargetedParticipantId = targetParticipantIds.some((participantId) =>
           matchUpParticipantIds.includes(participantId),
         );
