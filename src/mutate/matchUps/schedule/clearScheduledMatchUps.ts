@@ -21,6 +21,7 @@ import {
   ALLOCATE_COURTS,
   ASSIGN_COURT,
   ASSIGN_VENUE,
+  COURT_ORDER,
   SCHEDULED_DATE,
   SCHEDULED_TIME,
 } from '@Constants/timeItemConstants';
@@ -37,7 +38,7 @@ export function clearScheduledMatchUps(params: ClearScheduledMatchUpsArgs): Resu
   clearedScheduleCount?: number;
 } {
   const {
-    scheduleAttributes = ['scheduledDate', 'scheduledTime'],
+    scheduleAttributes = ['scheduledDate', 'scheduledTime', 'courtOrder'],
     ignoreMatchUpStatuses = completedMatchUpStatuses,
     scheduledDates,
     venueIds,
@@ -70,7 +71,7 @@ export function clearScheduledMatchUps(params: ClearScheduledMatchUpsArgs): Resu
 }
 
 function clearSchedules({
-  scheduleAttributes = ['scheduledDate', 'scheduledTime'],
+  scheduleAttributes = ['scheduledDate', 'scheduledTime', 'courtOrder'],
   ignoreMatchUpStatuses = completedMatchUpStatuses,
   tournamentRecord,
   scheduledDates,
@@ -119,7 +120,9 @@ function clearSchedules({
       matchUp.timeItems = (matchUp.timeItems ?? []).filter((timeItem) => {
         const preserve =
           timeItem?.itemType &&
-          ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, SCHEDULED_DATE, SCHEDULED_TIME].includes(timeItem?.itemType);
+          ![ALLOCATE_COURTS, ASSIGN_COURT, ASSIGN_VENUE, COURT_ORDER, SCHEDULED_DATE, SCHEDULED_TIME].includes(
+            timeItem?.itemType,
+          );
         if (!preserve) modified = true;
         return preserve;
       });
