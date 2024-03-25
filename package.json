@@ -120,7 +120,7 @@
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/cli": "10.3.2",
     "@nestjs/common": "10.3.5",
-    "@nestjs/config": "3.2.0",
+    "@nestjs/config": "3.2.1",
     "@nestjs/core": "10.3.5",
     "@nestjs/jwt": "10.2.0",
     "@nestjs/platform-express": "10.3.5",
@@ -182,7 +182,7 @@
     "tslib": "2.6.2",
     "typescript": "5.4.3",
     "variable-diff": "2.0.2",
-    "vite": "5.2.4",
+    "vite": "5.2.6",
     "vite-tsconfig-paths": "4.3.2",
     "vitest": "1.4.0"
   },
