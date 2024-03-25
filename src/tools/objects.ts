@@ -53,7 +53,7 @@ export const hav = hasAttributeValues;
 // useful in notifications where back end does not recognize undefined for updates
 export function undefinedToNull(obj: object, shallow?: boolean) {
   if (obj === undefined) return null;
-  if (typeof obj !== 'object' || obj === null) return obj;
+  if (!isObject(obj) || obj === null) return obj;
 
   const definedKeys = Object.keys(obj);
   const notNull = (value) => (value === undefined ? null : value);
@@ -73,7 +73,7 @@ export function undefinedToNull(obj: object, shallow?: boolean) {
 function countKeys(o) {
   if (Array.isArray(o)) {
     return o.length + o.map(countKeys).reduce((a, b) => a + b, 0);
-  } else if (typeof o === 'object' && o !== null) {
+  } else if (isObject(o) && o !== null) {
     return (
       Object.keys(o).length +
       Object.keys(o)

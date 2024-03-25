@@ -1,3 +1,4 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getContextContent } from '@Query/hierarchical/getContextContent';
 import { getMatchUp } from '@Query/matchUps/getMatchUpFromMatchUps';
@@ -6,15 +7,10 @@ import { getDrawStructures } from './findStructure';
 
 // constants and types
 import { DrawDefinition, Event, Participant, Structure } from '@Types/tournamentTypes';
+import { ErrorType, MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { ContextContent, ContextProfile, MatchUpsMap } from '@Types/factoryTypes';
+import { DRAW_DEFINITION, MATCHUP_ID } from '@Constants/attributeConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
-import {
-  ErrorType,
-  INVALID_VALUES,
-  MATCHUP_NOT_FOUND,
-  MISSING_DRAW_DEFINITION,
-  MISSING_MATCHUP_ID,
-} from '@Constants/errorConditionConstants';
 
 /*
   public version of findMatchUp
@@ -39,29 +35,30 @@ type FindDrawMatchUpArgs = {
   event?: Event;
 };
 
-export function findDrawMatchUp({
-  tournamentParticipants,
-  afterRecoveryTimes,
-  contextContent,
-  contextProfile,
-  drawDefinition,
-  matchUpsMap,
-  matchUpId,
-  inContext,
-  context,
-  event,
-}: FindDrawMatchUpArgs): {
+export function findDrawMatchUp(params: FindDrawMatchUpArgs): {
   matchUp?: HydratedMatchUp;
   structure?: Structure;
   error?: ErrorType;
 } {
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-  if (typeof matchUpId !== 'string') return { error: INVALID_VALUES };
+  const paramsCheck = checkRequiredParameters(params, [{ [DRAW_DEFINITION]: true, [MATCHUP_ID]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const {
+    tournamentParticipants,
+    afterRecoveryTimes,
+    contextProfile,
+    drawDefinition,
+    matchUpsMap,
+    matchUpId,
+    inContext,
+    context,
+    event,
+  } = params;
 
   const { structures = [] } = getDrawStructures({ drawDefinition });
 
-  if (contextProfile && !contextContent) contextContent = getContextContent({ contextProfile, drawDefinition });
+  const contextContent =
+    params.contextContent || (contextProfile && getContextContent({ contextProfile, drawDefinition }));
 
   for (const structure of structures) {
     const { matchUps } = getAllStructureMatchUps({
