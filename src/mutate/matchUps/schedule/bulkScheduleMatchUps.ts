@@ -6,8 +6,8 @@ import { getMatchUpId } from '@Functions/global/extractors';
 // constants and types
 import { ARRAY, INVALID, OF_TYPE, ONE_OF, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 
 type BulkScheduleMatchUpsArgs = {
   tournamentRecords: { [key: string]: Tournament };
