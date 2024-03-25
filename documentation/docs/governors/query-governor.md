@@ -1494,9 +1494,14 @@ const {
 
 ## tallyParticipantResults
 
+:::tip
+Setting `engine.devContext({ tally: true })` will log `readableReport` to the console. In browser consoles of client applications use: `dev.context({ tally: true })` where available.
+:::
+
 ```js
 const { participantResults } = tallyParticipantResults({
   policyDefinitions: mockProfile.policyDefinitions,
+  generateReport, // optional boolean; attaches { readableReport } to returned values
   matchUps,
 });
 ```
