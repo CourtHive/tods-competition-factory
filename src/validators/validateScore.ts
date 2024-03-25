@@ -28,9 +28,7 @@ export function validateScore({
   const info = 'scoreString must be a string!';
 
   if (scoreStringSide1 !== undefined && typeof scoreStringSide1 !== 'string') return { error: INVALID_VALUES, info };
-
   if (scoreStringSide2 !== undefined && typeof scoreStringSide2 !== 'string') return { error: INVALID_VALUES, info };
-
   if (sets !== undefined && !Array.isArray(sets)) return { error: INVALID_VALUES, info: mustBeAnArray('sets') };
 
   if (sets?.length) {
@@ -56,7 +54,7 @@ export function validateScore({
         [side1TiebreakScore, side2TiebreakScore],
         [side1PointScore, side2PointScore],
       ]
-        .filter((pair) => pair.some((value) => value !== undefined))
+        .filter((pair) => pair.some((value: any) => ![undefined, null].includes(value)))
         .every((pair) => pair.every((numericValue) => isConvertableInteger(numericValue)));
 
       if (!numericValuePairs) {
@@ -64,7 +62,7 @@ export function validateScore({
       }
 
       const numericValues = [setNumber, winningSide]
-        .filter((value) => value !== undefined)
+        .filter((value: any) => ![undefined, null].includes(value))
         .every((numericValue) => isConvertableInteger(numericValue));
 
       if (!numericValues) {
