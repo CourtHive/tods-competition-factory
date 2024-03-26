@@ -94,6 +94,7 @@ export function getGroupOrder(params) {
 
   report.push({ attribute, groups: orderedTallyGroups });
 
+  // tally groups are participants grouped by the attribute
   const sortedTallyGroups = Object.keys(orderedTallyGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
@@ -105,6 +106,10 @@ export function getGroupOrder(params) {
     return result.order;
   });
 
+  // subGroup is an array of indices of the sortedTallyGroups
+  // subGroup is used to determine the order of groups of participants when there are no resolutions
+  // e.g. [[resolved, unresolved, unresolved, unresolved], [resolved, unresolved, unresolved, unresolved]]
+  // in the above example the order would be [1, 2, 2, 2, 5, 6, 6, 6]
   const groupOrder = sortedOrder
     .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
     .flat();
