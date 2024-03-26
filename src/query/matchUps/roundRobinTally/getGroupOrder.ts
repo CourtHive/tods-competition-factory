@@ -108,7 +108,7 @@ export function getGroupOrder(params) {
 
   // subGroup is an array of indices of the sortedTallyGroups
   // subGroup is used to determine the order of groups of participants when there are no resolutions
-  // e.g. [[resolved], [unresolved, unresolved, unresolved], [resolved], [unresolved, unresolved, unresolved]]
+  // e.g. [[resolved, unresolved, unresolved, unresolved], [resolved, unresolved, unresolved, unresolved]]
   // in the above example the order would be [1, 2, 2, 2, 5, 6, 6, 6]
   const groupOrder = sortedOrder
     .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
