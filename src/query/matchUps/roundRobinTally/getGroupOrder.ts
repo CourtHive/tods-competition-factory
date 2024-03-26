@@ -56,16 +56,13 @@ const GEMScoreValueMap = {
   setsPct: 12,
 };
 
-/**
- *
- * @param {object[]} participantResults - calculated results for each participant
- * @param {number} participantsCount - number of participants in round robin group
- * @param {object} subOrderMap - { [participantId]: subOrder }
- *
- */
-
 export function getGroupOrder(params) {
-  const { requireCompletion = true, participantResults, subOrderMap, tallyPolicy } = params;
+  const {
+    requireCompletion = true, // no order is provided unless all opponents have completed their matchUps
+    participantResults, // { participantId: { matchUpsWon, matchUpsLost, matchUpsCancelled, ... } }
+    subOrderMap, // { participantId: subOrder }
+    tallyPolicy, // array of attributes to use for tie-breaking
+  } = params;
 
   const report: any[] = [];
 
@@ -97,17 +94,23 @@ export function getGroupOrder(params) {
 
   report.push({ attribute, groups: orderedTallyGroups });
 
-  const groupOrder = Object.keys(orderedTallyGroups)
+  const sortedTallyGroups = Object.keys(orderedTallyGroups)
     .map((key) => parseFloat(key))
     .sort((a, b) => b - a)
-    .map((key) => orderedTallyGroups[key])
-    .map((participantIds) => {
-      const result = groupSubSort({ participantIds, ...params });
-      report.push(...(result.report ?? []));
-      return result.order;
-    })
-    .flat(Infinity);
+    .map((key) => orderedTallyGroups[key]);
 
+  const sortedOrder = sortedTallyGroups.map((participantIds) => {
+    const result = groupSubSort({ participantIds, ...params });
+    report.push(...(result.report ?? []));
+    return result.order;
+  });
+
+  const groupOrder = sortedOrder
+    .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
+    .flat();
+
+  let lastSubGroup;
+  let subGroupCount = 0;
   let groupPosition = 1;
   let priorPositionResolution;
   groupOrder.forEach((finishingPosition, index) => {
@@ -124,15 +127,24 @@ export function getGroupOrder(params) {
     // update prior position resolution
     priorPositionResolution = finishingPosition.resolved;
 
+    const subGroup = parseInt(finishingPosition.subGroup?.join('') || 0);
+
     if (finishingPosition.resolved) {
       // if a position is resolved, position is index + 1
       finishingPosition.position = index + 1;
       // if a position is resolved, update groupPosition
       groupPosition = finishingPosition.position;
     } else {
+      if (lastSubGroup && subGroup > lastSubGroup) {
+        groupPosition += subGroupCount;
+        subGroupCount = 0;
+      }
       // if a position is unresovled, position is groupPosition
       finishingPosition.position = groupPosition;
+      subGroupCount += 1;
     }
+
+    lastSubGroup = subGroup;
   });
 
   const positions = groupOrder.map(({ position }) => position);
@@ -212,23 +224,27 @@ function processAttribute({
 
   if (Object.keys(groups).length > 1 && participantIds.length) {
     // separation by attribute was successful
-    order = Object.keys(groups)
+    const sortedTallyGroups = Object.keys(groups)
       .map((key) => parseFloat(key))
       .sort((a, b) => (reversed ? a - b : b - a))
-      .map((key) => groups[key])
-      .map((participantIds) => {
-        const result = groupSubSort({
-          participantResults,
-          disableHeadToHead,
-          participantIds,
-          matchUpFormat,
-          tallyPolicy,
-          matchUps,
-        });
-        report.push(...(result.report ?? []));
-        return result.order;
-      })
-      .flat(Infinity);
+      .map((key) => groups[key]);
+
+    const sortedOrder = sortedTallyGroups.map((participantIds) => {
+      const result = groupSubSort({
+        participantResults,
+        disableHeadToHead,
+        participantIds,
+        matchUpFormat,
+        tallyPolicy,
+        matchUps,
+      });
+      report.push(...(result.report ?? []));
+      return result.order;
+    });
+
+    order = sortedOrder
+      .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
+      .flat();
   }
 
   return { order, report };
@@ -249,11 +265,11 @@ function groupSubSort({ participantResults, disableHeadToHead, participantIds, m
     participantIds?.length === 2 &&
     (!tallyPolicy?.headToHead || (!tallyPolicy.headToHead.disabled && !disableHeadToHead))
   ) {
-    const result = headToHeadWinner({ participantIds, participantResults });
+    const result = getHeadToHeadWinner({ participantIds, participantResults });
     if (result) {
       const headToHeadWinner = result[0].participantId;
       report.push({ attribute: 'head2Head', participantIds, headToHeadWinner });
-      return { order: [result], headToHeadWinner, report };
+      return { order: result, headToHeadWinner, report };
     }
   }
 
@@ -295,7 +311,7 @@ function groupSubSort({ participantResults, disableHeadToHead, participantIds, m
 }
 
 // NOTE: This currently considers one victory rather than a head2head win/loss record (considering rounds of play where participants may encounter each other more than once)
-function headToHeadWinner({ participantIds, participantResults }) {
+function getHeadToHeadWinner({ participantIds, participantResults }) {
   if (!participantIds) return;
 
   if (participantResults[participantIds[0]].victories.includes(participantIds[1])) {

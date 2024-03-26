@@ -1,6 +1,6 @@
 import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
-import { xa } from '@Tools/extractAttributes';
 import tournamentEngine from '@Engines/syncEngine';
+import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
 // constants and fixtures
@@ -12,7 +12,7 @@ import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 import tournamentRecord from './dominantDuo.tods.json';
 
 it('supports multiple policy configurations', () => {
-  const result = tournamentEngine.setState(tournamentRecord);
+  let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
   const RR = tournamentRecord.events[0].drawDefinitions[0].structures[0];
@@ -42,12 +42,14 @@ it('supports multiple policy configurations', () => {
     GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
   };
 
-  participantResults = tallyParticipantResults({
+  result = tallyParticipantResults({
     policyDefinitions: {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: fewestGamesLostWinReversed,
     },
     matchUps: structure1MatchUps,
-  }).participantResults;
+    generateReport: true,
+  });
+  participantResults = result.participantResults;
 
   expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 2, 1]);
 

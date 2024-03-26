@@ -1,8 +1,9 @@
 import { decorateResult } from '@Functions/global/decorateResult';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findTournamentId } from './findTournamentId';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findEvent } from './findEvent';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
