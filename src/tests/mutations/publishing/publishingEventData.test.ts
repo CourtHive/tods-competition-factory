@@ -1,6 +1,6 @@
-import { constantToString } from '@Tools/strings';
-import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import { constantToString } from '@Tools/strings';
 import { expect, it } from 'vitest';
 
 // constants and fixtures
@@ -787,9 +787,10 @@ it('can add or remove stages from a published draw', () => {
   result = tournamentEngine.publishOrderOfPlay();
   expect(result.success).toEqual(true);
 
-  result = tournamentEngine.competitionScheduleMatchUps({
-    usePublishState: true,
-  });
+  result = tournamentEngine.getPublishState();
+  expect(result.publishState.tournament.orderOfPlay.published).toEqual(true);
+
+  result = tournamentEngine.competitionScheduleMatchUps({ usePublishState: true });
   expect(result.groupInfo).toBeDefined();
 
   // expect only { stage: VOLUNTARY_CONSOLATION } matchUps to be present
