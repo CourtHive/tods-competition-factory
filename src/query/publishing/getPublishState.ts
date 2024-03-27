@@ -94,6 +94,7 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
   if (tournamentRecord) {
     const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
     publishState.tournament = pubStatus ?? {};
+    if (pubStatus?.orderOfPlay?.published || pubStatus?.participants?.published) tournamentPublished = true;
     publishState.tournament.status = { published: tournamentPublished, publishedEventIds };
   }
 
