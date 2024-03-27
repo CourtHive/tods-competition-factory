@@ -4,13 +4,14 @@ import tournamentEngine from '@Engines/syncEngine';
 import { fixtures, mocksEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 
+// constants and fixtures
+import { COLLEGE_D3, DOMINANT_DUO, TEAM_DOUBLES_3_AGGREGATION } from '@Constants/tieFormatConstants';
 import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { tieFormats } from '@Fixtures/scoring/tieFormats';
 import { FEMALE, MALE } from '@Constants/genderConstants';
 import { TEAM } from '@Constants/eventConstants';
-import { COLLEGE_D3, DOMINANT_DUO, TEAM_DOUBLES_3_AGGREGATION } from '@Constants/tieFormatConstants';
 
 const matchUpFormat = FORMAT_STANDARD;
 
@@ -48,7 +49,6 @@ const errorConditions = [
 it.each(errorConditions)('can validate tieFormats', (errorCondition: any) => {
   const result: any = validateTieFormat(errorCondition);
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
-  expect(result?.errors?.length).toBeGreaterThanOrEqual(1);
 });
 
 // prettier-ignore

@@ -1,12 +1,13 @@
 import { validateCollectionDefinition } from './validateCollectionDefinition';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { mustBeAnArray } from '@Tools/mustBeAnArray';
+import { isObject } from '@Tools/objects';
 import { unique } from '@Tools/arrays';
 
 // constants and types
 import { INVALID_TIE_FORMAT } from '@Constants/errorConditionConstants';
 import { Category, Event, GenderUnion } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type ValidateTieFormatArgs = {
   checkCollectionIds?: boolean;
@@ -28,32 +29,8 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
   const stack = 'validateTieFormat';
   const errors: string[] = [];
 
-  if (!params || !tieFormat || typeof tieFormat !== 'object') {
-    errors.push('tieFormat must be an object');
-    return decorateResult({
-      result: { error: INVALID_TIE_FORMAT },
-      context: { tieFormat, errors },
-      stack,
-    });
-  }
-
-  if (typeof tieFormat.winCriteria !== 'object') {
-    errors.push('tieFormat.winCriteria must be an object');
-    return decorateResult({
-      result: { error: INVALID_TIE_FORMAT },
-      context: { tieFormat, errors },
-      stack,
-    });
-  }
-
-  if (!Array.isArray(tieFormat.collectionDefinitions)) {
-    errors.push(mustBeAnArray('tieFormat.collectionDefinitions'));
-    return decorateResult({
-      result: { error: INVALID_TIE_FORMAT },
-      context: { tieFormat, errors },
-      stack,
-    });
-  }
+  const paramsCheck = checkParams({ ...params, stack });
+  if (paramsCheck?.error) return paramsCheck;
 
   let aggregateValueImperative;
   const validCollections = tieFormat.collectionDefinitions.every((collectionDefinition) => {
@@ -110,4 +87,34 @@ export function validateTieFormat(params: ValidateTieFormatArgs): ResultType {
     });
   }
   return result;
+}
+
+function checkParams(params) {
+  const { tieFormat, stack } = params;
+
+  if (!params || !tieFormat || !isObject(tieFormat)) {
+    return decorateResult({
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, message: 'tieformat must be an object' },
+      stack,
+    });
+  }
+
+  if (!isObject(tieFormat.winCriteria)) {
+    return decorateResult({
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, message: 'tieformat.winCritiera must be an object' },
+      stack,
+    });
+  }
+
+  if (!Array.isArray(tieFormat.collectionDefinitions)) {
+    return decorateResult({
+      result: { error: INVALID_TIE_FORMAT },
+      context: { tieFormat, message: 'collectionDefinitions must be an array' },
+      stack,
+    });
+  }
+
+  return { ...SUCCESS };
 }
