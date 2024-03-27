@@ -22,9 +22,11 @@ export const MUTATIONS = 'mutations';
 export const PUBLISH_EVENT = 'publishEvent';
 export const PUBLISH_EVENT_SEEDING = 'publishEventSeeding';
 export const PUBLISH_ORDER_OF_PLAY = 'publishOrderOfPlay';
+export const PUBLISH_PARTICIPANTS = 'publishParticipants';
 export const UNPUBLISH_EVENT = 'unPublishEvent';
 export const UNPUBLISH_EVENT_SEEDING = 'unPublishEventSeeding';
 export const UNPUBLISH_ORDER_OF_PLAY = 'unPublishOrderOfPlay';
+export const UNPUBLISH_PARTICIPANTS = 'unPublishParticipants';
 export const UPDATE_INCONTEXT_MATCHUP = 'updateInContextMatchUp';
 
 export const topicConstants = {
@@ -52,6 +54,7 @@ export const topicConstants = {
   PUBLISH_EVENT_SEEDING,
   PUBLISH_EVENT,
   PUBLISH_ORDER_OF_PLAY,
+  PUBLISH_PARTICIPANTS,
   UNPUBLISH_EVENT_SEEDING,
   UNPUBLISH_EVENT,
   UNPUBLISH_ORDER_OF_PLAY,
