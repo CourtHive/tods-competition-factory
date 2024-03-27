@@ -15,10 +15,7 @@ export function publishOrderOfPlay(params) {
   if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = publishOOP({
-      tournamentRecord,
-      ...params,
-    });
+    const result = publishOOP({ tournamentRecord, ...params });
     if (result.error) return result;
   }
 
@@ -29,19 +26,10 @@ function publishOOP({ scheduledDates = [], removePriorValues, tournamentRecord, 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;
-  const { timeItem } = getTimeItem({
-    element: tournamentRecord,
-    itemType,
-  });
-
+  const { timeItem } = getTimeItem({ element: tournamentRecord, itemType });
   const itemValue = timeItem?.itemValue || { [status]: {} };
-
   itemValue[status].orderOfPlay = { published: true, scheduledDates, eventIds };
-
-  const updatedTimeItem = {
-    itemValue,
-    itemType,
-  };
+  const updatedTimeItem = { itemValue, itemType };
 
   addTimeItem({
     timeItem: updatedTimeItem,
