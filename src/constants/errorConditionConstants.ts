@@ -377,6 +377,10 @@ export const MISSING_VALUE = {
   message: 'Missing value',
   code: 'ERR_MISSING_VALUE',
 };
+export const MISSING_BIRTH_DATE = {
+  message: 'Missing birthdate',
+  code: 'ERR_MISSING_BIRTH_DATE',
+};
 export const MISSING_DATE = {
   message: 'Missing date',
   code: 'ERR_MISSING_DATE',
@@ -450,6 +454,10 @@ export const CANNOT_MODIFY_PARTICIPANT_TYPE = {
 export const CANNOT_REMOVE_PARTICIPANTS = {
   message: 'Cannot remove participants',
   code: 'ERR_UNCHANGED_CANNOT_REMOVE_PARTICIPANTS',
+};
+export const CATEGORY_MISMATCH = {
+  message: 'Participant category mismatch',
+  code: 'ERR_CATEGORY_MISMATCH',
 };
 export const CANNOT_CHANGE_WINNING_SIDE = {
   message: 'Cannot change winningSide',
@@ -786,6 +794,7 @@ export const errorConditionConstants = {
   CANNOT_MODIFY_PARTICIPANT_TYPE,
   CANNOT_REMOVE_MAIN_STRUCTURE,
   CANNOT_REMOVE_PARTICIPANTS,
+  CATEGORY_MISMATCH,
   COURT_EXISTS,
   COURT_NOT_FOUND,
   DRAW_DEFINITION_NOT_FOUND,
@@ -868,6 +877,7 @@ export const errorConditionConstants = {
   MISSING_ASSIGNMENTS,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_AVOIDANCE_POLICY,
+  MISSING_BIRTH_DATE,
   MISSING_COLLECTION_DEFINITION,
   MISSING_COURT_ID,
   MISSING_COURTS_INFO,

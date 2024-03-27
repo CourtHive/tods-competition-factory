@@ -113,7 +113,7 @@ it('can publish order of play for specified days', () => {
   expect(result.success).toEqual(true);
 
   result = competitionEngine.getState();
-  let tournamentRecord: Tournament = Object.values(result.tournamentRecords)[0] as Tournament;
+  const tournamentRecord: Tournament = Object.values(result.tournamentRecords)[0] as Tournament;
   expect(tournamentRecord.timeItems?.[1].itemValue[PUBLIC].orderOfPlay).not.toBeUndefined();
 
   publishState = competitionEngine.getPublishState().publishState;

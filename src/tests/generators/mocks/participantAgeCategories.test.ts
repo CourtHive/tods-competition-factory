@@ -1,6 +1,6 @@
 import { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { test, expect } from 'vitest';
-import { mocksEngine } from '../../..';
 
 // prettier-ignore
 const ageCategoryScenarios = [
