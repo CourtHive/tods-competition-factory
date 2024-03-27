@@ -93,7 +93,7 @@ function checkCategoryUpdates(params) {
           !cd.category || categoryCanContain({ category: params.eventUpdates.category, childCategory: cd.category }),
       ),
     );
-    if (!validCategory) return decorateResult({ result: { error: INVALID_CATEGORY }, stack: 'checkCategoryUpdates' });
+    if (!validCategory) return decorateResult({ result: { error: INVALID_CATEGORY }, stack: params.stack });
   }
 
   if (params.enteredParticipants?.length) {
