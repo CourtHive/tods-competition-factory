@@ -147,7 +147,6 @@ If attributes are combined will sanity check correspondence and return an array 
 
 ```js
 const {
-} = engine.getCategoryAgeDetails({
   consideredDate, // returns either supplied value or date when invoked
   combinedAge, // boolean indicating that ageMax and ageMin are combined values
   ageMaxDate,
@@ -178,8 +177,9 @@ event.modifyEvent({
     eventGender, // optional - must validate against current event entries, if any
     eventType, // optional - must validate against current event entries, if any
     eventName, // optional
-    startDate, // optional
-    endDate, // optional
+    startDate, // optional - must fall within tournament dates
+    category, // optional - must validate against current event entries, if any
+    endDate, // optional - must fall within tournament dates
   },
   eventId,
 });

@@ -201,13 +201,25 @@ const { valid, error } = tools.tieFormatGenderValidityCheck({
 
 ## unique
 
+```js
+engine.unique([]); // returns unique members of an array
+```
+
 ---
 
 ## UUID
 
+```js
+engine.UUID(); // generates unique identifier
+```
+
 ---
 
 ## UUIDS
+
+```js
+engine.UUIDS(count); // generates count unique identifiers
+```
 
 ---
 
