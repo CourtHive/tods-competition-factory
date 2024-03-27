@@ -1,3 +1,4 @@
+import { getTournamentPublishStatus } from '@Query/tournaments/getTournamentPublishStatus';
 import { getCompetitionPublishedDrawDetails } from './getCompetitionPublishedDrawDetails';
 import { scheduledSortedMatchUps } from '@Functions/sorters/scheduledSortedMatchUps';
 import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
@@ -5,13 +6,12 @@ import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getCompetitionMatchUps } from './getCompetitionMatchUps';
 import { getTournamentId } from '@Global/state/globalState';
-import { getTournamentTimeItem } from '../base/timeItems';
 
 // constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { MatchUpFilters, TournamentRecords } from '@Types/factoryTypes';
-import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { Venue } from '@Types/tournamentTypes';
@@ -60,12 +60,9 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   } = params;
 
   // PUBLISH.STATUS is attached at the tournament level by `publishOrderOfPlay`
+  const tournamentId = activeTournamentId ?? getTournamentId() ?? Object.keys(tournamentRecords)[0];
   const tournamentPublishStatus = usePublishState
-    ? getTournamentTimeItem({
-        tournamentRecord:
-          tournamentRecords[activeTournamentId ?? getTournamentId() ?? Object.keys(tournamentRecords)[0]],
-        itemType: `${PUBLISH}.${STATUS}`,
-      }).timeItem?.itemValue?.[status]
+    ? getTournamentPublishStatus({ tournamentRecord: tournamentRecords[tournamentId], status })
     : undefined;
 
   const allCompletedMatchUps = alwaysReturnCompleted
@@ -79,8 +76,8 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
       }).completedMatchUps
     : [];
 
-  // if { usePublishState: true } only return non-completed matchUps if there is orderOfPlay detail
-  if (usePublishState && (!tournamentPublishStatus || !Object.keys(tournamentPublishStatus).length)) {
+  // if { usePublishState: true } return only completed matchUps unless orderOfPLay is published
+  if (usePublishState && !tournamentPublishStatus?.orderOfPlay?.published) {
     return {
       completedMatchUps: allCompletedMatchUps,
       dateMatchUps: [],

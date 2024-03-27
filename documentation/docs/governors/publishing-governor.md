@@ -13,6 +13,7 @@ Return publishing details for tournament, event(s), and/or draws.
 ```js
 // return status for all events and tournament `orderOfPlay`
 publishState = engine.getPublishState().publishState;
+const participantsPublished = publishState.tournament.participants.published;
 const orderOfPlayPublished = publishState.tournament.orderOfPlay.published;
 // status returned for all events within tournamentRecord, accessed by eventId
 const { published, publishedDrawIds, drawDetails } = publishState['eventId'].status;
@@ -27,6 +28,8 @@ const drawPublished = publishState.status.published;
 // when only specific stages or structures are published
 const drawPublishDetail = publishState.status.drawDetail;
 ```
+
+---
 
 ## publishEvent
 
@@ -79,6 +82,15 @@ engine.publishOrderOfPlay({
 
 ---
 
+## publishParticipants
+
+````js
+engine.publishParticipants({
+  removePriorValues, // optional boolean - when true will delete prior timeItems
+})
+
+---
+
 ## unPublishEvent
 
 Modifies the `publishState` of an event. `Subscriptions` or middleware can be used to trigger messaging to services which make event data visible on public websites.
@@ -88,7 +100,7 @@ engine.unPublishEvent({
   removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
   eventId,
 });
-```
+````
 
 ---
 
@@ -108,6 +120,16 @@ engine.unPublishEventSeeding({
 
 ```js
 engine.unPublishOrderOfPlay({
+  removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
+});
+```
+
+---
+
+## unPublishParticipants
+
+```js
+engine.unPublishParticipants({
   removePriorValues, // optional boolean, defaults to true - when true will delete prior timeItems
 });
 ```

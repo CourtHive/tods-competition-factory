@@ -94,6 +94,17 @@ it('can modify PAIR participants', () => {
     participant: modifiedSecondIndividual,
   });
   expect(result.participant.person.nationalityCode).toEqual('USA');
+
+  result = tournamentEngine.modifyParticipant({
+    participant: {
+      participantId: individualParticipantIds[0],
+      person: { tennisId: 'ABC123' },
+    },
+  });
+  expect(result.participant.person.tennisId).toEqual('ABC123');
+
+  const participant = tournamentEngine.findParticipant({ participantId: individualParticipantIds[0] }).participant;
+  expect(participant.person.tennisId).toEqual('ABC123');
 });
 
 it('can modify TEAM participants', () => {

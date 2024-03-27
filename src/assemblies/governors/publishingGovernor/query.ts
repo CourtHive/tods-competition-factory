@@ -1,3 +1,4 @@
+export { getTournamentPublishStatus } from '@Query/tournaments/getTournamentPublishStatus';
 export { bulkUpdatePublishedEventIds } from '@Query/event/bulkUpdatePublishedEventIds';
 export { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 export { getPublishState } from '@Query/publishing/getPublishState';

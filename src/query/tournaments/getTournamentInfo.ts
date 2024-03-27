@@ -77,6 +77,7 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
     }
   }
 
+  tournamentInfo.publishState = publishState?.tournament;
   tournamentInfo.eventInfo = eventInfo;
 
   return {

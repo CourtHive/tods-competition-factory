@@ -6,29 +6,29 @@ import { addTimeItem } from './addTimeItem';
 // constants
 import { MISSING_TOURNAMENT_RECORD, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
-import { UNPUBLISH_ORDER_OF_PLAY } from '@Constants/topicConstants';
+import { UNPUBLISH_PARTICIPANTS } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
-export function unPublishOrderOfPlay(params) {
+export function unPublishParticipants(params) {
   const tournamentRecords = resolveTournamentRecords(params);
 
   if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    const result = unPublishOOP({ tournamentRecord, ...params });
+    const result = unpublish({ tournamentRecord, ...params });
     if (result.error) return result;
   }
 
   return { ...SUCCESS };
 }
 
-function unPublishOOP({ removePriorValues = true, tournamentRecord, status = PUBLIC }) {
+function unpublish({ removePriorValues = true, tournamentRecord, status = PUBLIC }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTimeItem({ element: tournamentRecord, itemType });
   const itemValue = timeItem?.itemValue || { [status]: {} };
-  if (itemValue[status]) delete itemValue[status].orderOfPlay;
+  if (itemValue[status]) delete itemValue[status].participants;
   const updatedTimeItem = { itemValue, itemType };
 
   addTimeItem({
@@ -37,10 +37,8 @@ function unPublishOOP({ removePriorValues = true, tournamentRecord, status = PUB
     removePriorValues,
   });
   addNotice({
-    topic: UNPUBLISH_ORDER_OF_PLAY,
-    payload: {
-      tournamentId: tournamentRecord.tournamentId,
-    },
+    payload: { tournamentId: tournamentRecord.tournamentId },
+    topic: UNPUBLISH_PARTICIPANTS,
   });
 
   return { ...SUCCESS };
