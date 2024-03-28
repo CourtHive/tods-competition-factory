@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  axios: 0.28.0
+  axios: 0.28.1
 
 dependencies:
   '@cmfcmf/docusaurus-search-local':
@@ -3710,8 +3710,8 @@ packages:
       postcss-value-parser: 4.2.0
     dev: false
 
-  /axios@0.28.0:
-    resolution: {integrity: sha512-Tu7NYoGY4Yoc7I+Npf9HhUMtEEpV7ZiLH9yndTCoNhcpBH0kwcvFbzYN9/u5QKI5A6uefjsNNWaz5olJVYS62Q==}
+  /axios@0.28.1:
+    resolution: {integrity: sha512-iUcGA5a7p0mVb4Gm/sy+FSECNkPFT4y7wt6OM/CDpO/OnNCvSs3PoMG8ibrC9jRoGYU0gUK5pXVC4NPXq6lHRQ==}
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -10664,7 +10664,7 @@ packages:
     engines: {node: '>=10.0.0'}
     hasBin: true
     dependencies:
-      axios: 0.28.0
+      axios: 0.28.1
       joi: 17.10.2
       lodash: 4.17.21
       minimist: 1.2.8
