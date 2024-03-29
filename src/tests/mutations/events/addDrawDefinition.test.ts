@@ -4,7 +4,8 @@ import tournamentEngineSync from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { MISSING_VALUE } from '@Constants/errorConditionConstants';
+// constants
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { SINGLES } from '@Constants/matchUpTypes';
 
@@ -71,7 +72,7 @@ test.each([tournamentEngineSync])('can create flightProfile on addDrawDefinition
   expect(result.event.eventId).toEqual('customId');
 
   result = await tournamentEngine.deleteEvents();
-  expect(result.error).toEqual(MISSING_VALUE);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = await tournamentEngine.deleteEvents({ eventIds: [] });
   expect(result.success).toEqual(true);

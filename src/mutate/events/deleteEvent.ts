@@ -1,19 +1,24 @@
-import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
+import { checkAndUpdateSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { mustBeAnArray } from '@Tools/mustBeAnArray';
-import { addNotice } from '@Global/state/globalState';
+import { addNotice, hasTopic } from '@Global/state/globalState';
 
+// constants
+import { ARRAY, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { DELETE_EVENTS } from '@Constants/auditConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { DOUBLES } from '@Constants/eventConstants';
 import { AUDIT } from '@Constants/topicConstants';
-import { EVENT_NOT_FOUND, MISSING_TOURNAMENT_RECORD, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
-export function deleteEvents({ removePairParticipants, tournamentRecord, eventIds }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!tournamentRecord.events) return { error: EVENT_NOT_FOUND };
-  if (!Array.isArray(eventIds)) return { error: MISSING_VALUE, info: mustBeAnArray('drawIds') };
+export function deleteEvents(params) {
+  const paramCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true },
+    { eventIds: true, [OF_TYPE]: ARRAY },
+  ]);
+  if (paramCheck.error) return paramCheck;
+
+  const { removePairParticipants, tournamentRecord, eventIds } = params;
 
   const auditTrail: any[] = [];
   const deletedEventDetails: any[] = [];
@@ -69,12 +74,16 @@ export function deleteEvents({ removePairParticipants, tournamentRecord, eventId
   checkAndUpdateSchedulingProfile({ tournamentRecord });
 
   if (auditTrail.length) {
-    addNotice({ topic: AUDIT, payload: auditTrail });
-    const timeItem = {
-      itemType: DELETE_EVENTS,
-      itemValue: deletedEventDetails,
-    };
-    addTournamentTimeItem({ tournamentRecord, timeItem });
+    if (hasTopic(AUDIT)) {
+      const tournamentId = tournamentRecord.tournamentId;
+      addNotice({ topic: AUDIT, payload: { type: DELETE_EVENTS, tournamentId, detail: auditTrail } });
+    } else {
+      const timeItem = {
+        itemValue: deletedEventDetails,
+        itemType: DELETE_EVENTS,
+      };
+      addTournamentTimeItem({ tournamentRecord, timeItem });
+    }
   }
 
   return { ...SUCCESS };

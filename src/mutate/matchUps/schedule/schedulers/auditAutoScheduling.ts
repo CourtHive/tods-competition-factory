@@ -1,9 +1,10 @@
 import { addTournamentTimeItem } from '@Mutate/timeItems/addTimeItem';
-import { addNotice } from '@Global/state/globalState';
+import { addNotice, hasTopic } from '@Global/state/globalState';
 
 // constants
 import { AUTO_SCHEDULING_AUDIT } from '@Constants/auditConstants';
 import { AUDIT } from '@Constants/topicConstants';
+import { Tournament } from '@Types/tournamentTypes';
 
 export function auditAutoScheduling({ autoSchedulingAudit, tournamentRecords }) {
   addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
@@ -33,6 +34,14 @@ export function auditAutoScheduling({ autoSchedulingAudit, tournamentRecords }) 
   };
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
-    addTournamentTimeItem({ tournamentRecord, timeItem });
+    const tournamentId: string = (tournamentRecord as Tournament).tournamentId;
+    if (hasTopic(AUDIT)) {
+      addNotice({
+        payload: { type: AUTO_SCHEDULING_AUDIT, tournamentId, detail: itemValue },
+        topic: AUDIT,
+      });
+    } else {
+      addTournamentTimeItem({ tournamentRecord, timeItem });
+    }
   }
 }

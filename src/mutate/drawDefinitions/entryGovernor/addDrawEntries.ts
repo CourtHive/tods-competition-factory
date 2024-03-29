@@ -1,3 +1,4 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { refreshEntryPositions } from '@Mutate/entries/refreshEntryPositions';
 import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { participantInEntries } from '@Query/drawDefinition/entryGetter';
@@ -12,6 +13,7 @@ import { addNotice } from '@Global/state/globalState';
 // constants and types
 import { AD_HOC, MAIN, VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE, LUCKY_LOSER } from '@Constants/entryStatusConstants';
+import { DRAW_DEFINITION, ENTRY_STAGE } from '@Constants/attributeConstants';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { DATA_ISSUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -46,14 +48,16 @@ type AddDrawEntryArgs = {
   participant?: Participant;
   extensions?: Extension[];
   entryPosition?: number;
+  participantId?: string;
   extension?: Extension;
-  participantId: string;
   roundTarget?: number;
   drawType?: string;
   event?: Event;
 };
 
 export function addDrawEntry(params: AddDrawEntryArgs) {
+  const paramsCheck = checkRequiredParameters(params, [{ [DRAW_DEFINITION]: true, [ENTRY_STAGE]: true }]);
+  if (paramsCheck.error) return paramsCheck;
   const {
     suppressDuplicateEntries = true,
     entryStatus = DIRECT_ACCEPTANCE,
@@ -71,8 +75,6 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
   } = params;
 
   const stack = 'addDrawEntry';
-  if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (!entryStage) return { error: MISSING_STAGE };
   if (drawType !== AD_HOC && !getValidStage({ stage: entryStage, drawDefinition })) {
     return decorateResult({ result: { error: INVALID_STAGE }, stack });
   }
@@ -182,12 +184,12 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
   const {
     suppressDuplicateEntries = true,
     entryStatus = DIRECT_ACCEPTANCE,
-    stage = MAIN,
     autoEntryPositions = true,
     ignoreStageSpace,
     participantIds,
     drawDefinition,
     stageSequence,
+    stage = MAIN,
     roundTarget,
     extension,
     event,

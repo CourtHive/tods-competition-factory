@@ -1,8 +1,7 @@
 import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
-import { addTournamentTimeItem } from '../timeItems/addTimeItem';
-import { definedAttributes } from '@Tools/definedAttributes';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
+// constants and types
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import {
   MISSING_TOURNAMENT_RECORD,
@@ -32,34 +31,6 @@ export function addQualifyingStructure(params: AddQualifyingstructureArgs) {
 
   const result = addQualifying(params);
   if (result.error) return result;
-
-  const {
-    qualifyingRoundNumber,
-    qualifyingPositions,
-    targetStructureId,
-    drawDefinition,
-    structureName,
-    matchUpType,
-    drawSize,
-    drawType,
-  } = params;
-
-  const qualifyingDetails = definedAttributes({
-    drawId: drawDefinition.drawId,
-    qualifyingRoundNumber,
-    qualifyingPositions,
-    targetStructureId,
-    structureName,
-    matchUpType,
-    drawSize,
-    drawType,
-  });
-
-  const timeItem = {
-    itemType: 'addQualifyingStructures',
-    itemValue: qualifyingDetails,
-  };
-  addTournamentTimeItem({ tournamentRecord, timeItem });
 
   return result;
 }

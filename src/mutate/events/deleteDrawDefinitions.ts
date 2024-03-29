@@ -8,13 +8,15 @@ import { modifyEventPublishStatus } from './modifyEventPublishStatus';
 import { addEventExtension } from '../extensions/addRemoveExtensions';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { addNotice, hasTopic } from '@Global/state/globalState';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { addTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawStructures } from '@Acquire/findStructure';
 import { publishEvent } from '../publishing/publishEvent';
 import { addExtension } from '../extensions/addExtension';
-import { addNotice } from '@Global/state/globalState';
 import { findExtension } from '@Acquire/findExtension';
+import { getTimeItem } from '@Query/base/timeItems';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -161,7 +163,6 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
           })
         : undefined;
 
-      // TODO: conditionally add auditTrail based on policyDefinitions
       const audit = {
         action: DELETE_DRAW_DEFINITIONS,
         payload: {
@@ -226,7 +227,15 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   }
 
   if (auditTrail.length) {
-    addNotice({ topic: AUDIT, payload: auditTrail });
+    if (hasTopic(AUDIT)) {
+      const tournamentId = tournamentRecord.tournamentId;
+      addNotice({ topic: AUDIT, payload: { tournamentId, detail: auditTrail } });
+      const result = getTimeItem({ element: event, itemType: DRAW_DELETIONS });
+      const itemValue = (result?.timeItem?.itemValue || 0) + 1;
+      addTimeItem({ element: event, timeItem: { itemType: DRAW_DELETIONS, itemValue }, removePriorValues: true });
+    } else {
+      addDrawDeletionTelemetry({ appliedPolicies, event, deletedDrawsDetail, auditData });
+    }
   }
   if (matchUpIds.length) {
     deleteMatchUpsNotice({
@@ -236,7 +245,6 @@ export function deleteDrawDefinitions(params: DeleteDrawDefinitionArgs) {
   }
 
   drawIds.forEach((drawId) => deleteDrawNotice({ drawId }));
-  addDrawDeletionTelemetry({ appliedPolicies, event, deletedDrawsDetail, auditData });
 
   if (autoPublish && publishedDrawsDeleted) {
     const result = publishEvent({
