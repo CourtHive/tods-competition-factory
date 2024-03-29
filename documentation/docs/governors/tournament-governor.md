@@ -187,7 +187,12 @@ Accepts an ISO String Date;
 Set tournament `startDate` and `endDate` in one method call. Also cleans up `matchUp` schedules that are invalid due to date changes, and updates court `dateAvailability`.
 
 ```js
-engine.setTournamentDates({ startDate, endDate });
+engine.setTournamentDates({
+  activeDates, // optional array of dates from startDate to endDate
+  weekDays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
+  startDate, // optional
+  endDate, // optional
+});
 ```
 
 ## setTournamentName

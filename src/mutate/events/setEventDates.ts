@@ -1,8 +1,12 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { isValidWeekdaysValue } from '@Validators/isValidWeekdaysValue';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { dateValidation } from '@Validators/regex';
 import { extractDate } from '@Tools/dateTime';
 
 // constants and types
+import { Event, Tournament, weekdayUnion } from '@Types/tournamentTypes';
+import { INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -11,7 +15,6 @@ import {
   INVALID_VALUES,
   MISSING_EVENT,
   MISSING_TOURNAMENT_RECORD,
-  MISSING_VALUE,
 } from '@Constants/errorConditionConstants';
 
 export function setEventStartDate({ tournamentRecord, event, startDate }) {
@@ -44,7 +47,8 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
   return { ...SUCCESS };
 }
 
-export function setEventEndDate({ tournamentRecord, event, endDate }) {
+export function setEventEndDate(params) {
+  const { tournamentRecord, event, endDate } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!event) return { error: MISSING_EVENT };
   if (!dateValidation.test(endDate)) return { error: INVALID_DATE };
@@ -73,17 +77,50 @@ export function setEventEndDate({ tournamentRecord, event, endDate }) {
   return { ...SUCCESS };
 }
 
-export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!event) return { error: MISSING_EVENT };
-  if (!startDate && !endDate) return { error: MISSING_VALUE, info: 'missing date' };
-  if (startDate && !dateValidation.test(startDate)) return { error: INVALID_DATE };
-  if (endDate && !dateValidation.test(endDate)) return { error: INVALID_DATE };
+type SetEventDatesArgs = {
+  tournamentRecord: Tournament;
+  weekdays?: weekdayUnion[];
+  activeDates?: string[];
+  startDate?: string;
+  endDate?: string;
+  event: Event;
+};
+
+export function setEventDates(params: SetEventDatesArgs) {
+  const paramsCheck = checkRequiredParameters(params, [
+    { tournamentRecord: true, event: true },
+    {
+      [VALIDATE]: (value) => dateValidation.test(value),
+      [INVALID]: INVALID_DATE,
+      startDate: false,
+      endDate: false,
+    },
+    {
+      [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
+      [INVALID]: INVALID_DATE,
+      activeDates: false,
+    },
+    {
+      [VALIDATE]: isValidWeekdaysValue,
+      weekdays: false,
+    },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { tournamentRecord, activeDates, weekdays, event, startDate, endDate } = params;
 
   if (startDate && endDate) {
     const newStartDate = new Date(extractDate(startDate)).getTime();
     const newEndDate = new Date(extractDate(endDate)).getTime();
     if (newStartDate > newEndDate) return { error: INVALID_VALUES };
+  }
+
+  if (activeDates) {
+    const start = startDate || tournamentRecord.startDate;
+    const end = endDate || tournamentRecord.endDate;
+    const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
+    const validEnd = !end || activeDates.every((d) => new Date(d) <= new Date(end));
+    if (!validStart || !validEnd) return { error: INVALID_DATE };
   }
 
   if (startDate) {
@@ -95,6 +132,9 @@ export function setEventDates({ tournamentRecord, event, startDate, endDate }) {
     const result = setEventEndDate({ tournamentRecord, event, endDate });
     if (result.error) return result;
   }
+
+  if (activeDates) event.activeDates = activeDates;
+  if (weekdays) event.weekdays = weekdays;
 
   return { ...SUCCESS };
 }

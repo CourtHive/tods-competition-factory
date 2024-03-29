@@ -28,6 +28,7 @@ export { timeItemConstants } from './timeItemConstants';
 export { topicConstants } from './topicConstants';
 export { tournamentConstants } from './tournamentConstants';
 export { venueConstants } from './venueConstants';
+export { weekdayConstants } from './weekdayConstants';
 
 export {
   activeMatchUpStatuses,
