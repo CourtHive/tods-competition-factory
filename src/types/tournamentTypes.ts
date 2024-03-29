@@ -1,8 +1,6 @@
 export interface Tournament {
+  activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   createdAt?: Date | string;
-  /**
-   * Date on which the tournament ends
-   */
   endDate?: string;
   events?: Event[];
   extensions?: Extension[];
@@ -21,9 +19,6 @@ export interface Tournament {
   promotionalName?: string;
   registrationProfile?: RegistrationProfile;
   season?: string;
-  /**
-   * Date on which the tournament starts
-   */
   startDate?: string;
   surfaceCategory?: SurfaceCategoryUnion;
   timeItems?: TimeItem[];
@@ -38,6 +33,7 @@ export interface Tournament {
   tournamentStatus?: TournamentStatusUnion;
   updatedAt?: Date | string;
   venues?: Venue[];
+  weekdays?: weekdayUnion[];
 }
 
 export type TournamentStatusUnion = 'ABANDONDED' | 'CANCELLED' | 'ACTIVE' | 'COMPLETED';
@@ -53,14 +49,12 @@ export interface Organisation {
 }
 
 export interface Event {
+  activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   allowedDrawTypes?: DrawTypeUnion[];
   category?: Category;
   createdAt?: Date | string;
   discipline?: DisciplineUnion;
   drawDefinitions?: DrawDefinition[];
-  /**
-   * Date on which the event ends
-   */
   endDate?: string;
   entries?: Entry[];
   eventAbbreviation?: string;
@@ -78,9 +72,6 @@ export interface Event {
   matchUpFormat?: string;
   notes?: string;
   processCodes?: string[];
-  /**
-   * Date on which the event starts
-   */
   startDate?: string;
   surfaceCategory?: SurfaceCategoryUnion;
   tennisOfficialIds?: string[];
@@ -89,6 +80,7 @@ export interface Event {
   tieFormats?: TieFormat[];
   timeItems?: TimeItem[];
   updatedAt?: Date | string;
+  weekdays?: weekdayUnion[];
   wheelchairClass?: WheelchairClassUnion;
 }
 
@@ -179,6 +171,7 @@ enum DisciplineEnum {
 export type DisciplineUnion = keyof typeof DisciplineEnum;
 
 export interface DrawDefinition {
+  activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   automated?: boolean;
   createdAt?: Date | string;
   drawId: string;
@@ -187,9 +180,6 @@ export interface DrawDefinition {
   drawRepresentativeIds?: string[];
   drawStatus?: DrawStatusUnion;
   drawType?: DrawTypeUnion;
-  /**
-   * Date on which the draw ends
-   */
   endDate?: string;
   entries?: Entry[];
   extensions?: Extension[];
@@ -200,9 +190,6 @@ export interface DrawDefinition {
   matchUpType?: EventTypeUnion;
   notes?: string;
   processCodes?: string[];
-  /**
-   * Date on which the draw begins
-   */
   startDate?: string;
   structures?: Structure[];
   tieFormat?: TieFormat;
@@ -338,9 +325,6 @@ export interface MatchUp {
   collectionPosition?: number;
   createdAt?: Date | string;
   drawPositions?: number[];
-  /**
-   * Date on which the matchUp ends
-   */
   endDate?: string;
   extensions?: Extension[];
   finishingPositionRange?: MatchUpFinishingPositionRange;
@@ -362,9 +346,6 @@ export interface MatchUp {
   roundPosition?: number;
   score?: Score;
   sides?: Side[];
-  /**
-   * Date on which matchUp begins
-   */
   startDate?: string;
   surfaceCategory?: SurfaceCategoryUnion;
   tieFormat?: TieFormat;
@@ -1398,3 +1379,14 @@ export interface UnifiedVenueID {
   updatedAt?: Date | string;
   venueId: string;
 }
+
+enum WeekdayEnum {
+  MON = 'MON',
+  TUE = 'TUE',
+  WED = 'WED',
+  THU = 'THU',
+  FRI = 'FRI',
+  SAT = 'SAT',
+  SUN = 'SUN',
+}
+export type weekdayUnion = keyof typeof WeekdayEnum;

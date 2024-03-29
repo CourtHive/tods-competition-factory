@@ -1,10 +1,13 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
 import { deriveElement } from '@Query/base/deriveElement';
+import { getTimeItemValues } from './getTimeItemValues';
+import { addNotice } from '@Global/state/globalState';
 import { isObject, isString } from '@Tools/objects';
 import { getTimeItem } from '@Query/base/timeItems';
 
 // constants and types
 import { DrawDefinition, Event, TimeItem, Tournament } from '@Types/tournamentTypes';
+import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   EVENT_NOT_FOUND,
@@ -111,13 +114,19 @@ export function addParticipantTimeItem({
 export function addTournamentTimeItem(params) {
   const { removePriorValues, tournamentRecord, duplicateValues, creationTime, timeItem } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  return addTimeItem({
+  const result = addTimeItem({
     element: tournamentRecord,
     removePriorValues,
     duplicateValues,
     creationTime,
     timeItem,
   });
+  if (result.error) return result;
+
+  const timeItemValues = getTimeItemValues({ element: tournamentRecord });
+  addNotice({ topic: MODIFY_TOURNAMENT_DETAIL, payload: { timeItemValues } });
+
+  return result;
 }
 
 export function addEventTimeItem(params) {

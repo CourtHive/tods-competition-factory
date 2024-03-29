@@ -6,10 +6,11 @@ import { expect, test } from 'vitest';
 // constants
 import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { IN_PROGRESS } from '@Constants/tournamentConstants';
+import { setSubscriptions } from '@Global/state/globalState';
+import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  tournamentEngine.setState(tournamentRecord);
+  mocksEngine.generateTournamentRecord({ setState: true });
   let { tournamentInfo } = tournamentEngine.getTournamentInfo();
   const { startDate, endDate } = tournamentInfo;
   expect(startDate).not.toBeUndefined();
@@ -49,4 +50,18 @@ test('tournamentEngine can set tournament startDate and endDate', () => {
   expect(tournamentInfo.startDate).toEqual(anEarlierEndDate);
 
   expect(tournamentInfo.tournamentStatus).toEqual(IN_PROGRESS);
+});
+
+test('touramentInfo includes timeItemValues', () => {
+  const tournamentDetailUpdates: any[] = [];
+  setSubscriptions({
+    subscriptions: { [MODIFY_TOURNAMENT_DETAIL]: (payload) => tournamentDetailUpdates.push(...payload) },
+  });
+  mocksEngine.generateTournamentRecord({ setState: true });
+  const timeItem = { itemType: 'TEST', itemValue: 'value' };
+  tournamentEngine.addTournamentTimeItem({ timeItem });
+  const { tournamentInfo } = tournamentEngine.getTournamentInfo();
+  expect(tournamentInfo.timeItemValues).toEqual({ TEST: 'value' });
+  expect(tournamentDetailUpdates.length).toEqual(1);
+  expect(tournamentDetailUpdates[0].timeItemValues).toEqual({ TEST: 'value' });
 });
