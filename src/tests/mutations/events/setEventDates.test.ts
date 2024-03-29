@@ -3,7 +3,8 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import tournamentEngineSync from '@Engines/syncEngine';
-import { INVALID_DATE, MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_VALUES, MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { MON } from '@Constants/weekdayConstants';
 
 test.each([tournamentEngineSync])('can modify event.startDate and event.endDate', async (tournamentEngine) => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
@@ -84,8 +85,8 @@ test.each([tournamentEngineSync])(
 
     const newEventStartDate = dateStringDaysChange(startDate, -1);
     let result = await tournamentEngine.setEventStartDate({
-      eventId,
       startDate: newEventStartDate,
+      eventId,
     });
     expect(result.success).toEqual(undefined);
     expect(result.error).toEqual(INVALID_DATE);
@@ -94,8 +95,8 @@ test.each([tournamentEngineSync])(
 
     const newEventEndDate = dateStringDaysChange(endDate, 1);
     result = await tournamentEngine.setEventEndDate({
-      eventId,
       endDate: newEventEndDate,
+      eventId,
     });
     expect(result.success).toEqual(undefined);
     expect(result.error).toEqual(INVALID_DATE);
@@ -108,5 +109,36 @@ test.each([tournamentEngineSync])(
     ({ event } = await tournamentEngine.getEvent({ eventId }));
     expect(event.startDate).toEqual(startDate);
     expect(event.endDate).toEqual(endDate);
+
+    result = await tournamentEngine.setEventDates();
+    expect(result.error).toEqual(MISSING_EVENT);
+
+    result = await tournamentEngine.setEventDates({ eventId });
+    expect(result.success).toEqual(true);
+
+    result = await tournamentEngine.setEventDates({ eventId, weekdays: ['invalid'] });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = await tournamentEngine.setEventDates({ eventId, weekdays: [MON, MON] });
+    expect(result.error).toEqual(INVALID_VALUES);
+
+    result = await tournamentEngine.setEventDates({ eventId, weekdays: [MON] });
+    expect(result.success).toEqual(true);
+
+    let activeDates = [
+      dateStringDaysChange(startDate, -1),
+      dateStringDaysChange(startDate, 2),
+      dateStringDaysChange(startDate, 4),
+    ];
+    result = await tournamentEngine.setEventDates({ eventId, activeDates });
+    expect(result.error).toEqual(INVALID_DATE);
+
+    activeDates = [startDate, dateStringDaysChange(startDate, 2), dateStringDaysChange(startDate, 8)];
+    result = await tournamentEngine.setEventDates({ eventId, activeDates });
+    expect(result.error).toEqual(INVALID_DATE);
+
+    activeDates = [startDate, dateStringDaysChange(startDate, 2), dateStringDaysChange(startDate, 4)];
+    result = await tournamentEngine.setEventDates({ eventId, activeDates });
+    expect(result.success).toEqual(true);
   },
 );

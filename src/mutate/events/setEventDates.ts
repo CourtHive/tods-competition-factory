@@ -88,11 +88,12 @@ type SetEventDatesArgs = {
 
 export function setEventDates(params: SetEventDatesArgs) {
   const paramsCheck = checkRequiredParameters(params, [
-    { tournamentRecord: true },
+    { tournamentRecord: true, event: true },
     {
       [VALIDATE]: (value) => dateValidation.test(value),
-      [ANY_OF]: { startDate: false, endDate: false },
       [INVALID]: INVALID_DATE,
+      startDate: false,
+      endDate: false,
     },
     {
       [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
@@ -119,7 +120,7 @@ export function setEventDates(params: SetEventDatesArgs) {
     const end = endDate || tournamentRecord.endDate;
     const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
     const validEnd = !end || activeDates.every((d) => new Date(d) <= new Date(end));
-    if (!validStart || !validEnd) return { error: INVALID_VALUES };
+    if (!validStart || !validEnd) return { error: INVALID_DATE };
   }
 
   if (startDate) {

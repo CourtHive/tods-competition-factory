@@ -122,10 +122,12 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
 }
 
 export function setTournamentStartDate({ tournamentRecord, startDate }) {
+  if (!startDate) return { error: INVALID_DATE };
   return setTournamentDates({ tournamentRecord, startDate });
 }
 
 export function setTournamentEndDate({ tournamentRecord, endDate }) {
+  if (!endDate) return { error: INVALID_DATE };
   return setTournamentDates({ tournamentRecord, endDate });
 }
 
