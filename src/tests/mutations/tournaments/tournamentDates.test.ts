@@ -3,7 +3,11 @@ import { addDays, extractDate } from '@Tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
+
+// constants
 import { MODIFY_DRAW_DEFINITION, MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { MON } from '@Constants/weekdayConstants';
 
 it('will remove court.dateAvailabiilty items that fall outside of tournament dates', () => {
   const venueId = 'venueId';
@@ -201,4 +205,36 @@ it('will remove scheduling detail for matchUps which have been scheduled outside
 
   // since notices were not cleared between "transactions" there will be one for each date change
   expect(drawModifyNotices.length).toEqual(2);
+});
+
+it('can set activeDates for a tournament', () => {
+  const startDate = '2024-05-01';
+  const endDate = addDays(startDate, 6);
+  mocksEngine.generateTournamentRecord({ startDate, endDate, setState: true });
+
+  // first date is before startDate
+  let activeDates = [addDays(startDate, -1), addDays(startDate, 2), addDays(startDate, 4)];
+  let result = tournamentEngine.setTournamentDates({ activeDates });
+  expect(result.error).toEqual(INVALID_DATE);
+
+  // last date is after endDate
+  activeDates = [startDate, addDays(startDate, 2), addDays(startDate, 7)];
+  result = tournamentEngine.setTournamentDates({ activeDates });
+  expect(result.error).toEqual(INVALID_DATE);
+
+  activeDates = [startDate, addDays(startDate, 2), addDays(startDate, 4)];
+  result = tournamentEngine.setTournamentDates({ activeDates });
+  expect(result.success).toEqual(true);
+});
+
+it('can set weekdays for a tournament', () => {
+  mocksEngine.generateTournamentRecord({ setState: true });
+  let result = tournamentEngine.setTournamentDates({ weekdays: true });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = tournamentEngine.setTournamentDates({ weekdays: ['Invalid'] });
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = tournamentEngine.setTournamentDates({ weekdays: [MON, MON] }); // duplicate values
+  expect(result.error).toEqual(INVALID_VALUES);
+  result = tournamentEngine.setTournamentDates({ weekdays: [MON] });
+  expect(result.success).toEqual(true);
 });

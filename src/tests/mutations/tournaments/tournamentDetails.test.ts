@@ -1,3 +1,4 @@
+import { setSubscriptions } from '@Global/state/globalState';
 import { dateStringDaysChange } from '@Tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
@@ -5,9 +6,8 @@ import { expect, test } from 'vitest';
 
 // constants
 import { INVALID_DATE, INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { IN_PROGRESS } from '@Constants/tournamentConstants';
-import { setSubscriptions } from '@Global/state/globalState';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
+import { IN_PROGRESS } from '@Constants/tournamentConstants';
 
 test('tournamentEngine can set tournament startDate and endDate', () => {
   mocksEngine.generateTournamentRecord({ setState: true });

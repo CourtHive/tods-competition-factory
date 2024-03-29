@@ -2,7 +2,7 @@ import { clearScheduledMatchUps } from '@Mutate/matchUps/schedule/clearScheduled
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '@Mutate/venues/updateCourtAvailability';
-import { isValidWeekdayValue } from '@Validators/isValidWeekdayValue';
+import { isValidWeekdaysValue } from '@Validators/isValidWeekdaysValue';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { addNotice } from '@Global/state/globalState';
 import { generateDateRange } from '@Tools/dateTime';
@@ -10,8 +10,8 @@ import { dateValidation } from '@Validators/regex';
 
 // constants and types
 import { INVALID_DATE, INVALID_VALUES, SCHEDULE_NOT_CLEARED } from '@Constants/errorConditionConstants';
-import { ANY_OF, INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
+import { INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { Tournament, weekdayUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
@@ -34,8 +34,9 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
     { tournamentRecord: true },
     {
       [VALIDATE]: (value) => dateValidation.test(value),
-      [ANY_OF]: { startDate: false, endDate: false },
       [INVALID]: INVALID_DATE,
+      startDate: false,
+      endDate: false,
     },
     {
       [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
@@ -43,7 +44,7 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
       activeDates: false,
     },
     {
-      [VALIDATE]: isValidWeekdayValue,
+      [VALIDATE]: isValidWeekdaysValue,
       weekdays: false,
     },
   ]);
@@ -57,7 +58,7 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
     const end = endDate || tournamentRecord.endDate;
     const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
     const validEnd = !end || activeDates.every((d) => new Date(d) <= new Date(end));
-    if (!validStart || !validEnd) return { error: INVALID_VALUES };
+    if (!validStart || !validEnd) return { error: INVALID_DATE };
   }
 
   let checkScheduling;

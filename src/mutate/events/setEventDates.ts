@@ -1,5 +1,5 @@
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { isValidWeekdayValue } from '@Validators/isValidWeekdayValue';
+import { isValidWeekdaysValue } from '@Validators/isValidWeekdaysValue';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { dateValidation } from '@Validators/regex';
 import { extractDate } from '@Tools/dateTime';
@@ -100,7 +100,7 @@ export function setEventDates(params: SetEventDatesArgs) {
       activeDates: false,
     },
     {
-      [VALIDATE]: isValidWeekdayValue,
+      [VALIDATE]: isValidWeekdaysValue,
       weekdays: false,
     },
   ]);

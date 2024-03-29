@@ -102,11 +102,7 @@ test.each([tournamentEngineSync])(
     ({ event } = await tournamentEngine.getEvent({ eventId }));
     expect(event.endDate).toEqual(eventEndDate);
 
-    result = await tournamentEngine.setEventDates({
-      eventId,
-      startDate,
-      endDate,
-    });
+    result = await tournamentEngine.setEventDates({ eventId, startDate, endDate });
     expect(result.success).toEqual(true);
 
     ({ event } = await tournamentEngine.getEvent({ eventId }));
