@@ -154,7 +154,11 @@ function setSubscriptions(params) {
   const instanceState = getInstanceState();
 
   Object.keys(params.subscriptions).forEach((subscription) => {
-    instanceState.subscriptions[subscription] = params.subscriptions[subscription];
+    if (typeof params.subscriptions[subscription] === 'function') {
+      instanceState.subscriptions[subscription] = params.subscriptions[subscription];
+    } else {
+      delete instanceState.subscriptions[subscription];
+    }
   });
   return { ...SUCCESS };
 }

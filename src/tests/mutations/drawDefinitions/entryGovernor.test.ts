@@ -31,7 +31,7 @@ it('rejects adding participants when stage drawSize undefined', () => {
 });
 
 it('will not allow duplicate entries', () => {
-  setSubscriptions({ subscriptions: { [DATA_ISSUE]: true } }); // doesn't have to be a function to capture
+  setSubscriptions({ subscriptions: { [DATA_ISSUE]: () => {} } });
   const drawDefinition: DrawDefinition = newDrawDefinition({
     drawId: 'uuid-abc',
   });
@@ -67,7 +67,7 @@ it('will not allow duplicate entries', () => {
 });
 
 it('will not allow duplicate entries', () => {
-  setSubscriptions({ subscriptions: { [DATA_ISSUE]: true } }); // doesn't have to be a function to capture
+  setSubscriptions({ subscriptions: { [DATA_ISSUE]: () => {} } });
   const drawDefinition: DrawDefinition = newDrawDefinition({
     drawId: 'uuid-abc',
   });

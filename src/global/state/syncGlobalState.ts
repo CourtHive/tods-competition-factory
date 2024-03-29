@@ -121,7 +121,11 @@ export function setSubscriptions(params: any) {
   if (typeof params.subscriptions !== 'object') return { error: INVALID_VALUES };
 
   Object.keys(params.subscriptions).forEach((subscription) => {
-    syncGlobalState.subscriptions[subscription] = params.subscriptions[subscription];
+    if (typeof params.subscriptions[subscription] === 'function') {
+      syncGlobalState.subscriptions[subscription] = params.subscriptions[subscription];
+    } else {
+      delete syncGlobalState.subscriptions[subscription];
+    }
   });
 
   return { ...SUCCESS };

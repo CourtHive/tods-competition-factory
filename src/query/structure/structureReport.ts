@@ -81,7 +81,9 @@ export function getStructureReports({
         [flight.drawId]: flight.flightNumber,
       }));
       const flightMap: any = flightNumbers && Object.assign({}, ...flightNumbers);
-      const drawDeletionsCount = extensions?.find((x) => x.name === DRAW_DELETIONS)?.value?.length || 0;
+      const drawDeletionsExtension = extensions?.find((x) => x.name === DRAW_DELETIONS);
+      const drawDeletionsTimeItem = eventTimeItems?.find((x) => x.itemType === DRAW_DELETIONS);
+      const drawDeletionsCount = drawDeletionsExtension?.value?.length || drawDeletionsTimeItem?.itemValue || 0;
 
       const mapValues: number[] = Object.values(flightMap);
       const minFlightNumber = flightMap && Math.min(...mapValues);
@@ -89,11 +91,11 @@ export function getStructureReports({
       const eventSeedingBasis = getSeedingBasis(eventTimeItems);
 
       eventStructureReports[eventId] = {
+        seedingBasis: eventSeedingBasis ? JSON.stringify(eventSeedingBasis) : undefined,
         totalPositionManipulations: 0,
         maxPositionManipulations: 0,
         generatedDrawsCount: 0,
         drawDeletionsCount,
-        seedingBasis: eventSeedingBasis ? JSON.stringify(eventSeedingBasis) : undefined,
         tournamentId,
         eventId,
       };

@@ -12,6 +12,7 @@ export const ROUND_NUMBER = 'roundNumber';
 export const STRUCTURE_ID = 'structureId';
 export const PARTICIPANT = 'participant';
 export const MATCHUP_IDS = 'matchUpIds';
+export const ENTRY_STAGE = 'entryStage';
 export const POLICY_TYPE = 'policyType';
 export const STRUCTURES = 'structures';
 export const MATCHUP_ID = 'matchUpId';

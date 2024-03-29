@@ -1,6 +1,8 @@
+import { getTimeItemValues } from '@Mutate/timeItems/getTimeItemValues';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { getPublishState } from '@Query/publishing/getPublishState';
 import { extractEventInfo } from '@Query/event/extractEventInfo';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
@@ -29,6 +31,7 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
     onlineResources,
 
     localTimeZone,
+    activeDates,
     startDate,
     endDate,
 
@@ -48,6 +51,7 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
     onlineResources,
 
     localTimeZone,
+    activeDates,
     startDate,
     endDate,
 
@@ -77,11 +81,13 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
     }
   }
 
+  tournamentInfo.timeItemValues = getTimeItemValues({ element: tournamentRecord });
+
   tournamentInfo.publishState = publishState?.tournament;
   tournamentInfo.eventInfo = eventInfo;
 
   return {
-    tournamentInfo: makeDeepCopy(tournamentInfo, false, true),
+    tournamentInfo: makeDeepCopy(definedAttributes(tournamentInfo), false, true),
     ...SUCCESS,
   };
 }

@@ -321,6 +321,10 @@ export function getTopics() {
   return _globalStateProvider.getTopics();
 }
 
+export function hasTopic(topic) {
+  return getTopics()?.topics?.includes(topic);
+}
+
 export type CallListenerArgs = {
   notices: Notice[];
   topic: string;

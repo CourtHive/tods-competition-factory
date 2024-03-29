@@ -6,7 +6,6 @@ import { expect, it } from 'vitest';
 import { DRAW_DEFINITION_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 import { AUDIT, DELETED_MATCHUP_IDS } from '@Constants/topicConstants';
-import { DRAW_DELETIONS } from '@Constants/extensionConstants';
 
 it('can notify subscriber when drawDefinitions are deleted', () => {
   const drawProfiles = [
@@ -64,17 +63,17 @@ it('can notify subscriber when drawDefinitions are deleted', () => {
   expect(result.success).toEqual(true);
 
   expect(notificationCounter).toEqual(1);
-  expect(auditTrail.flat(Infinity)[0].payload.auditData).toEqual(auditData);
+  expect(auditTrail.flat(Infinity)[0].detail[0].payload.auditData).toEqual(auditData);
 
   const { event } = tournamentEngine.getEvent({ eventId });
-  expect(event.extensions.length).toEqual(2);
-  const deletions = event.extensions.find((x) => x.name === DRAW_DELETIONS);
-  expect(deletions.value.length).toEqual(1);
+  // because there is an AUDIT topic no deletedDrawDefinitions extension is added
+  expect(event.extensions.length).toEqual(1);
 
   // now test structureReports
   const { eventStructureReports } = tournamentEngine.getStructureReports();
   const eventReport = eventStructureReports.find((e) => e.eventId === eventId);
   expect(eventReport.totalPositionManipulations).toEqual(0);
   expect(eventReport.generatedDrawsCount).toEqual(0);
+  // drawDeletionsCount is found in event timeItems when no extension is present
   expect(eventReport.drawDeletionsCount).toEqual(1);
 });

@@ -33,8 +33,7 @@ export function stageStructures({ stage, drawDefinition, stageSequence }) {
   return (
     drawDefinition &&
     stage &&
-    drawDefinition.structures &&
-    drawDefinition.structures.filter((structure) => {
+    drawDefinition.structures?.filter((structure) => {
       return structure.stage === stage && structure.stageSequence === stageSequence;
     })
   );
