@@ -5,8 +5,8 @@ import { dateValidation } from '@Validators/regex';
 import { extractDate } from '@Tools/dateTime';
 
 // constants and types
-import { ANY_OF, INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { Event, Tournament, weekdayUnion } from '@Types/tournamentTypes';
+import { INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
