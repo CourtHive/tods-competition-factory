@@ -2,6 +2,8 @@ import { clearScheduledMatchUps } from '@Mutate/matchUps/schedule/clearScheduled
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { updateCourtAvailability } from '@Mutate/venues/updateCourtAvailability';
+import { isValidWeekdayValue } from '@Validators/isValidWeekdayValue';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { addNotice } from '@Global/state/globalState';
 import { generateDateRange } from '@Tools/dateTime';
 import { dateValidation } from '@Validators/regex';
@@ -10,12 +12,14 @@ import { dateValidation } from '@Validators/regex';
 import { INVALID_DATE, INVALID_VALUES, SCHEDULE_NOT_CLEARED } from '@Constants/errorConditionConstants';
 import { ANY_OF, INVALID, VALIDATE } from '@Constants/attributeConstants';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
+import { Tournament, weekdayUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { Tournament } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;
+  weekdays?: weekdayUnion[];
+  activeDates?: string[];
   startDate?: string;
   endDate?: string;
 };
@@ -24,7 +28,7 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   datesRemoved?: string[];
   datesAdded?: string[];
 } {
-  const { tournamentRecord, startDate, endDate } = params;
+  const { tournamentRecord, startDate, endDate, activeDates, weekdays } = params;
 
   const paramsCheck = checkRequiredParameters(params, [
     { tournamentRecord: true },
@@ -33,10 +37,28 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
       [ANY_OF]: { startDate: false, endDate: false },
       [INVALID]: INVALID_DATE,
     },
+    {
+      [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
+      [INVALID]: INVALID_DATE,
+      activeDates: false,
+    },
+    {
+      [VALIDATE]: isValidWeekdayValue,
+      weekdays: false,
+    },
   ]);
   if (paramsCheck.error) return paramsCheck;
 
   if (endDate && startDate && new Date(endDate) < new Date(startDate)) return { error: INVALID_VALUES };
+  if (endDate && startDate && new Date(startDate) > new Date(endDate)) return { error: INVALID_VALUES };
+
+  if (activeDates) {
+    const start = startDate || tournamentRecord.startDate;
+    const end = endDate || tournamentRecord.endDate;
+    const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
+    const validEnd = !end || activeDates.every((d) => new Date(d) <= new Date(end));
+    if (!validStart || !validEnd) return { error: INVALID_VALUES };
+  }
 
   let checkScheduling;
   // if start has moved closer to end or end has moved closer to start, check for scheduling issues
@@ -77,16 +99,21 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
     tournamentRecord.startDate = endDate;
   }
 
+  if (activeDates) tournamentRecord.activeDates = activeDates;
+  if (weekdays) tournamentRecord.weekdays = weekdays;
+
   const unscheduledMatchUpIds = checkScheduling && removeInvalidScheduling({ tournamentRecord })?.unscheduledMatchUpIds;
 
   updateCourtAvailability({ tournamentRecord });
   addNotice({
-    payload: {
+    payload: definedAttributes({
       parentOrganisation: tournamentRecord.parentOrganisation,
       tournamentId: tournamentRecord.tournamentId,
+      activeDates,
       startDate,
+      weekdays,
       endDate,
-    },
+    }),
     topic: MODIFY_TOURNAMENT_DETAIL,
   });
 
