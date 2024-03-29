@@ -5,6 +5,7 @@ import { intersection } from '@Tools/arrays';
 // constants and types
 import { IDENTIFIER, RESOURCE_SUB_TYPE, RESOURCE_TYPE } from '@Constants/resourceConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
+import { validStages } from '@Constants/drawDefinitionConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
   EVENT_NOT_FOUND,
@@ -38,6 +39,7 @@ import {
   COURT_IDS,
   DRAW_DEFINITION,
   DRAW_ID,
+  ENTRY_STAGE,
   ERROR,
   EVENT,
   EVENT_ID,
@@ -81,6 +83,7 @@ const validators = {
   [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
   [ONLINE_RESOURCE]: (value) =>
     intersection(Object.keys(value), [RESOURCE_SUB_TYPE, RESOURCE_TYPE, IDENTIFIER]).length === 3,
+  [ENTRY_STAGE]: (value) => validStages.includes(value),
 };
 
 const errors = {
