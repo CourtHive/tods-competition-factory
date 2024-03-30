@@ -125,7 +125,11 @@ export function addTournamentTimeItem(params) {
 
   const timeItemValues = getTimeItemValues({ element: tournamentRecord });
   addNotice({
-    payload: { timeItemValues, tournamentId: tournamentRecord.tournamentId },
+    payload: {
+      parentOrganisation: tournamentRecord.parentOrganisation,
+      tournamentId: tournamentRecord.tournamentId,
+      timeItemValues,
+    },
     topic: MODIFY_TOURNAMENT_DETAIL,
   });
 
