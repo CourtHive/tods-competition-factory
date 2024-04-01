@@ -1,4 +1,5 @@
 import { findTournamentParticipant } from '@Acquire/findTournamentParticipant';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { deriveElement } from './deriveElement';
 
 // constants and types
@@ -53,7 +54,7 @@ export function getTimeItem(params: TimeItemArgs): TimeItemResult & ResultType {
       return aDate - bDate;
     });
 
-  const timeItem = filteredSorted.pop();
+  const timeItem = makeDeepCopy(filteredSorted.pop(), false, true);
 
   if (timeItem) {
     const result = { timeItem, ...SUCCESS };
