@@ -1,19 +1,24 @@
+import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpSubstitutions';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { removeLineUpSubstitutions } from '../../drawDefinitions/removeLineUpSubstitutions';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
-import { assignSeed } from '../../drawDefinitions/entryGovernor/seedAssignment';
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { assignDrawPositionBye } from './assignDrawPositionBye';
 import { findStructure } from '@Acquire/findStructure';
-import { assignDrawPosition } from './positionAssignment';
 import { numericSort } from '@Tools/sorting';
 
+// constants
 import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { INVALID_DRAW_POSITION, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
+import {
+  DRAW_POSITION_OCCUPIED,
+  INVALID_DRAW_POSITION,
+  MISSING_PARTICIPANT_ID,
+} from '@Constants/errorConditionConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -108,9 +113,7 @@ export function directLoser(params) {
     .map((assignment) => assignment.drawPosition);
 
   const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
-
   const isFeedRound = loserTargetLink.target.roundNumber > 1 && unfilledTargetMatchUpDrawPositions?.length;
-
   const isFirstRoundValidDrawPosition = loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
 
   if (fedDrawPositionFMLC) {
@@ -136,9 +139,10 @@ export function directLoser(params) {
     });
     if (result.error) return decorateResult({ result, stack });
   } else {
+    const error = !targetDrawPositionIsUnfilled ? DRAW_POSITION_OCCUPIED : INVALID_DRAW_POSITION;
     return decorateResult({
-      result: { error: INVALID_DRAW_POSITION },
-      context: { loserDrawPosition, loserTargetLink },
+      context: { loserDrawPosition, loserTargetLink, targetDrawPositionIsUnfilled },
+      result: { error },
       stack,
     });
   }
