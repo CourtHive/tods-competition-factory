@@ -60,8 +60,24 @@ test('touramentInfo includes timeItemValues', () => {
   mocksEngine.generateTournamentRecord({ setState: true });
   const timeItem = { itemType: 'TEST', itemValue: 'value' };
   tournamentEngine.addTournamentTimeItem({ timeItem });
-  const { tournamentInfo } = tournamentEngine.getTournamentInfo();
+  const tournamentInfo = tournamentEngine.getTournamentInfo().tournamentInfo;
   expect(tournamentInfo.timeItemValues).toEqual({ TEST: 'value' });
   expect(tournamentDetailUpdates.length).toEqual(1);
   expect(tournamentDetailUpdates[0].timeItemValues).toEqual({ TEST: 'value' });
+
+  let result = tournamentEngine.addTournamentTimeItem({ timeItem, removePriorValues: true });
+  expect(result.success).toEqual(true);
+
+  result = tournamentEngine.getTournament();
+  expect(result.tournamentRecord.timeItems.length).toEqual(1);
+
+  // check that removing prior values works
+  result = tournamentEngine.addTournamentTimeItem({ timeItem });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.getTournament();
+  expect(result.tournamentRecord.timeItems.length).toEqual(2);
+  result = tournamentEngine.addTournamentTimeItem({ timeItem, removePriorValues: true });
+  expect(result.success).toEqual(true);
+  result = tournamentEngine.getTournament();
+  expect(result.tournamentRecord.timeItems.length).toEqual(1);
 });
