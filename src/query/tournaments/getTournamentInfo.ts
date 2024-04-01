@@ -62,12 +62,13 @@ export function getTournamentInfo(params?: { tournamentRecord: Tournament; usePu
     updatedAt,
   }))(tournamentRecord);
 
-  const tournamentContacts = getParticipants({
+  const participantResult = getParticipants({
     participantFilters: { participantRoles: [ADMINISTRATION, OFFICIAL, MEDIA, MEDICAL, SECURITY] },
     policyDefinitions: POLICY_PRIVACY_STAFF,
     tournamentRecord,
-  }).participants;
+  });
 
+  const tournamentContacts = participantResult?.participants ?? [];
   if (tournamentContacts) tournamentInfo.tournamentContacts = tournamentContacts;
 
   const publishState = getPublishState({ tournamentRecord })?.publishState;

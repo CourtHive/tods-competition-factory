@@ -26,6 +26,7 @@ type GetParticipantsArgs = {
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
   withPotentialMatchUps?: boolean;
+  returnParticipantMap?: boolean; // defaults to true
   contextProfile?: ContextProfile;
   tournamentRecord: Tournament;
   withRankingProfile?: boolean;
@@ -35,6 +36,7 @@ type GetParticipantsArgs = {
   withTeamMatchUps?: boolean;
   withScaleValues?: boolean;
   usePublishState?: boolean;
+  returnMatchUps?: boolean; // defaults to true
   withStatistics?: boolean;
   withOpponents?: boolean;
   withMatchUps?: boolean;
@@ -49,6 +51,7 @@ export function getParticipants(params: GetParticipantsArgs): {
   eventsPublishStatuses?: { [key: string]: any };
   participantIdsWithConflicts?: string[];
   participants?: HydratedParticipant[];
+  missingParticipantIds?: string[];
   participantMap?: ParticipantMap;
   derivedEventInfo?: any;
   derivedDrawInfo?: any;
@@ -89,7 +92,7 @@ export function getParticipants(params: GetParticipantsArgs): {
     getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
   }
 
-  let { participantMap } = getParticipantMap({
+  const mapResult = getParticipantMap({
     convertExtensions,
     tournamentRecord,
     withSignInStatus,
@@ -98,6 +101,8 @@ export function getParticipants(params: GetParticipantsArgs): {
     withISO2,
     withIOC,
   });
+
+  let { participantMap } = mapResult;
 
   const entriesResult = getParticipantEntries({
     withMatchUps: withMatchUps ?? withRankingProfile,
@@ -199,17 +204,17 @@ export function getParticipants(params: GetParticipantsArgs): {
     : filteredParticipants;
 
   // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants
-  // filter mappedMatchUps and matchUps to reduce over-the-wire payloads
 
   return {
+    participantMap: params.returnParticipantMap !== false ? participantMap : undefined,
+    mappedMatchUps: params.returnMatchUps !== false ? mappedMatchUps : undefined,
+    matchUps: params.returnMatchUps !== false ? matchUps : undefined,
+    missingParticipantIds: mapResult.missingParticipantIds,
     participantIdsWithConflicts,
     eventsPublishStatuses,
     derivedEventInfo,
     derivedDrawInfo,
-    mappedMatchUps,
-    participantMap,
     participants,
     ...SUCCESS,
-    matchUps,
   };
 }
