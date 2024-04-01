@@ -94,6 +94,10 @@ export const DRAW_POSITION_ACTIVE = {
   message: 'drawPosition is active',
   code: 'ERR_ACTIVE_DRAW_POSITION',
 };
+export const DRAW_POSITION_OCCUPIED = {
+  message: 'drawPosition is occupied',
+  code: 'ERR_OCCUPIED_DRAW_POSITION',
+};
 export const INVALID_DRAW_POSITION = {
   message: 'Invlid drawPosition',
   code: 'ERR_INVALID_DRAW_POSITION',
