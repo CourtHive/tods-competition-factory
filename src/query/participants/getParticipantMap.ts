@@ -44,9 +44,12 @@ export function getParticipantMap({
   withISO2,
   withIOC,
 }: GetParticpantsMapArgs): {
+  missingParticipantIds: string[];
   participantMap: ParticipantMap;
 } {
+  const missingParticipantIds: string[] = [];
   const participantMap: ParticipantMap = {};
+
   // initialize all participants first, to preserve order
   for (const participant of tournamentRecord.participants ?? []) {
     const participantId = participant?.participantId;
@@ -61,13 +64,16 @@ export function getParticipantMap({
     Object.assign(participantMap[participantId].participant, participantCopy);
 
     if (individualParticipantIds) {
-      processIndividualParticipantIds({
+      const result = processIndividualParticipantIds({
         individualParticipantIds,
         participantCopy,
         participantMap,
         participantType,
         participantId,
       });
+      if (result.missingParticipantIds.length) {
+        missingParticipantIds.push(...result.missingParticipantIds);
+      }
     }
 
     if (withSignInStatus) {
@@ -96,7 +102,7 @@ export function getParticipantMap({
     addIndividualParticipants({ participantMap, template });
   }
 
-  return { participantMap };
+  return { missingParticipantIds, participantMap };
 }
 
 function signedIn(participant) {
@@ -115,8 +121,14 @@ function processIndividualParticipantIds({
   participantType,
   participantId,
 }) {
+  const missingParticipantIds: string[] = [];
+
   for (const individualParticipantId of individualParticipantIds) {
-    const individualParticipant = participantMap[individualParticipantId].participant;
+    const individualParticipant = participantMap[individualParticipantId]?.participant;
+    if (!individualParticipant) {
+      missingParticipantIds.push(individualParticipantId);
+      continue;
+    }
     individualParticipant[typeMap[participantType]].push(participantId);
 
     if ([TEAM, GROUP].includes(participantType)) {
@@ -138,6 +150,8 @@ function processIndividualParticipantIds({
       participantMap[individualParticipantId].pairIdMap[partnerParticipantId] = participantId;
     }
   }
+
+  return { missingParticipantIds };
 }
 
 function initializeParticipantId({ participantMap, participantId }) {
