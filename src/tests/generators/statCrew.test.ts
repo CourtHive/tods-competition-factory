@@ -29,15 +29,23 @@ test('generation of statcrew from dual', () => {
   const linesCount = lines.length;
   expect(linesCount).toEqual(47);
   const tags = lines.map((line) => line.split(' ')?.[0].slice(1).split('>')?.[0]);
+
+  const doubles_match_close = '/doubles_match';
+  const singles_match_close = '/singles_match';
+  const doubles_match = 'doubles_match';
+  const singles_match = 'singles_match';
+  const doubles_score = 'doubles_score';
+  const singles_score = 'singles_score';
+
   // prettier-ignore
   expect(tags).toEqual([
-    'tngame', 'venue', 'officials', 'rules', '/venue', '', 'singles_matches', 'singles_match',
-    'singles_score', 'singles_score', '/singles_match', 'singles_match', 'singles_score',
-    'singles_score', '/singles_match', 'singles_match', 'singles_score', 'singles_score',
-    '/singles_match', 'singles_match', 'singles_score', 'singles_score', '/singles_match',
-    'singles_match', 'singles_score', 'singles_score', '/singles_match', 'singles_match',
-    'singles_score', 'singles_score', '/singles_match', '/singles_matches', 'doubles_matches',
-    'doubles_match', 'doubles_score', 'doubles_score', '/doubles_match', 'doubles_match',
-    'doubles_score', 'doubles_score', '/doubles_match', 'doubles_match', 'doubles_score',
-    'doubles_score', '/doubles_match', '/doubles_matches', '/tngame', ]);
+    'tngame', 'venue', 'officials', 'rules', '/venue', '', 'singles_matches', singles_match,
+    singles_score, singles_score, singles_match_close, singles_match, singles_score,
+    singles_score, singles_match_close, singles_match, singles_score, singles_score,
+    singles_match_close, singles_match, singles_score, singles_score, singles_match_close,
+    singles_match, singles_score, singles_score, singles_match_close, singles_match,
+    singles_score, singles_score, singles_match_close, '/singles_matches', 'doubles_matches',
+    doubles_match, doubles_score, doubles_score, doubles_match_close, doubles_match,
+    doubles_score, doubles_score, doubles_match_close, doubles_match, doubles_score,
+    doubles_score, doubles_match_close, '/doubles_matches', '/tngame', ]);
 });
