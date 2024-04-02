@@ -1,0 +1,2920 @@
+{
+  "createdAt": "2024-04-02T10:35:33.443Z",
+  "extensions": [],
+  "timeItems": [
+    {
+      "createdAt": "2024-03-29T11:00:08.550Z",
+      "itemSubTypes": [],
+      "itemType": "RETRIEVAL.RATING.SINGLES.WTN",
+      "itemValue": "2024-03-29T07:00"
+    }
+  ],
+  "updatedAt": "2024-03-31T03:59:23.930Z",
+  "endDate": "2024-03-31T05:00:00.000Z",
+  "events": [
+    {
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "eb9ce8e7-a1de-4cf6-b9d0-a86d1eb65794",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "734ccbc3-9a7e-4b1a-aeda-1caeda8be259",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "d11b870a-aa85-47eb-aef2-77f6733f31a7"
+              }
+            ]
+          }
+        }
+      ],
+      "allowedDrawTypes": [],
+      "drawDefinitions": [
+        {
+          "extensions": [
+            {
+              "name": "lineUps",
+              "value": {
+                "01A4F72E-DC0C-4F58-BF78-B035F4474D53": [
+                  {
+                    "participantId": "37D70C50-65AA-4F00-BE40-897127B79856",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 6
+                      },
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "25E2453F-2682-49E1-A7E4-7A27C6D02713",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "8170DC55-3562-4309-9B05-03F96B166456",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 4
+                      },
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "6C94C804-6E3C-4930-A044-70842C0FB3EA",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "5B2CCB25-15DE-4590-AD9C-33C54800446E",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "76DCDC5C-D2AE-4C55-9B72-1B8973DF9FE3",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 3
+                      },
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 5
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "9813C05E-8CA2-48C2-8792-19B66EAFF1B4",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  }
+                ],
+                "C7D4D83B-0C22-4847-92E1-DB8A9AEB1C65": [
+                  {
+                    "participantId": "2BEB32FD-6A8C-443C-A2E4-FEAA7F33CFE5",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 3
+                      },
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "2369EEE9-B39A-49A1-B3C0-40B928354202",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 1
+                      },
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 1
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "5BC34C81-B96D-4DE7-8D2B-7A10030D2187",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 2
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "8F7A56DC-502F-4355-A4B5-5C111231AC1E",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 4
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "2F9DC475-98C8-46D4-82E1-41761AFFBE4F",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 2
+                      },
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "B5F88846-A909-49DF-B20A-6FDDD424552E",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionPosition": 3
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "1D5D77A6-47FB-4DF8-9D4A-C845FDF1E109",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 5
+                      }
+                    ]
+                  },
+                  {
+                    "participantId": "02CAC9F5-BB3C-4C5E-8084-82AA952971F5",
+                    "collectionAssignments": [
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionPosition": 6
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          ],
+          "updatedAt": "2024-03-31T03:59:23.890Z",
+          "automated": true,
+          "drawId": "d11b870a-aa85-47eb-aef2-77f6733f31a7",
+          "drawName": "Draw",
+          "drawOrder": 1,
+          "drawRepresentativeIds": [],
+          "drawType": "SINGLE_ELIMINATION",
+          "entries": [
+            {
+              "entryPosition": 1,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "eb9ce8e7-a1de-4cf6-b9d0-a86d1eb65794"
+            },
+            {
+              "entryPosition": 2,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "734ccbc3-9a7e-4b1a-aeda-1caeda8be259"
+            }
+          ],
+          "links": [],
+          "matchUps": [],
+          "structures": [
+            {
+              "updatedAt": "2024-03-31T03:59:23.890Z",
+              "finishingPosition": "ROUND_OUTCOME",
+              "matchUps": [
+                {
+                  "timeItems": [
+                    {
+                      "createdAt": "2023-11-15T14:51:18.897Z",
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.DATE",
+                      "itemValue": "2024-03-30"
+                    },
+                    {
+                      "createdAt": "2023-11-15T14:51:18.898Z",
+                      "itemSubTypes": [],
+                      "itemType": "SCHEDULE.TIME.SCHEDULED",
+                      "itemValue": "13:00"
+                    }
+                  ],
+                  "drawPositions": [1, 2],
+                  "finishingPositionRange": {
+                    "loser": [2, 2],
+                    "winner": [1, 1]
+                  },
+                  "finishingRound": 1,
+                  "matchUpId": "68625a46-784a-4316-b71b-f58bbec9fe42",
+                  "matchUpStatus": "COMPLETED",
+                  "matchUpStatusCodes": [],
+                  "matchUpType": "TEAM",
+                  "roundNumber": 1,
+                  "roundPosition": 1,
+                  "sides": [
+                    {
+                      "lineUp": [
+                        {
+                          "participantId": "d9d46057-3353-4387-9769-0f3bee8826cb",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 6
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "2e4e3878-0210-42d1-b65c-9e9249cba2e6",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "f49edb4c-564e-4b9f-9f48-59836c68a4a8",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 2
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 4
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "4844d69a-5f36-49a8-9ca9-8dbcc54b56f7",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "066a729d-fae3-4a4b-8705-d472e0220e49",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "e702f807-2070-46f1-8956-0ed39cab7cec",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 5
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "19906b47-5fcc-4680-a147-5f563ea3c749",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        }
+                      ],
+                      "sideNumber": 1
+                    },
+                    {
+                      "lineUp": [
+                        {
+                          "participantId": "9b1b1487-03f6-43aa-963e-56061b5a91a2",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "09f03d50-febe-42ad-8d4b-217bf119492e",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 1
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 1
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "9709441d-db36-4ecd-a3cd-2921d37e5985",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "f8dc822e-98e7-47e5-b3f4-58d2ee904940",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 2
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 4
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "42de34d4-9684-4c6d-a4e5-980b0bd76ae0",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 3
+                            },
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 2
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "a951203f-3573-4345-b4ce-f9200979012c",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                              "collectionPosition": 3
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "ebf77fa3-2df5-4d1b-935f-2871bd761434",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 5
+                            }
+                          ]
+                        },
+                        {
+                          "participantId": "9c70b228-f56a-4aa8-a1e3-65703e0ecbc7",
+                          "collectionAssignments": [
+                            {
+                              "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                              "collectionPosition": 6
+                            }
+                          ]
+                        }
+                      ],
+                      "sideNumber": 2
+                    }
+                  ],
+                  "tieMatchUps": [
+                    {
+                      "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                      "collectionPosition": 1,
+                      "drawPositions": [],
+                      "matchUpId": "568999dd-2e37-4158-a634-bbd61da89f80",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:54:34.904Z",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-7(5)",
+                        "scoreStringSide2": "7-6(5)",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side1TiebreakScore": 5,
+                            "side2Score": 7,
+                            "side2TiebreakScore": 7,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                      "collectionPosition": 2,
+                      "drawPositions": [],
+                      "matchUpId": "6e04ad61-f35f-4118-8737-51fdf7ac9399",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:55:01.570Z",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-2",
+                        "scoreStringSide2": "2-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 2,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                      "collectionPosition": 3,
+                      "drawPositions": [],
+                      "matchUpId": "2ad77cf1-347b-4df2-b6ae-40383f88b6d5",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:55:27.734Z",
+                      "matchUpFormat": "SET1-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "3-6",
+                        "scoreStringSide2": "6-3",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 3,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 1,
+                      "drawPositions": [],
+                      "matchUpId": "cc9bd80b-372d-4442-8d83-a88e3324efd6",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:55:49.969Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-4",
+                        "scoreStringSide2": "3-6 4-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 4,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 2,
+                      "drawPositions": [],
+                      "matchUpId": "5cb9b5f6-367a-4d3b-b761-77561f18627d",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:56:15.739Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "1-6 6-2 2-6",
+                        "scoreStringSide2": "6-1 2-6 6-2",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 1,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 2,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 3,
+                      "drawPositions": [],
+                      "matchUpId": "113ef523-08d5-4dda-998b-3c740901d42b",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:58:24.866Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-7(6) 1-6",
+                        "scoreStringSide2": "7-6(6) 6-1",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side1TiebreakScore": 6,
+                            "side2Score": 7,
+                            "side2TiebreakScore": 8,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 1,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 4,
+                      "drawPositions": [],
+                      "matchUpId": "a2cad90e-140c-4a2f-afbc-d6799002dd1e",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:57:46.028Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-2 6-4",
+                        "scoreStringSide2": "2-6 4-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 2,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 4,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 5,
+                      "drawPositions": [],
+                      "matchUpId": "ce762100-c87f-40fa-b3c6-32e0cba535fc",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.906Z",
+                      "updatedAt": "2024-03-31T03:59:02.356Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "7-6(5) 6-2",
+                        "scoreStringSide2": "6-7(5) 2-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 7,
+                            "side1TiebreakScore": 7,
+                            "side2Score": 6,
+                            "side2TiebreakScore": 5,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 2,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1
+                    },
+                    {
+                      "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                      "collectionPosition": 6,
+                      "drawPositions": [],
+                      "matchUpId": "53cb0cb6-0bcf-47cc-867b-64f96384d704",
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "SINGLES",
+                      "sides": [
+                        {
+                          "lineUp": [],
+                          "sideNumber": 1
+                        },
+                        {
+                          "lineUp": [],
+                          "sideNumber": 2
+                        }
+                      ],
+                      "tieMatchUps": [],
+                      "winners": [],
+                      "losers": [],
+                      "processCodes": [],
+                      "createdAt": "2023-11-15T14:51:18.907Z",
+                      "updatedAt": "2024-03-31T03:59:23.889Z",
+                      "matchUpFormat": "SET3-S:6/TB7",
+                      "score": {
+                        "scoreStringSide1": "6-3 3-6 6-7(2)",
+                        "scoreStringSide2": "3-6 6-3 7-6(2)",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 3,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 3,
+                            "side1Score": 6,
+                            "side1TiebreakScore": 2,
+                            "side2Score": 7,
+                            "side2TiebreakScore": 7,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2
+                    }
+                  ],
+                  "winners": [],
+                  "losers": [],
+                  "processCodes": [],
+                  "createdAt": "2023-11-15T14:51:18.906Z",
+                  "updatedAt": "2024-03-31T03:59:23.889Z",
+                  "score": {
+                    "scoreStringSide1": "3-4",
+                    "scoreStringSide2": "4-3",
+                    "sets": [
+                      {
+                        "side1Score": 3,
+                        "side2Score": 4,
+                        "winningSide": 2,
+                        "games": []
+                      }
+                    ]
+                  },
+                  "tieFormat": {
+                    "collectionDefinitions": [
+                      {
+                        "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+                        "collectionName": "Doubles",
+                        "collectionValue": 1,
+                        "collectionValueProfiles": [],
+                        "matchUpCount": 3,
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "matchUpType": "DOUBLES",
+                        "processCodes": []
+                      },
+                      {
+                        "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+                        "collectionName": "Singles",
+                        "collectionValueProfiles": [],
+                        "matchUpCount": 6,
+                        "matchUpFormat": "SET3-S:6/TB7",
+                        "matchUpType": "SINGLES",
+                        "matchUpValue": 1,
+                        "processCodes": []
+                      }
+                    ],
+                    "winCriteria": {
+                      "valueGoal": 4
+                    },
+                    "tieFormatName": "COLLEGE_DEFAULT"
+                  },
+                  "winningSide": 2,
+                  "isMock": true
+                }
+              ],
+              "positionAssignments": [
+                {
+                  "drawPosition": 1,
+                  "participantId": "eb9ce8e7-a1de-4cf6-b9d0-a86d1eb65794"
+                },
+                {
+                  "drawPosition": 2,
+                  "participantId": "734ccbc3-9a7e-4b1a-aeda-1caeda8be259"
+                }
+              ],
+              "seedAssignments": [],
+              "seedLimit": 0,
+              "stage": "MAIN",
+              "stageSequence": 1,
+              "structureId": "916cf619-202e-4eae-9866-1cfb67784161",
+              "structureName": "MAIN"
+            }
+          ],
+          "processCodes": [],
+          "isMock": true
+        }
+      ],
+      "endDate": "2024-03-31T05:00:00.000Z",
+      "entries": [
+        {
+          "entryPosition": 1,
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "eb9ce8e7-a1de-4cf6-b9d0-a86d1eb65794"
+        },
+        {
+          "entryPosition": 2,
+          "entryStage": "MAIN",
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "734ccbc3-9a7e-4b1a-aeda-1caeda8be259"
+        }
+      ],
+      "eventId": "4ff0cb26-d855-4719-9165-2ad6f7672434",
+      "eventName": "Event 1 MALE",
+      "eventType": "TEAM",
+      "gender": "MALE",
+      "links": [],
+      "startDate": "2024-03-30T18:00:00.000Z",
+      "tennisOfficialIds": [],
+      "tieFormat": {
+        "collectionDefinitions": [
+          {
+            "collectionId": "8c9fa6d1-c446-4906-8744-73f3dbf31d18",
+            "collectionName": "Doubles",
+            "collectionValue": 1,
+            "collectionValueProfiles": [],
+            "matchUpCount": 3,
+            "matchUpFormat": "SET3-S:6/TB7",
+            "matchUpType": "DOUBLES",
+            "processCodes": []
+          },
+          {
+            "collectionId": "dc092505-52b3-45b4-81c6-4bf1960cc20e",
+            "collectionName": "Singles",
+            "collectionValueProfiles": [],
+            "matchUpCount": 6,
+            "matchUpFormat": "SET3-S:6/TB7",
+            "matchUpType": "SINGLES",
+            "matchUpValue": 1,
+            "processCodes": []
+          }
+        ],
+        "winCriteria": {
+          "valueGoal": 4
+        },
+        "tieFormatName": "COLLEGE_DEFAULT"
+      },
+      "processCodes": [],
+      "isMock": true
+    }
+  ],
+  "localTimeZone": "America/New_York",
+  "matchUps": [],
+  "onlineResources": [
+    {
+      "identifier": "https://ioncourt.com/ties/66082b1c3d976a0364fa7744",
+      "name": "scoreLink",
+      "resourceType": "URL"
+    }
+  ],
+  "participants": [
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.547Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 12.92,
+            "confidence": 100,
+            "gameZoneLower": 14.66,
+            "gameZoneUpper": 11.19,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.547Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.59,
+            "confidence": 80,
+            "gameZoneLower": 21.37,
+            "gameZoneUpper": 17.8,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "b72b22cb-6e9e-482a-a86e-e6b5686be12b",
+      "participantName": "Tyrone Waterhouse",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "a752f070-2353-4318-b0e0-d2b8f78b28f0",
+      "person": {
+        "extensions": [],
+        "birthDate": "2004-12-07",
+        "isMock": true,
+        "nationalityCode": "HKG",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "HKG"
+          }
+        ],
+        "personId": "ddf741c3-bf78-497e-b951-1b21cde36fb9",
+        "standardFamilyName": "Waterhouse",
+        "standardGivenName": "Tyrone"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.547Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 8.5,
+            "confidence": 100,
+            "gameZoneLower": 10.23,
+            "gameZoneUpper": 6.77,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.547Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.19,
+            "confidence": 80,
+            "gameZoneLower": 17.97,
+            "gameZoneUpper": 14.41,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "066a729d-fae3-4a4b-8705-d472e0220e49",
+      "participantName": "Zoran Jensen",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8b8b3acb-4acd-4ee5-8120-082e3106bafc",
+      "person": {
+        "birthDate": "2001-05-22",
+        "isMock": true,
+        "nationalityCode": "KIR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "KIR"
+          }
+        ],
+        "personId": "ad9f784f-da0e-489b-bb40-11aa9ca40d7f",
+        "standardFamilyName": "Jensen",
+        "standardGivenName": "Zoran"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.547Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.37,
+            "confidence": 90,
+            "gameZoneLower": 16.12,
+            "gameZoneUpper": 12.63,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 11.13,
+            "confidence": 90,
+            "gameZoneLower": 12.9,
+            "gameZoneUpper": 9.36,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "d9d46057-3353-4387-9769-0f3bee8826cb",
+      "participantName": "Paul Bauers",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "1411a2cb-c534-411a-9929-3b15f0e16ff6",
+      "person": {
+        "birthDate": "2002-12-11",
+        "isMock": true,
+        "nationalityCode": "IOT",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "IOT"
+          }
+        ],
+        "personId": "b3cfa90c-c667-4090-bfc7-8b43db96a3be",
+        "standardFamilyName": "Bauers",
+        "standardGivenName": "Paul"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8f65f437-700e-49c4-bbdc-19cee4b1edf8",
+      "participantName": "Aldous Le Guin",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "d3417d86-de7d-43c3-87f0-ac59a7d08782",
+      "person": {
+        "birthDate": "2004-10-25",
+        "isMock": true,
+        "nationalityCode": "ABW",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "ABW"
+          }
+        ],
+        "personId": "229481ec-0f89-45da-bcfd-11e8476e8b11",
+        "standardFamilyName": "Le Guin",
+        "standardGivenName": "Aldous"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 12.21,
+            "confidence": 100,
+            "gameZoneLower": 13.94,
+            "gameZoneUpper": 10.48,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 17.43,
+            "confidence": 80,
+            "gameZoneLower": 19.21,
+            "gameZoneUpper": 15.64,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f49edb4c-564e-4b9f-9f48-59836c68a4a8",
+      "participantName": "Johann Lem",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "308a3378-15a8-4637-aaa5-58f78ceb8e59",
+      "person": {
+        "extensions": [],
+        "birthDate": "2004-03-19",
+        "isMock": true,
+        "nationalityCode": "GUF",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "GUF"
+          }
+        ],
+        "personId": "1af601f4-8927-4b20-b83c-6ac8e55edc9b",
+        "standardFamilyName": "Lem",
+        "standardGivenName": "Johann"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 9.63,
+            "confidence": 100,
+            "gameZoneLower": 11.37,
+            "gameZoneUpper": 7.89,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.55,
+            "confidence": 80,
+            "gameZoneLower": 18.32,
+            "gameZoneUpper": 14.77,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "2e4e3878-0210-42d1-b65c-9e9249cba2e6",
+      "participantName": "Palmer Ogden",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "95e5da05-e319-4e5e-a450-3d94cfe38a48",
+      "person": {
+        "extensions": [],
+        "birthDate": "2006-11-19",
+        "isMock": true,
+        "nationalityCode": "BOL",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "BOL"
+          }
+        ],
+        "personId": "967e9718-483e-41a7-8f45-7c57f87acb8c",
+        "standardFamilyName": "Ogden",
+        "standardGivenName": "Palmer"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 13.35,
+            "confidence": 100,
+            "gameZoneLower": 15.08,
+            "gameZoneUpper": 11.61,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 17.93,
+            "confidence": 80,
+            "gameZoneLower": 19.71,
+            "gameZoneUpper": 16.16,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "e702f807-2070-46f1-8956-0ed39cab7cec",
+      "participantName": "Maurits Shaftoe",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "32a180d3-b781-4770-a168-5d57f48fdef3",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-09-10",
+        "isMock": true,
+        "nationalityCode": "CYM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "CYM"
+          }
+        ],
+        "personId": "20aad1cb-121e-454e-8a38-1ea080a08bae",
+        "standardFamilyName": "Shaftoe",
+        "standardGivenName": "Maurits"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 15.15,
+            "confidence": 90,
+            "gameZoneLower": 16.9,
+            "gameZoneUpper": 13.4,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.63,
+            "confidence": 80,
+            "gameZoneLower": 18.41,
+            "gameZoneUpper": 14.85,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "76e13184-50e6-4940-af08-3ebcfc015102",
+      "participantName": "Emmanuel Berry",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "0db4711e-7e09-44e2-b2e9-4f7070da8da1",
+      "person": {
+        "extensions": [],
+        "birthDate": "2004-12-31",
+        "isMock": true,
+        "nationalityCode": "NIC",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "NIC"
+          }
+        ],
+        "personId": "30fecf16-e9a9-43e9-811b-bbedefbe6b7c",
+        "standardFamilyName": "Berry",
+        "standardGivenName": "Emmanuel"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 13,
+            "confidence": 60,
+            "gameZoneLower": 14.81,
+            "gameZoneUpper": 11.2,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.6,
+            "confidence": 70,
+            "gameZoneLower": 21.38,
+            "gameZoneUpper": 17.81,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "4844d69a-5f36-49a8-9ca9-8dbcc54b56f7",
+      "participantName": "Jonathan Eldritch",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "6b92dea7-d462-406a-ba25-dd6fea6f360f",
+      "person": {
+        "birthDate": "2001-10-03",
+        "isMock": true,
+        "nationalityCode": "BRN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "BRN"
+          }
+        ],
+        "personId": "13fb4518-10ac-416c-9d19-aaba31cd024e",
+        "standardFamilyName": "Eldritch",
+        "standardGivenName": "Jonathan"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 11.53,
+            "confidence": 100,
+            "gameZoneLower": 13.26,
+            "gameZoneUpper": 9.8,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 11.96,
+            "confidence": 70,
+            "gameZoneLower": 13.75,
+            "gameZoneUpper": 10.17,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "19906b47-5fcc-4680-a147-5f563ea3c749",
+      "participantName": "Walton Wormwood",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "b1bd0516-f2a1-4632-9c4d-2c83ebe4bfa8",
+      "person": {
+        "birthDate": "2003-10-11",
+        "isMock": true,
+        "nationalityCode": "WLF",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "WLF"
+          }
+        ],
+        "personId": "faaa2589-13f8-43ce-853e-0065bf8eb0cb",
+        "standardFamilyName": "Wormwood",
+        "standardGivenName": "Walton"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.22,
+            "confidence": 60,
+            "gameZoneLower": 18.02,
+            "gameZoneUpper": 14.42,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 21.18,
+            "confidence": 30,
+            "gameZoneLower": 23.05,
+            "gameZoneUpper": 19.3,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f9148862-03c2-482a-ad49-52df965e00be",
+      "participantName": "John Michael Fuller",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "ef8cdbd2-1db4-44f4-bf88-1623f048d268",
+      "person": {
+        "birthDate": "2000-05-29",
+        "isMock": true,
+        "nationalityCode": "DOM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "DOM"
+          }
+        ],
+        "personId": "d8df2442-b31b-4850-83ae-b933b7d9cebf",
+        "standardFamilyName": "Fuller",
+        "standardGivenName": "John Michael"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 15.9,
+            "confidence": 70,
+            "gameZoneLower": 17.68,
+            "gameZoneUpper": 14.13,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.78,
+            "confidence": 50,
+            "gameZoneLower": 21.61,
+            "gameZoneUpper": 17.94,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "af776db9-6754-4034-b8cc-70f177e4fdf9",
+      "participantName": "Kurt Nagle",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "ce2c1ede-56d7-46ba-8b60-b8b7a2e52a2f",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-12-10",
+        "isMock": true,
+        "nationalityCode": "HND",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "HND"
+          }
+        ],
+        "personId": "7fef6f4c-248f-4c61-b060-d9157bfbf7c9",
+        "standardFamilyName": "Nagle",
+        "standardGivenName": "Kurt"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 4.96,
+            "confidence": 60,
+            "gameZoneLower": 6.75,
+            "gameZoneUpper": 3.96,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 5.15,
+            "confidence": 30,
+            "gameZoneLower": 7.02,
+            "gameZoneUpper": 3.72,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f2593ef1-7a6c-4d35-b4b5-651e7c1a7615",
+      "participantName": "Axel Beals",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "cb9fa05f-7f16-46f9-8331-882515d23650",
+      "person": {
+        "birthDate": "2000-07-16",
+        "isMock": true,
+        "nationalityCode": "CAN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "CAN"
+          }
+        ],
+        "personId": "f0b9aa24-b24a-48b4-9ad5-f97da7683f9d",
+        "standardFamilyName": "Beals",
+        "standardGivenName": "Axel"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 13.45,
+            "confidence": 100,
+            "gameZoneLower": 15.19,
+            "gameZoneUpper": 11.71,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 18.89,
+            "confidence": 70,
+            "gameZoneLower": 20.68,
+            "gameZoneUpper": 17.1,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "25cca319-a754-495f-b7c1-629d7250a7fb",
+      "participantName": "Westley Bonaparte",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7058fe7e-5c66-4b5b-b3ec-3fc893624dbb",
+      "person": {
+        "extensions": [],
+        "birthDate": "2004-03-03",
+        "isMock": true,
+        "nationalityCode": "JEY",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "JEY"
+          }
+        ],
+        "personId": "1fd0fdf0-442f-4fcf-9258-e476e5bcbcca",
+        "standardFamilyName": "Bonaparte",
+        "standardGivenName": "Westley"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.37,
+            "confidence": 100,
+            "gameZoneLower": 16.11,
+            "gameZoneUpper": 12.63,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 20.53,
+            "confidence": 60,
+            "gameZoneLower": 22.34,
+            "gameZoneUpper": 18.73,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "9c70b228-f56a-4aa8-a1e3-65703e0ecbc7",
+      "participantName": "Vizzini Schumacher",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "d0da3079-44b9-4f56-895b-ef745aade1ca",
+      "person": {
+        "extensions": [],
+        "birthDate": "2005-07-18",
+        "isMock": true,
+        "nationalityCode": "SDN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "SDN"
+          }
+        ],
+        "personId": "8dd871fb-bb9e-446c-bb39-6549fc6fd8db",
+        "standardFamilyName": "Schumacher",
+        "standardGivenName": "Vizzini"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 5.6,
+            "confidence": 100,
+            "gameZoneLower": 7.34,
+            "gameZoneUpper": 4.08,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 12.83,
+            "confidence": 70,
+            "gameZoneLower": 14.63,
+            "gameZoneUpper": 11.04,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "16cb393c-1ca0-45f5-a5f6-38dae858a55b",
+      "participantName": "Masanobu Mander",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8250404e-5e2a-446f-81c4-29ccedf546d9",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-04-28",
+        "isMock": true,
+        "nationalityCode": "NER",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "NER"
+          }
+        ],
+        "personId": "ebf6b7e4-3d2c-4e21-bbe7-9c38d0b6c871",
+        "standardFamilyName": "Mander",
+        "standardGivenName": "Masanobu"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.08,
+            "confidence": 80,
+            "gameZoneLower": 15.84,
+            "gameZoneUpper": 12.32,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.48,
+            "confidence": 80,
+            "gameZoneLower": 16.25,
+            "gameZoneUpper": 12.7,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "36e0c59a-4361-4c60-a453-0c686b63e5be",
+      "participantName": "Italo Mond",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "9c88a325-a462-4a13-ae73-362d808cdfef",
+      "person": {
+        "birthDate": "2003-05-04",
+        "isMock": true,
+        "nationalityCode": "TGO",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "TGO"
+          }
+        ],
+        "personId": "45aaae6b-d305-40f0-a031-346b3913e007",
+        "standardFamilyName": "Mond",
+        "standardGivenName": "Italo"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 12.97,
+            "confidence": 60,
+            "gameZoneLower": 14.77,
+            "gameZoneUpper": 11.18,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 12.38,
+            "confidence": 70,
+            "gameZoneLower": 14.17,
+            "gameZoneUpper": 10.59,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "9709441d-db36-4ecd-a3cd-2921d37e5985",
+      "participantName": "Charles Faulkner",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "b86a584a-de64-499a-83b0-2f98f14b0b77",
+      "person": {
+        "birthDate": "2001-05-28",
+        "isMock": true,
+        "nationalityCode": "HND",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "HND"
+          }
+        ],
+        "personId": "1703c2e0-ec7c-4491-ab58-812432a2b6ac",
+        "standardFamilyName": "Faulkner",
+        "standardGivenName": "Charles"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 4.02,
+            "confidence": 100,
+            "gameZoneLower": 5.25,
+            "gameZoneUpper": 3.71,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 7.29,
+            "confidence": 80,
+            "gameZoneLower": 9.07,
+            "gameZoneUpper": 5.5,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "fcedd35a-7c41-4061-b9d6-310728c1a6f2",
+      "participantName": "Helmholtz Godel",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "3b2c737a-51c0-4ff3-bf5d-44cdf2b2b677",
+      "person": {
+        "birthDate": "2003-07-03",
+        "isMock": true,
+        "nationalityCode": "NAM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "NAM"
+          }
+        ],
+        "personId": "cf03886f-beff-441c-bb7a-550e19b6941e",
+        "standardFamilyName": "Godel",
+        "standardGivenName": "Helmholtz"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 9.42,
+            "confidence": 100,
+            "gameZoneLower": 11.16,
+            "gameZoneUpper": 7.68,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 23.61,
+            "confidence": 60,
+            "gameZoneLower": 25.41,
+            "gameZoneUpper": 21.8,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "42de34d4-9684-4c6d-a4e5-980b0bd76ae0",
+      "participantName": "Ivan Catton",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "48229a70-d391-46a6-82a4-222e134d78eb",
+      "person": {
+        "extensions": [],
+        "birthDate": "2005-10-28",
+        "isMock": true,
+        "nationalityCode": "FJI",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "FJI"
+          }
+        ],
+        "personId": "25363802-d51a-4776-9aa1-c5f90f212208",
+        "standardFamilyName": "Catton",
+        "standardGivenName": "Ivan"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 15.4,
+            "confidence": 80,
+            "gameZoneLower": 17.17,
+            "gameZoneUpper": 13.63,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 17.18,
+            "confidence": 80,
+            "gameZoneLower": 18.96,
+            "gameZoneUpper": 15.4,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "a951203f-3573-4345-b4ce-f9200979012c",
+      "participantName": "Frank Batty",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "16c5fc8e-b278-49fd-8cec-c3ec26c69252",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-11-05",
+        "isMock": true,
+        "nationalityCode": "VGB",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "VGB"
+          }
+        ],
+        "personId": "43ef1550-e6c5-4cab-8d21-1f5d4a59a353",
+        "standardFamilyName": "Batty",
+        "standardGivenName": "Frank"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 11.32,
+            "confidence": 100,
+            "gameZoneLower": 13.05,
+            "gameZoneUpper": 9.58,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 13.7,
+            "confidence": 80,
+            "gameZoneLower": 15.47,
+            "gameZoneUpper": 11.93,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "9b1b1487-03f6-43aa-963e-56061b5a91a2",
+      "participantName": "Glen Dunbar",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "d59dada7-1c50-425a-a572-970f59ef5bc9",
+      "person": {
+        "extensions": [],
+        "birthDate": "2003-05-26",
+        "isMock": true,
+        "nationalityCode": "CXR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "CXR"
+          }
+        ],
+        "personId": "bbf757d3-c571-4b62-8e93-5116f116ec0c",
+        "standardFamilyName": "Dunbar",
+        "standardGivenName": "Glen"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.96,
+            "confidence": 100,
+            "gameZoneLower": 16.7,
+            "gameZoneUpper": 13.22,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.94,
+            "confidence": 50,
+            "gameZoneLower": 18.76,
+            "gameZoneUpper": 15.11,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "445c9886-d4ae-4a4e-a46b-be7ab8a2bb68",
+      "participantName": "Estlin Crane",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "75927d8f-f931-4883-a9a2-625623658ca4",
+      "person": {
+        "birthDate": "2003-08-23",
+        "isMock": true,
+        "nationalityCode": "SYR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "SYR"
+          }
+        ],
+        "personId": "49b186bf-9257-427a-ba83-2f381debe7cd",
+        "standardFamilyName": "Crane",
+        "standardGivenName": "Estlin"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 15.71,
+            "confidence": 30,
+            "gameZoneLower": 17.56,
+            "gameZoneUpper": 13.86,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 9.46,
+            "confidence": 10,
+            "gameZoneLower": 11.41,
+            "gameZoneUpper": 7.51,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "5345f5bb-8206-4492-bb5b-b8d78d179a82",
+      "participantName": "Lief Lovelace",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "b37a2a8e-d56f-4101-8005-64710fa828a1",
+      "person": {
+        "birthDate": "2000-02-27",
+        "isMock": true,
+        "nationalityCode": "BLZ",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "BLZ"
+          }
+        ],
+        "personId": "2cfabae3-ad98-413f-a7ed-cf9a58cfb209",
+        "standardFamilyName": "Lovelace",
+        "standardGivenName": "Lief"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 7.79,
+            "confidence": 100,
+            "gameZoneLower": 9.54,
+            "gameZoneUpper": 6.05,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.16,
+            "confidence": 80,
+            "gameZoneLower": 15.94,
+            "gameZoneUpper": 12.38,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "09f03d50-febe-42ad-8d4b-217bf119492e",
+      "participantName": "Rick Illich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "225edcf2-7b00-42c1-82b5-291e3c0317c3",
+      "person": {
+        "birthDate": "2003-10-02",
+        "isMock": true,
+        "nationalityCode": "GTM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "GTM"
+          }
+        ],
+        "personId": "63f661a1-4e79-480f-8c8f-bc08c287dfe6",
+        "standardFamilyName": "Illich",
+        "standardGivenName": "Rick"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 13.26,
+            "confidence": 100,
+            "gameZoneLower": 15,
+            "gameZoneUpper": 11.52,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 16.82,
+            "confidence": 40,
+            "gameZoneLower": 18.68,
+            "gameZoneUpper": 14.97,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ebf77fa3-2df5-4d1b-935f-2871bd761434",
+      "participantName": "Malachi Banks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "6a3cc591-3e1b-46b3-9e7d-6115f715059b",
+      "person": {
+        "birthDate": "2002-05-09",
+        "isMock": true,
+        "nationalityCode": "FRA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "FRA"
+          }
+        ],
+        "personId": "ea0b031b-e365-470c-ae00-22208c6c0b6a",
+        "standardFamilyName": "Banks",
+        "standardGivenName": "Malachi"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.59,
+            "confidence": 40,
+            "gameZoneLower": 21.44,
+            "gameZoneUpper": 17.75,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 19.45,
+            "confidence": 10,
+            "gameZoneLower": 21.37,
+            "gameZoneUpper": 17.53,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "7f42f17a-ddb0-4620-91dd-e1d33bc6f7ed",
+      "participantName": "Kirkpatrick Austen",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "5ef9e7a4-dc6a-40f1-b5ce-af0474f0b457",
+      "person": {
+        "birthDate": "2002-09-03",
+        "isMock": true,
+        "nationalityCode": "SMR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "SMR"
+          }
+        ],
+        "personId": "8da5e38c-35a8-49fd-be74-674e0c159735",
+        "standardFamilyName": "Austen",
+        "standardGivenName": "Kirkpatrick"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.548Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 17.38,
+            "confidence": 20,
+            "gameZoneLower": 19.27,
+            "gameZoneUpper": 15.5,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.549Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.04,
+            "confidence": 10,
+            "gameZoneLower": 16.06,
+            "gameZoneUpper": 12.02,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "b16b65e7-8107-44cb-b3ae-145533cb1007",
+      "participantName": "Michael Earhart",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "d0f5d0dd-7242-42cc-982a-bab77cec8f23",
+      "person": {
+        "birthDate": "2000-11-24",
+        "isMock": true,
+        "nationalityCode": "HTI",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "HTI"
+          }
+        ],
+        "personId": "204e786b-a26f-4a8f-a2ff-427525e53469",
+        "standardFamilyName": "Earhart",
+        "standardGivenName": "Michael"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-03-29T11:00:08.549Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 10.46,
+            "confidence": 100,
+            "gameZoneLower": 12.2,
+            "gameZoneUpper": 8.72,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-03-29T11:00:08.549Z",
+          "itemDate": "2024-03-27T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 14.95,
+            "confidence": 80,
+            "gameZoneLower": 16.74,
+            "gameZoneUpper": 13.17,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f8dc822e-98e7-47e5-b3f4-58d2ee904940",
+      "participantName": "William Assange",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "ab390325-017f-48b6-aa7a-9014ccd26c5c",
+      "person": {
+        "birthDate": "2002-11-30",
+        "isMock": true,
+        "nationalityCode": "GRL",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "59325",
+            "state": "BM",
+            "city": "Springfield",
+            "countryCode": "GRL"
+          }
+        ],
+        "personId": "d16558f5-c884-4af8-9f77-d7dd4da11582",
+        "standardFamilyName": "Assange",
+        "standardGivenName": "William"
+      }
+    },
+    {
+      "extensions": [
+        {
+          "name": "schoolGender",
+          "value": "MALE"
+        },
+        {
+          "name": "conference",
+          "value": "Southern_Conference"
+        },
+        {
+          "name": "division",
+          "value": "DIV_I"
+        },
+        {
+          "name": "region",
+          "value": "Ohio_Valley"
+        }
+      ],
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": [
+        "b72b22cb-6e9e-482a-a86e-e6b5686be12b",
+        "066a729d-fae3-4a4b-8705-d472e0220e49",
+        "d9d46057-3353-4387-9769-0f3bee8826cb",
+        "8f65f437-700e-49c4-bbdc-19cee4b1edf8",
+        "f49edb4c-564e-4b9f-9f48-59836c68a4a8",
+        "2e4e3878-0210-42d1-b65c-9e9249cba2e6",
+        "e702f807-2070-46f1-8956-0ed39cab7cec",
+        "76e13184-50e6-4940-af08-3ebcfc015102",
+        "4844d69a-5f36-49a8-9ca9-8dbcc54b56f7",
+        "19906b47-5fcc-4680-a147-5f563ea3c749",
+        "f9148862-03c2-482a-ad49-52df965e00be",
+        "af776db9-6754-4034-b8cc-70f177e4fdf9",
+        "f2593ef1-7a6c-4d35-b4b5-651e7c1a7615",
+        "25cca319-a754-495f-b7c1-629d7250a7fb"
+      ],
+      "onlineResources": [
+        {
+          "extensions": [
+            {
+              "name": "logoWidth",
+              "value": 80
+            }
+          ],
+          "identifier": "https://colleges.wearecollegetennis.com/Library/UnivOfTennesseeChattanoogaM?command=Proxy&lang=en&type=Images&currentFolder=%2F&hash=c70faddce10917d2f11600710b9cdd3a3a9ca400&fileName=Tennessee-at-Chattanooga-logo.png",
+          "name": "logo",
+          "resourceSubType": "IMAGE",
+          "resourceType": "URL"
+        }
+      ],
+      "participantId": "eb9ce8e7-a1de-4cf6-b9d0-a86d1eb65794",
+      "participantName": "Touch and Go",
+      "participantOtherName": "TNG",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "TEAM",
+      "penalties": [],
+      "teamId": "797D7406-7B39-468A-89AE-147B676855B0"
+    },
+    {
+      "extensions": [
+        {
+          "name": "schoolGender",
+          "value": "MALE"
+        },
+        {
+          "name": "conference",
+          "value": "Southern_Conference"
+        },
+        {
+          "name": "division",
+          "value": "DIV_I"
+        },
+        {
+          "name": "region",
+          "value": "Carolina"
+        }
+      ],
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": [
+        "9c70b228-f56a-4aa8-a1e3-65703e0ecbc7",
+        "16cb393c-1ca0-45f5-a5f6-38dae858a55b",
+        "36e0c59a-4361-4c60-a453-0c686b63e5be",
+        "9709441d-db36-4ecd-a3cd-2921d37e5985",
+        "fcedd35a-7c41-4061-b9d6-310728c1a6f2",
+        "42de34d4-9684-4c6d-a4e5-980b0bd76ae0",
+        "a951203f-3573-4345-b4ce-f9200979012c",
+        "9b1b1487-03f6-43aa-963e-56061b5a91a2",
+        "445c9886-d4ae-4a4e-a46b-be7ab8a2bb68",
+        "5345f5bb-8206-4492-bb5b-b8d78d179a82",
+        "09f03d50-febe-42ad-8d4b-217bf119492e",
+        "ebf77fa3-2df5-4d1b-935f-2871bd761434",
+        "7f42f17a-ddb0-4620-91dd-e1d33bc6f7ed",
+        "b16b65e7-8107-44cb-b3ae-145533cb1007",
+        "f8dc822e-98e7-47e5-b3f4-58d2ee904940"
+      ],
+      "onlineResources": [
+        {
+          "extensions": [
+            {
+              "name": "logoWidth",
+              "value": 80
+            }
+          ],
+          "identifier": "https://colleges.wearecollegetennis.com/Library/FurmanUniversityM?command=Proxy&lang=en&type=Images&currentFolder=%2F&hash=924f9480d12135313ddcb386b1e6efadb09688a5&fileName=Furman-logo.png",
+          "name": "logo",
+          "resourceSubType": "IMAGE",
+          "resourceType": "URL"
+        }
+      ],
+      "participantId": "734ccbc3-9a7e-4b1a-aeda-1caeda8be259",
+      "participantName": "Killer Instinct",
+      "participantOtherName": "KI",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": ["Home"],
+      "participantStatus": "ACTIVE",
+      "participantType": "TEAM",
+      "penalties": [],
+      "teamId": "227EF7D0-2D9A-4698-BED1-45933908A82A"
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["d9d46057-3353-4387-9769-0f3bee8826cb", "2e4e3878-0210-42d1-b65c-9e9249cba2e6"],
+      "onlineResources": [],
+      "participantId": "81bd3137-d31b-4287-a2ae-61a1aae7a1f3",
+      "participantName": "Bauers/Ogden",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["9b1b1487-03f6-43aa-963e-56061b5a91a2", "09f03d50-febe-42ad-8d4b-217bf119492e"],
+      "onlineResources": [],
+      "participantId": "54b87578-7b76-4bb5-be06-26d29d2314a9",
+      "participantName": "Dunbar/Illich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["f49edb4c-564e-4b9f-9f48-59836c68a4a8", "4844d69a-5f36-49a8-9ca9-8dbcc54b56f7"],
+      "onlineResources": [],
+      "participantId": "f8162007-dfd1-4041-8556-1124f5e4141f",
+      "participantName": "Eldritch/Lem",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["9709441d-db36-4ecd-a3cd-2921d37e5985", "f8dc822e-98e7-47e5-b3f4-58d2ee904940"],
+      "onlineResources": [],
+      "participantId": "f83d9dc7-e40f-4d2a-95f8-71c7f7759c16",
+      "participantName": "Assange/Faulkner",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["066a729d-fae3-4a4b-8705-d472e0220e49", "e702f807-2070-46f1-8956-0ed39cab7cec"],
+      "onlineResources": [],
+      "participantId": "f977282d-8340-497a-a988-f94351323111",
+      "participantName": "Jensen/Shaftoe",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["42de34d4-9684-4c6d-a4e5-980b0bd76ae0", "a951203f-3573-4345-b4ce-f9200979012c"],
+      "onlineResources": [],
+      "participantId": "91c1079a-a4a5-4259-87b8-25c7664e79d3",
+      "participantName": "Batty/Catton",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    }
+  ],
+  "registrationProfile": [],
+  "startDate": "2024-03-30T18:00:00.000Z",
+  "totalPrizeMoney": [],
+  "tournamentCategories": [],
+  "tournamentGroups": [],
+  "tournamentId": "c01a3967-bfb0-4030-acf9-46c14e4629d6",
+  "tournamentName": "Anonymized: 2024-04-02",
+  "tournamentOtherIds": [],
+  "dualMatchMetadata": {
+    "scoringFormat": "COLLEGE_DEFAULT",
+    "teamOrgIds": ["797D7406-7B39-468A-89AE-147B676855B0", "227EF7D0-2D9A-4698-BED1-45933908A82A"],
+    "homeTeamId": "227EF7D0-2D9A-4698-BED1-45933908A82A",
+    "neutralLocation": false,
+    "isConference": true,
+    "opponent": "6193f4e9a340ea251959b76c",
+    "opponentTeamId": "227EF7D0-2D9A-4698-BED1-45933908A82A",
+    "parentTeamId": "797D7406-7B39-468A-89AE-147B676855B0",
+    "noScheduledTime": false,
+    "gender": "MALE",
+    "teamConferences": ["Southern_Conference", "Southern_Conference"],
+    "teamDivisions": ["DIV_I", "DIV_I"],
+    "isCompleted": true
+  },
+  "processCodes": [],
+  "deleted": false,
+  "venueIds": [],
+  "venues": [],
+  "isMock": true
+}

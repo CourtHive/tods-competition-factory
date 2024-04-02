@@ -61,6 +61,11 @@ export function getParticipantMap({
 
     const { participantId, individualParticipantIds, participantType } = participantCopy;
 
+    if (!participantMap[participantId]) {
+      missingParticipantIds.push(participantId);
+      continue;
+    }
+
     Object.assign(participantMap[participantId].participant, participantCopy);
 
     if (individualParticipantIds) {

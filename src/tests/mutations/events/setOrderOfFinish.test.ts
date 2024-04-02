@@ -1,14 +1,25 @@
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
+import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngine from '@Engines/syncEngine';
 import { mocksEngine } from '../../..';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '@Constants/matchUpStatusConstants';
-import { MAIN } from '@Constants/drawDefinitionConstants';
-import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+// constants
 import { INVALID_MATCHUP_STATUS, INVALID_VALUES } from '@Constants/errorConditionConstants';
+import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can both assign and remove individualParticipants in SINGLES matchUps that are part of team events', () => {
+  let matchUpModifications: any[] = [];
+  setSubscriptions({
+    subscriptions: {
+      [MODIFY_MATCHUP]: (result) => {
+        matchUpModifications.push(result);
+      },
+    },
+  });
   const { tournamentRecord, drawId } = generateTeamTournament({
     singlesCount: 6,
     doublesCount: 3,
@@ -112,6 +123,7 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
+  matchUpModifications = [];
   // attempt to assign orderOfFinish to all singlesMatchUps
   finishingOrder = singlesMatchUps.slice(0, 3).map(({ matchUpId }, index) => ({
     orderOfFinish: index + 1,
@@ -122,4 +134,10 @@ it('can both assign and remove individualParticipants in SINGLES matchUps that a
     drawId,
   });
   expect(result.success).toEqual(true);
+
+  const matchUpIds = singlesMatchUps.map(({ matchUpId }) => matchUpId);
+  const matchUps = tournamentEngine.allTournamentMatchUps({ matchUpFilters: { matchUpIds } }).matchUps;
+  expect(matchUps.map(({ orderOfFinish }) => orderOfFinish)).toEqual([1, 2, 3, undefined, undefined, undefined]);
+  expect(matchUpModifications.length).toEqual(1);
+  expect(matchUpModifications.flat(Infinity).length).toEqual(3);
 });
