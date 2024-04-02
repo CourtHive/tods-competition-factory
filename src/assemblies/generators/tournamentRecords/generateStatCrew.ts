@@ -9,6 +9,7 @@ import { TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { unique } from '@Tools/arrays';
 
 export function generateStatCrew(params) {
   const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORD]: true }]);
@@ -45,21 +46,32 @@ export function generateStatCrew(params) {
       }) ?? []),
     );
 
-  const getParticipantAttibutes = ({ matchUpId, participant }) => {
-    const name = !participant.individualParticipants ? participant.participantName : undefined;
+  const getParticipantAttibutes = ({ participant }) => {
+    const pair = participant.individualParticipants?.length === 2;
+    const pairTeamParticipantIds = pair
+      ? unique(participant.individualParticipants?.map((p) => p.teams?.[0]?.participantId))
+      : [];
+    const pairTeamIds = pair ? unique(participant.individualParticipants?.map((p) => p.teams?.[0]?.teamId)) : [];
+    const teamParticipantId =
+      (!pair && participant.teams?.[0]?.participantId) ||
+      (pairTeamParticipantIds?.length === 1 && pairTeamParticipantIds[0]) ||
+      undefined;
+    const team =
+      (!pair && participant.teams?.[0]?.teamId) || (pairTeamIds?.length === 1 && pairTeamIds[0]) || teamParticipantId;
+    const name = !pair ? participant.participantName : undefined;
     const name_1 = participant.individualParticipants?.[0]?.participantName;
     const name_2 = participant.individualParticipants?.[1]?.participantName;
-    const vh = matchUpId === homeid ? 'H' : 'V';
-    return definedAttributes({ vh, name, name_1, name_2 });
+    const vh = (homeid && (teamParticipantId === homeid ? 'H' : 'V')) || '';
+    return definedAttributes({ vh, team, name, name_1, name_2 });
   };
 
   const mapMatchUp = (matchUp) => {
-    const { collectionPosition: match, orderOfFinish: order, matchUpId, matchUpType, sides } = matchUp;
+    const { collectionPosition: match, orderOfFinish: order, matchUpType, sides } = matchUp;
     const childArray = sides?.map((side) => {
       const { sideNumber, participant } = side;
       const scoreAttributes = getScoreAttributes({ sets: matchUp.score?.sets, sideNumber });
       const scoreType = matchUpType === SINGLES ? 'singles_score' : 'doubles_score';
-      return { [scoreType]: { ...getParticipantAttibutes({ matchUpId, participant }), ...scoreAttributes } };
+      return { [scoreType]: { ...getParticipantAttibutes({ participant }), ...scoreAttributes } };
     });
 
     const matchType = matchUpType === SINGLES ? 'singles_match' : 'doubles_match';
