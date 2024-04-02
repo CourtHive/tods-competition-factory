@@ -1,4 +1,5 @@
 import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { getMatchUpId } from '@Functions/global/extractors';
@@ -6,22 +7,18 @@ import { mustBeAnArray } from '@Tools/mustBeAnArray';
 import { isConvertableInteger } from '@Tools/math';
 import { uniqueValues } from '@Tools/arrays';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// constants and types
 import { INVALID_MATCHUP_STATUS, INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
-import { DrawDefinition } from '@Types/tournamentTypes';
-
-/**
- *
- * @param {object} drawDefinition - provided by drawEngine
- * @param {object[]} finishingOrder - [{ matchUpId, orderOfFinish }] where order of finish is whole number
- * @returns { success, error }
- */
+import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 type SetOrderOfFinishArgs = {
   finishingOrder: { matchUpId: string; orderOfFinish: number }[];
+  tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
 };
-export function setOrderOfFinish({ drawDefinition, finishingOrder }: SetOrderOfFinishArgs) {
+
+export function setOrderOfFinish({ tournamentRecord, drawDefinition, finishingOrder }: SetOrderOfFinishArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   const stack = 'setOrderOfFinish';
 
@@ -143,7 +140,15 @@ export function setOrderOfFinish({ drawDefinition, finishingOrder }: SetOrderOfF
     if (result.error) return decorateResult({ result, stack });
 
     // apply the new values to targeted matchUps
-    result.completedMatchUps?.forEach((matchUp) => (matchUp.orderOfFinish = valuesMap[matchUp.matchUpId]));
+    result.completedMatchUps?.forEach((matchUp) => {
+      matchUp.orderOfFinish = valuesMap[matchUp.matchUpId];
+      modifyMatchUpNotice({
+        tournamentId: tournamentRecord.tournamentId,
+        context: 'setOrderOfFinish',
+        drawDefinition,
+        matchUp,
+      });
+    });
   }
 
   return { ...SUCCESS };
