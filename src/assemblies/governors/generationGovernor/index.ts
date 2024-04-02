@@ -11,6 +11,7 @@ export { roundRobinGroups } from '../../generators/drawDefinitions/drawTypes/rou
 export { generateSeedingScaleItems } from '../../generators/drawDefinitions/generateSeedingScaleItems';
 export { drawMatic } from '../../generators/drawDefinitions/drawTypes/adHoc/drawMatic/drawMatic';
 export { generateFlightProfile } from '../../generators/drawDefinitions/generateFlightProfile';
+export { generateStatCrew } from '@Generators/tournamentRecords/generateStatCrew';
 export { generateLineUps } from '../../generators/participants/generateLineUps';
 export { generateCourts } from '../../generators/venues/generateCourts';
 export * as garman from '../../generators/scheduling/garman/garman';
