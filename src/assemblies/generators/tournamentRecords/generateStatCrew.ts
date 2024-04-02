@@ -15,20 +15,18 @@ export function generateStatCrew(params) {
   if (paramsCheck.error) return paramsCheck;
 
   const { tournamentRecord } = params;
-  const { tournamentId } = tournamentRecord;
+  const { startDate, tournamentId } = tournamentRecord;
 
   const teamParticipants = tournamentRecord.participants.filter((participant) => participant.participantType === TEAM);
-
   const homeTeam = teamParticipants?.find((team) => team.participantRoleResponsibilities?.includes('Home'));
   const awayTeams = teamParticipants?.filter((team) => team.participantId !== homeTeam?.participantId);
+  const date = formatDate(startDate, '/', 'MDY');
   const neutralGame = !homeTeam ? 'Y' : 'N';
-  const date = formatDate(tournamentRecord.startDate, '/', 'MDY');
-
-  const visname = awayTeams?.[0]?.participantName;
-  const visid = awayTeams?.[0]?.participantId;
 
   const homename = homeTeam?.participantName || awayTeams?.[1]?.participantName;
   const homeid = homeTeam?.participantId || awayTeams?.[1]?.participantId;
+  const visname = awayTeams?.[0]?.participantName;
+  const visid = awayTeams?.[0]?.participantId;
 
   const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps;
   const singles = matchUps?.filter((matchUp) => matchUp.matchUpType === SINGLES);
