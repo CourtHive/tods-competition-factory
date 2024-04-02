@@ -3,11 +3,11 @@ export { resetVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/rese
 export { withdrawParticipantAtDrawPosition } from '@Mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
 export { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
 export { luckyLoserDrawPositionAssignment } from '@Mutate/drawDefinitions/luckyLoserDrawPositionAssignment';
-export { alternateDrawPositionAssignment } from '@Mutate/drawDefinitions/alternateDrawPositionAssignment';
 export { shiftAdHocRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/shiftAdHocRounds';
 export { setPositionAssignments } from '@Mutate/drawDefinitions/positionGovernor/setPositionAssignments';
 export { swapAdHocRounds } from '@Mutate/drawDefinitions/structureGovernor/adHocRounds/swapAdHocRounds';
 export { qualifierDrawPositionAssignment } from '@Mutate/drawDefinitions/qualifierDrawPositionAssignment';
+export { alternateDrawPositionAssignment } from '@Mutate/matchUps/drawPositions/positionAlternate';
 export { removeDrawPositionAssignment } from '@Mutate/drawDefinitions/removeDrawPositionAssignment';
 export { modifySeedAssignment } from '@Mutate/drawDefinitions/entryGovernor/modifySeedAssignment';
 export { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';

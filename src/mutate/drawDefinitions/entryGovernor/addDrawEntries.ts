@@ -263,7 +263,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
     return notAdded;
   }, []);
 
-  if (duplicateEntries.length && suppressDuplicateEntries) {
+  if (duplicateEntries.length && !suppressDuplicateEntries) {
     return decorateResult({
       context: { eventId, drawId, duplicateEntries },
       result: { error: DUPLICATE_ENTRY },
