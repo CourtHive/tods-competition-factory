@@ -1,14 +1,13 @@
 import { removeDirectedBye, removeDirectedWinner } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
+import { getPairedPreviousMatchUp } from '@Query/matchUps/getPairedPreviousMatchup';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { positionTargets } from '@Query/matchUp/positionTargets';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { intersection, overlap } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 
-import { getPairedPreviousMatchUp } from '../../../query/matchUps/getPairedPreviousMatchup';
-import { positionTargets } from '@Query/matchUp/positionTargets';
-
-import { pushGlobalLog } from '@Functions/global/globalLog';
-
+// constants
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   BYE,
@@ -29,6 +28,7 @@ const keyColors = {
 
 export function removeDoubleExit(params) {
   const { inContextDrawMatchUps, appliedPolicies, drawDefinition, matchUpsMap, targetData, matchUp } = params;
+  const { matchUpId } = matchUp;
 
   let { iteration = 0 } = params;
   iteration += 1;
@@ -36,26 +36,28 @@ export function removeDoubleExit(params) {
   const stack = 'removeDoubleExit';
 
   pushGlobalLog({
-    method: stack,
     color: 'brightyellow',
+    method: stack,
+    matchUpId,
     iteration,
     keyColors,
   });
 
   const {
-    targetLinks: { loserTargetLink },
     targetMatchUps: { loserMatchUp, winnerMatchUp, loserTargetDrawPosition },
+    targetLinks: { loserTargetLink },
   } = targetData;
 
   // only handles winnerMatchUps in the same structure
   if (winnerMatchUp && winnerMatchUp.matchUpStatus !== BYE) {
-    const { stage, roundNumber, roundPosition } = winnerMatchUp;
+    const { stage, roundNumber, roundPosition, structureName } = winnerMatchUp;
     pushGlobalLog({
       winner: 'winner',
-      stage,
-      roundNumber,
       roundPosition,
+      structureName,
+      roundNumber,
       keyColors,
+      stage,
     });
     conditionallyRemoveDrawPosition({
       ...params,
@@ -65,22 +67,27 @@ export function removeDoubleExit(params) {
     });
   }
 
-  if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
+  const byePropagatedToLoserMatchUp =
+    loserMatchUp?.matchUpStatus === BYE && (loserMatchUp?.feedRound || loserMatchUp?.roundNumber === 1);
+
+  if (loserMatchUp && (loserMatchUp.matchUpStatus !== BYE || byePropagatedToLoserMatchUp)) {
     const inContextLoserMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
     const { structure: loserStructure } = findStructure({
       drawDefinition,
       structureId: inContextLoserMatchUp.structureId,
     });
-    const { stage, roundNumber, roundPosition, feedRound } = loserMatchUp;
+    const { stage, roundNumber, roundPosition, feedRound, structureName } = loserMatchUp;
     pushGlobalLog({
       loser: 'loser',
-      stage,
-      roundNumber,
       roundPosition,
+      structureName,
+      roundNumber,
       keyColors,
       feedRound,
+      stage,
     });
-    if (appliedPolicies?.progression?.doubleExitPropagateBye) {
+
+    if (appliedPolicies?.progression?.doubleExitPropagateBye || byePropagatedToLoserMatchUp) {
       removeDirectedBye({
         drawPosition: loserTargetDrawPosition,
         targetLink: loserTargetLink,
@@ -91,8 +98,8 @@ export function removeDoubleExit(params) {
     } else {
       const result = conditionallyRemoveDrawPosition({
         ...params,
-        structure: loserStructure,
         targetMatchUp: loserMatchUp,
+        structure: loserStructure,
         iteration,
       });
       if (result.error) return decorateResult({ result, stack });
@@ -114,7 +121,7 @@ export function conditionallyRemoveDrawPosition(params) {
   } = params;
 
   const stack = 'conditionallyRemoveDrawPosition';
-  pushGlobalLog({ method: stack });
+  pushGlobalLog({ method: stack, structureName: structure?.structureName, iteration });
 
   // only handles winnerMatchUps in the same structure
   const nextTargetData = positionTargets({
@@ -179,15 +186,16 @@ export function conditionallyRemoveDrawPosition(params) {
   }
 
   if (nextWinnerMatchUp && drawPositionToRemove) {
-    const { stage, roundNumber, roundPosition } = nextWinnerMatchUp;
+    const { stage, roundNumber, roundPosition, structureName } = nextWinnerMatchUp;
     pushGlobalLog({
       method: 'removeDirectedWinner',
       drawPositionToRemove,
-      keyColors,
       color: 'brightgreen',
-      stage,
-      roundNumber,
       roundPosition,
+      structureName,
+      roundNumber,
+      keyColors,
+      stage,
     });
     removeDirectedWinner({
       winningDrawPosition: drawPositionToRemove,
