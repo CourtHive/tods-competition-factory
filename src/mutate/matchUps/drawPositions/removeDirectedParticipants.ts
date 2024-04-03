@@ -5,6 +5,8 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -20,9 +22,9 @@ import { HydratedMatchUp } from '@Types/hydrated';
 import { MatchUpsMap } from '@Types/factoryTypes';
 
 export function removeDirectedParticipants(params): {
+  tieMatchUpResult?: any;
   error?: ErrorType;
   success?: boolean;
-  tieMatchUpResult?: any;
 } {
   const {
     dualWinningSideChange,
@@ -362,8 +364,15 @@ export function removeDirectedBye({
   event,
 }: RemoveDirectedByeArgs) {
   const structureId = targetLink.target.structureId;
+  const stack = 'removeDirectedBye';
 
-  clearDrawPosition({
+  pushGlobalLog({
+    color: 'brightyellow',
+    method: stack,
+    drawPosition,
+  });
+
+  const result = clearDrawPosition({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
@@ -373,5 +382,5 @@ export function removeDirectedBye({
     event,
   });
 
-  return { ...SUCCESS };
+  return decorateResult({ result, stack });
 }

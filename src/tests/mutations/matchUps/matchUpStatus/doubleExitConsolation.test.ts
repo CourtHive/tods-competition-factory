@@ -1,14 +1,14 @@
+import { printGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
+import { setDevContext, setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
-import { printGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
-import { setDevContext, setSubscriptions } from '@Global/state/globalState';
-
-import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
-import { MODIFY_MATCHUP } from '@Constants/topicConstants';
+// constants and fixtures
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
+import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { MODIFY_MATCHUP } from '@Constants/topicConstants';
 
 const getTarget = (params) => {
   const { matchUps, roundNumber, roundPosition, stage } = params;
@@ -39,101 +39,101 @@ const scenarios = [
     ],
     preRemovalChecks: [
       {
-        stage: MAIN,
         matchUpStatus: DOUBLE_WALKOVER,
         drawPositions: [3, 4],
-        roundNumber: 1,
         roundPosition: 2,
+        roundNumber: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: WALKOVER,
         drawPositions: [1],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
         winningSide: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [1],
-        roundNumber: 3,
         roundPosition: 1,
+        roundNumber: 3,
+        stage: MAIN,
       },
       {
-        stage: CONSOLATION,
+        losingSideMatchUpStatusCode: DOUBLE_WALKOVER,
         matchUpStatus: WALKOVER,
         drawPositions: [3, 4],
-        losingSideMatchUpStatusCode: DOUBLE_WALKOVER,
-        roundNumber: 1,
+        stage: CONSOLATION,
         roundPosition: 1,
+        roundNumber: 1,
         winningSide: 1,
       },
       {
+        drawPositions: [1, 3],
         stage: CONSOLATION,
         matchUpStatus: BYE,
-        drawPositions: [1, 3],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
       },
       {
-        stage: CONSOLATION,
         matchUpStatus: TO_BE_PLAYED,
+        stage: CONSOLATION,
         drawPositions: [3],
-        roundNumber: 3,
         roundPosition: 1,
+        roundNumber: 3,
       },
     ],
     postRemovalChecks: [
       {
-        stage: MAIN,
         matchUpStatus: COMPLETED,
         drawPositions: [1, 2],
-        roundNumber: 1,
         roundPosition: 1,
+        roundNumber: 1,
         winningSide: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3, 4],
-        roundNumber: 1,
         roundPosition: 2,
+        roundNumber: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [1],
+        roundPosition: 1,
         roundNumber: 2,
-        roundPosition: 1,
-      },
-      {
         stage: MAIN,
-        matchUpStatus: TO_BE_PLAYED,
-        drawPositions: undefined,
-        roundNumber: 3,
-        roundPosition: 1,
       },
       {
-        stage: CONSOLATION,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: undefined,
-        roundNumber: 3,
         roundPosition: 1,
+        roundNumber: 3,
+        stage: MAIN,
       },
       {
+        matchUpStatus: TO_BE_PLAYED,
         stage: CONSOLATION,
+        drawPositions: [],
+        roundPosition: 1,
+        roundNumber: 3,
+      },
+      {
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3, 4],
-        roundNumber: 1,
+        stage: CONSOLATION,
         roundPosition: 1,
+        roundNumber: 1,
       },
       {
+        matchUpStatus: TO_BE_PLAYED,
         stage: CONSOLATION,
-        matchUpStatus: BYE,
         drawPositions: [1],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
       },
     ],
   },
@@ -157,42 +157,42 @@ const scenarios = [
     ],
     preRemovalChecks: [
       {
-        stage: MAIN,
         matchUpStatus: DOUBLE_WALKOVER,
         drawPositions: [1, 2],
-        roundNumber: 1,
         roundPosition: 1,
+        roundNumber: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: WALKOVER,
         drawPositions: [3],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
         winningSide: 2,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3],
-        roundNumber: 3,
         roundPosition: 1,
+        roundNumber: 3,
+        stage: MAIN,
       },
       {
-        stage: CONSOLATION,
+        losingSideMatchUpStatusCode: DOUBLE_WALKOVER,
         matchUpStatus: WALKOVER,
         drawPositions: [3, 4],
-        losingSideMatchUpStatusCode: DOUBLE_WALKOVER,
-        roundNumber: 1,
+        stage: CONSOLATION,
         roundPosition: 1,
+        roundNumber: 1,
         winningSide: 2,
       },
       {
+        drawPositions: [1, 4],
         stage: CONSOLATION,
         matchUpStatus: BYE,
-        drawPositions: [1, 4],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
       },
       {
         stage: CONSOLATION,
@@ -204,55 +204,55 @@ const scenarios = [
     ],
     postRemovalChecks: [
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [1, 2],
-        roundNumber: 1,
         roundPosition: 1,
+        roundNumber: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: COMPLETED,
         drawPositions: [3, 4],
-        roundNumber: 1,
         roundPosition: 2,
+        roundNumber: 1,
         winningSide: 1,
+        stage: MAIN,
       },
       {
-        stage: MAIN,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3],
+        roundPosition: 1,
         roundNumber: 2,
-        roundPosition: 1,
-      },
-      {
         stage: MAIN,
-        matchUpStatus: TO_BE_PLAYED,
-        drawPositions: undefined,
-        roundNumber: 3,
-        roundPosition: 1,
       },
       {
-        stage: CONSOLATION,
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: undefined,
-        roundNumber: 3,
         roundPosition: 1,
+        roundNumber: 3,
+        stage: MAIN,
       },
       {
+        matchUpStatus: TO_BE_PLAYED,
         stage: CONSOLATION,
+        drawPositions: [],
+        roundPosition: 1,
+        roundNumber: 3,
+      },
+      {
         matchUpStatus: TO_BE_PLAYED,
         drawPositions: [3, 4],
-        roundNumber: 1,
+        stage: CONSOLATION,
         roundPosition: 1,
+        roundNumber: 1,
       },
       {
+        matchUpStatus: TO_BE_PLAYED,
         includeCheck: true,
         stage: CONSOLATION,
-        matchUpStatus: BYE,
         drawPositions: [1],
-        roundNumber: 2,
         roundPosition: 1,
+        roundNumber: 2,
       },
     ],
   },
