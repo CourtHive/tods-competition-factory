@@ -16,13 +16,12 @@ export function generateStatCrew(params) {
   if (paramsCheck.error) return paramsCheck;
 
   const { tournamentRecord } = params;
-  const { startDate, tournamentId } = tournamentRecord;
+  const { startDate, tournamentId, tournamentName } = tournamentRecord;
 
   const teamParticipants = tournamentRecord.participants.filter((participant) => participant.participantType === TEAM);
   const homeTeam = teamParticipants?.find((team) => team.participantRoleResponsibilities?.includes('Home'));
   const awayTeams = teamParticipants?.filter((team) => team.participantId !== homeTeam?.participantId);
   const date = formatDate(startDate, '/', 'MDY');
-  const neutralGame = !homeTeam ? 'Y' : 'N';
 
   const homename = homeTeam?.participantName || awayTeams?.[1]?.participantName;
   const homeid = homeTeam?.participantId || awayTeams?.[1]?.participantId;
@@ -79,7 +78,19 @@ export function generateStatCrew(params) {
   };
 
   const json = {
-    venue: { gameid: tournamentId, date, neutralGame, homeid, homename, visid, visname, officials: {}, rules: {} },
+    venue: {
+      tournament: teamParticipants?.length > 2 ? 'Y' : 'N',
+      neutralgame: !homeTeam ? 'Y' : 'N',
+      tournamentname: tournamentName,
+      gameid: tournamentId,
+      officials: {},
+      rules: {},
+      homename,
+      visname,
+      homeid,
+      visid,
+      date,
+    },
     singles_matches: singles?.map(mapMatchUp),
     doubles_matches: doubles?.map(mapMatchUp),
   };
