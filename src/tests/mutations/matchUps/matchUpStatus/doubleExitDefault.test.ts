@@ -1,4 +1,4 @@
-import { getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
+import { getOrderedDrawPositionPairs } from '@Tests/mutations/drawDefinitions/testingUtilities';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
@@ -8,10 +8,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
+// constants
+import { BYE, DEFAULTED, DOUBLE_DEFAULT } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
 import { MODIFY_MATCHUP } from '@Constants/topicConstants';
-import { BYE, DEFAULTED, DOUBLE_DEFAULT } from '@Constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
@@ -283,7 +284,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
   expect(targetMatchUp.winningSide).toEqual(1);
 });
 
-it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExitPropagateBye', () => {
+it('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExitPropagateBye', () => {
   // create an FMLC with the 1st position matchUp completed
   const drawProfiles = [
     {
@@ -296,9 +297,9 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
       drawType: FIRST_MATCH_LOSER_CONSOLATION,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           scoreString: '6-1 6-2',
+          roundPosition: 1,
+          roundNumber: 1,
           winningSide: 1,
         },
       ],
@@ -391,12 +392,7 @@ it.skip('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExit
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  console.log({ filteredOrderedPairs, consolationStructureOrderedPairs });
-  /*
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    consolationStructureOrderedPairs
-  );
-  */
+  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(consolationStructureOrderedPairs);
 });
 
 /*
@@ -408,9 +404,9 @@ it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           scoreString: '6-1 6-1',
+          roundPosition: 1,
+          roundNumber: 1,
           winningSide: 1,
         },
       ],
@@ -426,9 +422,9 @@ it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
   // get the first upcoming matchUp
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const { matchUpId } = getTarget({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 2,
+    roundNumber: 1,
+    matchUps,
   });
 
   const {
@@ -451,9 +447,9 @@ it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
   ]);
 
   const result = tournamentEngine.setMatchUpStatus({
-    drawId,
-    matchUpId,
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
+    matchUpId,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -479,21 +475,21 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
+          scoreString: '6-1 6-1',
           roundPosition: 1,
-          scoreString: '6-1 6-1',
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 1,
+          scoreString: '6-1 6-1',
           roundPosition: 2,
-          scoreString: '6-1 6-1',
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 1,
-          roundPosition: 3,
           matchUpStatus: DOUBLE_DEFAULT,
+          roundPosition: 3,
+          roundNumber: 1,
         },
       ],
     },
