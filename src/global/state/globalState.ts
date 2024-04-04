@@ -380,10 +380,14 @@ export function handleCaughtError({ engineName, methodName, params, err }: Handl
     (isFunction(_globalStateProvider.handleCaughtError) && _globalStateProvider.handleCaughtError) ||
     syncGlobalState.handleCaughtError;
 
+  // do not return tournamentRecord in error log if it was passed in params
+  const { tournamentRecord, ...rest } = params;
+  !!tournamentRecord;
+
   return caughtErrorHandler({
+    params: rest,
     engineName,
     methodName,
-    params,
     err,
   });
 }
