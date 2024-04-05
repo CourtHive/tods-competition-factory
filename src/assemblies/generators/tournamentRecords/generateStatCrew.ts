@@ -34,7 +34,6 @@ export function generateStatCrew(params) {
   const visname = awayTeams?.[0]?.participantName;
   const visid = awayTeams?.[0]?.participantId;
 
-  // const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps;
   const singles = matchUps?.filter((matchUp) => matchUp.matchUpType === SINGLES);
   const doubles = matchUps?.filter((matchUp) => matchUp.matchUpType === DOUBLES);
 
