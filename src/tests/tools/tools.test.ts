@@ -17,7 +17,7 @@ import {
   isDate,
   subtractWeek,
   timeSort,
-  weekDays,
+  weekdays,
 } from '@Tools/dateTime';
 import {
   arrayIndices,
@@ -119,13 +119,13 @@ test('miscellaneous date/time tests', () => {
   let result: any = times.sort(timeSort);
   expect(result).toEqual(['07:00', '09:00', '09:30', '10:00', '11:30', '13:00']);
 
-  result = weekDays();
+  result = weekdays();
   expect(result.length).toEqual(7);
 
-  result = weekDays('');
+  result = weekdays('');
   expect(result).toEqual([]);
 
-  result = weekDays(new Date(date201229));
+  result = weekdays(new Date(date201229));
   expect(result).toEqual([
     '2020-12-27',
     '2020-12-28',
@@ -137,7 +137,7 @@ test('miscellaneous date/time tests', () => {
   ]);
 
   // first day of week 1 => Monday
-  result = weekDays(new Date(date201229), 1);
+  result = weekdays(new Date(date201229), 1);
   expect(result).toEqual([
     '2020-12-28',
     date201229,

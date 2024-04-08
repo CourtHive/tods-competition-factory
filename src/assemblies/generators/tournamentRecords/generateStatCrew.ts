@@ -149,14 +149,15 @@ export function generateStatCrew(params) {
     const matchType = matchUpType === SINGLES ? 'singles_match' : 'doubles_match';
     return { [matchType]: { match, order, childArray } };
   };
+  const tournament = teamParticipants?.length > 2 ? 'Y' : 'N';
 
-  const json = {
+  const json = definedAttributes({
     venue: {
-      tournament: teamParticipants?.length > 2 ? 'Y' : 'N',
+      tournamentname: tournament ? tournamentName : undefined,
       neutralgame: !homeTeam ? 'Y' : 'N',
-      tournamentname: tournamentName,
       gameid: tournamentId,
       officials: {},
+      tournament,
       rules: {},
       homename,
       visname,
@@ -167,7 +168,7 @@ export function generateStatCrew(params) {
     childArray: teams,
     singles_matches: singles?.map(mapMatchUp),
     doubles_matches: doubles?.map(mapMatchUp),
-  };
+  });
 
   const xml = jsonToXml({ json, tagName: 'tngame' });
 

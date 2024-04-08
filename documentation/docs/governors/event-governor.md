@@ -322,7 +322,7 @@ Where startDate and/or endDate are strings 'YYYY-MM-DD'. Can be used to set `sta
 ```js
 engine.setEventDates({
   activeDates, // optional array of dates from startDate to endDate
-  weekDays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
+  weekdays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
   startDate, // optional
   endDate, // optional
   eventId, // required
