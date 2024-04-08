@@ -3,6 +3,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // constants
+import { SAT, SUN, TUE, WED } from '@Constants/weekdayConstants';
 import { COLLEGE_DEFAULT } from '@Constants/tieFormatConstants';
 import { TEAM } from '@Constants/participantConstants';
 import { MALE } from '@Constants/genderConstants';
@@ -12,7 +13,7 @@ it('can generate Teams and venues from leagueProfiles', () => {
   const endDate = '2022-04-31'; // four months for league
   const leagueProfiles = [
     {
-      daysOfWeek: ['Tuesday', 'Saturday'],
+      weekdays: [TUE, SAT],
       tieFormatName: COLLEGE_DEFAULT,
       leagueName: 'NTRP 3.5 Men', // || eventName
       leagueId: 'leagueId', // optional
@@ -33,7 +34,7 @@ it('can generate Teams and venues from leagueProfiles', () => {
       gender: MALE,
     },
     {
-      daysOfWeek: ['Wednesday', 'Saturday'],
+      weekdays: [WED, SAT],
       tieFormatName: COLLEGE_DEFAULT,
       leagueName: 'NTRP 3.5 Women',
       teamProfiles: [
@@ -50,7 +51,7 @@ it('can generate Teams and venues from leagueProfiles', () => {
       gender: MALE,
     },
     {
-      daysOfWeek: ['Tuesday', 'Sunday'],
+      weekdays: [TUE, SUN],
       tieFormatName: COLLEGE_DEFAULT,
       leagueName: 'NTRP 3.0 Women',
       endDate: '2022-5-30',

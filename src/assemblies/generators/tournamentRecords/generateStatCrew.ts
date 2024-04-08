@@ -34,7 +34,6 @@ export function generateStatCrew(params) {
   const visname = awayTeams?.[0]?.participantName;
   const visid = awayTeams?.[0]?.participantId;
 
-  // const matchUps = allTournamentMatchUps({ tournamentRecord }).matchUps;
   const singles = matchUps?.filter((matchUp) => matchUp.matchUpType === SINGLES);
   const doubles = matchUps?.filter((matchUp) => matchUp.matchUpType === DOUBLES);
 
@@ -68,10 +67,10 @@ export function generateStatCrew(params) {
 
         if (matchUpType === SINGLES) {
           const pair = singles.length + 1;
-          singles.push({ singles_pair: { pair, won, lost } });
+          singles.push({ singles_pair: { pair, won, lost, tied: '0' } });
         } else if (matchUpType === DOUBLES) {
           const pair = doubles.length + 1;
-          doubles.push({ doubles_pair: { pair, won, lost } });
+          doubles.push({ doubles_pair: { pair, won, lost, tied: '0' } });
         }
       }
     }
@@ -150,14 +149,15 @@ export function generateStatCrew(params) {
     const matchType = matchUpType === SINGLES ? 'singles_match' : 'doubles_match';
     return { [matchType]: { match, order, childArray } };
   };
+  const tournament = teamParticipants?.length > 2 ? 'Y' : 'N';
 
-  const json = {
+  const json = definedAttributes({
     venue: {
-      tournament: teamParticipants?.length > 2 ? 'Y' : 'N',
+      tournamentname: tournament ? tournamentName : undefined,
       neutralgame: !homeTeam ? 'Y' : 'N',
-      tournamentname: tournamentName,
       gameid: tournamentId,
       officials: {},
+      tournament,
       rules: {},
       homename,
       visname,
@@ -168,7 +168,7 @@ export function generateStatCrew(params) {
     childArray: teams,
     singles_matches: singles?.map(mapMatchUp),
     doubles_matches: doubles?.map(mapMatchUp),
-  };
+  });
 
   const xml = jsonToXml({ json, tagName: 'tngame' });
 

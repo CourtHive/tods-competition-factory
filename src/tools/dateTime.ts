@@ -259,7 +259,7 @@ export function timeSort(a, b) {
   return 0;
 }
 
-export function weekDays(date: any = new Date(), firstDayOfWeek = 0) {
+export function weekdays(date: any = new Date(), firstDayOfWeek = 0) {
   if (!isDate(date)) return [];
   const dates = [0, 1, 2, 3, 4, 5, 6].map((i) => dayOfWeek(date, i + firstDayOfWeek));
   return dates;

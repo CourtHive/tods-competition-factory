@@ -189,7 +189,7 @@ Set tournament `startDate` and `endDate` in one method call. Also cleans up `mat
 ```js
 engine.setTournamentDates({
   activeDates, // optional array of dates from startDate to endDate
-  weekDays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
+  weekdays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
   startDate, // optional
   endDate, // optional
 });

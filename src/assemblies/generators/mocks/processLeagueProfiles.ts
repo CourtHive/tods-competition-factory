@@ -33,7 +33,7 @@ export function processLeagueProfiles(params): any {
       tieFormatName = COLLEGE_DEFAULT,
       teamProfiles = [],
       teamsCount = 0,
-      // daysOfWeek,
+      // weekdays,
       category,
       idPrefix,
       gender,
