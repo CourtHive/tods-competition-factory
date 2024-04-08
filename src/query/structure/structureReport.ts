@@ -22,11 +22,8 @@ type GetStructureReportsArgs = {
   firstFlightOnly?: boolean;
 };
 
-export function getStructureReports({
-  firstFlightOnly = true,
-  extensionProfiles,
-  tournamentRecord,
-}: GetStructureReportsArgs) {
+export function getStructureReports(params: GetStructureReportsArgs) {
+  const { tournamentRecord, extensionProfiles, firstFlightOnly } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_ID };
 
   const mainStructures: any[] = [];
@@ -85,7 +82,7 @@ export function getStructureReports({
       const drawDeletionsTimeItem = eventTimeItems?.find((x) => x.itemType === DRAW_DELETIONS);
       const drawDeletionsCount = drawDeletionsExtension?.value?.length || drawDeletionsTimeItem?.itemValue || 0;
 
-      const mapValues: number[] = Object.values(flightMap);
+      const mapValues: number[] = Object.values(flightMap ?? {});
       const minFlightNumber = flightMap && Math.min(...mapValues);
 
       const eventSeedingBasis = getSeedingBasis(eventTimeItems);
