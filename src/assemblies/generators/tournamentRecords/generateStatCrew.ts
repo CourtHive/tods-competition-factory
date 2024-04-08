@@ -67,10 +67,10 @@ export function generateStatCrew(params) {
 
         if (matchUpType === SINGLES) {
           const pair = singles.length + 1;
-          singles.push({ singles_pair: { pair, won, lost } });
+          singles.push({ singles_pair: { pair, won, lost, tied: '0' } });
         } else if (matchUpType === DOUBLES) {
           const pair = doubles.length + 1;
-          doubles.push({ doubles_pair: { pair, won, lost } });
+          doubles.push({ doubles_pair: { pair, won, lost, tied: '0' } });
         }
       }
     }
