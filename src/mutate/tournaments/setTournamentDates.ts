@@ -28,7 +28,8 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   datesRemoved?: string[];
   datesAdded?: string[];
 } {
-  const { tournamentRecord, startDate, endDate, activeDates, weekdays } = params;
+  const { tournamentRecord, startDate, endDate, weekdays } = params;
+  const activeDates = params.activeDates?.filter(Boolean);
 
   const paramsCheck = checkRequiredParameters(params, [
     { tournamentRecord: true },
@@ -39,7 +40,7 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
       endDate: false,
     },
     {
-      [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
+      [VALIDATE]: (value) => value.filter(Boolean).every((d) => dateValidation.test(d)),
       [INVALID]: INVALID_DATE,
       activeDates: false,
     },
@@ -53,7 +54,7 @@ export function setTournamentDates(params: SetTournamentDatesArgs): ResultType &
   if (endDate && startDate && new Date(endDate) < new Date(startDate)) return { error: INVALID_VALUES };
   if (endDate && startDate && new Date(startDate) > new Date(endDate)) return { error: INVALID_VALUES };
 
-  if (activeDates) {
+  if (activeDates?.length) {
     const start = startDate || tournamentRecord.startDate;
     const end = endDate || tournamentRecord.endDate;
     const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
