@@ -78,13 +78,13 @@ export function removeDoubleExit(params) {
       ({ roundNumber, structureId }) => structureId === matchUp.structureId && roundNumber === 1,
     );
     const roundPositions = roundMatchUps.map(({ roundPosition }) => roundPosition);
-    const pairedPosition = chunkArray(roundPositions.sort(), 2)
-      .find((chunk) => chunk.includes(matchUp.roundPosition))
-      .filter((position) => position !== matchUp.roundPosition)[0];
-    const pairedMatchUpStatus = roundMatchUps.find(
-      ({ roundPosition }) => roundPosition === pairedPosition,
-    )?.matchUpStatus;
-    const pairedMatchUpIsDoubleExit = [DOUBLE_DEFAULT, DOUBLE_WALKOVER].includes(pairedMatchUpStatus);
+    const pairedPositions = chunkArray(roundPositions.sort(), 2).find((chunk) => chunk.includes(matchUp.roundPosition));
+    const pairedMatchUpStatuses = roundMatchUps
+      .filter(({ roundPosition }) => pairedPositions.includes(roundPosition))
+      ?.map(({ matchUpStatus }) => matchUpStatus);
+    const pairedMatchUpIsDoubleExit = pairedMatchUpStatuses.every((matchUpStatus) =>
+      [DOUBLE_DEFAULT, DOUBLE_WALKOVER].includes(matchUpStatus),
+    );
     if (pairedMatchUpIsDoubleExit) {
       return decorateResult({ result: { ...SUCCESS }, stack });
     }

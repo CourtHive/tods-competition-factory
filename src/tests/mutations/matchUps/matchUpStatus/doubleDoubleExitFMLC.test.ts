@@ -1,12 +1,14 @@
-import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 // constants
-import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { BYE, DOUBLE_DEFAULT, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
-test('removing one of two adjacent double exits will preserve propagated BYE', () => {
+const scenarios = [{ removals: ['FMLC-1-2', 'FMLC-1-1'] }, { removals: ['FMLC-1-1', 'FMLC-1-2'] }];
+
+test.each(scenarios)('removing one of two adjacent double exits will preserve propagated BYE', (scenario) => {
   const drawId = 'did';
   let result = mocksEngine.generateTournamentRecord({
     drawProfiles: [
@@ -38,11 +40,21 @@ test('removing one of two adjacent double exits will preserve propagated BYE', (
 
   result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: TO_BE_PLAYED },
-    matchUpId: 'FMLC-1-2',
+    matchUpId: scenario.removals[0],
     drawId,
   });
   expect(result.success).toBe(true);
 
   result = tournamentEngine.findMatchUp({ drawId, matchUpId: 'FMLC-c-2-1' }).matchUp;
   expect(result.matchUpStatus).toBe(BYE);
+
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: TO_BE_PLAYED },
+    matchUpId: scenario.removals[1],
+    drawId,
+  });
+  expect(result.success).toBe(true);
+
+  result = tournamentEngine.findMatchUp({ drawId, matchUpId: 'FMLC-c-2-1' }).matchUp;
+  expect(result.matchUpStatus).toBe(TO_BE_PLAYED);
 });
