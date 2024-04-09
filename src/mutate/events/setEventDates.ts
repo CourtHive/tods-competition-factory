@@ -96,7 +96,7 @@ export function setEventDates(params: SetEventDatesArgs) {
       endDate: false,
     },
     {
-      [VALIDATE]: (value) => value.every((d) => dateValidation.test(d)),
+      [VALIDATE]: (value) => value.filter(Boolean).every((d) => dateValidation.test(d)),
       [INVALID]: INVALID_DATE,
       activeDates: false,
     },
@@ -107,7 +107,8 @@ export function setEventDates(params: SetEventDatesArgs) {
   ]);
   if (paramsCheck.error) return paramsCheck;
 
-  const { tournamentRecord, activeDates, weekdays, event, startDate, endDate } = params;
+  const { tournamentRecord, weekdays, event, startDate, endDate } = params;
+  const activeDates = params.activeDates?.filter(Boolean);
 
   if (startDate && endDate) {
     const newStartDate = new Date(extractDate(startDate)).getTime();
