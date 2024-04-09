@@ -25,6 +25,12 @@ export function doubleExitAdvancement(params) {
   const { matchUp: sourceMatchUp, targetMatchUps, targetLinks } = targetData;
   const { loserMatchUp, winnerMatchUp, loserTargetDrawPosition } = targetMatchUps;
 
+  // if the loserMatchUp is a WALKOVER or DEFAULTED and has no participants assigned, then it is an 'empty' exit
+  // an 'empty' exit is an exit propagated by a double walkover or double default
+  const loserMatchUpIsEmptyExit =
+    [WALKOVER, DEFAULTED].includes(loserMatchUp?.matchUpStatus) &&
+    !loserMatchUp.sides?.map((side) => side.participantId ?? side.participant).filter(Boolean).length;
+
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const { loserTargetLink } = targetLinks;
     if (appliedPolicies?.progression?.doubleExitPropagateBye) {
@@ -38,7 +44,8 @@ export function doubleExitAdvancement(params) {
         event,
       });
       if (result.error) return decorateResult({ result, stack });
-    } else {
+    } else if (!loserMatchUpIsEmptyExit) {
+      // only attemp to advance the loserMatchUp if it is not an 'empty' exit present
       const { feedRound, drawPositions, matchUpId } = loserMatchUp;
       const walkoverWinningSide = feedRound ? 2 : 2 - drawPositions.indexOf(loserTargetDrawPosition);
       const result = conditionallyAdvanceDrawPosition({
