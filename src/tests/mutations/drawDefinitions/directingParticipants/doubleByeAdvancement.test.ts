@@ -4,6 +4,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { BYE, COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { ALTERNATE } from '@Constants/entryStatusConstants';
 import { SCORE } from '@Constants/matchUpActionConstants';
@@ -14,8 +15,8 @@ it('can create double bye and remove advanced participant when outcome is reset'
   };
   const drawProfiles = [
     {
-      drawSize: 8,
       participantsCount: 7,
+      drawSize: 8,
       outcomes: [
         {
           roundNumber: 1,

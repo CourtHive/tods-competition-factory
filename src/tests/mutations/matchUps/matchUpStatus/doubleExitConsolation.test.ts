@@ -129,7 +129,7 @@ const scenarios = [
         roundNumber: 1,
       },
       {
-        matchUpStatus: TO_BE_PLAYED,
+        matchUpStatus: BYE,
         stage: CONSOLATION,
         drawPositions: [1],
         roundPosition: 1,
@@ -401,7 +401,7 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
         check: JSON.stringify(check.drawPositions),
       });
       if (check.includeCheck !== false) {
-        expect(targetMatchUp.drawPositions?.filter(Boolean)).toEqual(check.drawPositions);
+        expect(targetMatchUp.drawPositions?.filter(Boolean) ?? []).toEqual(check.drawPositions ?? []);
         expect(targetMatchUp.matchUpStatus).toEqual(check.matchUpStatus);
         expect(targetMatchUp.winningSide).toEqual(check.winningSide);
       }

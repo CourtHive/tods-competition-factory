@@ -4,10 +4,11 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { pushGlobalLog } from '@Functions/global/globalLog';
-import { intersection, overlap } from '@Tools/arrays';
+import { chunkArray, intersection, overlap } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 
 // constants
+import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   BYE,
@@ -69,6 +70,25 @@ export function removeDoubleExit(params) {
 
   const byePropagatedToLoserMatchUp =
     loserMatchUp?.matchUpStatus === BYE && (loserMatchUp?.feedRound || loserMatchUp?.roundNumber === 1);
+  const isFMLC = targetData?.targetLinks?.loserTargetLink?.linkCondition === FIRST_MATCHUP;
+
+  if (byePropagatedToLoserMatchUp && isFMLC) {
+    // determine whether the BYE has been propagated to the loserMatchUp by two double exits
+    const roundMatchUps = inContextDrawMatchUps.filter(
+      ({ roundNumber, structureId }) => structureId === matchUp.structureId && roundNumber === 1,
+    );
+    const roundPositions = roundMatchUps.map(({ roundPosition }) => roundPosition);
+    const pairedPosition = chunkArray(roundPositions.sort(), 2)
+      .find((chunk) => chunk.includes(matchUp.roundPosition))
+      .filter((position) => position !== matchUp.roundPosition)[0];
+    const pairedMatchUpStatus = roundMatchUps.find(
+      ({ roundPosition }) => roundPosition === pairedPosition,
+    )?.matchUpStatus;
+    const pairedMatchUpIsDoubleExit = [DOUBLE_DEFAULT, DOUBLE_WALKOVER].includes(pairedMatchUpStatus);
+    if (pairedMatchUpIsDoubleExit) {
+      return decorateResult({ result: { ...SUCCESS }, stack });
+    }
+  }
 
   if (loserMatchUp && (loserMatchUp.matchUpStatus !== BYE || byePropagatedToLoserMatchUp)) {
     const inContextLoserMatchUp = inContextDrawMatchUps.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
@@ -105,6 +125,7 @@ export function removeDoubleExit(params) {
       if (result.error) return decorateResult({ result, stack });
     }
   }
+
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
 

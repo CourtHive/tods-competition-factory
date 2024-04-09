@@ -14,11 +14,12 @@ import { overlap } from '@Tools/arrays';
 
 // constants and types
 import { DRAW_POSITION_ASSIGNED, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
-import { TEAM } from '@Constants/matchUpTypes';
 import { MatchUpsMap } from '@Types/factoryTypes';
+import { TEAM } from '@Constants/matchUpTypes';
 import {
   BYE,
   COMPLETED,
@@ -29,7 +30,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '@Constants/matchUpStatusConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type AssignMatchUpDrawPositionArgs = {
   inContextDrawMatchUps: HydratedMatchUp[];
@@ -80,8 +80,8 @@ export function assignMatchUpDrawPosition({
 
   const drawPositions: number[] = matchUp?.drawPositions ?? [];
   const { positionAdded, positionAssigned, updatedDrawPositions } = getUpdatedDrawPositions({
-    drawPosition,
     drawPositions,
+    drawPosition,
   });
 
   const { positionAssignments } = getPositionAssignments({
@@ -252,6 +252,7 @@ export function assignMatchUpDrawPosition({
         matchUpsMap,
         event,
       });
+
       if (result.error) return result;
     }
   }
