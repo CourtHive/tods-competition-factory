@@ -24,8 +24,13 @@ test('json arrays to xml', () => {
 test('generation of statcrew from dual', () => {
   const tournamentRecordJSON = fs.readFileSync('./src/tests/generators/dual.tods.json', 'utf-8');
   const tournamentRecord = JSON.parse(tournamentRecordJSON);
+
   const result: any = generateStatCrew({ tournamentRecord });
-  const lines = result.xml.split('\n');
+
+  expect(Array.isArray(result.xml)).toEqual(true);
+  const lines = result.xml[0].split('\n');
   const linesCount = lines.length;
   expect(linesCount).toEqual(197);
+
+  expect(result.json[0].childArray.map(({ team }) => team.score)).toEqual([3, 4]);
 });
