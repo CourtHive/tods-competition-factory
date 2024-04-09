@@ -129,7 +129,7 @@ const scenarios = [
         roundNumber: 1,
       },
       {
-        matchUpStatus: BYE,
+        matchUpStatus: TO_BE_PLAYED,
         stage: CONSOLATION,
         drawPositions: [1],
         roundPosition: 1,

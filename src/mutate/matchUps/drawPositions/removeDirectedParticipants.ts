@@ -376,8 +376,8 @@ export function removeDirectedBye({
     inContextDrawMatchUps,
     tournamentRecord,
     drawDefinition,
-    matchUpsMap,
     drawPosition,
+    matchUpsMap,
     structureId,
     event,
   });

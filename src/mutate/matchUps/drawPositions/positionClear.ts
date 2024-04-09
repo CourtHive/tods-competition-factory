@@ -402,8 +402,7 @@ function removeDrawPosition({
     (targetMatchUp.matchUpStatus &&
       [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus) &&
       targetMatchUp.matcHUpStatus) ||
-    (targetMatchUp.drawPositions?.length === 2 && TO_BE_PLAYED) ||
-    undefined;
+    TO_BE_PLAYED;
 
   targetMatchUp.matchUpStatus = newMatchUpStatus;
 
@@ -432,9 +431,9 @@ function removeDrawPosition({
 
     modifyMatchUpNotice({
       tournamentId: tournamentRecord?.tournamentId,
+      context: `${stack}-${drawPosition}`,
       eventId: event?.eventId,
       matchUp: targetMatchUp,
-      context: `${stack}-${drawPosition}`,
       drawDefinition,
     });
   }
