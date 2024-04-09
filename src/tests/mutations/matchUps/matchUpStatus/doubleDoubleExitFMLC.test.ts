@@ -35,7 +35,10 @@ test.each(scenarios)('removing one of two adjacent double exits will preserve pr
   });
   expect(result.success).toBe(true);
 
-  result = tournamentEngine.findMatchUp({ drawId, matchUpId: 'FMLC-c-2-1' }).matchUp;
+  // consolation matchUp with propagated BYE
+  const matchUpId = 'FMLC-c-2-1';
+
+  result = tournamentEngine.findMatchUp({ drawId, matchUpId }).matchUp;
   expect(result.matchUpStatus).toBe(BYE);
 
   result = tournamentEngine.setMatchUpStatus({
@@ -45,7 +48,7 @@ test.each(scenarios)('removing one of two adjacent double exits will preserve pr
   });
   expect(result.success).toBe(true);
 
-  result = tournamentEngine.findMatchUp({ drawId, matchUpId: 'FMLC-c-2-1' }).matchUp;
+  result = tournamentEngine.findMatchUp({ drawId, matchUpId }).matchUp;
   expect(result.matchUpStatus).toBe(BYE);
 
   result = tournamentEngine.setMatchUpStatus({
@@ -55,6 +58,6 @@ test.each(scenarios)('removing one of two adjacent double exits will preserve pr
   });
   expect(result.success).toBe(true);
 
-  result = tournamentEngine.findMatchUp({ drawId, matchUpId: 'FMLC-c-2-1' }).matchUp;
+  result = tournamentEngine.findMatchUp({ drawId, matchUpId }).matchUp;
   expect(result.matchUpStatus).toBe(TO_BE_PLAYED);
 });
