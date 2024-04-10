@@ -1,13 +1,14 @@
-import { ensureInt } from '@Tools/ensureInt';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import { ensureInt } from '@Tools/ensureInt';
 import { expect, it } from 'vitest';
 
+// constants
+import { SPLIT_LEVEL_BASED, SPLIT_SHUTTLE, SPLIT_WATERFALL } from '@Constants/flightConstants';
 import { MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { RANKING, RATING } from '@Constants/scaleConstants';
 import { SINGLES } from '@Constants/eventConstants';
-import { SPLIT_LEVEL_BASED, SPLIT_SHUTTLE, SPLIT_WATERFALL } from '@Constants/flightConstants';
 
 // turn on devContext to enable checking splitEntries value
 tournamentEngine.devContext(true);
