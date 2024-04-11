@@ -1,13 +1,14 @@
-import tournamentEngine from '../engines/syncEngine';
-import mocksEngine from '../../assemblies/engines/mock';
+import tournamentEngine from '@Tests/engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import { JSON2CSV } from '@Tools/json';
 import { expect, it } from 'vitest';
 
+// constants
+import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES_EVENT } from '@Constants/eventConstants';
 import { WALKOVER } from '@Constants/matchUpStatusConstants';
 import { SINGLES } from '@Constants/matchUpTypes';
-import { JSON2CSV } from '@Tools/json';
-import { FORMAT_ATP_DOUBLES, FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 it('can create CSV from shallow JSON objects', () => {
   const csv = JSON2CSV([{ a: '1', b: '2' }]);
@@ -41,11 +42,9 @@ it('supports passing functions which manipulate values', () => {
   const jsonObjects = [{ matchUpStatus: WALKOVER }, { matchUpType: SINGLES_EVENT }];
   const expectations = ['matchUpStatus,matchUpType', 'WO,', ',S'];
   const config = {
-    delimiter: '',
+    functionMap: { matchUpType: (value) => value?.slice(0, 1) },
     valuesMap: { matchUpStatus: { WALKOVER: 'WO' } },
-    functionMap: {
-      matchUpType: (value) => value?.slice(0, 1),
-    },
+    delimiter: '',
   };
   const converted = JSON2CSV(jsonObjects, config) as string;
   const conversion = converted.split('\r\n');

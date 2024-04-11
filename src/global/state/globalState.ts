@@ -233,9 +233,7 @@ export type DeepCopyAttributes = {
 };
 
 export function setDeepCopy(value: boolean, attributes: DeepCopyAttributes) {
-  if (typeof value === 'boolean') {
-    globalState.deepCopy = value;
-  }
+  if (typeof value === 'boolean') globalState.deepCopy = value;
   if (typeof attributes === 'object') {
     if (Array.isArray(attributes.ignore)) globalState.deepCopyAttributes.ignore = attributes.ignore;
     if (Array.isArray(attributes.toJSON)) globalState.deepCopyAttributes.toJSON = attributes.toJSON;

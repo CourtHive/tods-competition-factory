@@ -1,14 +1,15 @@
 import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { mocksEngine, competitionEngine } from '../../..';
 import { expect, test } from 'vitest';
 
+// constants
+import { COMPASS, CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { PUBLISH, STATUS } from '@Constants/timeItemConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { FEMALE, MALE } from '@Constants/genderConstants';
 import { PAIR } from '@Constants/participantConstants';
-import { COMPASS, CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 
 test('modifyTournamentRecord error conditions', () => {
   const result = mocksEngine.modifyTournamentRecord();
@@ -226,7 +227,7 @@ test('mocksEngine can modify existing tournamentRecords with drawProfiles', () =
     startDate,
   });
 
-  const { rounds } = competitionEngine.setState(tournamentRecord).getRounds();
+  const { rounds } = tournamentEngine.setState(tournamentRecord).getRounds();
   const schedulingProfile = [{ scheduleDate: startDate, venues: [{ venueId, rounds }] }];
 
   const result = mocksEngine.modifyTournamentRecord({
