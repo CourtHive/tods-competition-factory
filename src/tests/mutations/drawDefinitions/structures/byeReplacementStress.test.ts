@@ -1,10 +1,11 @@
+import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 import { generateRange } from '@Tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 import fs from 'fs';
-import { popGlobalLog, printGlobalLog, purgeGlobalLog, pushGlobalLog } from '@Functions/global/globalLog';
 
+// constants
 import { POSITION_ACTIONS } from '@Constants/extensionConstants';
 import {
   COMPASS,
