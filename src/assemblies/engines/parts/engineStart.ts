@@ -20,8 +20,8 @@ import {
 } from '@Assemblies/engines/parts/stateMethods';
 
 // constants and types
-import { SUCCESS } from '@Constants/resultConstants';
 import { FactoryEngine } from '@Types/factoryTypes';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function engineStart(engine: FactoryEngine, engineInvoke: any): void {
   engine.importMethods = (methods, collections, depth, global) =>

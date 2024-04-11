@@ -117,6 +117,7 @@ module.exports = {
         'tools/make-deep-copy',
         'tools/structure-sort',
         'tools/json-to-csv',
+        'tools/tools-api',
       ],
     },
     {
