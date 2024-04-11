@@ -11,6 +11,9 @@ coverage
 scratch
 *decoy*
 
+# build
+build
+
 # Dependencies
 node_modules
 node_*
