@@ -1,5 +1,5 @@
 ---
-title: tools API
+title: API
 ---
 
 Convenience methods useful for projects working with the Competition Factory.
@@ -132,6 +132,8 @@ const { extension } = tools.findExtension({ element, name });
 ---
 
 ## JSON2CSV
+
+See [documentation page](/docs/tools/json-to-csv.mdx).
 
 ---
 
