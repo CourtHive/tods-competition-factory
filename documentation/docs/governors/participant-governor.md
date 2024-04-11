@@ -402,10 +402,10 @@ Modifying team assignments has "global" effect, meaning that if a team appears i
 
 ```js
 const scaleAttributes = {
+  sortOrder: ASCENDING, // defaults to ASCENDING; use case for DESCENDING is unclear!
   scaleType: RANKING,
   eventType: SINGLES,
   scaleName: 'U18',
-  sortOrder: ASCENDING, // defaults to ASCENDING; use case for DESCENDING is unclear!
 };
 engine.scaledTeamAssignment({
   clearExistingAssignments, // optional - true by default remove all existing individualParticipantIds from targeted teams
@@ -430,8 +430,8 @@ const scaleAttributes = {
 };
 
 const scaledParticipants = individualParticipants.map((participant) => ({
-  participantId: 'participantId',
   scaleValue: participantScaleItem({ participant, scaleAttributes }).scaleItem.scaleValue,
+  participantId: 'participantId',
 }));
 
 const teamParticipantIds = teamParticipants.map(getParticipantId);

@@ -1,17 +1,18 @@
 import { attachFlightProfile as attachProfile } from '@Mutate/events/attachFlightProfile';
+import { chunkArray, chunkByNth, generateRange, shuffleArray } from '@Tools/arrays';
 import { getScaledEntries } from '@Query/event/getScaledEntries';
 import { getParticipantId } from '@Functions/global/extractors';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { getDevContext } from '@Global/state/globalState';
 import { UUID } from '@Tools/UUID';
-import { chunkArray, chunkByNth, generateRange, shuffleArray } from '@Tools/arrays';
 
+// constants and types
+import { EXISTING_PROFILE, ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
+import { Entry, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
+import { SPLIT_SHUTTLE, SPLIT_WATERFALL } from '@Constants/flightConstants';
 import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { FlightProfile, ScaleAttributes } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { EXISTING_PROFILE, ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
-import { SPLIT_SHUTTLE, SPLIT_WATERFALL } from '@Constants/flightConstants';
-import { Entry, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 
 /**
  * @param {object} event - automatically retrieved by tournamentEngine given eventId

@@ -1,17 +1,18 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import { getParticipantId } from '@Functions/global/extractors';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
+import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { ScaleAttributes } from '@Types/factoryTypes';
 import { RANKING } from '@Constants/scaleConstants';
-import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 const EVENT_NAME = 'Team Event';
 
