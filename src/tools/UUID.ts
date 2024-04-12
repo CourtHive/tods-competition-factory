@@ -11,11 +11,11 @@ import { generateRange } from './arrays';
  *
  * @param {number} count - number of UUIDs to generate
  */
-export function UUIDS(count = 1) {
-  return generateRange(0, count).map(UUID);
+export function UUIDS(count = 1, pre?) {
+  return generateRange(0, count).map(() => UUID(pre));
 }
 
-export function UUID() {
+export function UUID(pre?) {
   const lut: string[] = [];
 
   for (let i = 0; i < 256; i++) {
@@ -27,7 +27,7 @@ export function UUID() {
   const d2 = (Math.random() * 0xffffffff) | 0;
   const d3 = (Math.random() * 0xffffffff) | 0;
   // eslint-disable-next-line no-mixed-operators
-  return (
+  const uuid =
     lut[d0 & 0xff] +
     lut[(d0 >> 8) & 0xff] +
     lut[(d0 >> 16) & 0xff] +
@@ -50,13 +50,7 @@ export function UUID() {
     lut[d3 & 0xff] +
     lut[(d3 >> 8) & 0xff] +
     lut[(d3 >> 16) & 0xff] +
-    lut[(d3 >> 24) & 0xff]
-  );
-}
+    lut[(d3 >> 24) & 0xff];
 
-/**
- * UUID prepended with 'u_' which is safe for html attribute ids
- */
-export function safeUUID() {
-  return `u_${UUID()}`;
+  return typeof pre === 'string' ? `${pre}_${uuid.replace(/-/g, '')}` : uuid;
 }
