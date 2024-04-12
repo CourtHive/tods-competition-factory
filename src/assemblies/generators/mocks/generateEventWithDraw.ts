@@ -1,10 +1,10 @@
 import { generateDrawDefinition } from '../drawDefinitions/generateDrawDefinition/generateDrawDefinition';
 import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
+import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { completeDrawMatchUps, completeDrawMatchUp } from './completeDrawMatchUps';
 import { addPlayoffStructures } from '@Mutate/drawDefinitions/addPlayoffStructures';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
-import { setParticipantScaleItem } from '@Mutate/participants/scaleItems/addScaleItems';
 import { addDrawDefinition } from '@Mutate/drawDefinitions/addDrawDefinition';
 import { addParticipants } from '@Mutate/participants/addParticipants';
 import { allDrawMatchUps } from '@Query/matchUps/getAllDrawMatchUps';
@@ -76,6 +76,7 @@ export function generateEventWithDraw(params) {
     drawExtensions,
     completionGoal,
     tieFormatName,
+    buildTeams,
     seedsCount,
     timeItems,
     drawName,
@@ -229,11 +230,12 @@ export function generateEventWithDraw(params) {
         mIndex += genders[MALE];
         rIndex += mixedCount;
 
+        const individualParticipantIds = buildTeams !== false ? [...fPIDs, ...mPIDs, ...rIDs] : [];
         return {
-          individualParticipantIds: [...fPIDs, ...mPIDs, ...rIDs],
           participantOtherName: `TM${teamIndex + 1}`,
           participantName: `Team ${teamIndex + 1}`,
           participantRole: COMPETITOR,
+          individualParticipantIds,
           participantType: TEAM,
           participantId: UUID(),
         };

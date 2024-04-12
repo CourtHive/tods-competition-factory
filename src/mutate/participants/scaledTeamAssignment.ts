@@ -1,10 +1,12 @@
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
 import { getParticipantId } from '@Functions/global/extractors';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { addParticipants } from './addParticipants';
 import { isConvertableInteger } from '@Tools/math';
 import { generateRange } from '@Tools/arrays';
-import { addParticipants } from './addParticipants';
 
+// constants and types
+import { INDIVIDUAL, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { Event, Participant, Tournament } from '@Types/tournamentTypes';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
@@ -20,7 +22,6 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { INDIVIDUAL, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 
 /*
 scaledParticipants are equivalent to scaledEntries
@@ -36,13 +37,13 @@ scaleAttributes can include { accessor: 'attribute' } which will return scaleIte
 */
 
 type ScaledTeamAssignmentArgs = {
-  clearExistingAssignments?: boolean;
   individualParticipantIds?: string[];
+  clearExistingAssignments?: boolean;
   reverseAssignmentOrder?: boolean;
-  initialTeamIndex?: number;
-  scaledParticipants?: any[];
   teamParticipantIds?: string[];
   tournamentRecord: Tournament;
+  scaledParticipants?: any[];
+  initialTeamIndex?: number;
   scaleAttributes?: any;
   teamNameBase?: string;
   teamsCount?: number;
