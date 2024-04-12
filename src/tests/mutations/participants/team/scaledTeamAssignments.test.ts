@@ -5,10 +5,10 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-// constants
+// constants and types
 import { INVALID_PARTICIPANT_IDS, INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
-import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { ScaleAttributes } from '@Types/factoryTypes';
@@ -32,10 +32,9 @@ it('can automatically assign participants to teams using individualParticipantId
     eventIds: [eventId],
   } = mocksEngine.generateTournamentRecord({
     participantsProfile,
+    setState: true,
     eventProfiles,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   const individualParticipantIds = tournamentRecord.participants.map(getParticipantId);
 
@@ -174,8 +173,8 @@ it('can automatically assign participants to teams using scaledParticipants', ()
   };
 
   const scaledParticipants = individualParticipants.map((participant) => ({
-    participantId: participant.participantId,
     scaleValue: participantScaleItem({ participant, scaleAttributes })?.scaleItem?.scaleValue,
+    participantId: participant.participantId,
   }));
 
   const teamParticipantIds = teamParticipants.map(getParticipantId);

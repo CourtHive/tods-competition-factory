@@ -1,8 +1,8 @@
 import { isOdd, nextPowerOf2, isPowerOf2, skewedDistribution } from '@Tools/math';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateHashCode } from '@Tools/objects';
-import { safeUUID, UUIDS } from '@Tools/UUID';
 import { deepMerge } from '@Tools/deepMerge';
+import { UUID, UUIDS } from '@Tools/UUID';
 import { expect, it, test } from 'vitest';
 import {
   addMinutesToTimeString,
@@ -116,7 +116,7 @@ test('converTime supports both 12 and 24 hour formats', () => {
 
 test('miscellaneous date/time tests', () => {
   const times = ['09:00', '10:00', '07:00', '13:00', '11:30', '09:30'];
-  let result: any = times.sort(timeSort);
+  let result: any = times.toSorted(timeSort);
   expect(result).toEqual(['07:00', '09:00', '09:30', '10:00', '11:30', '13:00']);
 
   result = weekdays();
@@ -334,7 +334,7 @@ test('can generate an array of UUIDs', () => {
 
 // UUIDs embedded in HTML cannot start with a number
 test('can generate an HTML-safe UUID', () => {
-  const result = safeUUID();
+  const result = UUID('u');
   expect(typeof result).toEqual('string');
   expect(parseInt(result[0])).toEqual(NaN);
 });

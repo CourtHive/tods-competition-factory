@@ -101,11 +101,11 @@ it('will assign TEAM positions based on ranking', () => {
     scaleAllParticipants: true,
   };
   const {
-    tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
     tournamentName: 'Gold Team Challenge',
     participantsProfile,
+    setState: true,
     drawProfiles: [
       {
         category: { ageCategoryCode: categoryName },
@@ -115,9 +115,6 @@ it('will assign TEAM positions based on ranking', () => {
       },
     ],
   });
-
-  const result = tournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
 
   const { participants } = tournamentEngine.getParticipants({
     withIndividualParticipants: true,
@@ -202,12 +199,12 @@ it('can generate lineUps for TEAM events', () => {
   };
   const {
     eventIds: [eventId],
-    tournamentRecord,
     drawIds,
   } = mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     participantsProfile,
     policyDefinitions,
+    setState: true,
     drawProfiles: [
       {
         category: { ageCategoryCode: categoryName },
@@ -217,9 +214,6 @@ it('can generate lineUps for TEAM events', () => {
       },
     ],
   });
-
-  let result = tournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   // all matchUps cannot be complelted if all participants have not been assigned propertly
@@ -233,7 +227,7 @@ it('can generate lineUps for TEAM events', () => {
 
   // !!!!!!!!!!!!!!!!!!!!!!!!! DELETE DRAW_DEFINITION !!!!!!!!!!!!!!!!!!!!!!!!!!
   // Now delete the draw and all of the existing pairParticipants
-  result = tournamentEngine.deleteDrawDefinitions({ drawIds });
+  let result = tournamentEngine.deleteDrawDefinitions({ drawIds });
   expect(result.error).toEqual(SCORES_PRESENT);
 
   result = tournamentEngine.deleteDrawDefinitions({ drawIds, force: true });
