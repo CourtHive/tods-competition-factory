@@ -218,8 +218,8 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     ].includes(matchUpStatus)
   ) {
     return {
-      error: INVALID_VALUES,
       info: 'Not supported for matchUpType: TEAM',
+      error: INVALID_VALUES,
     };
   }
 
@@ -243,9 +243,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       winningSide,
       score,
     });
-    if (result.error) {
-      return result;
-    }
+    if (result.error) return result;
   }
 
   const appliedPolicies =

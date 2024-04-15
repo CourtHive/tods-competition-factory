@@ -54,6 +54,9 @@ export function anonymizeTournamentRecord({
   delete tournamentRecord.parentOrganisation;
 
   for (const participant of tournamentRecord.participants || []) {
+    participant.extensions = filterExtensions(participant);
+    participant.onlineResources = [];
+
     const newParticipantId = UUID();
     idMap[participant.participantId] = newParticipantId;
     participant.participantId = newParticipantId;
@@ -70,19 +73,34 @@ export function anonymizeTournamentRecord({
 
   let venueIndex = 0;
   for (const venue of tournamentRecord.venues || []) {
+    venue.venueAbbreviation = `V${venueIndex}`;
     venue.extensions = filterExtensions(venue);
     venue.venueName = `Venue #${venueIndex}`;
-    venue.venueAbbreviation = `V${venueIndex}`;
+
+    venue.onlineResources = [];
+    venue.addresses = [];
+
     const newVenueId = UUID();
     idMap[venue.venueId] = newVenueId;
+
     venue.isMock = true;
     venueIndex += 1;
     // venue.eventId = UUID(); eventIds can't be anonymized without updating schedulingProfiles
+
+    let courtIndex = 0;
+    for (const court of venue.courts || []) {
+      court.courtName = `V${venueIndex}C${courtIndex}`;
+      court.extensions = filterExtensions(court);
+      court.onlineResources = [];
+      court.isMock = true;
+      courtIndex += 1;
+    }
   }
 
   let eventCount = 1;
   for (const event of tournamentRecord.events || []) {
     event.extensions = filterExtensions(event);
+    event.onlineResources = [];
     event.isMock = true;
 
     const newEventId = UUID();
