@@ -2,7 +2,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { ensureInt } from '@Tools/ensureInt';
 
 // constants and types
-import { MULTI_STRUCTURE_DRAWS, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
+import { AD_HOC, MULTI_STRUCTURE_DRAWS, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 import { INVALID_DRAW_SIZE } from '@Constants/errorConditionConstants';
 import { DrawTypeUnion } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
@@ -13,6 +13,7 @@ export function getCoercedDrawType(params): ResultType & { drawType: DrawTypeUni
 
   let drawType =
     (drawTypeCoercion &&
+      params.drawType !== AD_HOC &&
       (typeof drawTypeCoercion === 'boolean' || drawTypeCoercion <= 2) &&
       drawSize === 2 &&
       SINGLE_ELIMINATION) ||
