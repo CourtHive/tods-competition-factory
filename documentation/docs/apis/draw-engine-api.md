@@ -300,16 +300,16 @@ Returns categorized matchUps from a single structure.
 ```js
 const { upcomingMatchUps, pendingMatchUps, completedMatchUps, abandonedMatchUps, byeMatchUps } =
   drawEngine.getStructureMatchUps({
-    structureId,
-    context, // optional context to be added into matchUps
-    inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
-    nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
-    matchUpFilters, // attribute filters
-    contextFilters, // filters based on context attributes
-    tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
-    requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
     tournamentAppliedPolicies, // any policies, such as privacy, to be applied to matchUps
     scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+    tournamentParticipants, // optional - provide an array of tournamentParticipants to add into matchUps
+    requireParticipants, // optional - require that participants be loaded into drawEngine or passed into method
+    contextFilters, // filters based on context attributes
+    matchUpFilters, // attribute filters
+    structureId,
+    nextMatchUps, // optioanl - boolean - to include winnerTo and loserTo
+    inContext, // boolean - add context { drawId, structureId, participant, individualParticipants ... }
+    context, // optional context to be added into matchUps
   });
 ```
 
