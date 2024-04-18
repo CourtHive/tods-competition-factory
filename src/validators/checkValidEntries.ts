@@ -121,7 +121,7 @@ function getValidGender(params) {
     ANY === eventGender ||
     ([MALE, FEMALE].includes(eventGender) && pairGender[0] === eventGender) ||
     (MIXED === eventGender &&
-      ((pairGender.length == 1 && participant.individualParticipantIds?.length === 1) || pairGender.length === 2));
+      ((pairGender.length === 1 && participant.individualParticipantIds?.length === 1) || pairGender.length === 2));
 
   const personGender = participant?.person?.sex as unknown;
 

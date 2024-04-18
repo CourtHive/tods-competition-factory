@@ -81,7 +81,7 @@ export function generateParticipants(params): {
   rankingRange = rankingRange || [1, rankingUpperBound];
   rankingRange[1] += 1; // so that behavior is as expected
 
-  const individualParticipantsCount = participantsCount * (doubles ? 2 : team ? 8 : 1);
+  const individualParticipantsCount = participantsCount * ((doubles && 2) || (team && 8) || 1);
 
   const result = generatePersons({
     count: individualParticipantsCount,
@@ -180,9 +180,8 @@ export function generateParticipants(params): {
   const isoMin = getMin(nationalityCodesCount);
   const isoList = isoMin
     ? shuffleArray(countryCodes).slice(0, nationalityCodesCount)
-    : nationalityCodes
-      ? countryCodes.filter((isoCountry) => nationalityCodes.includes(isoCountry.iso))
-      : countryCodes;
+    : (nationalityCodes && countryCodes.filter((isoCountry) => nationalityCodes.includes(isoCountry.iso))) ||
+      countryCodes;
 
   const countriesList = shuffleArray(
     generateRange(0, Math.ceil(individualParticipantsCount / (isoMin || 1)))
@@ -193,7 +192,7 @@ export function generateParticipants(params): {
   const teamNames = nameMocks({ count: participantsCount }).names;
   const participants = generateRange(0, participantsCount)
     .map((i) => {
-      const sideParticipantsCount = doubles ? 2 : team ? 8 : 1;
+      const sideParticipantsCount = (doubles && 2) || (team && 8) || 1;
       const individualParticipants = generateRange(0, sideParticipantsCount).map((j) => {
         const participantIndex = i * sideParticipantsCount + j;
         return generateIndividualParticipant(participantIndex);
