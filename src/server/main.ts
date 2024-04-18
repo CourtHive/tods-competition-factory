@@ -13,8 +13,6 @@ async function bootstrap() {
     origin: '*',
   });
 
-  // await app.register(cookieParser);
-  // await app.register(compression);
   app.use(json({ limit: '8mb' }));
 
   const swaggerConfig = new DocumentBuilder()
