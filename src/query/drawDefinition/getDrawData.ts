@@ -104,7 +104,7 @@ export function getDrawData(params): {
       })
       .sort((a, b) => structureSort(a, b, sortConfig))
       .map((structure) => {
-        if (!structure) return;
+        if (!structure) return undefined;
         const structureId = structure?.structureId;
         let seedAssignments = [];
 
@@ -249,9 +249,7 @@ export function getDrawData(params): {
   return {
     structures:
       !usePublishState || drawInfo.drawPublished
-        ? noDeepCopy
-          ? structures
-          : makeDeepCopy(structures, false, true)
+        ? (noDeepCopy && structures) || makeDeepCopy(structures, false, true)
         : undefined,
     drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,

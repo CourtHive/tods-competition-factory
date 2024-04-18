@@ -77,7 +77,7 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
   // ensure all scheduleDates are valid date strings
   const validScheduleDates = scheduleDates
     .map((scheduleDate) => {
-      if (!isValidDateString(scheduleDate)) return;
+      if (!isValidDateString(scheduleDate)) return undefined;
       return extractDate(scheduleDate);
     })
     .filter(Boolean);

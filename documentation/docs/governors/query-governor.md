@@ -30,8 +30,8 @@ Returns all matchUps for an event.
 
 ```js
 const { matchUps } = allEventMatchUps({
+  scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
-  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
   nextMatchUps: true, // include winner/loser target matchUp details
@@ -61,7 +61,7 @@ Return an array of all matchUps contained within a tournament. These matchUps ar
 
 ```js
 const { matchUps, groupInfo } = engine.allTournamentMatchUps({
-  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   contextFilters, // filters based on context attributes
@@ -118,13 +118,13 @@ Returns matchUps for an event grouped by status.
 
 ```js
 const { abandonedMatchUps, byeMatchUps, completedMatchUps, pendingMatchUps, upcomingMatchUps } = engine.eventMatchUps({
-  eventId,
-  nextMatchUps, // optional boolean; include winner/loser target matchUp details
-  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
-  contextFilters,
+  scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
   tournamentAppliedPolicies,
-  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
-  inContext: true, // optional - adds context details to all matchUps
+  contextFilters, // optiona; filter by attributes that are only present after matchUpContext has been added (hydration)
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+  nextMatchUps, // optional boolean; include winner/loser target matchUp details
+  inContext, // optional - adds context details to all matchUps
+  eventId,
 });
 ```
 
@@ -660,7 +660,7 @@ const {
     allocatedCourts: [{ venueId, courtid }], // applies only to TEAM matchUps
   },
 } = engine.getMatchUpScheduleDetails({
-  scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+  scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
   matchUp,
 });
 ```
@@ -1515,9 +1515,9 @@ Returns tournament matchUps grouped by matchUpStatus. These matchUps are returne
 ```js
 const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps, byeMatchUps, groupInfo } =
   engine.tournamentMatchUps({
-    matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+    scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
     policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
-    scheduleVisibilityFilters, // { visibilityThreshold: Date, eventIds, drawIds }
+    matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
   });
 ```
 

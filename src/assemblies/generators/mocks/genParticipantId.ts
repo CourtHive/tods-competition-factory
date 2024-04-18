@@ -1,7 +1,7 @@
-import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { isString } from '@Tools/objects';
 import { UUID } from '@Tools/UUID';
 
 export function genParticipantId({ idPrefix, participantType, index, uuids }) {
-  const type = participantType === INDIVIDUAL ? 'I' : PAIR ? 'P' : TEAM ? 'T' : GROUP ? 'G' : 'X';
+  const type = isString(participantType) ? participantType[0] : 'X';
   return idPrefix ? `${idPrefix}-${type}-${index}` : uuids?.pop() || UUID();
 }

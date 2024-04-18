@@ -11,7 +11,7 @@ export function validTimePeriod({ startTime = '', endTime = '' } = {}) {
   const [endHour, endMinute] = endTime.split(':').map(getInt);
 
   if (endHour < startHour) return false;
-  return startHour === endHour && endMinute < startMinute ? false : true;
+  return !(startHour === endHour && endMinute < startMinute);
 }
 
 export function startTimeSort(a, b) {

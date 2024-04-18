@@ -10,11 +10,9 @@ async function bootstrap() {
   app.enableCors({
     methods: ['GET', 'POST'],
     allowedHeaders: '*',
-    origin: '*'
+    origin: '*',
   });
 
-  // await app.register(cookieParser);
-  // await app.register(compression);
   app.use(json({ limit: '8mb' }));
 
   const swaggerConfig = new DocumentBuilder()

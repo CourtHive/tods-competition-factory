@@ -1,10 +1,11 @@
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
-import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpFormatTiming } from './getMatchUpFormatTiming';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { findExtension } from '@Acquire/findExtension';
 import { findPolicy } from '@Acquire/findPolicy';
 import { unique } from '@Tools/arrays';
 
+// constants, fixtures and types
 import { POLICY_TYPE_SCHEDULING, POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import POLICY_SCHEDULING_DEFAULT from '@Fixtures/policies/POLICY_SCHEDULING_DEFAULT';
 import { ErrorType, MISSING_EVENT } from '@Constants/errorConditionConstants';
@@ -65,14 +66,8 @@ export function getEventMatchUpFormatTiming({
     matchUpFormatDefinitions = matchUpFormats
       .map((definition) => {
         const definitionObject = typeof definition === 'string' ? { matchUpFormat: definition } : definition;
-
-        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat)) return;
-        if (
-          !isValidMatchUpFormat({
-            matchUpFormat: definitionObject?.matchUpFormat,
-          })
-        )
-          return;
+        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat)) return undefined;
+        if (!isValidMatchUpFormat({ matchUpFormat: definitionObject?.matchUpFormat })) return undefined;
         uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
         return definitionObject;
       })

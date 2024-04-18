@@ -304,7 +304,7 @@ function groupSubSort({ participantResults, disableHeadToHead, participantIds, m
     report.push(result.report);
 
     // return false if a rule has successfully broken the tie
-    return result.order ? false : true;
+    return !result.order;
   });
 
   if (result.order) return { order: result.order, report };

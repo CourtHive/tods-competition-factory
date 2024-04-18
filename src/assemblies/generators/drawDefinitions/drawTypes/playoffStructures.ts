@@ -122,9 +122,7 @@ export function generatePlayoffStructures(params: GeneratePlayoffStructuresArgs)
   const rounds = Math.ceil(Math.log(drawSize) / Math.log(2));
   const roundsToPlayOff = roundOffsetLimit
     ? Math.min(roundOffsetLimit - roundOffset, rounds)
-    : !finishingPositionLimit || finishingPositionsFrom < finishingPositionLimit
-      ? rounds
-      : 0;
+    : ((!finishingPositionLimit || finishingPositionsFrom < finishingPositionLimit) && rounds) || 0;
 
   if (drawSize > 2) {
     generateRange(1, roundsToPlayOff + 1).forEach((roundNumber) => generateChildStructures(roundNumber));

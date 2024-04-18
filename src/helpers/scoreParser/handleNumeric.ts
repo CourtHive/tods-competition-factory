@@ -128,8 +128,8 @@ export function handleNumeric(params) {
       } else if (allWinners) {
         score = chunks.join(' ');
         applied.push('chunkSplit');
-      } else if (numbers.length == 6) {
-        if (instances[1] == 2 || instances[2] === 2) {
+      } else if (numbers.length === 6) {
+        if (instances[1] === 2 || instances[2] === 2) {
           if (!Object.values(positiveInstances).includes(3)) {
             score = chunks.join(' ');
             applied.push('chunkSplit');

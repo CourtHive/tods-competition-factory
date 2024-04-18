@@ -56,7 +56,7 @@ export function validateSchedulingProfile({ tournamentRecords, schedulingProfile
         return validRound && validSegment;
       });
 
-      return !validRounds ? false : true;
+      return !!validRounds;
     });
   });
 

@@ -9,6 +9,7 @@ import { matchUpAssignedVenueId } from '@Query/matchUp/venueAssignment';
 import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
 import { matchUpDuration } from '@Query/matchUp/matchUpDuration';
 import { matchUpCourtOrder } from '@Query/matchUp/courtOrder';
+import { getHomeParticipantId } from './getHomeParticipantId';
 import { matchUpStartTime } from '@Query/matchUp/startTime';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getVenueData } from '@Query/venues/getVenueData';
@@ -22,7 +23,6 @@ import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
-import { getHomeParticipantId } from './getHomeParticipantId';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;

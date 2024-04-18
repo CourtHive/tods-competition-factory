@@ -102,6 +102,7 @@ export function joinFloatingTiebreak({ score }) {
         return lastSet;
       }
     }
+    return undefined;
   });
 
   const tiebreakIndices = arrayIndices('tiebreak', profile);

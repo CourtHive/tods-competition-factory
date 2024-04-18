@@ -33,12 +33,9 @@ export function feedInLinks({
   // range excludes final round which is final matchUp
   return generateRange(1 + roundOffset, roundsCount + 1 + roundOffset)
     .map((roundNumber) => {
-      const feedProfile =
-        roundFeedProfiles && roundFeedProfiles[roundNumber - 1]
-          ? roundFeedProfiles[roundNumber - 1]
-          : roundNumber % 2
-            ? TOP_DOWN
-            : BOTTOM_UP;
+      const feedProfile = roundFeedProfiles?.[roundNumber - 1]
+        ? roundFeedProfiles[roundNumber - 1]
+        : (roundNumber % 2 && TOP_DOWN) || BOTTOM_UP;
 
       // after first two rounds of target feed, matchUps are every other round
       const targetRound =

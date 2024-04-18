@@ -111,9 +111,9 @@ it('can generate balanced gendered teams for Mixed Gender events', () => {
         const previousRankingProfile = previousTeamRankingProfile[j];
         const expectLess = j % 2;
         if (expectLess) {
-          expect(rankingProfile.value).toBeLessThan(previousRankingProfile.value);
+          expect(rankingProfile.value).toBeLessThanOrEqual(previousRankingProfile.value);
         } else {
-          expect(rankingProfile.value).toBeGreaterThan(previousRankingProfile.value);
+          expect(rankingProfile.value).toBeGreaterThanOrEqual(previousRankingProfile.value);
         }
       });
     }

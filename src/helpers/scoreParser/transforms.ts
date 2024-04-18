@@ -77,7 +77,7 @@ export function removeErroneous({ score, applied }) {
     .map((part) => {
       if (/^\d+$/.test(part) && part.length === 1) {
         applied.push('removeErroneous1');
-        return;
+        return undefined;
       }
       return part;
     })

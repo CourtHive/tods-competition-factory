@@ -9,8 +9,8 @@ import { getPublishState } from '../publishing/getPublishState';
 import { timeSort, timeStringMinutes } from '@Tools/dateTime';
 import { extensionsToAttributes } from '@Tools/makeDeepCopy';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { stringSort } from '@Functions/sorters/stringSort';
 import { getFlightProfile } from '../event/getFlightProfile';
+import { stringSort } from '@Functions/sorters/stringSort';
 import { processSides } from '../matchUps/processSides';
 import { isObject } from '@Tools/objects';
 
@@ -529,7 +529,7 @@ export function getParticipantEntries(params) {
             const orderedParticipation = orderedStructureIds
               .map((structureId) => {
                 const participation = participantAggregator.structureParticipation[structureId];
-                if (!participation) return;
+                if (!participation) return undefined;
 
                 if (!finishingPositionRange) finishingPositionRange = participation?.finishingPositionRange;
                 if (diff(finishingPositionRange) > diff(participation?.finishingPositionRange))

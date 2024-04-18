@@ -12,17 +12,17 @@ import { Module } from '@nestjs/common';
     JwtModule.register({
       signOptions: { expiresIn: process.env.JWT_VALIDITY || '1d' },
       secret: process.env.JWT_SECRET,
-      global: true
-    })
+      global: true,
+    }),
   ],
   providers: [
     AuthService,
     {
       provide: APP_GUARD,
-      useClass: AuthGuard
-    }
+      useClass: AuthGuard,
+    },
   ],
   controllers: [AuthController],
-  exports: [AuthService]
+  exports: [AuthService],
 })
 export class AuthModule {}
