@@ -15,8 +15,8 @@ export class UsersService {
       userId: 1,
       email: TEST_EMAIL,
       password: TEST_PASSWORD,
-      roles: ['admin', 'client']
-    }
+      roles: ['admin', 'client'],
+    },
   ];
 
   async findOne(email: string): Promise<User | undefined> {

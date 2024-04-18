@@ -10,7 +10,7 @@ async function bootstrap() {
   app.enableCors({
     methods: ['GET', 'POST'],
     allowedHeaders: '*',
-    origin: '*'
+    origin: '*',
   });
 
   // await app.register(cookieParser);

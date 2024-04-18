@@ -8,8 +8,8 @@ import { Module } from '@nestjs/common';
     ConfigModule.forRoot({
       load: [...configurations],
       validate: validateConfig,
-      isGlobal: true
-    })
-  ]
+      isGlobal: true,
+    }),
+  ],
 })
 export class ConfigsModule {}

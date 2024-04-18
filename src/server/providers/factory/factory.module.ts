@@ -3,6 +3,6 @@ import { Module } from '@nestjs/common';
 
 @Module({
   providers: [FactoryService],
-  exports: [FactoryService]
+  exports: [FactoryService],
 })
 export class FactoryModule {}
