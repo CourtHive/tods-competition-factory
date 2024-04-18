@@ -249,9 +249,7 @@ export function getDrawData(params): {
   return {
     structures:
       !usePublishState || drawInfo.drawPublished
-        ? noDeepCopy
-          ? structures
-          : makeDeepCopy(structures, false, true)
+        ? (noDeepCopy && structures) || makeDeepCopy(structures, false, true)
         : undefined,
     drawInfo: noDeepCopy ? drawInfo : makeDeepCopy(drawInfo, false, true),
     ...SUCCESS,
