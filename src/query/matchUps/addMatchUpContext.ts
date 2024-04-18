@@ -316,14 +316,15 @@ export function addMatchUpContext({
       if (side.participantId) {
         const participant = makeDeepCopy(
           getMappedParticipant(side.participantId) ||
-            (tournamentParticipants &&
-              findParticipant({
-                policyDefinitions: appliedPolicies,
-                participantId: side.participantId,
-                tournamentParticipants,
-                internalUse: true,
-                contextProfile,
-              })),
+            (tournamentParticipants
+              ? findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  participantId: side.participantId,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                })
+              : undefined),
           undefined,
           true,
         );
@@ -345,14 +346,15 @@ export function addMatchUpContext({
         const individualParticipants = side.participant.individualParticipantIds.map((participantId) => {
           return (
             getMappedParticipant(participantId) ||
-            (tournamentParticipants &&
-              findParticipant({
-                policyDefinitions: appliedPolicies,
-                tournamentParticipants,
-                internalUse: true,
-                contextProfile,
-                participantId,
-              }))
+            (tournamentParticipants
+              ? findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                  participantId,
+                })
+              : undefined)
           );
         });
         Object.assign(side.participant, { individualParticipants });

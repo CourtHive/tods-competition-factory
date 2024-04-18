@@ -10,9 +10,10 @@ const compat = new FlatCompat({
 });
 
 module.exports = [
-  ...compat.extends('./eslint.vite.js'),
+  // ...compat.extends('./eslint.vite.js'),
   js.configs.recommended,
   ...compat.extends(
+    'eslint:recommended',
     'plugin:compat/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:import/recommended',
@@ -21,6 +22,16 @@ module.exports = [
     'plugin:prettier/recommended',
   ),
   { plugins: { sonarjs: eslintPluginSonarjs } },
+  {
+    settings: {
+      'import/resolver': {
+        node: {
+          extensions: ['.js', '.ts'],
+          paths: ['src'],
+        },
+      },
+    },
+  },
   {
     languageOptions: {
       parser: typescriptEslintParser,
@@ -38,18 +49,29 @@ module.exports = [
   },
   {
     rules: {
-      'no-unused-expressions': 'off',
-      '@typescript-eslint/no-useless-escape': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      '@typescript-eslint/no-empty-function': 'off',
-      '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/explicit-function-return-type': 'off',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-empty-function': 'warn',
+      '@typescript-eslint/no-empty-interface': 'error',
+      '@typescript-eslint/no-explicit-any': 'off',
+      '@typescript-eslint/no-unused-expressions': 'off',
+      '@typescript-eslint/no-unused-vars': ['error', { ignoreRestSiblings: true }],
       '@typescript-eslint/no-use-before-define': 'off',
-      '@typescript-eslint/no-unused-vars': 'warn',
-      'import/no-named-as-default': 'off',
-      'import/no-named-as-default-member': 'off',
-      'import/no-unresolved': 'off',
+      '@typescript-eslint/no-useless-escape': 'off',
+      'array-callback-return': 'warn',
+      'import/named': 'off',
       'import/namespace': 'off',
+      'import/no-duplicates': 'error',
+      'import/no-named-as-default-member': 'off',
+      'import/no-named-as-default': 'off',
+      'import/no-unresolved': 'off',
+      'no-console': 'off',
+      'no-debugger': 'error',
+      'no-duplicate-imports': 0,
+      'no-nested-ternary': 'warn',
+      'no-unneeded-ternary': 'warn',
+      'no-unused-expressions': 'off',
+      'no-unused-vars': 'off',
       'sonarjs/cognitive-complexity': ['off', 100],
       'sonarjs/no-all-duplicated-branches': 'warn',
       'sonarjs/no-collapsible-if': 'warn',
@@ -70,6 +92,8 @@ module.exports = [
       'sonarjs/no-unused-collection': 'warn',
       'sonarjs/prefer-object-literal': 'warn',
       'sonarjs/prefer-single-boolean-return': 'warn',
+      complexity: ['off', 25],
+      eqeqeq: ['warn', 'smart'],
     },
   },
   { ignores: ['node_modules/', 'dist/', 'coverage/', '**/scratch/', 'server/', '**/*.test.ts'] },
