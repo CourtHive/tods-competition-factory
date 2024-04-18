@@ -3,6 +3,7 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { mergePersonRequests } from './mergePersonRequests';
 import { savePersonRequests } from './savePersonRequests';
 
+// constants
 import { ARRAY, INVALID, OF_TYPE, TOURNAMENT_RECORDS } from '@Constants/attributeConstants';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
@@ -30,7 +31,7 @@ export function modifyPersonRequests(params) {
           // find the updatedRequest
           const modification = requests.find((updatedRequest) => updatedRequest.requestId === request.requestId);
           // FEATURE: returning an updatedRequest without a requestType will remove it
-          if (!modification.requestType) return;
+          if (!modification.requestType) return undefined;
 
           return Object.assign(request, modification);
         })

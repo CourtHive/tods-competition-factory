@@ -7,7 +7,7 @@ export function getUpdatedSchedulingProfile({ schedulingProfile, venueIds, event
       const date = extractDate(dateSchedulingProfile?.scheduleDate);
       if (!date) {
         issues.push(`Invalid date: ${dateSchedulingProfile?.scheduledDate}`);
-        return;
+        return undefined;
       }
 
       const venues = (dateSchedulingProfile?.venues || [])
@@ -16,7 +16,7 @@ export function getUpdatedSchedulingProfile({ schedulingProfile, venueIds, event
           const venueExists = venueIds?.includes(venueId);
           if (!venueExists) {
             issues.push(`Missing venueId: ${venueId}`);
-            return;
+            return undefined;
           }
 
           const filteredRounds = rounds.filter((round) => {
@@ -25,7 +25,7 @@ export function getUpdatedSchedulingProfile({ schedulingProfile, venueIds, event
             return validEventIdAndDrawId;
           });
 
-          if (!filteredRounds.length) return;
+          if (!filteredRounds.length) return undefined;
 
           return { venueId, rounds: filteredRounds };
         })

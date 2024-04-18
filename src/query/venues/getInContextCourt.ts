@@ -23,7 +23,7 @@ export function getInContextCourt({ convertExtensions, ignoreDisabled, venue, co
         : inContextCourt.dateAvailability
             .map((availability) => {
               const date = availability.date;
-              if (!date || disabledDates.includes(date)) return; // ignore defaultAvailility (no date)
+              if (!date || disabledDates.includes(date)) return undefined; // ignore defaultAvailility (no date)
               return availability;
             })
             .filter(Boolean);

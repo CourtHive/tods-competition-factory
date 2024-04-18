@@ -1,6 +1,6 @@
 import { getStructureLinks } from '../drawDefinition/linkGetter';
-import { findStructure } from '@Acquire/findStructure';
 import { DrawDefinition } from '@Types/tournamentTypes';
+import { findStructure } from '@Acquire/findStructure';
 
 type GetSourceStructureDetailArgs = {
   drawDefinition: DrawDefinition;
@@ -36,7 +36,7 @@ export function getSourceStructureIdsAndRelevantLinks({
       });
 
       // if finishingPosition has been specified and does not match, ignore link
-      if (finishingPosition && sourceStructure?.finishingPosition !== finishingPosition) return;
+      if (finishingPosition && sourceStructure?.finishingPosition !== finishingPosition) return undefined;
       return link;
     })
     .filter(Boolean);

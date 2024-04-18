@@ -1,22 +1,13 @@
 import { checkParticipantProfileInitialization } from './checkParticipantProfileInitialization';
-import { getIndividualParticipantIds } from '../../../../query/matchUp/getIndividualParticipantIds';
+import { getIndividualParticipantIds } from '@Query/matchUp/getIndividualParticipantIds';
 import { unique } from '@Tools/arrays';
 
 // constants
 import { TOTAL } from '@Constants/scheduleConstants';
 
-/**
- * @param {object} matchUp
- * @param {object} matchUpDailyLimits - { SINGLES, DOUBLES, TOTAL } - counters
- * @param {string[]} matchUpPotentialParticipantIds - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
- * @param {object} individualParticipantProfiles - participantIds are attributes { [participantId]: { counters: { SINGLES, DOUBLES, TOTAL }}}
- * @returns {string[]} participantIdsAtLimit - array of participantIds who are at or beyond daily matchUp limit
- * @returns {string[]} relevantParticipantIds - array of participantIds relevant to current matchUp
- * @modifies individualParticipantProfiles - increments counters
- */
 export function checkDailyLimits({
-  individualParticipantProfiles,
   matchUpPotentialParticipantIds,
+  individualParticipantProfiles,
   matchUpDailyLimits = {},
   matchUp,
 }) {
@@ -45,6 +36,7 @@ export function checkDailyLimits({
         return participantsCount && dailyLimit && participantsCount >= dailyLimit;
       });
     }
+    return undefined;
   });
 
   return { participantIdsAtLimit, relevantParticipantIds };

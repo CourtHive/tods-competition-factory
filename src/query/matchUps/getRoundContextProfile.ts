@@ -92,7 +92,7 @@ export function getRoundContextProfile({
     Object.assign(
       roundNamingProfile,
       ...roundProfileKeys.map((round) => {
-        if (!roundProfile?.[round]) return;
+        if (!roundProfile?.[round]) return undefined;
         const { matchUpsCount, preFeedRound } = roundProfile[round];
         const participantsCount = matchUpsCount * 2;
 

@@ -67,7 +67,7 @@ export function getEvents({
     .filter(({ eventId }) => !eventIds || (Array.isArray(eventIds) && eventIds.includes(eventId)))
     .map((event) => {
       const eventDrawIds = event.drawDefinitions?.map(getDrawId);
-      if (drawIds?.length && !intersection(drawIds, eventDrawIds).length) return;
+      if (drawIds?.length && !intersection(drawIds, eventDrawIds).length) return undefined;
       const eventCopy = makeDeepCopy(event);
       if (inContext) Object.assign(eventCopy, { tournamentId });
       if (context) Object.assign(eventCopy, context);

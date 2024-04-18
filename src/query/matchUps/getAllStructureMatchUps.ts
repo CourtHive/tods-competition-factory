@@ -632,6 +632,8 @@ export function getAllStructureMatchUps({
             ).filter(Boolean);
             if (pairGenders.length === 1) return pairGenders[0];
           }
+
+          return undefined;
         });
         if (sideGenders.filter(Boolean).length === 2 && unique(sideGenders).length === 1) {
           const inferredGender = sideGenders[0];

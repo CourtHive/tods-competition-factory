@@ -19,9 +19,9 @@ export function renameStructures({ drawDefinition, structureDetails }: RenameStr
     {},
     ...structureDetails
       .map((detail) => {
-        if (!isObject(detail)) return;
+        if (!isObject(detail)) return undefined;
         const { structureId, structureName } = detail || {};
-        if (!structureId || !structureName) return;
+        if (!structureId || !structureName) return undefined;
         return { [structureId]: structureName };
       })
       .filter(Boolean),
