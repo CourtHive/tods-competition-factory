@@ -18,8 +18,8 @@ import { matchUpEndTime } from '@Query/matchUp/endTime';
 import { findEvent } from '@Acquire/findEvent';
 
 // constants and types
+import { Event, Tournament, EventTypeUnion, DrawDefinition } from '@Types/tournamentTypes';
 import { ScheduleTiming, ScheduleVisibilityFilters } from '@Types/factoryTypes';
-import { Event, Tournament, EventTypeUnion } from '@Types/tournamentTypes';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
@@ -28,6 +28,7 @@ type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   scheduleTiming?: ScheduleTiming;
   tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
   matchUpType?: EventTypeUnion;
   afterRecoveryTimes?: boolean;
   usePublishState?: boolean;
@@ -62,12 +63,14 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
     (event || tournamentRecord) &&
     matchUp.drawId
   ) {
-    let drawDefinition = event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === matchUp.drawId);
+    let drawDefinition =
+      params.drawDefinition ||
+      event?.drawDefinitions?.find((drawDefinition) => drawDefinition.drawId === matchUp.drawId);
 
     if (!drawDefinition && tournamentRecord) {
       ({ drawDefinition, event } = findEvent({
-        tournamentRecord,
         drawId: matchUp.drawId,
+        tournamentRecord,
       }));
     }
 
