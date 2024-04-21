@@ -144,7 +144,14 @@ export function generateEventWithDraw(params) {
   }
 
   const uniqueParticipantIds: string[] = [];
-  if (qualifyingParticipantsCount || drawProfile.uniqueParticipants || !tournamentRecord || gender || category) {
+  if (
+    participantsProfile?.participantsCount === 0 ||
+    drawProfile.uniqueParticipants ||
+    qualifyingParticipantsCount ||
+    !tournamentRecord ||
+    gender ||
+    category
+  ) {
     const drawParticipantsCount = (participantsCount || 0) + alternatesCount + qualifyingParticipantsCount;
     let individualParticipantCount = drawParticipantsCount;
     const gendersCount = { [MALE]: 0, [FEMALE]: 0 };
