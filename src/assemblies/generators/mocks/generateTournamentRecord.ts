@@ -202,16 +202,18 @@ function processDrawProfiles(params) {
 
     const { drawId, eventId, event, uniqueParticipantIds } = result;
 
-    result = addEvent({
-      suppressNotifications: false,
-      internalUse: true,
-      tournamentRecord,
-      event,
-    });
-    if (result.error) return result;
+    if (drawProfile?.addEvent !== false) {
+      result = addEvent({
+        suppressNotifications: false,
+        internalUse: true,
+        tournamentRecord,
+        event,
+      });
+      if (result.error) return result;
 
-    if (drawId) drawIds.push(drawId);
-    eventIds.push(eventId);
+      if (drawId) drawIds.push(drawId);
+      eventIds.push(eventId);
+    }
 
     if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
 
