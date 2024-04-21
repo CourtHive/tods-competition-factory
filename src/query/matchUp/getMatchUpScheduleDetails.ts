@@ -89,10 +89,10 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
   const { endTime } = matchUpEndTime({ matchUp });
 
   let schedule;
-  const { visibilityThreshold, eventIds, drawIds } = scheduleVisibilityFilters ?? {};
+  const { eventIds, drawIds } = scheduleVisibilityFilters ?? {};
 
   if ((!eventIds || eventIds.includes(matchUp.eventId)) && (!drawIds || drawIds.includes(matchUp.drawId))) {
-    const scheduleSource = { matchUp, visibilityThreshold };
+    const scheduleSource = { matchUp };
     const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
     const { homeParticipantId } = getHomeParticipantId(scheduleSource);
     const { scheduledTime } = scheduledMatchUpTime(scheduleSource);

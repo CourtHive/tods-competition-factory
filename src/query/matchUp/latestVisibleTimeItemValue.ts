@@ -9,14 +9,9 @@ type LastVisibleTimeItemValueArgs = {
   timeItems: TimeItem[];
   itemType: string;
 };
-export function latestVisibleTimeItemValue({ visibilityThreshold, timeItems, itemType }: LastVisibleTimeItemValueArgs) {
+export function latestVisibleTimeItemValue({ timeItems, itemType }: LastVisibleTimeItemValueArgs) {
   const latestVisible = timeItems
-    .filter(
-      (timeItem) =>
-        timeItem &&
-        timeItem.itemType === itemType &&
-        (!visibilityThreshold || getTimeStamp(timeItem) < new Date(visibilityThreshold).getTime()),
-    )
+    .filter((timeItem) => timeItem && timeItem.itemType === itemType)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
 

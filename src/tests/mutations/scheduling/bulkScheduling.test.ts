@@ -128,8 +128,6 @@ it('can bulk schedule matchUps', () => {
 });
 
 test('recognizes scheduling conflicts', () => {
-  const visibilityThreshold = Date.now();
-
   const eventProfiles = [
     {
       eventName: 'Event Test',
@@ -199,15 +197,6 @@ test('recognizes scheduling conflicts', () => {
   roundMatchUps[2].forEach((secondRoundMatchUp) =>
     expect(typeof secondRoundMatchUp.schedule.scheduleConflict).toEqual('string'),
   );
-
-  ({ matchUps } = tournamentEngine.allCompetitionMatchUps({
-    scheduleVisibilityFilters: { visibilityThreshold },
-    nextMatchUps: true,
-  }));
-
-  // visibilityThreshold has removed all schedule details except for time and milliseconds
-  expect(Object.keys(matchUps[0].schedule).includes('scheduledDate')).toEqual(false);
-  expect(Object.keys(matchUps[0].schedule).length).toEqual(2);
 
   const { participantIdsWithConflicts: ceConflicts } = tournamentEngine.getCompetitionParticipants({
     scheduleAnalysis: true,
