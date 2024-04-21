@@ -34,9 +34,9 @@ it('can generate Teams and venues from leagueProfiles', () => {
       gender: MALE,
     },
     {
-      weekdays: [WED, SAT],
       tieFormatName: COLLEGE_DEFAULT,
       leagueName: 'NTRP 3.5 Women',
+      weekdays: [WED, SAT],
       teamProfiles: [
         { teamName: 'Team 1 W', venueIds: ['venue1'] },
         { teamName: 'Team 2 W', venueIds: ['venue2'] },

@@ -5,15 +5,14 @@ import { generateRange } from '@Tools/arrays';
 import { expect, it, test } from 'vitest';
 import { UUID } from '@Tools/UUID';
 
+// constants
 import { FEMALE, MALE } from '@Constants/genderConstants';
 import { PAIR } from '@Constants/participantConstants';
 
 it('can generate unique participants', () => {
   const defaultPersonData = generatePersonData().personData;
   const participantsCount = (defaultPersonData?.length ?? 0) + 10;
-  const { participants } = mocksEngine.generateParticipants({
-    participantsCount,
-  });
+  const { participants } = mocksEngine.generateParticipants({ participantsCount });
   expect(participants[participants.length - 1].person.firstName).not.toEqual('GivenName');
 });
 

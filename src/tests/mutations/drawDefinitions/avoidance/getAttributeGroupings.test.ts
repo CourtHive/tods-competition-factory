@@ -1,7 +1,10 @@
 import { getAttributeGroupings } from '@Query/participants/getAttributeGrouping';
-import { fixtures, participantTypes } from '../../../..';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
+
+// constants and fixtures
+import { participantTypes } from '@Constants/participantConstants';
+import { fixtures } from '@Fixtures/index';
 
 const { PAIR } = participantTypes;
 
@@ -9,9 +12,9 @@ it('can generate groupings accurately', () => {
   const { participants } = mocksEngine.generateParticipants({
     nationalityCodesCount: 10,
     addressProps: {
+      postalCodesCount: 10,
       citiesCount: 10,
       statesCount: 10,
-      postalCodesCount: 10,
     },
 
     participantsCount: 32,

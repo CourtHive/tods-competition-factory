@@ -7,6 +7,7 @@ import { COLLEGE_D3, COLLEGE_DEFAULT, COLLEGE_JUCO } from '@Constants/tieFormatC
 import collegeDefault from '@Fixtures/scoring/tieFormats/COLLEGE_DEFAULT.json';
 import collegeJuco from '@Fixtures/scoring/tieFormats/COLLEGE_JUCO.json';
 import collegeD3 from '@Fixtures/scoring/tieFormats/COLLEGE_D3.json';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { TieFormat } from '@Types/tournamentTypes';
 
 it('can find differences in tieFormats', () => {
@@ -41,22 +42,22 @@ it('can differentiate matchUpValue', () => {
     modifiedTieFormat: {
       collectionDefinitions: [
         {
-          matchUpValue: 0,
-          matchUpType: 'DOUBLES',
-          collectionName: 'Doubles',
-          matchUpFormat: 'SET1-S:8/TB7',
           collectionId: 'collectionId001',
-          matchUpCount: 1,
+          matchUpFormat: 'SET1-S:8/TB7',
+          collectionName: 'Doubles',
+          matchUpType: DOUBLES,
           collectionOrder: 1,
+          matchUpCount: 1,
+          matchUpValue: 0,
         },
         {
-          matchUpValue: 0,
-          matchUpType: 'SINGLES',
-          collectionName: 'Singles',
           matchUpFormat: 'SET3-S:6/TB7-F:TB10',
           collectionId: 'collectionId002',
-          matchUpCount: 2,
+          collectionName: 'Singles',
+          matchUpType: SINGLES,
           collectionOrder: 2,
+          matchUpCount: 2,
+          matchUpValue: 0,
         },
       ],
       tieFormatName: 'DOMINANT_DUO',
@@ -67,22 +68,22 @@ it('can differentiate matchUpValue', () => {
     ancestor: {
       collectionDefinitions: [
         {
-          collectionName: 'Doubles',
-          matchUpCount: 1,
-          matchUpFormat: 'SET1-S:8/TB7',
-          matchUpType: 'DOUBLES',
-          matchUpValue: 1,
           collectionId: 'collectionId001',
+          matchUpFormat: 'SET1-S:8/TB7',
+          collectionName: 'Doubles',
+          matchUpType: DOUBLES,
           collectionOrder: 1,
+          matchUpCount: 1,
+          matchUpValue: 1,
         },
         {
-          collectionName: 'Singles',
-          matchUpCount: 2,
           matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-          matchUpType: 'SINGLES',
-          matchUpValue: 1,
           collectionId: 'collectionId002',
+          collectionName: 'Singles',
+          matchUpType: SINGLES,
           collectionOrder: 2,
+          matchUpCount: 2,
+          matchUpValue: 1,
         },
       ],
       tieFormatName: 'DOMINANT_DUO',

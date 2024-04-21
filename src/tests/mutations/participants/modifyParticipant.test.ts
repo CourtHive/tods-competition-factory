@@ -1,12 +1,13 @@
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import { CANNOT_MODIFY_PARTICIPANT_TYPE } from '@Constants/errorConditionConstants';
-import { MALE } from '@Constants/genderConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
+import { MALE } from '@Constants/genderConstants';
 
 tournamentEngine.devContext(true);
 
@@ -113,9 +114,7 @@ it('can modify TEAM participants', () => {
     participantType: TEAM,
     sex: MALE,
   };
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile,
-  });
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({ participantsProfile });
 
   tournamentEngine.setState(tournamentRecord);
 
