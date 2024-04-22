@@ -3,13 +3,7 @@ import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMat
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { scheduledMatchUpTime } from '@Query/matchUp/scheduledMatchUpTime';
 import { scheduledMatchUpDate } from '@Query/matchUp/scheduledMatchUpDate';
-import { matchUpAllocatedCourts } from '@Query/matchUp/courtAllocations';
-import { matchUpAssignedCourtId } from '@Query/matchUp/courtAssignment';
-import { matchUpAssignedVenueId } from '@Query/matchUp/venueAssignment';
-import { matchUpTimeModifiers } from '@Query/matchUp/timeModifiers';
 import { matchUpDuration } from '@Query/matchUp/matchUpDuration';
-import { matchUpCourtOrder } from '@Query/matchUp/courtOrder';
-import { getHomeParticipantId } from './getHomeParticipantId';
 import { matchUpStartTime } from '@Query/matchUp/startTime';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getVenueData } from '@Query/venues/getVenueData';
@@ -23,6 +17,17 @@ import { ScheduleTiming, ScheduleVisibilityFilters } from '@Types/factoryTypes';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { TEAM } from '@Constants/eventConstants';
+import {
+  ALLOCATE_COURTS,
+  ASSIGN_COURT,
+  ASSIGN_OFFICIAL,
+  ASSIGN_VENUE,
+  COURT_ORDER,
+  HOME_PARTICIPANT_ID,
+  SCHEDULED_DATE,
+  SCHEDULED_TIME,
+  TIME_MODIFIERS,
+} from '@Constants/timeItemConstants';
 
 type GetMatchUpScheduleDetailsArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
@@ -92,15 +97,22 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
   const { eventIds, drawIds } = scheduleVisibilityFilters ?? {};
 
   if ((!eventIds || eventIds.includes(matchUp.eventId)) && (!drawIds || drawIds.includes(matchUp.drawId))) {
-    const scheduleSource = { matchUp };
-    const { allocatedCourts } = matchUpAllocatedCourts(scheduleSource);
-    const { homeParticipantId } = getHomeParticipantId(scheduleSource);
-    const { scheduledTime } = scheduledMatchUpTime(scheduleSource);
-    const { timeModifiers } = matchUpTimeModifiers(scheduleSource);
-    let { scheduledDate } = scheduledMatchUpDate(scheduleSource);
-    const { venueId } = matchUpAssignedVenueId(scheduleSource);
-    const { courtId } = matchUpAssignedCourtId(scheduleSource);
-    const { courtOrder } = matchUpCourtOrder(scheduleSource);
+    const getTimeStamp = (item) => (!item.createdAt ? 0 : new Date(item.createdAt).getTime());
+
+    const timeItemMap = new Map();
+    const sortedTimeItems = matchUp.timeItems?.toSorted((a, b) => getTimeStamp(a) - getTimeStamp(b)) ?? [];
+    for (const timeItem of sortedTimeItems) {
+      timeItemMap.set(timeItem.itemType, timeItem.itemValue);
+    }
+    const allocatedCourts = timeItemMap.get(ALLOCATE_COURTS);
+    const homeParticipantId = timeItemMap.get(HOME_PARTICIPANT_ID);
+    const scheduledTime = timeItemMap.get(SCHEDULED_TIME);
+    const timeModifiers = timeItemMap.get(TIME_MODIFIERS);
+    let scheduledDate = timeItemMap.get(SCHEDULED_DATE);
+    const venueId = timeItemMap.get(ASSIGN_VENUE);
+    const courtId = timeItemMap.get(ASSIGN_COURT);
+    const courtOrder = timeItemMap.get(COURT_ORDER);
+    const official = timeItemMap.get(ASSIGN_OFFICIAL);
 
     let timeAfterRecovery, averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes, typeChangeTimeAfterRecovery;
 
@@ -165,15 +177,16 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
       scheduledTime,
       isoDateString,
 
-      allocatedCourts,
       homeParticipantId,
-      timeModifiers,
       venueAbbreviation,
+      allocatedCourts,
+      timeModifiers,
       venueName,
       venueId,
       courtOrder,
       courtName,
       courtId,
+      official,
 
       typeChangeRecoveryMinutes,
       recoveryMinutes,

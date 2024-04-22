@@ -84,8 +84,9 @@ export function generateScoreString(
     const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
     const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    const ss1 = `${s1}${lowTiebreakSide === 1 ? `${tiebreak}` : ''}`;
-    const ss2 = `${s2}${lowTiebreakSide === 2 ? `${tiebreak}` : ''}`;
+    const includeTiebreak = (sideNumber) => (lowTiebreakSide === sideNumber ? tiebreak : '');
+    const ss1 = `${s1}${includeTiebreak(1)}`;
+    const ss2 = `${s2}${includeTiebreak(2)}`;
 
     let scoreString = reverseScores ? `${[ss2, ss1].join('-')}` : `${[ss1, ss2].join('-')}`;
 
