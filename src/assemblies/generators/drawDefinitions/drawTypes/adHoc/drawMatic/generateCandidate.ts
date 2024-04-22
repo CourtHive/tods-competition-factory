@@ -36,7 +36,7 @@ export function generateCandidate({
   let deltaCandidate = initialProposal;
 
   // iterations is the number of loops over valueSortedPairings
-  let candidatesCount = 0;
+  let candidatesCount = 1; // initial proposal
   let iterations = 0;
 
   let opponentCount = actors.length;

@@ -29,3 +29,21 @@ it('can generate multiple AD_HOC rounds', () => {
   const matchUps = tournamentEngine.generateAdHocRounds({ drawId, roundsCount }).matchUps;
   expect(matchUps.length).toEqual(roundsCount * (drawSize / 2));
 });
+
+it('can generate AD_HOC with only 2 participants', () => {
+  const drawSize = 2;
+  const result = mocksEngine.generateTournamentRecord({
+    participantsProfile: { idPrefix: 'P' },
+    drawProfiles: [
+      {
+        drawType: AD_HOC,
+        automated: true,
+        roundsCount: 1,
+        drawId: 'did',
+        drawSize,
+      },
+    ],
+    setState: true,
+  });
+  expect(result.tournamentRecord.events[0].drawDefinitions[0].structures[0].matchUps.length).toBe(1);
+});

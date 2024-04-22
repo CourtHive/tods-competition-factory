@@ -169,7 +169,6 @@ export function generateDrawMaticRound(params: GenerateDrawMaticRoundArgs): Resu
   };
 
   const { candidatesCount, participantIdPairings, deltaCandidate, iterations, candidate } = getPairings(paringParams);
-
   if (!candidatesCount) return { error: NO_CANDIDATES };
 
   let generatedRoundNumber;
