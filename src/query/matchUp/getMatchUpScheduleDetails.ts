@@ -104,15 +104,15 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
     for (const timeItem of sortedTimeItems) {
       timeItemMap.set(timeItem.itemType, timeItem.itemValue);
     }
-    const allocatedCourts = timeItemMap.get(ALLOCATE_COURTS);
     const homeParticipantId = timeItemMap.get(HOME_PARTICIPANT_ID);
+    const allocatedCourts = timeItemMap.get(ALLOCATE_COURTS);
     const scheduledTime = timeItemMap.get(SCHEDULED_TIME);
     const timeModifiers = timeItemMap.get(TIME_MODIFIERS);
     let scheduledDate = timeItemMap.get(SCHEDULED_DATE);
+    const official = timeItemMap.get(ASSIGN_OFFICIAL);
+    const courtOrder = timeItemMap.get(COURT_ORDER);
     const venueId = timeItemMap.get(ASSIGN_VENUE);
     const courtId = timeItemMap.get(ASSIGN_COURT);
-    const courtOrder = timeItemMap.get(COURT_ORDER);
-    const official = timeItemMap.get(ASSIGN_OFFICIAL);
 
     let timeAfterRecovery, averageMinutes, recoveryMinutes, typeChangeRecoveryMinutes, typeChangeTimeAfterRecovery;
 
