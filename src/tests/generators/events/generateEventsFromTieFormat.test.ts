@@ -3,11 +3,11 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // Constants
-import { INVALID_TIE_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { USTA_GOLD_TEAM_CHALLENGE } from '@Constants/tieFormatConstants';
 import tieFormatDefaults from '@Generators/templates/tieFormatDefaults';
 import { ALTERNATE, UNGROUPED } from '@Constants/entryStatusConstants';
 import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
+import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 
@@ -39,7 +39,7 @@ it('can generate singles/doubles events from tieFormats', () => {
   expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.generateEventsFromTieFormat({ tieFormat: {} });
-  expect(result.error).toEqual(INVALID_TIE_FORMAT);
+  expect(result.error).toEqual(INVALID_VALUES);
 
   result = tournamentEngine.generateEventsFromTieFormat({ tieFormatName: {} });
   expect(result.error).toEqual(INVALID_VALUES);

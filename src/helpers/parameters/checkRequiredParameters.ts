@@ -156,10 +156,10 @@ export function checkRequiredParameters(
   if (!paramError) return { valid: true };
 
   const error =
-    errors[errorParam] ||
-    (params?.[errorParam] === undefined
-      ? paramError[ERROR] || paramError[INVALID] || INVALID_VALUES
-      : (paramError[VALIDATE] && (paramError[ERROR] || paramError[INVALID])) || INVALID_VALUES);
+    (paramError[VALIDATE] && (paramError[ERROR] || paramError[INVALID])) ||
+    (params?.[errorParam] === undefined &&
+      (paramError[ERROR] || paramError[INVALID] || errors[errorParam] || INVALID_VALUES)) ||
+    INVALID_VALUES;
 
   const param = errorParam ?? (paramError[ONE_OF] && Object.keys(paramError[ONE_OF]).join(', '));
 
