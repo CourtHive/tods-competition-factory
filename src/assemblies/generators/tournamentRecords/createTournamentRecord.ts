@@ -7,7 +7,7 @@ import { UUID } from '@Tools/UUID';
 import { INVALID_DATE } from '@Constants/errorConditionConstants';
 
 export function createTournamentRecord(params): any {
-  const attributes = params || {};
+  const { tournamentRecord, tournamentRecords, activeTournamentId, ...attributes } = params || {};
   if (!attributes.tournamentId) attributes.tournamentId = UUID();
   if (attributes.startDate && !isISODateString(attributes.startDate) && !validDateString.test(attributes.startDate)) {
     return { error: INVALID_DATE };
