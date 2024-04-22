@@ -31,6 +31,7 @@ import {
   DEFAULTED,
   WALKOVER,
   IN_PROGRESS,
+  INCOMPLETE,
 } from '@Constants/matchUpStatusConstants';
 
 /**
@@ -138,7 +139,7 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
     !matchUp.winningSide &&
     checkScoreHasValue(matchUp) &&
     !completedMatchUpStatuses.includes(matchUpStatus) &&
-    ![AWAITING_RESULT, SUSPENDED].includes(matchUpStatus)
+    ![AWAITING_RESULT, SUSPENDED, INCOMPLETE].includes(matchUpStatus)
   ) {
     matchUp.matchUpStatus = IN_PROGRESS;
   }

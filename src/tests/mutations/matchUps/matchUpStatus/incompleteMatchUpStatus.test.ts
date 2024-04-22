@@ -1,12 +1,13 @@
+import { getContextMatchUp, getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
-import { getContextMatchUp, getOrderedDrawPositionPairs } from '../../drawDefinitions/testingUtilities';
 
+// Constants
 import { INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import { INCOMPLETE } from '@Constants/matchUpStatusConstants';
 
-it('DISALLOWS entry of incomplete result if active downsream', () => {
+it('DISALLOWS entry of incomplete result if active downstream', () => {
   const drawProfiles = [
     {
       drawSize: 8,
@@ -38,21 +39,21 @@ it('DISALLOWS entry of incomplete result if active downsream', () => {
 
   const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   const { matchUp } = getContextMatchUp({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
   });
   const { drawId, matchUpId, structureId } = matchUp;
 
   const values = {
-    scoreString: '6-1',
     matchUpStatus: INCOMPLETE,
+    scoreString: '6-1',
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
   const result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
@@ -66,15 +67,15 @@ it('removes advanced participant when completed score changes to incomplete resu
       drawSize: 8,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           scoreString: '6-1 6-1',
+          roundPosition: 1,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 1,
-          roundPosition: 2,
           scoreString: '6-1 6-2',
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
       ],
@@ -86,21 +87,21 @@ it('removes advanced participant when completed score changes to incomplete resu
 
   let { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
   });
   const { drawId, matchUpId, structureId } = matchUp;
 
   const values = {
-    scoreString: '6-1',
     matchUpStatus: INCOMPLETE,
+    scoreString: '6-1',
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
   const result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
@@ -109,9 +110,9 @@ it('removes advanced participant when completed score changes to incomplete resu
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   ({ matchUp } = getContextMatchUp({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
   }));
   expect(matchUp.score.scoreStringSide1).toEqual('6-1');
 });
@@ -122,9 +123,9 @@ it('removes advanced participant in FINAL when completed score changes to incomp
       drawSize: 2,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           scoreString: '6-1 6-1',
+          roundPosition: 1,
+          roundNumber: 1,
           winningSide: 1,
         },
       ],
@@ -136,30 +137,31 @@ it('removes advanced participant in FINAL when completed score changes to incomp
 
   let { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   let { matchUp } = getContextMatchUp({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
   });
   const { drawId, matchUpId } = matchUp;
 
   const values = {
-    scoreString: '6-1',
     matchUpStatus: INCOMPLETE,
+    scoreString: '6-1',
   };
   const { outcome } = mocksEngine.generateOutcomeFromScoreString(values);
   const result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId,
     outcome,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   ({ matchUp } = getContextMatchUp({
-    matchUps,
-    roundNumber: 1,
     roundPosition: 1,
+    roundNumber: 1,
+    matchUps,
   }));
   expect(matchUp.score.scoreStringSide1).toEqual('6-1');
+  expect(matchUp.matchUpStatus).toEqual(INCOMPLETE);
   expect(matchUp.winningSide).toBeUndefined();
 });

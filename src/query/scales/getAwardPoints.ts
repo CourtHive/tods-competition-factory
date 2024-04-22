@@ -1,5 +1,5 @@
-import { isConvertableInteger } from '@Tools/math';
 import { getTargetElement } from './getTargetElement';
+import { isConvertableInteger } from '@Tools/math';
 
 type GetAwardPointsArgs = {
   participantWon?: boolean;

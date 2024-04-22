@@ -4,8 +4,10 @@ export { getCompetitionPenalties } from '@Query/participants/getCompetitionPenal
 export { getCompetitionDateRange } from '@Query/tournaments/getCompetitionDateRange';
 export { getTournamentPenalties } from '@Query/participants/getTournamentPenalties';
 export { getTournamentPersons } from '@Query/tournaments/getTournamentPersons';
+export { getAggregateTeamResults } from '@Query/scales/getAggregateTeamResults';
 export { getTournamentStructures } from '@Query/structure/structureGetter';
 export { analyzeTournament } from '@Query/tournaments/analyzeTournament';
 export { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
+export { getTournamentPoints } from '@Query/scales/getTournamentPoints';
 export { analyzeDraws } from '@Query/tournaments/analyzeDraws';
 export { getTournamentTimeItem } from '@Query/base/timeItems';
