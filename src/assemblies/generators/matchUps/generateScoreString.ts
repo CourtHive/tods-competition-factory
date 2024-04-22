@@ -78,12 +78,16 @@ export function generateScoreString(
     }
 
     const lowTiebreakScore = Math.min(t1, t2);
+    const lowTiebreakSide = lowTiebreakScore === t1 ? 1 : 2;
     const tiebreak = lowTiebreakScore ? `(${lowTiebreakScore})` : '';
 
     const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
     const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    let scoreString = reverseScores ? `${[s2, s1].join('-')}${tiebreak}` : `${[s1, s2].join('-')}${tiebreak}`;
+    const ss1 = `${s1}${lowTiebreakSide === 1 ? `${tiebreak}` : ''}`;
+    const ss2 = `${s2}${lowTiebreakSide === 2 ? `${tiebreak}` : ''}`;
+
+    let scoreString = reverseScores ? `${[ss2, ss1].join('-')}` : `${[ss1, ss2].join('-')}`;
 
     if (['-', ' '].includes(scoreString)) scoreString = '';
     return scoreString;

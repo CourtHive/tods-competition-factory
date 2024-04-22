@@ -3,17 +3,11 @@ import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { parseScoreString } from '@Tools/parseScoreString';
 
+// Constants
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 /**
- *
  * Generates TODS score object from parseable score string
- *
- * @param {string} scoreString - parseable score string, e.g. '6-0 6-0'
- * @param {number} winningSide - optional - valid values are [1, 2, undefined]
- * @param {string=} matchUpFormat
- * @param {string=} matchUpStatus
- *
  */
 export function generateOutcomeFromScoreString(params) {
   const { matchUpFormat, matchUpStatus, winningSide, scoreString } = params;

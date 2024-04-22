@@ -27,21 +27,23 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '' }: ParseScor
     .map((set, index) => parseSet({ set, setNumber: index + 1 }));
 
   function parseSet({ set, setNumber }: ParseSetArgs): ParsedSetString {
+    const inParentheses = /\(([^)]+)\)/;
+    const inBrackets = /\[([^)]+)\]/;
+    const tiebreak = inParentheses.exec(set);
+    const supertiebreak = inBrackets.exec(set);
+
     const matchTiebreak =
-      set?.startsWith('[') &&
-      set
-        .split('[')[1]
-        .split(']')[0]
-        .split('-')
-        .map((sideScore) => parseInt(sideScore));
-    const setString = (set.includes('(') && set.split('(')[0]) || (set.includes('[') && set.split('[')[0]) || set;
+      set?.startsWith('[') && supertiebreak && supertiebreak[1].split('-').map((sideScore) => parseInt(sideScore));
+
+    const setString =
+      (tiebreak && set.replace(tiebreak[0], '')) || (supertiebreak && set.replace(supertiebreak[0], '')) || set;
     const setScores = !matchTiebreak && setString.split('-').map((sideScore) => parseInt(sideScore));
 
     const winningSide = matchTiebreak
       ? (matchTiebreak[0] > matchTiebreak[1] && 1) || (matchTiebreak[0] < matchTiebreak[1] && 2) || undefined
       : (setScores[0] > setScores[1] && 1) || (setScores[0] < setScores[1] && 2) || undefined;
 
-    const setTiebreakLowScore = set.includes('(') ? set.split('(')[1].split(')')[0] : undefined;
+    const setTiebreakLowScore = tiebreak ? tiebreak[1] : undefined;
 
     const side1TiebreakPerspective =
       setTiebreakLowScore &&
