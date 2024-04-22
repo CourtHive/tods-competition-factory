@@ -1,15 +1,16 @@
 import { getMatchUpWinner, removeFromScore, getHighTiebreakValue } from './keyValueUtilities';
-import { getLeadingSide } from '@Query/matchUp/checkSetIsComplete';
 import { processIncompleteSetScore } from './processIncompleteSetScore';
+import { getLeadingSide } from '@Query/matchUp/checkSetIsComplete';
 import { keyValueTimedSetScore } from './keyValueTimedSetScore';
 import { processTiebreakSet } from './processTiebreakSet';
-import { arrayIndices } from '@Tools/arrays';
-import { ensureInt } from '@Tools/ensureInt';
 import { keyValueSetScore } from './keyValueSetScore';
 import { getScoreAnalysis } from './scoreAnalysis';
 import { processOutcome } from './processOutcome';
 import { getWinningSide } from './winningSide';
+import { arrayIndices } from '@Tools/arrays';
+import { ensureInt } from '@Tools/ensureInt';
 
+// Constants
 import { INCOMPLETE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import {
   SET_TIEBREAK_BRACKETS,
