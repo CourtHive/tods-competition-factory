@@ -1,6 +1,8 @@
 import { definedAttributes } from '@Tools/definedAttributes';
 import { isConvertableInteger } from '@Tools/math';
+import { isString } from '@Tools/objects';
 
+// Constants
 import { SET, NOAD, TIMED, setTypes } from '@Constants/matchUpFormatConstants';
 
 type TiebreakFormat = {
@@ -32,7 +34,7 @@ export type ParsedFormat = {
 };
 
 export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
-  if (typeof matchUpFormatCode === 'string') {
+  if (isString(matchUpFormatCode)) {
     const type = (matchUpFormatCode.startsWith('T') && TIMED) || (matchUpFormatCode.startsWith(SET) && SET) || '';
 
     if (type === TIMED) {
