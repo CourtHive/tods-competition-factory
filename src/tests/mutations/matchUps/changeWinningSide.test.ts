@@ -2,8 +2,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { CANNOT_CHANGE_WINNING_SIDE } from '@Constants/errorConditionConstants';
+// Constants
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { CANNOT_CHANGE_WINNING_SIDE } from '@Constants/errorConditionConstants';
 
 // This should only apply when eventType is SINGLES or DOUBLES, NOT WHEN TEAM!
 test('changing winningSide can propagate changes through multiple structures', () => {

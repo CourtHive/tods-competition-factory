@@ -5,6 +5,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// Constants and fixtures
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import SEEDING_ITF_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 
@@ -88,10 +89,10 @@ it('generates correct finishingPositionRanges for SINGLE_ELIMINATION draws', () 
   outcomes.forEach((outcome) => {
     const [roundNumber, roundPosition, winningSide] = outcome;
     scoreMatchUp({
-      roundNumber,
       roundPosition,
-      matchUps,
+      roundNumber,
       winningSide,
+      matchUps,
       drawId,
     });
   });

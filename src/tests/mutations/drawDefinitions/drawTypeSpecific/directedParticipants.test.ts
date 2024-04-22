@@ -1,10 +1,12 @@
-import { parseScoreString } from '@Tools/parseScoreString';
+import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
+import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { verifyStructure } from '../primitives/verifyStructure';
 import { generateFMLC } from '../primitives/firstMatchLoserConsolation';
-import { getDrawStructures } from '@Acquire/findStructure';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
-import { mocksEngine } from '../../../..';
+import { verifyStructure } from '../primitives/verifyStructure';
+import { parseScoreString } from '@Tools/parseScoreString';
+import { getDrawStructures } from '@Acquire/findStructure';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 import {
   completeMatchUp,
@@ -13,19 +15,18 @@ import {
   findMatchUpByRoundNumberAndPosition,
 } from '../primitives/verifyMatchUps';
 
-import { MAIN } from '@Constants/drawDefinitionConstants';
+// Constants and types
+import { BYE, RETIRED, COMPLETED, TO_BE_PLAYED, DEFAULTED, SUSPENDED } from '@Constants/matchUpStatusConstants';
+import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
+import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
 import { EntryStatusUnion, StageTypeUnion } from '@Types/tournamentTypes';
+import { MAIN } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   CANNOT_CHANGE_WINNING_SIDE,
   INCOMPATIBLE_MATCHUP_STATUS,
   INVALID_VALUES,
 } from '@Constants/errorConditionConstants';
-import { BYE, RETIRED, COMPLETED, TO_BE_PLAYED, DEFAULTED, SUSPENDED } from '@Constants/matchUpStatusConstants';
-import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
-import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
-import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
-import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 
 it('advances paired drawPositions when BYE is assigned first', () => {
   let result;
@@ -623,9 +624,8 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
 
   // Now attempt to change a 1st round matchUp outcome, including winner...
-  // when { allowChangePropagation: false }
+  // when { allowChangePropagation: false } which is the default behavior
   ({ error } = setMatchUpState({
-    allowChangePropagation: false,
     matchUpStatus: COMPLETED,
     winningSide: 2,
     drawDefinition,

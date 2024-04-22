@@ -2,6 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// Constants
 import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
@@ -13,9 +14,9 @@ it('DOUBLE_WALKOVER can Advance participant to final when scores entered after W
       drawSize: 4,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 1,
           matchUpStatus: DOUBLE_WALKOVER,
+          roundPosition: 1,
+          roundNumber: 1,
         },
       ],
     },
