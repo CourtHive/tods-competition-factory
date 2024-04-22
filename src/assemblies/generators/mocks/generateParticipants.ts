@@ -44,6 +44,7 @@ export function generateParticipants(params): {
 
     participantsCount = 32,
     participantType,
+    teamSize = 8,
     personIds,
     idPrefix,
     uuids,
@@ -81,7 +82,7 @@ export function generateParticipants(params): {
   rankingRange = rankingRange || [1, rankingUpperBound];
   rankingRange[1] += 1; // so that behavior is as expected
 
-  const individualParticipantsCount = participantsCount * ((doubles && 2) || (team && 8) || 1);
+  const individualParticipantsCount = participantsCount * ((doubles && 2) || (team && (teamSize ?? 8)) || 1);
 
   const result = generatePersons({
     count: individualParticipantsCount,
@@ -192,7 +193,7 @@ export function generateParticipants(params): {
   const teamNames = nameMocks({ count: participantsCount }).names;
   const participants = generateRange(0, participantsCount)
     .map((i) => {
-      const sideParticipantsCount = (doubles && 2) || (team && 8) || 1;
+      const sideParticipantsCount = (doubles && 2) || (team && (teamSize ?? 8)) || 1;
       const individualParticipants = generateRange(0, sideParticipantsCount).map((j) => {
         const participantIndex = i * sideParticipantsCount + j;
         return generateIndividualParticipant(participantIndex);
@@ -206,12 +207,12 @@ export function generateParticipants(params): {
       const groupParticipant: any = {
         participantId: genParticipantId({
           participantType,
-          idPrefix,
           index: i,
+          idPrefix,
           uuids,
         }),
-        participantRole: COMPETITOR,
         participantName: doubles ? pairName : teamNames[i],
+        participantRole: COMPETITOR,
         individualParticipantIds,
         participantType,
       };

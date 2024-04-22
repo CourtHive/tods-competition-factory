@@ -3,6 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// constants
 import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 test('participants can be merged', () => {

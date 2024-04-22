@@ -2,6 +2,7 @@ import { addEventTimeItem } from '../timeItems/addTimeItem';
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { isObject } from '@Tools/objects';
 
+// constants and types
 import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { Event } from '@Types/tournamentTypes';

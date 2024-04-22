@@ -41,7 +41,7 @@ type AddEventEntriesArgs = {
   entryStatus?: EntryStatusUnion;
   drawDefinition?: DrawDefinition;
   autoEntryPositions?: boolean;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   entryStageSequence?: number;
   ignoreStageSpace?: boolean;
   entryStage?: StageTypeUnion;

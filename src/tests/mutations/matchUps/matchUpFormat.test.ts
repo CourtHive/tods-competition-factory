@@ -91,7 +91,7 @@ it('can set and return matchUpFormat codes', () => {
   result = tournamentEngine.setMatchUpFormat({
     eventId,
   });
-  expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
 
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: TIMED20,
@@ -170,7 +170,7 @@ it('can set and return matchUpFormat codes', () => {
   result = tournamentEngine.setMatchUpFormat({
     drawId,
   });
-  expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: FORMAT_SHORT_SETS,
   });
@@ -189,7 +189,7 @@ it('can set and return matchUpFormat codes', () => {
     structureId,
     drawId,
   });
-  expect(result.error).toEqual(MISSING_MATCHUP_FORMAT);
+  expect(result.error).toEqual(UNRECOGNIZED_MATCHUP_FORMAT);
 
   result = tournamentEngine.setMatchUpFormat({
     matchUpFormat: 'BOBUS',

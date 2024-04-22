@@ -1,15 +1,16 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { unique } from '@Tools/arrays';
 import { mockProfile } from './mockScaleProfile';
 import { expect, it, test } from 'vitest';
+import { unique } from '@Tools/arrays';
 
+// constants and fixtures
+import { EVENT_NOT_FOUND, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { ELO, NTRP, UTR, WTN } from '@Constants/ratingConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
-import { EVENT_NOT_FOUND, INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 const WTN_RATING = 'SCALE.RATING.SINGLES.WTN';
 
@@ -27,10 +28,7 @@ const rankingsScenarios = [
 ];
 
 test.each(rankingsScenarios)('it can generate rankings for participants', (scenario) => {
-  const participantsProfile = {
-    category: scenario.category,
-    participantsCount: 1,
-  };
+  const participantsProfile = { category: scenario.category, participantsCount: 1 };
 
   const {
     participants: [participant],
@@ -228,9 +226,9 @@ it('can assess predictive accuracy of scaleValues', () => {
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
     ascending: true, // scale goes from low to high
     valueAccessor: 'wtnRating',
+    matchUps: { boo: 1 },
     scaleName: WTN,
     zoneMargin: 3,
-    matchUps: { boo: 1 },
   });
   expect(result.error).toEqual(INVALID_VALUES);
 

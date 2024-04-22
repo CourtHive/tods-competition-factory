@@ -5,11 +5,10 @@ import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { ALLOCATE_COURTS } from '@Constants/timeItemConstants';
 import { ScheduledMatchUpArgs } from '@Types/factoryTypes';
 
-export function matchUpAllocatedCourts({ visibilityThreshold, timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
+export function matchUpAllocatedCourts({ timeStamp, schedule, matchUp }: ScheduledMatchUpArgs) {
   const { itemValue: allocatedCourts, timeStamp: itemTimeStamp } = latestVisibleTimeItemValue({
     timeItems: matchUp?.timeItems || [],
     itemType: ALLOCATE_COURTS,
-    visibilityThreshold,
   });
 
   return !schedule || (itemTimeStamp && timeStamp && new Date(itemTimeStamp).getTime() > new Date(timeStamp).getTime())

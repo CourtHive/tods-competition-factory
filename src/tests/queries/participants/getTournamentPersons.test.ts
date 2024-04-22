@@ -2,6 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// Constants and fixtures
 import PARTICIPANT_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { COMPETITOR, OFFICIAL } from '@Constants/participantRoles';
@@ -9,7 +10,7 @@ import { INDIVIDUAL } from '@Constants/participantConstants';
 
 it('can retrieve and modify tournament persons', () => {
   let tournamentPersons = tournamentEngine.getTournamentPersons({
-    tournamentRecord: { tournamentId: 'boo' },
+    tournamentRecord: { tournamentId: 'tid' },
   }).tournamentPersons;
   expect(tournamentPersons.length).toEqual(0);
 

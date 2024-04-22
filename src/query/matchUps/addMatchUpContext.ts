@@ -140,6 +140,7 @@ export function addMatchUpContext({
     tournamentRecord,
     usePublishState,
     scheduleTiming,
+    drawDefinition,
     matchUpFormat,
     publishStatus,
     matchUpType,

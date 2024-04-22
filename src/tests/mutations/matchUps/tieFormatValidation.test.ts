@@ -1,7 +1,7 @@
 import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
 import { validateTieFormat } from '@Validators/validateTieFormat';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { fixtures, mocksEngine } from '../../..';
 import { expect, it, test } from 'vitest';
 
 // constants and fixtures
@@ -12,6 +12,7 @@ import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { tieFormats } from '@Fixtures/scoring/tieFormats';
 import { FEMALE, MALE } from '@Constants/genderConstants';
 import { TEAM } from '@Constants/eventConstants';
+import { fixtures } from '@Fixtures/index';
 
 const matchUpFormat = FORMAT_STANDARD;
 

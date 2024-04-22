@@ -2,6 +2,7 @@ export const ADD_DRAW_DEFINITION = 'addDrawDefinition';
 export const ADD_MATCHUPS = 'addMatchUps';
 export const ADD_PARTICIPANTS = 'addParticipants';
 export const ADD_SCALE_ITEMS = 'addScaleItems';
+export const ADD_EVENT = 'addEvent';
 export const ADD_VENUE = 'addVenue';
 export const AUDIT = 'audit';
 export const DATA_ISSUE = 'dataIssue';
@@ -34,6 +35,7 @@ export const topicConstants = {
   ADD_MATCHUPS,
   ADD_PARTICIPANTS,
   ADD_SCALE_ITEMS,
+  ADD_EVENT,
   ADD_VENUE,
   AUDIT,
   DATA_ISSUE,

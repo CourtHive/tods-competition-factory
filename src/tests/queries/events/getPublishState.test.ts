@@ -162,7 +162,7 @@ test('calling getPublishState directly', () => {
   result = getPublishState({ tournamentRecord: {} });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  result = getPublishState({ tournamentRecord: { tournamentId: 'tid' }, eventId: 'boo' });
+  result = getPublishState({ tournamentRecord: { tournamentId: 'tid' }, eventId: 'eid' });
   expect(result.error).toEqual(EVENT_NOT_FOUND);
 
   // just for test coverage

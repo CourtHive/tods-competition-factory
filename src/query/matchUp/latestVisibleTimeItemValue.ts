@@ -1,4 +1,3 @@
-import { SCHEDULE } from '@Constants/timeItemConstants';
 import { TimeItem } from '@Types/tournamentTypes';
 
 function getTimeStamp(item) {
@@ -10,36 +9,13 @@ type LastVisibleTimeItemValueArgs = {
   timeItems: TimeItem[];
   itemType: string;
 };
-export function latestVisibleTimeItemValue({ visibilityThreshold, timeItems, itemType }: LastVisibleTimeItemValueArgs) {
-  // TODO: should visibilityThreshold be combination of scheduled date/time
-
+export function latestVisibleTimeItemValue({ timeItems, itemType }: LastVisibleTimeItemValueArgs) {
   const latestVisible = timeItems
-    .filter(
-      (timeItem) =>
-        timeItem &&
-        timeItem.itemType === itemType &&
-        (!visibilityThreshold || getTimeStamp(timeItem) < new Date(visibilityThreshold).getTime()),
-    )
+    .filter((timeItem) => timeItem && timeItem.itemType === itemType)
     .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
     .pop();
 
   const timeStamp = latestVisible && getTimeStamp(latestVisible);
 
   return { itemValue: latestVisible?.itemValue, timeStamp };
-}
-
-export function lastVisibleSchedule(timeItems, visibilityThreshold) {
-  const item = timeItems
-    .filter(
-      (timeItem) =>
-        timeItem &&
-        timeItem.itemType === SCHEDULE &&
-        (!visibilityThreshold || getTimeStamp(timeItem) < visibilityThreshold),
-    )
-    .sort((a, b) => getTimeStamp(a) - getTimeStamp(b))
-    .pop();
-
-  const timeStamp = item && getTimeStamp(item);
-
-  return { schedule: item?.value, timeStamp };
 }

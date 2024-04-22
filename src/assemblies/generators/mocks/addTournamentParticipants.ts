@@ -29,6 +29,8 @@ export function addTournamentParticipants({
   startDate,
   uuids,
 }: AddTournamentParticipantsArgs) {
+  if (participantsProfile?.participantsCount === 0) return { addedCount: 0, ...SUCCESS };
+
   const { participantsCount, participantType, largestTeamDraw, largestTeamSize, gendersCount } = getParticipantsCount({
     participantsProfile,
     eventProfiles,
