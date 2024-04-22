@@ -226,9 +226,9 @@ it('can assess predictive accuracy of scaleValues', () => {
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
     ascending: true, // scale goes from low to high
     valueAccessor: 'wtnRating',
+    matchUps: { boo: 1 },
     scaleName: WTN,
     zoneMargin: 3,
-    matchUps: { boo: 1 },
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
