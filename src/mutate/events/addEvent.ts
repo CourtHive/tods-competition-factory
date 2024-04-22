@@ -1,11 +1,13 @@
 import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addDrawNotice, addMatchUpsNotice } from '../notifications/drawNotifications';
+import { addEventNotice } from '@Mutate/notifications/eventNotifications';
 import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '@Validators/validateTieFormat';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { getTopics } from '@Global/state/globalState';
 import { UUID } from '@Tools/UUID';
 
+// Constants and types
 import { SINGLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { ADD_MATCHUPS } from '@Constants/topicConstants';
@@ -101,9 +103,13 @@ export function addEvent({ suppressNotifications, tournamentRecord, internalUse,
         });
       }
 
-      for (const drawDefinition of event.drawDefinitions || []) {
+      const { drawDefinitions, ...rest } = event;
+
+      for (const drawDefinition of drawDefinitions || []) {
         addDrawNotice({ drawDefinition });
       }
+
+      addEventNotice({ tournamentId: tournamentRecord?.tournamentId, event: rest });
     }
 
     return { ...SUCCESS, event: eventRecord };

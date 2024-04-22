@@ -39,6 +39,7 @@ import { SEEDING } from '@Constants/timeItemConstants';
 import { OBJECT } from '@Constants/attributeConstants';
 import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
+import { nameMocks } from './nameMocks';
 
 export function generateEventWithDraw(params) {
   const paramsCheck = checkRequiredParameters(params, [{ drawProfile: true, _ofType: OBJECT }]);
@@ -224,6 +225,7 @@ export function generateEventWithDraw(params) {
             !femaleIndividualParticipantIds.includes(participantId),
         );
 
+      const teamNames = [...(drawProfileCopy.teamNames ?? []), ...nameMocks({ count: drawParticipantsCount }).names];
       const mixedCount = teamSize - (genders[MALE] + genders[FEMALE]);
       // use indices to keep track of positions within pId arrays
       let fIndex = 0,
@@ -239,8 +241,8 @@ export function generateEventWithDraw(params) {
 
         const individualParticipantIds = buildTeams !== false ? [...fPIDs, ...mPIDs, ...rIDs] : [];
         return {
+          participantName: teamNames[teamIndex] || `Team ${teamIndex + 1}`,
           participantOtherName: `TM${teamIndex + 1}`,
-          participantName: `Team ${teamIndex + 1}`,
           participantRole: COMPETITOR,
           individualParticipantIds,
           participantType: TEAM,
