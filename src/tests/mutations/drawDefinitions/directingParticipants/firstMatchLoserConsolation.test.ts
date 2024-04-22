@@ -3,10 +3,11 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// Constants
+import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
+import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { SINGLES } from '@Constants/eventConstants';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION, MAIN } from '@Constants/drawDefinitionConstants';
 
 tournamentEngine.devContext(true);
 
@@ -23,16 +24,16 @@ it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkov
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
+          matchUpStatus: WALKOVER,
           roundPosition: 2,
           scoreString: '',
-          matchUpStatus: WALKOVER,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           scoreString: '6-2 6-1',
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 1,
         },
       ],
@@ -42,17 +43,14 @@ it('directs participant to FIRST_MATCH_LOSER_CONSOLATION consolation when walkov
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({ inContext: true, drawId });
   expect(completedMatchUps.length).toEqual(2);
 
   // target specific matchUp
@@ -86,15 +84,15 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 2,
           scoreString: '6-1 6-2',
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           scoreString: '6-2 6-1',
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 1,
         },
       ],
@@ -104,17 +102,14 @@ it('correctly places consolation bye for winner of 2nd round match who had bye',
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({ inContext: true, drawId });
   expect(completedMatchUps.length).toEqual(2);
 
   // target specific matchUp
@@ -147,15 +142,15 @@ it('correctly places consolation BYE for WALKOVER outcome 2nd round match with p
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 2,
           scoreString: '6-1 6-2',
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           matchUpStatus: WALKOVER,
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 1,
         },
       ],
@@ -165,17 +160,14 @@ it('correctly places consolation BYE for WALKOVER outcome 2nd round match with p
     tournamentRecord,
     drawIds: [drawId],
   } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
     participantsProfile,
+    drawProfiles,
   });
 
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ inContext: true, drawId });
 
   // target specific matchUp
   const targetMatchUp = matchUps.find(
@@ -208,15 +200,15 @@ it('correctly places WALKOVER loser of 2nd round match who had bye into consolat
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 2,
           scoreString: '6-1 6-2',
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           matchUpStatus: WALKOVER,
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 2,
         },
       ],
@@ -225,10 +217,7 @@ it('correctly places WALKOVER loser of 2nd round match who had bye into consolat
   const {
     tournamentRecord,
     drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    participantsProfile,
-  });
+  } = mocksEngine.generateTournamentRecord({ participantsProfile, drawProfiles });
 
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
@@ -270,15 +259,15 @@ it('correctly places WALKOVER loser of 2nd round match who had BYE into consolat
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 2,
           matchUpStatus: WALKOVER,
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           matchUpStatus: WALKOVER,
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 2,
         },
       ],
@@ -287,18 +276,12 @@ it('correctly places WALKOVER loser of 2nd round match who had BYE into consolat
   const {
     tournamentRecord,
     drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    participantsProfile,
-  });
+  } = mocksEngine.generateTournamentRecord({ drawProfiles, participantsProfile });
 
   const result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({ drawId, inContext: true });
   expect(completedMatchUps.length).toEqual(2);
 
   // target specific matchUp
@@ -332,15 +315,15 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
       drawSize: 16,
       outcomes: [
         {
-          roundNumber: 1,
-          roundPosition: 2,
           matchUpStatus: DEFAULTED,
+          roundPosition: 2,
+          roundNumber: 1,
           winningSide: 1,
         },
         {
-          roundNumber: 2,
-          roundPosition: 1,
           matchUpStatus: DEFAULTED,
+          roundPosition: 1,
+          roundNumber: 2,
           winningSide: 2,
         },
       ],
@@ -349,18 +332,12 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
   const {
     tournamentRecord,
     drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    participantsProfile,
-  });
+  } = mocksEngine.generateTournamentRecord({ drawProfiles, participantsProfile });
 
   let result = tournamentEngine.setState(tournamentRecord);
   expect(result.success).toEqual(true);
 
-  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { completedMatchUps, byeMatchUps } = tournamentEngine.drawMatchUps({ drawId, inContext: true });
   expect(completedMatchUps.length).toEqual(2);
 
   // target specific matchUp
@@ -390,16 +367,13 @@ it('correctly places DEFAULTED loser of 2nd round match who had BYE into consola
 
   // remove outcome
   result = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: matchUp.matchUpId,
     outcome: toBePlayed,
+    drawId,
   });
   expect(result.success).toEqual(true);
 
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
-    inContext: true,
-  });
+  const { matchUps } = tournamentEngine.allDrawMatchUps({ drawId, inContext: true });
   targetMatchUp = matchUps.find(({ matchUpId }) => matchUp.matchUpId === matchUpId);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.score).toEqual({});

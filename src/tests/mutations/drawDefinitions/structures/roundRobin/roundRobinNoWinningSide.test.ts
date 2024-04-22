@@ -2,8 +2,9 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
+// Constants
+import { ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
-import { ABANDONED, CANCELLED, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
 
 test('completed matchUp outcomes with no winningSide will not cause destructuring errors', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -34,12 +35,5 @@ test('completed matchUp outcomes with no winningSide will not cause destructurin
 
   const matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   const matchUpStatuses = matchUps.map(({ matchUpStatus }) => matchUpStatus);
-  expect(matchUpStatuses).toEqual([
-    'ABANDONED',
-    'CANCELLED',
-    'DOUBLE_WALKOVER',
-    'TO_BE_PLAYED',
-    'TO_BE_PLAYED',
-    'TO_BE_PLAYED',
-  ]);
+  expect(matchUpStatuses).toEqual([ABANDONED, CANCELLED, DOUBLE_WALKOVER, TO_BE_PLAYED, TO_BE_PLAYED, TO_BE_PLAYED]);
 });
