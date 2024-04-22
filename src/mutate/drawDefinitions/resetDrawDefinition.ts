@@ -6,6 +6,7 @@ import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
+import { POSITION_ACTIONS } from '@Constants/extensionConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TimeItem } from '@Types/tournamentTypes';
@@ -94,6 +95,8 @@ export function resetDrawDefinition({ tournamentRecord, removeScheduling, drawDe
       }
     }
   }
+
+  drawDefinition.extensions = drawDefinition.extensions.filter((extension) => extension.name !== POSITION_ACTIONS);
 
   const structureIds = (drawDefinition.structures || []).map(({ structureId }) => structureId);
 
