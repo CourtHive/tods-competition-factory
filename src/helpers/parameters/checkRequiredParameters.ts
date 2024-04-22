@@ -1,9 +1,11 @@
+import { validateTieFormat } from '@Validators/validateTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isFunction, isObject } from '@Tools/objects';
 import { intersection } from '@Tools/arrays';
 
-// constants and types
+// Constants and types
 import { IDENTIFIER, RESOURCE_SUB_TYPE, RESOURCE_TYPE } from '@Constants/resourceConstants';
+import tieFormatDefaults from '@Generators/templates/tieFormatDefaults';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { validStages } from '@Constants/drawDefinitionConstants';
 import { ResultType } from '@Types/factoryTypes';
@@ -11,6 +13,7 @@ import {
   EVENT_NOT_FOUND,
   INVALID_EVENT_TYPE,
   INVALID_OBJECT,
+  INVALID_TIE_FORMAT,
   INVALID_VALUES,
   MISSING_COURT_ID,
   MISSING_DRAW_DEFINITION,
@@ -61,6 +64,8 @@ import {
   STRUCTURE,
   STRUCTURES,
   STRUCTURE_ID,
+  TIE_FORMAT,
+  TIE_FORMAT_NAME,
   TOURNAMENT_ID,
   TOURNAMENT_RECORD,
   TOURNAMENT_RECORDS,
@@ -80,9 +85,11 @@ type RequiredParams = {
 }[];
 
 const validators = {
-  [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
   [ONLINE_RESOURCE]: (value) =>
     intersection(Object.keys(value), [RESOURCE_SUB_TYPE, RESOURCE_TYPE, IDENTIFIER]).length === 3,
+  [TIE_FORMAT_NAME]: (value) => value && tieFormatDefaults({ namedFormat: value }),
+  [TIE_FORMAT]: (value) => !validateTieFormat({ tieFormat: value }).error,
+  [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
   [ENTRY_STAGE]: (value) => validStages.includes(value),
 };
 
@@ -101,6 +108,7 @@ const errors = {
   [EVENT_TYPE]: INVALID_EVENT_TYPE,
   [STRUCTURES]: MISSING_STRUCTURES,
   [MATCHUP_ID]: MISSING_MATCHUP_ID,
+  [TIE_FORMAT]: INVALID_TIE_FORMAT,
   [STRUCTURE]: MISSING_STRUCTURE,
   [COURT_ID]: MISSING_COURT_ID,
   [MATCHUPS]: MISSING_MATCHUPS,
@@ -122,6 +130,7 @@ const paramTypes = {
   [PARTICIPANT]: OBJECT,
   [MATCHUP_IDS]: ARRAY,
   [STRUCTURES]: ARRAY,
+  [TIE_FORMAT]: OBJECT,
   [STRUCTURE]: OBJECT,
   [COURT_IDS]: ARRAY,
   [VENUE_IDS]: ARRAY,
@@ -147,11 +156,13 @@ export function checkRequiredParameters(
   if (!paramError) return { valid: true };
 
   const error =
-    params?.[errorParam] === undefined
-      ? errors[errorParam] || paramError[ERROR] || paramError[INVALID] || INVALID_VALUES
-      : (paramError[VALIDATE] && (paramError[ERROR] || paramError[INVALID])) || INVALID_VALUES;
+    errors[errorParam] ||
+    (params?.[errorParam] === undefined
+      ? paramError[ERROR] || paramError[INVALID] || INVALID_VALUES
+      : (paramError[VALIDATE] && (paramError[ERROR] || paramError[INVALID])) || INVALID_VALUES);
 
   const param = errorParam ?? (paramError[ONE_OF] && Object.keys(paramError[ONE_OF]).join(', '));
+
   return decorateResult({
     info: { param, message: paramError[MESSAGE] },
     result: { error },
