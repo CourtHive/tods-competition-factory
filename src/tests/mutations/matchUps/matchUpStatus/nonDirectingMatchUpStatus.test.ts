@@ -77,6 +77,38 @@ it('supports entering INCOMPLETE matchUpStatus', () => {
   expect(matchUp.matchUpStatus).toEqual(INCOMPLETE);
 });
 
+it('supports entering INCOMPLETE matchUpStatus with incomplete score', () => {
+  const drawProfiles = [{ drawSize: 8 }];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const outcome = {
+    score: {
+      scoreStringSide1: '3-6 6-3',
+      scoreStringSide2: '6-3 3-6',
+      sets: [
+        { setNumber: 1, side1Score: 3, side2Score: 6, winningSide: 2 },
+        { setNumber: 2, side1Score: 6, side2Score: 3, winningSide: 1 },
+      ],
+    },
+    matchUpStatus: INCOMPLETE,
+  };
+  const result = tournamentEngine.setMatchUpStatus({
+    matchUpId,
+    outcome,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
+  expect(matchUp.matchUpStatus).toEqual(INCOMPLETE);
+});
+
 it('supports entering SUSPENDED matchUpStatus', () => {
   const drawProfiles = [{ drawSize: 8 }];
   const {
@@ -90,6 +122,38 @@ it('supports entering SUSPENDED matchUpStatus', () => {
   const result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: SUSPENDED },
     matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const { matchUp } = tournamentEngine.findMatchUp({ drawId, matchUpId });
+  expect(matchUp.matchUpStatus).toEqual(SUSPENDED);
+});
+
+it('supports entering SUSPENDED matchUpStatus with incomplete score', () => {
+  const drawProfiles = [{ drawSize: 8 }];
+  const {
+    drawIds: [drawId],
+    tournamentRecord,
+  } = mocksEngine.generateTournamentRecord({ drawProfiles });
+
+  const { upcomingMatchUps } = tournamentEngine.setState(tournamentRecord).drawMatchUps({ drawId });
+  const matchUpId = upcomingMatchUps[0].matchUpId;
+
+  const outcome = {
+    score: {
+      scoreStringSide1: '3-6 6-3',
+      scoreStringSide2: '6-3 3-6',
+      sets: [
+        { setNumber: 1, side1Score: 3, side2Score: 6, winningSide: 2 },
+        { setNumber: 2, side1Score: 6, side2Score: 3, winningSide: 1 },
+      ],
+    },
+    matchUpStatus: SUSPENDED,
+  };
+  const result = tournamentEngine.setMatchUpStatus({
+    matchUpId,
+    outcome,
     drawId,
   });
   expect(result.success).toEqual(true);

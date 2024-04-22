@@ -162,5 +162,6 @@ it('removes advanced participant in FINAL when completed score changes to incomp
     matchUps,
   }));
   expect(matchUp.score.scoreStringSide1).toEqual('6-1');
+  expect(matchUp.matchUpStatus).toEqual(INCOMPLETE);
   expect(matchUp.winningSide).toBeUndefined();
 });
