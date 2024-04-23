@@ -10,8 +10,10 @@ export function getAggregateTeamResults(params) {
   const paramsCheck = checkRequiredParameters(params, [{ [TOURNAMENT_RECORD]: true }]);
   if (paramsCheck.error) return paramsCheck;
 
+  const matchUps = allTournamentMatchUps(params)?.matchUps ?? [];
   const teamResults = {};
-  for (const matchUp of allTournamentMatchUps(params)?.matchUps ?? []) {
+
+  for (const matchUp of matchUps) {
     const { sides, matchUpFormat } = matchUp;
     const parsedMatchUpFormat: any = matchUpFormat && parse(matchUpFormat);
 
@@ -33,9 +35,20 @@ export function getAggregateTeamResults(params) {
 
         if (teamParticipantId && sideNumber) {
           if (!teamResults[teamParticipantId]) {
-            teamResults[teamParticipantId] = { score: 0, diff: 0, teamName: teamParticipant.participantName };
+            const teamName = teamParticipant.participantName;
+            teamResults[teamParticipantId] = { win: 0, loss: 0, score: 0, diff: 0, teamName };
           }
-          for (const set of matchUp.score?.sets ?? []) {
+
+          if (matchUp.winningSide) {
+            if (sideNumber === matchUp.winningSide) {
+              teamResults[teamParticipantId].win += 1;
+            } else {
+              teamResults[teamParticipantId].loss += 1;
+            }
+          }
+
+          const sets = matchUp.score?.sets || [];
+          for (const set of sets) {
             const opponentPoints = set?.[`side${3 - sideNumber}Score`] || 0;
             const points = set?.[`side${sideNumber}Score`] || 0;
             const diff = points - opponentPoints;
