@@ -9,6 +9,7 @@ type CheckSetIsCompleteArgs = {
   isDecidingSet?: boolean;
   isTiebreakSet?: boolean;
   matchUpFormat?: string;
+  isTimedSet?: boolean;
   set: any;
 };
 
@@ -18,6 +19,7 @@ export function checkSetIsComplete({
   matchUpFormat,
   isTiebreakSet,
   isDecidingSet,
+  isTimedSet,
   set,
 }: CheckSetIsCompleteArgs) {
   if (!set) return { error: MISSING_VALUE, info: 'missing set' };
@@ -25,8 +27,8 @@ export function checkSetIsComplete({
 
   const setFormat = (isDecidingSet && matchUpScoringFormat.finalSetFormat) || matchUpScoringFormat?.setFormat || {};
   const { side1Score, side2Score } = set;
-
   const { setTo, tiebreakAt } = setFormat;
+  const hasScore = side1Score || side2Score;
 
   const leadingSide = getLeadingSide({ set });
   const scoreDiff = Math.abs(side1Score - side2Score);
@@ -50,7 +52,10 @@ export function checkSetIsComplete({
   const hasWinMargin = scoreDiff >= winMargin;
   const validNormalSetScore = containsSetTo && (hasWinMargin || requiresTiebreak);
 
-  return !!((validNormalSetScore || isTiebreakSet) && (!requiresTiebreak || tiebreakIsValid));
+  return !!(
+    ((isTimedSet && hasScore) || validNormalSetScore || isTiebreakSet) &&
+    (!requiresTiebreak || tiebreakIsValid)
+  );
 }
 
 export function getLeadingSide({ set }) {
