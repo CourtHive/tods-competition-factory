@@ -1,13 +1,14 @@
 import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { processPlayoffGroups } from './drawTypes/processPlayoffGroups';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { findExtension } from '@Acquire/findExtension';
 import { generateTieMatchUps } from './tieMatchUps';
 
+// Constants
 import { INCOMPLETE_SOURCE_STRUCTURE, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { TALLY } from '@Constants/extensionConstants';
@@ -33,13 +34,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
     event,
   } = params;
 
-  const {
-    structures: playoffStructures = [],
-    links: playoffLinks = [],
-    finishingPositionTargets,
-    positionRangeMap,
-    error,
-  } = processPlayoffGroups({
+  const processResult = processPlayoffGroups({
     requireSequential,
     sourceStructureId,
     playoffGroups,
@@ -48,7 +43,14 @@ export function generateAndPopulateRRplayoffStructures(params) {
     ...params,
   });
 
-  if (error) return { error };
+  if (processResult.error) return decorateResult({ result: processResult, stack });
+
+  const {
+    structures: playoffStructures = [],
+    links: playoffLinks = [],
+    finishingPositionTargets,
+    positionRangeMap,
+  } = processResult;
 
   const positionsPlayedOff = finishingPositionTargets
     ?.map(({ finishingPositions }) => finishingPositions)

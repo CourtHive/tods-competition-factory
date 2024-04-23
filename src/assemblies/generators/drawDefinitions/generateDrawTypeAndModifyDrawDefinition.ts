@@ -3,16 +3,16 @@ import { getStageDrawPositionsCount } from '@Query/drawDefinition/getStageDrawPo
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { generateDrawStructuresAndLinks } from './generateDrawStructuresAndLinks';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
-import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { validateTieFormat } from '@Validators/validateTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
-import { definedAttributes } from '@Tools/definedAttributes';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { definedAttributes } from '@Tools/definedAttributes';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { generateTieMatchUps } from './tieMatchUps';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // constants and types
 import { PolicyDefinitions, MatchUpsMap, ResultType } from '@Types/factoryTypes';

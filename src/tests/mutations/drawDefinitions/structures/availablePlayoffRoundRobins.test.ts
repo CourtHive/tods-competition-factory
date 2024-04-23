@@ -325,7 +325,7 @@ it.each(scenarios)('can determine available playoff rounds for ROUND_ROBIN struc
   });
   expect(result.error).toEqual(INVALID_VALUES);
 
-  // if { completeAllMatchUps: true } then the playoffStructures are already generated and popujlated
+  // if { completeAllMatchUps: true } then the playoffStructures are already generated and populated
   if (playoffGroups && !completeAllMatchUps) {
     result = tournamentEngine.generateAndPopulatePlayoffStructures({
       structureId: mainStructureId,

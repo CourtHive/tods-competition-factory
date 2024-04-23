@@ -1,7 +1,8 @@
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
-import { mocksEngine } from '../../..';
 
+// Constants
 import { INCOMPLETE_SOURCE_STRUCTURE } from '@Constants/errorConditionConstants';
 import { ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 

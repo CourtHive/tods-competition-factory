@@ -6,12 +6,12 @@ import { directParticipants } from '@Mutate/matchUps/drawPositions/directPartici
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { checkMatchUpIsComplete } from '@Query/matchUp/checkMatchUpIsComplete';
-import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { getSourceRounds } from '@Query/drawDefinition/getSourceRounds';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpId } from '@Functions/global/extractors';
+import { addGoesTo } from '@Query/matchUps/addGoesTo';
 import { findStructure } from '@Acquire/findStructure';
 import { generateTieMatchUps } from './tieMatchUps';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
