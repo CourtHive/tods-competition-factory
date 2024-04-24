@@ -2,12 +2,13 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import mocksEngine from '@Assemblies/engines/mock';
-import { intersection } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
+import { intersection } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
-import { SINGLES_EVENT } from '@Constants/eventConstants';
+// Constants
 import { MAIN, ROUND_ROBIN, WATERFALL } from '@Constants/drawDefinitionConstants';
+import { SINGLES_EVENT } from '@Constants/eventConstants';
 
 const scenarios = [
   {

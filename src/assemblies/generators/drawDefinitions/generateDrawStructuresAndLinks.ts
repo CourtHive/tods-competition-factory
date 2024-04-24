@@ -1,15 +1,16 @@
 import { generateQualifyingStructures } from './drawTypes/generateQualifyingStructures';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { generateQualifyingLink } from './links/generateQualifyingLink';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { structureSort } from '@Functions/sorters/structureSort';
-import { generateQualifyingLink } from './links/generateQualifyingLink';
-import { definedAttributes } from '@Tools/definedAttributes';
 import { getDrawTypeCoercion } from './getDrawTypeCoercion';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { getCoercedDrawType } from './getCoercedDrawType';
+import { getGenerators } from './getGenerators';
 import { ensureInt } from '@Tools/ensureInt';
 import { isPowerOf2 } from '@Tools/math';
-import { getGenerators } from './getGenerators';
 
+// Constants and types
 import { EXISTING_STAGE, INVALID_DRAW_SIZE, UNRECOGNIZED_DRAW_TYPE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Structure, TieFormat } from '@Types/tournamentTypes';
 import { PlayoffAttributes, PolicyDefinitions } from '@Types/factoryTypes';

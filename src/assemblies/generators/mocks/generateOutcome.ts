@@ -1,11 +1,11 @@
 import { getSetComplement, getTiebreakComplement } from '@Query/matchUp/getComplement';
+import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
 import { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 import { generateRange, randomPop } from '@Tools/arrays';
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { randomInt, weightedRandom } from '@Tools/math';
 import { analyzeSet } from '@Query/matchUp/analyzeSet';
-import { matchUpScore } from '../matchUps/matchUpScore';
 
 // constants and fixtures
 import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
@@ -85,8 +85,8 @@ export function generateOutcome(params) {
     winningSide = winningSide || randomInt(1, 2);
     const outcome = {
       score: noScore,
-      winningSide,
       matchUpStatus,
+      winningSide,
     };
 
     const scoreDefaulted = matchUpStatus === DEFAULTED && randomInt(1, 100) > 100 - defaultWithScorePercent;
@@ -97,7 +97,7 @@ export function generateOutcome(params) {
 
   const parsedFormat = parse(matchUpFormat);
 
-  const { bestOf, setFormat, finalSetFormat } = parsedFormat ?? {};
+  const { bestOf = 1, exactly, setFormat, finalSetFormat } = parsedFormat ?? {};
 
   const sets: any[] = [];
   const weightedSide = randomInt(0, 1);
@@ -110,20 +110,21 @@ export function generateOutcome(params) {
   // if there is to be an incomplete set randomize which set is incomplete
   // for 3 sets this will always be setNumber 1 or setNumber 2
   // because it is not known in advance whether 3 sets will be generated
-  const incompleteAt = incompleteSet && (randomPop(generateRange(1, bestOf)) || 1);
+  const incompleteAt = incompleteSet && (randomPop(generateRange(1, exactly || bestOf)) || 1);
 
   // used to capture winner by RETIREMENT or DEFAULT
   let weightedWinningSide;
 
-  for (const setNumber of generateRange(1, (bestOf ?? 0) + 1)) {
-    const isFinalSet = setNumber === bestOf;
+  const setsToGenerate = generateRange(1, (exactly ?? bestOf) + 1);
+  for (const setNumber of setsToGenerate) {
+    const isFinalSet = setNumber === (exactly ?? bestOf);
     const { set, incomplete, winningSideNumber } = generateSet({
-      incomplete: incompleteAt === setNumber,
-      matchUpStatus,
-      pointsPerMinute,
       setFormat: (isFinalSet && finalSetFormat) || setFormat,
-      setNumber,
+      incomplete: incompleteAt === setNumber,
+      pointsPerMinute,
+      matchUpStatus,
       weightedRange,
+      setNumber,
     });
     sets.push(set);
 
@@ -132,29 +133,24 @@ export function generateOutcome(params) {
       break;
     }
 
-    const analysis = analyzeMatchUp({
-      matchUp: { score: { sets }, matchUpFormat },
-    });
+    const analysis = analyzeMatchUp({ matchUp: { score: { sets }, matchUpFormat } });
     if (analysis.calculatedWinningSide) break;
   }
 
-  const analysis = analyzeMatchUp({
-    matchUp: { score: { sets }, matchUpFormat },
-  });
-
+  const analysis = analyzeMatchUp({ matchUp: { score: { sets }, matchUpFormat, winningSide } });
   const matchUpWinningSide = weightedWinningSide ? winningSide || weightedWinningSide : analysis.calculatedWinningSide;
 
   // add the side perspective stringScores
   const { score } = matchUpScore({
-    score: { sets },
     winningSide: matchUpWinningSide,
+    score: { sets },
     matchUpStatus,
   });
 
   const outcome = {
-    score,
     winningSide: matchUpWinningSide,
     matchUpStatus,
+    score,
   };
 
   return { outcome };

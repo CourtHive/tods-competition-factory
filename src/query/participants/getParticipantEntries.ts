@@ -30,8 +30,8 @@ export function getParticipantEntries(params) {
     policyDefinitions,
     tournamentRecord,
     usePublishState,
-    contextProfile,
     participantMap,
+    contextProfile,
 
     withPotentialMatchUps,
     withRankingProfile,
@@ -205,10 +205,8 @@ export function getParticipantEntries(params) {
         const assignedParticipantIds = structures
           .filter(({ stage, stageSequence }) => (stage === MAIN && stageSequence === 1) || stage === QUALIFYING)
           .flatMap((structure) => {
+            const { positionAssignments } = getPositionAssignments({ structure });
             const { seedAssignments, stageSequence, stage } = structure;
-            const { positionAssignments } = getPositionAssignments({
-              structure,
-            });
 
             if (stage === MAIN) {
               drawSize = positionAssignments?.length ?? 0;

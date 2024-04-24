@@ -1,11 +1,12 @@
 import { getAvailablePlayoffProfiles } from './getAvailablePlayoffProfiles';
+import { isString } from '@Tools/objects';
 
 // constants
 import { INVALID_VALUES, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 
 export function getPositionRangeMap({ playoffGroups, drawDefinition, structureId }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
-  if (typeof structureId !== 'string' || !Array.isArray(playoffGroups)) {
+  if (!isString(structureId) || !Array.isArray(playoffGroups)) {
     return { error: INVALID_VALUES };
   }
 

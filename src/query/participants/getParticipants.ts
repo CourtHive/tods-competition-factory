@@ -8,10 +8,10 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { MISSING_TOURNAMENT_RECORD, ErrorType } from '@Constants/errorConditionConstants';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
-import { MatchUp, Tournament } from '@Types/tournamentTypes';
-import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import {
   ContextProfile,
   ParticipantFilters,
@@ -53,9 +53,9 @@ export function getParticipants(params: GetParticipantsArgs): {
   participants?: HydratedParticipant[];
   missingParticipantIds?: string[];
   participantMap?: ParticipantMap;
+  matchUps?: HydratedMatchUp[];
   derivedEventInfo?: any;
   derivedDrawInfo?: any;
-  matchUps?: MatchUp[];
   mappedMatchUps?: any;
   error?: ErrorType;
   success?: boolean;

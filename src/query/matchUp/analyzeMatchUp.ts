@@ -9,24 +9,24 @@ import { ResultType } from '@Types/factoryTypes';
 // TODO: what about checking array of sets are in order? ( setNumber )
 
 export function analyzeMatchUp(params?): ResultType & {
-  matchUpScoringFormat?: any;
-  validMatchUpOutcome?: boolean;
-  calculatedWinningSide?: number;
-  validMatchUpWinningSide?: boolean;
   completedSetsHaveValidOutcomes?: boolean;
+  validMatchUpWinningSide?: boolean;
+  calculatedWinningSide?: number;
   isLastSetWithValues?: boolean;
-  completedSetsCount?: number;
-  isCompletedMatchUp?: boolean;
-  isValidSideNumber?: boolean;
-  hasExistingValue?: boolean;
-  existingValue?: number;
-  expectTimedSet?: boolean;
-  isExistingSet?: boolean;
-  isActiveSet?: boolean;
-  isCompletedSet?: boolean;
-  sideGameScores?: number[];
-  sidePointScores?: number[];
+  validMatchUpOutcome?: boolean;
   sideTiebreakScores?: number[];
+  isCompletedMatchUp?: boolean;
+  completedSetsCount?: number;
+  isValidSideNumber?: boolean;
+  matchUpScoringFormat?: any;
+  hasExistingValue?: boolean;
+  sidePointScores?: number[];
+  sideGameScores?: number[];
+  expectTimedSet?: boolean;
+  isCompletedSet?: boolean;
+  isExistingSet?: boolean;
+  existingValue?: number;
+  isActiveSet?: boolean;
   winningSide?: number;
 } {
   const { matchUp, sideNumber, setNumber, isTiebreakValue, isPointValue } = params || {};
@@ -107,8 +107,8 @@ export function analyzeMatchUp(params?): ResultType & {
 
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
-  const { bestOf } = matchUpScoringFormat ?? {};
-  const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || 1;
+  const { bestOf, exactly } = matchUpScoringFormat ?? {};
+  const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || exactly || 1;
   const calculatedWinningSide =
     (maxSetsCount === setsToWin && maxSetsInstances === 1 && setsWinCounts.indexOf(maxSetsCount) + 1) || undefined;
 

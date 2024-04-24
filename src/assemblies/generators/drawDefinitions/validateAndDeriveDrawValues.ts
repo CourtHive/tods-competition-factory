@@ -10,6 +10,7 @@ import { nextPowerOf2 } from '@Tools/math';
 // constants and types
 import { POLICY_TYPE_MATCHUP_ACTIONS, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import { INVALID_DRAW_TYPE, MISSING_DRAW_SIZE } from '@Constants/errorConditionConstants';
+import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import POLICY_SEEDING_DEFAULT from '@Fixtures/policies/POLICY_SEEDING_DEFAULT';
 import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { DrawTypeUnion, Entry } from '@Types/tournamentTypes';
@@ -22,7 +23,6 @@ import {
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '@Constants/drawDefinitionConstants';
-import { QUALIFIER, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 
 export function validateAndDeriveDrawValues(params): ResultType & {
   policyDefinitions?: PolicyDefinitions;

@@ -1,5 +1,6 @@
 import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/generateOutcomeFromScoreString';
 import { assignTieMatchUpParticipantId } from '@Mutate/matchUps/lineUps/assignTieMatchUpParticipant';
+import { automatedPlayoffPositioning } from '@Mutate/drawDefinitions/automatedPlayoffPositioning';
 import { generateLineUps } from '@Assemblies/generators/participants/generateLineUps';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatus';
@@ -11,12 +12,13 @@ import { structureSort } from '@Functions/sorters/structureSort';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { generateOutcome } from './generateOutcome';
+import { intersection } from '@Tools/arrays';
 
 // constants and types
 import { BYE, COMPLETED, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { MAIN, PLAY_OFF, QUALIFYING, WIN_RATIO } from '@Constants/drawDefinitionConstants';
 import { ErrorType, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { addParticipants } from '@Mutate/participants/addParticipants';
-import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/matchUpTypes';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { LINEUPS } from '@Constants/extensionConstants';
@@ -25,6 +27,7 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { RANKING } from '@Constants/scaleConstants';
 
 export function completeDrawMatchUps(params): {
+  completeRoundRobinPlayoffs?: boolean;
   completedCount?: number;
   success?: boolean;
   error?: ErrorType;
@@ -47,13 +50,8 @@ export function completeDrawMatchUps(params): {
   let completedCount = 0;
 
   const { matchUps: firstRoundDualMatchUps, matchUpsMap } = getAllDrawMatchUps({
-    contextFilters: {
-      stages: [MAIN, QUALIFYING],
-    },
-    matchUpFilters: {
-      matchUpTypes: [TEAM],
-      roundNumbers: [1],
-    },
+    matchUpFilters: { matchUpTypes: [TEAM], roundNumbers: [1] },
+    contextFilters: { stages: [MAIN, QUALIFYING] },
     inContext: true,
     drawDefinition,
   });
@@ -151,16 +149,26 @@ export function completeDrawMatchUps(params): {
     }
   }
 
-  // to support legacy tests it is possible to use completeAllMatchUps
-  // to pass a score string that will be applied to all matchUps
+  // to support legacy tests it is possible to use completeAllMatchUps to pass a score string that will be applied to all matchUps
   const scoreString = typeof completeAllMatchUps === 'string' && completeAllMatchUps;
   const matchUpStatus = scoreString && COMPLETED;
 
-  for (const structure of sortedStructures) {
-    if (completedCount >= completionGoal) break;
+  const isRoundRobinWithPlayoff =
+    sortedStructures.length === 2 &&
+    sortedStructures[0].finishingPosition === WIN_RATIO &&
+    intersection(
+      sortedStructures.map(({ stage }) => stage),
+      [MAIN, PLAY_OFF],
+    ).length === 2;
 
-    const { matchUps } = getAllStructureMatchUps({
-      matchUpFilters: { matchUpTypes: [DOUBLES, SINGLES] },
+  const structureIds = sortedStructures.map(({ structureId }) => structureId);
+
+  for (const structureId of structureIds) {
+    if (completedCount >= completionGoal) break;
+    const structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
+
+    const matchUps = getAllStructureMatchUps({
+      contextFilters: { matchUpTypes: [DOUBLES, SINGLES] },
       afterRecoveryTimes: false,
       tournamentRecord,
       inContext: true,
@@ -168,7 +176,11 @@ export function completeDrawMatchUps(params): {
       matchUpsMap,
       structure,
       event,
-    });
+    }).matchUps;
+    if (!matchUps.length) {
+      console.log('##', drawDefinition);
+      // console.log(structure.matchUps, drawDefinition.matchUpType);
+    }
 
     const sortedMatchUpIds = matchUps
       .filter(({ winningSide }) => !winningSide)
@@ -196,8 +208,8 @@ export function completeDrawMatchUps(params): {
       const isDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(targetMatchUp.matchUpStatus);
 
       if (targetMatchUp?.readyToScore && !isDoubleExit) {
+        const winningSide = !randomWinningSide && 1;
         const result = smartComplete({
-          winningSide: !randomWinningSide && 1,
           matchUpStatusProfile,
           tournamentRecord,
           drawDefinition,
@@ -205,6 +217,7 @@ export function completeDrawMatchUps(params): {
           matchUpFormat,
           matchUpStatus,
           scoreString,
+          winningSide,
           event,
         });
 
@@ -212,6 +225,14 @@ export function completeDrawMatchUps(params): {
 
         completedCount += 1;
       }
+    }
+
+    if (isRoundRobinWithPlayoff && structure.finishingPosition === WIN_RATIO && params.completeRoundRobinPlayoffs) {
+      automatedPlayoffPositioning({
+        structureId: structure.structureId,
+        applyPositioning: true,
+        drawDefinition,
+      });
     }
   }
 

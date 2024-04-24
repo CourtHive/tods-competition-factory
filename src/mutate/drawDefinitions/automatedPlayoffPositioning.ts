@@ -1,17 +1,13 @@
-import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getMinFinishingPositionRange } from '@Functions/sorters/structureSort';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getPlayoffStructures } from '@Query/structure/structureGetter';
 import { automatedPositioning } from './automatedPositioning';
 
+// Constants and types
+import { DRAW_DEFINITION_NOT_FOUND, ErrorType, INCOMPLETE_SOURCE_STRUCTURE } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
-import {
-  DRAW_DEFINITION_NOT_FOUND,
-  EVENT_NOT_FOUND,
-  ErrorType,
-  INCOMPLETE_SOURCE_STRUCTURE,
-} from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/tournamentTypes';
 
 type StructurePositionAssignmentType = {
   positionAssignments: PositionAssignment[];
@@ -21,13 +17,13 @@ type StructurePositionAssignmentType = {
 type AutomatedPlayoffPositioningArgs = {
   provisionalPositioning?: boolean;
   seedingProfile?: SeedingProfile;
-  tournamentRecord: Tournament;
+  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
   applyPositioning?: boolean;
   structureId: string;
   placeByes?: boolean;
   seedsOnly?: boolean;
-  event: Event;
+  event?: Event;
 };
 export function automatedPlayoffPositioning(params: AutomatedPlayoffPositioningArgs): {
   structurePositionAssignments?: StructurePositionAssignmentType[];
@@ -44,10 +40,8 @@ export function automatedPlayoffPositioning(params: AutomatedPlayoffPositioningA
     structureId,
     placeByes,
     seedsOnly,
-    event,
   } = params;
 
-  if (!event) return { error: EVENT_NOT_FOUND };
   if (!drawDefinition) return { error: DRAW_DEFINITION_NOT_FOUND };
 
   const structureIsComplete = isCompletedStructure({
