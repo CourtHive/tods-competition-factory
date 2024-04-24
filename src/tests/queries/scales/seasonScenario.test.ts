@@ -1,10 +1,10 @@
-import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { completeDrawMatchUps } from '@Generators/mocks/completeDrawMatchUps';
 import { tournamentEngine } from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
 import { addDays } from '@Tools/dateTime';
 import { expect, it } from 'vitest';
+import fs from 'fs';
 
 // Constants
 import { ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
@@ -16,6 +16,7 @@ import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 const displayAggregateResults = false;
 const displayTournamentPoints = false;
 const displayStandingsTable = false;
+const exportOnIncomplete = false;
 
 const matchUpFormat = 'SET1-S:T30';
 
@@ -162,17 +163,17 @@ it.each(scenarios.slice(1))('can aggregate team scores across SINGLES/DOUBLES ev
         event,
       });
       expect(completionResult.success).toEqual(true);
-      if (completionResult.completedCount !== matchUpsCount) {
-        console.log(completionResult);
-        drawDefinition.structures.forEach((structure) => {
-          // condition where groupOrder has not been resolved
-          const p = getPositionAssignments({ structure });
-          console.log(p.positionAssignments.map((x) => x?.extensions?.[0].value));
-        });
-      }
       /* RESTORE: expect(completionResult.completedCount).toEqual(matchUpsCount); */
       const addResult = tournamentEngine.addDrawDefinition({ drawDefinition, eventId });
       expect(addResult.success).toEqual(true);
+      if (completionResult.completedCount !== matchUpsCount && exportOnIncomplete) {
+        const tournamentRecord = tournamentEngine.getTournament();
+        fs.writeFileSync(
+          `./src/scratch/seasonScenario-${i}-${drawNumber}.json`,
+          JSON.stringify(tournamentRecord, null, 2),
+        );
+        console.log('drawDefinition', { drawId: drawDefinition.drawId });
+      }
     }
 
     const { startDate, tournamentName } = tournamentEngine.getTournamentInfo().tournamentInfo;
