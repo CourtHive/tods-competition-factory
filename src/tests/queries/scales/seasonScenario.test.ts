@@ -95,6 +95,7 @@ it.each(scenarios.slice(1))('can aggregate team scores across SINGLES/DOUBLES ev
   });
 
   const result = tournamentEngine.generateEventsFromTieFormat({
+    uuids: ['e-1', 'e-2', 'e-3'], // used for eventIds to facilitate testing
     addEntriesFromTeams: true,
     addEvents: true,
     tieFormat,
@@ -142,9 +143,11 @@ it.each(scenarios.slice(1))('can aggregate team scores across SINGLES/DOUBLES ev
   // Now iterate through the season consistng of drawSize # of tournaments
   generateRange(0, teamsCount * roundsCount).forEach((i) => {
     const events = tournamentEngine.getEvents().events;
+    let drawNumber = 1;
     for (const event of events) {
       const { eventId } = event;
       const result = tournamentEngine.generateDrawDefinition({
+        drawId: `draw-${i}-${drawNumber++}`, // sequenced drawIds to facilitate testing
         drawSize: teamsCount,
         structureOptions,
         drawType,

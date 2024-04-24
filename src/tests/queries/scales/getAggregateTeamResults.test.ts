@@ -52,9 +52,13 @@ it('can aggregate team scores across SINGLES/DOUBLES events', () => {
 
   const pointsResult = tournamentEngine.getAggregateTeamResults();
   expect(pointsResult.success).toBe(true);
+
   for (const teamResult of Object.values(pointsResult.teamResults)) {
-    const { score, diff } = teamResult as { score: number; diff: number };
-    expect(score).toBeGreaterThanOrEqual(0);
+    const { points, diff, win, loss } = teamResult as { points: number; diff: number; win: number; loss: number };
+    expect(points).toBeGreaterThanOrEqual(0);
+    expect(loss).toBeGreaterThanOrEqual(0);
+    expect(win).toBeGreaterThanOrEqual(0);
+    expect(win + loss).toBeGreaterThan(0);
     expect(isNumeric(diff)).toBe(true);
   }
 });
