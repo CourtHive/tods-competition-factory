@@ -161,15 +161,14 @@ export function getEventData(params: GetEventDataArgs): {
           .filter((drawData) => drawData.structures?.length)
       : undefined;
 
-  const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
-  const venues = tournamentRecord.venues || [];
+  const venues = Array.isArray(tournamentRecord.venues) ? tournamentRecord.venues : [];
   const venuesData = venues.map((venue) =>
     (({ venueData }) => ({
       ...venueData,
     }))(
       getVenueData({
-        tournamentRecord,
         venueId: venue.venueId,
+        tournamentRecord,
       }),
     ),
   );
@@ -206,6 +205,8 @@ export function getEventData(params: GetEventDataArgs): {
     element: event,
     name: DISPLAY,
   }).extension?.value;
+
+  const { tournamentInfo } = getTournamentInfo({ tournamentRecord });
 
   const eventData = {
     tournamentInfo,

@@ -1,10 +1,13 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findVenue } from '@Query/venues/findVenue';
 import { getCourtInfo } from './getCourtInfo';
 
+// Constants and types
+import { ErrorType, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
+import { ERROR, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ErrorType, MISSING_TOURNAMENT_RECORD, MISSING_VENUE_ID } from '@Constants/errorConditionConstants';
 
 // The only difference from finding a venue is that information is filtered from both venue and courts
 // e.g. dataAvailability objects are not returned.
@@ -13,13 +16,18 @@ type GetVenueDataArgs = {
   tournamentRecord: Tournament;
   venueId: string;
 };
-export function getVenueData({ tournamentRecord, venueId }: GetVenueDataArgs): {
+export function getVenueData(params: GetVenueDataArgs): {
   success?: boolean;
   error?: ErrorType;
   venueData?: any;
 } {
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!venueId) return { error: MISSING_VENUE_ID };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true },
+    { venueId: true, [ERROR]: MISSING_VENUE_ID },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { tournamentRecord, venueId } = params;
 
   const result = findVenue({ tournamentRecord, venueId });
   if (result.error) return result;
