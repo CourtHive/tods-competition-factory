@@ -1,35 +1,27 @@
-import { getContainedStructures } from '../../drawDefinition/getContainedStructures';
-import { allCompetitionMatchUps } from '../../matchUps/getAllCompetitionMatchUps';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getContainedStructures } from '@Query/drawDefinition/getContainedStructures';
+import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
 import { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
 import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
 import { getMatchUpId } from '@Functions/global/extractors';
-import { mustBeAnArray } from '@Tools/mustBeAnArray';
-import { filterMatchUps } from '../../filterMatchUps';
+import { filterMatchUps } from '@Query/filterMatchUps';
 import { findEvent } from '@Acquire/findEvent';
 
 // constant and types
-import { ErrorType, MISSING_TOURNAMENT_RECORDS, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { BYE, completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
-import { Tournament } from '@Types/tournamentTypes';
+import { ANY_OF, ARRAY, OF_TYPE } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import { HydratedMatchUp } from '@Types/hydrated';
 
-/**
- *
- * @param {object} tournamentRecords - passed in automatically by competitionEngine
- * @param {string[]} containedStructureIds - optional optimization - otherwise created internally
- * @param {integer} periodLength - optional - defaults to 30
- * @param {object[]} matchUps - optional optimization - otherwise created internally
- * @param {object[]} rounds - array of ordered rounds specified as part of a schedulingProfile
- * @returns
- */
-
 type GetScheduledRoundsDetailsArgs = {
-  tournamentRecords: { [key: string]: Tournament };
+  tournamentRecords?: { [key: string]: Tournament };
   scheduleCompletedMatchUps?: boolean;
-  containedStructureIds?: string[];
-  matchUps?: HydratedMatchUp[];
+  containedStructureIds?: string[]; // optional to support calling method outside of scheduleProfileRounds
+  matchUps?: HydratedMatchUp[]; // optional to support calling method outside of scheduleProfileRounds
+  tournamentRecord?: Tournament;
   periodLength?: number;
   rounds: any[];
 };
@@ -45,26 +37,33 @@ type RoundsDetailsResult = {
   minutesMap?: any;
   info?: string;
 };
-export function getScheduledRoundsDetails({
-  scheduleCompletedMatchUps,
-  containedStructureIds, // optional to support calling method outside of scheduleProfileRounds
-  tournamentRecords,
-  periodLength = 30,
-  matchUps, // optional to support calling method outside of scheduleProfileRounds
-  rounds,
-}: GetScheduledRoundsDetailsArgs): RoundsDetailsResult {
+export function getScheduledRoundsDetails(params: GetScheduledRoundsDetailsArgs): RoundsDetailsResult {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [ANY_OF]: { tournamentRecords: false, tournamentRecord: false } },
+    { rounds: true, [OF_TYPE]: ARRAY },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
+
+  const { scheduleCompletedMatchUps, periodLength = 30 } = params;
+
+  const tournamentRecords =
+    params.tournamentRecords ||
+    (params.tournamentRecord && {
+      [params.tournamentRecord.tournamentId]: params.tournamentRecord,
+    }) ||
+    {};
   if (typeof tournamentRecords !== 'object') return { error: MISSING_TOURNAMENT_RECORDS };
-  if (!Array.isArray(rounds)) return { error: MISSING_VALUE, info: mustBeAnArray('rounds') };
 
   const matchUpFormatCohorts = {};
   const hashes: string[] = [];
   const orderedMatchUpIds: string[] = [];
-  rounds.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  // rounds.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
+  const rounds = params.rounds.toSorted((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
 
   // ---------------------------------------------------------
   // populate required variables if not provided by parameters
-  containedStructureIds =
-    containedStructureIds ??
+  const containedStructureIds =
+    params.containedStructureIds ??
     Object.assign(
       {},
       ...Object.values(tournamentRecords).map(
@@ -72,12 +71,7 @@ export function getScheduledRoundsDetails({
       ),
     );
 
-  if (!matchUps) {
-    ({ matchUps } = allCompetitionMatchUps({
-      nextMatchUps: true,
-      tournamentRecords,
-    }));
-  }
+  const matchUps = params.matchUps ?? allCompetitionMatchUps({ nextMatchUps: true, tournamentRecords }).matchUps;
   // ---------------------------------------------------------
 
   let greatestAverageMinutes = 0;
