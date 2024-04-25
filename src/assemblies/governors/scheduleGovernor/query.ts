@@ -1,3 +1,4 @@
+export { getMatchUpsToSchedule } from '@Mutate/matchUps/schedule/scheduleMatchUps/getMatchUpsToSchedule';
 export { getScheduledRoundsDetails } from '@Query/matchUps/scheduling/getScheduledRoundsDetails';
 export { getSchedulingProfileIssues } from '@Query/matchUps/scheduling/getSchedulingProfileIssues';
 export { getPersonRequests } from '@Query/matchUps/scheduling/getPersonRequests';
