@@ -2,6 +2,7 @@ import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 
 // Constants
+import { ErrorType } from '@Constants/errorConditionConstants';
 import { MATCHUPS } from '@Constants/attributeConstants';
 import {
   BYE,
@@ -25,7 +26,11 @@ type GetMatchUpsToScheduleArgs = {
   matchUps: any[];
 };
 
-export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs) {
+export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs): {
+  matchUpsToSchedule?: any[];
+  error?: ErrorType;
+  matchUpMap?: any;
+} {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUPS]: true }]);
   if (paramsCheck.error) return paramsCheck;
 
