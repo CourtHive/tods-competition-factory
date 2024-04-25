@@ -1,10 +1,11 @@
 import { addDays, generateDateRange } from '@Tools/dateTime';
 import { chunkArray, intersection } from '@Tools/arrays';
-import { xa } from '@Tools/extractAttributes';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
+/// Constants
 import { BYE } from '@Constants/matchUpStatusConstants';
 
 it('supports pro-scheduling', () => {

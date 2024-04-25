@@ -1,5 +1,6 @@
 import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/processNextMatchUps';
 
+// Constants
 import {
   BYE,
   ABANDONED,
@@ -11,20 +12,32 @@ import {
   DOUBLE_DEFAULT,
 } from '@Constants/matchUpStatusConstants';
 
-export function getMatchUpsToSchedule({
-  matchUpPotentialParticipantIds,
-  scheduleCompletedMatchUps,
-  dateScheduledMatchUpIds,
-  matchUpNotBeforeTimes,
-  matchUpScheduleTimes,
-  orderedMatchUpIds,
-  clearDate,
-  matchUps,
-}) {
+type GetMatchUpsToScheduleArgs = {
+  matchUpPotentialParticipantIds?: { [key: string]: string[] };
+  matchUpScheduleTimes: { [key: string]: string };
+  matchUpNotBeforeTimes: { [key: string]: any };
+  scheduleCompletedMatchUps?: boolean;
+  dateScheduledMatchUpIds: string[];
+  orderedMatchUpIds?: string[];
+  clearDate?: boolean;
+  matchUps: any[];
+};
+
+export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs) {
+  const {
+    matchUpPotentialParticipantIds,
+    scheduleCompletedMatchUps,
+    dateScheduledMatchUpIds,
+    matchUpNotBeforeTimes,
+    matchUpScheduleTimes,
+    orderedMatchUpIds,
+    clearDate,
+    matchUps,
+  } = params;
   const alreadyScheduledMatchUpIds = Object.keys(matchUpScheduleTimes);
 
   // this must be done to preserve the order of matchUpIds
-  const matchUpsToSchedule = orderedMatchUpIds
+  const matchUpsToSchedule = (orderedMatchUpIds ?? [])
     .map((matchUpId) => matchUps.find((matchUp) => matchUp.matchUpId === matchUpId))
     .filter(Boolean)
     .filter((matchUp) => {
@@ -51,27 +64,30 @@ export function getMatchUpsToSchedule({
 
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps
   // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-  const { matchUpMap } = matchUpsToSchedule.reduce(
-    (aggregator, matchUp) => {
-      const { drawId, tournamentId } = matchUp;
+  const matchUpMap = matchUpPotentialParticipantIds
+    ? matchUpsToSchedule.reduce(
+        (aggregator, matchUp) => {
+          const { drawId, tournamentId } = matchUp;
 
-      if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
-      if (!aggregator.matchUpMap[tournamentId][drawId]) {
-        aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
-      } else {
-        aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
-      }
+          if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
+          if (!aggregator.matchUpMap[tournamentId][drawId]) {
+            aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
+          } else {
+            aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
+          }
 
-      // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
-      processNextMatchUps({
-        matchUpPotentialParticipantIds,
-        matchUpNotBeforeTimes,
-        matchUp,
-      });
+          // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
+          processNextMatchUps({
+            matchUpPotentialParticipantIds,
+            matchUpNotBeforeTimes,
+            matchUp,
+          });
 
-      return aggregator;
-    },
-    { matchUpMap: {} },
-  );
+          return aggregator;
+        },
+        { matchUpMap: {} },
+      ).matchUpMap
+    : {};
+
   return { matchUpsToSchedule, matchUpMap };
 }

@@ -3,8 +3,8 @@ import { addNotice, hasTopic } from '@Global/state/globalState';
 
 // constants
 import { AUTO_SCHEDULING_AUDIT } from '@Constants/auditConstants';
-import { AUDIT } from '@Constants/topicConstants';
 import { Tournament } from '@Types/tournamentTypes';
+import { AUDIT } from '@Constants/topicConstants';
 
 export function auditAutoScheduling({ autoSchedulingAudit, tournamentRecords }) {
   addNotice({ topic: AUDIT, payload: autoSchedulingAudit });
