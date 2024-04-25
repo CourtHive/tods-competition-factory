@@ -1,19 +1,20 @@
-import { addMatchUpScheduledTime } from '../../scheduledTime';
-import { assignMatchUpVenue } from '../../assignMatchUpVenue';
-import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
-import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
-import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
-import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
+import { checkDependenciesScheduled } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDependenciesScheduled';
+import { updateTimeAfterRecovery } from '@Mutate/matchUps/schedule/scheduleMatchUps/updateTimeAfterRecovery';
+import { checkDependendantTiming } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDependentTiming';
+import { checkRequestConflicts } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkRequestConflicts';
+import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/processNextMatchUps';
 import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
-import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
-import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
-import { getMatchUpId } from '@Functions/global/extractors';
-import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
-import { auditAutoScheduling } from '../auditAutoScheduling';
+import { checkRecoveryTime } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkRecoveryTime';
+import { auditAutoScheduling } from '@Mutate/matchUps/schedule/schedulers/auditAutoScheduling';
+import { checkDailyLimits } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDailyLimits';
+import { bulkScheduleMatchUps } from '@Mutate/matchUps/schedule/bulkScheduleMatchUps';
 import { extractDate, sameDay, timeStringMinutes, zeroPad } from '@Tools/dateTime';
+import { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime';
+import { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { getMatchUpId } from '@Functions/global/extractors';
 
+// Constants
 import { SUCCESS } from '@Constants/resultConstants';
 import { TOTAL } from '@Constants/scheduleConstants';
 

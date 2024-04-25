@@ -1,26 +1,27 @@
-import { addMatchUpScheduledTime } from '../../scheduledTime';
-import { assignMatchUpCourt } from '../../assignMatchUpCourt';
-import { checkDependenciesScheduled } from '../../scheduleMatchUps/checkDependenciesScheduled';
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { updateTimeAfterRecovery } from '../../scheduleMatchUps/updateTimeAfterRecovery';
-import { checkDependendantTiming } from '../../scheduleMatchUps/checkDependentTiming';
-import { checkRequestConflicts } from '../../scheduleMatchUps/checkRequestConflicts';
-import { processNextMatchUps } from '../../scheduleMatchUps/processNextMatchUps';
-import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
-import { checkRecoveryTime } from '../../scheduleMatchUps/checkRecoveryTime';
-import { checkDailyLimits } from '../../scheduleMatchUps/checkDailyLimits';
-import { getMatchUpId } from '@Functions/global/extractors';
-import { generateVirtualCourts } from '../../../../../assemblies/generators/scheduling/utils/generateVirtualCourts';
-import { getEarliestCourtTime } from '../../../../../assemblies/generators/scheduling/utils/getEarliestCourtTime';
-import { bulkScheduleMatchUps } from '../../bulkScheduleMatchUps';
-import { auditAutoScheduling } from '../auditAutoScheduling';
-import { generateBookings } from '../../../../../assemblies/generators/scheduling/utils/generateBookings';
 import { addMinutesToTimeString, extractDate, sameDay, timeStringMinutes, timeToDate, zeroPad } from '@Tools/dateTime';
+import { checkDependenciesScheduled } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDependenciesScheduled';
+import { updateTimeAfterRecovery } from '@Mutate/matchUps/schedule/scheduleMatchUps/updateTimeAfterRecovery';
+import { checkDependendantTiming } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDependentTiming';
+import { checkRequestConflicts } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkRequestConflicts';
+import { generateVirtualCourts } from '@Assemblies/generators/scheduling/utils/generateVirtualCourts';
+import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/processNextMatchUps';
+import { getEarliestCourtTime } from '@Assemblies/generators/scheduling/utils/getEarliestCourtTime';
+import { getVenueSchedulingDetails } from '@Query/matchUps/scheduling/getVenueSchedulingDetails';
+import { checkRecoveryTime } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkRecoveryTime';
+import { auditAutoScheduling } from '@Mutate/matchUps/schedule/schedulers/auditAutoScheduling';
+import { checkDailyLimits } from '@Mutate/matchUps/schedule/scheduleMatchUps/checkDailyLimits';
+import { generateBookings } from '@Assemblies/generators/scheduling/utils/generateBookings';
+import { bulkScheduleMatchUps } from '@Mutate/matchUps/schedule/bulkScheduleMatchUps';
+import { addMatchUpScheduledTime } from '@Mutate/matchUps/schedule/scheduledTime';
+import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
+import { findDrawDefinition } from '@Acquire/findDrawDefinition';
+import { getMatchUpId } from '@Functions/global/extractors';
 
+// Constants and types
+import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
 import { HydratedCourt, HydratedMatchUp } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TOTAL } from '@Constants/scheduleConstants';
-import { PersonRequests, TournamentRecords } from '@Types/factoryTypes';
 
 // NOTE: non-Garman scheduling
 
