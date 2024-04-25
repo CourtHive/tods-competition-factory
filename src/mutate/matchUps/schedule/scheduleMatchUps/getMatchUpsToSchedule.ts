@@ -1,6 +1,8 @@
 import { processNextMatchUps } from '@Mutate/matchUps/schedule/scheduleMatchUps/processNextMatchUps';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 
 // Constants
+import { MATCHUPS } from '@Constants/attributeConstants';
 import {
   BYE,
   ABANDONED,
@@ -15,7 +17,7 @@ import {
 type GetMatchUpsToScheduleArgs = {
   matchUpPotentialParticipantIds?: { [key: string]: string[] };
   matchUpScheduleTimes: { [key: string]: string };
-  matchUpNotBeforeTimes: { [key: string]: any };
+  matchUpNotBeforeTimes?: { [key: string]: any };
   scheduleCompletedMatchUps?: boolean;
   dateScheduledMatchUpIds: string[];
   orderedMatchUpIds?: string[];
@@ -24,6 +26,9 @@ type GetMatchUpsToScheduleArgs = {
 };
 
 export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs) {
+  const paramsCheck = checkRequiredParameters(params, [{ [MATCHUPS]: true }]);
+  if (paramsCheck.error) return paramsCheck;
+
   const {
     matchUpPotentialParticipantIds,
     scheduleCompletedMatchUps,
@@ -64,30 +69,31 @@ export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs) {
 
   // for optimization, build up an object for each tournament and an array for each draw with target matchUps
   // keep track of matchUps counts per participant and don't add matchUps for participants beyond those limits
-  const matchUpMap = matchUpPotentialParticipantIds
-    ? matchUpsToSchedule.reduce(
-        (aggregator, matchUp) => {
-          const { drawId, tournamentId } = matchUp;
+  const matchUpMap =
+    matchUpPotentialParticipantIds && matchUpNotBeforeTimes
+      ? matchUpsToSchedule.reduce(
+          (aggregator, matchUp) => {
+            const { drawId, tournamentId } = matchUp;
 
-          if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
-          if (!aggregator.matchUpMap[tournamentId][drawId]) {
-            aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
-          } else {
-            aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
-          }
+            if (!aggregator.matchUpMap[tournamentId]) aggregator.matchUpMap[tournamentId] = {};
+            if (!aggregator.matchUpMap[tournamentId][drawId]) {
+              aggregator.matchUpMap[tournamentId][drawId] = [matchUp];
+            } else {
+              aggregator.matchUpMap[tournamentId][drawId].push(matchUp);
+            }
 
-          // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
-          processNextMatchUps({
-            matchUpPotentialParticipantIds,
-            matchUpNotBeforeTimes,
-            matchUp,
-          });
+            // since this matchUp is to be scheduled, update the matchUpPotentialParticipantIds
+            processNextMatchUps({
+              matchUpPotentialParticipantIds,
+              matchUpNotBeforeTimes,
+              matchUp,
+            });
 
-          return aggregator;
-        },
-        { matchUpMap: {} },
-      ).matchUpMap
-    : {};
+            return aggregator;
+          },
+          { matchUpMap: {} },
+        ).matchUpMap
+      : {};
 
   return { matchUpsToSchedule, matchUpMap };
 }
