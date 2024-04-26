@@ -1,4 +1,1 @@
-module.exports = {
-  extends: ['@commitlint/config-conventional'],
-  prompt: { useEmoji: true },
-};
+export default { extends: ['@commitlint/config-conventional'], useEmoji: true };
