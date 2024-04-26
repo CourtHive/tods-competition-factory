@@ -1,17 +1,18 @@
 import { getAssignedParticipantIds } from '@Query/drawDefinition/getAssignedParticipantIds';
-import { refreshEntryPositions } from './refreshEntryPositions';
-import { findParticipant } from '@Acquire/findParticipant';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
-import { removeExtension } from '../extensions/removeExtension';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { refreshEntryPositions } from './refreshEntryPositions';
+import { removeExtension } from '../extensions/removeExtension';
 import { isValidExtension } from '@Validators/isValidExtension';
-import { addExtension } from '../extensions/addExtension';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { addExtension } from '../extensions/addExtension';
+import { findParticipant } from '@Acquire/findParticipant';
 import { isUngrouped } from '@Query/entries/isUngrouped';
 
+// Constants
+import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { validStages } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, TEAM_EVENT } from '@Constants/eventConstants';
-import { INDIVIDUAL, PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   ENTRY_STATUS_NOT_ALLOWED_FOR_EVENT,
