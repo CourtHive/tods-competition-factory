@@ -4,10 +4,11 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
+// Constants
 import { EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOMINANT_DUO } from '@Constants/tieFormatConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
-import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, TEAM } from '@Constants/eventConstants';
 
 it('can delete participants', () => {

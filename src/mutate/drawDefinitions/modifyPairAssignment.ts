@@ -1,8 +1,9 @@
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '../participants/deleteParticipants';
-import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { addParticipant } from '../participants/addParticipant';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 
+// Constants
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { PAIR } from '@Constants/participantConstants';

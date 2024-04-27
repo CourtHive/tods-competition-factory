@@ -1,11 +1,13 @@
-import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { removeEventEntries } from '../entries/removeEventEntries';
 import { addEventEntries } from '../entries/addEventEntries';
 import { addNotice } from '@Global/state/globalState';
 import { intersection } from '@Tools/arrays';
 
+// Constants
+import { PAIR, TEAM as participantTeam } from '@Constants/participantConstants';
 import { DELETE_PARTICIPANTS } from '@Constants/topicConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -18,7 +20,6 @@ import {
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
 } from '@Constants/errorConditionConstants';
-import { PAIR, TEAM as participantTeam } from '@Constants/participantConstants';
 
 /**
  *

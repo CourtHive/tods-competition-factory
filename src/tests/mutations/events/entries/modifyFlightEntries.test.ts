@@ -1,10 +1,11 @@
+import { getParticipantId, getParticipantIds } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
-import { getParticipantId, getParticipantIds } from '@Functions/global/extractors';
 
-import { ALTERNATE } from '@Constants/entryStatusConstants';
+// Constants
 import { INDIVIDUAL } from '@Constants/participantConstants';
+import { ALTERNATE } from '@Constants/entryStatusConstants';
 import {
   EVENT_NOT_FOUND,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
