@@ -4,6 +4,7 @@ import { instanceCount } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 // constants
+import { INVALID_VALUES, MISSING_EVENT, MISSING_PARTICIPANT_ID } from '@Constants/errorConditionConstants';
 import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 import { MODIFY_PAIR_ASSIGNMENT } from '@Constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
@@ -111,6 +112,51 @@ test('postionAction for replacing participant within PAIR', () => {
     event?.entries
       ?.filter(({ entryStatus }) => [UNGROUPED].includes(entryStatus))
       .map(({ participantId }) => participantId) || [];
+
+  result = tournamentEngine.modifyPairAssignment({
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    participantId: pairParticipantId,
+    eventId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],
+    participantId: pairParticipantId,
+    eventId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    eventId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    participantId: pairParticipantId,
+  });
+  expect(result.error).toEqual(MISSING_EVENT);
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    participantId: pairParticipantId,
+    uuids: 'invalid',
+    eventId,
+  });
+  expect(result.error).toEqual(INVALID_VALUES);
+
+  result = tournamentEngine.modifyPairAssignment({
+    existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],
+    replacementIndividualParticipantId: availableIndividualParticipantIds[0],
+    participantId: 5000, // invalid participantId
+    eventId,
+  });
+  expect(result.error).toEqual(MISSING_PARTICIPANT_ID);
 
   result = tournamentEngine.modifyPairAssignment({
     existingIndividualParticipantId: pairParticipant.individualParticipantIds[0],

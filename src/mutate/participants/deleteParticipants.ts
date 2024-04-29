@@ -1,3 +1,4 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { removeParticipantIdsFromAllTeams } from './removeIndividualParticipantIds';
 import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { getParticipants } from '@Query/participants/getParticipants';
@@ -7,35 +8,37 @@ import { addNotice } from '@Global/state/globalState';
 import { intersection } from '@Tools/arrays';
 
 // Constants
+import { ARRAY, ERROR, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { PAIR, TEAM as participantTeam } from '@Constants/participantConstants';
 import { DELETE_PARTICIPANTS } from '@Constants/topicConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import { DOUBLES } from '@Constants/matchUpTypes';
 import { TEAM } from '@Constants/eventConstants';
 import {
   CANNOT_REMOVE_PARTICIPANTS,
   MISSING_PARTICIPANT_IDS,
-  MISSING_TOURNAMENT_RECORD,
   EXISTING_PARTICIPANT_DRAW_POSITION_ASSIGNMENT,
   ErrorType,
 } from '@Constants/errorConditionConstants';
 
-/**
- *
- * @param {boolean=} addIndividualParticipantsToEvents
- * @param {object} tournamentRecord
- * @param {string[]} participantIds
- * @returns {object}
- */
+type DeleteParticipantsArgs = {
+  addIndividualParticipantsToEvents?: boolean;
+  tournamentRecord: Tournament;
+  participantIds: string[];
+};
 
-export function deleteParticipants(params): {
+export function deleteParticipants(params: DeleteParticipantsArgs): {
   participantsRemovedCount?: number;
   success?: boolean;
   error?: ErrorType;
 } {
-  if (!params?.tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (!params?.participantIds?.length) return { error: MISSING_PARTICIPANT_IDS };
+  const paramsCheck = checkRequiredParameters(params, [
+    { [TOURNAMENT_RECORD]: true },
+    { participantIds: true, [OF_TYPE]: ARRAY, [ERROR]: MISSING_PARTICIPANT_IDS },
+  ]);
+  if (paramsCheck.error) return paramsCheck;
   const { addIndividualParticipantsToEvents, tournamentRecord, participantIds } = params;
 
   const participantsCount = tournamentRecord.participants?.length || 0;
@@ -54,7 +57,7 @@ export function deleteParticipants(params): {
       withDraws: true,
     }).participants ?? [];
 
-  const getPlacedPairParticipantIds = () => {
+  const getPlacedPairParticipantIds = (teamDrawIds) => {
     const matchUps =
       allTournamentMatchUps({
         matchUpFilters: { drawIds: teamDrawIds, matchUpTypes: [DOUBLES] },
@@ -62,15 +65,14 @@ export function deleteParticipants(params): {
       }).matchUps ?? [];
 
     const placedPairParticipantIds = matchUps
-      .map(({ sides }) => sides?.map(({ participantId }) => participantId))
-      .flat()
+      .flatMap(({ sides }) => sides?.map(({ participantId }) => participantId || []))
       .filter(Boolean);
 
     return intersection(placedPairParticipantIds, participantIds);
   };
 
   // for team draws it is necessary to check matchUps for pair participantIds "discovered" in collectionAssignments
-  const placedPairParticipantIds = teamDrawIds?.length && getPlacedPairParticipantIds();
+  const placedPairParticipantIds = teamDrawIds?.length ? getPlacedPairParticipantIds(teamDrawIds) : [];
 
   const participantsInDraws = tournamentParticipants.filter(
     (participant) =>
@@ -96,17 +98,17 @@ export function deleteParticipants(params): {
     eventParticipantIdsRemoved[event.eventId] = result.participantIdsRemoved;
   }
 
-  tournamentRecord.participants = tournamentRecord.participants.filter((participant) => {
+  tournamentRecord.participants = (tournamentRecord.participants ?? []).filter((participant) => {
     const participantToRemove =
       participantIds.includes(participant.participantId) ||
       (participant.participantType === PAIR &&
-        participant.individualParticipantIds.some((id) => participantIds.includes(id)));
+        participant.individualParticipantIds?.some((id) => participantIds.includes(id)));
 
     // remove deleted individualParticipantIds from TEAMs
     if (
       !participantToRemove &&
       participant.participantType === TEAM &&
-      participant.individualParticipantIds.some((id) => participantIds.includes(id))
+      participant.individualParticipantIds?.some((id) => participantIds.includes(id))
     ) {
       participant.individualParticipantIds = participant.individualParticipantIds.filter(
         (id) => !participantIds.includes(id),
@@ -116,6 +118,7 @@ export function deleteParticipants(params): {
     if (
       participantToRemove &&
       addIndividualParticipantsToEvents &&
+      participant.participantType &&
       [PAIR, participantTeam].includes(participant.participantType)
     ) {
       for (const individualParticipantId of participant.individualParticipantIds || []) {
