@@ -2,13 +2,16 @@ import { deleteParticipants } from '../participants/deleteParticipants';
 import { getStageEntries } from '@Query/drawDefinition/getStageEntries';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getParticipantId } from '@Functions/global/extractors';
-import { arrayIndices } from '@Tools/arrays';
 import { removeEventEntries } from './removeEventEntries';
 import { addEventEntries } from './addEventEntries';
+import { arrayIndices } from '@Tools/arrays';
 
+// Constants and types
+import { DrawDefinition, Tournament, Event } from '@Types/tournamentTypes';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
+import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { UNGROUPED } from '@Constants/entryStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import {
   ErrorType,
   INVALID_EVENT_TYPE,
@@ -19,25 +22,16 @@ import {
   PARTICIPANT_ENTRY_NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
-import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
-import { DrawDefinition, Tournament, Event } from '@Types/tournamentTypes';
 
 /**
  * When grouped participant entries are destroyed, individualParticipantIds will be added as { individualEntryStatus } participant entries
- *
- * @param {object} tournamentRecord - passed in by tournamentEngine
- * @param {string} participantId - id of TEAM/PAIR participant to remove
- * @param {string} eventId - resolved to { event } by tournamentEngine
- * @param {string} drawId - optional - resolved to { drawDefinition }
- * @param {boolean} removeGroupParticipant - whether to also remove grouping participant from tournamentRecord.participants
- *
  */
 
 type DestroyGroupEntryArgs = {
-  removeGroupParticipant?: boolean;
+  removeGroupParticipant?: boolean; // whether to also remove grouping participant from tournamentRecord.participants
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
-  participantId: string;
+  participantId: string; // id of TEAM/PAIR participant to remove
   drawId?: string;
   stage?: string;
   event: Event;
