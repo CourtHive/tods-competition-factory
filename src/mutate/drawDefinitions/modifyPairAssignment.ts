@@ -1,9 +1,12 @@
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { getPairedParticipant } from '@Query/participant/getPairedParticipant';
 import { deleteParticipants } from '../participants/deleteParticipants';
 import { addParticipant } from '../participants/addParticipant';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
+import { isString } from '@Tools/objects';
 
 // Constants
+import { ERROR, EVENT, TOURNAMENT_RECORD, UUIDS, VALIDATE } from '@Constants/attributeConstants';
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { PAIR } from '@Constants/participantConstants';
@@ -13,32 +16,32 @@ import {
   INVALID_EVENT_TYPE,
   INVALID_PARTICIPANT,
   INVALID_PARTICIPANT_ID,
-  INVALID_VALUES,
-  MISSING_EVENT,
   MISSING_PARTICIPANT_ID,
-  MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
 
-export function modifyPairAssignment({
-  replacementIndividualParticipantId,
-  existingIndividualParticipantId,
-  tournamentRecord,
-  drawDefinition,
-  participantId,
-  event,
-  uuids,
-}) {
-  if (!event) return { error: MISSING_EVENT };
+export function modifyPairAssignment(params) {
+  const paramsCheck = checkRequiredParameters(params, [
+    { [EVENT]: true, [TOURNAMENT_RECORD]: true, [UUIDS]: false },
+    {
+      replacementIndividualParticipantId: true,
+      [VALIDATE]: (value) => isString(value),
+      existingIndividualParticipantId: true,
+      [ERROR]: MISSING_PARTICIPANT_ID,
+      participantId: true,
+    },
+  ]);
+  const {
+    replacementIndividualParticipantId,
+    existingIndividualParticipantId,
+    tournamentRecord,
+    drawDefinition,
+    participantId,
+    event,
+    uuids,
+  } = params;
+  if (paramsCheck.error) return paramsCheck;
+
   if (event?.eventType !== DOUBLES) return { error: INVALID_EVENT_TYPE };
-  if (uuids && !Array.isArray(uuids)) return { error: INVALID_VALUES };
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  if (
-    ![replacementIndividualParticipantId, existingIndividualParticipantId, participantId].every(
-      (id) => typeof id === 'string',
-    )
-  ) {
-    return { error: MISSING_PARTICIPANT_ID };
-  }
 
   // ensure that replacementIndividualPartiicpant is UNPAIRED
   const availableIndividualParticipantIds =
@@ -87,7 +90,6 @@ export function modifyPairAssignment({
   } else {
     newPairParticipantId = existingPairParticipant.participantId;
   }
-
   const { flightProfile } = getFlightProfile({ event });
   if (drawDefinition) {
     // modify all positionAssignments in event, drawDefinition and flight
@@ -104,13 +106,8 @@ export function modifyPairAssignment({
 
     // update positionAssignments for all structures within the drawDefinition
     for (const structure of drawDefinition.structures || []) {
-      if (structure.positionAssignments) {
-        structure.positionAssignments = structure.positionAssignments.map((assignment) =>
-          assignment.participantId === participantId
-            ? { ...assignment, participantId: newPairParticipantId }
-            : assignment,
-        );
-      } else if (structure.structures) {
+      if (structure.structures) {
+        structure.positionAssignments = undefined;
         for (const subStructure of structure.structures) {
           subStructure.positionAssignments = subStructure.positionAssignments.map((assignment) =>
             assignment.participantId === participantId
@@ -118,6 +115,12 @@ export function modifyPairAssignment({
               : assignment,
           );
         }
+      } else if (structure.positionAssignments) {
+        structure.positionAssignments = structure.positionAssignments.map((assignment) =>
+          assignment.participantId === participantId
+            ? { ...assignment, participantId: newPairParticipantId }
+            : assignment,
+        );
       }
     }
   }
