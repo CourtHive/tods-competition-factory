@@ -1,6 +1,6 @@
 import { validateTieFormat } from '@Validators/validateTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { isFunction, isObject } from '@Tools/objects';
+import { isFunction, isObject, isString } from '@Tools/objects';
 import { intersection } from '@Tools/arrays';
 
 // Constants and types
@@ -88,6 +88,7 @@ const validators = {
   [ONLINE_RESOURCE]: (value) =>
     intersection(Object.keys(value), [RESOURCE_SUB_TYPE, RESOURCE_TYPE, IDENTIFIER]).length === 3,
   [TIE_FORMAT_NAME]: (value) => value && tieFormatDefaults({ namedFormat: value }),
+  [UUIDS]: (value) => !value || (Array.isArray(value) && value.every(isString)),
   [TIE_FORMAT]: (value) => !validateTieFormat({ tieFormat: value }).error,
   [EVENT_TYPE]: (value) => [SINGLES, DOUBLES, TEAM].includes(value),
   [ENTRY_STAGE]: (value) => validStages.includes(value),
