@@ -106,7 +106,7 @@ it('will clean up entries when participants are deleted', () => {
   });
   expect(result.success).toEqual(true);
 
-  ({ event, drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  event = tournamentEngine.getEvent({ drawId }).event;
   expect(event.entries.length).toEqual(4);
   expect(unique(event.entries.map(({ entryStatus }) => entryStatus))).toEqual([UNGROUPED]);
 });
