@@ -66,9 +66,7 @@ export function getValidAlternatesAction({
     .map(({ participantId }) => participantId)
     .filter(Boolean);
 
-  const { allPositionedParticipantIds } = getAllPositionedParticipantIds({
-    drawDefinition,
-  });
+  const { allPositionedParticipantIds } = getAllPositionedParticipantIds({ drawDefinition });
 
   const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
