@@ -6,6 +6,7 @@ export function alternateDrawPositionAssignment({
   drawDefinition,
   drawPosition,
   structureId,
+  event,
 }) {
   return positionParticipantAction({
     positionActionName: 'alternateDrawPositionAssignment',
@@ -15,5 +16,6 @@ export function alternateDrawPositionAssignment({
     drawDefinition,
     drawPosition,
     structureId,
+    event,
   });
 }

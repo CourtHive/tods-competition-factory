@@ -129,15 +129,12 @@ it('can create double bye and replace bye with alternate', () => {
   const {
     tournamentRecord,
     drawIds: [drawId],
-  } = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-    participantsProfile,
-  });
+  } = mocksEngine.generateTournamentRecord({ drawProfiles, participantsProfile });
   tournamentEngine.setState(tournamentRecord);
 
   const { completedMatchUps, upcomingMatchUps, byeMatchUps, pendingMatchUps } = tournamentEngine.drawMatchUps({
-    drawId,
     inContext: true,
+    drawId,
   });
   expect(byeMatchUps.length).toEqual(1);
   expect(completedMatchUps.length).toEqual(3);
@@ -149,42 +146,42 @@ it('can create double bye and replace bye with alternate', () => {
 
   // now replace the participant in { drawPosition; 1 } with a BYE
   replaceWithBye({
-    drawId,
-    structureId,
-    drawPosition: 1,
     expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
+    drawPosition: 1,
+    structureId,
+    drawId,
   });
 
   // now again replace the BYE with an alternate
   replaceWithAlternate({
-    drawId,
-    structureId,
-    drawPosition: 1,
     expectations: { bye: 1, complete: 3, pending: 1, upcoming: 2 },
+    drawPosition: 1,
+    structureId,
+    drawId,
   });
 
   // now replace the participant in { drawPosition; 1 } with a BYE
   replaceWithBye({
-    drawId,
-    structureId,
-    drawPosition: 1,
     expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
+    drawPosition: 1,
+    structureId,
+    drawId,
   });
 
   // now again replace the BYE with an alternate
   replaceWithAlternate({
-    drawId,
-    structureId,
-    drawPosition: 2,
     expectations: { bye: 1, complete: 3, pending: 1, upcoming: 2 },
+    drawPosition: 2,
+    structureId,
+    drawId,
   });
 
   // now replace the participant in { drawPosition; 2 } with a BYE
   replaceWithBye({
-    drawId,
-    structureId,
-    drawPosition: 2,
     expectations: { bye: 2, complete: 3, pending: 1, upcoming: 1 },
+    drawPosition: 2,
+    structureId,
+    drawId,
   });
 
   // now remove the result for matchUp: { roundNumber: 1, roundPosition: 2 }
@@ -266,13 +263,13 @@ function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {
 }
 
 function replaceWithAlternate({ drawId, structureId, drawPosition, expectations }) {
-  const { validActions } = tournamentEngine.positionActions({
-    drawId,
-    structureId,
+  let result = tournamentEngine.positionActions({
     drawPosition,
+    structureId,
+    drawId,
   });
-  let result = validActions.find(({ type }) => type === ALTERNATE);
-  const { method, payload, availableAlternatesParticipantIds } = result;
+  const altAction = result.validActions.find(({ type }) => type === ALTERNATE);
+  const { method, payload, availableAlternatesParticipantIds } = altAction;
   const alternateParticipantId = availableAlternatesParticipantIds[0];
   Object.assign(payload, { alternateParticipantId });
   result = tournamentEngine[method](payload);

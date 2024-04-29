@@ -332,9 +332,9 @@ export function addMatchUpContext({
         if (participant) {
           if (drawDefinition?.entries) {
             const entry = drawDefinition.entries.find((entry) => entry.participantId === side.participantId);
-            if (entry?.entryStatus) {
-              participant.entryStatus = entry.entryStatus;
-            }
+            // even.entries are used as a fallback for entryStatus when entries missing from drawDefinition
+            const eEntry = event?.entries?.find((entry) => entry.participantId === side.participantId);
+            participant.entryStatus = entry?.entryStatus || eEntry?.entryStatus;
             if (entry?.entryStage) {
               participant.entryStage = entry.entryStage;
             }

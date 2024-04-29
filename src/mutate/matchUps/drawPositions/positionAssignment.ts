@@ -3,6 +3,7 @@ import { getStructureDrawPositionProfiles } from '@Query/structure/getStructureD
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
 import { modifyPositionAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { addDrawEntry } from '@Mutate/drawDefinitions/entryGovernor/addDrawEntries';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { getInitialRoundNumber } from '@Query/matchUps/getInitialRoundNumber';
@@ -205,7 +206,6 @@ export function assignDrawPosition({
         participantId,
         seedNumber,
         seedValue,
-        // ...assignment,
         structureId,
         event,
       });
@@ -259,6 +259,20 @@ export function assignDrawPosition({
         drawDefinition,
       });
     }
+  }
+
+  const drawEntry = drawDefinition.entries?.find((entry) => entry.participantId === participantId);
+  const eventEntry = event?.entries?.find((entry) => entry.participantId === participantId);
+
+  if (!drawEntry && eventEntry) {
+    addDrawEntry({
+      entryStatus: eventEntry.entryStatus,
+      entryStage: structure.stage,
+      ignoreStageSpace: true,
+      drawDefinition,
+      participantId,
+      event,
+    });
   }
 
   modifyPositionAssignmentsNotice({

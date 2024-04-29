@@ -174,15 +174,11 @@ export function getParticipantEntries(params) {
 
       for (const drawId of drawIds) {
         const drawDefinition = drawDefinitions.find((drawDefinition) => drawDefinition.drawId === drawId);
-        const flight = flights?.find((flight) => flight.drawId === drawId);
-
-        const entries = drawDefinition?.entries || flight?.drawEntries;
-
-        const { structures = [], drawOrder, drawName, drawType } = drawDefinition ?? {};
-
-        const flightNumber = flight?.flightNumber;
-
         const scaleNames = [category?.categoryName, category?.ageCategoryCode].filter(Boolean);
+        const { structures = [], drawOrder, drawName, drawType } = drawDefinition ?? {};
+        const flight = flights?.find((flight) => flight.drawId === drawId);
+        const entries = drawDefinition?.entries || flight?.drawEntries;
+        const flightNumber = flight?.flightNumber;
 
         // used in rankings pipeline.
         // the structures in which a particpant particpates are ordered
