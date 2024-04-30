@@ -6,12 +6,14 @@ import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getAdHocStructureDetails } from './getAdHocStructureDetails';
 import { getMissingSequenceNumbers, unique } from '@Tools/arrays';
 import { getMatchUpId } from '@Functions/global/extractors';
+import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { xa } from '@Tools/extractAttributes';
 
 // constants and types
 import { ARRAY, DRAW_DEFINITION, INVALID, MATCHUP_IDS, OF_TYPE, ONE_OF } from '@Constants/attributeConstants';
 import { INVALID_VALUES, SCORES_PRESENT } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 
@@ -109,12 +111,22 @@ export function deleteAdHocMatchUps(params: DeleteAdHocMatchUpsArgs): ResultType
 
       const matchUpFormat = structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
 
+      const isDualMatchUp = structureResult.existingMatchUps.some((matchUp) => matchUp.matchUpType === TEAM_MATCHUP);
+      const matchUpFilters = isDualMatchUp ? { matchUpTypes: [TEAM_MATCHUP] } : undefined;
       const { matchUps } = getAllStructureMatchUps({
         afterRecoveryTimes: false,
         inContext: true,
+        matchUpFilters,
         structure,
         event,
       });
+
+      const isAdHocStructure = isAdHoc({ structure });
+      if (isAdHocStructure) {
+        structure.positionAssignments = unique(
+          matchUps.flatMap((matchUp) => (matchUp.sides ?? []).map((side) => side.participantId)).filter(Boolean),
+        ).map((participantId) => ({ participantId }));
+      }
 
       const result = updateAssignmentParticipantResults({
         positionAssignments: structure.positionAssignments,
