@@ -19,6 +19,7 @@ import { CONSOLATION, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefiniti
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { DISPLAY, TALLY } from '@Constants/extensionConstants';
 import { PUBLIC_DISPLAY } from '@Constants/displayConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -113,9 +114,7 @@ export function getDrawData(params): {
           seedAssignments = mainStageSeedAssignments;
         }
 
-        if (structure?.stage === QUALIFYING) {
-          seedAssignments = qualificationStageSeedAssignments;
-        }
+        if (structure?.stage === QUALIFYING) seedAssignments = qualificationStageSeedAssignments;
 
         const { matchUps, roundMatchUps, roundProfile } = getAllStructureMatchUps({
           // only propagate seedAssignments where none are present
@@ -132,9 +131,7 @@ export function getDrawData(params): {
           event,
         });
 
-        const { positionAssignments } = getPositionAssignments({
-          structure,
-        });
+        const { positionAssignments } = getPositionAssignments({ structure });
 
         let participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
           const participantResult = findExtension({ element: assignment, name: TALLY })?.extension?.value;
@@ -154,12 +151,17 @@ export function getDrawData(params): {
             (refreshResults && !structure.structures)) // cannot refresh for round roubins
         ) {
           const { subOrderMap } = createSubOrderMap({ positionAssignments });
+
+          const hasTeamMatchUps = matchUps.some((matchUp) => matchUp.matchUpType === TEAM_MATCHUP);
+          const consideredMatchUps = hasTeamMatchUps
+            ? matchUps.filter((matchUp) => matchUp.matchUpType === TEAM_MATCHUP)
+            : matchUps;
           const result = tallyParticipantResults({
             matchUpFormat: structure.matchUpFormat,
+            matchUps: consideredMatchUps,
             policyDefinitions,
             pressureRating,
             subOrderMap,
-            matchUps,
           });
 
           participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {

@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 
 // constants
 import { EVENT_NOT_FOUND, INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { FEMALE, MALE, ANY } from '@Constants/genderConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { addDays } from '@Tools/dateTime';
 
@@ -20,9 +20,9 @@ it('supports modifying event gender, name and eventType', () => {
       {
         drawProfiles: [{ drawSize, uniqueParticipants: true }],
         eventType: SINGLES,
-        eventName: MIXED,
-        eventId: MIXED,
-        gender: MIXED,
+        eventName: ANY,
+        eventId: ANY,
+        gender: ANY,
       },
       {
         drawProfiles: [{ drawSize, uniqueParticipants: true }],
@@ -46,14 +46,14 @@ it('supports modifying event gender, name and eventType', () => {
 
   let result = tournamentEngine.modifyEvent();
   expect(result.error).toEqual(EVENT_NOT_FOUND);
-  result = tournamentEngine.modifyEvent({ eventId: MIXED });
+  result = tournamentEngine.modifyEvent({ eventId: ANY });
   expect(result.error).toEqual(INVALID_VALUES);
   result = tournamentEngine.modifyEvent({
-    eventId: MIXED,
+    eventId: ANY,
     eventUpdates: { startDate: addDays(startDate), endDate: addDays(endDate, -1) },
   });
   expect(result.success).toEqual(true);
-  const event = tournamentEngine.getEvent({ eventId: MIXED }).event;
+  const event = tournamentEngine.getEvent({ eventId: ANY }).event;
   expect(event.startDate).toEqual(addDays(startDate));
   expect(event.endDate).toEqual(addDays(endDate, -1));
 
@@ -63,17 +63,17 @@ it('supports modifying event gender, name and eventType', () => {
 
   const profiles = [
     {
-      genderModification: { MIXED: true, MALE: false, FEMALE: false },
+      genderModification: { ANY: true, MALE: false, FEMALE: false },
       genders: [FEMALE, MALE],
-      eventId: MIXED,
+      eventId: ANY,
     },
     {
-      genderModification: { MIXED: true, MALE: true, FEMALE: false },
+      genderModification: { ANY: true, MALE: true, FEMALE: false },
       genders: [MALE],
       eventId: MALE,
     },
     {
-      genderModification: { MIXED: true, MALE: false, FEMALE: true },
+      genderModification: { ANY: true, MALE: false, FEMALE: true },
       genders: [FEMALE],
       eventId: FEMALE,
     },

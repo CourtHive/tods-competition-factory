@@ -6,6 +6,7 @@ import { getParticipants } from '@Query/participants/getParticipants';
 import { categoryCanContain } from '@Query/event/categoryCanContain';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { validateCategory } from '@Validators/validateCategory';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { setEventDates } from './setEventDates';
 import { unique } from '@Tools/arrays';
 
@@ -54,7 +55,10 @@ export function modifyEvent(params: ModifyEventArgs): ResultType {
   const participantsProfile = getParticipantsProfile({ enteredParticipants });
   const { enteredParticipantGenders, enteredParticipantTypes } = participantsProfile;
 
-  const genderResult = checkGenderUpdates({ enteredParticipantGenders, eventUpdates, stack });
+  const flights = getFlightProfile({ event })?.flightProfile?.flights;
+  const noFlightsNoDraws = !event.drawDefinitions?.length && !flights?.length;
+
+  const genderResult = checkGenderUpdates({ noFlightsNoDraws, enteredParticipantGenders, eventUpdates, stack });
   if (genderResult.error) return genderResult;
 
   const eventTypeResult = checkEventType({ enteredParticipantTypes, eventUpdates, stack });
@@ -187,11 +191,14 @@ function getParticipantsProfile({ enteredParticipants }) {
   return { enteredParticipantTypes, enteredParticipantGenders };
 }
 
-function checkGenderUpdates({ enteredParticipantGenders, eventUpdates, stack }) {
+function checkGenderUpdates({ noFlightsNoDraws, enteredParticipantGenders, eventUpdates, stack }) {
   const validGender =
     !enteredParticipantGenders.length ||
-    [MIXED, ANY].includes(eventUpdates.gender ?? '') ||
-    (enteredParticipantGenders.length === 1 && enteredParticipantGenders[0] === eventUpdates.gender);
+    !eventUpdates.gender ||
+    eventUpdates.gender === ANY ||
+    (enteredParticipantGenders.length === 1 && enteredParticipantGenders[0] === eventUpdates.gender) ||
+    // MIXED is only a valid gender change if there are no draws or flights
+    (noFlightsNoDraws && eventUpdates.gender === MIXED);
 
   return eventUpdates.gender && !validGender
     ? decorateResult({
