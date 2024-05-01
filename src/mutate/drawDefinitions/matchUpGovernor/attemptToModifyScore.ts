@@ -10,12 +10,14 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp } = params;
+  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
+    params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
     // in the case that CANCELLED or ABANDONED causes TEAM participant to advance
-    ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualMatchUp);
+    ([CANCELLED, ABANDONED].includes(matchUpStatus) && dualMatchUp) ||
+    autoCalcDisabled;
 
   const participantsCount =
     matchUp?.sides?.map((side) => side.participantId).filter(Boolean).length ||

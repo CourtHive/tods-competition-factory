@@ -58,7 +58,7 @@ export function noDownstreamDependencies(params) {
 
     // disableAutoCalc means the score is being set manually
     if (dualMatchUp?._disableAutoCalc && disableAutoCalc !== false) {
-      return attemptToModifyScore(params);
+      return attemptToModifyScore({ ...params, removeWinningSide });
     }
 
     const { connectedStructureIds } = checkConnectedStructures({

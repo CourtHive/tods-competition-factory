@@ -69,7 +69,6 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
 
   const {
     matchUpStatusCodes,
-    removeWinningSide,
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
@@ -124,7 +123,9 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
-  if (removeWinningSide) matchUp.winningSide = undefined;
+
+  // removeWinningSide directive calculated upstream
+  if (params.removeWinningSide) matchUp.winningSide = undefined;
 
   if (!structure && drawDefinition) {
     ({ structure } = findDrawMatchUp({
