@@ -71,6 +71,7 @@ type SetMatchUpStateArgs = {
   matchUpStatusCodes?: string[];
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  autoCalcDisabled?: boolean;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
@@ -329,11 +330,13 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
       const existingDualMatchUpWinningSide = dualMatchUp.winningSide;
       dualWinningSideChange = projectedWinningSide !== existingDualMatchUpWinningSide;
+      const autoCalcDisabled = dualMatchUp._disableAutoCalc;
 
       Object.assign(params, {
         isCollectionMatchUp: true,
         dualWinningSideChange,
         projectedWinningSide,
+        autoCalcDisabled,
         matchUpTieId,
         dualMatchUp,
         tieFormat,
@@ -341,9 +344,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     }
   }
 
+  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
+
   // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
   const activeDownstream = isActiveDownstream(params);
-  const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
 
   if (!matchUpTieId) {
     if (
@@ -405,7 +409,8 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     winningSide,
   });
 
-  const result = (!activeDownstream && noDownstreamDependencies(params)) ||
+  // when autoCalcDisabled for TEAM matchUps then noDownstreamDependencies can change collectionMatchUp status
+  const result = ((!activeDownstream || params.autoCalcDisabled) && noDownstreamDependencies(params)) ||
     (matchUpWinner && winningSideWithDownstreamDependencies(params)) ||
     (directingMatchUpStatus && applyMatchUpValues(params)) || {
       error: NO_VALID_ACTIONS,
