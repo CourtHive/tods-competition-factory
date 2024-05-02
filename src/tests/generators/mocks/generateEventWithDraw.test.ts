@@ -2,15 +2,14 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// Constants
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { FEMALE, MALE } from '@Constants/genderConstants';
 
 it('can generate an event with draw independent of a tournamentRecord', () => {
   const drawSize = 32;
   const drawProfile = { drawSize };
-  const { drawDefinition, event, success } = mocksEngine.generateEventWithDraw({
-    drawProfile,
-  });
+  const { drawDefinition, event, success } = mocksEngine.generateEventWithDraw({ drawProfile });
   expect(success).toEqual(true);
   expect(event.entries.length).toEqual(drawSize);
   expect(drawDefinition.entries.length).toEqual(drawSize);
@@ -93,20 +92,10 @@ it('can use eventProfiles to generate gendered SINGLES event', () => {
 
 it('can use drawProfiles to generate gendered DOUBLES event', () => {
   const drawProfiles = [
-    {
-      participantsCount: 32,
-      eventType: DOUBLES,
-      gender: MALE,
-    },
-    {
-      participantsCount: 32,
-      eventType: DOUBLES,
-      gender: FEMALE,
-    },
+    { participantsCount: 32, eventType: DOUBLES, gender: MALE },
+    { participantsCount: 32, eventType: DOUBLES, gender: FEMALE },
   ];
 
-  const result = mocksEngine.generateTournamentRecord({
-    drawProfiles,
-  });
+  const result = mocksEngine.generateTournamentRecord({ drawProfiles });
   expect(result.error).toBeUndefined();
 });
