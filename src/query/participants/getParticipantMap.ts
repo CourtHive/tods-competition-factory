@@ -8,8 +8,8 @@ import { isObject } from '@Tools/objects';
 // constants and types
 import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
-import { Tournament } from '@Types/tournamentTypes';
 import { ParticipantMap } from '@Types/factoryTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
