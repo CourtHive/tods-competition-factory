@@ -5,6 +5,7 @@ import { expect, it } from 'vitest';
 // Constants
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { FEMALE, MALE } from '@Constants/genderConstants';
+import { PAIR } from '@Constants/participantConstants';
 
 it('can generate an event with draw independent of a tournamentRecord', () => {
   const drawSize = 32;
@@ -96,6 +97,16 @@ it('can use drawProfiles to generate gendered DOUBLES event', () => {
     { participantsCount: 32, eventType: DOUBLES, gender: FEMALE },
   ];
 
-  const result = mocksEngine.generateTournamentRecord({ drawProfiles });
+  let result = mocksEngine.generateTournamentRecord({ drawProfiles, setState: true });
   expect(result.error).toBeUndefined();
+
+  result = tournamentEngine.getParticipants({
+    participantFilters: { positionedParticipants: true, participantTypes: [PAIR] },
+    withIndividualParticipants: true,
+    returnParticipantMap: true,
+  });
+  expect(result.participants[0].individualParticipants.length).toEqual(2);
+  expect(result.participantMap[result.participants[0].participantId].participant.individualParticipants.length).toEqual(
+    2,
+  );
 });

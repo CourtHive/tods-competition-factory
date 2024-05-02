@@ -192,9 +192,17 @@ export function getParticipants(params: GetParticipantsArgs): {
     const template = isObject(withIndividualParticipants) ? withIndividualParticipants : undefined;
     for (const participant of filteredParticipants) {
       for (const individualParticipantId of participant.individualParticipantIds ?? []) {
-        if (!participant.individualParticipants) participant.individualParticipants = [];
+        const mappedParticipant = participantMap[participant.participantId].participant;
+        if (!mappedParticipant?.individualParticipants) mappedParticipant.individualParticipants = [];
+        if (!participant.individualParticipants) {
+          participant.individualParticipants = [];
+        }
+        // const source = makeDeepCopy(ppMap.get(individualParticipantId), false, true);
         const source = ppMap.get(individualParticipantId);
-        participant.individualParticipants.push(template ? attributeFilter({ template, source }) : source);
+        const individualParticipant = template ? attributeFilter({ template, source }) : source;
+        if (mappedParticipant?.individualParticipants)
+          mappedParticipant.individualParticipants.push(individualParticipant);
+        participant.individualParticipants.push(individualParticipant);
       }
     }
   }
