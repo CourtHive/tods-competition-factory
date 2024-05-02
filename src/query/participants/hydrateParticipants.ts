@@ -1,12 +1,13 @@
 import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 import { addNationalityCode } from '@Query/participants/addNationalityCode';
 import { getScaleValues } from '../participant/getScaleValues';
+import { getParticipantMap } from './getParticipantMap';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
-import { getParticipantMap } from './getParticipantMap';
-import { Tournament } from '@Types/tournamentTypes';
-import { HydratedParticipant } from '@Types/hydrated';
+// Types
 import { ContextProfile, ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
+import { HydratedParticipant } from '@Types/hydrated';
+import { Tournament } from '@Types/tournamentTypes';
 
 type HydrateParticipantsArgs = {
   participantsProfile?: ParticipantsProfile;
