@@ -197,7 +197,6 @@ export function getParticipants(params: GetParticipantsArgs): {
         if (!participant.individualParticipants) {
           participant.individualParticipants = [];
         }
-        // const source = makeDeepCopy(ppMap.get(individualParticipantId), false, true);
         const source = ppMap.get(individualParticipantId);
         const individualParticipant = template ? attributeFilter({ template, source }) : source;
         if (mappedParticipant?.individualParticipants)
@@ -210,8 +209,6 @@ export function getParticipants(params: GetParticipantsArgs): {
   const participants: HydratedParticipant[] = template
     ? filteredParticipants.map((source) => attributeFilter({ source, template }))
     : filteredParticipants;
-
-  // IDEA: optimizePayload derive array of matchUpIds required for filteredParticipants
 
   return {
     participantMap: params.returnParticipantMap !== false ? participantMap : undefined,
