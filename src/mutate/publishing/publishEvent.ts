@@ -9,9 +9,9 @@ import { getEventData } from '@Query/event/getEventData';
 // constants and types
 import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { EVENT, OBJECT, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
-import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
