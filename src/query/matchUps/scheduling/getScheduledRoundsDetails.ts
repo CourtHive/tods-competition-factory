@@ -57,7 +57,6 @@ export function getScheduledRoundsDetails(params: GetScheduledRoundsDetailsArgs)
   const matchUpFormatCohorts = {};
   const hashes: string[] = [];
   const orderedMatchUpIds: string[] = [];
-  // rounds.sort((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
   const rounds = params.rounds.toSorted((a, b) => (a.sortOrder ?? 0) - (b.sortOrder ?? 0));
 
   // ---------------------------------------------------------
