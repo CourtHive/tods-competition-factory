@@ -1,10 +1,11 @@
 import { visualizeScheduledMatchUps } from '../../testHarness/testUtilities/visualizeScheduledMatchUps';
-import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { getMatchUpIds } from '@Functions/global/extractors';
+import { hasSchedule } from '@Query/matchUp/hasSchedule';
 import { instanceCount, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { xa } from '@Tools/extractAttributes';
+import { addDays } from '@Tools/dateTime';
 import { expect, test } from 'vitest';
 
 // constants
@@ -66,17 +67,18 @@ test.each([tournamentEngine])('auto schedules venue if only one venue provided',
   ];
   const venueProfiles = [{ courtsCount: 3 }];
 
-  const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
+  const { eventIds } = mocksEngine.generateTournamentRecord({
     policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-    endDate: '2021-05-07',
+    endDate: addDays(d210505, 2),
     startDate: d210505,
     venueProfiles,
     drawProfiles,
+
+    setState: true,
   });
 
   expect(eventIds).toEqual(['e1', 'e2']);
 
-  tournamentEngine.setState([tournamentRecord]);
   const { upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps();
   const { startDate } = tournamentEngine.getCompetitionDateRange();
 
@@ -197,7 +199,7 @@ test.each([tournamentEngine])('auto schedules venue if only one venue provided',
 
   visualizeScheduledMatchUps({
     scheduledMatchUps: result.dateMatchUps,
-    showGlobalLog: true,
+    showGlobalLog: false,
   });
 
   result = tournamentEngine.competitionScheduleMatchUps({

@@ -158,7 +158,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   if (detailsMap && Object.keys(detailsMap).length) {
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
-      if (!detailsMap[drawId]) return false;
+      if (!detailsMap?.[drawId]?.publishingDetail?.published) return false;
       if (detailsMap[drawId].stageDetails) {
         const stageKeys = Object.keys(detailsMap[drawId].stageDetails);
         const unpublishedStages = stageKeys.filter((stage) => !detailsMap[drawId].stageDetails[stage].published);
