@@ -85,7 +85,6 @@ export function getVenueSchedulingDetails({
     });
 
     let dateScheduledMatchUpIds;
-    let dateScheduledMatchUps;
     let scheduleTimes: any = [];
 
     if (useGarman) {
@@ -117,7 +116,8 @@ export function getVenueSchedulingDetails({
       matchUps,
     });
 
-    ({ dateScheduledMatchUpIds, dateScheduledMatchUps } = processResult);
+    ({ dateScheduledMatchUpIds } = processResult);
+    const dateScheduledMatchUps = processResult;
     const { byeScheduledMatchUpDetails, clearDate } = processResult;
     if (byeScheduledMatchUpDetails?.length) allDateScheduledByeMatchUpDetails.push(...byeScheduledMatchUpDetails);
 
