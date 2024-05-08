@@ -92,7 +92,7 @@ export function getVenueSchedulingDetails({
       // determines court availability taking into account already scheduled matchUps on the scheduleDate
       // optimization to pass already retrieved competitionMatchUps to avoid refetch (requires refactor)
       // on first call pass in the averageMatchUpMiutes of first round to be scheduled
-      ({ scheduleTimes, dateScheduledMatchUpIds, dateScheduledMatchUps } = generateScheduleTimes({
+      ({ scheduleTimes, dateScheduledMatchUpIds } = generateScheduleTimes({
         averageMatchUpMinutes: groupedRounds[0]?.averageMinutes,
         scheduleDate: extractDate(scheduleDate),
         venueIds: [venue.venueId],
