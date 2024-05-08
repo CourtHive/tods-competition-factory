@@ -17,10 +17,10 @@ import {
 
 type GetMatchUpsToScheduleArgs = {
   matchUpPotentialParticipantIds?: { [key: string]: string[] };
-  matchUpScheduleTimes: { [key: string]: string };
+  matchUpScheduleTimes?: { [key: string]: string };
   matchUpNotBeforeTimes?: { [key: string]: any };
   scheduleCompletedMatchUps?: boolean;
-  dateScheduledMatchUpIds: string[];
+  dateScheduledMatchUpIds?: string[];
   orderedMatchUpIds?: string[];
   clearDate?: boolean;
   matchUps: any[];
@@ -36,15 +36,15 @@ export function getMatchUpsToSchedule(params: GetMatchUpsToScheduleArgs): {
 
   const {
     matchUpPotentialParticipantIds,
+    dateScheduledMatchUpIds = [],
     scheduleCompletedMatchUps,
-    dateScheduledMatchUpIds,
     matchUpNotBeforeTimes,
     matchUpScheduleTimes,
     orderedMatchUpIds,
     clearDate,
     matchUps,
   } = params;
-  const alreadyScheduledMatchUpIds = Object.keys(matchUpScheduleTimes);
+  const alreadyScheduledMatchUpIds = matchUpScheduleTimes ? Object.keys(matchUpScheduleTimes) : [];
 
   // this must be done to preserve the order of matchUpIds
   const matchUpsToSchedule = (orderedMatchUpIds ?? [])
