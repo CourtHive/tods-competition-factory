@@ -23,7 +23,7 @@ test.each([tournamentEngine])(
     const venueProfiles = [{ courtsCount: 3 }];
 
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-      endDate: '2021-05-07',
+      endDate: addDays(d210505, 2),
       startDate: d210505,
       venueProfiles,
       drawProfiles,
@@ -112,6 +112,17 @@ test.each([tournamentEngine])('auto schedules venue if only one venue provided',
     nextMatchUps: true,
     matchUpFilters,
   });
+  expect(result.dateMatchUps.length).toEqual(0);
+
+  tournamentEngine.publishEvent({ eventId: 'e1' });
+  tournamentEngine.publishEvent({ eventId: 'e2' });
+
+  result = tournamentEngine.competitionScheduleMatchUps({
+    usePublishState: true,
+    nextMatchUps: true,
+    matchUpFilters,
+  });
+
   expect(result.dateMatchUps.length).toEqual(23);
   expect(result.dateMatchUps[0].winnerTo).toBeDefined();
 

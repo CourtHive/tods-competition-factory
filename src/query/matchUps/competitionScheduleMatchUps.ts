@@ -88,9 +88,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
 
   let publishedDrawIds, detailsMap;
   if (usePublishState) {
-    ({ drawIds: publishedDrawIds, detailsMap } = getCompetitionPublishedDrawDetails({
-      tournamentRecords,
-    }));
+    ({ drawIds: publishedDrawIds, detailsMap } = getCompetitionPublishedDrawDetails({ tournamentRecords }));
   }
 
   if (publishedDrawIds?.length) {
@@ -155,7 +153,8 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   let relevantMatchUps = [...(upcomingMatchUps ?? []), ...(pendingMatchUps ?? [])];
 
   // add any stage or structure filtering
-  if (detailsMap && Object.keys(detailsMap).length) {
+  // publishedDrawIds provides support for legacy timeItems
+  if (detailsMap && (!publishedDrawIds?.length || Object.keys(detailsMap).length)) {
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
       if (!detailsMap?.[drawId]?.publishingDetail?.published) return false;

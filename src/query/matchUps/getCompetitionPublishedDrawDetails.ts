@@ -4,8 +4,8 @@ import { TournamentRecords } from '@Types/factoryTypes';
 import { isObject } from '@Tools/objects';
 
 export function getCompetitionPublishedDrawDetails({ tournamentRecords }: { tournamentRecords: TournamentRecords }) {
-  const drawIds: string[] = [];
   const detailsMap: { [key: string]: any } = {};
+  const drawIds: string[] = [];
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     for (const event of tournamentRecord.events ?? []) {
