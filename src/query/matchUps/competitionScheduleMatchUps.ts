@@ -212,7 +212,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
       minRowsCount: minCourtGridRows,
       courtsData,
     });
-    result.courtPrefix = courtPrefix; // pass through for access to internal defaults by consumer
+    result.courtPrefix = courtPrefix; /* pass through for access to internal defaults by consumer */
     result.rows = rows;
   }
 
