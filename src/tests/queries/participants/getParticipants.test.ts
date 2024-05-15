@@ -227,20 +227,18 @@ it('can filter by entries', () => {
   const eventProfiles = [
     {
       eventName: 'U18 Male Doubles',
-      gender: MALE,
       drawProfiles: [{ drawSize }],
+      gender: MALE,
     },
   ];
   const {
-    // drawIds: [drawId],
     eventIds: [eventId],
     tournamentRecord,
   } = mocksEngine.generateTournamentRecord({
-    eventProfiles,
     participantsProfile,
+    setState: true,
+    eventProfiles,
   });
-
-  tournamentEngine.setState(tournamentRecord);
 
   let { participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds: [eventId] },
@@ -248,52 +246,34 @@ it('can filter by entries', () => {
 
   expect(participants.length).toEqual(drawSize);
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { drawEntryStatuses: true },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { drawEntryStatuses: true } }));
   expect(participants.length).toEqual(drawSize);
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { eventEntryStatuses: true },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { eventEntryStatuses: true } }));
   expect(participants.length).toEqual(drawSize);
 
   const newEventId = tools.UUID();
-  const event = {
-    eventType: SINGLES,
-    eventId: newEventId,
-  };
+  const event = { eventType: SINGLES, eventId: newEventId };
 
   let result = tournamentEngine.addEvent({ event });
   expect(result.success).toEqual(true);
 
   const participantIds = tournamentRecord.participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({
-    eventId: newEventId,
-    participantIds,
-  });
+  tournamentEngine.addEventEntries({ eventId: newEventId, participantIds });
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { eventEntryStatuses: true },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { eventEntryStatuses: true } }));
 
   // because the draw is gendered, 16 additional unique participants are generated
   const totalExpectedParticipants = participantsCount + drawSize;
   expect(participants.length).toEqual(totalExpectedParticipants);
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { drawEntryStatuses: true },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { drawEntryStatuses: true } }));
   expect(participants.length).toEqual(drawSize);
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { positionedParticipants: true },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { positionedParticipants: true } }));
   expect(participants.length).toEqual(drawSize);
 
-  ({ participants } = tournamentEngine.getParticipants({
-    participantFilters: { positionedParticipants: false },
-  }));
+  ({ participants } = tournamentEngine.getParticipants({ participantFilters: { positionedParticipants: false } }));
 
   expect(participants.length).toEqual(totalExpectedParticipants - drawSize);
 });

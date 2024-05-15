@@ -61,7 +61,6 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
 
   const genResult = generateOrGetExisting({
     ...params, // order is important here
-    isMock: params.isMock ?? true,
     policyDefinitions,
     tournamentRecord,
     appliedPolicies,

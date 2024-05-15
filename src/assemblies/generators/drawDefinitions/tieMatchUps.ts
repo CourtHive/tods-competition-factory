@@ -1,6 +1,7 @@
 import { generateRange } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { MatchUp, TieFormat } from '@Types/tournamentTypes';
 

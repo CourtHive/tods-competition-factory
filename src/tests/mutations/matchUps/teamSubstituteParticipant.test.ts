@@ -2,13 +2,16 @@ import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpS
 import { generateTeamTournament } from '../participants/team/generateTestTeamTournament';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { validateLineUp } from '@Validators/validateTeamLineUp';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { intersection } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// constants
 import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_ACTIONS_DEFAULT';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP, TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
+import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { IN_PROGRESS } from '@Constants/matchUpStatusConstants';
 import { LINEUPS } from '@Constants/extensionConstants';
@@ -19,7 +22,6 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_PARTICIPANT_ID,
 } from '@Constants/errorConditionConstants';
-import { PAIR, TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import {
   END,
   PENALTY,
@@ -33,7 +35,6 @@ import {
   STATUS,
   SUBSTITUTION,
 } from '@Constants/matchUpActionConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP, TEAM_MATCHUP } from '@Constants/matchUpTypes';
 
 const scenario = {
   singlesCount: 3,
@@ -126,9 +127,7 @@ it('can substitute an individual participant in a TEAM tieMatchUp', () => {
   });
 
   const { matchUps: teamMatchUps } = tournamentEngine.allTournamentMatchUps({
-    matchUpFilters: {
-      matchUpTypes: [TEAM_PARTICIPANT],
-    },
+    matchUpFilters: { matchUpTypes: [TEAM_PARTICIPANT] },
   });
 
   assignIndividualParticipants({

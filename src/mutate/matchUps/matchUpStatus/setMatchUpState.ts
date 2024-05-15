@@ -410,9 +410,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   });
 
   // when autoCalcDisabled for TEAM matchUps then noDownstreamDependencies can change collectionMatchUp status
-  const result = ((!activeDownstream || params.autoCalcDisabled) && noDownstreamDependencies(params)) ||
+  // const result = ((!activeDownstream || params.autoCalcDisabled) && noDownstreamDependencies(params)) ||
+  const result = (!activeDownstream && noDownstreamDependencies(params)) ||
     (matchUpWinner && winningSideWithDownstreamDependencies(params)) ||
-    (directingMatchUpStatus && applyMatchUpValues(params)) || {
+    ((directingMatchUpStatus || params.autoCalcDisabled) && applyMatchUpValues(params)) || {
       error: NO_VALID_ACTIONS,
     };
 
@@ -440,7 +441,7 @@ function applyMatchUpValues(params) {
     !params.winningSide &&
     !checkScoreHasValue({ score: params.score });
   const newMatchUpStatus = params.isCollectionMatchUp
-    ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED) || COMPLETED
+    ? params.matchUpStatus || (removeWinningSide && TO_BE_PLAYED) || (params.winningSide && COMPLETED) || INCOMPLETE
     : params.matchUpStatus || COMPLETED;
   const removeScore =
     params.removeScore ||

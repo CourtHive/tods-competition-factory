@@ -10,8 +10,8 @@ import { getParticipantId } from '@Functions/global/extractors';
 import { isValidExtension } from '@Validators/isValidExtension';
 import { publishEvent } from '@Mutate/publishing/publishEvent';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
-import { addEvent } from '@Mutate/events/addEvent';
 import { generateFlights } from './generateFlights';
+import { addEvent } from '@Mutate/events/addEvent';
 import { UUID } from '@Tools/UUID';
 
 // constants
