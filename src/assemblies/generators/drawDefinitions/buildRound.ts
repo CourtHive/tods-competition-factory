@@ -2,19 +2,6 @@ import { generateMatchUpId } from './generateMatchUpId';
 
 import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
-/**
- *
- * @param {boolean=} includeMatchUpType
- * @param {string=} matchUpType
- * @param {number} roundNumber
- * @param {object[]} matchUps
- * @param {string=} idPrefix
- * @param {boolean=} isMock
- * @param {string[]=} uuids
- * @param {object[]=} nodes
- * @returns
- */
-
 type BuildRoundArgs = {
   includeMatchUpType?: boolean;
   matchUpType?: string;

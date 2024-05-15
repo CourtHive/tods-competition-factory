@@ -1,20 +1,15 @@
+import { generateRange, randomMember, randomPop, shuffleArray } from '@Tools/arrays';
 import { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { generatePersonData } from './generatePersonData';
 import { dateFromDay } from '@Tools/dateTime';
 import { countries } from '@Fixtures/countryData';
 import { ensureInt } from '@Tools/ensureInt';
-import { generateRange, randomMember, randomPop, shuffleArray } from '@Tools/arrays';
 
+// constants
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { MALE, FEMALE } from '@Constants/genderConstants';
 
-/**
- * @param {integer} count - number of persons to generate
- * @param {string} sex - optional - MALE or FEMALE
- * @param {object[]} personData - optional array of persons to seed generator [{ firstName, lastName, sex, nationalityCode }]
- * @param {object} personExtensions - optional array of extentsions to apply to all persons
- */
 export function generatePersons(params?) {
   let count = params?.count || 1;
   const { personExtensions, consideredDate, isMock = true, gendersCount, personData, category, sex } = params || {};
