@@ -1,5 +1,5 @@
-import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 // constants
@@ -12,8 +12,9 @@ import { TALLY } from '@Constants/extensionConstants';
 const policyDefinitions = { [POLICY_TYPE_SCORING]: { requireParticipantsForScoring: false } };
 
 it('supports disabling and then re-enabling auto-Calc', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  mocksEngine.generateTournamentRecord({
     policyDefinitions,
+    setState: true,
     eventProfiles: [
       {
         // completionGoal of 5 will compelte 1 DOUBLES in each first round TEAM matchUp
@@ -23,9 +24,6 @@ it('supports disabling and then re-enabling auto-Calc', () => {
       },
     ],
   });
-
-  let result = tournamentEngine.setState(tournamentRecord);
-  expect(result.success).toEqual(true);
 
   const { completedMatchUps, pendingMatchUps } = tournamentEngine.tournamentMatchUps();
 
@@ -42,7 +40,7 @@ it('supports disabling and then re-enabling auto-Calc', () => {
   expect(originalDrawPositions).toEqual([originalWinningSide]);
 
   // now manually change the team score to not match the calculated score
-  result = tournamentEngine.setMatchUpStatus({
+  let result = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 3 - originalWinningSide },
     disableAutoCalc: true,
     matchUpId,
