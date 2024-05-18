@@ -71,11 +71,7 @@ it('can add and read timeItems from events', () => {
   expect(previousItems.length).toEqual(2);
   expect(info).toEqual(undefined);
 
-  ({
-    timeItem: retrievedTimeItem,
-    previousItems,
-    info,
-  } = tournamentEngine.getTimeItem({
+  ({ timeItem: retrievedTimeItem, info } = tournamentEngine.getTimeItem({
     itemType: MODIFICATION_OTHER,
   }));
   expect(retrievedTimeItem).toEqual(undefined);
@@ -104,8 +100,8 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   result = tournamentEngine.addTimeItem({
-    timeItem,
     duplicateValues: false,
+    timeItem,
   });
   expect(result.success).toEqual(true);
 
@@ -145,8 +141,8 @@ it('can prevent duplicates when equialent to existing itemValue', () => {
     itemValue,
   };
   result = tournamentEngine.addTimeItem({
-    timeItem,
     duplicateValues: false,
+    timeItem,
   });
   expect(result.success).toEqual(true);
 
