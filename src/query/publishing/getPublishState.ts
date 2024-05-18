@@ -124,18 +124,30 @@ function getPubStatus({ event }): any {
     }
   }
 
-  const publishedDrawIds =
-    (drawDetails &&
-      Object.keys(drawDetails).length &&
-      Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId }))) ||
-    eventPubStatus.drawIds;
+  const drawDetailPublishedIds =
+    drawDetails &&
+    Object.keys(drawDetails).length &&
+    Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId }));
+
+  const publishedDrawIds = drawDetailPublishedIds?.length ? drawDetailPublishedIds : eventPubStatus.drawIds ?? [];
+
+  // support legacy data where drawIds are not present in drawDetails
+  if (publishedDrawIds?.length && !drawDetailPublishedIds?.length) {
+    for (const drawId of publishedDrawIds) {
+      drawDetails[drawId] = {
+        publishingDetail: { published: true },
+      };
+    }
+  }
+
+  const published = publishedDrawIds?.length > 0;
 
   return {
     status: {
-      published: publishedDrawIds && publishedDrawIds.length > 0,
       publishedDrawIds,
       publishedSeeding,
       drawDetails,
+      published,
     },
   };
 }
