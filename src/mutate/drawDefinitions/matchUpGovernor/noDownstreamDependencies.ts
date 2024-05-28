@@ -104,8 +104,12 @@ export function noDownstreamDependencies(params) {
 }
 
 function scoreModification(params) {
-  const stack = 'scoreModification';
-  const remove = params.isCollectionMatchUp && params.dualMatchUp?.winningSide && !params.projectedWinningSide;
+  const stack = 'ndd:scoreModification';
+  const remove =
+    params.isCollectionMatchUp &&
+    params.dualMatchUp?.winningSide &&
+    !params.projectedWinningSide &&
+    !params.autoCalcDisabled; // if autoCalcDisabled then score has previously been set manually
 
   if (remove) {
     const result = removeDirectedParticipants(params);
