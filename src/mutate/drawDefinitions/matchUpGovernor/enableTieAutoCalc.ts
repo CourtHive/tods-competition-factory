@@ -1,8 +1,9 @@
-import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { setMatchUpState } from '../../matchUps/matchUpStatus/setMatchUpState';
+import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
+// Constants
 import { INVALID_MATCHUP, MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 
 export function enableTieAutoCalc({ tournamentRecord, drawDefinition, matchUpId, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
