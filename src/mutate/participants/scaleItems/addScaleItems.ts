@@ -1,14 +1,17 @@
 import { addDrawDefinitionTimeItem } from '@Mutate/drawDefinitions/addDrawDefinitionTimeItem';
 import { addEventTimeItem, addTournamentTimeItem } from '@Mutate/timeItems/addTimeItem';
 import { participantScaleItem } from '@Query/participant/participantScaleItem';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { addNotice, getTopics } from '@Global/state/globalState';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { findEvent } from '@Acquire/findEvent';
 
 // constants and types
 import { ADD_SCALE_ITEMS, AUDIT, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
+import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
 import { Participant, Tournament } from '@Types/tournamentTypes';
 import { ScaleItem, ResultType } from '@Types/factoryTypes';
+import { TEAM_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SCALE } from '@Constants/scaleConstants';
 import {
@@ -38,6 +41,10 @@ export function setParticipantScaleItem(params: SetParticipantScaleItemArgs) {
     participant = tournamentRecord.participants.find((participant) => participant.participantId === participantId);
 
     if (participant) {
+      if (participant.participantType === TEAM_PARTICIPANT && scaleItem?.eventType !== TEAM_EVENT) {
+        return { error: INVALID_SCALE_ITEM };
+      }
+
       const result = addParticipantScaleItem({
         removePriorValues,
         participant,
@@ -110,16 +117,23 @@ export function setParticipantScaleItems(params: SetParticipantScaleItemsArgs) {
     }
   }
 
-  tournamentRecord.participants.forEach((participant) => {
+  for (const participant of tournamentRecord.participants) {
     const { participantId } = participant || {};
     if (Array.isArray(participantScaleItemsMap[participantId])) {
-      participantScaleItemsMap[participantId].forEach((scaleItem) => {
+      for (const scaleItem of participantScaleItemsMap[participantId]) {
+        if (participant.participantType === TEAM_PARTICIPANT && scaleItem?.eventType !== TEAM_EVENT) {
+          return decorateResult({
+            context: { participantId, scaleItem, participantType: participant.participantType },
+            info: 'Invalid participantType for eventType',
+            result: { error: INVALID_SCALE_ITEM },
+          });
+        }
         addParticipantScaleItem({ participant, scaleItem, removePriorValues });
         modifiedParticipants.push(participant);
         modificationsApplied++;
-      });
+      }
     }
-  });
+  }
 
   const info = !modificationsApplied ? NO_MODIFICATIONS_APPLIED : undefined;
   const { topics } = getTopics();
