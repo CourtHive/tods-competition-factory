@@ -1,12 +1,14 @@
 import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAssignments';
-import { getFlightProfile } from '@Query/event/getFlightProfile';
-import { modifySeedAssignmentsNotice } from '../../notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { decorateResult } from '@Functions/global/decorateResult';
+import { modifySeedAssignmentsNotice } from '@Mutate/notifications/drawNotifications';
 import { participantInEntries } from '@Query/drawDefinition/entryGetter';
 import { isValidSeedPosition } from '@Query/drawDefinition/seedGetter';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { findStructure } from '@Acquire/findStructure';
 
+// Constants and Types
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
 import {
@@ -14,7 +16,6 @@ import {
   INVALID_PARTICIPANT_ID,
   INVALID_SEED_NUMBER,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 type AssignSeedArgs = {
   provisionalPositioning?: boolean;

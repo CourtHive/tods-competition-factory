@@ -170,14 +170,9 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   let sourceStructuresComplete;
   if (positionSourceStructureIds?.length) {
-    // EVERY: this can probably be changed to .every
-    sourceStructuresComplete = positionSourceStructureIds.reduce((ready, sourceStructureId) => {
-      const completed = isCompletedStructure({
-        structureId: sourceStructureId,
-        drawDefinition,
-      });
-      return completed && ready;
-    }, true);
+    sourceStructuresComplete = positionSourceStructureIds.every((sourceStructureId) =>
+      isCompletedStructure({ structureId: sourceStructureId, drawDefinition }),
+    );
   }
 
   const isWinRatioFedStructure = positionSourceStructureIds.length;
@@ -196,6 +191,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   const { assignedPositions, positionAssignments } = structureAssignedDrawPositions({ structure });
   const positionAssignment = assignedPositions?.find((assignment) => assignment.drawPosition === drawPosition);
+  const hasPositionAssigned = !!positionAssignment;
 
   const drawPositions = positionAssignments?.map((assignment) => assignment.drawPosition);
 
@@ -233,10 +229,10 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   if (actionsDisabled)
     return {
-      hasPositionAssigned: !!positionAssignment,
       info: 'Actions Disabled for structure',
       isActiveDrawPosition,
       isDrawPosition: true,
+      hasPositionAssigned,
       validActions: [],
       isByePosition,
     };
@@ -266,7 +262,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
     validAssignmentActions?.forEach((action) => validActions.push(action));
   }
 
-  if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT })) {
+  if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT }) && !isActiveDrawPosition) {
     const { validAssignmentActions } = getValidQualifiersAction({
       drawPositionInitialRounds,
       tournamentParticipants,
@@ -456,6 +452,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   if (
     isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
     !disablePlacementActions &&
+    !isActiveDrawPosition &&
     positionAssignments
   ) {
     const { validLuckyLosersAction } = getValidLuckyLosersAction({
@@ -487,9 +484,9 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   }
 
   return {
-    hasPositionAssigned: !!positionAssignment,
     isActiveDrawPosition,
     isDrawPosition: true,
+    hasPositionAssigned,
     isByePosition,
     validActions,
     ...SUCCESS,
