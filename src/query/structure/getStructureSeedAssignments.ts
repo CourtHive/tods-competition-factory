@@ -1,10 +1,11 @@
-import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { getStageEntries } from '../drawDefinition/stageGetter';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { findStructure } from '@Acquire/findStructure';
 
-import { PLAY_OFF } from '@Constants/drawDefinitionConstants';
+// Constants and Types
 import { ErrorType, MISSING_SEED_ASSIGNMENTS, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DrawDefinition, SeedAssignment, StageTypeUnion, Structure } from '@Types/tournamentTypes';
+import { PLAY_OFF } from '@Constants/drawDefinitionConstants';
 
 type GetStructureSeedAssignmentsArgs = {
   provisionalPositioning?: boolean;

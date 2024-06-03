@@ -71,7 +71,9 @@ export function getDrawData(params): {
 
   drawInfo.display = findExtension({ element: drawDefinition, name: DISPLAY }).extension?.value;
 
-  let mainStageSeedAssignments, qualificationStageSeedAssignments;
+  const qualificationStageSeedAssignments = {};
+  let mainStageSeedAssignments;
+
   const { allStructuresLinked, sourceStructureIds, hasDrawFeedProfile, structureGroups } = getStructureGroups({
     drawDefinition,
   });
@@ -97,8 +99,8 @@ export function getDrawData(params): {
         if (structure?.stage === MAIN && structure.stageSequence === 1) {
           mainStageSeedAssignments = seedAssignments;
         }
-        if (structure?.stage === QUALIFYING && structure.stageSequence === 1) {
-          qualificationStageSeedAssignments = seedAssignments;
+        if (structure?.stage === QUALIFYING) {
+          qualificationStageSeedAssignments[structure.stageSequence ?? 0] = seedAssignments;
         }
 
         return structure;
@@ -114,7 +116,9 @@ export function getDrawData(params): {
           seedAssignments = mainStageSeedAssignments;
         }
 
-        if (structure?.stage === QUALIFYING) seedAssignments = qualificationStageSeedAssignments;
+        if (structure?.stage === QUALIFYING) {
+          seedAssignments = qualificationStageSeedAssignments[structure.stageSequence ?? 0];
+        }
 
         const { matchUps, roundMatchUps, roundProfile } = getAllStructureMatchUps({
           // only propagate seedAssignments where none are present
