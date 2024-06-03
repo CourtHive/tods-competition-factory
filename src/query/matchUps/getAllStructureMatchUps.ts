@@ -47,6 +47,7 @@ type GetAllStructureMatchUps = {
   matchUpFilters?: MatchUpFilters;
   participantMap?: ParticipantMap;
   scheduleTiming?: ScheduleTiming;
+  hydrateParticipants?: boolean;
   drawDefinition?: DrawDefinition;
   contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
@@ -131,12 +132,9 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
   };
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
-  const stageSpecificPolicies =
-    structure.stage && structureScoringPolicies?.stage && structureScoringPolicies?.stage[structure.stage];
+  const stageSpecificPolicies = structure.stage && structureScoringPolicies?.stage?.[structure.stage];
   const sequenceSpecificPolicies =
-    structure.stageSequence &&
-    stageSpecificPolicies?.stageSequence &&
-    stageSpecificPolicies.stageSequence[structure.stageSequence];
+    structure.stageSequence && stageSpecificPolicies?.stageSequence?.[structure.stageSequence];
   const requireAllPositionsAssigned =
     appliedPolicies?.scoring?.requireAllPositionsAssigned ||
     stageSpecificPolicies?.requireAllPositionsAssigned ||
@@ -216,6 +214,7 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
       return addMatchUpContext({
         tournamentParticipants: params.tournamentParticipants ?? tournamentRecord?.participants,
         scheduleVisibilityFilters: params.scheduleVisibilityFilters,
+        hydrateParticipants: params.hydrateParticipants,
         afterRecoveryTimes: params.afterRecoveryTimes,
         usePublishState: params.usePublishState,
         participantMap: params.participantMap,

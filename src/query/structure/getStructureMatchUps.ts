@@ -50,6 +50,7 @@ type GetStructureMatchUpsArgs = {
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
   scheduleTiming?: ScheduleTiming;
+  hydrateParticipants?: boolean;
   requireParticipants?: boolean;
   tournamentRecord?: Tournament;
   contextProfile?: ContextProfile;
@@ -70,6 +71,7 @@ export function getStructureMatchUps({
   scheduleVisibilityFilters,
   tournamentAppliedPolicies,
   tournamentParticipants,
+  hydrateParticipants,
   afterRecoveryTimes,
   policyDefinitions,
   tournamentRecord,
@@ -98,6 +100,7 @@ export function getStructureMatchUps({
     tournamentAppliedPolicies,
     scheduleVisibilityFilters,
     tournamentParticipants,
+    hydrateParticipants,
     afterRecoveryTimes,
     policyDefinitions,
     tournamentRecord,

@@ -120,6 +120,7 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
       matchUpFilters: !nextMatchUps ? matchUpFilters : undefined,
       contextFilters: !nextMatchUps ? contextFilters : undefined,
       inContext: inContext || nextMatchUps || contextFilters,
+      hydrateParticipants: params.hydrateParticipants,
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,
       tournamentParticipants,

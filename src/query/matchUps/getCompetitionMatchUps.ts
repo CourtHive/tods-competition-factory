@@ -20,6 +20,7 @@ type CompetitionMatchUpsArgs = {
   policyDefinitions?: PolicyDefinitions;
   matchUpFilters?: MatchUpFilters;
   contextFilters?: MatchUpFilters;
+  hydrateParticipants?: boolean;
   afterRecoveryTimes?: boolean;
   usePublishState?: boolean;
   nextMatchUps?: boolean;
@@ -28,6 +29,7 @@ type CompetitionMatchUpsArgs = {
 
 export function getCompetitionMatchUps({
   scheduleVisibilityFilters,
+  hydrateParticipants,
   participantsProfile,
   tournamentRecords,
   policyDefinitions,
@@ -52,6 +54,7 @@ export function getCompetitionMatchUps({
     const tournamentRecord = tournamentRecords[tournamentId];
     return tournamentMatchUps({
       scheduleVisibilityFilters,
+      hydrateParticipants,
       participantsProfile,
       policyDefinitions,
       tournamentRecord,

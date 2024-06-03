@@ -1,8 +1,9 @@
-import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { hydrateParticipants } from '../participants/hydrateParticipants';
+import { getAppliedPolicies } from '../extensions/getAppliedPolicies';
 import { getContextContent } from '../hierarchical/getContextContent';
 import { getFlightProfile } from '../event/getFlightProfile';
 
+// Constants and types
 import { GetMatchUpsArgs, GroupsMatchUpsResult } from '@Types/factoryTypes';
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { eventMatchUps } from './getEventMatchUps';
@@ -58,6 +59,7 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
       };
 
       return eventMatchUps({
+        hydrateParticipants: params.hydrateParticipants,
         context: additionalContext,
         tournamentAppliedPolicies,
         scheduleVisibilityFilters,

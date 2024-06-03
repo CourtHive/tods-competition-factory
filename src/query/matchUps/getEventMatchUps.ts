@@ -49,7 +49,7 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
     }),
   };
 
-  let groupInfo: undefined | any;
+  let groupInfo: any;
   if (!tournamentParticipants && tournamentRecord) {
     ({
       participants: tournamentParticipants,
@@ -77,6 +77,7 @@ export function eventMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
   const drawDefinitions = event.drawDefinitions ?? [];
   const eventResult = drawDefinitions.reduce((results, drawDefinition) => {
     const drawMatchUpsResult = getDrawMatchUps({
+      hydrateParticipants: params.hydrateParticipants,
       context: additionalContext,
       tournamentAppliedPolicies,
       scheduleVisibilityFilters,

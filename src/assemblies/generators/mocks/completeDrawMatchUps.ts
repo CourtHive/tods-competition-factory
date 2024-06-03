@@ -178,7 +178,6 @@ export function completeDrawMatchUps(params): {
       event,
     }).matchUps;
     if (!matchUps.length) {
-      console.log('##', drawDefinition);
       // console.log(structure.matchUps, drawDefinition.matchUpType);
     }
 
