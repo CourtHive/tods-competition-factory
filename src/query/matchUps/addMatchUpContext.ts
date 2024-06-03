@@ -41,7 +41,6 @@ import {
   ScheduleVisibilityFilters,
 } from '@Types/factoryTypes';
 
-// isCollectionBye is an attempt to embed BYE status in matchUp.tieMatchUps
 type AddMatchUpContextArgs = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   additionalContext?: { [key: string]: any };
@@ -53,8 +52,9 @@ type AddMatchUpContextArgs = {
   participantMap?: ParticipantMap;
   scheduleTiming?: ScheduleTiming;
   contextContent?: ContextContent;
-  contextProfile?: ContextProfile;
   sourceDrawPositionRanges?: any;
+  contextProfile?: ContextProfile;
+  hydrateParticipants?: boolean;
   tournamentRecord?: Tournament;
   drawDefinition?: DrawDefinition;
   initialRoundOfPlay?: number;
@@ -81,6 +81,7 @@ export function addMatchUpContext({
   tournamentParticipants,
   positionAssignments,
   drawPositionsRanges,
+  hydrateParticipants,
   afterRecoveryTimes,
   initialRoundOfPlay,
   additionalContext,
@@ -301,7 +302,7 @@ export function addMatchUpContext({
     Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));
   }
 
-  if (tournamentParticipants && matchUpWithContext.sides) {
+  if (tournamentParticipants && matchUpWithContext.sides && hydrateParticipants !== false) {
     const participantAttributes = appliedPolicies?.[POLICY_TYPE_PARTICIPANT];
     const getMappedParticipant = (participantId) => {
       const participant = participantMap?.[participantId]?.participant;

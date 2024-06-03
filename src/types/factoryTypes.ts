@@ -306,6 +306,7 @@ export type GetMatchUpsArgs = {
   matchUpFilters?: MatchUpFilters;
   contextContent?: ContextContent;
   participantMap?: ParticipantMap;
+  hydrateParticipants?: boolean;
   tournamentRecord?: Tournament;
   contextProfile?: ContextProfile;
   drawDefinition?: DrawDefinition;

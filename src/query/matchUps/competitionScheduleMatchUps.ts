@@ -22,6 +22,7 @@ type CompetitionScheduleMatchUpsArgs = {
   alwaysReturnCompleted?: boolean;
   contextFilters?: MatchUpFilters;
   matchUpFilters?: MatchUpFilters;
+  hydrateParticipants?: boolean;
   withCourtGridRows?: boolean;
   activeTournamentId?: string;
   sortDateMatchUps?: boolean;

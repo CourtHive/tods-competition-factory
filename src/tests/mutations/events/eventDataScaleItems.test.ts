@@ -95,9 +95,10 @@ test('ratings values should be present on tournamentParticipants in getEventData
   expect(participants.every(({ person }) => !person.addresses)).toEqual(true);
 
   tournamentEngine.setState(tournamentRecord);
-  const result = tournamentEngine.competitionScheduleMatchUps({
-    participantsProfile,
-  });
+  let result = tournamentEngine.competitionScheduleMatchUps({ participantsProfile, hydrateParticipants: false });
+  expect(result.completedMatchUps[0].sides[0].participantId).toBeDefined();
+  expect(result.completedMatchUps[0].sides[0].participant).toBeUndefined();
+  result = tournamentEngine.competitionScheduleMatchUps({ participantsProfile, hydrateParticipants: true });
   expect(result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0].scaleName).toEqual(WTN);
 
   const eventScaleValues = tournamentEngine.getEvents({
@@ -105,7 +106,7 @@ test('ratings values should be present on tournamentParticipants in getEventData
   }).eventScaleValues;
   const wtnStats = eventScaleValues[eventId].ratingsStats.WTN;
   const statKeys = Object.keys(wtnStats);
-  expect(statKeys.sort()).toEqual(['avg', 'max', 'median', 'min']);
+  expect(statKeys.toSorted()).toEqual(['avg', 'max', 'median', 'min']);
   const statValues = Object.values(wtnStats);
   expect(statValues.length).toEqual(4);
   expect(statValues.every((value) => typeof value === 'number')).toEqual(true);
