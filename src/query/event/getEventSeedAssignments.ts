@@ -1,6 +1,7 @@
 import { participantScaleItem } from '../participant/participantScaleItem';
 import { intersection } from '@Tools/arrays';
 
+// Constants
 import { SCALE, SEEDING } from '@Constants/scaleConstants';
 
 export function getEventSeedAssignments({ publishedSeeding, usePublishState, withSeeding, participant, event }) {
