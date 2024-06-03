@@ -1,4 +1,6 @@
+// Types
 import { PositionAssignment, SeedAssignment } from '@Types/tournamentTypes';
+import { HydratedSide } from '@Types/hydrated';
 
 export function getSide({
   drawPositionCollectionAssignment,
@@ -57,7 +59,7 @@ export function getSide({
 }
 
 function getSideValue({ displaySideNumber, seedAssignments, participantId, assignment, sideNumber }) {
-  const side = {
+  const side: HydratedSide = {
     drawPosition: assignment.drawPosition,
     displaySideNumber,
     sideNumber,
@@ -65,6 +67,10 @@ function getSideValue({ displaySideNumber, seedAssignments, participantId, assig
   if (participantId) {
     const seeding = getSeeding({ seedAssignments, participantId });
     Object.assign(side, seeding, { participantId });
+    if (seeding?.seedNumber && seeding?.seedValue === '') {
+      // if an empty string is returned, use a tilde to indicate a seed assignment has been removed
+      side.seedValue = '~';
+    }
   } else if (assignment.bye) {
     Object.assign(side, { bye: true });
   }

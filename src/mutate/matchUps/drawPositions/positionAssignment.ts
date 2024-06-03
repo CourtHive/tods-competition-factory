@@ -187,7 +187,10 @@ export function assignDrawPosition({
   positionAssignment.participantId = participantId;
   if (isQualifierPosition) positionAssignment.qualifier = true;
 
-  if ((structure?.stageSequence || 0) > 1 || (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))) {
+  // seed positions should not be propagated in qualifying stages
+  const mainSeeding = structure.stage === MAIN && (!structure.stageSequence || structure.stageSequence > 1);
+
+  if (mainSeeding || (structure.stage && [CONSOLATION, PLAY_OFF].includes(structure.stage))) {
     const targetStage = structure.stage === QUALIFYING ? QUALIFYING : MAIN;
     const targetStructure = drawDefinition.structures?.find(
       (structure) => structure?.stage === targetStage && structure?.stageSequence === 1,

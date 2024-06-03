@@ -142,33 +142,22 @@ export function getValidQualifiersAction({
     }
   }
 
-  // this should be "if qualifiers are available"
   if (qualifyingParticipantIds.length) {
     validAssignmentActions.push(
       definedAttributes({
+        qualifyingParticipants: returnParticipants ? qualifyingParticipants : undefined,
+        method: QUALIFYING_PARTICIPANT_METHOD,
+        type: QUALIFYING_PARTICIPANT,
+        qualifyingParticipantIds,
         payload: {
           qualifyingParticipantId: undefined, // to be provided by client
           drawPosition,
           structureId,
           drawId,
         },
-        method: QUALIFYING_PARTICIPANT_METHOD,
-        type: QUALIFYING_PARTICIPANT,
-        qualifyingParticipantIds,
-        qualifyingParticipants: returnParticipants ? qualifyingParticipants : undefined,
       }),
     );
   }
 
   return { validAssignmentActions, sourceStructureIds };
 }
-
-/**
-  if (sourceStructureIds.length > 1)
-    return decorateResult({
-      stack: 'getValidQualifiersSaction',
-      info: 'too many source structures',
-      result: { error: INVALID_VALUES },
-      context: { sourceStructureIds },
-    });
-  */
