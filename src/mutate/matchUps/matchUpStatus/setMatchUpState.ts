@@ -159,6 +159,28 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   // Check validity of matchUpStatus considering assigned drawPositions -------
   const assignedDrawPositions = inContextMatchUp?.drawPositions?.filter(Boolean);
 
+  const matchUpTieId = inContextMatchUp?.matchUpTieId;
+
+  // Get winner/loser position targets ----------------------------------------
+  const targetData = positionTargets({
+    matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
+    inContextDrawMatchUps,
+    drawDefinition,
+  });
+
+  Object.assign(params, {
+    inContextDrawMatchUps,
+    inContextMatchUp,
+    matchUpTieId,
+    matchUpsMap,
+    targetData,
+    structure,
+    matchUp,
+  });
+
+  // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
+  const activeDownstream = isActiveDownstream(params);
+
   let dualWinningSideChange;
   if (isTeam) {
     if (disableAutoCalc) {
@@ -168,7 +190,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       });
     } else if (enableAutoCalc) {
       const existingDualMatchUpWinningSide = matchUp.winningSide;
-      removeExtension({ name: DISABLE_AUTO_CALC, element: matchUp });
+
       const {
         winningSide: projectedWinningSide,
         scoreStringSide1,
@@ -190,6 +212,17 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
       dualWinningSideChange = projectedWinningSide !== existingDualMatchUpWinningSide;
 
+      // if activeDownStream and dualWinningSideChange then disallow removal of autoCalc
+      if (activeDownstream && dualWinningSideChange) {
+        return decorateResult({
+          stack: 'winningSideWithDownstreamDependencies',
+          result: { error: CANNOT_CHANGE_WINNING_SIDE },
+          context: { winningSide, matchUp },
+        });
+      }
+
+      removeExtension({ name: DISABLE_AUTO_CALC, element: matchUp });
+
       // setting these parameters will enable noDownStreamDependencies to attemptToSetWinningSide
       Object.assign(params, {
         winningSide: projectedWinningSide,
@@ -198,6 +231,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
         score,
       });
     }
+
     ensureSideLineUps({
       tournamentId: tournamentRecord?.tournamentId,
       inContextDualMatchUp: inContextMatchUp,
@@ -223,15 +257,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
       error: INVALID_VALUES,
     };
   }
-
-  const matchUpTieId = inContextMatchUp?.matchUpTieId;
-
-  // Get winner/loser position targets ----------------------------------------
-  const targetData = positionTargets({
-    matchUpId: matchUpTieId || matchUpId, // get targets for TEAM matchUp if tieMatchUp
-    inContextDrawMatchUps,
-    drawDefinition,
-  });
 
   if (score && !isTeam && !disableScoreValidation) {
     const matchUpFormat =
@@ -286,17 +311,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     matchUp.winningSide;
 
   Object.assign(params, {
-    inContextDrawMatchUps,
     qualifierAdvancing,
     qualifierChanging,
     removingQualifier,
-    inContextMatchUp,
     appliedPolicies,
-    matchUpTieId,
-    matchUpsMap,
-    targetData,
-    structure,
-    matchUp,
   });
 
   if (matchUpTieId) {
@@ -345,9 +363,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   }
 
   const directingMatchUpStatus = isDirectingMatchUpStatus({ matchUpStatus });
-
-  // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
-  const activeDownstream = isActiveDownstream(params);
 
   if (!matchUpTieId) {
     if (
