@@ -34,16 +34,8 @@ export function isActiveDownstream(params) {
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
-  /**
   // if a winnerMatchUp contains a WALKOVER and its source matchUps have no winningSides it cannot be considered active
   // unless one of its downstream matchUps is active
-  /*
-  const winnerSourceMatchUps =
-    winnerMatchUp &&
-    params.matchUpsMap.drawMatchUps.filter(
-      ({ winnerMatchUpId }) => winnerMatchUpId === winnerMatchUp.matchUpId
-    );
-  */
 
   if (
     (loserMatchUp?.winningSide && !loserMatchUpExit) ||
