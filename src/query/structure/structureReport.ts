@@ -204,7 +204,7 @@ export function getStructureReports(params: GetStructureReportsArgs) {
                   category: subType,
                   categoryName,
                   ageCategoryCode,
-                  flightNumber: flightMap[drawId],
+                  flightNumber: flightMap?.[drawId],
                   drawType,
                   stage: s.stage,
                   seedingBasis: seedingBasis ? JSON.stringify(seedingBasis) : undefined,
