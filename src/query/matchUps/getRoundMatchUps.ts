@@ -1,11 +1,12 @@
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
+import { chunkArray, generateRange, intersection } from '@Tools/arrays';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { validMatchUps } from '@Validators/validMatchUp';
 import { numericSort } from '@Tools/sorting';
 import { ensureInt } from '@Tools/ensureInt';
 import { isPowerOf2 } from '@Tools/math';
-import { chunkArray, generateRange, intersection } from '@Tools/arrays';
 
+// Constants and Types
 import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
