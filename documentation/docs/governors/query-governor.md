@@ -80,7 +80,7 @@ const matchUpFilters = {
   scheduledDate, // scheduled date of matchUps to return
 };
 
-const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues } =
+const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues, participants } =
   engine.competitionScheduleMatchUps({
     courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
     alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
@@ -263,6 +263,15 @@ const {
 
 ```js
 const { startDate, endDate } = engine.getCompetitionDateRange();
+```
+
+---
+
+## getCompetitionMatchUps
+
+```js
+const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps, byeMatchUps, groupInfo, participants } =
+ = tournamentEngine.getCompetitionMatchUps();
 ```
 
 ---
@@ -1515,12 +1524,19 @@ const { participantResults } = tallyParticipantResults({
 Returns tournament matchUps grouped by matchUpStatus. These matchUps are returned with _context_.
 
 ```js
-const { abandonedMatchUps, completedMatchUps, upcomingMatchUps, pendingMatchUps, byeMatchUps, groupInfo } =
-  engine.tournamentMatchUps({
-    scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
-    policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
-    matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
-  });
+const {
+  abandonedMatchUps,
+  completedMatchUps,
+  upcomingMatchUps,
+  pendingMatchUps,
+  byeMatchUps,
+  groupInfo,
+  participants,
+} = engine.tournamentMatchUps({
+  scheduleVisibilityFilters, // { visibilityThreshold: dateString, eventIds, drawIds }
+  policyDefinitions, // optional - seeding or avoidance policies to be used when placing participants
+  matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
+});
 ```
 
 ---
