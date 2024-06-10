@@ -792,9 +792,9 @@ const {
   eventsPublishStatuses,
   derivedEventInfo,
   derivedDrawInfo,
-  participantsMap, // object { ['participantId']: participant }
+  participantsMap, // object { ['participantId']: participant } - NOTE: Not fully hydrated
   mappedMatchUps, // object { [matchUpId]: matchUp }; when { withMatchUps: true }
-  participants, // array of participants
+  participants, // array of hydrated participants
   matchUps, // array of all matchUps; when { withMatchUps: true }
  } =
   engine.getParticipants({
