@@ -3,9 +3,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
+// Constants
+import { FOLLOWED_BY, NEXT_AVAILABLE } from '@Constants/timeItemConstants';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SCHEDULE_WARNING } from '@Constants/scheduleConstants';
-import { FOLLOWED_BY, NEXT_AVAILABLE } from '@Constants/timeItemConstants';
 
 const startDate = '2023-06-16';
 const venueId = 'cc-venue-id';
@@ -67,13 +68,11 @@ it('will not scheduled earlier rounds after later rounds', () => {
   expect(result.results[0].scheduled.length).toEqual(25);
   expect(result.results[0].notScheduled.length).toEqual(5);
 
-  const { dateMatchUps } = tournamentEngine.competitionScheduleMatchUps({
-    matchUpFilters: { scheduledDate: startDate },
-  });
-  expect(dateMatchUps.length).toEqual(26); // thus only 26 of 31 matchUps have been scheduled
+  result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters: { scheduledDate: startDate } });
+  expect(result.dateMatchUps.length).toEqual(26); // thus only 26 of 31 matchUps have been scheduled
 
   const { courtIssues } = tournamentEngine.proConflicts({
-    matchUps: dateMatchUps,
+    matchUps: result.dateMatchUps,
   });
   const issues = unique(
     Object.values(courtIssues)
@@ -81,6 +80,25 @@ it('will not scheduled earlier rounds after later rounds', () => {
       .map((c: any) => c.issue),
   );
   expect(issues).toEqual([SCHEDULE_WARNING]);
+
+  result = tournamentEngine.competitionScheduleMatchUps({ hydrateParticipants: true });
+  expect(result.dateMatchUps[0].sides.every((side) => side.participantId)).toEqual(true);
+  expect(result.dateMatchUps[0].sides.every((side) => side.participant)).toEqual(true);
+
+  const autoHydratedSide1 = result.dateMatchUps[0].sides[0];
+
+  result = tournamentEngine.competitionScheduleMatchUps({ hydrateParticipants: false });
+  expect(result.dateMatchUps[0].sides.every((side) => side.participantId)).toEqual(true);
+  expect(result.dateMatchUps[0].sides.every((side) => side.participant.participantId)).toEqual(false);
+
+  const unhydratedSide1 = result.dateMatchUps[0].sides[0];
+  expect(autoHydratedSide1.participantId).toEqual(unhydratedSide1.participantId);
+
+  const hydratedSide1 = {
+    ...unhydratedSide1,
+    participant: result.mappedParticipants[unhydratedSide1.participantId],
+  };
+  expect(autoHydratedSide1.participant.person).toEqual(hydratedSide1.participant.person);
 });
 
 it('will not save overlapping timeModifiers', () => {

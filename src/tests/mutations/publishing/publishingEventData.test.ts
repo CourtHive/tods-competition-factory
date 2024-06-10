@@ -685,11 +685,9 @@ it('can add or remove stages from a published draw', () => {
   ]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: { ['drawId']: { stagesToRemove: [QUALIFYING] } },
     returnEventData: true,
     policyDefinitions,
-    drawDetails: {
-      ['drawId']: { stagesToRemove: [QUALIFYING] },
-    },
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
@@ -697,11 +695,9 @@ it('can add or remove stages from a published draw', () => {
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([MAIN, VOLUNTARY_CONSOLATION]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: { ['drawId']: { stagesToRemove: [VOLUNTARY_CONSOLATION] } },
     returnEventData: true,
     policyDefinitions,
-    drawDetails: {
-      ['drawId']: { stagesToRemove: [VOLUNTARY_CONSOLATION] },
-    },
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
@@ -709,11 +705,9 @@ it('can add or remove stages from a published draw', () => {
   expect(eventData.drawsData[0].structures.map(({ stage }) => stage)).toEqual([MAIN]);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: { ['drawId']: { stageDetails: { QUALIFYING: { published: true } } } },
     returnEventData: true,
     policyDefinitions,
-    drawDetails: {
-      ['drawId']: { stageDetails: { QUALIFYING: { published: true } } },
-    },
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
@@ -724,12 +718,10 @@ it('can add or remove stages from a published draw', () => {
   expect(event.timeItems.length).toEqual(1);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: { ['drawId']: { stagesToAdd: [MAIN] } },
     removePriorValues: true,
     returnEventData: true,
     policyDefinitions,
-    drawDetails: {
-      ['drawId']: { stagesToAdd: [MAIN] },
-    },
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
@@ -746,12 +738,10 @@ it('can add or remove stages from a published draw', () => {
   expect(event.timeItems.length).toEqual(1);
 
   ({ eventData, success: publishSuccess } = tournamentEngine.publishEvent({
+    drawDetails: { ['drawId']: { stagesToAdd: [QUALIFYING] } },
     removePriorValues: true,
     returnEventData: true,
     policyDefinitions,
-    drawDetails: {
-      ['drawId']: { stagesToAdd: [QUALIFYING] },
-    },
     eventId,
   }));
   expect(publishSuccess).toEqual(true);
@@ -762,9 +752,7 @@ it('can add or remove stages from a published draw', () => {
   expect(eventData.drawsData[0].structures.length).toEqual(1);
   expect(eventData.drawsData[0].structures[0].stage).toEqual(QUALIFYING);
 
-  result = tournamentEngine.competitionScheduleMatchUps({
-    usePublishState: true,
-  });
+  result = tournamentEngine.competitionScheduleMatchUps({ usePublishState: true });
   expect(result.dateMatchUps.length).toEqual(0);
   expect(result.groupInfo).toBeUndefined(); // not present when using publish state with no orderOfPlay
 

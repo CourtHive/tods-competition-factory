@@ -331,6 +331,7 @@ export type GroupsMatchUpsResult = {
   abandonedMatchUps?: HydratedMatchUp[];
   completedMatchUps?: HydratedMatchUp[];
   upcomingMatchUps?: HydratedMatchUp[];
+  participants?: HydratedParticipant[];
   pendingMatchUps?: HydratedMatchUp[];
   byeMatchUps?: HydratedMatchUp[];
   matchUpsMap?: MatchUpsMap;

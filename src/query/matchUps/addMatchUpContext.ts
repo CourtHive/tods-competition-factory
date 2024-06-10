@@ -302,7 +302,7 @@ export function addMatchUpContext({
     Object.assign(matchUpWithContext, makeDeepCopy({ sides }, true, true));
   }
 
-  if (tournamentParticipants && matchUpWithContext.sides && hydrateParticipants !== false) {
+  if (tournamentParticipants && matchUpWithContext.sides) {
     const participantAttributes = appliedPolicies?.[POLICY_TYPE_PARTICIPANT];
     const getMappedParticipant = (participantId) => {
       const participant = participantMap?.[participantId]?.participant;
@@ -314,6 +314,7 @@ export function addMatchUpContext({
         })
       );
     };
+
     matchUpWithContext.sides.filter(Boolean).forEach((side) => {
       if (side.participantId) {
         const participant = makeDeepCopy(
@@ -330,17 +331,29 @@ export function addMatchUpContext({
           undefined,
           true,
         );
+
         if (participant) {
+          let entryStatus, entryStage;
+
           if (drawDefinition?.entries) {
             const entry = drawDefinition.entries.find((entry) => entry.participantId === side.participantId);
             // even.entries are used as a fallback for entryStatus when entries missing from drawDefinition
             const eEntry = event?.entries?.find((entry) => entry.participantId === side.participantId);
-            participant.entryStatus = entry?.entryStatus || eEntry?.entryStatus;
+            entryStatus = entry?.entryStatus || eEntry?.entryStatus;
+            participant.entryStatus = entryStatus;
             if (entry?.entryStage) {
-              participant.entryStage = entry.entryStage;
+              entryStage = entry.entryStage;
+              participant.entryStage = entryStage;
             }
           }
-          Object.assign(side, { participant });
+
+          if (hydrateParticipants !== false) {
+            Object.assign(side, { participant });
+          } else {
+            // when hydrateParticipants is false, only add entryStatus and entryStage to side.participant, because unique to this context
+            // it is expected that receiving client will have access to participant data and can hydrate as needed
+            Object.assign(side, { participant: { entryStage, entryStatus } });
+          }
         }
       }
 
@@ -359,7 +372,7 @@ export function addMatchUpContext({
               : undefined)
           );
         });
-        Object.assign(side.participant, { individualParticipants });
+        if (hydrateParticipants !== false) Object.assign(side.participant, { individualParticipants });
       }
     });
 

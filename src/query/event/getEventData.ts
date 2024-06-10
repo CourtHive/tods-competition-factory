@@ -4,6 +4,7 @@ import { getParticipants } from '@Query/participants/getParticipants';
 import { getPublishState } from '@Query/publishing/getPublishState';
 import { getDrawData } from '@Query/drawDefinition/getDrawData';
 import { getVenueData } from '@Query/venues/getVenueData';
+import { findExtension } from '@Acquire/findExtension';
 import { isConvertableInteger } from '@Tools/math';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
@@ -15,12 +16,11 @@ import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParame
 import { EVENT_NOT_FOUND, ErrorType } from '@Constants/errorConditionConstants';
 import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { Event, Tournament } from '@Types/tournamentTypes';
+import { DISPLAY } from '@Constants/extensionConstants';
 import { ANY_OF } from '@Constants/attributeConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
-import { DISPLAY } from '@Constants/extensionConstants';
-import { findExtension } from '@Acquire/findExtension';
 
 type GetEventDataArgs = {
   participantsProfile?: ParticipantsProfile;
@@ -28,6 +28,7 @@ type GetEventDataArgs = {
   policyDefinitions?: PolicyDefinitions;
   allParticipantResults?: boolean;
   sortConfig?: StructureSortConfig;
+  hydrateParticipants?: boolean;
   tournamentRecord: Tournament;
   usePublishState?: boolean;
   refreshResults?: boolean;
@@ -129,6 +130,7 @@ export function getEventData(params: GetEventDataArgs): {
             }))(
               getDrawData({
                 allParticipantResults: params.allParticipantResults,
+                hydrateParticipants: params.hydrateParticipants,
                 context: { eventId, tournamentId, endDate },
                 pressureRating: params.pressureRating,
                 refreshResults: params.refreshResults,

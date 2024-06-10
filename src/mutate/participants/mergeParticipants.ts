@@ -2,11 +2,12 @@ import { addNotice, getTopics } from '@Global/state/globalState';
 import { xa } from '@Tools/extractAttributes';
 import { deepMerge } from '@Tools/deepMerge';
 
+// Contants and Types
+import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { Participant } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ADD_PARTICIPANTS, MODIFY_PARTICIPANTS } from '@Constants/topicConstants';
 
 export function mergeParticipants({ participants: incomingParticipants = [], tournamentRecord, arraysToMerge }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };

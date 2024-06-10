@@ -10,6 +10,7 @@ import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '@Constants/partici
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { ParticipantMap } from '@Types/factoryTypes';
 import { Tournament } from '@Types/tournamentTypes';
+import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
@@ -30,6 +31,7 @@ type GetParticpantsMapArgs = {
   convertExtensions?: boolean;
   withSignInStatus?: boolean;
   withScaleValues?: boolean;
+  withGroupings?: boolean;
   internalUse?: boolean;
   withISO2?: boolean;
   withIOC?: boolean;
@@ -40,12 +42,14 @@ export function getParticipantMap({
   tournamentRecord,
   withSignInStatus,
   withScaleValues,
+  withGroupings,
   internalUse,
   withISO2,
   withIOC,
 }: GetParticpantsMapArgs): {
   missingParticipantIds: string[];
   participantMap: ParticipantMap;
+  groupInfo: any;
 } {
   const missingParticipantIds: string[] = [];
   const participantMap: ParticipantMap = {};
@@ -86,9 +90,7 @@ export function getParticipantMap({
     }
 
     if (withScaleValues) {
-      const { ratings, rankings, seedings } = getScaleValues({
-        participant: participantCopy,
-      });
+      const { ratings, rankings, seedings } = getScaleValues({ participant: participantCopy });
       participantMap[participantId].participant.seedings = seedings;
       participantMap[participantId].participant.rankings = rankings;
       participantMap[participantId].participant.ratings = ratings;
@@ -107,7 +109,16 @@ export function getParticipantMap({
     addIndividualParticipants({ participantMap, template });
   }
 
-  return { missingParticipantIds, participantMap };
+  let groupInfo;
+  if (withGroupings) {
+    groupInfo = addParticipantGroupings({
+      participants: Object.values(participantMap).map(({ participant }) => participant),
+      participantsProfile: { convertExtensions },
+      deepCopy: false,
+    }).groupInfo;
+  }
+
+  return { missingParticipantIds, participantMap, groupInfo };
 }
 
 function signedIn(participant) {

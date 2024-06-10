@@ -17,7 +17,7 @@ export function getAvgWTN({ eventType, matchUps, eventId, drawId }: GetAvgWTNArg
     if (!matchUpFormatCounts[matchUpFormat]) matchUpFormatCounts[matchUpFormat] = 0;
     matchUpFormatCounts[matchUpFormat] += 1;
   };
-  const participantsMap = matchUps
+  const mappedParticipants = matchUps
     .filter((matchUp) => (eventId ? matchUp.eventId === eventId : matchUp.drawId === drawId))
     .reduce((participants, matchUp) => {
       countMatchUpFormat(matchUp);
@@ -26,7 +26,7 @@ export function getAvgWTN({ eventType, matchUps, eventId, drawId }: GetAvgWTNArg
         .forEach((participant) => (participants[participant.participantId] = participant));
       return participants;
     }, {});
-  const eventParticipants = Object.values(participantsMap);
+  const eventParticipants = Object.values(mappedParticipants);
   const wtnRatings = eventParticipants
     .map((participant) => getDetailsWTN({ participant, eventType }))
     .filter(({ wtnRating }) => wtnRating);

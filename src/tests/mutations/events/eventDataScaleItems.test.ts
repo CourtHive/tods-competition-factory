@@ -2,6 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// Constants and Fixtures
 import POLICY_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
 import { SINGLES } from '@Constants/matchUpTypes';
 import { WTN } from '@Constants/ratingConstants';
@@ -97,7 +98,7 @@ test('ratings values should be present on tournamentParticipants in getEventData
   tournamentEngine.setState(tournamentRecord);
   let result = tournamentEngine.competitionScheduleMatchUps({ participantsProfile, hydrateParticipants: false });
   expect(result.completedMatchUps[0].sides[0].participantId).toBeDefined();
-  expect(result.completedMatchUps[0].sides[0].participant).toBeUndefined();
+  expect(result.completedMatchUps[0].sides[0].participant.participantId).toBeUndefined();
   result = tournamentEngine.competitionScheduleMatchUps({ participantsProfile, hydrateParticipants: true });
   expect(result.completedMatchUps[0].sides[0].participant.ratings.SINGLES[0].scaleName).toEqual(WTN);
 
