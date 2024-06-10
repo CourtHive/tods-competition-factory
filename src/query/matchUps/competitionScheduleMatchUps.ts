@@ -10,10 +10,10 @@ import { getTournamentId } from '@Global/state/globalState';
 // constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
 import { MatchUpFilters, TournamentRecords } from '@Types/factoryTypes';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { HydratedMatchUp } from '@Types/hydrated';
 import { Venue } from '@Types/tournamentTypes';
 
 type CompetitionScheduleMatchUpsArgs = {
@@ -33,6 +33,7 @@ type CompetitionScheduleMatchUpsArgs = {
 };
 
 export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsArgs): {
+  mappedParticipants?: { [key: string]: HydratedParticipant };
   completedMatchUps?: HydratedMatchUp[];
   dateMatchUps?: HydratedMatchUp[];
   courtPrefix?: string;
@@ -145,11 +146,12 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
     }
   }
 
-  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo } = getCompetitionMatchUps({
-    ...params,
-    matchUpFilters: params.matchUpFilters,
-    contextFilters: params.contextFilters,
-  });
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo, mappedParticipants } =
+    getCompetitionMatchUps({
+      ...params,
+      matchUpFilters: params.matchUpFilters,
+      contextFilters: params.contextFilters,
+    });
 
   let relevantMatchUps = [...(upcomingMatchUps ?? []), ...(pendingMatchUps ?? [])];
 
@@ -202,6 +204,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
 
   const result: any = {
     completedMatchUps: alwaysReturnCompleted ? allCompletedMatchUps : completedMatchUps, // completed matchUps for the filter date
+    mappedParticipants: params.hydrateParticipants ? undefined : mappedParticipants,
     dateMatchUps, // all incomplete matchUps for the filter date
     courtsData,
     groupInfo,

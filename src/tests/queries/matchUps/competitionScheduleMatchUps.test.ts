@@ -36,10 +36,7 @@ test.each([tournamentEngine])(
     const matchUpIds = getMatchUpIds(upcomingMatchUps);
     expect(instanceCount(upcomingMatchUps.map(({ matchUpType }) => matchUpType))).toEqual({ DOUBLES: 8 });
 
-    const result = tournamentEngine.scheduleMatchUps({
-      scheduleDate: startDate,
-      matchUpIds,
-    });
+    const result = tournamentEngine.scheduleMatchUps({ scheduleDate: startDate, matchUpIds });
     Object.values(result.individualParticipantProfiles).forEach((participantProfile: any) =>
       expect(participantProfile.counters).toEqual({ DOUBLES: 1, total: 1 }),
     );

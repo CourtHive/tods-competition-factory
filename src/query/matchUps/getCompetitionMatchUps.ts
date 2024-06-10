@@ -2,7 +2,7 @@ import { tournamentMatchUps } from './getTournamentMatchUps';
 
 // constants and types
 import { MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { HydratedMatchUp } from '@Types/hydrated';
+import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import {
   GroupInfo,
   MatchUpFilters,
@@ -22,6 +22,7 @@ type CompetitionMatchUpsArgs = {
   contextFilters?: MatchUpFilters;
   hydrateParticipants?: boolean;
   afterRecoveryTimes?: boolean;
+  useParticipantMap?: boolean;
   usePublishState?: boolean;
   nextMatchUps?: boolean;
   inContext?: boolean;
@@ -32,6 +33,7 @@ export function getCompetitionMatchUps({
   hydrateParticipants,
   participantsProfile,
   tournamentRecords,
+  useParticipantMap,
   policyDefinitions,
   usePublishState,
   matchUpFilters,
@@ -39,6 +41,7 @@ export function getCompetitionMatchUps({
   nextMatchUps,
   inContext,
 }: CompetitionMatchUpsArgs): ResultType & {
+  mappedParticipants?: { [key: string]: HydratedParticipant };
   abandonedMatchUps?: HydratedMatchUp[];
   completedMatchUps?: HydratedMatchUp[];
   upcomingMatchUps?: HydratedMatchUp[];
@@ -56,6 +59,7 @@ export function getCompetitionMatchUps({
       scheduleVisibilityFilters,
       hydrateParticipants,
       participantsProfile,
+      useParticipantMap,
       policyDefinitions,
       tournamentRecord,
       usePublishState,
@@ -66,21 +70,26 @@ export function getCompetitionMatchUps({
     });
   });
 
+  const mappedParticipants = {};
   const groupInfo = {};
+
   const competitionMatchUpsResult = tournamentsMatchUps.reduce((groupings, matchUpGroupings) => {
     const keys = Object.keys(matchUpGroupings);
     keys.forEach((key) => {
-      if (Array.isArray(matchUpGroupings[key])) {
-        if (!groupings[key]) groupings[key] = [];
-        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
-      }
       if (key === 'groupInfo') {
         Object.assign(groupInfo, matchUpGroupings[key]);
+      } else if (key === 'participants') {
+        for (const participant of matchUpGroupings[key] ?? []) {
+          mappedParticipants[participant.participantId] = participant;
+        }
+      } else if (Array.isArray(matchUpGroupings[key])) {
+        if (!groupings[key]) groupings[key] = [];
+        groupings[key] = groupings[key].concat(matchUpGroupings[key]);
       }
     });
 
     return groupings;
   }, {});
 
-  return { ...competitionMatchUpsResult, groupInfo };
+  return { ...competitionMatchUpsResult, groupInfo, mappedParticipants };
 }

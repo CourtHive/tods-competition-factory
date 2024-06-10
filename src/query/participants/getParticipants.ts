@@ -192,15 +192,9 @@ export function getParticipants(params: GetParticipantsArgs): {
     const template = isObject(withIndividualParticipants) ? withIndividualParticipants : undefined;
     for (const participant of filteredParticipants) {
       for (const individualParticipantId of participant.individualParticipantIds ?? []) {
-        const mappedParticipant = participantMap[participant.participantId].participant;
-        if (!mappedParticipant?.individualParticipants) mappedParticipant.individualParticipants = [];
-        if (!participant.individualParticipants) {
-          participant.individualParticipants = [];
-        }
+        if (!participant.individualParticipants) participant.individualParticipants = [];
         const source = ppMap.get(individualParticipantId);
         const individualParticipant = template ? attributeFilter({ template, source }) : source;
-        if (mappedParticipant?.individualParticipants)
-          mappedParticipant.individualParticipants.push(individualParticipant);
         participant.individualParticipants.push(individualParticipant);
       }
     }

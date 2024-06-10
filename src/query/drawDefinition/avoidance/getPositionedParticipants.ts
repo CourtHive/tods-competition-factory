@@ -6,7 +6,7 @@ export function getPositionedParticipants({
   policyAttributes,
   idCollections,
 }) {
-  const participantsMap = Object.assign(
+  const mappedParticipants = Object.assign(
     {},
     ...participantsWithGroupings.map((participant) => ({
       [participant.participantId]: participant,
@@ -14,7 +14,7 @@ export function getPositionedParticipants({
   );
 
   return candidatePositionAssignments.map((assignment) => {
-    const participant = participantsMap[assignment.participantId];
+    const participant = mappedParticipants[assignment.participantId];
     const { values } = extractAttributeValues({
       participants: participantsWithGroupings,
       policyAttributes,

@@ -124,6 +124,7 @@ export function getDrawData(params): {
           // only propagate seedAssignments where none are present
           seedAssignments: !structure?.seedAssignments?.length ? seedAssignments : undefined,
           context: { drawId: drawInfo.drawId, ...context },
+          hydrateParticipants: params.hydrateParticipants,
           tournamentParticipants,
           policyDefinitions,
           tournamentRecord,

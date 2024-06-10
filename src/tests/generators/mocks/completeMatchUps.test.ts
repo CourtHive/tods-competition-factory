@@ -1,20 +1,17 @@
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
+import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { instanceCount } from '@Tools/arrays';
-import tournamentEngine from '@Engines/syncEngine';
 import { fmlc32profile } from './fmlc32';
 import { expect, it } from 'vitest';
 
-import { COMPLETED } from '@Constants/matchUpStatusConstants';
+// Constants
 import { FIRST_MATCH_LOSER_CONSOLATION, ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can generate a tournament with all results completed', () => {
   const drawProfiles = [{ drawSize: 32 }];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    completeAllMatchUps: true,
-    drawProfiles,
-  });
-  tournamentEngine.setState(tournamentRecord);
+  mocksEngine.generateTournamentRecord({ completeAllMatchUps: true, drawProfiles, setState: true });
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   const matchUpStatuses = instanceCount(matchUps.map((m) => m.matchUpStatus));
   expect(matchUps.length).toEqual(31);

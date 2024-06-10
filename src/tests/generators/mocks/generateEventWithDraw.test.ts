@@ -106,7 +106,5 @@ it('can use drawProfiles to generate gendered DOUBLES event', () => {
     returnParticipantMap: true,
   });
   expect(result.participants[0].individualParticipants.length).toEqual(2);
-  expect(result.participantMap[result.participants[0].participantId].participant.individualParticipants.length).toEqual(
-    2,
-  );
+  expect(result.participantMap[result.participants[0].participantId].participant.individualParticipant).toBeUndefined();
 });
