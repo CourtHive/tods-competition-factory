@@ -4,8 +4,8 @@ import { getContextContent } from '../hierarchical/getContextContent';
 import { getFlightProfile } from '../event/getFlightProfile';
 
 // Constants and types
-import { GetMatchUpsArgs, GroupsMatchUpsResult } from '@Types/factoryTypes';
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
+import { GetMatchUpsArgs, GroupsMatchUpsResult } from '@Types/factoryTypes';
 import { eventMatchUps } from './getEventMatchUps';
 
 export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResult {
@@ -16,7 +16,6 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
     participantsProfile,
     afterRecoveryTimes,
     policyDefinitions,
-    useParticipantMap,
     tournamentRecord,
     inContext = true,
     usePublishState,
@@ -32,7 +31,6 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
   const { participants, participantMap, groupInfo } = hydrateParticipants({
     participantsProfile,
     policyDefinitions,
-    useParticipantMap,
     tournamentRecord,
     contextProfile,
     inContext,
@@ -98,5 +96,5 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
     { matchUpsCount: 0 },
   );
 
-  return { ...eventsDrawMatchUpsResult, groupInfo };
+  return { ...eventsDrawMatchUpsResult, groupInfo, participants };
 }

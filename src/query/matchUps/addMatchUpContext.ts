@@ -315,57 +315,66 @@ export function addMatchUpContext({
       );
     };
 
-    if (hydrateParticipants !== false) {
-      matchUpWithContext.sides.filter(Boolean).forEach((side) => {
-        if (side.participantId) {
-          const participant = makeDeepCopy(
-            getMappedParticipant(side.participantId) ||
-              (tournamentParticipants
-                ? findParticipant({
-                    policyDefinitions: appliedPolicies,
-                    participantId: side.participantId,
-                    tournamentParticipants,
-                    internalUse: true,
-                    contextProfile,
-                  })
-                : undefined),
-            undefined,
-            true,
-          );
+    matchUpWithContext.sides.filter(Boolean).forEach((side) => {
+      if (side.participantId) {
+        const participant = makeDeepCopy(
+          getMappedParticipant(side.participantId) ||
+            (tournamentParticipants
+              ? findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  participantId: side.participantId,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                })
+              : undefined),
+          undefined,
+          true,
+        );
 
-          if (participant) {
-            if (drawDefinition?.entries) {
-              const entry = drawDefinition.entries.find((entry) => entry.participantId === side.participantId);
-              // even.entries are used as a fallback for entryStatus when entries missing from drawDefinition
-              const eEntry = event?.entries?.find((entry) => entry.participantId === side.participantId);
-              participant.entryStatus = entry?.entryStatus || eEntry?.entryStatus;
-              if (entry?.entryStage) {
-                participant.entryStage = entry.entryStage;
-              }
+        if (participant) {
+          let entryStatus, entryStage;
+
+          if (drawDefinition?.entries) {
+            const entry = drawDefinition.entries.find((entry) => entry.participantId === side.participantId);
+            // even.entries are used as a fallback for entryStatus when entries missing from drawDefinition
+            const eEntry = event?.entries?.find((entry) => entry.participantId === side.participantId);
+            entryStatus = entry?.entryStatus || eEntry?.entryStatus;
+            participant.entryStatus = entryStatus;
+            if (entry?.entryStage) {
+              entryStage = entry.entryStage;
+              participant.entryStage = entryStage;
             }
+          }
+
+          if (hydrateParticipants !== false) {
             Object.assign(side, { participant });
+          } else {
+            // when hydrateParticipants is false, only add entryStatus and entryStage to side.participant, because unique to this context
+            // it is expected that receiving client will have access to participant data and can hydrate as needed
+            Object.assign(side, { participant: { entryStage, entryStatus } });
           }
         }
+      }
 
-        if (side?.participant?.individualParticipantIds?.length && !side.participant.individualParticipants?.length) {
-          const individualParticipants = side.participant.individualParticipantIds.map((participantId) => {
-            return (
-              getMappedParticipant(participantId) ||
-              (tournamentParticipants
-                ? findParticipant({
-                    policyDefinitions: appliedPolicies,
-                    tournamentParticipants,
-                    internalUse: true,
-                    contextProfile,
-                    participantId,
-                  })
-                : undefined)
-            );
-          });
-          Object.assign(side.participant, { individualParticipants });
-        }
-      });
-    }
+      if (side?.participant?.individualParticipantIds?.length && !side.participant.individualParticipants?.length) {
+        const individualParticipants = side.participant.individualParticipantIds.map((participantId) => {
+          return (
+            getMappedParticipant(participantId) ||
+            (tournamentParticipants
+              ? findParticipant({
+                  policyDefinitions: appliedPolicies,
+                  tournamentParticipants,
+                  internalUse: true,
+                  contextProfile,
+                  participantId,
+                })
+              : undefined)
+          );
+        });
+        if (hydrateParticipants !== false) Object.assign(side.participant, { individualParticipants });
+      }
+    });
 
     if (!matchUpWithContext.matchUpType) {
       const { matchUpType } = getMatchUpType({ matchUp: matchUpWithContext });

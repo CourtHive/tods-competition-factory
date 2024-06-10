@@ -29,9 +29,7 @@ it('auto schedules venue if only one venue provided', () => {
   const scheduledMatchUpsCount = result.scheduledMatchUpIds.length;
 
   const matchUpFilters = { scheduledDate: startDate };
-  result = tournamentEngine.competitionScheduleMatchUps({
-    matchUpFilters,
-  });
+  result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps.length).toEqual(scheduledMatchUpsCount);
 
   ({ upcomingMatchUps } = tournamentEngine.getCompetitionMatchUps());
@@ -44,8 +42,6 @@ it('auto schedules venue if only one venue provided', () => {
   result = tournamentEngine.setTournamentStartDate({ startDate });
   expect(result.unscheduledMatchUpIds.length).toEqual(scheduledMatchUpsCount);
 
-  result = tournamentEngine.competitionScheduleMatchUps({
-    matchUpFilters,
-  });
+  result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters });
   expect(result.dateMatchUps.length).toEqual(0);
 });

@@ -5,7 +5,7 @@ import { getParticipantMap } from './getParticipantMap';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 
 // Types
-import { ContextProfile, ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
+import { ContextProfile, ParticipantMap, ParticipantsProfile, PolicyDefinitions } from '@Types/factoryTypes';
 import { HydratedParticipant } from '@Types/hydrated';
 import { Tournament } from '@Types/tournamentTypes';
 
@@ -23,15 +23,17 @@ export function hydrateParticipants({
   tournamentRecord,
   contextProfile,
   inContext,
-}: HydrateParticipantsArgs) {
+}: HydrateParticipantsArgs): {
+  participants?: HydratedParticipant[];
+  participantMap?: ParticipantMap;
+  groupInfo: any;
+} {
   if (useParticipantMap) {
-    const participantMap = getParticipantMap({
+    return getParticipantMap({
       ...participantsProfile,
       ...contextProfile,
       tournamentRecord,
-    })?.participantMap;
-
-    return { participantMap };
+    });
   }
 
   let participants: HydratedParticipant[] = makeDeepCopy(tournamentRecord.participants, false, true) || [];
