@@ -1,13 +1,14 @@
-import { countries } from '@Fixtures/countryData';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { expect, it } from 'vitest';
+import { expect, it, test } from 'vitest';
+import fs from 'fs';
 
-// constants
+// Constants and Fixtures
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { COMPASS, CURTIS_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { TEAM } from '@Constants/participantConstants';
 import { DOUBLES } from '@Constants/eventConstants';
+import { countries } from '@Fixtures/countryData';
 import { SINGLES } from '@Constants/matchUpTypes';
 
 it('returns eventData with expected drawsData', () => {
@@ -94,14 +95,14 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
   });
   expect(teamParticipants.length).toBeGreaterThan(0);
 
-  const { eventData } = tournamentEngine.getEventData({
+  let result = tournamentEngine.getEventData({
     participantsProfile: { withIOC: true, withISO2: true },
     eventId,
   });
-  expect(eventData.drawsData[0].structures.length).toEqual(1);
+  expect(result.eventData.drawsData[0].structures.length).toEqual(1);
 
   let iocCount = 0;
-  eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
+  result.eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
     expect(matchUp.matchUpType).toEqual(SINGLES);
 
     // expect that each individual participant on the team also has team information
@@ -116,6 +117,21 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
     });
   });
   expect(iocCount).toBeGreaterThan(0);
+
+  result = tournamentEngine.getEventData({
+    participantsProfile: { withIOC: true, withISO2: true },
+    hydrateParticipants: false,
+    eventId,
+  });
+
+  const mappedParticipants = new Map(result.participants.map((p) => [p.participantId, p]));
+
+  result.eventData.drawsData[0].structures[0].roundMatchUps[1].forEach((matchUp) => {
+    matchUp.sides.forEach((side) => {
+      expect(side.participant?.participantId).toBeUndefined();
+      expect(!!mappedParticipants.get(side.participantId)).toEqual(true);
+    });
+  });
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
     participantsProfile: { withIOC: true, withISO2: true },
@@ -140,4 +156,30 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
       });
     });
   expect(iocCount).toBeGreaterThan(0);
+});
+
+test.skip('hydrateParticipants: false will reduce getEventData payload size', () => {
+  const eventId = 'eid';
+  const mockProfile = {
+    drawProfiles: [{ drawSize: 128, eventId, drawType: CURTIS_CONSOLATION }],
+    completeAllMatchUps: true,
+    setState: true,
+  };
+
+  mocksEngine.generateTournamentRecord(mockProfile);
+  let result = tournamentEngine.getEventData({
+    participantsProfile: { withIOC: true, withISO2: true },
+    eventId,
+  });
+  fs.writeFileSync('hydrated.json', JSON.stringify({ eventData: result.eventData }, undefined, 1));
+
+  result = tournamentEngine.getEventData({
+    participantsProfile: { withIOC: true, withISO2: true },
+    hydrateParticipants: false,
+    eventId,
+  });
+  fs.writeFileSync(
+    'unhydrated.json',
+    JSON.stringify({ eventData: result.eventData, participants: result.participants }, undefined, 1),
+  );
 });
