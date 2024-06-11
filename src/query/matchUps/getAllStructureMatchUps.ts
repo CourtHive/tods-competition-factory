@@ -3,6 +3,7 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getCollectionPositionMatchUps } from './getCollectionPositionMatchUps';
 import { getMatchUpsMap, getMappedStructureMatchUps } from './getMatchUpsMap';
+import { hydrateParticipants } from '@Query/participants/hydrateParticipants';
 import { getSourceDrawPositionRanges } from './getSourceDrawPositionRanges';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { getContextContent } from '@Query/hierarchical/getContextContent';
@@ -24,6 +25,7 @@ import {
   MatchUpFilters,
   MatchUpsMap,
   ParticipantMap,
+  ParticipantsProfile,
   PolicyDefinitions,
   ScheduleTiming,
   ScheduleVisibilityFilters,
@@ -37,6 +39,7 @@ import {
 type GetAllStructureMatchUps = {
   scheduleVisibilityFilters?: ScheduleVisibilityFilters;
   tournamentAppliedPolicies?: PolicyDefinitions;
+  participantsProfile?: ParticipantsProfile;
   tournamentParticipants?: Participant[];
   policyDefinitions?: PolicyDefinitions;
   seedAssignments?: SeedAssignment[];
@@ -52,6 +55,7 @@ type GetAllStructureMatchUps = {
   contextProfile?: ContextProfile;
   tournamentRecord?: Tournament;
   afterRecoveryTimes?: boolean;
+  useParticipantMap?: boolean;
   usePublishState?: boolean;
   exitProfiles?: ExitProfiles;
   matchUpsMap?: MatchUpsMap;
@@ -210,17 +214,30 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
         }).drawPositionsRanges
       : undefined;
 
+    let tournamentParticipants = params.tournamentParticipants;
+    let participantMap = params.participantMap;
+
+    if (!tournamentParticipants?.length && !participantMap && tournamentRecord) {
+      ({ participants: tournamentParticipants = [], participantMap } = hydrateParticipants({
+        participantsProfile: params.participantsProfile,
+        useParticipantMap: params.useParticipantMap,
+        policyDefinitions: params.policyDefinitions,
+        tournamentRecord,
+        contextProfile,
+        inContext,
+      }));
+    }
+
     matchUps = matchUps.map((matchUp) => {
       return addMatchUpContext({
-        tournamentParticipants: params.tournamentParticipants ?? tournamentRecord?.participants,
         scheduleVisibilityFilters: params.scheduleVisibilityFilters,
         hydrateParticipants: params.hydrateParticipants,
         afterRecoveryTimes: params.afterRecoveryTimes,
         usePublishState: params.usePublishState,
-        participantMap: params.participantMap,
         scheduleTiming: params.scheduleTiming,
         publishStatus: params.publishStatus,
         sourceDrawPositionRanges,
+        tournamentParticipants,
         positionAssignments,
         drawPositionsRanges,
         initialRoundOfPlay,
@@ -229,6 +246,7 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
         appliedPolicies,
         seedAssignments,
         contextContent,
+        participantMap,
         contextProfile,
         drawDefinition,
         scoringActive,

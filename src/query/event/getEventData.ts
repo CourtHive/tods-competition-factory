@@ -33,6 +33,7 @@ type GetEventDataArgs = {
   usePublishState?: boolean;
   refreshResults?: boolean;
   pressureRating?: boolean;
+  contextProfile?: any;
   eventId?: string;
   status?: string;
   event?: Event;
@@ -50,6 +51,7 @@ export function getEventData(params: GetEventDataArgs): {
     policyDefinitions,
     usePublishState,
     status = PUBLIC,
+    contextProfile,
     sortConfig,
   } = params;
 
@@ -140,6 +142,7 @@ export function getEventData(params: GetEventDataArgs): {
                 policyDefinitions,
                 tournamentRecord,
                 usePublishState,
+                contextProfile,
                 drawDefinition,
                 publishStatus,
                 sortConfig,

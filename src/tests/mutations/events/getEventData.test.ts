@@ -56,6 +56,10 @@ it('returns eventData with expected drawsData', () => {
   eventData = tournamentEngine.getEventData({ eventId, usePublishState: true }).eventData;
   expect(eventData.eventInfo.published).toEqual(false);
   expect(eventData.drawsData).toBeUndefined();
+
+  const contextProfile = { withCompetitiveness: true };
+  eventData = tournamentEngine.getEventData({ eventId, contextProfile }).eventData;
+  expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].competitiveProfile.competitiveness).toBeDefined();
 });
 
 it('returns eventData when there is no drawsData', () => {

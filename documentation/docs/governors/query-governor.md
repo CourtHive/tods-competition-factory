@@ -342,7 +342,8 @@ const {
   structures,
 } = engine.getDrawData({
   allParticipantResults, // optional boolean; include round statistics per structure even for elimination structures
-  drawDefinition,
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
+  drawId,
 });
 ```
 
@@ -464,6 +465,7 @@ const { eventData } = engine.getEventData({
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   policyDefinitions, // optional
   usePublishState, // optional - filter out draws which are not published
+  contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
   eventId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
