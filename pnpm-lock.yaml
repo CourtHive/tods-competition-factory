@@ -30,8 +30,8 @@ importers:
         specifier: 19.2.2
         version: 19.2.2
       '@dep-tree/cli':
-        specifier: 0.20.4
-        version: 0.20.4
+        specifier: 0.20.5
+        version: 0.20.5
       '@nestjs/class-transformer':
         specifier: 0.4.0
         version: 0.4.0
@@ -126,8 +126,8 @@ importers:
         specifier: 1.20.2
         version: 1.20.2
       c8:
-        specifier: 10.0.0
-        version: 10.0.0
+        specifier: 10.1.1
+        version: 10.1.1
       chalk:
         specifier: 5.3.0
         version: 5.3.0
@@ -174,8 +174,8 @@ importers:
         specifier: 29.7.0
         version: 29.7.0(@types/node@20.14.2)(ts-node@10.9.2(@swc/core@1.5.28)(@types/node@20.14.2)(typescript@5.4.5))
       lint-staged:
-        specifier: 15.2.6
-        version: 15.2.6
+        specifier: 15.2.7
+        version: 15.2.7
       pinst:
         specifier: 3.0.0
         version: 3.0.0
@@ -1024,8 +1024,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@dep-tree/cli@0.20.4':
-    resolution: {integrity: sha512-nYQVetubrlsy73YShAnH8/Jau+T2zgDHV9nUexnYiRVW2KCeewXDkEvmgzCHe+cyHZfnHgd928LDKwR5oBMS/Q==}
+  '@dep-tree/cli@0.20.5':
+    resolution: {integrity: sha512-H2ekIr1Q0eYBlUcXcNgZSkXzahTaxLTZWXBV9TEtS1/o29q7gwdD6Lo4Y+X32NDHnBhOJf2Nc3cLVIuIm+yK/A==}
     hasBin: true
 
   '@esbuild/aix-ppc64@0.20.2':
@@ -2460,8 +2460,8 @@ packages:
     resolution: {integrity: sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==}
     engines: {node: '>= 0.8'}
 
-  c8@10.0.0:
-    resolution: {integrity: sha512-rdQecjxw16P8kwgMBjruaQyfF+R2o/mucCCK4VPktwq2HFMWLOHGyUasb46+WlUOVJX94d6dZolcJxzjCzWmXg==}
+  c8@10.1.1:
+    resolution: {integrity: sha512-+aAvpNMwnzncW27XsEf2eMrGTF8HXIGZ24UQ1dW679+8SQ/UvDXxHNoKwMohcI9ZVj0xl/bI4/meqxvIWOBYaw==}
     engines: {node: '>=18'}
     hasBin: true
 
@@ -3970,8 +3970,8 @@ packages:
   lines-and-columns@1.2.4:
     resolution: {integrity: sha512-7ylylesZQ/PV29jhEDl3Ufjo6ZX7gCqJr5F7PKrqc93v7fzSymt1BpwEU8nAUXs8qzzvqhbjhK5QZg6Mt/HkBg==}
 
-  lint-staged@15.2.6:
-    resolution: {integrity: sha512-M/3PdijFXT/A5lnbSK3EQNLbIIrkE00JZaD39r7t4kfFOqT1Ly9LgSZSMMtvQ3p2/C8Nyj/ou0vkNHmEwqoB8g==}
+  lint-staged@15.2.7:
+    resolution: {integrity: sha512-+FdVbbCZ+yoh7E/RosSdqKJyUM2OEjTciH0TFNkawKgvFp1zbGlEC39RADg+xKBG1R4mhoH2j85myBQZ5wR+lw==}
     engines: {node: '>=18.12.0'}
     hasBin: true
 
@@ -6579,7 +6579,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@dep-tree/cli@0.20.4': {}
+  '@dep-tree/cli@0.20.5': {}
 
   '@esbuild/aix-ppc64@0.20.2':
     optional: true
@@ -6808,7 +6808,7 @@ snapshots:
       jest-util: 29.7.0
       jest-validate: 29.7.0
       jest-watcher: 29.7.0
-      micromatch: 4.0.5
+      micromatch: 4.0.7
       pretty-format: 29.7.0
       slash: 3.0.0
       strip-ansi: 6.0.1
@@ -8118,7 +8118,7 @@ snapshots:
 
   bytes@3.1.2: {}
 
-  c8@10.0.0:
+  c8@10.1.1:
     dependencies:
       '@bcoe/v8-coverage': 0.2.3
       '@istanbuljs/schema': 0.1.3
@@ -10033,7 +10033,7 @@ snapshots:
 
   lines-and-columns@1.2.4: {}
 
-  lint-staged@15.2.6:
+  lint-staged@15.2.7:
     dependencies:
       chalk: 5.3.0
       commander: 12.1.0
