@@ -90,7 +90,7 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
           if (matchUps.matchUpsCount !== undefined) {
             matchUps.matchUpsCount += eventMatchUps[key].length;
           } else {
-            matchUps.matchUpsCount = 1;
+            matchUps.matchUpsCount = eventMatchUps[key].length;
           }
         }
       });
