@@ -30,8 +30,8 @@ importers:
         specifier: 19.2.2
         version: 19.2.2
       '@dep-tree/cli':
-        specifier: 0.22.0
-        version: 0.22.0
+        specifier: 0.22.3
+        version: 0.22.3
       '@nestjs/class-transformer':
         specifier: 0.4.0
         version: 0.4.0
@@ -1024,8 +1024,8 @@ packages:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
     engines: {node: '>=12'}
 
-  '@dep-tree/cli@0.22.0':
-    resolution: {integrity: sha512-hC+iSPKOIssTrvrIGMObGutTL1DspncINhLySZnJvOFdz+tyACCSrCE9zasel5GpgIXylTSAvBcdCoSNAb7CxA==}
+  '@dep-tree/cli@0.22.3':
+    resolution: {integrity: sha512-+NvaVFf1zEA0SZJEBaXO1abk4NxLXl3d7nWDBKZVbIJRxhX6xMeaj+sJkStfhAb+B/xHU3wyXnhwSv+4EqVd6g==}
     hasBin: true
 
   '@esbuild/aix-ppc64@0.21.5':
@@ -6441,7 +6441,7 @@ snapshots:
     dependencies:
       '@jridgewell/trace-mapping': 0.3.9
 
-  '@dep-tree/cli@0.22.0': {}
+  '@dep-tree/cli@0.22.3': {}
 
   '@esbuild/aix-ppc64@0.21.5':
     optional: true
