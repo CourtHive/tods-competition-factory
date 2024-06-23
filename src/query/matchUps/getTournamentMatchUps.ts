@@ -87,7 +87,11 @@ export function tournamentMatchUps(params: GetMatchUpsArgs): GroupsMatchUpsResul
         if (Array.isArray(eventMatchUps[key])) {
           if (!matchUps[key]) matchUps[key] = [];
           matchUps[key] = matchUps[key].concat(eventMatchUps[key]);
-          matchUps.matchUpsCount += eventMatchUps[key].length;
+          if (matchUps.matchUpsCount !== undefined) {
+            matchUps.matchUpsCount += eventMatchUps[key].length;
+          } else {
+            matchUps.matchUpsCount = eventMatchUps[key].length;
+          }
         }
       });
 
