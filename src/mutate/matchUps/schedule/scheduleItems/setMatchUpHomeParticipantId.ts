@@ -32,14 +32,7 @@ export function setMatchUpHomeParticipantId(
   if (params.homeParticipantId && !participantIds?.includes(params.homeParticipantId))
     return { error: INVALID_PARTICIPANT_ID };
 
-  const {
-    disableNotice = true,
-    homeParticipantId,
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    matchUpId,
-  } = params;
+  const { disableNotice, homeParticipantId, removePriorValues, tournamentRecord, drawDefinition, matchUpId } = params;
 
   const timeItem = {
     itemType: HOME_PARTICIPANT_ID,
