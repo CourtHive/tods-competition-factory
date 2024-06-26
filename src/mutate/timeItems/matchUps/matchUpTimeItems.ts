@@ -1,5 +1,5 @@
-import { modifyMatchUpNotice } from '../../notifications/drawNotifications';
-import { addTimeItem } from '../addTimeItem';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { addTimeItem } from '@Mutate/timeItems//addTimeItem';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
 // constants and types

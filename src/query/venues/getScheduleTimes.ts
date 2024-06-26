@@ -78,7 +78,7 @@ export function getScheduleTimes(params): ResultType & {
   });
 
   if (calculateStartTimeFromCourts && firstTimeSlotStartTime) {
-    startTime = firstTimeSlotStartTime ? firstTimeSlotStartTime : startTime;
+    startTime = firstTimeSlotStartTime ?? startTime;
   }
 
   // startTime, endTime and periodLength are used to calculate periodCount
