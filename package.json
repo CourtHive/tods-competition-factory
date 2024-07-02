@@ -118,7 +118,7 @@
     "@dep-tree/cli": "0.23.0",
     "@nestjs/class-transformer": "0.4.0",
     "@nestjs/class-validator": "0.13.4",
-    "@nestjs/cli": "10.3.2",
+    "@nestjs/cli": "10.4.0",
     "@nestjs/common": "10.3.9",
     "@nestjs/config": "3.2.3",
     "@nestjs/core": "10.3.9",
