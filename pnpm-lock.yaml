@@ -11178,7 +11178,7 @@ snapshots:
   tsconfig-paths-webpack-plugin@4.1.0:
     dependencies:
       chalk: 4.1.2
-      enhanced-resolve: 5.15.0
+      enhanced-resolve: 5.17.0
       tsconfig-paths: 4.2.0
 
   tsconfig-paths@3.15.0:
