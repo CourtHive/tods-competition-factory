@@ -1,11 +1,12 @@
 import { setSubscriptions } from '@Global/state/globalState';
 import tournamentEngine from '@Engines/syncEngine';
-import { mocksEngine } from '../../..';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// Constants
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { EXISTING_STRUCTURE } from '@Constants/errorConditionConstants';
+import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 it('can generate a draw with voluntary consolation stage', () => {
   const {
