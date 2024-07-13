@@ -1,3 +1,5 @@
+import { generateTieMatchUps } from '@Assemblies/generators/drawDefinitions/tieMatchUps';
+import { getGenerators } from '@Assemblies/generators/drawDefinitions/getGenerators';
 import { automatedPositioning } from '@Mutate/drawDefinitions/automatedPositioning';
 import { resolveTieFormat } from '@Query/hierarchical/tieFormats/resolveTieFormat';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
@@ -10,12 +12,10 @@ import { getDrawStructures } from '@Acquire/findStructure';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { constantToString } from '@Tools/strings';
 import { nextPowerOf2 } from '@Tools/math';
-import { generateTieMatchUps } from '../tieMatchUps';
-import { getGenerators } from '../getGenerators';
 
+// Constants and Types
 import { PlayoffAttributes, SeedingProfile } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
-import { SINGLES } from '@Constants/matchUpTypes';
 import {
   EXISTING_STRUCTURE,
   ErrorType,
@@ -104,7 +104,7 @@ export function generateVoluntaryConsolation(params: GenerateVoluntaryConsolatio
   }
 
   tieFormat = copyTieFormat(tieFormat ?? resolveTieFormat({ drawDefinition })?.tieFormat);
-  matchUpType = matchUpType ?? drawDefinition.matchUpType ?? SINGLES;
+  matchUpType = matchUpType ?? drawDefinition.matchUpType;
 
   const { structures: stageStructures } = getDrawStructures({
     stageSequence: 1,

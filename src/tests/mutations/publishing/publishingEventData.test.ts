@@ -4,8 +4,8 @@ import { constantToString } from '@Tools/strings';
 import { expect, it } from 'vitest';
 
 // constants and fixtures
-import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import PARTICIPANT_PRIVACY_DEFAULT from '@Fixtures/policies/POLICY_PRIVACY_DEFAULT';
+import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { INDIVIDUAL } from '@Constants/participantConstants';
