@@ -39,8 +39,8 @@ importers:
         specifier: 0.13.4
         version: 0.13.4
       '@nestjs/cli':
-        specifier: 10.4.1
-        version: 10.4.1(@swc/cli@0.4.0(@swc/core@1.6.13)(chokidar@3.6.0))(@swc/core@1.6.13)(esbuild@0.23.0)
+        specifier: 10.4.2
+        version: 10.4.2(@swc/cli@0.4.0(@swc/core@1.6.13)(chokidar@3.6.0))(@swc/core@1.6.13)(esbuild@0.23.0)
       '@nestjs/common':
         specifier: 10.3.10
         version: 10.3.10(reflect-metadata@0.2.2)(rxjs@7.8.1)
@@ -272,10 +272,6 @@ packages:
     resolution: {integrity: sha512-y5+tLQyV8pg3fsiln67BVLD1P13Eg4lh5RW9mF0zUuvLrv9uIQ4MCL+CRT+FTsBlBjcIan6PGsLcBN0m3ClUyQ==}
     engines: {node: '>=6.9.0'}
 
-  '@babel/code-frame@7.24.6':
-    resolution: {integrity: sha512-ZJhac6FkEd1yhG2AHOmfcXG4ceoLltoCVJjN5XsWN9BifBQr+cHJbWi0h68HZuSORq+3WtJ2z0hwF2NG1b5kcA==}
-    engines: {node: '>=6.9.0'}
-
   '@babel/code-frame@7.24.7':
     resolution: {integrity: sha512-BcYH1CVJBO9tvyIZ2jVeXgSIMvGZ2FDRvDdOIVQyuklNKSsx+eppDEBq/g47Ayw+RqNFE+URvOShmf+f/qwAlA==}
     engines: {node: '>=6.9.0'}
@@ -431,10 +427,6 @@ packages:
 
   '@babel/highlight@7.24.2':
     resolution: {integrity: sha512-Yac1ao4flkTxTteCDZLEvdxg2fZfz1v8M4QpaGypq/WPDqg3ijHYbDfs+LG5hvzSoqaSZ9/Z9lKSP3CjZjv+pA==}
-    engines: {node: '>=6.9.0'}
-
-  '@babel/highlight@7.24.6':
-    resolution: {integrity: sha512-2YnuOp4HAk2BsBrJJvYCbItHx0zWscI1C3zgWkz+wDyD9I7GIVrfnLyrR4Y1VR+7p+chAEcrgRQYZAGIKMV7vQ==}
     engines: {node: '>=6.9.0'}
 
   '@babel/highlight@7.24.7':
@@ -1467,8 +1459,8 @@ packages:
   '@nestjs/class-validator@0.13.4':
     resolution: {integrity: sha512-/mqZL36LJ5uV5WDhi87Cd52IssuO+SStaOr2+6sBsvCCGUWkoJes4Wwzmm3m/gdHH+tsNxX60sVSzYcU6hAy9Q==}
 
-  '@nestjs/cli@10.4.1':
-    resolution: {integrity: sha512-83zFEKjmUdnvhGMRKUKy4AOQ6ZeoBqwC/yVlREdFGLusYF9055gh8TXLWTCL+V+SX47Ec7XrSusA/m3JTK1Wzg==}
+  '@nestjs/cli@10.4.2':
+    resolution: {integrity: sha512-fQexIfLHfp6GUgX+CO4fOg+AEwV5ox/LHotQhyZi9wXUQDyIqS0NTTbumr//62EcX35qV4nU0359nYnuEdzG+A==}
     engines: {node: '>= 16.14'}
     hasBin: true
     peerDependencies:
@@ -5224,6 +5216,11 @@ packages:
   typedarray@0.0.6:
     resolution: {integrity: sha512-/aCDEGatGvZ2BIk+HmLf4ifCJFwvKFNb9/JeZPMulfgFracn9QFcAf5GO8B/mweUjSoblS5In0cWhqpfs/5PQA==}
 
+  typescript@5.3.3:
+    resolution: {integrity: sha512-pXWcraxM0uxAS+tN0AG/BF2TyqmHO014Z070UsJ+pFvYuRSq8KH8DmWpnbXe0pEPDHXZV3FcAbJkijJ5oNEnWw==}
+    engines: {node: '>=14.17'}
+    hasBin: true
+
   typescript@5.5.3:
     resolution: {integrity: sha512-/hreyEujaB0w76zKo6717l3L0o/qEUtRgdvUBvlkhoWeOVMjMuHNHk0BRBzikzuGDqNmPQbg5ifMEqsHLiIUcQ==}
     engines: {node: '>=14.17'}
@@ -5540,11 +5537,6 @@ snapshots:
       picocolors: 1.0.0
     optional: true
 
-  '@babel/code-frame@7.24.6':
-    dependencies:
-      '@babel/highlight': 7.24.6
-      picocolors: 1.0.0
-
   '@babel/code-frame@7.24.7':
     dependencies:
       '@babel/highlight': 7.24.7
@@ -5766,13 +5758,6 @@ snapshots:
       js-tokens: 4.0.0
       picocolors: 1.0.0
     optional: true
-
-  '@babel/highlight@7.24.6':
-    dependencies:
-      '@babel/helper-validator-identifier': 7.24.6
-      chalk: 2.4.2
-      js-tokens: 4.0.0
-      picocolors: 1.0.0
 
   '@babel/highlight@7.24.7':
     dependencies:
@@ -6952,26 +6937,25 @@ snapshots:
       libphonenumber-js: 1.10.54
       validator: 13.11.0
 
-  '@nestjs/cli@10.4.1(@swc/cli@0.4.0(@swc/core@1.6.13)(chokidar@3.6.0))(@swc/core@1.6.13)(esbuild@0.23.0)':
+  '@nestjs/cli@10.4.2(@swc/cli@0.4.0(@swc/core@1.6.13)(chokidar@3.6.0))(@swc/core@1.6.13)(esbuild@0.23.0)':
     dependencies:
       '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
       '@angular-devkit/schematics': 17.3.8(chokidar@3.6.0)
       '@angular-devkit/schematics-cli': 17.3.8(chokidar@3.6.0)
-      '@nestjs/schematics': 10.1.2(chokidar@3.6.0)(typescript@5.5.3)
+      '@nestjs/schematics': 10.1.2(chokidar@3.6.0)(typescript@5.3.3)
       chalk: 4.1.2
       chokidar: 3.6.0
       cli-table3: 0.6.5
       commander: 4.1.1
-      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.5.3)(webpack@5.92.1(@swc/core@1.6.13)(esbuild@0.23.0))
+      fork-ts-checker-webpack-plugin: 9.0.2(typescript@5.3.3)(webpack@5.92.1(@swc/core@1.6.13)(esbuild@0.23.0))
       glob: 10.4.2
       inquirer: 8.2.6
       node-emoji: 1.11.0
       ora: 5.4.1
-      source-map-support: 0.5.21
       tree-kill: 1.2.2
       tsconfig-paths: 4.2.0
       tsconfig-paths-webpack-plugin: 4.1.0
-      typescript: 5.5.3
+      typescript: 5.3.3
       webpack: 5.92.1(@swc/core@1.6.13)(esbuild@0.23.0)
       webpack-node-externals: 3.0.0
     optionalDependencies:
@@ -7036,6 +7020,17 @@ snapshots:
       tslib: 2.6.3
     transitivePeerDependencies:
       - supports-color
+
+  '@nestjs/schematics@10.1.2(chokidar@3.6.0)(typescript@5.3.3)':
+    dependencies:
+      '@angular-devkit/core': 17.3.8(chokidar@3.6.0)
+      '@angular-devkit/schematics': 17.3.8(chokidar@3.6.0)
+      comment-json: 4.2.3
+      jsonc-parser: 3.3.1
+      pluralize: 8.0.0
+      typescript: 5.3.3
+    transitivePeerDependencies:
+      - chokidar
 
   '@nestjs/schematics@10.1.2(chokidar@3.6.0)(typescript@5.5.3)':
     dependencies:
@@ -8317,14 +8312,14 @@ snapshots:
       jiti: 1.21.0
       typescript: 5.5.3
 
-  cosmiconfig@8.3.6(typescript@5.5.3):
+  cosmiconfig@8.3.6(typescript@5.3.3):
     dependencies:
       import-fresh: 3.3.0
       js-yaml: 4.1.0
       parse-json: 5.2.0
       path-type: 4.0.0
     optionalDependencies:
-      typescript: 5.5.3
+      typescript: 5.3.3
 
   cosmiconfig@9.0.0(typescript@5.5.3):
     dependencies:
@@ -9054,12 +9049,12 @@ snapshots:
       cross-spawn: 7.0.3
       signal-exit: 4.1.0
 
-  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.5.3)(webpack@5.92.1(@swc/core@1.6.13)(esbuild@0.23.0)):
+  fork-ts-checker-webpack-plugin@9.0.2(typescript@5.3.3)(webpack@5.92.1(@swc/core@1.6.13)(esbuild@0.23.0)):
     dependencies:
       '@babel/code-frame': 7.24.7
       chalk: 4.1.2
       chokidar: 3.6.0
-      cosmiconfig: 8.3.6(typescript@5.5.3)
+      cosmiconfig: 8.3.6(typescript@5.3.3)
       deepmerge: 4.3.1
       fs-extra: 10.1.0
       memfs: 3.5.3
@@ -9068,7 +9063,7 @@ snapshots:
       schema-utils: 3.3.0
       semver: 7.6.2
       tapable: 2.2.1
-      typescript: 5.5.3
+      typescript: 5.3.3
       webpack: 5.92.1(@swc/core@1.6.13)(esbuild@0.23.0)
 
   form-data@4.0.0:
@@ -9703,7 +9698,7 @@ snapshots:
 
   jest-message-util@29.7.0:
     dependencies:
-      '@babel/code-frame': 7.24.6
+      '@babel/code-frame': 7.24.7
       '@jest/types': 29.6.3
       '@types/stack-utils': 2.0.3
       chalk: 4.1.2
@@ -11191,6 +11186,8 @@ snapshots:
       possible-typed-array-names: 1.0.0
 
   typedarray@0.0.6: {}
+
+  typescript@5.3.3: {}
 
   typescript@5.5.3: {}
 
