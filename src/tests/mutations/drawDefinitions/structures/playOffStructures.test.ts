@@ -5,9 +5,10 @@ import { instanceCount } from '@Tools/arrays';
 import { numericSort } from '@Tools/sorting';
 import { expect, it } from 'vitest';
 
+// Constants and types
+import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '@Constants/resultConstants';
-import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('can generate compass draws', () => {
   let { result, drawDefinition } = playoffDraw({

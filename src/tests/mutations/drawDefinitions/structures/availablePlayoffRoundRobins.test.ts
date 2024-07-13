@@ -7,6 +7,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { xa } from '@Tools/extractAttributes';
 import { expect, it } from 'vitest';
 
+// Constants and fixtures
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
