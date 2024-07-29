@@ -180,7 +180,7 @@
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "tslib": "2.6.3",
-    "typescript": "5.5.3",
+    "typescript": "5.5.4",
     "variable-diff": "2.0.2",
     "vite": "5.3.4",
     "vite-tsconfig-paths": "4.3.2",
