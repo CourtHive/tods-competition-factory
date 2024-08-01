@@ -33,3 +33,6 @@ export { fixtures } from './fixtures';
 // CONSTANTS -------------------------------------------------------------
 export * as factoryConstants from './constants';
 export * from './constants';
+
+// TYPES -----------------------------------------------------------------
+export type * from './types';
