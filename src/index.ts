@@ -35,4 +35,4 @@ export * as factoryConstants from './constants';
 export * from './constants';
 
 // TYPES -----------------------------------------------------------------
-export type * as types from './types';
+export type * from './types';
