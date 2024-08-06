@@ -57,8 +57,8 @@ importers:
         specifier: 0.19.0
         version: 0.19.0(@types/react@18.3.3)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.2.3
-        version: 2.2.3
+        specifier: 2.2.4
+        version: 2.2.4
 
 packages:
 
@@ -4662,7 +4662,7 @@ packages:
   puppeteer@18.2.1:
     resolution: {integrity: sha512-7+UhmYa7wxPh2oMRwA++k8UGVDxh3YdWFB52r9C3tM81T6BU7cuusUSxImz0GEYSOYUKk/YzIhkQ6+vc0gHbxQ==}
     engines: {node: '>=14.1.0'}
-    deprecated: < 22.6.4 is no longer supported
+    deprecated: < 22.8.2 is no longer supported
 
   pure-color@1.3.0:
     resolution: {integrity: sha512-QFADYnsVoBMw1srW7OVKEYjG+MbIa49s54w1MA1EDY6r2r/sTcKKYqRX1f4GYvnXP7eN/Pe9HFcX+hwzmrXRHA==}
@@ -5383,8 +5383,8 @@ packages:
     resolution: {integrity: sha512-DkProJkJ8iwdACc+Fwrd95W9yRlXUlf5x4syvDoGwI4qBebbUdWea7w4qw3uMac1BxBxRnGI7oIAkqbB2X3bTg==}
     engines: {node: '>=20'}
 
-  tods-competition-factory@2.2.3:
-    resolution: {integrity: sha512-XwQjveFY6kC5F7LgjH7txyCk7bzbqB3Qu2y05GODg2nZYXGJHSc8WLgZuG8ac0ea6hG6ZTUtd4WFex9aeeye2g==}
+  tods-competition-factory@2.2.4:
+    resolution: {integrity: sha512-3ONWJN7RCOW81qLUGzaUBpOZhMu76z0ZyRnE//GBO+huNQQCFaAp1ObhjUhHAanv4c8zyQs4uzzH5qG5efhnMw==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -12727,7 +12727,7 @@ snapshots:
 
   tods-competition-factory@2.1.29: {}
 
-  tods-competition-factory@2.2.3: {}
+  tods-competition-factory@2.2.4: {}
 
   toidentifier@1.0.1: {}
 
