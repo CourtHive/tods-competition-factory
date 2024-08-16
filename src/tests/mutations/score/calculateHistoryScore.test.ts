@@ -1,7 +1,8 @@
-import matchUpEngineSync from '@Assemblies/engines/matchUp';
 import { getHistory } from '@Mutate/matchUps/score/history/getHistory';
+import matchUpEngineSync from '@Assemblies/engines/matchUp';
 import { expect, it } from 'vitest';
 
+// Constants and fixtures
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { MATCHUP_HISTORY } from '@Constants/extensionConstants';
 

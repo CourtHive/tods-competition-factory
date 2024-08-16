@@ -2,6 +2,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
+// Constants
 import { DOUBLES } from '@Constants/eventConstants';
 
 test('contextProfile can specify inferGender - works with SINGLES', () => {
@@ -14,9 +15,7 @@ test('contextProfile can specify inferGender - works with SINGLES', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({
-    contextProfile: { inferGender: true },
-  });
+  let { matchUps } = tournamentEngine.allTournamentMatchUps({ contextProfile: { inferGender: true } });
 
   expect(matchUps.map((m) => m.inferredGender).filter(Boolean).length).toBeGreaterThanOrEqual(1);
 
@@ -34,10 +33,7 @@ test('contextProfile can specify inferGender - works with SINGLES', () => {
   igMatchUps = result.matchUps.map((m) => m.inferredGender).filter(Boolean);
   expect(igMatchUps.length).toEqual(0);
 
-  result = tournamentEngine.getParticipants({
-    contextProfile: { inferGender: true },
-    withMatchUps: true,
-  });
+  result = tournamentEngine.getParticipants({ contextProfile: { inferGender: true }, withMatchUps: true });
 
   igMatchUps = result.matchUps.map((m) => m.inferredGender).filter(Boolean);
   expect(igMatchUps.length).toBeGreaterThanOrEqual(1);
@@ -53,9 +49,7 @@ test('contextProfile can specify inferGender - works with DOUBLES', () => {
   });
 
   tournamentEngine.setState(tournamentRecord);
-  let { matchUps } = tournamentEngine.allTournamentMatchUps({
-    contextProfile: { inferGender: true },
-  });
+  let { matchUps } = tournamentEngine.allTournamentMatchUps({ contextProfile: { inferGender: true } });
 
   expect(matchUps.map((m) => m.inferredGender).filter(Boolean).length).toBeGreaterThanOrEqual(1);
 
