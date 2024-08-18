@@ -30,6 +30,7 @@ type CompetitionScheduleMatchUpsArgs = {
   minCourtGridRows?: number;
   usePublishState?: boolean;
   sortCourtsData?: boolean;
+  nextMatchUps?: boolean;
   status?: string;
 };
 
