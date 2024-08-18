@@ -18,6 +18,7 @@ import {
   PolicyDefinitions,
   ScheduleAnalysis,
   ParticipantMap,
+  MatchUpFilters,
 } from '@Types/factoryTypes';
 
 type GetParticipantsArgs = {
@@ -26,6 +27,8 @@ type GetParticipantsArgs = {
   scheduleAnalysis?: ScheduleAnalysis;
   policyDefinitions?: PolicyDefinitions;
   withPotentialMatchUps?: boolean;
+  contextFilters?: MatchUpFilters;
+  matchUpFilters?: MatchUpFilters;
   returnParticipantMap?: boolean; // defaults to true
   contextProfile?: ContextProfile;
   tournamentRecord: Tournament;
@@ -74,8 +77,10 @@ export function getParticipants(params: GetParticipantsArgs): {
     withTeamMatchUps,
     withScaleValues,
     usePublishState,
-    contextProfile,
     withStatistics,
+    contextFilters,
+    matchUpFilters,
+    contextProfile,
     withOpponents,
     withMatchUps,
     internalUse,
@@ -119,6 +124,8 @@ export function getParticipants(params: GetParticipantsArgs): {
     withTeamMatchUps,
     usePublishState,
     withStatistics,
+    contextFilters,
+    matchUpFilters,
     participantMap,
     withOpponents,
     contextProfile,
