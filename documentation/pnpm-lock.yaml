@@ -57,8 +57,8 @@ importers:
         specifier: 0.19.0
         version: 0.19.0(@types/react@18.3.3)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.2.8
-        version: 2.2.8
+        specifier: 2.2.9
+        version: 2.2.9
 
 packages:
 
@@ -6397,19 +6397,6 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-<<<<<<< HEAD
-  tods-competition-factory@2.1.29:
-    resolution: {integrity: sha512-DkProJkJ8iwdACc+Fwrd95W9yRlXUlf5x4syvDoGwI4qBebbUdWea7w4qw3uMac1BxBxRnGI7oIAkqbB2X3bTg==}
-    engines: {node: '>=20'}
-
-  tods-competition-factory@2.2.8:
-    resolution: {integrity: sha512-sjYJvf61Cmdc+u1RBGLwlrYXB+TXfWTCfy3BiWhi8fAXd9a8dDml3sAh56vVkGlCBAaO1wxMQrBevrWtHZpGxQ==}
-=======
-  tods-competition-factory@2.2.7:
-    resolution: {integrity: sha512-4qIu1OfsADoU7WDGMMVlQ7x4Ju1Oh1Wp7i0F0H/0oYNgqelicifNKRPCnSTdZmVbtNeVC1Jnd07OUXKeEoMboA==}
->>>>>>> origin/renovate/courthive-components-0.x-lockfile
-    engines: {node: '>=20'}
-
   tods-competition-factory@2.2.9:
     resolution: {integrity: sha512-8RRQR2VfUkHEv901kNnoTobD7BRkJnWSHYOcz0GamQTMVFlmXXuaguS9SScT0N/xyJDTtxix6YfSTELe7q6PPA==}
     engines: {node: '>=20'}
@@ -9940,7 +9927,7 @@ snapshots:
   '@types/body-parser@1.19.5':
     dependencies:
       '@types/connect': 3.4.38
-      '@types/node': 18.19.44
+      '@types/node': 22.4.0
 
   '@types/bonjour@3.5.11':
     dependencies:
@@ -9957,7 +9944,7 @@ snapshots:
 
   '@types/connect@3.4.38':
     dependencies:
-      '@types/node': 18.19.44
+      '@types/node': 22.4.0
 
   '@types/cross-spawn@6.0.6':
     dependencies:
@@ -10005,7 +9992,7 @@ snapshots:
 
   '@types/express-serve-static-core@4.19.5':
     dependencies:
-      '@types/node': 18.19.44
+      '@types/node': 22.4.0
       '@types/qs': 6.9.15
       '@types/range-parser': 1.2.7
       '@types/send': 0.17.4
@@ -10146,7 +10133,7 @@ snapshots:
   '@types/send@0.17.4':
     dependencies:
       '@types/mime': 1.3.5
-      '@types/node': 18.19.44
+      '@types/node': 22.4.0
 
   '@types/serve-index@1.9.1':
     dependencies:
@@ -10161,7 +10148,7 @@ snapshots:
   '@types/serve-static@1.15.7':
     dependencies:
       '@types/http-errors': 2.0.4
-      '@types/node': 18.19.44
+      '@types/node': 22.4.0
       '@types/send': 0.17.4
 
   '@types/sockjs@0.3.33':
@@ -15117,14 +15104,6 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
-
-<<<<<<< HEAD
-  tods-competition-factory@2.1.29: {}
-
-  tods-competition-factory@2.2.8: {}
-=======
-  tods-competition-factory@2.2.7: {}
->>>>>>> origin/renovate/courthive-components-0.x-lockfile
 
   tods-competition-factory@2.2.9: {}
 
