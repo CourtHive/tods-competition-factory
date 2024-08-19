@@ -2,6 +2,7 @@ import { modifyDrawNotice, modifyMatchUpNotice } from '@Mutate/notifications/dra
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { copyTieFormat } from '@Query/hierarchical/tieFormats/copyTieFormat';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { getTieFormat } from '@Query/hierarchical/getTieFormat';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { findStructure } from '@Acquire/findStructure';
 import { isConvertableInteger } from '@Tools/math';
@@ -15,7 +16,7 @@ import { TEAM } from '@Constants/matchUpTypes';
 
 function getOrderedTieFormat({ tieFormat, orderMap }) {
   const orderedTieFormat = copyTieFormat(tieFormat);
-  orderedTieFormat.collectionDefinitions.forEach((collectionDefinition) => {
+  orderedTieFormat.collectionDefinitions?.forEach((collectionDefinition) => {
     const collectionOrder = orderMap[collectionDefinition.collectionId];
     if (collectionOrder) collectionDefinition.collectionOrder = collectionOrder;
   });
@@ -54,6 +55,10 @@ export function orderCollectionDefinitions({
       context: { orderMap },
     });
 
+  const result = structureId ? findStructure({ drawDefinition, structureId }) : undefined;
+  if (result?.error) return result;
+  const structure = result?.structure;
+
   if (eventId && event?.tieFormat) {
     updateEventTieFormat({ tournamentRecord, event, orderMap });
   } else if (matchUpId) {
@@ -69,23 +74,19 @@ export function orderCollectionDefinitions({
     matchUp = result.matchUp;
     if (!matchUp) return { error: MISSING_MATCHUP };
 
-    if (matchUp?.tieFormat) {
-      matchUp.tieFormat = getOrderedTieFormat({
-        tieFormat: matchUp.tieFormat,
-        orderMap,
-      });
-      modifyMatchUpNotice({
-        tournamentId: tournamentRecord?.tournamentId,
-        eventId: event?.eventId,
-        drawDefinition,
-        matchUp,
-      });
-    }
-  } else if (structureId) {
-    const result = findStructure({ drawDefinition, structureId });
-    if (result.error) return result;
-    const structure = result.structure;
+    const tieFormat = getTieFormat({ tournamentRecord, matchUpId, structure, drawDefinition, event })?.tieFormat;
 
+    matchUp.tieFormat = getOrderedTieFormat({
+      tieFormat,
+      orderMap,
+    });
+    modifyMatchUpNotice({
+      tournamentId: tournamentRecord?.tournamentId,
+      eventId: event?.eventId,
+      drawDefinition,
+      matchUp,
+    });
+  } else if (structureId) {
     if (structure?.tieFormat) {
       structure.tieFormat = getOrderedTieFormat({
         tieFormat: structure.tieFormat,
