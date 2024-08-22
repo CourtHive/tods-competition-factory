@@ -480,13 +480,7 @@
     },
     "DisciplineEnum": {
       "type": "string",
-      "enum": [
-        "BEACH_TENNIS",
-        "PADEL",
-        "PICKLEBALL",
-        "TENNIS",
-        "WHEELCHAIR_TENNIS"
-      ]
+      "enum": ["BEACH_TENNIS", "PADEL", "PICKLEBALL", "TENNIS", "WHEELCHAIR_TENNIS"]
     },
     "DrawDefinition": {
       "type": "object",
@@ -677,13 +671,7 @@
     },
     "StageTypeEnum": {
       "type": "string",
-      "enum": [
-        "CONSOLATION",
-        "MAIN",
-        "PLAY_OFF",
-        "QUALIFYING",
-        "VOLUNTARY_CONSOLATION"
-      ]
+      "enum": ["CONSOLATION", "MAIN", "PLAY_OFF", "QUALIFYING", "VOLUNTARY_CONSOLATION"]
     },
     "EntryStatusEnum": {
       "type": "string",
@@ -862,14 +850,7 @@
     },
     "PositioningProfileEnum": {
       "type": "string",
-      "enum": [
-        "BOTTOM_UP",
-        "DRAW",
-        "LOSS_POSITION",
-        "RANDOM",
-        "TOP_DOWN",
-        "WATERFALL"
-      ]
+      "enum": ["BOTTOM_UP", "DRAW", "LOSS_POSITION", "RANDOM", "TOP_DOWN", "WATERFALL"]
     },
     "SeedingProfileEnum": {
       "type": "string",
@@ -1415,13 +1396,7 @@
     },
     "CourtPositionEnum": {
       "type": "string",
-      "enum": [
-        "BASELINE",
-        "LEFT_SERVICE_COURT",
-        "NET",
-        "RIGHT_SERVICE_COURT",
-        "SERVICELINE"
-      ]
+      "enum": ["BASELINE", "LEFT_SERVICE_COURT", "NET", "RIGHT_SERVICE_COURT", "SERVICELINE"]
     },
     "ShotDetailEnum": {
       "type": "string",
@@ -1448,16 +1423,7 @@
     },
     "WinReasonEnum": {
       "type": "string",
-      "enum": [
-        "ACE",
-        "DOUBLE_FAULT",
-        "ERROR",
-        "FORCED",
-        "NET_CORD",
-        "PENALTY",
-        "UNFORCED",
-        "WINNER"
-      ]
+      "enum": ["ACE", "DOUBLE_FAULT", "ERROR", "FORCED", "NET_CORD", "PENALTY", "UNFORCED", "WINNER"]
     },
     "Side": {
       "type": "object",
@@ -2047,16 +2013,7 @@
     },
     "TournamentLevelEnum": {
       "type": "string",
-      "enum": [
-        "INTERNATIONAL",
-        "ZONAL",
-        "LOCAL",
-        "NATIONAL",
-        "REGIONAL",
-        "DISTRICT",
-        "CLUB",
-        "RECREATIONAL"
-      ]
+      "enum": ["INTERNATIONAL", "ZONAL", "LOCAL", "NATIONAL", "REGIONAL", "DISTRICT", "CLUB", "RECREATIONAL"]
     },
     "TournamentStatusEnum": {
       "type": "string",
@@ -2571,17 +2528,7 @@
     },
     "ParticipantRoleEnum": {
       "type": "string",
-      "enum": [
-        "ADMINISTRATION",
-        "CAPTAIN",
-        "COACH",
-        "COMPETITOR",
-        "MEDIA",
-        "MEDICAL",
-        "OFFICIAL",
-        "OTHER",
-        "SECURITY"
-      ]
+      "enum": ["ADMINISTRATION", "CAPTAIN", "COACH", "COMPETITOR", "MEDIA", "MEDICAL", "OFFICIAL", "OTHER", "SECURITY"]
     },
     "ParticipantStatusEnum": {
       "type": "string",
@@ -2999,7 +2946,7 @@
     },
     "OrganisationTypeEnum": {
       "type": "string",
-      "enum": ["NATIONAL_ASSOCIATION", "SCHOOL", "CLUB"]
+      "enum": ["NATIONAL_ASSOCIATION", "SCHOOL", "SECTION", "AREA", "DISTRICT", "CLUB", "OTHER"]
     },
     "RegistrationProfile": {
       "type": "object",

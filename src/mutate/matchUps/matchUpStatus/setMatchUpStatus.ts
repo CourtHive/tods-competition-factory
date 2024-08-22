@@ -29,6 +29,7 @@ type SetMatchUpStatusArgs = {
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
   tournamentId?: string;
+  setTBlast?: boolean;
   matchUpId: string;
   eventId?: string;
   drawId?: string;
@@ -83,7 +84,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     (policy?.allowChangePropagation !== undefined && policy.allowChangePropagation) ||
     undefined;
 
-  const { outcome } = params;
+  const { outcome, setTBlast } = params;
 
   if (outcome?.winningSide && ![1, 2].includes(outcome.winningSide)) {
     return { error: INVALID_WINNING_SIDE };
@@ -101,7 +102,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   }
 
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
-    const { score: scoreObject } = matchUpScore(outcome);
+    const { score: scoreObject } = matchUpScore({ ...outcome, setTBlast });
     outcome.score = scoreObject;
     outcome.score.sets = outcome.score.sets.filter(
       (set) => set.side1Score || set.side2Score || set.side1TiebreakScore || set.side2TiebreakScore,

@@ -9,7 +9,7 @@ import { getTournamentId } from '@Global/state/globalState';
 
 // constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
-import { MatchUpFilters, TournamentRecords } from '@Types/factoryTypes';
+import { MatchUpFilters, PolicyDefinitions, TournamentRecords } from '@Types/factoryTypes';
 import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
@@ -18,6 +18,7 @@ import { Venue } from '@Types/tournamentTypes';
 
 type CompetitionScheduleMatchUpsArgs = {
   tournamentRecords: TournamentRecords;
+  policyDefinitions?: PolicyDefinitions;
   courtCompletedMatchUps?: boolean;
   alwaysReturnCompleted?: boolean;
   contextFilters?: MatchUpFilters;
@@ -29,6 +30,7 @@ type CompetitionScheduleMatchUpsArgs = {
   minCourtGridRows?: number;
   usePublishState?: boolean;
   sortCourtsData?: boolean;
+  nextMatchUps?: boolean;
   status?: string;
 };
 

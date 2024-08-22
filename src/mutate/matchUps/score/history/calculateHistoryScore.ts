@@ -4,6 +4,7 @@ import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { isConvertableInteger } from '@Tools/math';
 import { getHistory } from './getHistory';
 
+// Constants
 import { SUCCESS } from '@Constants/resultConstants';
 import {
   INVALID_MATCHUP_FORMAT,
@@ -91,8 +92,8 @@ export function calculateHistoryScore(params) {
       tiebreakServingSide = undefined;
       sidePoints = [0, 0];
       servingSide = 3 - servingSide;
-      set.side1TiebreakScore = 0;
-      set.side2TiebreakScore = 0;
+      set.side1TiebreakScore = '';
+      set.side2TiebreakScore = '';
       set.side1PointScore = '';
       set.side2PointScore = '';
       faults = 0;

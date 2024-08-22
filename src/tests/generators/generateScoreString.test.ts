@@ -37,10 +37,10 @@ test('can generate matchUp set scores with set tiebreak', () => {
     },
     { side1Score: 3 },
   ];
-  let result = generateScoreString({ sets, autoComplete: true });
+  let result = generateScoreString({ setTBlast: false, sets, autoComplete: true });
   expect(result).toEqual('6(3)-7 7-6(12) 3-0');
 
-  result = generateScoreString({ sets, autoComplete: true, reversed: true });
+  result = generateScoreString({ setTBlast: false, sets, autoComplete: true, reversed: true });
   expect(result).toEqual('7-6(3) 6(12)-7 0-3');
 });
 
@@ -63,20 +63,22 @@ test('can append a scoreString outcome', () => {
     { side1Score: 3 },
   ];
   let result = generateScoreString({
-    sets,
-    winningSide: 1,
-    autoComplete: true,
     matchUpStatus: RETIRED,
     addOutcomeString: true,
+    autoComplete: true,
+    setTBlast: false,
+    winningSide: 1,
+    sets,
   });
   expect(result).toEqual('6(3)-7 7-6(12) 3-0 RET');
   result = generateScoreString({
-    sets,
-    winningSide: 1,
-    autoComplete: true,
-    matchUpStatus: RETIRED,
-    reversed: true,
     addOutcomeString: true,
+    matchUpStatus: RETIRED,
+    autoComplete: true,
+    setTBlast: false,
+    winningSide: 1,
+    reversed: true,
+    sets,
   });
   expect(result).toEqual('7-6(3) 6(12)-7 0-3 RET');
 });
@@ -105,6 +107,7 @@ test('can prepend a scoreString outcome', () => {
     autoComplete: true,
     matchUpStatus: RETIRED,
     addOutcomeString: true,
+    setTBlast: false,
   });
   expect(result).toEqual('RET 7-6(3) 6(12)-7 0-3');
 });
@@ -126,7 +129,7 @@ test('can generate with winningSide perspective', () => {
       winningSide: 2,
     },
   ];
-  const result = generateScoreString({ sets, winningSide: 2 });
+  const result = generateScoreString({ setTBlast: false, sets, winningSide: 2 });
   expect(result).toEqual('7-6(3) 7-6(12)');
 });
 
@@ -151,6 +154,7 @@ test('can ignore winningSide perspective', () => {
     sets,
     winningSide: 2,
     winnerFirst: false,
+    setTBlast: false,
   });
   expect(result).toEqual('6(3)-7 6(12)-7');
 });
@@ -175,7 +179,7 @@ test('properly sorts set results', () => {
     },
     { side1Score: 3 },
   ];
-  const result = generateScoreString({ sets, autoComplete: true });
+  const result = generateScoreString({ setTBlast: false, sets, autoComplete: true });
   expect(result).toEqual('7-6(12) 6(3)-7 3-0');
 });
 
@@ -199,7 +203,7 @@ test('generate incomplete scoreString string', () => {
     },
     { side1Score: 3 },
   ];
-  const result = generateScoreString({ sets, autoComplete: false });
+  const result = generateScoreString({ setTBlast: false, sets, autoComplete: false });
   expect(result).toEqual('7-6(12) 6(3)-7 3-');
 });
 

@@ -1,6 +1,7 @@
-import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
+import { generateScoreString } from '@Assemblies/generators/matchUps/generateScoreString';
 import { analyzeMatchUp } from '@Query/matchUp/analyzeMatchUp';
 
+// Constants
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 
 function generateSetScores(setValues) {

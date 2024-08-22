@@ -10,7 +10,7 @@ import { INVALID_VALUES } from '@Constants/errorConditionConstants';
  * Generates TODS score object from parseable score string
  */
 export function generateOutcomeFromScoreString(params) {
-  const { matchUpFormat, matchUpStatus, winningSide, scoreString } = params;
+  const { matchUpFormat, matchUpStatus, winningSide, scoreString, setTBlast } = params;
   if (!scoreString)
     return {
       outcome: {
@@ -26,11 +26,13 @@ export function generateOutcomeFromScoreString(params) {
   const winningScoreString = generateScoreString({
     sets: neutralParsedSets,
     matchUpFormat,
+    setTBlast,
   });
   const losingScoreString = generateScoreString({
     sets: neutralParsedSets,
     reversed: true,
     matchUpFormat,
+    setTBlast,
   });
   if (winningSide === 2) {
     score.scoreStringSide1 = losingScoreString;

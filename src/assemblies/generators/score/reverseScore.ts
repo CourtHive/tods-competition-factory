@@ -1,8 +1,9 @@
 import { generateScoreString } from '../matchUps/generateScoreString';
 import { definedAttributes } from '@Tools/definedAttributes';
 
-import { SUCCESS } from '@Constants/resultConstants';
+// Contants
 import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function reverseScore(params?): {
   reversedScore?: any;
@@ -22,10 +23,13 @@ export function reverseScore(params?): {
       setNumber,
     });
   });
-  const scoreStringSide1 = generateScoreString({ sets: reversedSets });
+
+  const setTBlast = params?.setTBlast;
+  const scoreStringSide1 = generateScoreString({ setTBlast, sets: reversedSets });
   const scoreStringSide2 = generateScoreString({
     sets: reversedSets,
     reversed: true,
+    setTBlast,
   });
 
   return {

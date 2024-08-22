@@ -21,6 +21,7 @@ type GenerateScoreString = {
   matchUpFormat?: string;
   winnerFirst?: boolean;
   winningSide?: number;
+  setTBlast?: boolean;
   reversed?: boolean;
   sets: any;
 };
@@ -29,6 +30,7 @@ export function generateScoreString(
 ): string | { error?: ErrorType; info?: ErrorType | string } {
   const {
     winnerFirst = true,
+    setTBlast = true,
     addOutcomeString,
     reversed = false,
     matchUpStatus,
@@ -65,30 +67,32 @@ export function generateScoreString(
     const hasGameScores = (set) => isNumeric(set?.side1Score) || isNumeric(set?.side2Score);
     const hasTiebreakScores = (set) => isNumeric(set?.side1TiebreakScore) || isNumeric(set?.side2TiebreakScore);
 
-    const isTiebreakSet = format?.tiebreakSet || (!hasGameScores(currentSet) && hasTiebreakScores(currentSet));
+    const tbscores = hasTiebreakScores(currentSet);
+    const isTiebreakSet = format?.tiebreakSet || (!hasGameScores(currentSet) && tbscores);
 
     const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } = currentSet;
 
-    const t1 = side1TiebreakScore || (isNumeric(side1TiebreakScore) || autoComplete ? 0 : '');
-    const t2 = side2TiebreakScore || (isNumeric(side2TiebreakScore) || autoComplete ? 0 : '');
+    const t1 = side1TiebreakScore || (isNumeric(side1TiebreakScore) || (tbscores && autoComplete) ? 0 : '');
+    const t2 = side2TiebreakScore || (isNumeric(side2TiebreakScore) || (tbscores && autoComplete) ? 0 : '');
 
     if (isTiebreakSet) {
       const tiebreakScore = reverseScores ? [t2, t1] : [t1, t2];
       return `[${tiebreakScore.join('-')}]`;
     }
 
-    const lowTiebreakScore = Math.min(t1, t2);
+    const lowTiebreakScore = tbscores ? Math.min(t1, t2) : '';
     const lowTiebreakSide = lowTiebreakScore === t1 ? 1 : 2;
-    const tiebreak = lowTiebreakScore ? `(${lowTiebreakScore})` : '';
+    const tiebreak = isNumeric(lowTiebreakScore) ? `(${lowTiebreakScore})` : '';
 
     const s1 = side1Score || (isNumeric(side1Score) || autoComplete ? 0 : '');
     const s2 = side2Score || (isNumeric(side2Score) || autoComplete ? 0 : '');
 
-    const includeTiebreak = (sideNumber) => (lowTiebreakSide === sideNumber ? tiebreak : '');
+    const includeTiebreak = (sideNumber) => (!setTBlast && lowTiebreakSide === sideNumber ? tiebreak : '');
     const ss1 = `${s1}${includeTiebreak(1)}`;
     const ss2 = `${s2}${includeTiebreak(2)}`;
 
-    let scoreString = reverseScores ? `${[ss2, ss1].join('-')}` : `${[ss1, ss2].join('-')}`;
+    const tbLast = setTBlast && tbscores ? `(${lowTiebreakScore})` : '';
+    let scoreString = reverseScores ? `${[ss2, ss1].join('-')}${tbLast}` : `${[ss1, ss2].join('-')}${tbLast}`;
 
     if (['-', ' '].includes(scoreString)) scoreString = '';
     return scoreString;

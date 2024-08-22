@@ -1,7 +1,7 @@
 import { generateScoreString } from './generateScoreString';
 
 export function matchUpScore(params) {
-  const { matchUpFormat, matchUpStatus, winningSide, score } = params;
+  const { matchUpFormat, matchUpStatus, winningSide, score, setTBlast } = params;
   if (!score) return { sets: [] };
 
   const sets = score.sets || [];
@@ -10,6 +10,7 @@ export function matchUpScore(params) {
     winnerFirst: false,
     matchUpFormat,
     matchUpStatus,
+    setTBlast,
     sets,
   });
 
@@ -18,6 +19,7 @@ export function matchUpScore(params) {
     reversed: true,
     matchUpFormat,
     matchUpStatus,
+    setTBlast,
     sets,
   });
 
@@ -25,6 +27,7 @@ export function matchUpScore(params) {
     matchUpFormat,
     matchUpStatus,
     winningSide,
+    setTBlast,
     sets,
   });
 
@@ -35,11 +38,5 @@ export function matchUpScore(params) {
     scoreStringSide2 = winningSide === 2 ? winnerPerspective : loserPerspective;
   }
 
-  return {
-    score: {
-      sets,
-      scoreStringSide1,
-      scoreStringSide2,
-    },
-  };
+  return { score: { sets, scoreStringSide1, scoreStringSide2 } };
 }
