@@ -62,7 +62,7 @@ export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: Sc
     // for each time group, sort sub-structure group matchUps by round number
     for (const timeKey of Object.keys(timeGroups)) {
       const timeGroup = timeGroups[timeKey];
-      const sortedTimeGroup = timeGroup.sort((a, b) => a['roundNumber'] || 0 - b['roundNumber'] || 0);
+      const sortedTimeGroup = timeGroup.sort((a, b) => (a['roundNumber'] || 0) - (b['roundNumber'] || 0));
       timeGroups[timeKey] = sortedTimeGroup;
     }
 
