@@ -59,6 +59,13 @@ export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: Sc
       timeGroups[scheduledTime].push(matchUp);
     }
 
+    // for each time group, sort sub-structure group matchUps by round number
+    for (const timeKey of Object.keys(timeGroups)) {
+      const timeGroup = timeGroups[timeKey];
+      const sortedTimeGroup = timeGroup.sort((a, b) => a['roundNumber'] || 0 - b['roundNumber'] || 0);
+      timeGroups[timeKey] = sortedTimeGroup;
+    }
+
     // this works because all times are strings '00:00' and 'noScheduledTime' sorts to last after numeric strings
     const sortedTimeKeys = Object.keys(timeGroups).sort();
 
