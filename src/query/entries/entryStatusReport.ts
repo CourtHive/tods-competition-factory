@@ -1,20 +1,22 @@
-import { allTournamentMatchUps } from '../matchUps/getAllTournamentMatchUps';
-import { getParticipants } from '../participants/getParticipants';
-import { getDetailsWTN } from '../scales/getDetailsWTN';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
+import { getParticipants } from '@Query/participants/getParticipants';
+import { getDetailsWTN } from '@Query/scales/getDetailsWTN';
 
+// Constants and Types
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { WITHDRAW_PARTICIPANT } from '@Constants/positionActionConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 import { DOUBLES_EVENT } from '@Constants/eventConstants';
-import { Tournament } from '@Types/tournamentTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
+import { Tournament } from '@Types/tournamentTypes';
 
 type GetEntryStatusReportsArgs = {
   tournamentRecord: Tournament;
 };
+
 export function getEntryStatusReports({ tournamentRecord }: GetEntryStatusReportsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
