@@ -156,7 +156,7 @@
     "eslint-import-resolver-typescript": "3.6.3",
     "eslint-module-utils": "2.8.2",
     "eslint-plugin-compat": "6.0.0",
-    "eslint-plugin-import": "2.29.1",
+    "eslint-plugin-import": "2.30.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-sonarjs": "2.0.2",
     "esm": "3.2.25",
