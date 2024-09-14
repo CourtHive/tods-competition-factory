@@ -1,3 +1,4 @@
+import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 import { addIndividualParticipants } from '@Query/participants/addIndividualParticipants';
 import { addNationalityCode } from '@Query/participants/addNationalityCode';
 import { getScaleValues } from '@Query/participant/getScaleValues';
@@ -10,7 +11,6 @@ import { GROUP, PAIR, SIGNED_IN, SIGN_IN_STATUS, TEAM } from '@Constants/partici
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { ParticipantMap } from '@Types/factoryTypes';
 import { Tournament } from '@Types/tournamentTypes';
-import { addParticipantGroupings } from '@Query/drawDefinition/avoidance/addParticipantGroupings';
 
 const typeMap = {
   [GROUP]: 'groupParticipantIds',
