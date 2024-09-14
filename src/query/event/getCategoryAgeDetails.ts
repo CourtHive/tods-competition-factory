@@ -1,9 +1,10 @@
+import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '@Tools/dateTime';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { isNumeric } from '@Tools/math';
-import { dateStringDaysChange, extractDate, isValidDateString, zeroPad } from '@Tools/dateTime';
 
-import { Category } from '@Types/tournamentTypes';
+// Constants and types
 import { INVALID_CATEGORY, INVALID_DATE } from '@Constants/errorConditionConstants';
+import { Category } from '@Types/tournamentTypes';
 
 const typeMatch = (arr, type) => arr.filter(Boolean).every((i) => typeof i === type);
 const allNumeric = (arr) => arr.filter(Boolean).every(isNumeric);
@@ -22,21 +23,20 @@ export function getCategoryAgeDetails(params: ParseArgs) {
   const categoryName = category.categoryName;
   let combinedAge;
 
-  if (
-    !typeMatch([ageCategoryCode, ageMaxDate, ageMinDate, categoryName], 'string') ||
-    !allNumeric([ageMax, ageMin] || ![ageMaxDate, ageMinDate].filter(Boolean).every(isValidDateString))
-  )
-    return { error: INVALID_CATEGORY };
+  const isValidCategory =
+    typeMatch([ageCategoryCode, ageMaxDate, ageMinDate, categoryName], 'string') &&
+    allNumeric([ageMax, ageMin]) &&
+    [ageMaxDate, ageMinDate].filter(Boolean).every(isValidDateString);
+
+  if (!isValidCategory) return { error: INVALID_CATEGORY };
 
   const consideredDate = params.consideredDate ?? extractDate(new Date().toLocaleDateString('sv'));
   if (!isValidDateString(consideredDate)) return { error: INVALID_DATE };
 
-  // const [consideredYear, month, day] = consideredDate
   const [consideredYear] = consideredDate
     .split('-')
     .slice(0, 3)
     .map((n) => parseInt(n));
-  // const monthDay = `${zeroPad(month)}-${zeroPad(day)}`;
 
   const previousDayDate = dateStringDaysChange(consideredDate, -1);
   const [previousDayMonth, previousDay] = previousDayDate
