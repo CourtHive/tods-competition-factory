@@ -106,5 +106,6 @@ it('can use drawProfiles to generate gendered DOUBLES event', () => {
     returnParticipantMap: true,
   });
   expect(result.participants[0].individualParticipants.length).toEqual(2);
+  // Do not expect the individualParticipant to be included in the participantMap
   expect(result.participantMap[result.participants[0].participantId].participant.individualParticipant).toBeUndefined();
 });

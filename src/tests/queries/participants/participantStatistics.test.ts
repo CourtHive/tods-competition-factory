@@ -1,9 +1,10 @@
-import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import { WIN_RATIO } from '@Constants/statsConstants';
+// Constants and types
 import { HydratedParticipant } from '@Types/hydrated';
+import { WIN_RATIO } from '@Constants/statsConstants';
 
 const scenarios = [{ drawProfiles: [{ drawSize: 8 }], matchUpsCount: 7 }];
 
@@ -46,16 +47,7 @@ test.each(scenarios)('it can calculate new ratings given matchUp results', ({ dr
     const winRatio = participant.statistics.find(({ statCode }) => statCode === WIN_RATIO);
     const matchUpsCount = participant.matchUps.length;
     expect(winRatio.denominator).toEqual(matchUpsCount);
-    const {
-      /*
-        counters: {
-          wins,
-          losses,
-          [SINGLES]: { wins: singlesWins, losses: singlesLosses },
-        },
-	*/
-      statistics,
-    } = participantMap[participant.participantId];
+    const { statistics } = participantMap[participant.participantId];
     expect(statistics[WIN_RATIO].denominator).toEqual(matchUpsCount);
   }
 });
