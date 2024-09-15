@@ -125,7 +125,7 @@ export function addMatchUpContext({
 
   const matchUpFormat = matchUp.collectionId
     ? collectionDefinition?.matchUpFormat
-    : matchUp.matchUpFormat ?? structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat;
+    : (matchUp.matchUpFormat ?? structure?.matchUpFormat ?? drawDefinition?.matchUpFormat ?? event?.matchUpFormat);
 
   const matchUpType =
     matchUp.matchUpType ||
@@ -183,7 +183,7 @@ export function addMatchUpContext({
         ...(context?.category || {}),
         ...collectionDefinition.category,
       }
-    : context?.category ?? event?.category;
+    : (context?.category ?? event?.category);
 
   const processCodes =
     (matchUp.processCodes?.length && matchUp.processCodes) ||

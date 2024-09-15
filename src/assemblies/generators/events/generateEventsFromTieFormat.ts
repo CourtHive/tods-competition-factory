@@ -71,7 +71,7 @@ export function generateEventsFromTieFormat(params: GenerateEventsFromTieFormatA
       const participantIds =
         eventGender === MIXED
           ? [...genderedParticipants[MALE], ...genderedParticipants[FEMALE]]
-          : genderedParticipants[eventGender] ?? [];
+          : (genderedParticipants[eventGender] ?? []);
 
       if (participantIds.length) {
         const result = addEventEntries({

@@ -57,7 +57,7 @@ export function copyTournamentRecord(params: CopyTournamentRecordArgs) {
   };
 
   const tournamentRecord = {
-    participants: params.copyParticipants ? params.tournamentRecord.participants?.map(copyParticipant) ?? [] : [],
+    participants: params.copyParticipants ? (params.tournamentRecord.participants?.map(copyParticipant) ?? []) : [],
     parentOrganisation: makeDeepCopy({ ...params.tournamentRecord.parentOrganisation }, false, true),
     venues: makeDeepCopy(params.tournamentRecord.venues ?? [], false, true), // TODO: update court dateAvailability
     extensions: filteredExtensions(params.tournamentRecord.extensions),

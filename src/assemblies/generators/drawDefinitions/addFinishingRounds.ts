@@ -75,7 +75,7 @@ export function addFinishingRounds({
         const upcomingMatchUps = roundMatchUpsCountArray?.slice(roundNumber - 1).reduce((a, b) => a + (b || 0), 0);
         // in the case of FMLC the finishingPositionRange in consolation is not modified after first fed round
         const fmlcException = fmlc && roundNumber !== 1;
-        const rangeOffset = 1 + finishingPositionOffset + (fmlcException ? positionsFed ?? 0 : 0);
+        const rangeOffset = 1 + finishingPositionOffset + (fmlcException ? (positionsFed ?? 0) : 0);
         const finalPosition = 1;
         const positionRange = generateRange(
           rangeOffset,

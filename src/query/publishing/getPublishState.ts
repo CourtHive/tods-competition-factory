@@ -129,7 +129,7 @@ function getPubStatus({ event }): any {
     Object.keys(drawDetails).length &&
     Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId }));
 
-  const publishedDrawIds = drawDetailPublishedIds?.length ? drawDetailPublishedIds : eventPubStatus.drawIds ?? [];
+  const publishedDrawIds = drawDetailPublishedIds?.length ? drawDetailPublishedIds : (eventPubStatus.drawIds ?? []);
 
   // support legacy data where drawIds are not present in drawDetails
   if (publishedDrawIds?.length && !drawDetailPublishedIds?.length) {

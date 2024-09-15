@@ -68,20 +68,20 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const matchUps =
     includeEventParticipants && event
-      ? allEventMatchUps({
+      ? (allEventMatchUps({
           contextFilters: { stages },
           matchUpFilters: eventMatchUpFilters,
           tournamentRecord,
           inContext: true,
           event,
-        })?.matchUps ?? []
-      : allDrawMatchUps({
+        })?.matchUps ?? [])
+      : (allDrawMatchUps({
           contextFilters: { stages },
           matchUpFilters: drawMatchUpFilters,
           tournamentRecord,
           inContext: true,
           drawDefinition,
-        })?.matchUps ?? [];
+        })?.matchUps ?? []);
 
   const voluntaryConsolationEntries = getStageEntries({
     stage: VOLUNTARY_CONSOLATION,

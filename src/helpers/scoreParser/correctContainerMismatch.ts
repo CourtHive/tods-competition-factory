@@ -23,9 +23,7 @@ export function correctContainerMismatch(score) {
         if (!domain.includes(type)) {
           if (!typeCount[type]) lastType = '';
           return complement;
-        } else {
-          if (!typeCount[lastType]) lastType = '';
-        }
+        } else if (!typeCount[lastType]) lastType = '';
       }
 
       return char;

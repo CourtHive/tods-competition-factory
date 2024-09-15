@@ -50,7 +50,7 @@ export function getRoundContextProfile({
     : 0;
 
   const preQualifyingSequence =
-    (structure.stageSequence ?? 1) < qualifyingStageSequences ? structure.stageSequence ?? 1 : '';
+    (structure.stageSequence ?? 1) < qualifyingStageSequences ? (structure.stageSequence ?? 1) : '';
 
   const preQualifyingAffix = preQualifyingSequence
     ? roundNamingPolicy?.affixes?.preQualifying || defaultRoundNamingPolicy.affixes.preQualifying || ''

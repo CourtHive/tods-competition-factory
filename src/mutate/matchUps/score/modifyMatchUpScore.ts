@@ -158,11 +158,11 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
         // matchUpFormat set here is only used in updateAssignmentParticipantResults
         matchUpFormat = isDualMatchUp
           ? 'SET1-S:T100'
-          : matchUpFormat ??
+          : (matchUpFormat ??
             matchUp.matchUpFormat ??
             structure?.matchUpFormat ??
             drawDefinition?.matchUpFormat ??
-            event?.matchUpFormat;
+            event?.matchUpFormat);
 
         const matchUpFilters = isDualMatchUp ? { matchUpTypes: [TEAM] } : undefined;
         const { matchUps } = getAllStructureMatchUps({
