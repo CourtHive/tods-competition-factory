@@ -83,51 +83,32 @@ export function tournamentRelevantSchedulingIds(params) {
     tournamentIds.push(tournamentId);
     tournamentMap[tournamentId] = {};
     const events = tournamentRecord?.events || [];
-    events.forEach((event) => {
+    for (const event of events) {
       const eventId = event.eventId;
       eventIds.push(eventId);
       tournamentMap[tournamentId][eventId] = {};
       const mapParsedInt = (roundNumber) => parseInt(roundNumber);
-      const processDraw = (drawDefinition) => {
+      for (const drawDefinition of event.drawDefinitions || []) {
         const drawId = drawDefinition.drawId;
         drawIds.push(drawId);
         tournamentMap[tournamentId][eventId][drawId] = {};
         const { structures } = getDrawStructures({ drawDefinition });
-        const mapStructure = (structure) => {
+        for (const structure of structures || []) {
           const structureId = structure.structureId;
           const { matchUps } = getAllStructureMatchUps({ structure });
           const { roundMatchUps } = getRoundMatchUps({ matchUps });
           const rounds = roundMatchUps && Object.keys(roundMatchUps).map(mapParsedInt);
-
           tournamentMap[tournamentId][eventId][drawId][structureId] = rounds;
-
           structureIds.push(structureId);
           if (structure.structures?.length) {
-            structure.structures.forEach((itemStructure) => {
+            for (const itemStructure of structure.structures) {
               structureIds.push(itemStructure.structureId);
               tournamentMap[tournamentId][eventId][drawId][itemStructure.structureId] = rounds;
-            });
+            }
           }
-        };
-        (structures || []).forEach((structure) => {
-          const structureId = structure.structureId;
-          const { matchUps } = getAllStructureMatchUps({ structure });
-          const { roundMatchUps } = getRoundMatchUps({ matchUps });
-          const rounds = roundMatchUps && Object.keys(roundMatchUps).map(mapParsedInt);
-
-          tournamentMap[tournamentId][eventId][drawId][structureId] = rounds;
-
-          structureIds.push(structureId);
-          if (structure.structures?.length) {
-            structure.structures.forEach((itemStructure) => {
-              structureIds.push(itemStructure.structureId);
-              tournamentMap[tournamentId][eventId][drawId][itemStructure.structureId] = rounds;
-            });
-          }
-        });
-      };
-      (event.drawDefinitions || []).forEach(processDraw);
-    });
+        }
+      }
+    }
   }
 
   return {
