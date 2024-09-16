@@ -130,7 +130,7 @@ export function JSON2CSV(arrayOfJSON?, config?): any {
     (columnName) => !tranformedHeaderRow.includes(columnName) && tranformedHeaderRow.unshift(columnName),
   );
 
-  typeof context === 'object' &&
+  if (typeof context === 'object')
     Object.keys(context).forEach(
       (columnName) => !tranformedHeaderRow.includes(columnName) && tranformedHeaderRow.unshift(columnName),
     );
