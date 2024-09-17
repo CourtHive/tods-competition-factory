@@ -156,19 +156,8 @@ export interface TimeItem {
   itemValue?: any;
 }
 
-enum CategoryEnum {
-  AGE = 'AGE',
-  BOTH = 'BOTH',
-  LEVEL = 'LEVEL',
-}
-export type CategoryUnion = keyof typeof CategoryEnum;
-
-enum DisciplineEnum {
-  BEACH_TENNIS = 'BEACH_TENNIS',
-  TENNIS = 'TENNIS',
-  WHEELCHAIR_TENNIS = 'WHEELCHAIR_TENNIS',
-}
-export type DisciplineUnion = keyof typeof DisciplineEnum;
+export type DisciplineUnion = 'BEACH_TENNIS' | 'TENNIS' | 'WHEELCHAIR_TENNIS';
+export type CategoryUnion = 'AGE' | 'BOTH' | 'LEVEL';
 
 export interface DrawDefinition {
   activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
@@ -198,12 +187,7 @@ export interface DrawDefinition {
   updatedAt?: Date | string;
 }
 
-enum DrawStatusEnum {
-  COMPLETE = 'COMPLETE',
-  IN_PROGRESS = 'IN_PROGRESS',
-  TO_BE_PLAYED = 'TO_BE_PLAYED',
-}
-export type DrawStatusUnion = keyof typeof DrawStatusEnum;
+export type DrawStatusUnion = 'COMPLETE' | 'IN_PROGRESS' | 'TO_BE_PLAYED';
 
 export interface Entry {
   createdAt?: Date | string;
@@ -362,12 +346,7 @@ export interface MatchUpFinishingPositionRange {
   winner: number[];
 }
 
-enum IndoorOutdoorEnum {
-  INDOOR = 'INDOOR',
-  MIXED = 'MIXED',
-  OUTDOOR = 'OUTDOOR',
-}
-export type IndoorOutdoorUnion = keyof typeof IndoorOutdoorEnum;
+export type IndoorOutdoorUnion = 'INDOOR' | 'MIXED' | 'OUTDOOR';
 
 enum MatchUpStatusEnum {
   ABANDONED = 'ABANDONED',

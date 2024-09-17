@@ -47,7 +47,7 @@ export function getParticipantResults({
       ? tieMatchUps
           .filter(({ matchUpStatus }) => !excludeMatchUpStatuses.includes(matchUpStatus))
           .flatMap(({ score }) => score?.sets?.length ?? 0)
-      : score?.sets?.length ?? 0,
+      : (score?.sets?.length ?? 0),
   );
   const totalSets = allSets?.reduce((a, b) => a + b, 0);
 

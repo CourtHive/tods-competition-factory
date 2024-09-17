@@ -269,21 +269,19 @@ export function keyValueScore(params) {
     info = `invalid key: ${value}`;
   } else if (analysis.isGameScoreEntry) {
     info = 'game scoreString entry';
+  } else if (analysis.lastSetIsComplete || !sets.length) {
+    updated = true;
+    const { scoreString: newScore, set } = keyValueSetScore({
+      analysis,
+      lowSide,
+      scoreString,
+      value: ensureInt(value),
+    });
+    if (set) set.setNumber = sets?.length + 1 || 1;
+    sets = sets?.concat(set).filter(Boolean) || [set];
+    scoreString = newScore || undefined;
   } else {
-    if (analysis.lastSetIsComplete || !sets.length) {
-      updated = true;
-      const { scoreString: newScore, set } = keyValueSetScore({
-        analysis,
-        lowSide,
-        scoreString,
-        value: ensureInt(value),
-      });
-      if (set) set.setNumber = sets?.length + 1 || 1;
-      sets = sets?.concat(set).filter(Boolean) || [set];
-      scoreString = newScore || undefined;
-    } else {
-      console.log('error: unknown outcome');
-    }
+    console.log('error: unknown outcome');
   }
 
   if (updated) {

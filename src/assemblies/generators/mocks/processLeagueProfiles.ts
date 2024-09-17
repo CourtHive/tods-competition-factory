@@ -117,8 +117,8 @@ export function processLeagueProfiles(params): any {
 
     if (entries.length) {
       const roundsCount =
-        (isNumeric(leagueProfile.roundsCount) && leagueProfile.roundsCount) ??
-        leagueProfile.roundsCount === DOUBLE_ROUND_ROBIN
+        ((isNumeric(leagueProfile.roundsCount) && leagueProfile.roundsCount) ??
+        leagueProfile.roundsCount === DOUBLE_ROUND_ROBIN)
           ? (drawSize - 1) * 2
           : drawSize - 1;
       // generate drawDefinition for league

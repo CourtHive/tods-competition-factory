@@ -42,7 +42,7 @@ export function addParticipant(params: AddParticipantType) {
 
   const tournamentRecord = params.tournamentId // if a tournamentId is specified, use it!
     ? params.tournamentRecords?.[params.tournamentId]
-    : params.tournamentRecord ?? (params.activeTournamentId && params.tournamentRecords?.[params.activeTournamentId]);
+    : (params.tournamentRecord ?? (params.activeTournamentId && params.tournamentRecords?.[params.activeTournamentId]));
 
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!participant) return decorateResult({ result: { error: MISSING_PARTICIPANT }, stack });

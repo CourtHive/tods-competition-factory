@@ -212,7 +212,7 @@ export function processSides(params) {
         individualParticipantIds.forEach((participantId, i) => {
           const partnerParticipantId = individualParticipantIds[1 - i];
           const participant = participantMap[participantId];
-          participant && addPartner({ participant, partnerParticipantId });
+          if (participant) addPartner({ participant, partnerParticipantId });
         });
 
         // in TEAM events PAIR participants do not appear in entries

@@ -104,7 +104,7 @@ function checkCategoryUpdates(params) {
     const startDate = params.eventUpdates.startDate || params.event.startDate || params.tournamentRecord.startDate;
     const endDate = params.eventUpdates.endDate || params.event.endDate || params.tournamentRecord.endDate;
     const individualParticpants = params.enteredParticipants
-      .map((p) => (p.participantType === INDIVIDUAL ? p : p.individualParticpants ?? []))
+      .map((p) => (p.participantType === INDIVIDUAL ? p : (p.individualParticpants ?? [])))
       .flat();
 
     const startAgeDetails = getCategoryAgeDetails({ category, consideredDate: startDate });
@@ -168,11 +168,11 @@ function getEnteredParticipants(params) {
       .map(({ participantId }) => participantId) ?? [];
 
   return enteredParticipantIds
-    ? getParticipants({
+    ? (getParticipants({
         participantFilters: { participantIds: enteredParticipantIds },
         withIndividualParticipants: true,
         tournamentRecord,
-      }).participants ?? []
+      }).participants ?? [])
     : [];
 }
 

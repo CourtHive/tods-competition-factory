@@ -69,7 +69,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
   const zoneMargin =
     isConvertableInteger(zonePct) && ratingsRangeDifference
       ? (zonePct ?? 0 / 100) * ratingsRangeDifference
-      : params.zoneMargin ?? ratingsRangeDifference;
+      : (params.zoneMargin ?? ratingsRangeDifference);
 
   const contextProfile = { withScaleValues: true, withCompetitiveness: true };
   const contextFilters = {

@@ -120,7 +120,7 @@ export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
     const singlesSort = teamParticipant.individualParticipants?.sort(singlesScaleSort) ?? [];
     const doublesSort = singlesOnly
       ? singlesSort
-      : teamParticipant.individualParticipants?.sort(doublesScaleSort) ?? [];
+      : (teamParticipant.individualParticipants?.sort(doublesScaleSort) ?? []);
 
     const participantAssignments: { [key: string]: CollectionAssignment[] } = {};
     for (const collectionDefinition of collectionDefinitions) {
@@ -129,7 +129,7 @@ export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
       const singlesMatchUp = isMatchUpEventType(SINGLES_MATCHUP)(matchUpType);
 
       generateRange(0, matchUpCount).forEach((i) => {
-        const typeSort = singlesMatchUp ? singlesSort : doublesSort ?? [];
+        const typeSort = singlesMatchUp ? singlesSort : (doublesSort ?? []);
         const collectionPosition = i + 1;
 
         const participantIds: string[] = [];
