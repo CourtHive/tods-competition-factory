@@ -412,7 +412,7 @@ export function getNextSeedBlock(params) {
   const seedsLeftToAssign =
     unplacedSeedAssignments?.length && unplacedSeedAssignments.length > 0
       ? unplacedSeedAssignments.length
-      : seedsWithoutDrawPositions?.length ?? 0;
+      : (seedsWithoutDrawPositions?.length ?? 0);
   const unfilled =
     (seedsLeftToAssign &&
       nextSeedBlock?.drawPositions.filter((drawPosition) => !assignedDrawPositions?.includes(drawPosition))) ||

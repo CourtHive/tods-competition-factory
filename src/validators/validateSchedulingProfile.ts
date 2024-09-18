@@ -1,9 +1,10 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import { getDrawStructures } from '@Acquire/findStructure';
 import { isConvertableInteger, isPowerOf2 } from '@Tools/math';
+import { getDrawStructures } from '@Acquire/findStructure';
 import { isValidDateString } from '@Tools/dateTime';
 
+// Constants
 import { INVALID_VALUES, VENUE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function validateSchedulingProfile({ tournamentRecords, schedulingProfile }): any {
@@ -82,33 +83,32 @@ export function tournamentRelevantSchedulingIds(params) {
     tournamentIds.push(tournamentId);
     tournamentMap[tournamentId] = {};
     const events = tournamentRecord?.events || [];
-    events.forEach((event) => {
+    for (const event of events) {
       const eventId = event.eventId;
       eventIds.push(eventId);
       tournamentMap[tournamentId][eventId] = {};
-      (event.drawDefinitions || []).forEach((drawDefinition) => {
+      const mapParsedInt = (roundNumber) => parseInt(roundNumber);
+      for (const drawDefinition of event.drawDefinitions || []) {
         const drawId = drawDefinition.drawId;
         drawIds.push(drawId);
         tournamentMap[tournamentId][eventId][drawId] = {};
         const { structures } = getDrawStructures({ drawDefinition });
-        (structures || []).forEach((structure) => {
+        for (const structure of structures || []) {
           const structureId = structure.structureId;
           const { matchUps } = getAllStructureMatchUps({ structure });
           const { roundMatchUps } = getRoundMatchUps({ matchUps });
-          const rounds = roundMatchUps && Object.keys(roundMatchUps).map((roundNumber) => parseInt(roundNumber));
-
+          const rounds = roundMatchUps && Object.keys(roundMatchUps).map(mapParsedInt);
           tournamentMap[tournamentId][eventId][drawId][structureId] = rounds;
-
           structureIds.push(structureId);
           if (structure.structures?.length) {
-            structure.structures.forEach((itemStructure) => {
+            for (const itemStructure of structure.structures) {
               structureIds.push(itemStructure.structureId);
               tournamentMap[tournamentId][eventId][drawId][itemStructure.structureId] = rounds;
-            });
+            }
           }
-        });
-      });
-    });
+        }
+      }
+    }
   }
 
   return {

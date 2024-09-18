@@ -34,7 +34,7 @@ export function generateEventParticipants(params) {
 
   const participantsCount = eventProfile.drawProfiles?.length
     ? mainParticipantsCount + qualifyingParticipantsCount
-    : eventProfile.participantsProfile?.participantsCount ?? 0;
+    : (eventProfile.participantsProfile?.participantsCount ?? 0);
 
   const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
 

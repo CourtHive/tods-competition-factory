@@ -24,7 +24,7 @@ export function getTallyReport({ matchUps, order, report }) {
 
         const participantsCount = step.groups
           ? Object.values(step.groups).flat(Infinity).length
-          : step.participantIds?.length ?? 0;
+          : (step.participantIds?.length ?? 0);
 
         const getExplanation = (step) => {
           step.groups &&
