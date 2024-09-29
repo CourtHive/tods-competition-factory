@@ -18,7 +18,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./scratch",
+    "outDir": "./dist/scratch",
     "resolveJsonModule": true,
     "rootDir": ".",
     "sourceMap": false,
