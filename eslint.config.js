@@ -80,6 +80,7 @@ module.exports = [
       'sonarjs/no-duplicate-string': 'warn',
       'sonarjs/no-duplicated-branches': 'warn',
       'sonarjs/no-empty-collection': 'warn',
+      'sonarjs/no-empty-string-repetition': 'warn',
       'sonarjs/no-extra-arguments': 'warn',
       'sonarjs/no-gratuitous-expressions': 'warn',
       'sonarjs/no-identical-expressions': 'warn',
