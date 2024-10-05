@@ -18,7 +18,7 @@
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./scratch",
+    "outDir": "./dist/scratch",
     "resolveJsonModule": true,
     "rootDir": ".",
     "sourceMap": false,
@@ -40,13 +40,13 @@
       "@Query/*": ["./src/query/*"],
       "@Tests/*": ["./src/tests/*"],
       "@Tools/*": ["./src/tools/*"],
-      "@Types/*": ["./src/types/*"],
+      "@Types/*": ["./src/types/*"]
     },
 
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "removeComments": true,
     "skipLibCheck": true,
-    "target": "ES2021",
-  },
+    "target": "ES2021"
+  }
 }
