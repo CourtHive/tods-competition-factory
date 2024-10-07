@@ -420,6 +420,28 @@ engine.resetVoluntaryConsolationStructure({
 
 --
 
+## resetMainStructure
+
+```js
+engine.resetMainStructure({
+  resetEntries, // optional - remove all { entryStage: MAIN }
+  drawId,
+});
+```
+
+--
+
+## resetQualifyingStructure
+
+```js
+engine.resetQualifyingStructure({
+  resetEntries, // optional - remove all { entryStage: QUALIFYING }
+  drawId,
+});
+```
+
+--
+
 ## setDrawParticipantRepresentativeIds
 
 Set the participantIds of participants in the draw who are representing players by observing the creation of the draw.

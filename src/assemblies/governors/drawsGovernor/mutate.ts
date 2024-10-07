@@ -1,5 +1,7 @@
 export { setDrawParticipantRepresentativeIds } from '@Mutate/drawDefinitions/setDrawParticipantRepresentativeIds';
 export { resetVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/resetVoluntaryConsolationStructure';
+export { resetMainStructure } from '@Mutate/drawDefinitions/resetMainStructure';
+export { resetQualifyingStructure } from '@Mutate/drawDefinitions/resetQualifyingStructure';
 export { withdrawParticipantAtDrawPosition } from '@Mutate/drawDefinitions/withdrawParticipantAtDrawPosition';
 export { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
 export { luckyLoserDrawPositionAssignment } from '@Mutate/drawDefinitions/luckyLoserDrawPositionAssignment';
