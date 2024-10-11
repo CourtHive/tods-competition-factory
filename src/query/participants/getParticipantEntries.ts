@@ -1,17 +1,17 @@
+import { getEventSeedAssignments } from '@Query/event/getEventSeedAssignments';
+import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getDrawId, getParticipantId } from '@Functions/global/extractors';
-import { getEventSeedAssignments } from '../event/getEventSeedAssignments';
-import { getPositionAssignments } from '../drawDefinition/positionsGetter';
-import { processEventEntry } from '../participant/processEventEntry';
-import { allEventMatchUps } from '../matchUps/getAllEventMatchUps';
+import { processEventEntry } from '@Query/participant/processEventEntry';
+import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
+import { getPublishState } from '@Query/publishing/getPublishState';
 import { addScheduleItem } from '@Query/matchUps/addScheduleItem';
 import { structureSort } from '@Functions/sorters/structureSort';
-import { getPublishState } from '../publishing/getPublishState';
+import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { timeSort, timeStringMinutes } from '@Tools/dateTime';
 import { extensionsToAttributes } from '@Tools/makeDeepCopy';
+import { processSides } from '@Query/matchUps/processSides';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { getFlightProfile } from '../event/getFlightProfile';
 import { stringSort } from '@Functions/sorters/stringSort';
-import { processSides } from '../matchUps/processSides';
 import { isObject } from '@Tools/objects';
 
 // constants and types

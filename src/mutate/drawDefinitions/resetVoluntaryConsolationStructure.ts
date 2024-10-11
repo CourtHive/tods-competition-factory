@@ -1,8 +1,9 @@
-import { deleteMatchUpsNotice, modifyDrawNotice } from '../notifications/drawNotifications';
+import { deleteMatchUpsNotice, modifyDrawNotice } from '@Mutate/notifications/drawNotifications';
 
+// Constants
+import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 
 export function resetVoluntaryConsolationStructure({ tournamentRecord, drawDefinition, resetEntries, event }) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };

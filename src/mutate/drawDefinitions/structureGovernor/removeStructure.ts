@@ -77,7 +77,7 @@ export function removeStructure(params: RemoveStructureArgs) {
     }
   }
 
-  isQualifyingStructure && resequenceStructures({ drawDefinition });
+  if (isQualifyingStructure) resequenceStructures({ drawDefinition });
 
   deleteMatchUpsNotice({
     tournamentId: tournamentRecord?.tournamentId,
