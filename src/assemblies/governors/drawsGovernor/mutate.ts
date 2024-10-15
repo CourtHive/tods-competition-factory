@@ -18,6 +18,7 @@ export { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDraw
 export { addDrawDefinitionTimeItem } from '@Mutate/drawDefinitions/addDrawDefinitionTimeItem';
 export { removeStructure } from '@Mutate/drawDefinitions/structureGovernor/removeStructure';
 export { addVoluntaryConsolationStage } from '@Mutate/events/addVoluntaryConsolationStage';
+export { resetQualifyingStructure } from '@Mutate/drawDefinitions/resetQualifyingStructure';
 export { swapDrawPositionAssignments } from '@Mutate/matchUps/drawPositions/positionSwap';
 export { removeSeededParticipant } from '@Mutate/drawDefinitions/removeSeededParticipant';
 export { addQualifyingStructure } from '@Mutate/drawDefinitions/addQualifyingStructure';
