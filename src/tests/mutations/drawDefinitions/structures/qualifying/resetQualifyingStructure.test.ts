@@ -29,7 +29,10 @@ describe('resetQualifyingStructure()', () => {
     const qualifyingStructure = drawDefinition.structures?.find((structure) => structure.stage === QUALIFYING);
     expect(qualifyingStructure).toBeDefined();
 
-    const result = tournamentEngine.resetQualifyingStructure({ drawDefinition });
+    const result = tournamentEngine.resetQualifyingStructure({
+      drawDefinition,
+      structureId: qualifyingStructure.structureId,
+    });
     expect(result.success).toEqual(true);
 
     const { structure } = getStructureMatchUps({ structure: qualifyingStructure });
