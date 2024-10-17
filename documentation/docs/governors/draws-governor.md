@@ -409,6 +409,14 @@ engine.resetDrawDefinition({ drawId });
 
 ---
 
+## resetQualifyingStructure
+
+```js
+engine.resetQualifyingStructure({ structureId, drawId });
+```
+
+--
+
 ## resetVoluntaryConsolationStructure
 
 ```js
