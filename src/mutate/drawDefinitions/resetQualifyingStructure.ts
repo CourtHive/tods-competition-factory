@@ -2,10 +2,23 @@ import { deleteMatchUpsNotice, modifyDrawNotice } from '@Mutate/notifications/dr
 
 // Constants
 import { MISSING_DRAW_DEFINITION, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
-export function resetQualifyingStructure({ tournamentRecord, drawDefinition, event, structureId }) {
+interface ResetQualifyingStructureArgs {
+  tournamentRecord?: Tournament;
+  drawDefinition: DrawDefinition;
+  event?: Event;
+  structureId: string;
+}
+
+export function resetQualifyingStructure({
+  tournamentRecord,
+  drawDefinition,
+  event,
+  structureId,
+}: ResetQualifyingStructureArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
   const structure = drawDefinition.structures?.find(
