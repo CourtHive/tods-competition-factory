@@ -418,7 +418,18 @@ engine.resetVoluntaryConsolationStructure({
 });
 ```
 
---
+---
+
+## resetQualifyingStructure
+
+```js
+engine.resetQualifyingStructure({
+  drawId,
+  structureId,
+});
+```
+
+---
 
 ## setDrawParticipantRepresentativeIds
 
