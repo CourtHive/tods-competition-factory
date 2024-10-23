@@ -137,7 +137,7 @@
     "@swc/cli": "0.4.0",
     "@swc/core": "1.7.36",
     "@types/express": "5.0.0",
-    "@types/jest": "29.5.13",
+    "@types/jest": "29.5.14",
     "@types/node": "20.16.12",
     "@types/supertest": "6.0.2",
     "@typescript-eslint/eslint-plugin": "8.9.0",
