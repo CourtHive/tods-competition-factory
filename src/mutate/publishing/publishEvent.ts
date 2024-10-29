@@ -219,7 +219,7 @@ export function publishEvent(params: PublishEventType): ResultType & { eventData
         })?.eventData
       : undefined;
 
-  notify &&
+  if (notify)
     addNotice({
       payload: { eventData, tournamentId: tournamentRecord.tournamentId },
       topic: PUBLISH_EVENT,
