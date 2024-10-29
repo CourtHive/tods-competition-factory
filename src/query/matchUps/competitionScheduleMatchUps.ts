@@ -163,7 +163,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
       if (!detailsMap?.[drawId]?.publishingDetail?.published) return false;
-      if (detailsMap[drawId].stageDetails) {
+      if (Object.keys(detailsMap[drawId].stageDetails ?? {})?.length) {
         const stageKeys = Object.keys(detailsMap[drawId].stageDetails);
         const unpublishedStages = stageKeys.filter((stage) => !detailsMap[drawId].stageDetails[stage].published);
         const publishedStages = stageKeys.filter((stage) => detailsMap[drawId].stageDetails[stage].published);
@@ -171,7 +171,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
         if (publishedStages.length && publishedStages.includes(stage)) return true;
         return unpublishedStages.length && !unpublishedStages.includes(stage) && !publishedStages.length;
       }
-      if (detailsMap[drawId].structureDetails) {
+      if (Object.keys(detailsMap[drawId].structureDetails ?? {})?.length) {
         const structureIdKeys = Object.keys(detailsMap[drawId].structureDetails);
         const unpublishedStructureIds = structureIdKeys.filter(
           (structureId) => !detailsMap[drawId].structureDetails[structureId].published,
