@@ -163,16 +163,18 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
     relevantMatchUps = relevantMatchUps.filter((matchUp) => {
       const { drawId, structureId, stage } = matchUp;
       if (!detailsMap?.[drawId]?.publishingDetail?.published) return false;
-      if (detailsMap[drawId].stageDetails) {
-        const stageKeys = Object.keys(detailsMap[drawId].stageDetails);
+
+      const stageKeys = Object.keys(detailsMap[drawId].stageDetails ?? {});
+      if (stageKeys.length) {
         const unpublishedStages = stageKeys.filter((stage) => !detailsMap[drawId].stageDetails[stage].published);
         const publishedStages = stageKeys.filter((stage) => detailsMap[drawId].stageDetails[stage].published);
         if (unpublishedStages.length && unpublishedStages.includes(stage)) return false;
         if (publishedStages.length && publishedStages.includes(stage)) return true;
         return unpublishedStages.length && !unpublishedStages.includes(stage) && !publishedStages.length;
       }
-      if (detailsMap[drawId].structureDetails) {
-        const structureIdKeys = Object.keys(detailsMap[drawId].structureDetails);
+
+      const structureIdKeys = Object.keys(detailsMap[drawId].structureDetails ?? {});
+      if (structureIdKeys.length) {
         const unpublishedStructureIds = structureIdKeys.filter(
           (structureId) => !detailsMap[drawId].structureDetails[structureId].published,
         );
@@ -187,6 +189,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
           !publishedStructureIds.length
         );
       }
+
       return true;
     });
   }
