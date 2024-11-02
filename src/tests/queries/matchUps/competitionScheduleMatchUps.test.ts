@@ -5,20 +5,14 @@ import { instanceCount, unique } from '@Tools/arrays';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { xa } from '@Tools/extractAttributes';
-import { addDays, extractDate } from '@Tools/dateTime';
+import { addDays } from '@Tools/dateTime';
 import { expect, test } from 'vitest';
 
 // constants
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { MAIN, QUALIFYING, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
-import {
-  CONSOLATION,
-  MAIN,
-  QUALIFYING,
-  SINGLE_ELIMINATION,
-  VOLUNTARY_CONSOLATION,
-} from '@Constants/drawDefinitionConstants';
 
 const sst = 'schedule.scheduledTime';
 const d210505 = '2021-05-05';
@@ -272,29 +266,29 @@ test.each([tournamentEngine])(
   'correctly returns date matchUps when draw structures are published separately and when order of play is published',
   async (tournamentEngine) => {
     const startDate = '2022-01-01';
-    const drawId = 'mockDrawId';
     const venueId = 'mockVenueId';
+    const drawId = 'mockDrawId';
 
     const drawProfiles = [
       {
-        drawId,
-        drawSize: 32,
-        drawName: 'Main Draw',
-        stage: MAIN,
         drawType: SINGLE_ELIMINATION,
-        completionGoal: 5,
         uniqueParticipants: true,
+        drawName: 'Main Draw',
+        completionGoal: 5,
+        drawSize: 32,
+        stage: MAIN,
+        drawId,
       },
     ];
 
     const venueProfiles = [
       {
-        venueId: venueId,
         venueName: 'Club Courts',
         venueAbbreviation: 'CC',
         startTime: '08:00',
         endTime: '20:00',
         courtsCount: 10,
+        venueId,
       },
     ];
 
@@ -303,19 +297,19 @@ test.each([tournamentEngine])(
         scheduleDate: startDate,
         venues: [
           {
-            venueId: venueProfiles[0].venueId,
             rounds: [{ drawId, winnerFinishingPositionRange: '1-16' }],
+            venueId: venueProfiles[0].venueId,
           },
         ],
       },
     ];
 
     const { success, tournamentRecord } = mocksEngine.generateTournamentRecord({
-      autoSchedule: true,
       policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
-      drawProfiles,
+      autoSchedule: true,
       schedulingProfile,
       venueProfiles,
+      drawProfiles,
       startDate,
     });
 
@@ -331,13 +325,26 @@ test.each([tournamentEngine])(
     expect(drawDefinition).toBeDefined();
     expect(mainStructure).toBeDefined();
 
-    let result = tournamentEngine.addQualifyingStructure({
+    let result = tournamentEngine.allCompetitionMatchUps();
+    expect(result.matchUps.length).toEqual(31);
+
+    result = tournamentEngine.addQualifyingStructure({
       targetStructureId: mainStructure.structureId,
+      drawId: drawDefinition.drawId,
       qualifyingRoundNumber: 3,
       drawSize: 32,
-      drawId: drawDefinition.drawId,
     });
     expect(result.success).toEqual(true);
+    result = tournamentEngine.allCompetitionMatchUps();
+
+    // expect 59 matchUps because the main draw has 31 matchUps and the qualifying draw has 28 matchUps
+    expect(result.matchUps.length).toEqual(59);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: false,
+    });
+    expect(result.dateMatchUps.length).toEqual(11);
 
     result = tournamentEngine.getDrawData({ drawId: drawDefinition.drawId });
     const structureIds = result.structures.map((structure) => structure.structureId);
@@ -345,22 +352,52 @@ test.each([tournamentEngine])(
     expect(qualifyingStructure).toBeDefined();
     expect(qualifyingStructure.structureId).toBeDefined();
 
+    const qualifyingStructureId = qualifyingStructure.structureId;
+    const mainStructureId = structureIds.find((structureId) => structureId !== qualifyingStructureId);
+
+    const qualifyingMatchUps = Object.values(qualifyingStructure.roundMatchUps).flat();
+
+    // TODO: it is necessary to SCHEDULE the qualifying matchUps before the structureDetail publishing can be tested
+
+    let matchUpContextIds = qualifyingMatchUps.map(({ drawId, matchUpId }: any) => ({
+      tournamentId: tournamentRecord.tournamentId,
+      matchUpId,
+      drawId,
+    }));
+
+    let schedule = {
+      scheduledDate: startDate,
+      scheduledTime: '08:00',
+      venueId,
+    };
+    result = tournamentEngine.bulkScheduleMatchUps({
+      matchUpContextIds,
+      schedule,
+    });
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: false,
+    });
+    expect(result.dateMatchUps.length).toEqual(39);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(0);
+
     result = tournamentEngine.publishEvent({
-      eventId: event.eventId,
-      removePriorValues: true,
       drawIdsToAdd: [drawDefinition.drawId],
+      removePriorValues: true,
+      eventId: event.eventId,
       drawDetails: {
         [drawDefinition.drawId]: {
-          publishingDetail: {
-            published: true,
-          },
+          publishingDetail: { published: true },
           structureDetails: {
-            [structureIds[0]]: {
-              published: true,
-            },
-            [structureIds[1]]: {
-              published: true,
-            },
+            [qualifyingStructureId]: { published: false },
+            [mainStructureId]: { published: true },
           },
         },
       },
@@ -371,17 +408,62 @@ test.each([tournamentEngine])(
     expect(result.success).toEqual(true);
 
     const { eventData } = tournamentEngine.getEventData({ eventId: event.eventId });
-    const publishState = eventData.eventInfo.publishState;
+    let publishState = eventData.eventInfo.publishState;
     const drawDetails = publishState.status.drawDetails[drawDefinition.drawId];
     const structureDetails = drawDetails.structureDetails;
     expect(eventData.eventInfo.published).toEqual(true);
     expect(drawDetails.publishingDetail.published).toEqual(true);
-    expect(structureDetails[structureIds[0]].published).toEqual(true);
-    expect(structureDetails[structureIds[1]].published).toEqual(true);
+    expect(structureDetails[qualifyingStructureId].published).toEqual(false);
+    expect(structureDetails[mainStructureId].published).toEqual(true);
 
     result = tournamentEngine.competitionScheduleMatchUps({
-      usePublishState: true,
       matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(11);
+
+    result = tournamentEngine.publishEvent({
+      removePriorValues: true,
+      eventId: event.eventId,
+      drawDetails: {
+        [drawDefinition.drawId]: {
+          publishingDetail: { published: true },
+          structureDetails: {
+            [qualifyingStructureId]: { published: true },
+            [mainStructureId]: { published: true },
+          },
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
+    publishState = tournamentEngine.getPublishState().publishState;
+    expect(publishState[event.eventId].status.drawDetails[drawDefinition.drawId].stageDetails).toEqual({});
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(39);
+
+    result = tournamentEngine.publishEvent({
+      removePriorValues: true,
+      eventId: event.eventId,
+      drawDetails: {
+        [drawDefinition.drawId]: {
+          publishingDetail: { published: true },
+          stagesToRemove: [QUALIFYING],
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
+    publishState = tournamentEngine.getPublishState().publishState;
+    expect(publishState[event.eventId].status.drawDetails[drawDefinition.drawId].stageDetails[QUALIFYING]).toEqual({
+      published: false,
+    });
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
     });
     expect(result.dateMatchUps.length).toEqual(11);
   },
