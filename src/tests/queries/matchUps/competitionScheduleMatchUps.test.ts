@@ -10,6 +10,7 @@ import { expect, test } from 'vitest';
 
 // constants
 import POLICY_SCHEDULING_NO_DAILY_LIMITS from '@Fixtures/policies/POLICY_SCHEDULING_NO_DAILY_LIMITS';
+import { MAIN, QUALIFYING, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 import { MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 
@@ -260,3 +261,210 @@ test.each([tournamentEngine])('auto schedules venue if only one venue provided',
   });
   expect(result.scheduledMatchUpIds.length).toEqual(0);
 });
+
+test.each([tournamentEngine])(
+  'correctly returns date matchUps when draw structures are published separately and when order of play is published',
+  async (tournamentEngine) => {
+    const startDate = '2022-01-01';
+    const venueId = 'mockVenueId';
+    const drawId = 'mockDrawId';
+
+    const drawProfiles = [
+      {
+        drawType: SINGLE_ELIMINATION,
+        uniqueParticipants: true,
+        drawName: 'Main Draw',
+        completionGoal: 5,
+        drawSize: 32,
+        stage: MAIN,
+        drawId,
+      },
+    ];
+
+    const venueProfiles = [
+      {
+        venueName: 'Club Courts',
+        venueAbbreviation: 'CC',
+        startTime: '08:00',
+        endTime: '20:00',
+        courtsCount: 10,
+        venueId,
+      },
+    ];
+
+    const schedulingProfile = [
+      {
+        scheduleDate: startDate,
+        venues: [
+          {
+            rounds: [{ drawId, winnerFinishingPositionRange: '1-16' }],
+            venueId: venueProfiles[0].venueId,
+          },
+        ],
+      },
+    ];
+
+    const { success, tournamentRecord } = mocksEngine.generateTournamentRecord({
+      policyDefinitions: POLICY_SCHEDULING_NO_DAILY_LIMITS,
+      autoSchedule: true,
+      schedulingProfile,
+      venueProfiles,
+      drawProfiles,
+      startDate,
+    });
+
+    tournamentEngine.setState(tournamentRecord);
+
+    expect(success).toEqual(true);
+    expect(tournamentRecord).toBeDefined();
+
+    const event = tournamentRecord.events[0];
+    const drawDefinition = event.drawDefinitions[0];
+    const mainStructure = drawDefinition.structures[0];
+
+    expect(drawDefinition).toBeDefined();
+    expect(mainStructure).toBeDefined();
+
+    let result = tournamentEngine.allCompetitionMatchUps();
+    expect(result.matchUps.length).toEqual(31);
+
+    result = tournamentEngine.addQualifyingStructure({
+      targetStructureId: mainStructure.structureId,
+      drawId: drawDefinition.drawId,
+      qualifyingRoundNumber: 3,
+      drawSize: 32,
+    });
+    expect(result.success).toEqual(true);
+    result = tournamentEngine.allCompetitionMatchUps();
+
+    // expect 59 matchUps because the main draw has 31 matchUps and the qualifying draw has 28 matchUps
+    expect(result.matchUps.length).toEqual(59);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: false,
+    });
+    expect(result.dateMatchUps.length).toEqual(11);
+
+    result = tournamentEngine.getDrawData({ drawId: drawDefinition.drawId });
+    const structureIds = result.structures.map((structure) => structure.structureId);
+    const qualifyingStructure = result.structures.find((structure) => structure.stage === QUALIFYING);
+    expect(qualifyingStructure).toBeDefined();
+    expect(qualifyingStructure.structureId).toBeDefined();
+
+    const qualifyingStructureId = qualifyingStructure.structureId;
+    const mainStructureId = structureIds.find((structureId) => structureId !== qualifyingStructureId);
+
+    const qualifyingMatchUps = Object.values(qualifyingStructure.roundMatchUps).flat();
+
+    // TODO: it is necessary to SCHEDULE the qualifying matchUps before the structureDetail publishing can be tested
+
+    let matchUpContextIds = qualifyingMatchUps.map(({ drawId, matchUpId }: any) => ({
+      tournamentId: tournamentRecord.tournamentId,
+      matchUpId,
+      drawId,
+    }));
+
+    let schedule = {
+      scheduledDate: startDate,
+      scheduledTime: '08:00',
+      venueId,
+    };
+    result = tournamentEngine.bulkScheduleMatchUps({
+      matchUpContextIds,
+      schedule,
+    });
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: false,
+    });
+    expect(result.dateMatchUps.length).toEqual(39);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(0);
+
+    result = tournamentEngine.publishEvent({
+      drawIdsToAdd: [drawDefinition.drawId],
+      removePriorValues: true,
+      eventId: event.eventId,
+      drawDetails: {
+        [drawDefinition.drawId]: {
+          publishingDetail: { published: true },
+          structureDetails: {
+            [qualifyingStructureId]: { published: false },
+            [mainStructureId]: { published: true },
+          },
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
+
+    result = tournamentEngine.publishOrderOfPlay();
+    expect(result.success).toEqual(true);
+
+    const { eventData } = tournamentEngine.getEventData({ eventId: event.eventId });
+    let publishState = eventData.eventInfo.publishState;
+    const drawDetails = publishState.status.drawDetails[drawDefinition.drawId];
+    const structureDetails = drawDetails.structureDetails;
+    expect(eventData.eventInfo.published).toEqual(true);
+    expect(drawDetails.publishingDetail.published).toEqual(true);
+    expect(structureDetails[qualifyingStructureId].published).toEqual(false);
+    expect(structureDetails[mainStructureId].published).toEqual(true);
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(11);
+
+    result = tournamentEngine.publishEvent({
+      removePriorValues: true,
+      eventId: event.eventId,
+      drawDetails: {
+        [drawDefinition.drawId]: {
+          publishingDetail: { published: true },
+          structureDetails: {
+            [qualifyingStructureId]: { published: true },
+            [mainStructureId]: { published: true },
+          },
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
+    publishState = tournamentEngine.getPublishState().publishState;
+    expect(publishState[event.eventId].status.drawDetails[drawDefinition.drawId].stageDetails).toEqual({});
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(39);
+
+    result = tournamentEngine.publishEvent({
+      removePriorValues: true,
+      eventId: event.eventId,
+      drawDetails: {
+        [drawDefinition.drawId]: {
+          publishingDetail: { published: true },
+          stagesToRemove: [QUALIFYING],
+        },
+      },
+    });
+    expect(result.success).toEqual(true);
+    publishState = tournamentEngine.getPublishState().publishState;
+    expect(publishState[event.eventId].status.drawDetails[drawDefinition.drawId].stageDetails[QUALIFYING]).toEqual({
+      published: false,
+    });
+
+    result = tournamentEngine.competitionScheduleMatchUps({
+      matchUpFilters: { scheduledDate: startDate },
+      usePublishState: true,
+    });
+    expect(result.dateMatchUps.length).toEqual(11);
+  },
+);
