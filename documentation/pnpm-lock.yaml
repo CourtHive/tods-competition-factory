@@ -42,8 +42,8 @@ importers:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       mdx-mermaid:
-        specifier: 2.0.1
-        version: 2.0.1(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2)
+        specifier: 2.0.2
+        version: 2.0.2(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2)
       mermaid:
         specifier: 11.4.0
         version: 11.4.0
@@ -4864,8 +4864,8 @@ packages:
   mdurl@1.0.1:
     resolution: {integrity: sha512-/sKlQJCBYVY9Ers9hqzKou4H6V5UWc/M59TH2dvkt+84itfnq7uFOMLpOiOS4ujvHP4etln18fmIxA5R5fll0g==}
 
-  mdx-mermaid@2.0.1:
-    resolution: {integrity: sha512-OM+W2uz+JXFHuTAsPd7qyI0d9gmj7kmwcy3kJJpLQyD3l81j1zEMYFif6YG+EvKErsSOvAVtF3GOPxADZUj9eg==}
+  mdx-mermaid@2.0.2:
+    resolution: {integrity: sha512-HBeR0yO2gtu5seSRrTGL3ufqLhSlvNPJ7DouckRMxJWYQVE4TzoZwfPyd52pv81OdQwZQlNYu6txUhAPN4LUkw==}
     peerDependencies:
       mermaid: '>=8.11.0'
       react: ^16.8.4 || ^17.0.0 || ^18.0.0
@@ -13445,7 +13445,7 @@ snapshots:
 
   mdurl@1.0.1: {}
 
-  mdx-mermaid@2.0.1(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2):
+  mdx-mermaid@2.0.2(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2):
     dependencies:
       mermaid: 11.4.0
       react: 18.3.1
