@@ -57,8 +57,8 @@ importers:
         specifier: 0.19.0
         version: 0.19.0(@types/react@18.3.12)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.2.15
-        version: 2.2.15
+        specifier: 2.2.16
+        version: 2.2.16
 
 packages:
 
@@ -6536,8 +6536,8 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  tods-competition-factory@2.2.15:
-    resolution: {integrity: sha512-BzEmwi9GqE1yw56MEjZ7PimE1hcFWp/Se4FeeVikKB0sGYYDYypmOOdm7aAxxNhx4bTDd0qd3dRSfaA/zm5R/A==}
+  tods-competition-factory@2.2.16:
+    resolution: {integrity: sha512-qOM2z6Q8TrMMbSuaN4gD9KiwTs/+bxVzbwrFcTgZzQGaO6KYmWVa9jTFJR4PnLiq5+ZGJJFG7bgIt6ekA6yzKA==}
     engines: {node: '>=20'}
 
   tods-competition-factory@2.2.9:
@@ -15461,7 +15461,7 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  tods-competition-factory@2.2.15: {}
+  tods-competition-factory@2.2.16: {}
 
   tods-competition-factory@2.2.9: {}
 
