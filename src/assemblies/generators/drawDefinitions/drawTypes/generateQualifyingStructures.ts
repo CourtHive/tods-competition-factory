@@ -4,18 +4,30 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { coerceEven, isConvertableInteger } from '@Tools/math';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { generateRoundRobin } from './roundRobin/roundRobin';
-import { treeMatchUps } from './eliminationTree';
 import { constantToString } from '@Tools/strings';
+import { treeMatchUps } from './eliminationTree';
 
 // constants and types
 import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
 import { MISSING_DRAW_SIZE } from '@Constants/errorConditionConstants';
-import { DrawLink, Structure } from '@Types/tournamentTypes';
+import { DrawLink, Structure, TieFormat } from '@Types/tournamentTypes';
+import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { ResultType } from '@Types/factoryTypes';
+
+type GenerateQualifyingStructuresArgs = {
+  hasExistingDrawDefinition?: boolean;
+  appliedPolicies?: PolicyDefinitions;
+  qualifyingProfiles: any[];
+  qualifyingOnly?: boolean;
+  tieFormat?: TieFormat;
+  idPrefix?: string;
+  isMock?: boolean;
+  uuids?: string[];
+};
 
 export function generateQualifyingStructures({
+  hasExistingDrawDefinition,
   qualifyingProfiles,
   appliedPolicies,
   qualifyingOnly,
@@ -23,7 +35,7 @@ export function generateQualifyingStructures({
   idPrefix,
   isMock,
   uuids,
-}): ResultType & {
+}: GenerateQualifyingStructuresArgs): ResultType & {
   qualifyingDrawPositionsCount?: number;
   structures?: Structure[];
   qualifiersCount?: number;
@@ -115,6 +127,7 @@ export function generateQualifyingStructures({
           structureName: structureProfile.structureName || qualifyingStructureName,
           structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
+          hasExistingDrawDefinition,
           stage: QUALIFYING,
           qualifyingOnly,
           matchUpFormat,

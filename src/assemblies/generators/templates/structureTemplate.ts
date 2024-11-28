@@ -7,6 +7,7 @@ import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
 
 type StructureTemplateArgs = {
+  hasExistingDrawDefinition?: boolean;
   seedAssignments?: SeedAssignment[];
   qualifyingRoundNumber?: number;
   structureAbbreviation?: string;
@@ -31,6 +32,7 @@ type StructureTemplateArgs = {
 
 export const structureTemplate = ({
   finishingPosition = ROUND_OUTCOME,
+  hasExistingDrawDefinition,
   qualifyingRoundNumber,
   structureAbbreviation,
   seedAssignments = [],
@@ -61,9 +63,9 @@ export const structureTemplate = ({
     structureName,
   };
 
+  if (qualifyingOnly || (hasExistingDrawDefinition && tieFormat)) structure.tieFormat = tieFormat;
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
-  if (qualifyingOnly) structure.tieFormat = tieFormat;
   if (seedingProfile) {
     if (typeof seedingProfile === 'string') {
       structure.seedingProfile = seedingProfile;

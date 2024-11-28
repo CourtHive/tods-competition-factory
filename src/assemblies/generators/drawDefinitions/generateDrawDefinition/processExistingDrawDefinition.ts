@@ -28,6 +28,7 @@ export function processExistingDrawDefinition(params): ResultType & {
   const qualifyingProfiles = params.qualifyingProfiles;
   const qualifyingResult = qualifyingProfiles?.length
     ? generateQualifyingStructures({
+        hasExistingDrawDefinition: true,
         uuids: params.uuids,
         qualifyingProfiles,
         appliedPolicies,

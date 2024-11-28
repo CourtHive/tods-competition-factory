@@ -13,9 +13,9 @@ import { ResultType } from '@Types/factoryTypes';
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
   const {
     qualifyingPlaceholder,
-    qualifyingProfiles,
     existingDrawDefinition,
     positioningReports,
+    qualifyingProfiles,
     appliedPolicies,
     qualifyingOnly,
     drawDefinition,
