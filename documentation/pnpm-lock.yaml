@@ -43,10 +43,10 @@ importers:
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       mdx-mermaid:
         specifier: 2.0.2
-        version: 2.0.2(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2)
+        version: 2.0.2(mermaid@11.4.1)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2)
       mermaid:
-        specifier: 11.4.0
-        version: 11.4.0
+        specifier: 11.4.1
+        version: 11.4.1
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2145,9 +2145,6 @@ packages:
   '@types/debug@4.1.8':
     resolution: {integrity: sha512-/vPO1EPOs306Cvhwv7KfVfYvOJqA/S/AXjaHQiJboCZzcNDb+TIJFN9/2C9DZ//ijSKWioNyUxD792QmDJ+HKQ==}
 
-  '@types/dompurify@3.0.5':
-    resolution: {integrity: sha512-1Wg0g3BtQF7sSb27fJQAKck1HECM6zV1EB66j8JH9i3LCjYabJa0FSdiSgsD5K/RbrsR0SiraKacLB+T8ZVYAg==}
-
   '@types/emscripten@1.39.13':
     resolution: {integrity: sha512-cFq+fO/isvhvmuP/+Sl4K4jtU6E23DoivtbO4r50e3odaxAiVdbfSYRDdJ4gCdxx+3aRjhphS5ZMwIH4hFy/Cw==}
 
@@ -3565,8 +3562,8 @@ packages:
     resolution: {integrity: sha512-cgwlv/1iFQiFnU96XXgROh8xTeetsnJiDsTc7TYCLFd9+/WNkIqPTxiM/8pSd8VIrhXGTf1Ny1q1hquVqDJB5w==}
     engines: {node: '>= 4'}
 
-  dompurify@3.1.6:
-    resolution: {integrity: sha512-cTOAhc36AalkjtBpfG6O8JimdTMWNXjiePT2xQH/ppBGi/4uIpmj8eKyIkMJErXWARyINV/sB38yf8JCLF5pbQ==}
+  dompurify@3.2.1:
+    resolution: {integrity: sha512-NBHEsc0/kzRYQd+AY6HR6B/IgsqzBABrqJbpCDQII/OK6h7B7LXzweZTDsqSW2LkTRpoxf18YUP+YjGySk6B3w==}
 
   domutils@2.8.0:
     resolution: {integrity: sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==}
@@ -4889,8 +4886,8 @@ packages:
     resolution: {integrity: sha512-8q7VEgMJW4J8tcfVPy8g09NcQwZdbwFEqhe/WZkoIzjn/3TGDwtOCYtXGxA3O8tPzpczCCDgv+P2P5y00ZJOOg==}
     engines: {node: '>= 8'}
 
-  mermaid@11.4.0:
-    resolution: {integrity: sha512-mxCfEYvADJqOiHfGpJXLs4/fAjHz448rH0pfY5fAoxiz70rQiDSzUUy4dNET2T08i46IVpjohPd6WWbzmRHiPA==}
+  mermaid@11.4.1:
+    resolution: {integrity: sha512-Mb01JT/x6CKDWaxigwfZYuYmDZ6xtrNwNlidKZwkSrDaY9n90tdrJTV5Umk+wP1fZscGptmKFXHsXMDEVZ+Q6A==}
 
   methods@1.1.2:
     resolution: {integrity: sha512-iclAHeNqNm68zFtnZ0e+1L2yUIdvzNoauKU4WBA3VvH/vPFieF7qfRlwUZU+DA9P9bPXIS90ulxoUoCH23sV2w==}
@@ -10256,10 +10253,6 @@ snapshots:
       '@types/ms': 0.7.31
     optional: true
 
-  '@types/dompurify@3.0.5':
-    dependencies:
-      '@types/trusted-types': 2.0.7
-
   '@types/emscripten@1.39.13': {}
 
   '@types/estree-jsx@1.0.0':
@@ -10438,7 +10431,8 @@ snapshots:
     dependencies:
       '@types/node': 22.4.0
 
-  '@types/trusted-types@2.0.7': {}
+  '@types/trusted-types@2.0.7':
+    optional: true
 
   '@types/unist@2.0.8': {}
 
@@ -11898,7 +11892,9 @@ snapshots:
     dependencies:
       domelementtype: 2.3.0
 
-  dompurify@3.1.6: {}
+  dompurify@3.2.1:
+    optionalDependencies:
+      '@types/trusted-types': 2.0.7
 
   domutils@2.8.0:
     dependencies:
@@ -13445,9 +13441,9 @@ snapshots:
 
   mdurl@1.0.1: {}
 
-  mdx-mermaid@2.0.2(mermaid@11.4.0)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2):
+  mdx-mermaid@2.0.2(mermaid@11.4.1)(react@18.3.1)(typescript@5.3.3)(unist-util-visit@4.1.2):
     dependencies:
-      mermaid: 11.4.0
+      mermaid: 11.4.1
       react: 18.3.1
       unist-util-visit: 4.1.2
     optionalDependencies:
@@ -13477,13 +13473,12 @@ snapshots:
 
   merge2@1.4.1: {}
 
-  mermaid@11.4.0:
+  mermaid@11.4.1:
     dependencies:
       '@braintree/sanitize-url': 7.1.0
       '@iconify/utils': 2.1.32
       '@mermaid-js/parser': 0.3.0
       '@types/d3': 7.4.3
-      '@types/dompurify': 3.0.5
       cytoscape: 3.30.2
       cytoscape-cose-bilkent: 4.1.0(cytoscape@3.30.2)
       cytoscape-fcose: 2.2.0(cytoscape@3.30.2)
@@ -13491,7 +13486,7 @@ snapshots:
       d3-sankey: 0.12.3
       dagre-d3-es: 7.0.11
       dayjs: 1.11.12
-      dompurify: 3.1.6
+      dompurify: 3.2.1
       katex: 0.16.10
       khroma: 2.1.0
       lodash-es: 4.17.21
