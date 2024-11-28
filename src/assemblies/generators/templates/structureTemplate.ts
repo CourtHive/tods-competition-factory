@@ -63,7 +63,8 @@ export const structureTemplate = ({
     structureName,
   };
 
-  if (qualifyingOnly || (hasExistingDrawDefinition && tieFormat)) structure.tieFormat = tieFormat;
+  // CONSIDER: when tieFormatId is implemented, tieFormats should not be attached to structures
+  if (qualifyingOnly || (hasExistingDrawDefinition && tieFormat)) structure.tieFormat = tieFormat; // FUTURE: only attach if differs from drawDefinition.tieFormat
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) {
