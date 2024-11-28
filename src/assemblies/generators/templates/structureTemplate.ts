@@ -20,8 +20,8 @@ type StructureTemplateArgs = {
   stageSequence?: number;
   structureName?: string;
   structureType?: string;
+  tieFormat?: TieFormat;
   matchUpType?: string;
-  tieFormat: TieFormat;
   matchUps?: MatchUp[];
   roundOffset?: number;
   structureId?: string;
