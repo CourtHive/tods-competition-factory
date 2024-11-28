@@ -31,7 +31,7 @@ import {
 } from '@Constants/drawDefinitionConstants';
 
 export function getGenerators(params): { generators?: any; error?: ErrorType } {
-  const { playoffAttributes, stageSequence = 1, stage = MAIN, matchUpType, drawSize, uuids } = params;
+  const { playoffAttributes, stageSequence = 1, stage = MAIN, tieFormat, matchUpType, drawSize, uuids } = params;
 
   const getPrefixedStructureId = () => {
     if (!params.isMock && !params.idPrefix) return undefined;
@@ -55,6 +55,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       structureName,
       matchUpType,
       structureId,
+      tieFormat,
       matchUps,
       stage,
     });
@@ -116,6 +117,7 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
         matchUpType,
         structureId,
         stage: MAIN,
+        tieFormat,
         matchUps,
       });
 
