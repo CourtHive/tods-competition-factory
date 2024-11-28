@@ -2,16 +2,17 @@ import { deleteMatchUpsNotice, modifyDrawNotice } from '@Mutate/notifications/dr
 
 // Constants
 import { MISSING_DRAW_DEFINITION, SCORES_PRESENT, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
-import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
 
 interface ResetQualifyingStructureArgs {
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
-  event?: Event;
   structureId: string;
+  event?: Event;
 }
 
 export function resetQualifyingStructure({
@@ -28,11 +29,10 @@ export function resetQualifyingStructure({
 
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
-  const completedMatchUps = structure.matchUps?.filter((matchUp) =>
-    completedMatchUpStatuses.includes(matchUp.matchUpStatus),
+  const scoresPresent = structure.matchUps?.some(
+    ({ matchUpStatus, score }) => checkScoreHasValue({ score }) ?? completedMatchUpStatuses.includes(matchUpStatus),
   );
-
-  if (completedMatchUps?.length) return { error: SCORES_PRESENT };
+  if (scoresPresent) return { error: SCORES_PRESENT };
 
   const removedMatchUpIds = structure.matchUps?.map(({ matchUpId }) => matchUpId) || [];
 
