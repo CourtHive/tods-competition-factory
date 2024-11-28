@@ -1,7 +1,8 @@
+import structureTemplate from '../../assemblies/generators/templates/structureTemplate';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { constantToString } from '@Tools/strings';
-import structureTemplate from '../../assemblies/generators/templates/structureTemplate';
 
+// Constants and types
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 import { VOLUNTARY_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';

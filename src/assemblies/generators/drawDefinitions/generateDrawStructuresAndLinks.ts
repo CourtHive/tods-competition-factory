@@ -36,6 +36,7 @@ type GenerateDrawStructuresAndLinksArgs = {
   overwriteExisting?: boolean;
   drawTypeCoercion?: boolean;
   staggeredEntry?: boolean;
+  qualifyingOnly?: boolean;
   qualifyingProfiles?: any;
   structureName?: string;
   tieFormat?: TieFormat;
@@ -51,6 +52,7 @@ export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAnd
     enforceMinimumDrawSize = true,
     overwriteExisting,
     appliedPolicies,
+    qualifyingOnly,
     staggeredEntry, // optional - specifies main structure FEED_IN for drawTypes CURTIS_CONSOLATION, FEED_IN_CHAMPIONSHIPS, FMLC
     drawDefinition,
     tieFormat,
@@ -143,6 +145,8 @@ export function generateDrawStructuresAndLinks(params: GenerateDrawStructuresAnd
       idPrefix: params.idPrefix,
       qualifyingProfiles,
       appliedPolicies,
+      qualifyingOnly,
+      tieFormat,
       isMock,
       uuids,
     });

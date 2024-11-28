@@ -13,15 +13,16 @@ import { ResultType } from '@Types/factoryTypes';
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
   const {
     qualifyingPlaceholder,
-    qualifyingProfiles,
     existingDrawDefinition,
     positioningReports,
+    qualifyingProfiles,
     appliedPolicies,
     qualifyingOnly,
     drawDefinition,
     seedingProfile,
     participants,
     structureId,
+    tieFormat,
     entries,
     stack,
   } = params;
@@ -111,6 +112,8 @@ export function qualifyingGeneration(params): ResultType & { qualifyingConflicts
     const qualifyingStructure = structureTemplate({
       structureName: constantToString(QUALIFYING),
       stage: QUALIFYING,
+      qualifyingOnly,
+      tieFormat,
     });
     const { link } = generateQualifyingLink({
       sourceStructureId: qualifyingStructure.structureId,

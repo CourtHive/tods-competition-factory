@@ -42,6 +42,7 @@ const roundRobinTally = {
   gamesCreditForRetirements: false, // whether or not to award e.g. 2 sets won for participant who wins by opponent RETIREMENT
   gamesCreditForTiebreakSets: true, // defaults to true; whether to count a tiebreak set as a game won, e.g. 6-2 2-6 [10-3]
   GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'setsPct', 'gamesPct', 'pointsPct'],
+  precision: 3, // controls % rounding in tally results, e.g. precision of 3 returns .667 whereas precision 5 returns .66667
 };
 
 engine.attachPolicies({ policyDefinitions: { roundRobinTally } });

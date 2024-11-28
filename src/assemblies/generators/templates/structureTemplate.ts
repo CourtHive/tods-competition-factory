@@ -1,22 +1,26 @@
 import { unique } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
+// Constants and types
+import { MatchUp, SeedAssignment, Structure, TieFormat } from '@Types/tournamentTypes';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
-import { MatchUp, SeedAssignment, Structure } from '@Types/tournamentTypes';
 
 type StructureTemplateArgs = {
+  hasExistingDrawDefinition?: boolean;
   seedAssignments?: SeedAssignment[];
   qualifyingRoundNumber?: number;
   structureAbbreviation?: string;
   seedingProfile?: SeedingProfile;
   finishingPosition?: string;
   structures?: Structure[];
+  qualifyingOnly?: boolean;
   structureOrder?: number;
   matchUpFormat?: string;
   stageSequence?: number;
   structureName?: string;
   structureType?: string;
+  tieFormat?: TieFormat;
   matchUpType?: string;
   matchUps?: MatchUp[];
   roundOffset?: number;
@@ -28,22 +32,25 @@ type StructureTemplateArgs = {
 
 export const structureTemplate = ({
   finishingPosition = ROUND_OUTCOME,
+  hasExistingDrawDefinition,
   qualifyingRoundNumber,
   structureAbbreviation,
   seedAssignments = [],
   stageSequence = 1,
+  qualifyingOnly,
   structureOrder,
   seedingProfile,
   matchUpFormat,
   structureType,
   structureName,
-  matchUpType,
   matchUps = [],
+  matchUpType,
   structureId,
   roundOffset,
   roundLimit,
   stageOrder,
   structures,
+  tieFormat,
   stage,
 }: StructureTemplateArgs) => {
   const structure: any = {
@@ -56,6 +63,8 @@ export const structureTemplate = ({
     structureName,
   };
 
+  // CONSIDER: when tieFormatId is implemented, tieFormats should not be attached to structures
+  if (qualifyingOnly || (hasExistingDrawDefinition && tieFormat)) structure.tieFormat = tieFormat; // FUTURE: only attach if differs from drawDefinition.tieFormat
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
   if (seedingProfile) {
