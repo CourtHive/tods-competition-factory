@@ -16,8 +16,10 @@ export function processExistingDrawDefinition(params): ResultType & {
   const {
     existingQualifyingPlaceholderStructureId,
     appliedPolicies,
+    qualifyingOnly,
     drawEntries,
     structureId,
+    tieFormat,
     idPrefix,
     isMock,
     event,
@@ -29,6 +31,8 @@ export function processExistingDrawDefinition(params): ResultType & {
         uuids: params.uuids,
         qualifyingProfiles,
         appliedPolicies,
+        qualifyingOnly,
+        tieFormat,
         idPrefix,
         isMock,
       })

@@ -40,6 +40,7 @@ type GenerateDrawTypeAndModify = {
   matchUpType?: EventTypeUnion;
   drawDefinition: DrawDefinition;
   drawTypeCoercion?: boolean;
+  qualifyingOnly?: boolean;
   modifyOriginal?: boolean;
   qualifiersCount?: number;
   stageSequence?: number;

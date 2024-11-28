@@ -18,6 +18,8 @@ import { ResultType } from '@Types/factoryTypes';
 export function generateQualifyingStructures({
   qualifyingProfiles,
   appliedPolicies,
+  qualifyingOnly,
+  tieFormat,
   idPrefix,
   isMock,
   uuids,
@@ -114,10 +116,12 @@ export function generateQualifyingStructures({
           structureId: structureId || uuids?.pop(),
           qualifyingRoundNumber: roundLimit,
           stage: QUALIFYING,
+          qualifyingOnly,
           matchUpFormat,
           stageSequence,
           matchUpType,
           roundLimit, // redundant
+          tieFormat,
           matchUps,
         });
 

@@ -1,15 +1,16 @@
 import { getParticipantId } from '@Functions/global/extractors';
 import mocksEngine from '@Assemblies/engines/mock';
-import { instanceCount } from '@Tools/arrays';
 import tournamentEngine from '@Engines/syncEngine';
+import { instanceCount } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 import { expect, it } from 'vitest';
 
+// Constants, Types and Fixtures
+import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
+import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
-import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
-import { ALTERNATE, DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
 
 it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
   const singlesCollectionId = UUID();
@@ -124,7 +125,13 @@ it('Modifying tieFormats supported for TEAM QUALIFYING events', () => {
 
   const drawId = drawDefinition.drawId;
   expect(drawDefinition.tieFormat).not.toBeUndefined();
-  drawDefinition.structures.forEach((structure) => expect(structure.tieFormat).toBeUndefined());
+  drawDefinition.structures.forEach((structure) => {
+    if (structure.stage === QUALIFYING) {
+      expect(structure.tieFormat).not.toBeUndefined();
+    } else {
+      expect(structure.tieFormat).toBeUndefined();
+    }
+  });
 
   const qualifyingStructure = drawDefinition.structures.find(({ stage }) => stage === QUALIFYING);
 

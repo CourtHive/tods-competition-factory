@@ -1,9 +1,10 @@
 import { unique } from '@Tools/arrays';
 import { UUID } from '@Tools/UUID';
 
+// Constants and types
+import { MatchUp, SeedAssignment, Structure, TieFormat } from '@Types/tournamentTypes';
 import { ROUND_OUTCOME } from '@Constants/drawDefinitionConstants';
 import { SeedingProfile } from '@Types/factoryTypes';
-import { MatchUp, SeedAssignment, Structure } from '@Types/tournamentTypes';
 
 type StructureTemplateArgs = {
   seedAssignments?: SeedAssignment[];
@@ -12,12 +13,14 @@ type StructureTemplateArgs = {
   seedingProfile?: SeedingProfile;
   finishingPosition?: string;
   structures?: Structure[];
+  qualifyingOnly?: boolean;
   structureOrder?: number;
   matchUpFormat?: string;
   stageSequence?: number;
   structureName?: string;
   structureType?: string;
   matchUpType?: string;
+  tieFormat: TieFormat;
   matchUps?: MatchUp[];
   roundOffset?: number;
   structureId?: string;
@@ -32,18 +35,20 @@ export const structureTemplate = ({
   structureAbbreviation,
   seedAssignments = [],
   stageSequence = 1,
+  qualifyingOnly,
   structureOrder,
   seedingProfile,
   matchUpFormat,
   structureType,
   structureName,
-  matchUpType,
   matchUps = [],
+  matchUpType,
   structureId,
   roundOffset,
   roundLimit,
   stageOrder,
   structures,
+  tieFormat,
   stage,
 }: StructureTemplateArgs) => {
   const structure: any = {
@@ -58,6 +63,7 @@ export const structureTemplate = ({
 
   if (structureOrder) structure.structureOrder = structureOrder;
   if (structureType) structure.structureType = structureType;
+  if (qualifyingOnly) structure.tieFormat = tieFormat;
   if (seedingProfile) {
     if (typeof seedingProfile === 'string') {
       structure.seedingProfile = seedingProfile;
