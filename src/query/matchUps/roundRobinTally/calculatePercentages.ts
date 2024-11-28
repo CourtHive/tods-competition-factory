@@ -5,6 +5,7 @@ export function calculatePercentages({ participantResults, matchUpFormat, tallyP
   const bestOfGames = parsedGroupMatchUpFormat.bestOf;
   const bracketSetsToWin = (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
   const bracketGamesForSet = parsedGroupMatchUpFormat.setFormat?.setTo;
+  const precision = Math.pow(10, tallyPolicy?.precision || 3);
 
   Object.keys(participantResults).forEach((participantId) => {
     const setsWon = participantResults[participantId].setsWon;
@@ -12,30 +13,30 @@ export function calculatePercentages({ participantResults, matchUpFormat, tallyP
     const setsTotal = tallyPolicy?.groupTotalSetsPlayed
       ? totalSets
       : perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
-    let setsPct = Math.round((setsWon / setsTotal) * 1000) / 1000;
+    let setsPct = Math.round((setsWon / setsTotal) * precision) / precision;
     if (setsPct === Infinity || isNaN(setsPct)) setsPct = setsTotal;
 
     const tieMatchUpsWon = participantResults[participantId].tieMatchUpsWon;
     const tieMatchUpsLost = participantResults[participantId].tieMatchUpsLost;
     const tieMatchUpsTotal = tieMatchUpsWon + tieMatchUpsLost;
-    let tieMatchUpsPct = Math.round((tieMatchUpsWon / tieMatchUpsTotal) * 1000) / 1000;
+    let tieMatchUpsPct = Math.round((tieMatchUpsWon / tieMatchUpsTotal) * precision) / precision;
     if (tieMatchUpsPct === Infinity || isNaN(tieMatchUpsPct)) tieMatchUpsPct = tieMatchUpsWon;
 
     const matchUpsWon = participantResults[participantId].matchUpsWon;
     const matchUpsLost = participantResults[participantId].matchUpsLost;
     const matchUpsTotal = matchUpsWon + matchUpsLost;
-    let matchUpsPct = Math.round((matchUpsWon / matchUpsTotal) * 1000) / 1000;
+    let matchUpsPct = Math.round((matchUpsWon / matchUpsTotal) * precision) / precision;
     if (matchUpsPct === Infinity || isNaN(matchUpsPct)) matchUpsPct = matchUpsWon;
 
     const gamesWon = participantResults[participantId].gamesWon || 0;
     const gamesLost = participantResults[participantId].gamesLost || 0;
     const minimumExpectedGames = (perPlayer || 0) * (bracketSetsToWin || 0) * (bracketGamesForSet || 0);
     const gamesTotal = Math.max(minimumExpectedGames, gamesWon + gamesLost);
-    let gamesPct = Math.round((gamesWon / gamesTotal) * 1000) / 1000;
+    let gamesPct = Math.round((gamesWon / gamesTotal) * precision) / precision;
     if (gamesPct === Infinity || isNaN(gamesPct)) gamesPct = 0;
 
     const pointsTotal = participantResults[participantId].pointsWon + participantResults[participantId].pointsLost;
-    let pointsPct = Math.round((participantResults[participantId].pointsWon / pointsTotal) * 1000) / 1000;
+    let pointsPct = Math.round((participantResults[participantId].pointsWon / pointsTotal) * precision) / precision;
     if (pointsPct === Infinity || isNaN(pointsPct)) pointsPct = 0;
 
     participantResults[participantId].setsWon = setsWon;

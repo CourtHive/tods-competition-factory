@@ -22,10 +22,9 @@ it('supports multiple policy configurations', () => {
   const structure1MatchUps = matchUps.filter((m) => m.structureId === structureIds[0]);
   const structure2MatchUps = matchUps.filter((m) => m.structureId === structureIds[1]);
 
+  let participantResults;
   const structureGroupOrder = (structure) =>
     structure.positionAssignments.map((assignment) => participantResults[assignment.participantId].groupOrder);
-
-  let participantResults;
 
   participantResults = tallyParticipantResults({
     matchUps: structure1MatchUps,
@@ -42,14 +41,15 @@ it('supports multiple policy configurations', () => {
     GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
   };
 
-  result = tallyParticipantResults({
+  participantResults = tallyParticipantResults({
     policyDefinitions: {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: fewestGamesLostWinReversed,
     },
     matchUps: structure1MatchUps,
     generateReport: true,
-  });
-  participantResults = result.participantResults;
+  }).participantResults;
+  let firstResult = Object.values(participantResults)[0] as any;
+  expect(firstResult?.setsPct.toString().length).toEqual(5);
 
   expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 2, 1]);
 
@@ -60,6 +60,7 @@ it('supports multiple policy configurations', () => {
       { attribute: 'gamesWon', reversed: false, idsFilter: false },
     ],
     GEMscore: ['matchUpsPct', 'tieMatchUpsPct', 'gamesWon', 'gamesPct'],
+    precision: 5,
   };
 
   participantResults = tallyParticipantResults({
@@ -69,12 +70,16 @@ it('supports multiple policy configurations', () => {
     matchUps: structure1MatchUps,
   }).participantResults;
 
+  firstResult = Object.values(participantResults)[0] as any;
+  expect(firstResult?.setsPct.toString().length).toEqual(7);
+
   expect(structureGroupOrder(RR.structures[0])).toEqual([4, 3, 1, 2]);
 
   const mostDoublesWon = {
     groupOrderKey: 'tieDoublesWon',
     headToHead: { disabled: true },
     tallyDirectives: [{ attribute: 'gamesPct', idsFilter: false }],
+    precision: 7,
   };
 
   participantResults = tallyParticipantResults({
@@ -83,6 +88,9 @@ it('supports multiple policy configurations', () => {
     },
     matchUps: structure2MatchUps,
   }).participantResults;
+
+  firstResult = Object.values(participantResults)[0] as any;
+  expect(firstResult?.gamesPct.toString().length).toEqual(9);
 
   expect(structureGroupOrder(RR.structures[1])).toEqual([1, 2, 4, 2]);
 
