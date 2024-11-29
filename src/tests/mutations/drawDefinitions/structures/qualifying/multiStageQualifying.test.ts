@@ -2,12 +2,15 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
 import { getDrawStructures } from '@Acquire/findStructure';
+import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
-import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
+// Constants and Fixtures
 import POLICY_POSITION_ACTIONS_UNRESTRICTED from '@Fixtures/policies/POLICY_POSITION_ACTIONS_UNRESTRICTED';
+import { DRAW, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import {
   QUALIFYING_PARTICIPANT,
   ASSIGN_BYE,
@@ -19,8 +22,6 @@ import {
   REMOVE_ASSIGNMENT,
   ADD_NICKNAME,
 } from '@Constants/positionActionConstants';
-import { DRAW, MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 
 it('supports multi-sequence qualifying structures', () => {
   const drawProfiles = [

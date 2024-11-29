@@ -1,10 +1,10 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
 import { INestApplication } from '@nestjs/common';
 import { AppModule } from '../../app.module';
 import { Test } from '@nestjs/testing';
 import request from 'supertest';
 
-import { mocksEngine } from '@Assemblies/engines/mock';
-
+// Constants
 import { TEST_EMAIL, TEST_PASSWORD } from '../../common/constants/test';
 import { SINGLES } from '@Constants/eventConstants';
 
