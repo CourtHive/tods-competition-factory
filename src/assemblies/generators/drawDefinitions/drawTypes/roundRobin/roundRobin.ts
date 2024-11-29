@@ -9,20 +9,23 @@ import { UUID } from '@Tools/UUID';
 import { PlayoffAttributes, PolicyDefinitions, SeedingProfile, ResultType } from '@Types/factoryTypes';
 import { MAIN, ITEM, WIN_RATIO, CONTAINER } from '@Constants/drawDefinitionConstants';
 import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
-import { MatchUp, EventTypeUnion } from '@Types/tournamentTypes';
+import { MatchUp, EventTypeUnion, TieFormat } from '@Types/tournamentTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 
 type GenerateRoundRobinArgs = {
   playoffAttributes?: PlayoffAttributes;
+  hasExistingDrawDefinition?: boolean;
   appliedPolicies?: PolicyDefinitions;
   seedingProfile?: SeedingProfile;
+  matchUpType?: EventTypeUnion;
+  qualifyingOnly?: boolean;
   groupNameBase?: string;
   structureName?: string;
   stageSequence?: number;
   structureOptions?: any;
-  matchUpType?: EventTypeUnion;
+  tieFormat?: TieFormat;
   groupNames?: string[];
   roundTarget?: number;
   structureId?: string;
@@ -35,17 +38,20 @@ type GenerateRoundRobinArgs = {
 
 export function generateRoundRobin(params: GenerateRoundRobinArgs) {
   const {
+    hasExistingDrawDefinition,
     groupNameBase = 'Group',
     playoffAttributes,
     stageSequence = 1,
     structureOptions,
     appliedPolicies,
+    qualifyingOnly,
     seedingProfile,
     stage = MAIN,
     matchUpType,
     roundTarget,
     structureId,
     groupNames,
+    tieFormat,
     drawSize,
     idPrefix,
     isMock,
@@ -79,22 +85,27 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
 
     return structureTemplate({
       structureId: uuids?.pop(),
+      hasExistingDrawDefinition,
       structureType: ITEM,
       finishingPosition,
+      qualifyingOnly,
       structureOrder,
       structureName,
+      tieFormat,
       matchUps,
     });
   });
 
   const structure = structureTemplate({
     structureId: structureId ?? uuids?.pop(),
+    hasExistingDrawDefinition,
     structureType: CONTAINER,
     finishingPosition,
     seedingProfile,
     structureName,
     stageSequence,
     structures,
+    tieFormat,
     stage,
   });
 
