@@ -2,6 +2,7 @@ import { setMatchUpMatchUpFormat } from '@Mutate/matchUps/matchUpFormat/setMatch
 import { checkTieFormat } from '@Mutate/tieFormat/checkTieFormat';
 
 export function checkFormatScopeEquivalence({
+  existingQualifyingStructures,
   tournamentRecord,
   drawDefinition,
   matchUpFormat,
@@ -23,7 +24,11 @@ export function checkFormatScopeEquivalence({
         const result = checkTieFormat({ tieFormat });
         if (result.error) return result;
 
-        drawDefinition.tieFormat = result.tieFormat ?? tieFormat;
+        const existingQualifyingTieFormats = existingQualifyingStructures?.every((structure) => structure.tieFormat);
+        if (!existingQualifyingStructures?.length || existingQualifyingTieFormats) {
+          // if there are no existing qualifying structures or if all existing qualifying structures have a tieFormat
+          drawDefinition.tieFormat = result.tieFormat ?? tieFormat;
+        }
       } else if (matchUpFormat) {
         const result = setMatchUpMatchUpFormat({
           tournamentRecord,
