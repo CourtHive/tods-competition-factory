@@ -16,9 +16,9 @@ export function setUpDrawGeneration(params): ResultType & {
 } {
   const {
     tournamentRecord,
-    matchUpFormat,
-    appliedPolicies,
     policyDefinitions,
+    appliedPolicies,
+    matchUpFormat,
     matchUpType,
     tieFormat,
     drawType,
@@ -29,30 +29,6 @@ export function setUpDrawGeneration(params): ResultType & {
   const existingDrawDefinition = params.drawId
     ? (event?.drawDefinitions?.find((d) => d.drawId === params.drawId) as DrawDefinition)
     : undefined;
-
-  if (existingDrawDefinition && drawType !== existingDrawDefinition.drawType)
-    existingDrawDefinition.drawType = drawType as DrawTypeUnion;
-
-  const drawDefinition: any =
-    existingDrawDefinition ??
-    newDrawDefinition({
-      processCodes: params.processCodes,
-      drawId: params.drawId,
-      drawType,
-    });
-
-  const equivalenceResult = checkFormatScopeEquivalence({
-    tournamentRecord,
-    drawDefinition,
-    matchUpFormat,
-    matchUpType,
-    tieFormat,
-    event,
-  });
-  if (equivalenceResult.error) return decorateResult({ result: equivalenceResult, stack });
-
-  const attachmentResult = policyAttachment({ appliedPolicies, policyDefinitions, drawDefinition, stack });
-  if (attachmentResult.error) return attachmentResult;
 
   // find existing MAIN structureId if existingDrawDefinition
   const structureId = existingDrawDefinition?.structures?.find(
@@ -66,6 +42,31 @@ export function setUpDrawGeneration(params): ResultType & {
     existingQualifyingStructures?.length === 1 &&
     !existingQualifyingStructures[0].matchUps?.length &&
     existingQualifyingStructures[0].structureId;
+
+  if (existingDrawDefinition && drawType !== existingDrawDefinition.drawType)
+    existingDrawDefinition.drawType = drawType as DrawTypeUnion;
+
+  const drawDefinition: any =
+    existingDrawDefinition ??
+    newDrawDefinition({
+      processCodes: params.processCodes,
+      drawId: params.drawId,
+      drawType,
+    });
+
+  const equivalenceResult = checkFormatScopeEquivalence({
+    existingQualifyingStructures,
+    tournamentRecord,
+    drawDefinition,
+    matchUpFormat,
+    matchUpType,
+    tieFormat,
+    event,
+  });
+  if (equivalenceResult.error) return decorateResult({ result: equivalenceResult, stack });
+
+  const attachmentResult = policyAttachment({ appliedPolicies, policyDefinitions, drawDefinition, stack });
+  if (attachmentResult.error) return attachmentResult;
 
   return { drawDefinition, structureId, existingDrawDefinition, existingQualifyingPlaceholderStructureId };
 }
