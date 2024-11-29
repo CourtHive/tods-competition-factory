@@ -2,11 +2,12 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// Constants
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { INDIVIDUAL, TEAM } from '@Constants/participantConstants'
+import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
+import { ANY, MALE } from '@Constants/genderConstants';
 import { SINGLES } from '@Constants/eventConstants';
 import { DOUBLES } from '@Constants/matchUpTypes';
-import { ANY, MALE } from '@Constants/genderConstants';
 
 it('can generate a qualifying structure with tieFormat, then generate a main structure with a different tieFormat', () => {
   const {
@@ -42,67 +43,59 @@ it('can generate a qualifying structure with tieFormat, then generate a main str
   });
   expect(result.success).toEqual(true);
 
+  const qualifyingCollectionName = 'Qualifying Collection';
   const qualifyingTieFormat = {
     tieFormatName: 'CUSTOM',
     collectionDefinitions: [
       {
-        category: {
-          ageCategoryCode: 'U18',
-        },
-        gender: ANY,
-        collectionOrder: 1,
-        matchUpValue: 1,
-        collectionName: 'Qualifying Collection',
-        matchUpCount: 3,
-        matchUpType: DOUBLES,
+        collectionName: qualifyingCollectionName,
+        category: { ageCategoryCode: 'U18' },
         matchUpFormat: 'SET3-S:6/TB7',
         collectionId: 'Q-collection1',
+        matchUpType: DOUBLES,
+        collectionOrder: 1,
+        matchUpValue: 1,
+        matchUpCount: 3,
+        gender: ANY,
       },
     ],
-    winCriteria: {
-      valueGoal: 2,
-      success: true,
-    },
+    winCriteria: { valueGoal: 2, success: true },
   };
 
+  const mainCollectionName = 'Main Collection';
   const mainTieFormat = {
     tieFormatName: 'CUSTOM',
     collectionDefinitions: [
       {
-        category: {
-          ageCategoryCode: 'U18',
-        },
-        gender: MALE,
-        collectionOrder: 1,
-        matchUpValue: 1,
-        collectionName: 'Main Collection',
-        matchUpCount: 2,
-        matchUpType: SINGLES,
+        category: { ageCategoryCode: 'U18' },
+        collectionName: mainCollectionName,
         matchUpFormat: 'SET3-S:6/TB7',
         collectionId: 'M-collection1',
+        matchUpType: SINGLES,
+        collectionOrder: 1,
+        matchUpValue: 1,
+        matchUpCount: 2,
+        gender: MALE,
       },
     ],
-    winCriteria: {
-      valueGoal: 2,
-      success: true,
-    },
+    winCriteria: { valueGoal: 2, success: true },
   };
 
   let { drawDefinition: qualifyingDrawDefinition } = tournamentEngine.generateDrawDefinition({
+    tieFormat: qualifyingTieFormat,
+    qualifyingOnly: true,
     qualifyingProfiles: [
       {
         structureProfiles: [
           {
-            drawSize: 16,
             matchUpFormat: 'SET1-S:TB11NOAD',
             qualifyingPositions: 2,
             seedsCount: 0,
+            drawSize: 16,
           },
         ],
       },
     ],
-    qualifyingOnly: true,
-    tieFormat: qualifyingTieFormat,
     eventId,
   });
 
@@ -111,7 +104,7 @@ it('can generate a qualifying structure with tieFormat, then generate a main str
   expect(qualifyingStructure.matchUps.length).toEqual(14);
   expect(qualifyingStructure.matchUps[0].tieMatchUps.length).toEqual(3);
   expect(qualifyingStructure.tieFormat.collectionDefinitions.length).toEqual(1);
-  expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionName).toEqual('Qualifying Collection');
+  expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionName).toEqual(qualifyingCollectionName);
   expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionId).toEqual(
     qualifyingTieFormat.collectionDefinitions[0].collectionId,
   );
@@ -122,76 +115,34 @@ it('can generate a qualifying structure with tieFormat, then generate a main str
     allowReplacement: true,
     existingDrawCount: 0,
     eventId,
-
   });
 
   const mainDrawEntries = [
     ...mainParticipantIds.map((p, i) => ({
-      participantId: p,
       entryStatus: 'DIRECT_ACCEPTANCE',
-      entryStage: 'MAIN',
       entryPosition: i + 1,
+      entryStage: 'MAIN',
+      participantId: p,
     })),
     ...qualifyingParticipantIds.slice(0, 2).map((p, i) => ({
-      participantId: p,
       entryStatus: 'DIRECT_ACCEPTANCE',
       entryStage: 'QUALIFYING',
       entryPosition: i + 1,
+      participantId: p,
     })),
   ];
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
-    drawSize: 16,
-    drawType: 'SINGLE_ELIMINATION',
-    structureOptions: {
-      groupSize: 4,
-    },
-    seedingProfile: {},
-    voluntaryConsolation: false,
-    advancedPerGroup: '1',
-    advancementType: 'TOP_FINISHERS',
-    automated: 'automated',
-    drawName: 'Draw',
-    drawStage: 'MAIN',
-    matchUpFormat: 'SET1-S:TB11NOAD',
-    placeRemainingPlayers: false,
-    playoffStructure: 'COMPASS',
-    qualifiersCount: 2,
-    qualifyingDrawSize: 4,
-    qualifyingSeedsCount: 0,
-    scoring: 's3',
-    seedsCount: 0,
-    tieFormatName: '',
-    eventId: eventId,
-    ignoreStageSpace: true,
-    tieFormat: mainTieFormat,
-    drawId: qualifyingDrawDefinition.drawId,
-    drawEntries: mainDrawEntries,
-    enforceMinimumDrawSize: false,
-    hydrateCollections: true,
-    seedByRanking: false,
-    ignoreAllowedDrawTypes: true,
-    feedPolicy: {
-      roundGroupedOrder: [[1], [1], [1, 2], [3, 4, 1, 2], [2, 1, 4, 3, 6, 5, 8, 7], [1]],
-      roundFeedProfiles: [
-        'TOP_DOWN',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-        'BOTTOM_UP',
-      ],
-    },
-    finishingPositionNaming: {
-      '3-4': {
-        name: '3-4 Playoff',
-        abbreviation: 'PL',
-      },
-    },
-    qualifyingPlaceholder: true,
     activeTournamentId: tournamentRecord.tournamentId,
+    drawId: qualifyingDrawDefinition.drawId,
+    structureOptions: { groupSize: 4 },
+    drawEntries: mainDrawEntries,
+    tieFormat: mainTieFormat,
+    qualifyingDrawSize: 4,
+    qualifiersCount: 2,
+    eventId: eventId,
+    automated: true,
+    drawSize: 16,
   });
 
   //verify main structure has been created with tieFormat at drawDefinition level
@@ -200,7 +151,7 @@ it('can generate a qualifying structure with tieFormat, then generate a main str
   expect(mainStructure.matchUps[0].tieMatchUps.length).toEqual(2);
   expect(mainStructure.tieFormat).toBeUndefined();
   expect(drawDefinition.tieFormat.collectionDefinitions.length).toEqual(1);
-  expect(drawDefinition.tieFormat.collectionDefinitions[0].collectionName).toEqual('Main Collection');
+  expect(drawDefinition.tieFormat.collectionDefinitions[0].collectionName).toEqual(mainCollectionName);
   expect(drawDefinition.tieFormat.collectionDefinitions[0].collectionId).toEqual(
     mainTieFormat.collectionDefinitions[0].collectionId,
   );
@@ -210,7 +161,7 @@ it('can generate a qualifying structure with tieFormat, then generate a main str
   expect(newQualifyingStructure.matchUps.length).toEqual(14);
   expect(newQualifyingStructure.matchUps[0].tieMatchUps.length).toEqual(3);
   expect(newQualifyingStructure.tieFormat.collectionDefinitions.length).toEqual(1);
-  expect(newQualifyingStructure.tieFormat.collectionDefinitions[0].collectionName).toEqual('Qualifying Collection');
+  expect(newQualifyingStructure.tieFormat.collectionDefinitions[0].collectionName).toEqual(qualifyingCollectionName);
   expect(newQualifyingStructure.tieFormat.collectionDefinitions[0].collectionId).toEqual(
     qualifyingTieFormat.collectionDefinitions[0].collectionId,
   );
