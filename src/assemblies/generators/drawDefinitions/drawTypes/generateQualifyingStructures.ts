@@ -1,4 +1,5 @@
 import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import structureTemplate from '@Generators/templates/structureTemplate';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { coerceEven, isConvertableInteger } from '@Tools/math';
@@ -14,6 +15,7 @@ import { DrawLink, Structure, TieFormat } from '@Types/tournamentTypes';
 import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { generateTieMatchUps } from '../tieMatchUps';
 
 type GenerateQualifyingStructuresArgs = {
   hasExistingDrawDefinition?: boolean;
@@ -21,6 +23,7 @@ type GenerateQualifyingStructuresArgs = {
   qualifyingProfiles: any[];
   qualifyingOnly?: boolean;
   tieFormat?: TieFormat;
+  drawType?: string;
   idPrefix?: string;
   isMock?: boolean;
   uuids?: string[];
@@ -97,12 +100,15 @@ export function generateQualifyingStructures({
           structureName: structureProfile.structureName || qualifyingStructureName,
           structureId: structureId || uuids?.pop(),
           // qualifyingPositions,
+          hasExistingDrawDefinition,
           stage: QUALIFYING,
           structureOptions,
           appliedPolicies,
+          qualifyingOnly,
           stageSequence,
           matchUpType,
           roundTarget,
+          tieFormat,
           drawSize,
           idPrefix,
           isMock,
@@ -170,6 +176,14 @@ export function generateQualifyingStructures({
       // always set to the final round of the last generated qualifying structure
       finalQualifyingStructureId = structure.structureId;
       finalQualifyingRoundNumber = roundLimit;
+
+      if (tieFormat) {
+        matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
+        matchUps?.forEach((matchUp) => {
+          const { tieMatchUps } = generateTieMatchUps({ tieFormat, matchUp, isMock });
+          Object.assign(matchUp, { tieMatchUps, matchUpType });
+        });
+      }
 
       structures.push(structure);
       stageSequence += 1;

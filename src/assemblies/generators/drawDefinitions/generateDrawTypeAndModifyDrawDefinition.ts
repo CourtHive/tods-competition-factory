@@ -151,11 +151,7 @@ export function generateDrawTypeAndModifyDrawDefinition(params: GenerateDrawType
     // if there were exiting matchUps, exclude them from this step
     matchUps?.forEach((matchUp) => {
       if (!existingMatchUpIds.includes(matchUp.matchUpId)) {
-        const { tieMatchUps } = generateTieMatchUps({
-          tieFormat,
-          matchUp,
-          isMock,
-        });
+        const { tieMatchUps } = generateTieMatchUps({ tieFormat, matchUp, isMock });
         Object.assign(matchUp, { tieMatchUps, matchUpType });
       }
     });
