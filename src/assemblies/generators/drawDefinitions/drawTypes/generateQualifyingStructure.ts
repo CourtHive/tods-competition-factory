@@ -1,15 +1,17 @@
 import { generateQualifyingLink } from '@Generators/drawDefinitions/links/generateQualifyingLink';
 import structureTemplate from '@Assemblies/generators/templates/structureTemplate';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { coerceEven, isConvertableInteger } from '@Tools/math';
 import { addExtension } from '@Mutate/extensions/addExtension';
 import { generateRoundRobin } from './roundRobin/roundRobin';
+import { generateTieMatchUps } from '../tieMatchUps';
 import { constantToString } from '@Tools/strings';
 import { treeMatchUps } from './eliminationTree';
 
 // constants, fixtures and types
-import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure } from '@Types/tournamentTypes';
+import { DrawDefinition, DrawLink, DrawTypeUnion, Event, Structure, TieFormat } from '@Types/tournamentTypes';
 import { POSITION, QUALIFYING, ROUND_ROBIN, WINNER } from '@Constants/drawDefinitionConstants';
 import POLICY_ROUND_NAMING_DEFAULT from '@Fixtures/policies/POLICY_ROUND_NAMING_DEFAULT';
 import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
@@ -25,16 +27,19 @@ import {
 } from '@Constants/errorConditionConstants';
 
 type GenerateQualifyingStructureArgs = {
+  hasExistingDrawDefinition?: boolean;
   appliedPolicies?: PolicyDefinitions;
   qualifyingRoundNumber: number;
   drawDefinition: DrawDefinition;
   qualifyingPositions?: number;
   participantsCount?: number;
   targetStructureId: string;
+  qualifyingOnly?: boolean;
   drawType?: DrawTypeUnion;
   structureOptions?: any;
   matchUpFormat?: string;
   structureName?: string;
+  tieFormat?: TieFormat;
   structureId?: string;
   roundTarget: number;
   drawSize?: number;
@@ -73,16 +78,19 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
   let drawSize = params.drawSize ?? coerceEven(params.participantsCount);
 
   const {
+    hasExistingDrawDefinition,
     qualifyingRoundNumber,
     qualifyingPositions,
     targetStructureId,
     structureOptions,
     appliedPolicies,
+    qualifyingOnly,
     drawDefinition,
     matchUpFormat,
     structureName,
     structureId,
     roundTarget,
+    tieFormat,
     drawType,
     idPrefix,
     isMock,
@@ -139,12 +147,15 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
     const { maxRoundNumber /*, groupSize*/, structures, groupCount } = generateRoundRobin({
       structureName: structureName ?? qualifyingStructureName,
       structureId: structureId ?? uuids?.pop(),
+      hasExistingDrawDefinition,
       stage: QUALIFYING,
       structureOptions,
       appliedPolicies,
+      qualifyingOnly,
       stageSequence,
       matchUpType,
       roundTarget,
+      tieFormat,
       idPrefix,
       drawSize,
       isMock,
@@ -201,6 +212,14 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
       finishingPositions,
       linkType,
     })?.link;
+
+  if (tieFormat) {
+    matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
+    matchUps?.forEach((matchUp) => {
+      const { tieMatchUps } = generateTieMatchUps({ tieFormat, matchUp, isMock });
+      Object.assign(matchUp, { tieMatchUps, matchUpType });
+    });
+  }
 
   return {
     qualifyingDrawPositionsCount: drawSize,

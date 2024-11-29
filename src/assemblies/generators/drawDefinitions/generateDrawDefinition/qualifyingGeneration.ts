@@ -10,6 +10,7 @@ import { POSITION, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ResultType } from '@Types/factoryTypes';
 
+// only does stage perparation unless no qualifyingProfiles are provided and a qualifyingPlaceholder is necessary
 export function qualifyingGeneration(params): ResultType & { qualifyingConflicts?: any[] } {
   const {
     qualifyingPlaceholder,

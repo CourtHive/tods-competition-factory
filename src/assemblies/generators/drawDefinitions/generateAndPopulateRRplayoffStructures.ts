@@ -78,11 +78,7 @@ export function generateAndPopulateRRplayoffStructures(params) {
 
     if (tieFormat) {
       addedMatchUps.forEach((matchUp) => {
-        const { tieMatchUps } = generateTieMatchUps({
-          isMock: params.isMock,
-          tieFormat,
-          matchUp,
-        });
+        const { tieMatchUps } = generateTieMatchUps({ isMock: params.isMock, tieFormat, matchUp });
         Object.assign(matchUp, { tieMatchUps, matchUpType: TEAM_MATCHUP });
       });
     }
