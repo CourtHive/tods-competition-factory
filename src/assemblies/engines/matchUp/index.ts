@@ -43,62 +43,62 @@ export const matchUpEngine = (() => {
     return engine;
   }
 
-  importGovernors([scoreGovernor]);
+  importGovernors(engine, [scoreGovernor]);
 
   return engine;
-
-  function importGovernors(governors) {
-    governors.forEach((governor) => {
-      Object.keys(governor).forEach((methodName) => {
-        engine[methodName] = (params) => {
-          if (getDevContext()) {
-            return invoke({ params, governor, methodName });
-          } else {
-            try {
-              return invoke({ params, governor, methodName });
-            } catch (err) {
-              handleCaughtError({
-                engineName: 'matchUpEngine',
-                methodName,
-                params,
-                err,
-              });
-            }
-          }
-        };
-      });
-    });
-  }
-
-  function invoke({ params, governor, methodName }) {
-    engine.error = undefined;
-    engine.success = false;
-
-    const matchUp = params?.matchUp || getMatchUp();
-    const matchUps = params?.matchUps || getMatchUps();
-
-    const snapshot = params?.rollbackOnError && makeDeepCopy(matchUp, false, true);
-
-    params = {
-      ...params,
-      matchUpId: matchUp?.matchUpId,
-      matchUps,
-      matchUp,
-    };
-
-    const result = governor[methodName](params);
-
-    if (result?.error) {
-      if (snapshot) setState(snapshot);
-      return { ...result, rolledBack: !!snapshot };
-    }
-
-    const notify = result?.success && params?.delayNotify !== true && params?.doNotNotify !== true;
-    if (notify) notifySubscribers();
-    if (notify || !result?.success || params?.doNotNotify) deleteNotices();
-
-    return result;
-  }
 })();
+
+function importGovernors(engine, governors) {
+  governors.forEach((governor) => {
+    Object.keys(governor).forEach((methodName) => {
+      engine[methodName] = (params) => {
+        if (getDevContext()) {
+          return invoke(engine, { params, governor, methodName });
+        } else {
+          try {
+            return invoke(engine, { params, governor, methodName });
+          } catch (err) {
+            handleCaughtError({
+              engineName: 'matchUpEngine',
+              methodName,
+              params,
+              err,
+            });
+          }
+        }
+      };
+    });
+  });
+}
+
+function invoke(engine, { params, governor, methodName }) {
+  engine.error = undefined;
+  engine.success = false;
+
+  const matchUp = params?.matchUp || getMatchUp();
+  const matchUps = params?.matchUps || getMatchUps();
+
+  const snapshot = params?.rollbackOnError && makeDeepCopy(matchUp, false, true);
+
+  params = {
+    ...params,
+    matchUpId: matchUp?.matchUpId,
+    matchUps,
+    matchUp,
+  };
+
+  const result = governor[methodName](params);
+
+  if (result?.error) {
+    if (snapshot) setState(snapshot);
+    return { ...result, rolledBack: !!snapshot };
+  }
+
+  const notify = result?.success && params?.delayNotify !== true && params?.doNotNotify !== true;
+  if (notify) notifySubscribers();
+  if (notify || !result?.success || params?.doNotNotify) deleteNotices();
+
+  return result;
+}
 
 export default matchUpEngine;
