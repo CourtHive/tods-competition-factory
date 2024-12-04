@@ -199,16 +199,18 @@ export function addMatchUpContext({
   // necessry for SINGLES/DOUBLES matchUps that are part of TEAM tournaments
   const finishingPositionRange = matchUp.finishingPositionRange ?? additionalContext.finishingPositionRange;
 
+  const roundOfPlay =
+    stage !== QUALIFYING && isConvertableInteger(initialRoundOfPlay) && initialRoundOfPlay + (roundNumber || 0);
+
   // order is important here as Round Robin matchUps already have inContext structureId
   const onlyDefined = (obj) => definedAttributes(obj, undefined, true);
+
   const matchUpWithContext = {
     ...onlyDefined(context),
     ...onlyDefined({
-      matchUpFormat: matchUp.matchUpType === TEAM ? undefined : matchUpFormat,
-      tieFormat: matchUp.matchUpType !== TEAM ? undefined : tieFormat,
+      matchUpFormat: matchUpType === TEAM ? undefined : matchUpFormat,
+      tieFormat: matchUpType !== TEAM ? undefined : tieFormat,
       gender: collectionDefinition?.gender ?? event?.gender,
-      roundOfPlay:
-        stage !== QUALIFYING && isConvertableInteger(initialRoundOfPlay) && initialRoundOfPlay + (roundNumber || 0),
       endDate: matchUp.endDate ?? endDate,
       discipline: event?.discipline,
       category: matchUpCategory,
@@ -229,6 +231,7 @@ export function addMatchUpContext({
       roundOffset,
       structureId,
       roundNumber,
+      roundOfPlay,
       feedRound,
       roundName,
       drawName,
