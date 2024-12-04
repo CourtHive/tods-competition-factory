@@ -119,7 +119,6 @@ it('can generateDrawDefinition a main structure, then generate a qualifying stru
     activeTournamentId: tournamentRecord.tournamentId,
     drawDefinition: mainDrawDefinition,
     allowReplacement: true,
-    existingDrawCount: 0,
     eventId,
   });
 
@@ -145,6 +144,15 @@ it('can generateDrawDefinition a main structure, then generate a qualifying stru
     eventId,
   });
 
+  result = tournamentEngine.addDrawDefinition({
+    activeTournamentId: tournamentRecord.tournamentId,
+    allowReplacement: true,
+    drawDefinition,
+    eventId,
+  });
+
+  expect(result.success).toEqual(true);
+
   // reverify main structure has been created with tieFormat at drawDefinition level and not on structure level
   const newMainStructure = drawDefinition.structures.find(({ stage }) => stage === MAIN);
   expect(newMainStructure.matchUps.length).toEqual(15);
@@ -168,5 +176,14 @@ it('can generateDrawDefinition a main structure, then generate a qualifying stru
   expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionName).toEqual(qualifyingCollectionName);
   expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionId).toEqual(
     qualifyingTieFormat.collectionDefinitions[0].collectionId,
+  );
+
+  const qualifyingMatchUps = tournamentEngine
+    .allTournamentMatchUps({ contextFilters: { structureIds: [qualifyingStructure.structureId] } })
+    .matchUps.filter((m) => !!m.tieMatchUps);
+  expect(qualifyingMatchUps[0].structureId).toEqual(qualifyingStructure.structureId);
+  expect(qualifyingMatchUps[0].tieFormat.tieFormatName).toEqual(qualifyingTieFormatName);
+  expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionId).toEqual(
+    qualifyingMatchUps[0].tieMatchUps[0].collectionId,
   );
 });
