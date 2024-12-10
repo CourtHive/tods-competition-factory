@@ -153,10 +153,8 @@ it('generates expected finishingPositions for qualifying structures', () => {
 
   // now auto place qualifier in MAIN draw
   result = tournamentEngine.setMatchUpStatus({
+    policyDefinitions: { [POLICY_TYPE_PROGRESSION]: { autoPlaceQualifiers: true } },
     matchUpId: qualifyingMatchUp.matchUpId,
-    policyDefinitions: {
-      [POLICY_TYPE_PROGRESSION]: { autoPlaceQualifiers: true },
-    },
     outcome,
     drawId,
   });
