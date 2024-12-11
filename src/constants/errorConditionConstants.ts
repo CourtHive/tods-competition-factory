@@ -503,6 +503,10 @@ export const MISSING_PARTICIPANT_ID = {
   message: 'Missing participantId',
   code: 'ERR_MISSING_PARTICIPANT_ID',
 };
+export const MISSING_QUALIFIED_PARTICIPANTS = {
+  message: 'Missing qualified participants',
+  code: 'ERR_MISSING_QUALIFIED_PARTICIPANTS',
+};
 export const PARTICIPANT_NOT_FOUND = {
   message: 'Participant Not Found',
   code: 'ERR_NOT_FOUND_PARTICIPANT',
@@ -894,6 +898,7 @@ export const errorConditionConstants = {
   MISSING_DRAW_SIZE,
   MISSING_ENTRIES,
   MISSING_EVENT,
+  MISSING_QUALIFIED_PARTICIPANTS,
   MISSING_MATCHUP_FORMAT,
   MISSING_MATCHUP_ID,
   MISSING_MATCHUP_IDS,

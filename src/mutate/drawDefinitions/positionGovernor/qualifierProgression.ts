@@ -1,9 +1,11 @@
-import { findDrawDefinition } from '@Acquire/findDrawDefinition';
-import { findEvent } from '@Acquire/findEvent';
 import { findExtension } from '@Acquire/findExtension';
 import { findStructure } from '@Acquire/findStructure';
 import { qualifierDrawPositionAssignment } from '@Assemblies/governors/drawsGovernor';
 import { POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
+import {
+  MISSING_QUALIFIED_PARTICIPANTS,
+  NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
+} from '@Constants/errorConditionConstants';
 import { TALLY } from '@Constants/extensionConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
@@ -20,24 +22,21 @@ import { ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Structure, Tournament } from '@Types/tournamentTypes';
 
 interface QualifierProgressionArgs {
-  drawId: string;
-  eventId: string;
+  drawDefinition: DrawDefinition;
+  event: Event;
   mainStructureId: string;
   tournamentRecord: Tournament;
 }
 
 export function qualifierProgression({
-  drawId,
-  eventId,
+  drawDefinition,
+  event,
   mainStructureId,
   tournamentRecord,
 }: QualifierProgressionArgs): ResultType {
   const qualifyingParticipantIds: string[] = [];
 
-  const drawDefinition = findDrawDefinition({ tournamentRecord, drawId })?.drawDefinition ?? ({} as DrawDefinition);
-  const event = findEvent({ tournamentRecord, eventId })?.event ?? ({} as Event);
   const structure = findStructure({ drawDefinition, structureId: mainStructureId })?.structure ?? ({} as Structure);
-
   const appliedPolicies =
     getAppliedPolicies({
       tournamentRecord,
@@ -51,7 +50,8 @@ export function qualifierProgression({
 
   const { qualifierPositions, positionAssignments } = structureAssignedDrawPositions({ structure });
 
-  if (!qualifierPositions.length) return decorateResult({ result: { error: 'NO_QUALIFIER_POSITIONS' } }); // update with error constant
+  if (!qualifierPositions.length)
+    return decorateResult({ result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } });
 
   const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
@@ -141,7 +141,7 @@ export function qualifierProgression({
     }
   }
 
-  if (!qualifyingParticipantIds.length) return decorateResult({ result: { error: 'NO_QUALIFIERS_FOUND' } }); // update with error constant
+  if (!qualifyingParticipantIds.length) return decorateResult({ result: { error: MISSING_QUALIFIED_PARTICIPANTS } });
 
   qualifierPositions.forEach((position) => {
     const randomParticipantId = randomPop(qualifyingParticipantIds);
