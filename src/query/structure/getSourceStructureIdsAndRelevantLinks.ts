@@ -5,7 +5,7 @@ import { findStructure } from '@Acquire/findStructure';
 type GetSourceStructureDetailArgs = {
   drawDefinition: DrawDefinition;
   finishingPosition?: string;
-  targetRoundNumber: number;
+  targetRoundNumber?: number;
   structureId: string;
   linkType: string;
 };
