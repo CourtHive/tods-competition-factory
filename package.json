@@ -155,7 +155,7 @@
     "eslint-config-prettier": "9.1.0",
     "eslint-import-resolver-typescript": "3.7.0",
     "eslint-module-utils": "2.12.0",
-    "eslint-plugin-compat": "6.0.1",
+    "eslint-plugin-compat": "6.0.2",
     "eslint-plugin-import": "2.31.0",
     "eslint-plugin-prettier": "5.2.1",
     "eslint-plugin-sonarjs": "3.0.1",
