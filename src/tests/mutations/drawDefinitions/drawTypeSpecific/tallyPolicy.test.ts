@@ -3,6 +3,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
+// Constants
+import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+
 test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore
   const mockProfile: any = {
@@ -24,8 +27,8 @@ test('roundRobinTally policy can specify tally by games only', () => {
 
     drawProfiles: [
       {
-        drawType: 'ROUND_ROBIN',
         matchUpFormat: 'SET1-S:T20',
+        drawType: ROUND_ROBIN,
         drawSize: 4,
       },
     ],
@@ -52,4 +55,36 @@ test('roundRobinTally policy can specify tally by games only', () => {
     // in very rare instances the GEMscore calc is expectation - 1
     expect([expectation - 1, expectation].includes(parseInt(GEMscore?.toString()?.slice(0, 2)))).toEqual(true);
   });
+});
+
+test('roundRobinTally policy can specify groupTotalGamesPlayed and groupTotalSetsPlayed', () => {
+  const mockProfile: any = {
+    policyDefinitions: { roundRobinTally: { groupTotalGamesPlayed: true, groupTotalSetsPlayed: true } },
+    drawProfiles: [{ drawType: ROUND_ROBIN, drawSize: 4 }],
+    tournamentName: 'group total games and sets',
+  };
+
+  mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    setState: true,
+    ...mockProfile,
+  });
+
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  const { participantResults } = tallyParticipantResults({
+    policyDefinitions: mockProfile.policyDefinitions,
+    matchUpFormat: mockProfile.matchUpFormat,
+    matchUps,
+  });
+
+  let gamesPctTotal = 0;
+  let setsPctTotal = 0;
+  Object.values(participantResults).forEach((result: any) => {
+    const { setsPct, gamesPct = 0 } = result;
+    gamesPctTotal += gamesPct;
+    setsPctTotal += setsPct;
+  });
+  expect(Math.round(gamesPctTotal)).toEqual(1);
+  expect(Math.round(setsPctTotal)).toEqual(1);
 });

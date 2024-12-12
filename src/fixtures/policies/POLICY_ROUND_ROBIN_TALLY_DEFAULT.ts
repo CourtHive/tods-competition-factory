@@ -4,6 +4,7 @@ export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
   [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
     policyName: 'Default Round Robin Tally',
     groupOrderKey: 'matchUpsWon', // possible to group by tieMatchUpsWon, tieSinglesWon, tieDoublesWon, matchUpsWon, pointsWon, gamesWon, setsWon, gamesPct, setsPct, pointsPct, matchUpsPct
+    groupTotalGamesPlayed: false, // optional - when true will calculate % of games won based on total group games played rather than participant games played
     groupTotalSetsPlayed: false, // optional - when true will calculate % of sets won based on total group sets played rather than participant sets played
     headToHead: { disabled: false },
     tallyDirectives: [
@@ -12,17 +13,17 @@ export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
       // with { idsFilter: false } the ratio is calculated from all group matchUps
       // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
       // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
-      { attribute: 'matchUpsPct', idsFilter: false },
+      { attribute: 'matchUpsPct', idsFilter: false, groupTotals: false },
       { attribute: 'allDefaults', reversed: true, idsFilter: false }, // reversed: true => reverses default which is greatest to least
       { attribute: 'defaults', reversed: true, idsFilter: false },
       { attribute: 'walkovers', reversed: true, idsFilter: false },
       { attribute: 'retirements', reversed: true, idsFilter: false },
-      { attribute: 'setsPct', idsFilter: false },
-      { attribute: 'gamesPct', idsFilter: false },
+      { attribute: 'setsPct', idsFilter: false, groupTotals: false },
+      { attribute: 'gamesPct', idsFilter: false, groupTotals: false },
       { attribute: 'pointsPct', idsFilter: false },
-      { attribute: 'matchUpsPct', idsFilter: true },
-      { attribute: 'setsPct', idsFilter: true },
-      { attribute: 'gamesPct', idsFilter: true },
+      { attribute: 'matchUpsPct', idsFilter: true, groupTotals: false },
+      { attribute: 'setsPct', idsFilter: true, groupTotals: false },
+      { attribute: 'gamesPct', idsFilter: true, groupTotals: false },
       { attribute: 'pointsPct', idsFilter: true },
     ],
     disqualifyDefaults: true, // disqualified participants are pushed to the bottom of the group order
