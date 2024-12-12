@@ -1,6 +1,14 @@
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 
-export function calculatePercentages({ participantResults, matchUpFormat, tallyPolicy, perPlayer, totalSets }) {
+export function calculatePercentages({
+  participantResults,
+  groupingTotal,
+  matchUpFormat,
+  tallyPolicy,
+  totalGames,
+  perPlayer,
+  totalSets,
+}) {
   const parsedGroupMatchUpFormat = (matchUpFormat && parse(matchUpFormat)) || {};
   const bestOfGames = parsedGroupMatchUpFormat.bestOf;
   const bracketSetsToWin = (bestOfGames && Math.ceil(bestOfGames / 2)) || 1;
@@ -10,9 +18,10 @@ export function calculatePercentages({ participantResults, matchUpFormat, tallyP
   Object.keys(participantResults).forEach((participantId) => {
     const setsWon = participantResults[participantId].setsWon;
     const setsLost = participantResults[participantId].setsLost;
-    const setsTotal = tallyPolicy?.groupTotalSetsPlayed
-      ? totalSets
-      : perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
+    const setsTotal =
+      tallyPolicy?.groupTotalSetsPlayed || groupingTotal === 'setsPct'
+        ? totalSets
+        : perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
     let setsPct = Math.round((setsWon / setsTotal) * precision) / precision;
     if (setsPct === Infinity || isNaN(setsPct)) setsPct = setsTotal;
 
@@ -31,7 +40,10 @@ export function calculatePercentages({ participantResults, matchUpFormat, tallyP
     const gamesWon = participantResults[participantId].gamesWon || 0;
     const gamesLost = participantResults[participantId].gamesLost || 0;
     const minimumExpectedGames = (perPlayer || 0) * (bracketSetsToWin || 0) * (bracketGamesForSet || 0);
-    const gamesTotal = Math.max(minimumExpectedGames, gamesWon + gamesLost);
+    const gamesTotal =
+      tallyPolicy?.groupTotalGamesPlayed || groupingTotal === 'gamesPct'
+        ? totalGames
+        : Math.max(minimumExpectedGames, gamesWon + gamesLost);
     let gamesPct = Math.round((gamesWon / gamesTotal) * precision) / precision;
     if (gamesPct === Infinity || isNaN(gamesPct)) gamesPct = 0;
 

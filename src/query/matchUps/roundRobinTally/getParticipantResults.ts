@@ -14,6 +14,7 @@ type GetParticipantResultsArgs = {
   matchUps: HydratedMatchUp[];
   participantIds?: string[];
   pressureRating?: string;
+  groupingTotal?: string; // attribute being processed for group totals
   matchUpFormat?: string;
   perPlayer?: number;
   tallyPolicy?: any;
@@ -22,6 +23,7 @@ type GetParticipantResultsArgs = {
 export function getParticipantResults({
   participantIds,
   pressureRating,
+  groupingTotal,
   matchUpFormat,
   tallyPolicy,
   perPlayer,
@@ -42,14 +44,25 @@ export function getParticipantResults({
     );
   });
 
-  const allSets = filteredMatchUps?.flatMap(({ score, tieMatchUps }) =>
+  const allSetsCount = filteredMatchUps?.flatMap(({ score, tieMatchUps }) =>
     tieMatchUps
       ? tieMatchUps
           .filter(({ matchUpStatus }) => !excludeMatchUpStatuses.includes(matchUpStatus))
           .flatMap(({ score }) => score?.sets?.length ?? 0)
       : (score?.sets?.length ?? 0),
   );
-  const totalSets = allSets?.reduce((a, b) => a + b, 0);
+  const totalSets = allSetsCount?.reduce((a, b) => a + b, 0);
+
+  const getGames = (score) =>
+    score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0) + (set?.side2Score ?? 0), 0) ?? 0;
+  const allGamesCount = filteredMatchUps?.flatMap(({ score, tieMatchUps }) =>
+    tieMatchUps
+      ? tieMatchUps
+          .filter(({ matchUpStatus }) => !excludeMatchUpStatuses.includes(matchUpStatus))
+          .flatMap(({ score }) => getGames(score))
+      : getGames(score),
+  );
+  const totalGames = allGamesCount?.reduce((a, b) => a + b, 0);
 
   for (const matchUp of filteredMatchUps ?? []) {
     const { matchUpStatus, tieMatchUps, tieFormat, score, winningSide, sides } = matchUp;
@@ -200,10 +213,10 @@ export function getParticipantResults({
       }
     }
 
-    const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
-    const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
-
     if (manualGamesOverride) {
+      const gamesWonSide1 = score?.sets?.reduce((total, set) => total + (set?.side1Score ?? 0), 0);
+      const gamesWonSide2 = score?.sets?.reduce((total, set) => total + (set.side2Score ?? 0), 0);
+
       const side1participantId = sides?.find(({ sideNumber }) => sideNumber === 1)?.participantId;
       const side2participantId = sides?.find(({ sideNumber }) => sideNumber === 2)?.participantId;
 
@@ -224,8 +237,10 @@ export function getParticipantResults({
 
   calculatePercentages({
     participantResults,
+    groupingTotal,
     matchUpFormat,
     tallyPolicy,
+    totalGames,
     perPlayer,
     totalSets,
   });
