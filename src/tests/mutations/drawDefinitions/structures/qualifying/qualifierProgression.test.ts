@@ -75,7 +75,7 @@ it('can assign all available qualified participants to the main structure qualif
   // assert no MAIN draw qualifying positions are available
   const noMainProgressionResult = tournamentEngine.qualifierProgression({
     drawId: qualifyingDrawDefinition.drawId,
-    mainStructureId: mainStructure.structureId,
+    targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
   });
@@ -108,7 +108,7 @@ it('can assign all available qualified participants to the main structure qualif
   // assert no qualified participants are available
   const noQualifiersProgressionResult = tournamentEngine.qualifierProgression({
     drawId: drawDefinition.drawId,
-    mainStructureId: populatedMainStructure.structureId,
+    targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
   });
@@ -127,11 +127,12 @@ it('can assign all available qualified participants to the main structure qualif
 
   const progressQualifiersResult = tournamentEngine.qualifierProgression({
     drawId: drawDefinition.drawId,
-    mainStructureId: populatedMainStructure.structureId,
+    targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
   });
 
+  expect(progressQualifiersResult.assignedParticipants.length).toEqual(4);
   expect(progressQualifiersResult.success).toEqual(true);
 
   // assert qualified participants have been assigned to the main draw positions

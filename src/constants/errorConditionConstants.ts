@@ -192,6 +192,10 @@ export const MISSING_STRUCTURE = {
   message: 'Missing structure',
   code: 'ERR_MISSING_STRUCTURE',
 };
+export const MISSING_MAIN_STRUCTURE = {
+  message: 'Missing MAIN structure',
+  code: 'ERR_MISSING_MAIN_STRUCTURE',
+};
 export const UNLINKED_STRUCTURES = {
   message: 'drawDefinition contains unlinked structures',
   code: 'ERR_MISSING_STRUCTURE_LINKS',
@@ -929,6 +933,7 @@ export const errorConditionConstants = {
   MISSING_STAGE,
   MISSING_STRUCTURE_ID,
   MISSING_STRUCTURE,
+  MISSING_MAIN_STRUCTURE,
   MISSING_STRUCTURES,
   MISSING_TARGET_LINK,
   MISSING_TIE_FORMAT,

@@ -328,7 +328,7 @@ Fills as many qualifier drawPositions as possible with qualified participants, e
 engine.qualifierProgression({
   drawId,
   eventId,
-  mainStructureId,
+  targetRoundNumber, // optional - defaults to 1
   tournamentId,
 });
 ```
