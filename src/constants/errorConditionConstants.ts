@@ -192,6 +192,10 @@ export const MISSING_STRUCTURE = {
   message: 'Missing structure',
   code: 'ERR_MISSING_STRUCTURE',
 };
+export const MISSING_MAIN_STRUCTURE = {
+  message: 'Missing MAIN structure',
+  code: 'ERR_MISSING_MAIN_STRUCTURE',
+};
 export const UNLINKED_STRUCTURES = {
   message: 'drawDefinition contains unlinked structures',
   code: 'ERR_MISSING_STRUCTURE_LINKS',
@@ -502,6 +506,10 @@ export const MISSING_PARTICIPANTS = {
 export const MISSING_PARTICIPANT_ID = {
   message: 'Missing participantId',
   code: 'ERR_MISSING_PARTICIPANT_ID',
+};
+export const MISSING_QUALIFIED_PARTICIPANTS = {
+  message: 'Missing qualified participants',
+  code: 'ERR_MISSING_QUALIFIED_PARTICIPANTS',
 };
 export const PARTICIPANT_NOT_FOUND = {
   message: 'Participant Not Found',
@@ -894,6 +902,7 @@ export const errorConditionConstants = {
   MISSING_DRAW_SIZE,
   MISSING_ENTRIES,
   MISSING_EVENT,
+  MISSING_QUALIFIED_PARTICIPANTS,
   MISSING_MATCHUP_FORMAT,
   MISSING_MATCHUP_ID,
   MISSING_MATCHUP_IDS,
@@ -924,6 +933,7 @@ export const errorConditionConstants = {
   MISSING_STAGE,
   MISSING_STRUCTURE_ID,
   MISSING_STRUCTURE,
+  MISSING_MAIN_STRUCTURE,
   MISSING_STRUCTURES,
   MISSING_TARGET_LINK,
   MISSING_TIE_FORMAT,
