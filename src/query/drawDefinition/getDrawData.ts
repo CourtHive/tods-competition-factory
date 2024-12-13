@@ -73,7 +73,7 @@ export function getDrawData(params): {
   drawInfo.display = findExtension({ element: drawDefinition, name: DISPLAY }).extension?.value;
 
   const qualificationStageSeedAssignments = {};
-  let mainStageSeedAssignments;
+  let mainStageSeedAssignments, report;
 
   const { allStructuresLinked, sourceStructureIds, hasDrawFeedProfile, structureGroups } = getStructureGroups({
     drawDefinition,
@@ -171,6 +171,7 @@ export function getDrawData(params): {
             pressureRating,
             subOrderMap,
           });
+          report = result?.report;
 
           participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
             const { drawPosition, participantId } = assignment;
@@ -229,6 +230,7 @@ export function getDrawData(params): {
           roundMatchUps,
           roundProfile,
           structureId,
+          report,
         };
       });
 
