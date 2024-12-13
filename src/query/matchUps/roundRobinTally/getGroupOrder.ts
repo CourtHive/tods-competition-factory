@@ -226,7 +226,7 @@ function processAttribute({
     attribute,
   });
 
-  const report: any[] = [{ attribute, reversed, groups, idsFilter }];
+  const report: any[] = [{ attribute, reversed, groups, idsFilter, groupTotals }];
   let order;
 
   if (Object.keys(groups).length > 1 && participantIds.length) {
