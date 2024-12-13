@@ -4,7 +4,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 // Constants
+import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
+
+import tournamentRecord from '@Tests/testHarness/tallyPolicy.tods.json';
 
 test('roundRobinTally policy can specify tally by games only', () => {
   // prettier-ignore
@@ -87,4 +90,66 @@ test('roundRobinTally policy can specify groupTotalGamesPlayed and groupTotalSet
   });
   expect(Math.round(gamesPctTotal)).toEqual(1);
   expect(Math.round(setsPctTotal)).toEqual(1);
+});
+
+test('roundRobinTally policy can specify groupTotals for both setsPct and gamesPct', () => {
+  tournamentEngine.reset();
+  tournamentEngine.setState(tournamentRecord);
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  let gamesPctTotal = 0;
+  let participantResults = tallyParticipantResults({
+    matchUps,
+  }).participantResults;
+
+  Object.values(participantResults).forEach((result: any) => {
+    const { gamesPct = 0 } = result;
+    gamesPctTotal += gamesPct;
+  });
+  expect(gamesPctTotal).toBeGreaterThan(1.1);
+
+  const topLevelGroupTotalsPolicy = {
+    groupTotalGamesPlayed: true,
+    groupTotalSetsPlayed: true,
+  };
+  participantResults = tallyParticipantResults({
+    policyDefinitions: { [POLICY_TYPE_ROUND_ROBIN_TALLY]: topLevelGroupTotalsPolicy },
+    matchUps,
+  }).participantResults;
+
+  gamesPctTotal = 0;
+  Object.values(participantResults).forEach((result: any) => {
+    const { gamesPct = 0 } = result;
+    gamesPctTotal += gamesPct;
+  });
+  expect(Math.round(gamesPctTotal)).toEqual(1);
+  expect(gamesPctTotal).toBeLessThan(1.1);
+
+  const discreteGroupTotalsPolicy = {
+    tallyDirectives: [
+      { attribute: 'setsPct', idsFilter: false, groupTotals: true },
+      { attribute: 'gamesPct', idsFilter: false, groupTotals: true },
+      { attribute: 'setsPct', idsFilter: true, groupTotals: true },
+      { attribute: 'gamesPct', idsFilter: true, groupTotals: true },
+    ],
+  };
+  const result: any = tallyParticipantResults({
+    policyDefinitions: { [POLICY_TYPE_ROUND_ROBIN_TALLY]: discreteGroupTotalsPolicy },
+    generateReport: true,
+    matchUps,
+  });
+
+  participantResults = result.participantResults;
+
+  gamesPctTotal = 0;
+  Object.values(participantResults).forEach((result: any) => {
+    const { gamesPct = 0 } = result;
+    gamesPctTotal += gamesPct;
+  });
+  expect(gamesPctTotal).toBeGreaterThan(1.1);
+
+  expect(result?.report?.[1].attribute).toEqual('setsPct');
+  expect(result?.report?.[1].groupTotals).toEqual(true);
+  expect(result?.report?.[2].attribute).toEqual('gamesPct');
+  expect(result?.report?.[2].groupTotals).toEqual(true);
 });

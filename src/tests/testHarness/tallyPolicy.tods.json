@@ -1,0 +1,4957 @@
+{
+  "createdAt": "2024-12-13T12:59:40.286Z",
+  "extensions": [],
+  "timeItems": [
+    {
+      "itemSubTypes": [],
+      "itemType": "RETRIEVAL.RATING.SINGLES.WTN",
+      "itemValue": "2024-10-22T04:19"
+    },
+    {
+      "createdAt": "2024-10-22T13:39:09.345Z",
+      "itemSubTypes": [],
+      "itemType": "attachPlayoffStructures",
+      "itemValue": {
+        "structureIds": ["6825b6d5-1a8a-4cce-875f-bbff7400d30b"],
+        "drawId": "168b5d13-b04c-4526-a9e7-c680ba8b157b"
+      }
+    }
+  ],
+  "updatedAt": "2024-10-27T00:12:18.032Z",
+  "endDate": "2024-10-26T00:00:00.000Z",
+  "events": [
+    {
+      "extensions": [
+        {
+          "name": "flightProfile",
+          "value": {
+            "flights": [
+              {
+                "manuallyAdded": true,
+                "flightNumber": 1,
+                "drawEntries": [
+                  {
+                    "participantId": "32f268ce-31d7-4587-9e0c-75660abd8d64",
+                    "entryPosition": 0,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "7d7962f8-a49f-4e6e-b2a6-8c8fc5e0ca82",
+                    "entryPosition": 1,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "1b44bf2a-4b1b-4892-9b10-94a04ba1668f",
+                    "entryPosition": 2,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  },
+                  {
+                    "participantId": "ef718e14-1f09-485d-9d02-294754d2f330",
+                    "entryPosition": 3,
+                    "entryStatus": "DIRECT_ACCEPTANCE",
+                    "entryStage": "MAIN"
+                  }
+                ],
+                "drawName": "Draw",
+                "drawId": "29f0d65b-5c3b-47b1-8ba5-8c2cddd694f2"
+              }
+            ]
+          }
+        }
+      ],
+      "timeItems": [
+        {
+          "createdAt": "2024-10-22T09:53:44.235Z",
+          "itemSubTypes": [],
+          "itemType": "RETRIEVAL.RANKING.SINGLES.U12",
+          "itemValue": "2024-10-16T10:02"
+        },
+        {
+          "createdAt": "2024-10-26T22:59:32.859Z",
+          "itemSubTypes": [],
+          "itemType": "PUBLISH.STATUS",
+          "itemValue": {
+            "PUBLIC": {
+              "drawDetails": {
+                "dd00a950-dbed-44a4-87f9-1d407d54812f": {
+                  "publishingDetail": {
+                    "published": false
+                  }
+                }
+              }
+            }
+          }
+        }
+      ],
+      "allowedDrawTypes": ["FEED_IN_CHAMPIONSHIP_TO_QF"],
+      "category": {
+        "ageCategoryCode": "U12",
+        "ballType": "T2STANDARD_PRESSURISED",
+        "subType": "JUNIOR",
+        "type": "AGE"
+      },
+      "drawDefinitions": [
+        {
+          "extensions": [],
+          "updatedAt": "2024-10-26T22:59:27.003Z",
+          "automated": true,
+          "drawId": "29f0d65b-5c3b-47b1-8ba5-8c2cddd694f2",
+          "drawName": "Draw",
+          "drawOrder": 1,
+          "drawRepresentativeIds": [],
+          "drawType": "ROUND_ROBIN",
+          "entries": [
+            {
+              "entryPosition": 0,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "32f268ce-31d7-4587-9e0c-75660abd8d64"
+            },
+            {
+              "entryPosition": 1,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "7d7962f8-a49f-4e6e-b2a6-8c8fc5e0ca82"
+            },
+            {
+              "entryPosition": 2,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "1b44bf2a-4b1b-4892-9b10-94a04ba1668f"
+            },
+            {
+              "entryPosition": 3,
+              "entryStage": "MAIN",
+              "entryStatus": "DIRECT_ACCEPTANCE",
+              "participantId": "ef718e14-1f09-485d-9d02-294754d2f330"
+            }
+          ],
+          "links": [],
+          "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+          "matchUps": [],
+          "structures": [
+            {
+              "updatedAt": "2024-10-26T22:59:27.003Z",
+              "finishingPosition": "WIN_RATIO",
+              "matchUps": [],
+              "positionAssignments": [],
+              "seedAssignments": [],
+              "seedingProfile": "WATERFALL",
+              "seedLimit": 0,
+              "stage": "MAIN",
+              "stageSequence": 1,
+              "structureId": "4e83bf79-3a7f-4b16-bafe-f2123b283a19",
+              "structureName": "Main",
+              "structureType": "CONTAINER",
+              "structures": [
+                {
+                  "finishingPosition": "WIN_RATIO",
+                  "matchUps": [
+                    {
+                      "matchUpId": "6d41cdd8-0878-44f3-b099-42939ae6f42d",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [1, 2],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 1,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T20:18:00.294Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:30:53.622Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-26"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:30:53.625Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "13:30"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:30:53.628Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "1-6 4-6",
+                        "scoreStringSide2": "6-1 6-4",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 1,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 4,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2,
+                      "isMock": true
+                    },
+                    {
+                      "matchUpId": "8bf5002f-ebec-45d9-927f-371fbcf0c598",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [3, 4],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 1,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T20:17:48.090Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:30:59.755Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-26"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:30:59.758Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "13:30"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:30:59.760Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "1-6 2-6",
+                        "scoreStringSide2": "6-1 6-2",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 1,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 2,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2,
+                      "isMock": true
+                    },
+                    {
+                      "matchUpId": "c41017dc-238d-4660-8856-35b88b46669e",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [1, 3],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 2,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T21:44:20.922Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:31:10.251Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-26"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:31:10.255Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "16:00"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:31:10.257Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "6-1 6-0",
+                        "scoreStringSide2": "1-6 0-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 1,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 0,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1,
+                      "isMock": true
+                    },
+                    {
+                      "matchUpId": "d2bb6eee-9a61-43f4-a0f0-b26a3b7e7980",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [2, 4],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 2,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T22:59:27.002Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:31:13.072Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-26"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:31:13.076Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "16:00"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:31:13.077Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "5-7 3-6",
+                        "scoreStringSide2": "7-5 6-3",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 5,
+                            "side2Score": 7,
+                            "winningSide": 2,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 3,
+                            "side2Score": 6,
+                            "winningSide": 2,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 2,
+                      "isMock": true
+                    },
+                    {
+                      "matchUpId": "8acd88e3-c021-4b9d-adae-0a68321cffec",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [2, 3],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 3,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T00:36:02.089Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:35:18.967Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-25"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:35:18.971Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "18:00"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:35:18.974Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-0",
+                        "scoreStringSide2": "3-6 0-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 0,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1,
+                      "isMock": true
+                    },
+                    {
+                      "matchUpId": "57d00aaf-be13-4b9c-86b9-aed0360d5bd7",
+                      "createdAt": "2024-10-22T09:54:33.956Z",
+                      "drawPositions": [1, 4],
+                      "finishingPositionRange": {
+                        "loser": [1, 4],
+                        "winner": [1, 4]
+                      },
+                      "losers": [],
+                      "matchUpStatus": "COMPLETED",
+                      "matchUpStatusCodes": [],
+                      "matchUpType": "DOUBLES",
+                      "processCodes": [],
+                      "roundNumber": 3,
+                      "sides": [],
+                      "tieMatchUps": [],
+                      "updatedAt": "2024-10-26T00:36:14.065Z",
+                      "winners": [],
+                      "timeItems": [
+                        {
+                          "createdAt": "2024-10-22T14:35:15.892Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.DATE",
+                          "itemValue": "2024-10-25"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:35:15.895Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.TIME.SCHEDULED",
+                          "itemValue": "18:00"
+                        },
+                        {
+                          "createdAt": "2024-10-22T14:35:15.898Z",
+                          "itemSubTypes": [],
+                          "itemType": "SCHEDULE.ASSIGNMENT.VENUE",
+                          "itemValue": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"
+                        }
+                      ],
+                      "matchUpFormat": "SET3-S:6/TB7-F:TB10",
+                      "score": {
+                        "scoreStringSide1": "6-3 6-3",
+                        "scoreStringSide2": "3-6 3-6",
+                        "sets": [
+                          {
+                            "setNumber": 1,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          },
+                          {
+                            "setNumber": 2,
+                            "side1Score": 6,
+                            "side2Score": 3,
+                            "winningSide": 1,
+                            "games": []
+                          }
+                        ]
+                      },
+                      "winningSide": 1,
+                      "isMock": true
+                    }
+                  ],
+                  "positionAssignments": [
+                    {
+                      "extensions": [
+                        {
+                          "name": "tally",
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["FC12E6CF-0128-4D46-A2BE-432EB5CE18B6"],
+                            "gamesLost": 19,
+                            "gamesWon": 29,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "pressureScores": [],
+                            "ratingVariation": [],
+                            "retirements": 0,
+                            "setsLost": 2,
+                            "setsWon": 4,
+                            "tieSinglesWon": 0,
+                            "tieSinglesLost": 0,
+                            "tieDoublesWon": 0,
+                            "tieDoublesLost": 0,
+                            "tieMatchUpsLost": 0,
+                            "tieMatchUpsWon": 0,
+                            "victories": [
+                              "783A7651-1093-4F51-BB29-F0FA7CF19E1A",
+                              "CEDC34FE-688A-4B86-879C-25AD978BB087"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.604,
+                            "pointsPct": 0,
+                            "result": "2/1",
+                            "groupOrder": 2,
+                            "rankOrder": 2,
+                            "GEMscore": 66700000667060400000
+                          }
+                        }
+                      ],
+                      "drawPosition": 1,
+                      "participantId": "1b44bf2a-4b1b-4892-9b10-94a04ba1668f"
+                    },
+                    {
+                      "extensions": [
+                        {
+                          "name": "tally",
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["CEDC34FE-688A-4B86-879C-25AD978BB087"],
+                            "gamesLost": 21,
+                            "gamesWon": 32,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "pressureScores": [],
+                            "ratingVariation": [],
+                            "retirements": 0,
+                            "setsLost": 2,
+                            "setsWon": 4,
+                            "tieSinglesWon": 0,
+                            "tieSinglesLost": 0,
+                            "tieDoublesWon": 0,
+                            "tieDoublesLost": 0,
+                            "tieMatchUpsLost": 0,
+                            "tieMatchUpsWon": 0,
+                            "victories": [
+                              "DA022D1F-9B90-4986-86B7-C12A120A2DAB",
+                              "783A7651-1093-4F51-BB29-F0FA7CF19E1A"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.604,
+                            "pointsPct": 0,
+                            "result": "2/1",
+                            "groupOrder": 1,
+                            "rankOrder": 1,
+                            "GEMscore": 66700000667060400000
+                          }
+                        }
+                      ],
+                      "drawPosition": 2,
+                      "participantId": "7d7962f8-a49f-4e6e-b2a6-8c8fc5e0ca82"
+                    },
+                    {
+                      "extensions": [
+                        {
+                          "name": "tally",
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": [
+                              "CEDC34FE-688A-4B86-879C-25AD978BB087",
+                              "DA022D1F-9B90-4986-86B7-C12A120A2DAB",
+                              "FC12E6CF-0128-4D46-A2BE-432EB5CE18B6"
+                            ],
+                            "gamesLost": 36,
+                            "gamesWon": 7,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 3,
+                            "matchUpsWon": 0,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "pressureScores": [],
+                            "ratingVariation": [],
+                            "retirements": 0,
+                            "setsLost": 6,
+                            "setsWon": 0,
+                            "tieSinglesWon": 0,
+                            "tieSinglesLost": 0,
+                            "tieDoublesWon": 0,
+                            "tieDoublesLost": 0,
+                            "tieMatchUpsLost": 0,
+                            "tieMatchUpsWon": 0,
+                            "victories": [],
+                            "walkovers": 0,
+                            "setsPct": 0,
+                            "tieMatchUpsPct": 0,
+                            "matchUpsPct": 0,
+                            "gamesPct": 0.163,
+                            "pointsPct": 0,
+                            "result": "0/3",
+                            "groupOrder": 4,
+                            "rankOrder": 4,
+                            "GEMscore": 16300000
+                          }
+                        }
+                      ],
+                      "drawPosition": 3,
+                      "participantId": "ef718e14-1f09-485d-9d02-294754d2f330"
+                    },
+                    {
+                      "extensions": [
+                        {
+                          "name": "tally",
+                          "value": {
+                            "allDefaults": 0,
+                            "defaults": 0,
+                            "defeats": ["DA022D1F-9B90-4986-86B7-C12A120A2DAB"],
+                            "gamesLost": 23,
+                            "gamesWon": 31,
+                            "matchUpsCancelled": 0,
+                            "matchUpsLost": 1,
+                            "matchUpsWon": 2,
+                            "pointsLost": 0,
+                            "pointsWon": 0,
+                            "pressureScores": [],
+                            "ratingVariation": [],
+                            "retirements": 0,
+                            "setsLost": 2,
+                            "setsWon": 4,
+                            "tieSinglesWon": 0,
+                            "tieSinglesLost": 0,
+                            "tieDoublesWon": 0,
+                            "tieDoublesLost": 0,
+                            "tieMatchUpsLost": 0,
+                            "tieMatchUpsWon": 0,
+                            "victories": [
+                              "783A7651-1093-4F51-BB29-F0FA7CF19E1A",
+                              "FC12E6CF-0128-4D46-A2BE-432EB5CE18B6"
+                            ],
+                            "walkovers": 0,
+                            "setsPct": 0.667,
+                            "tieMatchUpsPct": 0,
+                            "matchUpsPct": 0.667,
+                            "gamesPct": 0.574,
+                            "pointsPct": 0,
+                            "result": "2/1",
+                            "groupOrder": 3,
+                            "rankOrder": 3,
+                            "GEMscore": 66700000667057400000
+                          }
+                        }
+                      ],
+                      "drawPosition": 4,
+                      "participantId": "32f268ce-31d7-4587-9e0c-75660abd8d64"
+                    }
+                  ],
+                  "seedAssignments": [],
+                  "stageSequence": 1,
+                  "structureId": "3b40cb15-70a0-4e34-b145-5eb85a15be21",
+                  "structureName": "Group 1",
+                  "structureType": "ITEM"
+                }
+              ]
+            }
+          ],
+          "processCodes": [],
+          "isMock": true
+        }
+      ],
+      "endDate": "2024-10-26T00:00:00.000Z",
+      "entries": [
+        {
+          "entryId": "CEDC34FE-688A-4B86-879C-25AD978BB087",
+          "entryPosition": 0,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "32f268ce-31d7-4587-9e0c-75660abd8d64"
+        },
+        {
+          "entryId": "FC12E6CF-0128-4D46-A2BE-432EB5CE18B6",
+          "entryPosition": 1,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "7d7962f8-a49f-4e6e-b2a6-8c8fc5e0ca82"
+        },
+        {
+          "entryId": "DA022D1F-9B90-4986-86B7-C12A120A2DAB",
+          "entryPosition": 2,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "1b44bf2a-4b1b-4892-9b10-94a04ba1668f"
+        },
+        {
+          "entryId": "783A7651-1093-4F51-BB29-F0FA7CF19E1A",
+          "entryPosition": 3,
+          "entryStatus": "DIRECT_ACCEPTANCE",
+          "participantId": "ef718e14-1f09-485d-9d02-294754d2f330"
+        },
+        {
+          "entryId": "4A9EA40F-81D0-4887-8126-38F8378FCF11",
+          "entryPosition": 0,
+          "entryStatus": "WITHDRAWN",
+          "participantId": "1c357fa1-c1e6-4c4f-8273-3f0f4aef99e5"
+        },
+        {
+          "entryId": "56D1D45D-3133-4A6D-8058-98D0498BBE8A",
+          "entryPosition": 1,
+          "entryStatus": "WITHDRAWN",
+          "participantId": "be51932e-4d8b-4949-8c58-8a4189ff13cc"
+        }
+      ],
+      "eventId": "1c282c7b-85b9-407a-8769-050bb1400244",
+      "eventName": "Event 1 U12",
+      "eventType": "DOUBLES",
+      "gender": "MALE",
+      "links": [],
+      "startDate": "2024-10-25T00:00:00.000Z",
+      "tennisOfficialIds": [],
+      "processCodes": [],
+      "weekdays": [],
+      "onlineResources": [],
+      "isMock": true
+    }
+  ],
+  "localTimeZone": "America/Chicago",
+  "matchUps": [],
+  "onlineResources": [],
+  "associatedOrganisations": [],
+  "rootOrganisationId": "96A7C92E-92CB-4965-8284-8E5A33761130",
+  "participants": [
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.22,
+            "confidence": 90,
+            "gameZoneLower": 31.91,
+            "gameZoneUpper": 28.52,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.15,
+            "confidence": 10,
+            "gameZoneLower": 34.99,
+            "gameZoneUpper": 31.31,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f96e07c8-ebc9-453f-9f63-b16774235ee2",
+      "participantName": "Sheldon Eldritch",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "C32FA685-BC65-49B4-84B0-9A4A9128111B",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-03-18",
+        "isMock": true,
+        "nationalityCode": "SPM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "07619",
+            "state": "FG",
+            "city": "Hallstatt",
+            "countryCode": "SPM"
+          }
+        ],
+        "personId": "a9d4ab23-406c-46b4-a904-4aa2eb9bd6e0",
+        "standardFamilyName": "Eldritch",
+        "standardGivenName": "Sheldon"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 37.92,
+            "confidence": 90,
+            "gameZoneLower": 39.61,
+            "gameZoneUpper": 36.22,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.74,
+            "confidence": 60,
+            "gameZoneLower": 37.47,
+            "gameZoneUpper": 34.02,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "5eba45aa-0c54-464e-b79d-af96dd3dabe6",
+      "participantName": "Antonia Murry",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "CBE84515-B1C8-4669-9CD7-7C4E65F57989",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-08-30",
+        "isMock": true,
+        "nationalityCode": "PAN",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "81347",
+            "state": "CC",
+            "city": "Longyearbyen",
+            "countryCode": "PAN"
+          }
+        ],
+        "personId": "199e344e-c33c-47cc-81eb-4d22170d8a62",
+        "standardFamilyName": "Murry",
+        "standardGivenName": "Antonia"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 37.51,
+            "confidence": 100,
+            "gameZoneLower": 39.19,
+            "gameZoneUpper": 35.84,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8df0a736-d36e-45ba-8c59-046a81583591",
+      "participantName": "Brienne Shaftoe",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "99713BF4-8659-4AE8-AB44-BC5011ED834F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2015-05-05",
+        "isMock": true,
+        "nationalityCode": "VGB",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "68658",
+            "state": "FN",
+            "city": "Yonwood",
+            "countryCode": "VGB"
+          }
+        ],
+        "personId": "07aacb44-e6c8-4f55-924b-78d8c0e1966d",
+        "standardFamilyName": "Shaftoe",
+        "standardGivenName": "Brienne"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["8c4453b4-f62f-409e-a390-7a7cf0668860", "7228f18b-75f9-4435-8dab-32784c5985eb"],
+      "onlineResources": [],
+      "participantId": "7c2d7e45-e1be-41a5-9b4a-ec8d42f6c109",
+      "participantName": "Beer/Langer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.78,
+            "confidence": 100,
+            "gameZoneLower": 30.45,
+            "gameZoneUpper": 27.11,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.6,
+            "confidence": 60,
+            "gameZoneLower": 31.32,
+            "gameZoneUpper": 27.88,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "43dc66a6-a82d-4d7b-9f1f-e43226e04f5a",
+      "participantName": "George Watson",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "B4A9B699-B974-47FA-A11B-F6F1AC9D71E3",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-04-12",
+        "isMock": true,
+        "nationalityCode": "FJI",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "43317",
+            "state": "FN",
+            "city": "Elista",
+            "countryCode": "FJI"
+          }
+        ],
+        "personId": "06ad9543-0919-4215-9d8e-fe387d539b93",
+        "standardFamilyName": "Watson",
+        "standardGivenName": "George"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.21,
+            "confidence": 100,
+            "gameZoneLower": 36.88,
+            "gameZoneUpper": 33.53,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.53,
+            "confidence": 60,
+            "gameZoneLower": 36.25,
+            "gameZoneUpper": 32.8,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T09:53:44.234Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U12",
+          "itemValue": 1399
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "45ef96cb-df67-4b7e-8368-76b4114e3fc3",
+      "participantName": "William Assange",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "43F813BF-6C5B-4197-969A-49DB3A33B880",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-07-12",
+        "isMock": true,
+        "nationalityCode": "GMB",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "65447",
+            "state": "FN",
+            "city": "Chronopolis",
+            "countryCode": "GMB"
+          }
+        ],
+        "personId": "11ac43a2-cc4e-4b57-a631-6046b9e4394d",
+        "standardFamilyName": "Assange",
+        "standardGivenName": "William"
+      }
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["ff710588-15e3-4a32-bb6d-9107caaf22d0", "9888b567-9816-4ce9-ad3a-a39812a1faf8"],
+      "onlineResources": [],
+      "participantId": "954bb3bd-d15a-4716-bcbb-e23563383d12",
+      "participantName": "Ananiadis/Postman",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["cb7617d2-9388-4392-8d6d-2fa74be11c93", "41c8ee14-db0f-4669-8d45-c09b69ed1d47"],
+      "onlineResources": [],
+      "participantId": "786db59b-8b77-4e4c-ad65-2e4177ed6db1",
+      "participantName": "Escher/Fulcher",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["161de1ba-64ea-4429-9746-88d8d4e1211b", "f8b3c398-c565-4f09-b061-2249447ca262"],
+      "onlineResources": [],
+      "participantId": "bdf6b8ae-7ab4-4a22-b8c3-b530a5e710c1",
+      "participantName": "Berry/Deckard",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.45,
+            "confidence": 90,
+            "gameZoneLower": 33.14,
+            "gameZoneUpper": 29.76,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "be51932e-4d8b-4949-8c58-8a4189ff13cc",
+      "participantName": "Jared Elliot",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "0B910989-75BA-4C2B-8D53-DA29A0C3153A",
+      "person": {
+        "extensions": [],
+        "birthDate": "2015-01-13",
+        "isMock": true,
+        "nationalityCode": "CAN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "60530",
+            "state": "FG",
+            "city": "Diomira",
+            "countryCode": "CAN"
+          }
+        ],
+        "personId": "1c0e2f05-3d49-4cd7-ae3f-556537c7e829",
+        "standardFamilyName": "Elliot",
+        "standardGivenName": "Jared"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["8def3ee8-23c5-4ffa-ba86-050f18aea3f9", "dcf4e06e-4056-449d-82d6-74d2b593d595"],
+      "onlineResources": [],
+      "participantId": "cf89426a-44a9-4c04-bf0e-67ee9076d7a2",
+      "participantName": "Midgely/Rugen",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.51,
+            "confidence": 90,
+            "gameZoneLower": 31.21,
+            "gameZoneUpper": 27.82,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 5856
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "29341e58-f345-4a03-90d7-aed306760ed3",
+      "participantName": "Korben Barrington",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8B364854-9F0E-494B-B5A8-DA79AB4E2EEA",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-11-24",
+        "isMock": true,
+        "nationalityCode": "COL",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "46754",
+            "state": "FG",
+            "city": "Miyake-jima",
+            "countryCode": "COL"
+          }
+        ],
+        "personId": "977c1207-ad1e-4a78-b264-4426b4de7404",
+        "standardFamilyName": "Barrington",
+        "standardGivenName": "Korben"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33,
+            "confidence": 100,
+            "gameZoneLower": 34.66,
+            "gameZoneUpper": 31.33,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.62,
+            "confidence": 60,
+            "gameZoneLower": 35.35,
+            "gameZoneUpper": 31.9,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "dcf4e06e-4056-449d-82d6-74d2b593d595",
+      "participantName": "Masanobu Midgely",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "170B4874-EEFF-41DE-8654-8BE93DCE53C4",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-10-08",
+        "isMock": true,
+        "nationalityCode": "FJI",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "26713",
+            "state": "FG",
+            "city": "Maycomb",
+            "countryCode": "FJI"
+          }
+        ],
+        "personId": "b645d0f9-97b3-4d31-ad1b-943eb00a5557",
+        "standardFamilyName": "Midgely",
+        "standardGivenName": "Masanobu"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["5eba45aa-0c54-464e-b79d-af96dd3dabe6", "31885b90-adc6-4e69-b481-3c2335231ed1"],
+      "onlineResources": [],
+      "participantId": "ad6de590-64c7-4eb7-a3c7-98b6b8a795dd",
+      "participantName": "Murry/Turing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.22,
+            "confidence": 100,
+            "gameZoneLower": 35.9,
+            "gameZoneUpper": 32.55,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.69,
+            "confidence": 60,
+            "gameZoneLower": 30.41,
+            "gameZoneUpper": 26.96,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T09:53:44.234Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U12",
+          "itemValue": 1302
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "3ef25874-79c0-4595-a6e9-4412c9958f63",
+      "participantName": "Chris Ripley",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "18A9AF50-93C7-406E-BFF3-3C252F89E5A6",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-03-23",
+        "isMock": true,
+        "nationalityCode": "TUR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "67710",
+            "state": "FN",
+            "city": "Nagoro",
+            "countryCode": "TUR"
+          }
+        ],
+        "personId": "4b82374c-faa1-4de6-8578-d3e90cedaa89",
+        "standardFamilyName": "Ripley",
+        "standardGivenName": "Chris"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["43dc66a6-a82d-4d7b-9f1f-e43226e04f5a", "d2a533c3-8793-45ca-92f7-84c0554a5120"],
+      "onlineResources": [],
+      "participantId": "08d68875-c1c8-4876-8049-9bc349d21390",
+      "participantName": "Banks/Watson",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.55,
+            "confidence": 10,
+            "gameZoneLower": 36.38,
+            "gameZoneUpper": 32.72,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.19,
+            "confidence": 20,
+            "gameZoneLower": 35.02,
+            "gameZoneUpper": 31.36,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "dd1da6bc-7a04-4111-ae93-ac3a6ae0141e",
+      "participantName": "Frank Le Guin",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7B0F71FB-81BD-4FA7-8DAA-96EECF569DA9",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-07-17",
+        "isMock": true,
+        "nationalityCode": "GIN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "23393",
+            "state": "CC",
+            "city": "Zion",
+            "countryCode": "GIN"
+          }
+        ],
+        "personId": "e3208411-3d4c-4887-900a-c39ef5b2cc62",
+        "standardFamilyName": "Le Guin",
+        "standardGivenName": "Frank"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["635a5d7f-1d92-4dde-902a-b2a9d8b0ca1b", "13517b40-efc1-4a30-a66d-1d83b629c868"],
+      "onlineResources": [],
+      "participantId": "1b44bf2a-4b1b-4892-9b10-94a04ba1668f",
+      "participantName": "Calvino/Parks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.72,
+            "confidence": 100,
+            "gameZoneLower": 34.4,
+            "gameZoneUpper": 31.04,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.81,
+            "confidence": 70,
+            "gameZoneLower": 36.53,
+            "gameZoneUpper": 33.1,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T09:53:44.234Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U12",
+          "itemValue": 602
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "1c357fa1-c1e6-4c4f-8273-3f0f4aef99e5",
+      "participantName": "Thomas Eyre",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "802A3DA2-A360-420C-9970-5326AEFF3011",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-01-10",
+        "isMock": true,
+        "nationalityCode": "BGR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "46258",
+            "state": "FN",
+            "city": "Matmata",
+            "countryCode": "BGR"
+          }
+        ],
+        "personId": "67fbb84f-f78b-44d1-a5f6-ffcd7f585223",
+        "standardFamilyName": "Eyre",
+        "standardGivenName": "Thomas"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.88,
+            "confidence": 100,
+            "gameZoneLower": 30.56,
+            "gameZoneUpper": 27.21,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.41,
+            "confidence": 60,
+            "gameZoneLower": 33.15,
+            "gameZoneUpper": 29.68,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 2799
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "9aa12b27-bd69-401d-b78d-88c60b3c51dd",
+      "participantName": "David Ophuls",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "17DCD138-304B-4CFA-AACB-BBC3B7D12D77",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-07-02",
+        "isMock": true,
+        "nationalityCode": "IDN",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "95982",
+            "state": "CC",
+            "city": "Pseudopolis",
+            "countryCode": "IDN"
+          }
+        ],
+        "personId": "4e512e49-92d2-4b23-add9-2afd12189bd7",
+        "standardFamilyName": "Ophuls",
+        "standardGivenName": "David"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.55,
+            "confidence": 90,
+            "gameZoneLower": 37.24,
+            "gameZoneUpper": 33.86,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.98,
+            "confidence": 30,
+            "gameZoneLower": 33.76,
+            "gameZoneUpper": 30.2,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "01fd0f9b-5e68-4269-91f6-629b3783266e",
+      "participantName": "Walton Shelley",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "16ED3AFC-FE2C-422E-99ED-C38EB4E25F5D",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-04-28",
+        "isMock": true,
+        "nationalityCode": "HMD",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "89632",
+            "state": "FG",
+            "city": "Dictionopolis",
+            "countryCode": "HMD"
+          }
+        ],
+        "personId": "21b0b53b-e0fa-419c-847f-1225189b8135",
+        "standardFamilyName": "Shelley",
+        "standardGivenName": "Walton"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.85,
+            "confidence": 90,
+            "gameZoneLower": 36.55,
+            "gameZoneUpper": 33.15,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.87,
+            "confidence": 30,
+            "gameZoneLower": 34.66,
+            "gameZoneUpper": 31.07,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f0f5420d-bad9-42be-8df9-85552f92aff3",
+      "participantName": "Edward Beals",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "A30045A6-B38E-4FAC-80EF-53A6A3DDE044",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-01-14",
+        "isMock": true,
+        "nationalityCode": "GBR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "15373",
+            "state": "CC",
+            "city": "Centralia",
+            "countryCode": "GBR"
+          }
+        ],
+        "personId": "43ad4ab1-02e6-4285-9901-71d9f4508526",
+        "standardFamilyName": "Beals",
+        "standardGivenName": "Edward"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.57,
+            "confidence": 90,
+            "gameZoneLower": 33.26,
+            "gameZoneUpper": 29.88,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.96,
+            "confidence": 70,
+            "gameZoneLower": 31.68,
+            "gameZoneUpper": 28.25,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 5752
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ff731ca6-11b9-48dc-9dcf-e9b5933f02a3",
+      "participantName": "Roy Twain",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "4C51CE94-517E-4CAE-81ED-C223895C2E11",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-06-19",
+        "isMock": true,
+        "nationalityCode": "ATA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "60604",
+            "state": "FN",
+            "city": "Trantor",
+            "countryCode": "ATA"
+          }
+        ],
+        "personId": "73babcc5-deca-4d8c-bff3-d0499db3300b",
+        "standardFamilyName": "Twain",
+        "standardGivenName": "Roy"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.4,
+            "confidence": 100,
+            "gameZoneLower": 33.08,
+            "gameZoneUpper": 29.73,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.17,
+            "confidence": 70,
+            "gameZoneLower": 33.89,
+            "gameZoneUpper": 30.45,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 9122
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "10eb569e-bab8-4c60-8a7c-e99ba7df4028",
+      "participantName": "Joe Beer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "EF3250FF-4D0A-48B6-ADAF-6E2E29A6AAE1",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-04-06",
+        "isMock": true,
+        "nationalityCode": "CGD",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "25363",
+            "state": "CC",
+            "city": "New New York",
+            "countryCode": "CGD"
+          }
+        ],
+        "personId": "8b446a07-ea7a-4379-b60d-04c5425c589d",
+        "standardFamilyName": "Beer",
+        "standardGivenName": "Joe"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.42,
+            "confidence": 80,
+            "gameZoneLower": 30.13,
+            "gameZoneUpper": 26.71,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.45,
+            "confidence": 50,
+            "gameZoneLower": 31.2,
+            "gameZoneUpper": 27.7,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "a03b0c63-f4cf-42b1-a4cc-15e0351dfcca",
+      "participantName": "Barry Crowne",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "635E904A-E4B0-4399-8DEF-7392E65225FA",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-12-29",
+        "isMock": true,
+        "nationalityCode": "NFK",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "30243",
+            "state": "CC",
+            "city": "Xylar",
+            "countryCode": "NFK"
+          }
+        ],
+        "personId": "2640614b-30cd-494e-a4d7-9f97041ab1db",
+        "standardFamilyName": "Crowne",
+        "standardGivenName": "Barry"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.74,
+            "confidence": 80,
+            "gameZoneLower": 32.45,
+            "gameZoneUpper": 29.04,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.1,
+            "confidence": 20,
+            "gameZoneLower": 30.92,
+            "gameZoneUpper": 27.28,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "d2a533c3-8793-45ca-92f7-84c0554a5120",
+      "participantName": "Rick Banks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7FDF580E-0E86-49D3-9AFC-2B51B04FA99B",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-11-13",
+        "isMock": true,
+        "nationalityCode": "PNG",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "70857",
+            "state": "FG",
+            "city": "Ilium",
+            "countryCode": "PNG"
+          }
+        ],
+        "personId": "24fc855e-c8cb-4661-b00e-ef274da5b6e1",
+        "standardFamilyName": "Banks",
+        "standardGivenName": "Rick"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "bb63c13e-7a24-4823-b737-68c1f5b46e98",
+      "participantName": "Milla Ahern",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "11A53002-9FFB-44E9-BDA4-ABFDF502DA6C",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-07-22",
+        "isMock": true,
+        "nationalityCode": "USA",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "39122",
+            "state": "FG",
+            "city": "Pemberley",
+            "countryCode": "USA"
+          }
+        ],
+        "personId": "b7a3e51d-7791-4147-bc97-1de432fbc63a",
+        "standardFamilyName": "Ahern",
+        "standardGivenName": "Milla"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.73,
+            "confidence": 90,
+            "gameZoneLower": 32.42,
+            "gameZoneUpper": 29.04,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.33,
+            "confidence": 40,
+            "gameZoneLower": 32.09,
+            "gameZoneUpper": 28.57,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "d66bd3b2-5a21-4087-b4a8-d40fc958e7ed",
+      "participantName": "Wendell Stratton",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "B936C894-45D6-46B2-8B0E-9E533469136E",
+      "person": {
+        "extensions": [],
+        "birthDate": "2006-05-17",
+        "isMock": true,
+        "nationalityCode": "COL",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "39802",
+            "state": "CC",
+            "city": "Lys",
+            "countryCode": "COL"
+          }
+        ],
+        "personId": "66f79b0e-dfb5-453c-a7fc-7d014f115895",
+        "standardFamilyName": "Stratton",
+        "standardGivenName": "Wendell"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.36,
+            "confidence": 100,
+            "gameZoneLower": 35.03,
+            "gameZoneUpper": 31.69,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.11,
+            "confidence": 80,
+            "gameZoneLower": 34.81,
+            "gameZoneUpper": 31.41,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T09:53:44.234Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U12",
+          "itemValue": 625
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "0de0cee4-ea4e-477c-847d-b33a896e2502",
+      "participantName": "Constantine Murry",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "C773CFE2-69B5-4D18-B514-7458616CAFB1",
+      "person": {
+        "extensions": [],
+        "birthDate": "2014-05-29",
+        "isMock": true,
+        "nationalityCode": "CHE",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "32348",
+            "state": "FN",
+            "city": "Lys",
+            "countryCode": "CHE"
+          }
+        ],
+        "personId": "df4462e4-04c5-43f3-82ab-5d96b98b0cb8",
+        "standardFamilyName": "Murry",
+        "standardGivenName": "Constantine"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.2,
+            "confidence": 100,
+            "gameZoneLower": 36.88,
+            "gameZoneUpper": 33.52,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.19,
+            "confidence": 30,
+            "gameZoneLower": 33.98,
+            "gameZoneUpper": 30.39,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "6ae2d50d-ee62-4078-9be4-845bccafa2c5",
+      "participantName": "Shannon Montoya",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8A0C3F25-B2C5-4F4C-9AB4-9BCA16734FBE",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-04-12",
+        "isMock": true,
+        "nationalityCode": "ALB",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "67179",
+            "state": "FG",
+            "city": "New New York",
+            "countryCode": "ALB"
+          }
+        ],
+        "personId": "03bf70ac-3e9c-4a0b-be26-9c9813a6389a",
+        "standardFamilyName": "Montoya",
+        "standardGivenName": "Shannon"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.72,
+            "confidence": 80,
+            "gameZoneLower": 33.44,
+            "gameZoneUpper": 30.01,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.63,
+            "confidence": 40,
+            "gameZoneLower": 34.4,
+            "gameZoneUpper": 30.85,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "6b1b2928-999d-4e21-92ce-5b2039e74f9c",
+      "participantName": "Ivan Illich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "CA4CD8ED-DE16-498B-A0AB-5BAB738865C6",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-12-14",
+        "isMock": true,
+        "nationalityCode": "NIC",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "49172",
+            "state": "CC",
+            "city": "Longyearbyen",
+            "countryCode": "NIC"
+          }
+        ],
+        "personId": "8890c746-aad3-4f09-a225-82de621d7b66",
+        "standardFamilyName": "Illich",
+        "standardGivenName": "Ivan"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.76,
+            "confidence": 100,
+            "gameZoneLower": 37.43,
+            "gameZoneUpper": 34.08,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 37.08,
+            "confidence": 50,
+            "gameZoneLower": 38.84,
+            "gameZoneUpper": 35.33,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "b3e25be6-014a-407a-b733-6727e6ff01ae",
+      "participantName": "Rebecca Twain",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "92022FCF-4F1D-4A63-9B04-BEE92ADAA10F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2014-09-29",
+        "isMock": true,
+        "nationalityCode": "SLV",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "43385",
+            "state": "FG",
+            "city": "Zion",
+            "countryCode": "SLV"
+          }
+        ],
+        "personId": "608fdd08-502b-44c6-99ba-a9e3f9380e59",
+        "standardFamilyName": "Twain",
+        "standardGivenName": "Rebecca"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 36.87,
+            "confidence": 90,
+            "gameZoneLower": 38.56,
+            "gameZoneUpper": 35.17,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.6,
+            "confidence": 50,
+            "gameZoneLower": 35.35,
+            "gameZoneUpper": 31.85,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "31885b90-adc6-4e69-b481-3c2335231ed1",
+      "participantName": "Portia Turing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "F366E81E-6B6E-45BE-BF9E-E5F9332AF51B",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-12-07",
+        "isMock": true,
+        "nationalityCode": "SLB",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "25397",
+            "state": "FN",
+            "city": "Miyake-jima",
+            "countryCode": "SLB"
+          }
+        ],
+        "personId": "51a37b12-7788-4177-bb48-1c7b87f55ec8",
+        "standardFamilyName": "Turing",
+        "standardGivenName": "Portia"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.79,
+            "confidence": 100,
+            "gameZoneLower": 35.46,
+            "gameZoneUpper": 32.11,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.45,
+            "confidence": 80,
+            "gameZoneLower": 35.15,
+            "gameZoneUpper": 31.75,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8c4453b4-f62f-409e-a390-7a7cf0668860",
+      "participantName": "Helen Beer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "384FBB22-FE99-4EE7-AC5A-2E4AABF1A4E1",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-10-04",
+        "isMock": true,
+        "nationalityCode": "PLW",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "18156",
+            "state": "FN",
+            "city": "Maycomb",
+            "countryCode": "PLW"
+          }
+        ],
+        "personId": "34511b29-db3d-450c-8743-dde10f8be36a",
+        "standardFamilyName": "Beer",
+        "standardGivenName": "Helen"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["f96e07c8-ebc9-453f-9f63-b16774235ee2", "d66bd3b2-5a21-4087-b4a8-d40fc958e7ed"],
+      "onlineResources": [],
+      "participantId": "19050d90-af76-4ea8-9cc5-32b635106304",
+      "participantName": "Eldritch/Stratton",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.11,
+            "confidence": 100,
+            "gameZoneLower": 36.8,
+            "gameZoneUpper": 33.43,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.29,
+            "confidence": 60,
+            "gameZoneLower": 34.01,
+            "gameZoneUpper": 30.56,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "7228f18b-75f9-4435-8dab-32784c5985eb",
+      "participantName": "Lilith Langer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "88203B17-06D3-43D1-AD02-FDC0329B1383",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-07-21",
+        "isMock": true,
+        "nationalityCode": "NMP",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "31365",
+            "state": "FN",
+            "city": "Xylar",
+            "countryCode": "NMP"
+          }
+        ],
+        "personId": "820289ca-6717-4513-b889-ff65636efd47",
+        "standardFamilyName": "Langer",
+        "standardGivenName": "Lilith"
+      }
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["a8a3d5d9-51e5-40f2-92aa-776213fea099", "29341e58-f345-4a03-90d7-aed306760ed3"],
+      "onlineResources": [],
+      "participantId": "b0907acb-74e1-419a-bd33-d5ae0ddc9e32",
+      "participantName": "Barrington/Turing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.04,
+            "confidence": 90,
+            "gameZoneLower": 35.72,
+            "gameZoneUpper": 32.35,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.24,
+            "confidence": 40,
+            "gameZoneLower": 37,
+            "gameZoneUpper": 33.47,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "913240d5-be8d-4338-9ecf-4a627993efe7",
+      "participantName": "Meg Kingsnorth",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "D5EA934F-24DB-4A99-AB4A-0C429FDBFF71",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-17",
+        "isMock": true,
+        "nationalityCode": "TON",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "26756",
+            "state": "FG",
+            "city": "Nagoro",
+            "countryCode": "TON"
+          }
+        ],
+        "personId": "1b22992f-3153-4cf1-94b4-73946be500d3",
+        "standardFamilyName": "Kingsnorth",
+        "standardGivenName": "Meg"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 27.7,
+            "confidence": 90,
+            "gameZoneLower": 29.4,
+            "gameZoneUpper": 26,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.71,
+            "confidence": 30,
+            "gameZoneLower": 34.51,
+            "gameZoneUpper": 30.92,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "1075830d-0e7d-446d-b9e7-82bdb26dc909",
+      "participantName": "Stanislaw Greer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "F903760C-4506-4F85-91DF-025E4EC7ADAB",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-26",
+        "isMock": true,
+        "nationalityCode": "GRD",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "85424",
+            "state": "CC",
+            "city": "Centralia",
+            "countryCode": "GRD"
+          }
+        ],
+        "personId": "4fa966ef-61e1-408d-9b49-2f8c39cc8f1d",
+        "standardFamilyName": "Greer",
+        "standardGivenName": "Stanislaw"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.16,
+            "confidence": 100,
+            "gameZoneLower": 36.83,
+            "gameZoneUpper": 33.49,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.62,
+            "confidence": 60,
+            "gameZoneLower": 37.35,
+            "gameZoneUpper": 33.89,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "cb7617d2-9388-4392-8d6d-2fa74be11c93",
+      "participantName": "Mary Escher",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "FF69B448-3811-46EA-ABC7-FF23F0D7C6C7",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-07-13",
+        "isMock": true,
+        "nationalityCode": "NRU",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "17368",
+            "state": "FG",
+            "city": "Pseudopolis",
+            "countryCode": "NRU"
+          }
+        ],
+        "personId": "cc6c23f7-32da-45f3-b3d3-5edecc2c314b",
+        "standardFamilyName": "Escher",
+        "standardGivenName": "Mary"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.03,
+            "confidence": 100,
+            "gameZoneLower": 35.71,
+            "gameZoneUpper": 32.36,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.71,
+            "confidence": 40,
+            "gameZoneLower": 34.47,
+            "gameZoneUpper": 30.94,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "41c8ee14-db0f-4669-8d45-c09b69ed1d47",
+      "participantName": "Jasmine Fulcher",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "FCB7AF33-9826-4F61-A081-EDA8BD7D91E2",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-08-28",
+        "isMock": true,
+        "nationalityCode": "CRI",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "95898",
+            "state": "CC",
+            "city": "Elista",
+            "countryCode": "CRI"
+          }
+        ],
+        "personId": "bb73624b-6276-4731-b8cf-69c6cf0c1a9f",
+        "standardFamilyName": "Fulcher",
+        "standardGivenName": "Jasmine"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.03,
+            "confidence": 80,
+            "gameZoneLower": 35.74,
+            "gameZoneUpper": 32.31,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "c56f613e-06a3-46fa-956b-d74fe28b2644",
+      "participantName": "Neil Earhart",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7F53CF3C-D199-4729-8BD3-5B5C21455B0A",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-12-10",
+        "isMock": true,
+        "nationalityCode": "GLP",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "60659",
+            "state": "FG",
+            "city": "Xylar",
+            "countryCode": "GLP"
+          }
+        ],
+        "personId": "c8da2a3d-2f24-42ba-85bb-f94582201bbe",
+        "standardFamilyName": "Earhart",
+        "standardGivenName": "Neil"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.47,
+            "confidence": 100,
+            "gameZoneLower": 37.16,
+            "gameZoneUpper": 33.79,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 26.31,
+            "confidence": 30,
+            "gameZoneLower": 28.1,
+            "gameZoneUpper": 24.52,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ec6f29fd-00ab-4539-b9fd-7c19dc3bbdce",
+      "participantName": "Inigo Eisenstein",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "B93DCCB2-C4B2-4E45-9920-0F704F28A230",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-06-12",
+        "isMock": true,
+        "nationalityCode": "LBY",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "05172",
+            "state": "FG",
+            "city": "Centralia",
+            "countryCode": "LBY"
+          }
+        ],
+        "personId": "ef32e183-8b95-4cfb-b795-20844916ea5a",
+        "standardFamilyName": "Eisenstein",
+        "standardGivenName": "Inigo"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.93,
+            "confidence": 100,
+            "gameZoneLower": 33.62,
+            "gameZoneUpper": 30.25,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.16,
+            "confidence": 80,
+            "gameZoneLower": 33.87,
+            "gameZoneUpper": 30.46,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 5925
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "c9013133-6542-48ce-bdcd-500312994044",
+      "participantName": "Italo Bennett",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "9AA23ADD-FBA2-4343-A330-B8AACC3A92A0",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-08-22",
+        "isMock": true,
+        "nationalityCode": "CUW",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "43963",
+            "state": "FN",
+            "city": "Trantor",
+            "countryCode": "CUW"
+          }
+        ],
+        "personId": "3b796343-db59-4bf7-b5d7-1a6e8f635b5e",
+        "standardFamilyName": "Bennett",
+        "standardGivenName": "Italo"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["0de0cee4-ea4e-477c-847d-b33a896e2502", "b9de6972-8f95-47f8-b86a-5796e2ebb19f"],
+      "onlineResources": [],
+      "participantId": "7d7962f8-a49f-4e6e-b2a6-8c8fc5e0ca82",
+      "participantName": "Escher/Murry",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.56,
+            "confidence": 60,
+            "gameZoneLower": 35.29,
+            "gameZoneUpper": 31.82,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 8906
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "a8a3d5d9-51e5-40f2-92aa-776213fea099",
+      "participantName": "Kirkpatrick Turing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "829AA972-19AE-4147-B07F-9049E768C68C",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-06-04",
+        "isMock": true,
+        "nationalityCode": "UGA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "33162",
+            "state": "FN",
+            "city": "Diomira",
+            "countryCode": "UGA"
+          }
+        ],
+        "personId": "1d4f17bf-e931-4315-af21-f412aa75f2d2",
+        "standardFamilyName": "Turing",
+        "standardGivenName": "Kirkpatrick"
+      }
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["d0e8b8da-29dc-4ad4-8544-2f2c0bc46bfe", "7f03cae9-9574-441c-8f0c-bbbdce51bf46"],
+      "onlineResources": [],
+      "participantId": "84655a39-0dcb-4b26-8616-431c015741bb",
+      "participantName": "Ahern/Curie",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["a7c5afa1-7f76-4c20-a764-0a927c2b3f0c", "0e757736-d9cb-4703-bd4a-d74b2c9172de"],
+      "onlineResources": [],
+      "participantId": "b432e9fd-9960-4c0a-b11a-4faf4a784b80",
+      "participantName": "Nearing/Yeats",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.97,
+            "confidence": 100,
+            "gameZoneLower": 32.64,
+            "gameZoneUpper": 29.3,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.28,
+            "confidence": 70,
+            "gameZoneLower": 34.99,
+            "gameZoneUpper": 31.56,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8def3ee8-23c5-4ffa-ba86-050f18aea3f9",
+      "participantName": "August Rugen",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7FBDE003-F061-4A01-A891-01C79BF10AFB",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-10-08",
+        "isMock": true,
+        "nationalityCode": "DNK",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "80206",
+            "state": "FN",
+            "city": "New New York",
+            "countryCode": "DNK"
+          }
+        ],
+        "personId": "ec3de5cb-338e-486a-862e-bdc2d11883c0",
+        "standardFamilyName": "Rugen",
+        "standardGivenName": "August"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["6bff947a-cf59-4013-ab99-179f075e6e8f", "b3e25be6-014a-407a-b733-6727e6ff01ae"],
+      "onlineResources": [],
+      "participantId": "23078f64-28a8-4f89-a303-6098659b5442",
+      "participantName": "Nearing/Twain",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.98,
+            "confidence": 100,
+            "gameZoneLower": 32.65,
+            "gameZoneUpper": 29.3,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.84,
+            "confidence": 50,
+            "gameZoneLower": 32.59,
+            "gameZoneUpper": 29.1,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 3461
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "3b91f147-63c0-4f34-94d4-ad795990b960",
+      "participantName": "Octavio Ellul",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "1DD39976-3ACF-4EE2-8E43-EBFECBA36D19",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-02-09",
+        "isMock": true,
+        "nationalityCode": "TCD",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "61462",
+            "state": "FG",
+            "city": "Centralia",
+            "countryCode": "TCD"
+          }
+        ],
+        "personId": "e3fb1cf0-5b15-489e-9546-34048d9813dc",
+        "standardFamilyName": "Ellul",
+        "standardGivenName": "Octavio"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.06,
+            "confidence": 80,
+            "gameZoneLower": 34.77,
+            "gameZoneUpper": 31.34,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.9,
+            "confidence": 10,
+            "gameZoneLower": 33.73,
+            "gameZoneUpper": 30.07,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "acd3d0cf-a62b-4c7c-ac3e-33e584f5415b",
+      "participantName": "Juliet Vonnegut",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "95C20A7B-71B9-43C3-A093-8912652E960D",
+      "person": {
+        "extensions": [],
+        "birthDate": "2006-04-27",
+        "isMock": true,
+        "nationalityCode": "BEL",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "40453",
+            "state": "CC",
+            "city": "New New York",
+            "countryCode": "BEL"
+          }
+        ],
+        "personId": "06c7555b-6658-43b4-855b-d94c27a444ec",
+        "standardFamilyName": "Vonnegut",
+        "standardGivenName": "Juliet"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "6698018d-f2ad-432f-b515-ff58e9040803",
+      "participantName": "Eva Yates",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "70DC982E-006C-44E0-A5DA-96CF1A65E370",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-11-23",
+        "isMock": true,
+        "nationalityCode": "JEY",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "01188",
+            "state": "FG",
+            "city": "Maycomb",
+            "countryCode": "JEY"
+          }
+        ],
+        "personId": "b1d52078-caed-4071-a172-cb3948bf5fec",
+        "standardFamilyName": "Yates",
+        "standardGivenName": "Eva"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.1,
+            "confidence": 100,
+            "gameZoneLower": 31.79,
+            "gameZoneUpper": 28.42,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.12,
+            "confidence": 20,
+            "gameZoneLower": 32.92,
+            "gameZoneUpper": 29.32,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 4024
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "c373dcb9-4376-419b-a09c-d95215b9e842",
+      "participantName": "Paul Hedges",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "D2D08647-7B72-4783-B3B4-BF8165C161AC",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-12-06",
+        "isMock": true,
+        "nationalityCode": "MUS",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "98798",
+            "state": "CC",
+            "city": "Chronopolis",
+            "countryCode": "MUS"
+          }
+        ],
+        "personId": "406c48f5-acb2-4c4f-858e-feb8e2e3f206",
+        "standardFamilyName": "Hedges",
+        "standardGivenName": "Paul"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["bb63c13e-7a24-4823-b737-68c1f5b46e98", "dcfe4910-a31c-4e3f-b557-4ab49496dec1"],
+      "onlineResources": [],
+      "participantId": "2ffab607-a13b-4d94-bfbd-644cce5ea7bf",
+      "participantName": "Ahern/Banks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["1075830d-0e7d-446d-b9e7-82bdb26dc909", "a03b0c63-f4cf-42b1-a4cc-15e0351dfcca"],
+      "onlineResources": [],
+      "participantId": "d91f041f-3f33-4e3f-8f64-29681ce1d7d9",
+      "participantName": "Crowne/Greer",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.4,
+            "confidence": 20,
+            "gameZoneLower": 35.21,
+            "gameZoneUpper": 31.6,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.381Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 15809
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "0e757736-d9cb-4703-bd4a-d74b2c9172de",
+      "participantName": "Tyrone Yeats",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "84AE9292-8DF8-4A67-8794-AD66727BC615",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-11-21",
+        "isMock": true,
+        "nationalityCode": "ABW",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "74420",
+            "state": "FN",
+            "city": "Maycomb",
+            "countryCode": "ABW"
+          }
+        ],
+        "personId": "ec3f9448-d7de-4722-b316-f650cba86117",
+        "standardFamilyName": "Yeats",
+        "standardGivenName": "Tyrone"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.55,
+            "confidence": 70,
+            "gameZoneLower": 35.27,
+            "gameZoneUpper": 31.83,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "a6947ec6-9245-45d1-b618-874c354f5e07",
+      "participantName": "Pris Earhart",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "A0AA1E5E-A793-4216-BF41-67E353840443",
+      "person": {
+        "extensions": [],
+        "birthDate": "2014-11-14",
+        "isMock": true,
+        "nationalityCode": "PER",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "34963",
+            "state": "FG",
+            "city": "Zion",
+            "countryCode": "PER"
+          }
+        ],
+        "personId": "1befd8c9-6a70-4feb-a701-90b62262a84c",
+        "standardFamilyName": "Earhart",
+        "standardGivenName": "Pris"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.54,
+            "confidence": 60,
+            "gameZoneLower": 33.28,
+            "gameZoneUpper": 29.8,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8b7e430e-25c6-411b-9167-ec9ca2e11456",
+      "participantName": "Syme Mond",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "ADD0CC07-5C81-4912-B7C2-1D2CF293C159",
+      "person": {
+        "extensions": [],
+        "birthDate": "2006-10-31",
+        "isMock": true,
+        "nationalityCode": "BWA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "61875",
+            "state": "FG",
+            "city": "Dictionopolis",
+            "countryCode": "BWA"
+          }
+        ],
+        "personId": "bde19c24-960a-4723-9af4-ff4a82e9b1a8",
+        "standardFamilyName": "Mond",
+        "standardGivenName": "Syme"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["10eb569e-bab8-4c60-8a7c-e99ba7df4028", "ccbbdfd5-eb08-489c-8014-4c697fe9fe4a"],
+      "onlineResources": [],
+      "participantId": "e4dfcf38-a984-4f3b-bf69-59e3ec563aae",
+      "participantName": "Beer/Godel",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.85,
+            "confidence": 90,
+            "gameZoneLower": 36.54,
+            "gameZoneUpper": 33.16,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "635a5d7f-1d92-4dde-902a-b2a9d8b0ca1b",
+      "participantName": "Frito Calvino",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "2621FCC4-CC14-401F-BBC2-479FDBB48832",
+      "person": {
+        "extensions": [],
+        "birthDate": "2013-02-13",
+        "isMock": true,
+        "nationalityCode": "KOR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "22755",
+            "state": "CC",
+            "city": "Yonwood",
+            "countryCode": "KOR"
+          }
+        ],
+        "personId": "61ebfc52-d4f2-4290-b751-38799f77b026",
+        "standardFamilyName": "Calvino",
+        "standardGivenName": "Frito"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.32,
+            "confidence": 100,
+            "gameZoneLower": 33.01,
+            "gameZoneUpper": 29.64,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.14,
+            "confidence": 30,
+            "gameZoneLower": 29.92,
+            "gameZoneUpper": 26.35,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 3606
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "d0e8b8da-29dc-4ad4-8544-2f2c0bc46bfe",
+      "participantName": "Emmanuel Ahern",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "49CF8E6F-02C0-4AC3-9327-108266D04113",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-09-26",
+        "isMock": true,
+        "nationalityCode": "NIC",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "49322",
+            "state": "CC",
+            "city": "Chronopolis",
+            "countryCode": "NIC"
+          }
+        ],
+        "personId": "bc87d681-4271-4806-bee5-c53860e6850e",
+        "standardFamilyName": "Ahern",
+        "standardGivenName": "Emmanuel"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.83,
+            "confidence": 80,
+            "gameZoneLower": 31.53,
+            "gameZoneUpper": 28.12,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.69,
+            "confidence": 50,
+            "gameZoneLower": 32.44,
+            "gameZoneUpper": 28.95,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "6f93f865-593e-49b6-bfdf-ab0c0bcfc23f",
+      "participantName": "Barda Waschuk",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "EF44426D-020F-4010-8A64-674A71E54A3C",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-10-08",
+        "isMock": true,
+        "nationalityCode": "BVT",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "62260",
+            "state": "CC",
+            "city": "Centralia",
+            "countryCode": "BVT"
+          }
+        ],
+        "personId": "e9d69f42-89ea-4208-be69-40b5e536ecce",
+        "standardFamilyName": "Waschuk",
+        "standardGivenName": "Barda"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.16,
+            "confidence": 100,
+            "gameZoneLower": 32.83,
+            "gameZoneUpper": 29.48,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.17,
+            "confidence": 50,
+            "gameZoneLower": 33.91,
+            "gameZoneUpper": 30.43,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ccbbdfd5-eb08-489c-8014-4c697fe9fe4a",
+      "participantName": "Axel Godel",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "43B302E9-3B27-4913-A095-FA92010C7CFF",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-01-05",
+        "isMock": true,
+        "nationalityCode": "TGO",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "79371",
+            "state": "FG",
+            "city": "Zion",
+            "countryCode": "TGO"
+          }
+        ],
+        "personId": "b5c04f21-0ad2-4eea-8219-a10ab01ea6b8",
+        "standardFamilyName": "Godel",
+        "standardGivenName": "Axel"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.61,
+            "confidence": 90,
+            "gameZoneLower": 31.3,
+            "gameZoneUpper": 27.93,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.24,
+            "confidence": 100,
+            "gameZoneLower": 32.91,
+            "gameZoneUpper": 29.57,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 3401
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "7d80b31c-ef19-46ae-a2c1-c403e15af5dc",
+      "participantName": "Palmer Lem",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "4F2340F4-A973-491E-8BE2-156EA704BDF7",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-08-09",
+        "isMock": true,
+        "nationalityCode": "GBR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "96968",
+            "state": "CC",
+            "city": "Yonwood",
+            "countryCode": "GBR"
+          }
+        ],
+        "personId": "96d1a379-9451-4c0b-955d-a0d9b2168c8b",
+        "standardFamilyName": "Lem",
+        "standardGivenName": "Palmer"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["0de24667-3fda-4a80-adaa-1a9061ad49a1", "8b7e430e-25c6-411b-9167-ec9ca2e11456"],
+      "onlineResources": [],
+      "participantId": "ad41e209-6229-4f64-9035-c8e9a1f0f3c2",
+      "participantName": "Jensen/Mond",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.16,
+            "confidence": 100,
+            "gameZoneLower": 32.85,
+            "gameZoneUpper": 29.48,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 3695
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "9888b567-9816-4ce9-ad3a-a39812a1faf8",
+      "participantName": "Rincewind Ananiadis",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "119F803B-8EFD-4CEF-BF4B-3ED6CA28E8EC",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-11-12",
+        "isMock": true,
+        "nationalityCode": "NPL",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "27090",
+            "state": "CC",
+            "city": "Pemberley",
+            "countryCode": "NPL"
+          }
+        ],
+        "personId": "34c390c8-71b0-487b-9862-f6dfaba634f2",
+        "standardFamilyName": "Ananiadis",
+        "standardGivenName": "Rincewind"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.06,
+            "confidence": 30,
+            "gameZoneLower": 36.86,
+            "gameZoneUpper": 33.27,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.78,
+            "confidence": 10,
+            "gameZoneLower": 33.62,
+            "gameZoneUpper": 29.94,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "0de24667-3fda-4a80-adaa-1a9061ad49a1",
+      "participantName": "Ernst Jensen",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "F52F18A2-E2F8-4E88-BB5E-7CED688982A9",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-07-02",
+        "isMock": true,
+        "nationalityCode": "CYP",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "21652",
+            "state": "FG",
+            "city": "Nagoro",
+            "countryCode": "CYP"
+          }
+        ],
+        "personId": "55026a07-307d-4b6d-b681-849174d7f046",
+        "standardFamilyName": "Jensen",
+        "standardGivenName": "Ernst"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.27,
+            "confidence": 60,
+            "gameZoneLower": 35,
+            "gameZoneUpper": 31.53,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.03,
+            "confidence": 30,
+            "gameZoneLower": 31.81,
+            "gameZoneUpper": 28.25,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 15672
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "161de1ba-64ea-4429-9746-88d8d4e1211b",
+      "participantName": "Glen Berry",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8F97CC7B-6AC8-469B-BA14-3F5E0087ED3F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-02-22",
+        "isMock": true,
+        "nationalityCode": "UZB",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "30265",
+            "state": "FN",
+            "city": "Maycomb",
+            "countryCode": "UZB"
+          }
+        ],
+        "personId": "8af35712-c041-42b4-8c61-f76011b80add",
+        "standardFamilyName": "Berry",
+        "standardGivenName": "Glen"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["e83c5c7d-9223-4c2b-ae08-b941c969cb8e", "913240d5-be8d-4338-9ecf-4a627993efe7"],
+      "onlineResources": [],
+      "participantId": "0a539846-aaf2-4008-85ce-016d4f5a6542",
+      "participantName": "Kingsnorth/Watson",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 35.26,
+            "confidence": 100,
+            "gameZoneLower": 36.94,
+            "gameZoneUpper": 33.57,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.67,
+            "confidence": 50,
+            "gameZoneLower": 32.42,
+            "gameZoneUpper": 28.92,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "b9de6972-8f95-47f8-b86a-5796e2ebb19f",
+      "participantName": "Julian Escher",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "EAF53BAB-58F3-48EA-8C94-E2FCFBC2D9FD",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-11-13",
+        "isMock": true,
+        "nationalityCode": "GGY",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "33981",
+            "state": "CC",
+            "city": "Chronopolis",
+            "countryCode": "GGY"
+          }
+        ],
+        "personId": "27925819-a8a2-42ae-9603-d75c13332678",
+        "standardFamilyName": "Escher",
+        "standardGivenName": "Julian"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 34.27,
+            "confidence": 90,
+            "gameZoneLower": 35.96,
+            "gameZoneUpper": 32.57,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 36.13,
+            "confidence": 40,
+            "gameZoneLower": 37.9,
+            "gameZoneUpper": 34.36,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "e83c5c7d-9223-4c2b-ae08-b941c969cb8e",
+      "participantName": "Sharn Watson",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "7255247B-B10E-4E10-B008-6AA63FD937E2",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-06-16",
+        "isMock": true,
+        "nationalityCode": "MYS",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "11621",
+            "state": "FN",
+            "city": "Longyearbyen",
+            "countryCode": "MYS"
+          }
+        ],
+        "personId": "174e1d2f-e5dd-4ca4-b9fc-2296d6bfa5d9",
+        "standardFamilyName": "Watson",
+        "standardGivenName": "Sharn"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 37.08,
+            "confidence": 100,
+            "gameZoneLower": 38.76,
+            "gameZoneUpper": 35.4,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 37.93,
+            "confidence": 40,
+            "gameZoneLower": 39.69,
+            "gameZoneUpper": 36.16,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "6bff947a-cf59-4013-ab99-179f075e6e8f",
+      "participantName": "Susanne Nearing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "A74FE18E-29DD-4CE9-BE97-B255BC9CBFB3",
+      "person": {
+        "extensions": [],
+        "birthDate": "2014-05-28",
+        "isMock": true,
+        "nationalityCode": "ISR",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "22253",
+            "state": "FN",
+            "city": "Xylar",
+            "countryCode": "ISR"
+          }
+        ],
+        "personId": "9bb82d02-1d64-4ad4-999d-7a1afd9b4830",
+        "standardFamilyName": "Nearing",
+        "standardGivenName": "Susanne"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["f0f5420d-bad9-42be-8df9-85552f92aff3", "1c357fa1-c1e6-4c4f-8273-3f0f4aef99e5"],
+      "onlineResources": [],
+      "participantId": "88aa2354-781e-4ee7-a645-800033a7907e",
+      "participantName": "Beals/Eyre",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "dcfe4910-a31c-4e3f-b557-4ab49496dec1",
+      "participantName": "Hermia Banks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "5B2F528E-EF8E-4422-AED4-0C1C86FD0558",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-12-29",
+        "isMock": true,
+        "nationalityCode": "BLM",
+        "sex": "FEMALE",
+        "addresses": [
+          {
+            "postalCode": "34749",
+            "state": "FG",
+            "city": "Pseudopolis",
+            "countryCode": "BLM"
+          }
+        ],
+        "personId": "047353a8-52d8-44b1-be18-b02654385dbd",
+        "standardFamilyName": "Banks",
+        "standardGivenName": "Hermia"
+      },
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.91,
+            "confidence": 40,
+            "gameZoneLower": 30.69,
+            "gameZoneUpper": 27.13,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 5777
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "a7c5afa1-7f76-4c20-a764-0a927c2b3f0c",
+      "participantName": "Mustapha Nearing",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "540A6775-9DB6-42D2-BEB8-85C84FBFD173",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-08-19",
+        "isMock": true,
+        "nationalityCode": "SLB",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "38831",
+            "state": "CC",
+            "city": "Yonwood",
+            "countryCode": "SLB"
+          }
+        ],
+        "personId": "023a2e9a-8640-4c64-b2f4-a4c734c33b39",
+        "standardFamilyName": "Nearing",
+        "standardGivenName": "Mustapha"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 33,
+            "confidence": 100,
+            "gameZoneLower": 34.68,
+            "gameZoneUpper": 31.33,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.23,
+            "confidence": 40,
+            "gameZoneLower": 33.99,
+            "gameZoneUpper": 30.47,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 6881
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ab0239c8-f6b1-4c3f-80d1-3617b6828973",
+      "participantName": "Westley Tillich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8E9E7AA5-83C7-4986-9418-EA393E63E686",
+      "person": {
+        "extensions": [],
+        "birthDate": "2011-11-26",
+        "isMock": true,
+        "nationalityCode": "SMX",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "07225",
+            "state": "FN",
+            "city": "Longyearbyen",
+            "countryCode": "SMX"
+          }
+        ],
+        "personId": "4a667bdb-de6a-4d8d-aebd-cce14aac8849",
+        "standardFamilyName": "Tillich",
+        "standardGivenName": "Westley"
+      }
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "f8b3c398-c565-4f09-b061-2249447ca262",
+      "participantName": "Fezzik Deckard",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8B71FC1F-725D-4BC7-B913-BAB8C764936E",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-07-26",
+        "isMock": true,
+        "nationalityCode": "NRU",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "20104",
+            "state": "FN",
+            "city": "Trantor",
+            "countryCode": "NRU"
+          }
+        ],
+        "personId": "b4c23bf2-9107-4f73-beb6-a1de2d6d1d3b",
+        "standardFamilyName": "Deckard",
+        "standardGivenName": "Fezzik"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["acd3d0cf-a62b-4c7c-ac3e-33e584f5415b", "6698018d-f2ad-432f-b515-ff58e9040803"],
+      "onlineResources": [],
+      "participantId": "e26b36da-ebcb-474d-bad9-0f6a0e23c4a0",
+      "participantName": "Vonnegut/Yates",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.92,
+            "confidence": 100,
+            "gameZoneLower": 32.6,
+            "gameZoneUpper": 29.24,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.32,
+            "confidence": 60,
+            "gameZoneLower": 34.05,
+            "gameZoneUpper": 30.59,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 3947
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "2525c059-7709-4e42-b6dc-350085ca5900",
+      "participantName": "Charles Ogden",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "6B60D32C-8A52-463A-9BC5-050C21A61CA4",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-08-02",
+        "isMock": true,
+        "nationalityCode": "ATA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "03728",
+            "state": "FG",
+            "city": "Hallstatt",
+            "countryCode": "ATA"
+          }
+        ],
+        "personId": "afed7532-0bf9-4a8c-b193-1c26bf9681ca",
+        "standardFamilyName": "Ogden",
+        "standardGivenName": "Charles"
+      }
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["2525c059-7709-4e42-b6dc-350085ca5900", "ab0239c8-f6b1-4c3f-80d1-3617b6828973"],
+      "onlineResources": [],
+      "participantId": "d64ddaeb-b034-4eb3-9a46-5135469edea5",
+      "participantName": "Ogden/Tillich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.5,
+            "confidence": 70,
+            "gameZoneLower": 34.22,
+            "gameZoneUpper": 30.78,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "63035521-d899-4968-8ef5-984e15f33387",
+      "participantName": "Mark Sale",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "0AC55B86-BED4-4D06-8789-013AE988D91D",
+      "person": {
+        "extensions": [],
+        "birthDate": "2015-11-17",
+        "isMock": true,
+        "nationalityCode": "AIA",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "91491",
+            "state": "CC",
+            "city": "Nagoro",
+            "countryCode": "AIA"
+          }
+        ],
+        "personId": "57139e40-79aa-43b7-a1cd-520768af2104",
+        "standardFamilyName": "Sale",
+        "standardGivenName": "Mark"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.64,
+            "confidence": 90,
+            "gameZoneLower": 34.33,
+            "gameZoneUpper": 30.95,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 33.81,
+            "confidence": 20,
+            "gameZoneLower": 35.62,
+            "gameZoneUpper": 32,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T09:53:44.234Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U12",
+          "itemValue": 1298
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "13517b40-efc1-4a30-a66d-1d83b629c868",
+      "participantName": "Stanley Parks",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "52420C2D-E319-4ED5-B19B-5C9989FDADB5",
+      "person": {
+        "extensions": [],
+        "birthDate": "2012-02-09",
+        "isMock": true,
+        "nationalityCode": "KOR",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "69629",
+            "state": "FG",
+            "city": "Zion",
+            "countryCode": "KOR"
+          }
+        ],
+        "personId": "570581a8-05fb-452e-80e7-c7468476aa2a",
+        "standardFamilyName": "Parks",
+        "standardGivenName": "Stanley"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.88,
+            "confidence": 100,
+            "gameZoneLower": 30.56,
+            "gameZoneUpper": 27.2,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.19,
+            "confidence": 50,
+            "gameZoneLower": 29.94,
+            "gameZoneUpper": 26.44,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 2030
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "dec5cf04-6e10-4f5b-91ff-c396e53e6cbf",
+      "participantName": "Robinson Rumfoord",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "18BBED5C-5DD0-472F-96DD-ADEC1D4D57E3",
+      "person": {
+        "extensions": [],
+        "birthDate": "2008-08-20",
+        "isMock": true,
+        "nationalityCode": "ATG",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "54843",
+            "state": "CC",
+            "city": "Yonwood",
+            "countryCode": "ATG"
+          }
+        ],
+        "personId": "0823e1e8-282e-4ed6-85cb-36dd2271b09a",
+        "standardFamilyName": "Rumfoord",
+        "standardGivenName": "Robinson"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 31.33,
+            "confidence": 70,
+            "gameZoneLower": 33.05,
+            "gameZoneUpper": 29.6,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 28.24,
+            "confidence": 30,
+            "gameZoneLower": 30.04,
+            "gameZoneUpper": 26.45,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 5275
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "7f03cae9-9574-441c-8f0c-bbbdce51bf46",
+      "participantName": "James Curie",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "8742673C-B150-47BD-A1B8-E1CF6BC447B7",
+      "person": {
+        "extensions": [],
+        "birthDate": "2007-07-01",
+        "isMock": true,
+        "nationalityCode": "CHE",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "90824",
+            "state": "FN",
+            "city": "Diomira",
+            "countryCode": "CHE"
+          }
+        ],
+        "personId": "b69f189c-1710-4f0d-9d9a-6bbe09fbef37",
+        "standardFamilyName": "Curie",
+        "standardGivenName": "James"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 32.12,
+            "confidence": 80,
+            "gameZoneLower": 33.82,
+            "gameZoneUpper": 30.42,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.52,
+            "confidence": 40,
+            "gameZoneLower": 31.28,
+            "gameZoneUpper": 27.75,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 7467
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ffc1cd04-4053-46e2-b844-d2da22c9b6a9",
+      "participantName": "Estlin Paz",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "A6F1D84C-4E31-41F2-93AA-06AB94A5B64F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-02-21",
+        "isMock": true,
+        "nationalityCode": "NER",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "54621",
+            "state": "FG",
+            "city": "Dictionopolis",
+            "countryCode": "NER"
+          }
+        ],
+        "personId": "53092120-c2f1-43f6-b7e8-46cacddd3edb",
+        "standardFamilyName": "Paz",
+        "standardGivenName": "Estlin"
+      }
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 27.96,
+            "confidence": 100,
+            "gameZoneLower": 29.64,
+            "gameZoneUpper": 26.28,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.03,
+            "confidence": 50,
+            "gameZoneLower": 30.78,
+            "gameZoneUpper": 27.28,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 2296
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "8afae036-82ac-44de-9ee8-d1e7767e4d02",
+      "participantName": "Jerry Atreides",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "B91535A2-605D-4C59-9192-8E6760664EB6",
+      "person": {
+        "extensions": [],
+        "birthDate": "2009-09-08",
+        "isMock": true,
+        "nationalityCode": "WSM",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "15373",
+            "state": "CC",
+            "city": "Xylar",
+            "countryCode": "WSM"
+          }
+        ],
+        "personId": "5e58ea3e-7c1e-4bdb-b3a8-bfffdb25d9ca",
+        "standardFamilyName": "Atreides",
+        "standardGivenName": "Jerry"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["01fd0f9b-5e68-4269-91f6-629b3783266e", "c56f613e-06a3-46fa-956b-d74fe28b2644"],
+      "onlineResources": [],
+      "participantId": "eb4e8093-a26b-4240-b34d-ef2a57716bc6",
+      "participantName": "Earhart/Shelley",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["6ae2d50d-ee62-4078-9be4-845bccafa2c5", "63035521-d899-4968-8ef5-984e15f33387"],
+      "onlineResources": [],
+      "participantId": "ef718e14-1f09-485d-9d02-294754d2f330",
+      "participantName": "Montoya/Sale",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 29.87,
+            "confidence": 90,
+            "gameZoneLower": 31.56,
+            "gameZoneUpper": 28.18,
+            "isRanked": false
+          }
+        },
+        {
+          "createdAt": "2024-10-22T13:30:29.382Z",
+          "itemDate": "2024-10-22T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RANKING.DOUBLES.U16",
+          "itemValue": 6480
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "ff710588-15e3-4a32-bb6d-9107caaf22d0",
+      "participantName": "Aldous Postman",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "0826C103-806A-4E09-AC65-A66F87588A5F",
+      "person": {
+        "extensions": [],
+        "birthDate": "2010-11-28",
+        "isMock": true,
+        "nationalityCode": "PLW",
+        "sex": "MALE",
+        "addresses": [
+          {
+            "postalCode": "27090",
+            "state": "FG",
+            "city": "Dictionopolis",
+            "countryCode": "PLW"
+          }
+        ],
+        "personId": "9374437f-93e1-4c7f-aadc-4455988144e6",
+        "standardFamilyName": "Postman",
+        "standardGivenName": "Aldous"
+      }
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["3ef25874-79c0-4595-a6e9-4412c9958f63", "45ef96cb-df67-4b7e-8368-76b4114e3fc3"],
+      "onlineResources": [],
+      "participantId": "32f268ce-31d7-4587-9e0c-75660abd8d64",
+      "participantName": "Assange/Ripley",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "contacts": [],
+      "individualParticipantIds": ["ec6f29fd-00ab-4539-b9fd-7c19dc3bbdce", "6b1b2928-999d-4e21-92ce-5b2039e74f9c"],
+      "onlineResources": [],
+      "participantId": "b350355b-9332-4075-9bcb-5283b984d7ab",
+      "participantName": "Eisenstein/Illich",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": [],
+      "timeItems": []
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-10-22T13:32:32.598Z",
+          "itemDate": "2024-10-22T13:32:31.206Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.SEEDING.DOUBLES.860138A7-B7DF-4F08-92EC-E0558E192971",
+          "itemValue": 1
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": ["ffc1cd04-4053-46e2-b844-d2da22c9b6a9", "dec5cf04-6e10-4f5b-91ff-c396e53e6cbf"],
+      "onlineResources": [],
+      "participantId": "7db1ae97-7126-4b04-963a-4b9804145f9e",
+      "participantName": "Paz/Rumfoord",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [
+        {
+          "createdAt": "2024-10-22T13:32:32.598Z",
+          "itemDate": "2024-10-22T13:32:31.206Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.SEEDING.DOUBLES.860138A7-B7DF-4F08-92EC-E0558E192971",
+          "itemValue": 2
+        }
+      ],
+      "contacts": [],
+      "individualParticipantIds": ["8afae036-82ac-44de-9ee8-d1e7767e4d02", "ff731ca6-11b9-48dc-9dcf-e9b5933f02a3"],
+      "onlineResources": [],
+      "participantId": "88a27a42-a7e6-4e88-9a82-09e7776cc654",
+      "participantName": "Atreides/Twain",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [],
+      "contacts": [],
+      "individualParticipantIds": ["9aa12b27-bd69-401d-b78d-88c60b3c51dd", "3b91f147-63c0-4f34-94d4-ad795990b960"],
+      "onlineResources": [],
+      "participantId": "e8518447-e02c-4a63-8299-dec5575ddc0d",
+      "participantName": "Ellul/Ophuls",
+      "participantRole": "COMPETITOR",
+      "participantRoleResponsibilities": [],
+      "participantStatus": "ACTIVE",
+      "participantType": "PAIR",
+      "penalties": []
+    },
+    {
+      "timeItems": [
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.DOUBLES.WTN",
+          "itemValue": {
+            "wtnRating": 30.03,
+            "confidence": 90,
+            "gameZoneLower": 31.72,
+            "gameZoneUpper": 28.35,
+            "isRanked": false
+          }
+        },
+        {
+          "itemDate": "2024-10-16T00:00:00.000Z",
+          "itemSubTypes": [],
+          "itemType": "SCALE.RATING.SINGLES.WTN",
+          "itemValue": {
+            "wtnRating": 25.53,
+            "confidence": 10,
+            "gameZoneLower": 27.38,
+            "gameZoneUpper": 23.69,
+            "isRanked": false
+          }
+        }
+      ],
+      "contacts": [
+        {
+          "emailAddress": "ptcguy@yahoo.com",
+          "telephone": "8168051801"
+        }
+      ],
+      "individualParticipantIds": [],
+      "onlineResources": [],
+      "participantId": "21032b59-8aca-4411-8553-c7eb5d7f9154",
+      "participantName": "Aravis Carson",
+      "participantRole": "OFFICIAL",
+      "participantRoleResponsibilities": ["TournamentDirector"],
+      "participantStatus": "ACTIVE",
+      "participantType": "INDIVIDUAL",
+      "penalties": [],
+      "personId": "EADA44DC-5592-4217-949E-7DE26EB6EC0E",
+      "person": {
+        "birthDate": "2004-01-21",
+        "isMock": true,
+        "sex": "OTHER",
+        "nationalityCode": "ESE",
+        "addresses": [
+          {
+            "postalCode": "62260",
+            "state": "FG",
+            "city": "Pemberley",
+            "countryCode": "ESE"
+          }
+        ],
+        "personId": "5a56c49e-3b73-4de6-ba23-e585b633c9b8",
+        "standardFamilyName": "Carson",
+        "standardGivenName": "Aravis"
+      }
+    }
+  ],
+  "registrationProfile": [
+    {
+      "entriesClose": "2024-10-21T00:00:00.000Z"
+    }
+  ],
+  "season": "a8ead796-829a-4be3-aced-5e5431e04d5d",
+  "startDate": "2024-10-25T00:00:00.000Z",
+  "totalPrizeMoney": [],
+  "tournamentCategories": [],
+  "tournamentGroups": [],
+  "tournamentId": "eb331ba4-4de8-43af-b785-67b734842102",
+  "tournamentName": "Anonymized: 2024-12-13",
+  "tournamentExternalId": "24-05654",
+  "tournamentOtherIds": [],
+  "processCodes": [],
+  "deleted": false,
+  "venueIds": ["6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2"],
+  "venues": [
+    {
+      "addresses": [],
+      "courts": [],
+      "venueAbbreviation": "V0",
+      "venueId": "6B4350E5-A298-4BC7-8FA8-C1F3EB0214C2",
+      "venueName": "Venue #0",
+      "venueOtherIds": [],
+      "onlineResources": [],
+      "isMock": true
+    }
+  ],
+  "isMock": true
+}
