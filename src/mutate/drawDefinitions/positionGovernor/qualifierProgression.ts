@@ -1,56 +1,50 @@
+import { getSourceStructureIdsAndRelevantLinks } from '@Query/structure/getSourceStructureIdsAndRelevantLinks';
+import { getPositionAssignments, structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { qualifierDrawPositionAssignment } from '@Mutate/matchUps/drawPositions/positionQualifier';
+import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
+import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { definedAttributes } from '@Tools/definedAttributes';
 import { findExtension } from '@Acquire/findExtension';
-import { qualifierDrawPositionAssignment } from '@Assemblies/governors/drawsGovernor';
+import { ResultType } from '@Types/factoryTypes';
+import { randomPop } from '@Tools/arrays';
+
+// Constants and Types
 import { DRAW_DEFINITION, EVENT, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { MAIN, POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
+import { TALLY } from '@Constants/extensionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   MISSING_MAIN_STRUCTURE,
   MISSING_QUALIFIED_PARTICIPANTS,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '@Constants/errorConditionConstants';
-import { TALLY } from '@Constants/extensionConstants';
-import { BYE } from '@Constants/matchUpStatusConstants';
-import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
-import { SUCCESS } from '@Constants/resultConstants';
-import { decorateResult } from '@Functions/global/decorateResult';
-import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
-import { getPositionAssignments, structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
-import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { getSourceStructureIdsAndRelevantLinks } from '@Query/structure/getSourceStructureIdsAndRelevantLinks';
-import { randomPop } from '@Tools/arrays';
-import { definedAttributes } from '@Tools/definedAttributes';
-import { ResultType } from '@Types/factoryTypes';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 
 interface QualifierProgressionArgs {
   drawDefinition: DrawDefinition;
-  event: Event;
-  targetRoundNumber?: number;
   tournamentRecord: Tournament;
+  targetRoundNumber?: number;
+  event: Event;
 }
 
 export function qualifierProgression({
-  drawDefinition,
-  event,
   targetRoundNumber = 1,
   tournamentRecord,
+  drawDefinition,
+  event,
 }: QualifierProgressionArgs): ResultType {
-  const paramsCheck = checkRequiredParameters(
-    {
-      drawDefinition,
-      event,
-      tournamentRecord,
-    },
-    [{ [DRAW_DEFINITION]: true, [EVENT]: true, [TOURNAMENT_RECORD]: true }],
-  );
+  const paramsCheck = checkRequiredParameters({ drawDefinition, event, tournamentRecord }, [
+    { [DRAW_DEFINITION]: true, [EVENT]: true, [TOURNAMENT_RECORD]: true },
+  ]);
   if (paramsCheck.error) return paramsCheck;
 
+  const assignedParticipants: { participantId: string; drawPosition: number }[] = [];
   const qualifyingParticipantIds: string[] = [];
-  const assignedParticipants: {
-    participantId: string;
-    drawPosition: number;
-  }[] = [];
 
   const mainStructure = drawDefinition.structures?.find(
     (structure) => structure.stage === MAIN && structure.stageSequence === 1,
@@ -59,12 +53,7 @@ export function qualifierProgression({
   if (!mainStructure) return decorateResult({ result: { error: MISSING_MAIN_STRUCTURE } });
 
   const appliedPolicies =
-    getAppliedPolicies({
-      tournamentRecord,
-      drawDefinition,
-      structure: mainStructure,
-      event,
-    }).appliedPolicies ?? {};
+    getAppliedPolicies({ tournamentRecord, drawDefinition, structure: mainStructure, event }).appliedPolicies ?? {};
 
   const policy = appliedPolicies[POLICY_TYPE_POSITION_ACTIONS];
   const requireCompletedStructures = policy?.requireCompletedStructures;
@@ -78,18 +67,18 @@ export function qualifierProgression({
 
   const { relevantLinks: eliminationSourceLinks } =
     getSourceStructureIdsAndRelevantLinks({
+      structureId: mainStructure.structureId,
       targetRoundNumber,
       linkType: WINNER, // WINNER of qualifying structures will traverse link
       drawDefinition,
-      structureId: mainStructure.structureId,
     }) || {};
 
   const { relevantLinks: roundRobinSourceLinks } =
     getSourceStructureIdsAndRelevantLinks({
+      structureId: mainStructure.structureId,
       targetRoundNumber,
       linkType: POSITION, // link will define how many finishingPositions traverse the link
       drawDefinition,
-      structureId: mainStructure.structureId,
     }) || {};
 
   for (const sourceLink of eliminationSourceLinks) {
@@ -98,18 +87,13 @@ export function qualifierProgression({
     );
     if (structure?.stage !== QUALIFYING) continue;
 
-    const structureCompleted = isCompletedStructure({
-      structureId: sourceLink.source.structureId,
-      drawDefinition,
-    });
+    const structureCompleted = isCompletedStructure({ structureId: sourceLink.source.structureId, drawDefinition });
 
     if (!requireCompletedStructures || structureCompleted) {
       const qualifyingRoundNumber = structure.qualifyingRoundNumber;
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: {
-          ...(qualifyingRoundNumber && {
-            roundNumbers: [qualifyingRoundNumber],
-          }),
+          ...(qualifyingRoundNumber && { roundNumbers: [qualifyingRoundNumber] }),
           hasWinningSide: true,
         },
         afterRecoveryTimes: false,
@@ -118,8 +102,8 @@ export function qualifierProgression({
       });
 
       for (const matchUp of matchUps) {
-        const winningSide = matchUp.sides.find((side) => side?.sideNumber === matchUp.winningSide);
         const relevantSide = matchUp.matchUpStatus === BYE && matchUp.sides?.find(({ participantId }) => participantId);
+        const winningSide = matchUp.sides.find((side) => side?.sideNumber === matchUp.winningSide);
 
         if (winningSide || relevantSide) {
           const { participantId } = winningSide || relevantSide || {};
@@ -148,10 +132,7 @@ export function qualifierProgression({
         positionAssignments
           ?.map((assignment) => {
             const participantId = assignment.participantId;
-            const results = findExtension({
-              element: assignment,
-              name: TALLY,
-            }).extension?.value;
+            const results = findExtension({ element: assignment, name: TALLY }).extension?.value;
 
             return results ? { participantId, groupOrder: results?.groupOrder } : {};
           })
@@ -172,10 +153,10 @@ export function qualifierProgression({
     if (randomParticipantId) {
       const positionAssignmentResult: ResultType = qualifierDrawPositionAssignment({
         qualifyingParticipantId: randomParticipantId,
+        structureId: mainStructure.structureId,
+        drawPosition: position.drawPosition,
         tournamentRecord,
         drawDefinition,
-        drawPosition: position.drawPosition,
-        structureId: mainStructure.structureId,
       });
 
       positionAssignmentResult?.success &&
@@ -184,9 +165,6 @@ export function qualifierProgression({
   });
 
   return decorateResult({
-    result: definedAttributes({
-      ...SUCCESS,
-      assignedParticipants,
-    }),
+    result: definedAttributes({ ...SUCCESS, assignedParticipants }),
   });
 }
