@@ -318,6 +318,23 @@ engine.qualifierDrawPositionAssignment({
 
 ---
 
+## qualifiersProgression
+
+Randomly replaces existing qualifier drawPosition assignments in the MAIN draw with qualified participants from the QUALIFYING draw.
+
+Fills as many qualifier drawPositions as possible with qualified participants, e.g. if there are 4 qualifier drawPositions and 2 currently qualified participants, only 2 will be assigned.
+
+```js
+engine.qualifierProgression({
+  drawId,
+  eventId,
+  targetRoundNumber, // optional - defaults to 1
+  tournamentId,
+});
+```
+
+---
+
 ## removeDrawDefinitionExtension
 
 ```js
