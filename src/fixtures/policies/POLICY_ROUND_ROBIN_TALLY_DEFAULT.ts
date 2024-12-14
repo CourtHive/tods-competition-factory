@@ -9,9 +9,11 @@ export const POLICY_ROUND_ROBIN_TALLY_DEFAULT = {
     headToHead: { disabled: false },
     tallyDirectives: [
       // these are the default values if no tallyDirectives provided; edit to suit
+      // groupTotals scopes the tally calculations to all sets or games or matches played by all participants
       // idsFilter scopes the tally calculations to only tied participants
       // with { idsFilter: false } the ratio is calculated from all group matchUps
       // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
+      // when { maxParticipants: 2 } is defined, the rule only applies when # of participants is <= maxParticipants
       // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
       { attribute: 'matchUpsPct', idsFilter: false, groupTotals: false },
       { attribute: 'allDefaults', reversed: true, idsFilter: false }, // reversed: true => reverses default which is greatest to least

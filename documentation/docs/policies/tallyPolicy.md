@@ -9,16 +9,19 @@ See [engine.attachPolicies](/docs/governors/policy-governor#attachpolicies).
 ```js
 const roundRobinTally = {
   groupOrderKey: 'matchUpsWon', // possible to group by tieMatchUpsWon, tieSinglesWon, tieDoublesWon, matchUpsWon, pointsWon, gamesWon, setsWon, gamesPct, setsPct, pointsPct, matchUpsPct
+  groupTotalGamesPlayed: false, // optional - when true will calculate % of games won based on total group games played rather than participant games played
   groupTotalSetsPlayed: false, // optional - when true will calculate % of sets won based on total group sets played rather than participant sets played
   headToHead: { disabled: false },
   tallyDirectives: [
     // these are the default values if no tallyDirectives provided; edit to suit
+    // groupTotals scopes the tally calculations to all sets or games or matches played by all participants
     // idsFilter scopes the tally calculations to only tied participants
     // with { idsFilter: false } the ratio is calculated from all group matchUps
     // with { idsFilter: true } the ratio is calculated from matchUps including tied participants
     // when { maxParticipants: 2 } is defined, the rule only applies when # of participants is <= maxParticipants
     // any attribute/idsFilter combination can be selectively disabled for Head to Head calculations
     { attribute: 'matchUpsPct', idsFilter: false, disbleHeadToHead: false },
+    { attribute: 'allDefaults', reversed: true, idsFilter: false }, // reversed: true => reverses default which is greatest to least
     {
       attribute: 'tieMatchUpsPct',
       idsFilter: false,
