@@ -1,6 +1,7 @@
 import tournamentEngine from '../engines/syncEngine';
 import { expect, it } from 'vitest';
 
+// Test data
 import tournamentRecord from './publishState.tods.json';
 
 it('can get competitionScheduleMatchUps', () => {
@@ -9,8 +10,6 @@ it('can get competitionScheduleMatchUps', () => {
   let result = tournamentEngine.competitionScheduleMatchUps();
   expect(result.dateMatchUps.length).toEqual(29);
 
-  result = tournamentEngine.competitionScheduleMatchUps({
-    usePublishState: true,
-  });
+  result = tournamentEngine.competitionScheduleMatchUps({ usePublishState: true });
   expect(result.dateMatchUps.length).toEqual(0);
 });
