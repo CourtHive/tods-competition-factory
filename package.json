@@ -133,7 +133,7 @@
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "15.3.0",
     "@rollup/plugin-terser": "0.4.4",
-    "@rollup/plugin-typescript": "12.1.1",
+    "@rollup/plugin-typescript": "12.1.2",
     "@swc/cli": "0.5.2",
     "@swc/core": "1.10.1",
     "@types/express": "5.0.0",
