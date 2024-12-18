@@ -77,8 +77,8 @@ export function getValidQualifiersAction({
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: {
           roundNumbers: [qualifyingRoundNumber],
-          hasWinningSide: true,
           isCollectionMatchUp: false,
+          hasWinningSide: true,
         },
         afterRecoveryTimes: false,
         tournamentParticipants,

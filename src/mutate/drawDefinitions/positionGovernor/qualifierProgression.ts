@@ -94,8 +94,8 @@ export function qualifierProgression({
       const { matchUps } = getAllStructureMatchUps({
         matchUpFilters: {
           ...(qualifyingRoundNumber && { roundNumbers: [qualifyingRoundNumber] }),
-          hasWinningSide: true,
           isCollectionMatchUp: false,
+          hasWinningSide: true,
         },
         afterRecoveryTimes: false,
         inContext: true,
