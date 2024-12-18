@@ -78,6 +78,7 @@ export function getValidQualifiersAction({
         matchUpFilters: {
           roundNumbers: [qualifyingRoundNumber],
           hasWinningSide: true,
+          isCollectionMatchUp: false,
         },
         afterRecoveryTimes: false,
         tournamentParticipants,

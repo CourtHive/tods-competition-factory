@@ -95,6 +95,7 @@ export function qualifierProgression({
         matchUpFilters: {
           ...(qualifyingRoundNumber && { roundNumbers: [qualifyingRoundNumber] }),
           hasWinningSide: true,
+          isCollectionMatchUp: false,
         },
         afterRecoveryTimes: false,
         inContext: true,
