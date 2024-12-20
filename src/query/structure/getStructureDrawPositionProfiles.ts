@@ -26,9 +26,9 @@ export function getStructureDrawPositionProfiles(params: GetStructureDrawPositio
   const { drawDefinition, findContainer, structureId, event } = params;
   let structure = params.structure;
 
-  const matchUpFilters = { isCollectionMatchUp: false };
   const { containedStructures } = getContainedStructures({ drawDefinition });
   const containedStructureIds = structureId ? containedStructures[structureId] || [] : [];
+  const matchUpFilters = { isCollectionMatchUp: false };
 
   if (!structure) {
     const result = findStructure({ drawDefinition, structureId });
