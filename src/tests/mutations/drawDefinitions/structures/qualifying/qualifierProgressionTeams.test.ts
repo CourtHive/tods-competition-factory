@@ -2,15 +2,15 @@ import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
+// Constants
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { INDIVIDUAL, TEAM } from '@Constants/participantConstants';
-
+import { COMPLETED } from '@Constants/matchUpStatusConstants';
+import { DOUBLES } from '@Constants/matchUpTypes';
 import {
   MISSING_QUALIFIED_PARTICIPANTS,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '@Constants/errorConditionConstants';
-import { DOUBLES } from '@Constants/matchUpTypes';
-import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('can assign all available qualified participants to the main structure qualifying draw positions for a team event', () => {
   const {
@@ -19,10 +19,9 @@ it('can assign all available qualified participants to the main structure qualif
   } = mocksEngine.generateTournamentRecord({
     participantsProfile: { participantType: TEAM, participantsCount: 30 },
     eventProfiles: [{ eventName: 'test', eventType: TEAM }],
+    setState: true,
   });
   expect(tournamentRecord.participants.length).toEqual(270);
-
-  tournamentEngine.setState(tournamentRecord);
 
   const { participants: teamParticipants } = tournamentEngine.getParticipants({
     participantFilters: { participantTypes: [TEAM] },
@@ -58,16 +57,7 @@ it('can assign all available qualified participants to the main structure qualif
   expect(result.success).toEqual(true);
 
   const { drawDefinition: qualifyingDrawDefinition } = tournamentEngine.generateDrawDefinition({
-    qualifyingProfiles: [
-      {
-        structureProfiles: [
-          {
-            qualifyingPositions: 2,
-            drawSize: 4,
-          },
-        ],
-      },
-    ],
+    qualifyingProfiles: [{ structureProfiles: [{ qualifyingPositions: 2, drawSize: 4 }] }],
     qualifyingOnly: true,
     eventId,
   });
