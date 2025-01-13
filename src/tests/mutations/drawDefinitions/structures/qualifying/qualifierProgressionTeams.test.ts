@@ -83,6 +83,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomizedQualifierPositions: [],
   });
   expect(noMainProgressionResult.error).toEqual(NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS);
 
@@ -101,11 +102,17 @@ it('can assign all available qualified participants to the main structure qualif
   expect(populatedMainStructure.matchUps.length).toEqual(15);
   expect(newQualifyingStructure.matchUps.length).toEqual(2);
 
+  const randMainDrawQualifierPositions = populatedMainStructure.positionAssignments
+    .filter((p) => p.qualifier && !p.participantId)
+    .map((p) => p.drawPosition)
+    .sort((p) => Math.random() - 0.5);
+
   const addMainDrawDefinitionResult = tournamentEngine.addDrawDefinition({
     activeTournamentId: tournamentRecord.tournamentId,
     drawDefinition,
     allowReplacement: true,
     eventId,
+    randomizedQualifierPositions: randMainDrawQualifierPositions,
   });
 
   expect(addMainDrawDefinitionResult.success).toEqual(true);
@@ -116,6 +123,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomizedQualifierPositions: randMainDrawQualifierPositions,
   });
 
   expect(noQualifiersProgressionResult.error).toEqual(MISSING_QUALIFIED_PARTICIPANTS);
@@ -163,6 +171,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomizedQualifierPositions: randMainDrawQualifierPositions
   });
 
   // assert all assigned participants are team participants
