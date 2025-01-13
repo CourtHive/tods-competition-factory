@@ -110,7 +110,7 @@
   },
   "devDependencies": {
     "@babel/core": "7.26.0",
-    "@babel/plugin-transform-nullish-coalescing-operator": "7.25.9",
+    "@babel/plugin-transform-nullish-coalescing-operator": "7.26.6",
     "@babel/plugin-transform-optional-chaining": "7.25.9",
     "@babel/preset-env": "7.26.0",
     "@babel/preset-typescript": "7.26.0",
