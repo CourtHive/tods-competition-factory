@@ -330,6 +330,7 @@ engine.qualifierProgression({
   eventId,
   targetRoundNumber, // optional - defaults to 1
   tournamentId,
+  randomList // randomized array of qualifier draw positions - use getRandomQualifierList() method to generate
 });
 ```
 

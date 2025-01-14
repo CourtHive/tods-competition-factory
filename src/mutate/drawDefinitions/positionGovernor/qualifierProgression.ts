@@ -19,7 +19,6 @@ import { BYE } from '@Constants/matchUpStatusConstants';
 import { TALLY } from '@Constants/extensionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
-  DRAW_POSITIONS_NOT_FOUND,
   MISSING_MAIN_STRUCTURE,
   MISSING_QUALIFIED_PARTICIPANTS,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
@@ -30,7 +29,7 @@ interface QualifierProgressionArgs {
   tournamentRecord: Tournament;
   targetRoundNumber?: number;
   event: Event;
-  randomizedQualifierPositions: number[];
+  randomList: number[];
 }
 
 export function qualifierProgression({
@@ -38,7 +37,7 @@ export function qualifierProgression({
   tournamentRecord,
   drawDefinition,
   event,
-  randomizedQualifierPositions,
+  randomList,
 }: QualifierProgressionArgs): ResultType {
   const paramsCheck = checkRequiredParameters({ drawDefinition, event, tournamentRecord }, [
     { [DRAW_DEFINITION]: true, [EVENT]: true, [TOURNAMENT_RECORD]: true },
@@ -156,15 +155,7 @@ export function qualifierProgression({
 
   if (!qualifyingParticipantIds.length) return decorateResult({ result: { error: MISSING_QUALIFIED_PARTICIPANTS } });
 
-  const validDrawPositions =
-    qualifierPositions
-      .map((p) => p?.drawPosition)
-      .sort((a, b) => a - b)
-      .join(',') === [...randomizedQualifierPositions].sort((a, b) => a - b).join(',');
-
-  if (!validDrawPositions) return decorateResult({ result: { error: DRAW_POSITIONS_NOT_FOUND } });
-
-  randomizedQualifierPositions.forEach((position, index) => {
+  randomList.forEach((position, index) => {
     const participantToAssign = qualifyingParticipantIds[index];
     if (participantToAssign) {
       const positionAssignmentResult: ResultType = qualifierDrawPositionAssignment({
