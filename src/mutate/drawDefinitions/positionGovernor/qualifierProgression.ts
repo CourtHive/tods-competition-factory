@@ -23,13 +23,15 @@ import {
   MISSING_QUALIFIED_PARTICIPANTS,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '@Constants/errorConditionConstants';
+import { generateRange } from '@Tools/arrays';
+import { mapNumbersToIndexes } from '@Tools/mapNumbersToIndexes';
 
 interface QualifierProgressionArgs {
   drawDefinition: DrawDefinition;
   tournamentRecord: Tournament;
   targetRoundNumber?: number;
   event: Event;
-  randomList: number[];
+  randomList?: number[];
 }
 
 export function qualifierProgression({
@@ -69,6 +71,12 @@ export function qualifierProgression({
 
   if (!qualifierPositions.length)
     return decorateResult({ result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } });
+
+  let qualifierPositionIndexes = generateRange(0, qualifierPositions.length);
+
+  if (randomList) {
+    qualifierPositionIndexes = mapNumbersToIndexes(qualifierPositionIndexes, randomList);
+  }
 
   const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
@@ -155,19 +163,20 @@ export function qualifierProgression({
 
   if (!qualifyingParticipantIds.length) return decorateResult({ result: { error: MISSING_QUALIFIED_PARTICIPANTS } });
 
-  randomList.forEach((position, index) => {
+  qualifierPositionIndexes.forEach((positionIndex, index) => {
     const participantToAssign = qualifyingParticipantIds[index];
+    const drawPosition = qualifierPositions[positionIndex].drawPosition;
     if (participantToAssign) {
       const positionAssignmentResult: ResultType = qualifierDrawPositionAssignment({
         qualifyingParticipantId: participantToAssign,
         structureId: mainStructure.structureId,
-        drawPosition: position,
+        drawPosition,
         tournamentRecord,
         drawDefinition,
       });
 
       positionAssignmentResult?.success &&
-        assignedParticipants.push({ participantId: participantToAssign, drawPosition: position });
+        assignedParticipants.push({ participantId: participantToAssign, drawPosition });
     }
   });
 

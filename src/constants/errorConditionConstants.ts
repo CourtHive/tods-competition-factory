@@ -82,6 +82,10 @@ export const DRAW_POSITION_NOT_FOUND = {
   message: 'drawPosition not found',
   code: 'ERR_NOT_FOUND_DRAW_POSITION',
 };
+export const DRAW_POSITIONS_NOT_FOUND = {
+  message: 'drawPositions not found',
+  code: 'ERR_NOT_FOUND_DRAW_POSITIONS',
+};
 export const UNRECOGNIZED_DRAW_TYPE = {
   message: 'Unrecognized drawType',
   code: 'ERR_UNRECOGNIZED_DRAW_TYPE',
@@ -815,6 +819,7 @@ export const errorConditionConstants = {
   DRAW_POSITION_ASSIGNED,
   DRAW_POSITION_NOT_CLEARED,
   DRAW_POSITION_NOT_FOUND,
+  DRAW_POSITIONS_NOT_FOUND,
   DRAW_SIZE_MISMATCH,
   DUPLICATE_ENTRY,
   DUPLICATE_VALUE,

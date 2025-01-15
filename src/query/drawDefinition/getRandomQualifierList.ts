@@ -5,6 +5,7 @@ import { MAIN } from '@Constants/drawDefinitionConstants';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { MISSING_MAIN_STRUCTURE } from '@Constants/errorConditionConstants';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { generateRange } from '@Tools/arrays';
 
 interface GetRandomQualifierListParams {
   drawDefinition: DrawDefinition;
@@ -27,5 +28,5 @@ export const getRandomQualifierList = ({ drawDefinition }: GetRandomQualifierLis
     qualifierPositions: { drawPosition: number; qualifier: boolean }[];
   } = structureAssignedDrawPositions({ structure: mainStructure });
 
-  return qualifierPositions.map((position) => position.drawPosition).sort(() => Math.random() - 0.5);
+  return generateRange(0, qualifierPositions.length).sort(() => Math.random() - 0.5);
 };
