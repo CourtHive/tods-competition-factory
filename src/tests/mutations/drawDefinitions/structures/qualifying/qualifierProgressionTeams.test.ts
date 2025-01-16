@@ -83,6 +83,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: [],
   });
   expect(noMainProgressionResult.error).toEqual(NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS);
 
@@ -101,11 +102,14 @@ it('can assign all available qualified participants to the main structure qualif
   expect(populatedMainStructure.matchUps.length).toEqual(15);
   expect(newQualifyingStructure.matchUps.length).toEqual(2);
 
+  const randQalifierList = tournamentEngine.getRandomQualifierList({ drawDefinition });
+
   const addMainDrawDefinitionResult = tournamentEngine.addDrawDefinition({
     activeTournamentId: tournamentRecord.tournamentId,
     drawDefinition,
     allowReplacement: true,
     eventId,
+    randomList: randQalifierList,
   });
 
   expect(addMainDrawDefinitionResult.success).toEqual(true);
@@ -116,6 +120,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: randQalifierList,
   });
 
   expect(noQualifiersProgressionResult.error).toEqual(MISSING_QUALIFIED_PARTICIPANTS);
@@ -163,6 +168,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: randQalifierList,
   });
 
   // assert all assigned participants are team participants

@@ -78,6 +78,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: [],
   });
   expect(noMainProgressionResult.error).toEqual(NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS);
 
@@ -105,12 +106,15 @@ it('can assign all available qualified participants to the main structure qualif
 
   expect(addMainDrawDefinitionResult.success).toEqual(true);
 
+  const randQalifierList = tournamentEngine.getRandomQualifierList({ drawDefinition });
+
   // assert no qualified participants are available
   const noQualifiersProgressionResult = tournamentEngine.qualifierProgression({
     drawId: drawDefinition.drawId,
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: randQalifierList,
   });
 
   expect(noQualifiersProgressionResult.error).toEqual(MISSING_QUALIFIED_PARTICIPANTS);
@@ -130,6 +134,7 @@ it('can assign all available qualified participants to the main structure qualif
     targetRoundNumber: 1,
     tournamentId: tournamentRecord.tournamentId,
     eventId: eventId,
+    randomList: randQalifierList,
   });
 
   expect(progressQualifiersResult.assignedParticipants.length).toEqual(4);
