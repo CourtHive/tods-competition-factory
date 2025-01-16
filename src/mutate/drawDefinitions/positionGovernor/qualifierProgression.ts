@@ -6,9 +6,11 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { mapNumbersToIndexes } from '@Tools/mapNumbersToIndexes';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { findExtension } from '@Acquire/findExtension';
 import { ResultType } from '@Types/factoryTypes';
+import { generateRange } from '@Tools/arrays';
 
 // Constants and Types
 import { DRAW_DEFINITION, EVENT, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
@@ -23,8 +25,6 @@ import {
   MISSING_QUALIFIED_PARTICIPANTS,
   NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS,
 } from '@Constants/errorConditionConstants';
-import { generateRange } from '@Tools/arrays';
-import { mapNumbersToIndexes } from '@Tools/mapNumbersToIndexes';
 
 interface QualifierProgressionArgs {
   drawDefinition: DrawDefinition;
