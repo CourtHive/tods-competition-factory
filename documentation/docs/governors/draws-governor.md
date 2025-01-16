@@ -330,6 +330,7 @@ engine.qualifierProgression({
   eventId,
   targetRoundNumber, // optional - defaults to 1
   tournamentId,
+  randomList // optional - array of integers to set assignment order, e.g. [2,3,1,0]. generate with getRandomQualifierList()
 });
 ```
 

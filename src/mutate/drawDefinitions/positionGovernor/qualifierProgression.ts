@@ -6,15 +6,16 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { mapNumbersToIndexes } from '@Tools/mapNumbersToIndexes';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { findExtension } from '@Acquire/findExtension';
 import { ResultType } from '@Types/factoryTypes';
-import { randomPop } from '@Tools/arrays';
+import { generateRange } from '@Tools/arrays';
 
 // Constants and Types
 import { DRAW_DEFINITION, EVENT, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { MAIN, POSITION, QUALIFYING, WINNER } from '@Constants/drawDefinitionConstants';
-import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { DrawDefinition, Event, PositionAssignment, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_POSITION_ACTIONS } from '@Constants/policyConstants';
 import { BYE } from '@Constants/matchUpStatusConstants';
 import { TALLY } from '@Constants/extensionConstants';
@@ -30,6 +31,7 @@ interface QualifierProgressionArgs {
   tournamentRecord: Tournament;
   targetRoundNumber?: number;
   event: Event;
+  randomList?: number[];
 }
 
 export function qualifierProgression({
@@ -37,6 +39,7 @@ export function qualifierProgression({
   tournamentRecord,
   drawDefinition,
   event,
+  randomList,
 }: QualifierProgressionArgs): ResultType {
   const paramsCheck = checkRequiredParameters({ drawDefinition, event, tournamentRecord }, [
     { [DRAW_DEFINITION]: true, [EVENT]: true, [TOURNAMENT_RECORD]: true },
@@ -58,10 +61,22 @@ export function qualifierProgression({
   const policy = appliedPolicies[POLICY_TYPE_POSITION_ACTIONS];
   const requireCompletedStructures = policy?.requireCompletedStructures;
 
-  const { qualifierPositions, positionAssignments } = structureAssignedDrawPositions({ structure: mainStructure });
+  const {
+    qualifierPositions,
+    positionAssignments,
+  }: {
+    qualifierPositions: { drawPosition: number; qualifier: boolean }[];
+    positionAssignments: PositionAssignment[];
+  } = structureAssignedDrawPositions({ structure: mainStructure });
 
   if (!qualifierPositions.length)
     return decorateResult({ result: { error: NO_DRAW_POSITIONS_AVAILABLE_FOR_QUALIFIERS } });
+
+  let qualifierPositionIndexes = generateRange(0, qualifierPositions.length);
+
+  if (randomList) {
+    qualifierPositionIndexes = mapNumbersToIndexes(qualifierPositionIndexes, randomList);
+  }
 
   const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
 
@@ -148,20 +163,20 @@ export function qualifierProgression({
 
   if (!qualifyingParticipantIds.length) return decorateResult({ result: { error: MISSING_QUALIFIED_PARTICIPANTS } });
 
-  qualifierPositions.forEach((position) => {
-    const randomParticipantId = randomPop(qualifyingParticipantIds);
-
-    if (randomParticipantId) {
+  qualifierPositionIndexes.forEach((positionIndex, index) => {
+    const participantToAssign = qualifyingParticipantIds[index];
+    const drawPosition = qualifierPositions[positionIndex].drawPosition;
+    if (participantToAssign) {
       const positionAssignmentResult: ResultType = qualifierDrawPositionAssignment({
-        qualifyingParticipantId: randomParticipantId,
+        qualifyingParticipantId: participantToAssign,
         structureId: mainStructure.structureId,
-        drawPosition: position.drawPosition,
+        drawPosition,
         tournamentRecord,
         drawDefinition,
       });
 
       positionAssignmentResult?.success &&
-        assignedParticipants.push({ participantId: randomParticipantId, drawPosition: position.drawPosition });
+        assignedParticipants.push({ participantId: participantToAssign, drawPosition });
     }
   });
 
