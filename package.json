@@ -123,7 +123,7 @@
     "@nestjs/common": "11.0.0",
     "@nestjs/config": "3.3.0",
     "@nestjs/core": "11.0.0",
-    "@nestjs/jwt": "10.2.0",
+    "@nestjs/jwt": "11.0.0",
     "@nestjs/platform-express": "11.0.0",
     "@nestjs/schematics": "10.2.3",
     "@nestjs/swagger": "8.1.1",

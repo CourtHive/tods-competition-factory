@@ -51,8 +51,8 @@ importers:
         specifier: 11.0.0
         version: 11.0.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/platform-express@11.0.0)(reflect-metadata@0.2.2)(rxjs@7.8.1)
       '@nestjs/jwt':
-        specifier: 10.2.0
-        version: 10.2.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))
+        specifier: 11.0.0
+        version: 11.0.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))
       '@nestjs/platform-express':
         specifier: 11.0.0
         version: 11.0.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.0)
@@ -1539,10 +1539,10 @@ packages:
       '@nestjs/websockets':
         optional: true
 
-  '@nestjs/jwt@10.2.0':
-    resolution: {integrity: sha512-x8cG90SURkEiLOehNaN2aRlotxT0KZESUliOPKKnjWiyJOcWurkF3w345WOX0P4MgFzUjGoZ1Sy0aZnxeihT0g==}
+  '@nestjs/jwt@11.0.0':
+    resolution: {integrity: sha512-v7YRsW3Xi8HNTsO+jeHSEEqelX37TVWgwt+BcxtkG/OfXJEOs6GZdbdza200d6KqId1pJQZ6UPj1F0M6E+mxaA==}
     peerDependencies:
-      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0
+      '@nestjs/common': ^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0
 
   '@nestjs/mapped-types@2.0.6':
     resolution: {integrity: sha512-84ze+CPfp1OWdpRi1/lOu59hOhTz38eVzJvRKrg9ykRFwDz+XleKfMsG0gUqNZYFa6v53XYzeD+xItt8uDW7NQ==}
@@ -2001,8 +2001,8 @@ packages:
   '@types/json5@0.0.29':
     resolution: {integrity: sha512-dRLjCWHYg4oaA77cxO64oO+7JwCwnIzkZPdrrC71jQmQtlhM556pwKo5bUzqvZndkVbeFLIIi+9TC40JNF5hNQ==}
 
-  '@types/jsonwebtoken@9.0.5':
-    resolution: {integrity: sha512-VRLSGzik+Unrup6BsouBeHsf4d1hOEgYWTm/7Nmw1sXoN1+tRly/Gy/po3yeahnP4jfnQWWAhQAqcNfH7ngOkA==}
+  '@types/jsonwebtoken@9.0.7':
+    resolution: {integrity: sha512-ugo316mmTYBl2g81zDFnZ7cfxlut3o+/EQdaP7J8QN2kY6lJ22hmQYCK5EHcJHbrW+dkCGSCPgbG8JtYj6qSrg==}
 
   '@types/methods@1.1.4':
     resolution: {integrity: sha512-ymXWVrDiCxTBE3+RIrrP533E70eA+9qu7zdWoHuOmGujkYtzf4HQF96b8nwHLqhuf4ykX61IGRIB38CC6/sImQ==}
@@ -7237,10 +7237,10 @@ snapshots:
     optionalDependencies:
       '@nestjs/platform-express': 11.0.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))(@nestjs/core@11.0.0)
 
-  '@nestjs/jwt@10.2.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))':
+  '@nestjs/jwt@11.0.0(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))':
     dependencies:
       '@nestjs/common': 11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1)
-      '@types/jsonwebtoken': 9.0.5
+      '@types/jsonwebtoken': 9.0.7
       jsonwebtoken: 9.0.2
 
   '@nestjs/mapped-types@2.0.6(@nestjs/common@11.0.0(reflect-metadata@0.2.2)(rxjs@7.8.1))(reflect-metadata@0.2.2)':
@@ -7644,7 +7644,7 @@ snapshots:
 
   '@types/json5@0.0.29': {}
 
-  '@types/jsonwebtoken@9.0.5':
+  '@types/jsonwebtoken@9.0.7':
     dependencies:
       '@types/node': 22.10.7
 
