@@ -80,4 +80,4 @@ it('can generate H2H reports with Competitors In Common', () => {
       participants,
     }).h2h;
   });
-});
+}, 0);
