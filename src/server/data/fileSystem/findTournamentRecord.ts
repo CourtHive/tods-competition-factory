@@ -7,7 +7,7 @@ export async function findTournamentRecord({ tournamentId }) {
 
   if ((await fs.existsSync(tournamentFile)) === true) {
     const record = await fs.readFileSync(tournamentFile, UTF8);
-    const tournamentRecord = JSON.parse(record);
+    const tournamentRecord = JSON.parse(record.trim() || '{}');
     return { tournamentRecord };
   } else {
     return { error: 'Tournament not found' };
