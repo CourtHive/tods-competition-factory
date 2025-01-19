@@ -22,6 +22,7 @@ const feedPolicy = {
   ],
   roundFeedProfiles: [TOP_DOWN, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP, BOTTOM_UP],
 };
+
 it('can generate FEED_IN_CHAMPIONSHIP to RSF', () => {
   const { links, drawDefinition, mainDrawMatchUps, consolationMatchUps, consolationStructure } = feedInChampionship({
     drawType: FEED_IN_CHAMPIONSHIP_TO_SF,
@@ -195,4 +196,5 @@ test.each(scenarios)(
     expect(isOdd(finishingRounds.reduce(simpleAddition))).toEqual(true);
     expect(isOdd(finishingRounds[0])).toEqual(true);
   },
+  0,
 );
