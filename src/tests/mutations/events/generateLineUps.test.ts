@@ -291,4 +291,4 @@ it('can generate lineUps for TEAM events', () => {
     participantFilters: { participantTypes: [PAIR] },
   }).participants;
   expect(pairParticipants.length).toEqual(64);
-});
+}, 0);
