@@ -205,6 +205,7 @@ function processAttribute({
   disableHeadToHead,
   participantIds,
   matchUpFormat,
+  groupTotals,
   tallyPolicy,
   attribute,
   idsFilter,
@@ -213,6 +214,7 @@ function processAttribute({
 }) {
   const { participantResults } = getParticipantResults({
     participantIds: idsFilter && participantIds,
+    groupingTotal: groupTotals && attribute,
     matchUpFormat,
     tallyPolicy,
     matchUps,
@@ -224,7 +226,7 @@ function processAttribute({
     attribute,
   });
 
-  const report: any[] = [{ attribute, reversed, groups, idsFilter }];
+  const report: any[] = [{ attribute, reversed, groups, idsFilter, groupTotals }];
   let order;
 
   if (Object.keys(groups).length > 1 && participantIds.length) {
@@ -290,11 +292,12 @@ function groupSubSort({ participantResults, disableHeadToHead, participantIds, m
 
   if (excludedDirectives.length) report.push({ excludedDirectives, participantIds });
 
-  filteredDirectives.every(({ attribute, reversed, idsFilter, disableHeadToHead }) => {
+  filteredDirectives.every(({ attribute, reversed, idsFilter, groupTotals, disableHeadToHead }) => {
     result = processAttribute({
       disableHeadToHead,
       participantIds,
       matchUpFormat,
+      groupTotals,
       tallyPolicy,
       attribute,
       idsFilter,

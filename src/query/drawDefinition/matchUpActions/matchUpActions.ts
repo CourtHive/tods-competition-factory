@@ -170,7 +170,7 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
   if (!structureId) return { validActions };
 
   const isAdHocMatchUp = isAdHoc({ structure });
-  const isCollectionMatchUp = matchUp.collectionId;
+  const isCollectionMatchUp = Boolean(matchUp.collectionId);
 
   if (isAdHocMatchUp && !isCollectionMatchUp) {
     const adHocValidActions = adHocMatchUpActions({

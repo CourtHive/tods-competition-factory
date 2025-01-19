@@ -73,8 +73,8 @@ export function getEventData(params: GetEventDataArgs): {
   const { tournamentId, endDate } = tournamentRecord;
 
   const publishStatus = getEventPublishStatus({ event, status });
-  const publishState = getPublishState({ event }).publishState ?? {};
-  const eventPublished = !!publishState?.status?.published;
+  const eventPublishState = getPublishState({ event }).publishState ?? {};
+  const eventPublished = !!eventPublishState?.status?.published;
 
   const { participants: tournamentParticipants } = getParticipants({
     withGroupings: true,
@@ -138,6 +138,7 @@ export function getEventData(params: GetEventDataArgs): {
                 refreshResults: params.refreshResults,
                 includePositionAssignments,
                 tournamentParticipants,
+                eventPublishState,
                 noDeepCopy: true,
                 policyDefinitions,
                 tournamentRecord,
@@ -220,8 +221,8 @@ export function getEventData(params: GetEventDataArgs): {
     drawsData,
   };
 
-  eventData.eventInfo.publishState = publishState;
-  eventData.eventInfo.published = publishState?.status?.published;
+  eventData.eventInfo.publishState = eventPublishState;
+  eventData.eventInfo.published = eventPublishState?.status?.published;
 
   return { ...SUCCESS, eventData, participants: tournamentParticipants };
 }

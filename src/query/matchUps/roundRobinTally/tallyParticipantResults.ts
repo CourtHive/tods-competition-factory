@@ -89,8 +89,8 @@ export function tallyParticipantResults({
     participantResults,
     participantsCount,
     matchUpFormat,
-    tallyPolicy,
     subOrderMap,
+    tallyPolicy,
   });
 
   if (pressureRating) addPressureOrder({ participantResults });

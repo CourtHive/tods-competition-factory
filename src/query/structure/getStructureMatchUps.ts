@@ -150,7 +150,7 @@ export function getStructureMatchUps({
 
       if (matchUp.matchUpType === TEAM) includesTeamMatchUps = true;
 
-      const isCollectionMatchUp = matchUp.collectionId;
+      const isCollectionMatchUp = Boolean(matchUp.collectionId);
       const collectionSidesAssigned = isCollectionMatchUp && matchUp.sides?.every((side) => side.participantId);
 
       const drawPositionsFilled = !isCollectionMatchUp && matchUp.drawPositions?.filter(Boolean).length === 2;

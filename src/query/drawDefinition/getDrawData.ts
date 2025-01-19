@@ -35,7 +35,7 @@ import {
   WALKOVER,
 } from '@Constants/matchUpStatusConstants';
 
-// NOTE: if { usePublishState: true } then { eventPublished } or { event } must be provided
+// NOTE: if { usePublishState: true } then { eventPublishedState } or { event } must be provided
 export function getDrawData(params): {
   structures?: any[];
   success?: boolean;
@@ -73,7 +73,7 @@ export function getDrawData(params): {
   drawInfo.display = findExtension({ element: drawDefinition, name: DISPLAY }).extension?.value;
 
   const qualificationStageSeedAssignments = {};
-  let mainStageSeedAssignments;
+  let mainStageSeedAssignments, report;
 
   const { allStructuresLinked, sourceStructureIds, hasDrawFeedProfile, structureGroups } = getStructureGroups({
     drawDefinition,
@@ -81,8 +81,11 @@ export function getDrawData(params): {
 
   if (!allStructuresLinked) return { error: UNLINKED_STRUCTURES };
 
+  const eventPublishState = params?.eventPublishState ?? getPublishState({ event }).publishState;
   const publishStatus = params?.publishStatus ?? getEventPublishStatus({ event, status });
-  const eventPublished = params.eventPublished ?? !!getPublishState({ event }).publishState?.status?.published;
+  const drawDetails = eventPublishState?.status?.drawDetails?.[drawDefinition.drawId];
+  const eventPublished = !!eventPublishState?.status?.published;
+  const structureDetails = drawDetails?.structureDetails;
 
   let drawActive = false;
   let participantPlacements = false; // if any positionAssignments include a participantId
@@ -171,6 +174,7 @@ export function getDrawData(params): {
             pressureRating,
             subOrderMap,
           });
+          report = result?.report;
 
           participantResults = positionAssignments?.filter(xa(PARTICIPANT_ID)).map((assignment) => {
             const { drawPosition, participantId } = assignment;
@@ -229,6 +233,7 @@ export function getDrawData(params): {
           roundMatchUps,
           roundProfile,
           structureId,
+          report,
         };
       });
 
@@ -241,7 +246,11 @@ export function getDrawData(params): {
     return structures;
   });
 
-  const structures = groupedStructures.flat();
+  // to support legacy publish status which did not support discrete structure publishing...
+  // ...default to true when no structureDetails are found
+  const structures = groupedStructures
+    .flat()
+    .filter((structure) => !usePublishState || structureDetails?.[structure?.structureId]?.published || true);
 
   drawInfo.drawActive = drawActive;
   drawInfo.participantPlacements = participantPlacements;

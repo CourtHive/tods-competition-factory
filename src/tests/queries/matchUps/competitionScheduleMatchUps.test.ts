@@ -407,14 +407,25 @@ test.each([tournamentEngine])(
     result = tournamentEngine.publishOrderOfPlay();
     expect(result.success).toEqual(true);
 
-    const { eventData } = tournamentEngine.getEventData({ eventId: event.eventId });
+    let eventData = tournamentEngine.getEventData({ eventId: event.eventId, usePublishState: false }).eventData;
     let publishState = eventData.eventInfo.publishState;
-    const drawDetails = publishState.status.drawDetails[drawDefinition.drawId];
-    const structureDetails = drawDetails.structureDetails;
+    let drawDetails = publishState.status.drawDetails[drawDefinition.drawId];
+    let structureDetails = drawDetails.structureDetails;
     expect(eventData.eventInfo.published).toEqual(true);
     expect(drawDetails.publishingDetail.published).toEqual(true);
     expect(structureDetails[qualifyingStructureId].published).toEqual(false);
     expect(structureDetails[mainStructureId].published).toEqual(true);
+
+    // since usePublishState is false, all structures are returned
+    expect(eventData.drawsData[0].structures.length).toEqual(2);
+
+    eventData = tournamentEngine.getEventData({ eventId: event.eventId, usePublishState: true }).eventData;
+    publishState = eventData.eventInfo.publishState;
+    drawDetails = publishState.status.drawDetails[drawDefinition.drawId];
+    structureDetails = drawDetails.structureDetails;
+
+    // since usePublishState is false, only published structures are returned
+    expect(eventData.drawsData[0].structures.length).toEqual(1);
 
     result = tournamentEngine.competitionScheduleMatchUps({
       matchUpFilters: { scheduledDate: startDate },
