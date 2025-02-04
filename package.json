@@ -185,7 +185,7 @@
     "variable-diff": "2.0.2",
     "vite": "6.0.11",
     "vite-tsconfig-paths": "5.1.4",
-    "vitest": "3.0.4"
+    "vitest": "3.0.5"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
