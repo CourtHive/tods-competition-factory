@@ -3,7 +3,7 @@ export function credits(): string {
     This project would not have been possible without the generous input and patience
     of tournament organizers and directors who worked with early versions of CourtHive/TMX.
 
-    Thanks to Pavel, Ivan, Mladen, Zdenko, Antonia, Jakov, Kreso, Barry, Jeff, Bobby... to name just a few. 
+    Thanks to Miro, Pavel, Ivan, Mladen, Zdenko, Antonia, Jakov, Kreso, Barry, Jeff, Bobby... to name just a few. 
 
     The project would not have even begun without the support of Miro, or the introduction by Sretchko.
     The project would not have succeeded without the enthusiasm of Randy and Bruce.
