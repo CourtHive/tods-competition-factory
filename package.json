@@ -109,7 +109,7 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.26.9",
+    "@babel/core": "7.26.10",
     "@babel/plugin-transform-nullish-coalescing-operator": "7.26.6",
     "@babel/plugin-transform-optional-chaining": "7.25.9",
     "@babel/preset-env": "7.26.9",
@@ -129,7 +129,7 @@
     "@nestjs/swagger": "11.0.6",
     "@nestjs/testing": "11.0.10",
     "@rollup/plugin-babel": "6.0.4",
-    "@rollup/plugin-commonjs": "28.0.2",
+    "@rollup/plugin-commonjs": "28.0.3",
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "16.0.0",
     "@rollup/plugin-terser": "0.4.4",
