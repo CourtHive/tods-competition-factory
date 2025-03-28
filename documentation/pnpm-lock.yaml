@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  axios: 0.29.0
+  axios: 0.30.0
 
 importers:
 
@@ -2567,8 +2567,8 @@ packages:
     resolution: {integrity: sha512-wvUjBtSGN7+7SjNpq/9M2Tg350UZD3q62IFZLbRAR1bSMlCo1ZaeW+BJ+D090e4hIIZLBcTDWe4Mh4jvUDajzQ==}
     engines: {node: '>= 0.4'}
 
-  axios@0.29.0:
-    resolution: {integrity: sha512-Kjsq1xisgO5DjjNQwZFsy0gpcU1P2j36dZeQDXVhpIU26GVgkDUnROaHLSuluhMqtDE7aKA2hbKXG5yu5DN8Tg==}
+  axios@0.30.0:
+    resolution: {integrity: sha512-Z4F3LjCgfjZz8BMYalWdMgAQUnEtKDmpwNHjh/C8pQZWde32TF64cqnSeyL3xD/aTIASRU30RHTNzRiV/NpGMg==}
 
   b4a@1.6.6:
     resolution: {integrity: sha512-5Tk1HLk6b6ctmjIkAcU/Ujv/1WqiDl0F0JdRCR80VsOcUlHcu7pWeWRlOqQLHfDEsVx9YH/aif5AG4ehoCtTmg==}
@@ -10763,7 +10763,7 @@ snapshots:
     dependencies:
       possible-typed-array-names: 1.0.0
 
-  axios@0.29.0:
+  axios@0.30.0:
     dependencies:
       follow-redirects: 1.15.6
       form-data: 4.0.0
@@ -15834,7 +15834,7 @@ snapshots:
 
   wait-on@6.0.1:
     dependencies:
-      axios: 0.29.0
+      axios: 0.30.0
       joi: 17.10.2
       lodash: 4.17.21
       minimist: 1.2.8
