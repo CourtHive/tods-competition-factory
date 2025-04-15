@@ -138,8 +138,8 @@ importers:
         specifier: 8.57.1
         version: 8.57.1
       eslint-config-prettier:
-        specifier: 10.1.1
-        version: 10.1.1(eslint@8.57.1)
+        specifier: 10.1.2
+        version: 10.1.2(eslint@8.57.1)
       eslint-import-resolver-typescript:
         specifier: 4.3.2
         version: 4.3.2(eslint-plugin-import@2.31.0)(eslint@8.57.1)
@@ -154,7 +154,7 @@ importers:
         version: 2.31.0(@typescript-eslint/parser@8.30.1(eslint@8.57.1)(typescript@5.8.3))(eslint-import-resolver-typescript@4.3.2)(eslint@8.57.1)
       eslint-plugin-prettier:
         specifier: 5.2.6
-        version: 5.2.6(@types/eslint@8.56.10)(eslint-config-prettier@10.1.1(eslint@8.57.1))(eslint@8.57.1)(prettier@3.5.3)
+        version: 5.2.6(@types/eslint@8.56.10)(eslint-config-prettier@10.1.2(eslint@8.57.1))(eslint@8.57.1)(prettier@3.5.3)
       eslint-plugin-sonarjs:
         specifier: 3.0.2
         version: 3.0.2(eslint@8.57.1)
@@ -3228,8 +3228,8 @@ packages:
     resolution: {integrity: sha512-TtpcNJ3XAzx3Gq8sWRzJaVajRs0uVxA2YAkdb1jm2YkPz4G6egUFAyA3n5vtEIZefPk5Wa4UXbKuS5fKkJWdgA==}
     engines: {node: '>=10'}
 
-  eslint-config-prettier@10.1.1:
-    resolution: {integrity: sha512-4EQQr6wXwS+ZJSzaR5ZCrYgLxqvUjdXctaEtBqHcbkW944B1NQyO4qpdHQbXBONfwxXdkAY81HH4+LUfrg+zPw==}
+  eslint-config-prettier@10.1.2:
+    resolution: {integrity: sha512-Epgp/EofAUeEpIdZkW60MHKvPyru1ruQJxPL+WIycnaPApuseK0Zpkrh/FwL9oIpQvIhJwV7ptOy0DWUjTlCiA==}
     hasBin: true
     peerDependencies:
       eslint: '>=7.0.0'
@@ -9172,7 +9172,7 @@ snapshots:
 
   escape-string-regexp@4.0.0: {}
 
-  eslint-config-prettier@10.1.1(eslint@8.57.1):
+  eslint-config-prettier@10.1.2(eslint@8.57.1):
     dependencies:
       eslint: 8.57.1
 
@@ -9250,7 +9250,7 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-plugin-prettier@5.2.6(@types/eslint@8.56.10)(eslint-config-prettier@10.1.1(eslint@8.57.1))(eslint@8.57.1)(prettier@3.5.3):
+  eslint-plugin-prettier@5.2.6(@types/eslint@8.56.10)(eslint-config-prettier@10.1.2(eslint@8.57.1))(eslint@8.57.1)(prettier@3.5.3):
     dependencies:
       eslint: 8.57.1
       prettier: 3.5.3
@@ -9258,7 +9258,7 @@ snapshots:
       synckit: 0.11.1
     optionalDependencies:
       '@types/eslint': 8.56.10
-      eslint-config-prettier: 10.1.1(eslint@8.57.1)
+      eslint-config-prettier: 10.1.2(eslint@8.57.1)
 
   eslint-plugin-sonarjs@3.0.2(eslint@8.57.1):
     dependencies:
