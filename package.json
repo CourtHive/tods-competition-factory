@@ -120,7 +120,7 @@
     "@nestjs/class-transformer": "0.4.0",
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/cli": "11.0.6",
-    "@nestjs/common": "11.0.14",
+    "@nestjs/common": "11.0.16",
     "@nestjs/config": "4.0.2",
     "@nestjs/core": "11.0.14",
     "@nestjs/jwt": "11.0.0",
