@@ -40,7 +40,7 @@ importers:
         version: 0.13.4
       '@nestjs/cli':
         specifier: 11.0.6
-        version: 11.0.6(@swc/cli@0.7.2(@swc/core@1.11.21)(chokidar@4.0.3))(@swc/core@1.11.21)(@types/node@22.14.1)(esbuild@0.25.2)
+        version: 11.0.6(@swc/cli@0.7.3(@swc/core@1.11.21)(chokidar@4.0.3))(@swc/core@1.11.21)(@types/node@22.14.1)(esbuild@0.25.2)
       '@nestjs/common':
         specifier: 11.0.17
         version: 11.0.17(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -84,8 +84,8 @@ importers:
         specifier: 12.1.2
         version: 12.1.2(rollup@4.40.0)(tslib@2.8.1)(typescript@5.8.3)
       '@swc/cli':
-        specifier: 0.7.2
-        version: 0.7.2(@swc/core@1.11.21)(chokidar@4.0.3)
+        specifier: 0.7.3
+        version: 0.7.3(@swc/core@1.11.21)(chokidar@4.0.3)
       '@swc/core':
         specifier: 1.11.21
         version: 1.11.21
@@ -1894,8 +1894,8 @@ packages:
   '@sinonjs/fake-timers@10.3.0':
     resolution: {integrity: sha512-V4BG07kuYSUkTCSBHG8G8TNhM+F19jXFWnQtzj+we8DrkpSBCee9Z3Ms8yiGer/dlmhe35/Xdgyo3/0rQKg7YA==}
 
-  '@swc/cli@0.7.2':
-    resolution: {integrity: sha512-B73b2Orrd0tauaX3Jct9MxkAI79U3OMHzRB++x2wfyq+JPjgC6foJK6zyY2JI0vsTlaTbGpx9+hsowTQ8RtQFA==}
+  '@swc/cli@0.7.3':
+    resolution: {integrity: sha512-rnVXNnlURjdOuPaBIwZ3TmBA44BF/eP0j154LanlgPEYfau74ige7cpKlKkZr1IBqMOG99lAnYNxQipDWA3hdg==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
@@ -7384,7 +7384,7 @@ snapshots:
       libphonenumber-js: 1.11.12
       validator: 13.12.0
 
-  '@nestjs/cli@11.0.6(@swc/cli@0.7.2(@swc/core@1.11.21)(chokidar@4.0.3))(@swc/core@1.11.21)(@types/node@22.14.1)(esbuild@0.25.2)':
+  '@nestjs/cli@11.0.6(@swc/cli@0.7.3(@swc/core@1.11.21)(chokidar@4.0.3))(@swc/core@1.11.21)(@types/node@22.14.1)(esbuild@0.25.2)':
     dependencies:
       '@angular-devkit/core': 19.2.6(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.6(chokidar@4.0.3)
@@ -7406,7 +7406,7 @@ snapshots:
       webpack: 5.98.0(@swc/core@1.11.21)(esbuild@0.25.2)
       webpack-node-externals: 3.0.0
     optionalDependencies:
-      '@swc/cli': 0.7.2(@swc/core@1.11.21)(chokidar@4.0.3)
+      '@swc/cli': 0.7.3(@swc/core@1.11.21)(chokidar@4.0.3)
       '@swc/core': 1.11.21
     transitivePeerDependencies:
       - '@types/node'
@@ -7678,7 +7678,7 @@ snapshots:
     dependencies:
       '@sinonjs/commons': 3.0.1
 
-  '@swc/cli@0.7.2(@swc/core@1.11.21)(chokidar@4.0.3)':
+  '@swc/cli@0.7.3(@swc/core@1.11.21)(chokidar@4.0.3)':
     dependencies:
       '@swc/core': 1.11.21
       '@swc/counter': 0.1.3
