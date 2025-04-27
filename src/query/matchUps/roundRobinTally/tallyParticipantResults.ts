@@ -72,7 +72,7 @@ export function tallyParticipantResults({
   const tallyPolicy = policyDefinitions?.[POLICY_TYPE_ROUND_ROBIN_TALLY];
 
   const consideredMatchUps = matchUps.filter(
-    (matchUp) => checkMatchUpIsComplete({ matchUp }) || matchUp.matchUpType === TEAM,
+    (matchUp) => checkMatchUpIsComplete({ matchUp }) ?? matchUp.matchUpType === TEAM,
   );
   const { participantResults } = getParticipantResults({
     matchUps: consideredMatchUps,

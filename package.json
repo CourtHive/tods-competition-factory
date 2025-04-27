@@ -204,7 +204,8 @@
     "ignoredBuiltDependencies": [
       "@dep-tree/cli",
       "@nestjs/core",
-      "esbuild"
+      "esbuild",
+      "unrs-resolver"
     ]
   }
 }

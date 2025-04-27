@@ -1204,6 +1204,7 @@ const {
     drawDeletionsCount,
   },
 } = engine.getStructureReports({
+  firstStageSequenceOnly, // boolean - defaults to true - only return first stageSequence
   firstFlightOnly, // boolean - defaults to true - only return first flight when multiple drawDefinitions per event
   extensionProfiles: [
     {
