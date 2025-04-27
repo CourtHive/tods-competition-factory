@@ -19,7 +19,7 @@ it.skip.each(filenames)('can generate structureReports for all tournamentRecords
     const tournamentRecord = JSON.parse(fs.readFileSync(`${sourcePath}/${filename}`, { encoding: 'utf8' }));
     tournamentEngine.setState(tournamentRecord);
 
-    if ((tournamentRecord?.extensions || []).find((e) => e?.name === 'level')) {
+    if ((tournamentRecord?.extensions ?? []).find((e) => e?.name === 'level')) {
       const districtCode = findExtension({
         element: tournamentRecord,
         name: 'districtCode',
@@ -230,4 +230,191 @@ it('can identify winningParticipants and map WTN and ranking', () => {
     'tournamentId',
     'wtnRating',
   ]);
+});
+
+it('can generate structureReports for a COMPASS draw', () => {
+  const drawProfiles = [
+    {
+      eventName: `COMPASS DRAW SINGLES`,
+      category: { categoryName: '18U' },
+      drawType: 'COMPASS',
+      generate: true,
+      seedsCount: 4,
+      drawSize: 16,
+    },
+  ];
+
+  const tournamentExtensions = [
+    { name: 'level', value: { level: { orderIndex: 3 } } },
+    { name: 'sectionCode', value: '045' },
+    { name: 'districtCode', value: '012' },
+  ];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    tournamentExtensions,
+    drawProfiles,
+  });
+
+  // structure analytics
+  tournamentEngine.setState(tournamentRecord);
+  const { structureReports, eventStructureReports } = tournamentEngine.getStructureReports({
+    extensionProfiles: [
+      { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
+      { name: 'districtCode' },
+      { name: 'sectionCode' },
+    ],
+  });
+
+  expect(structureReports.length).toEqual(drawProfiles.length);
+  eventStructureReports.forEach((report) => {
+    expect(report.totalPositionManipulations).toEqual(0);
+    expect(report.generatedDrawsCount).toEqual(1);
+    expect(report.drawDeletionsCount).toEqual(0);
+  });
+
+  // event analytics
+  const { participantEntryReports, tournamentEntryReport, eventReports } = tournamentEngine.getEntryStatusReports();
+  expect(eventReports.length).toEqual(drawProfiles.length);
+
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: {
+      participantTypes: [INDIVIDUAL],
+      participantRoles: [COMPETITOR],
+    },
+    withScaleValues: true,
+    withEvents: true,
+    withDraws: true,
+  });
+
+  const individualParticipantsWithEvents = participants.filter(
+    ({ events, participantType }) => events.length && participantType === INDIVIDUAL,
+  );
+
+  expect(tournamentEntryReport.individualParticipantsCount).toEqual(participants.length);
+  expect(tournamentEntryReport.drawDefinitionsCount).toEqual(1);
+  expect(tournamentEntryReport.eventsCount).toEqual(1);
+
+  expect(tournamentEntryReport.nonParticipatingEntriesCount + participantEntryReports.length).toEqual(
+    participants.length,
+  );
+
+  expect(participantEntryReports.length).toEqual(individualParticipantsWithEvents.length);
+
+  expect(structureReports.map((r) => r.drawType)).toEqual(['COMPASS']);
+});
+
+it('getStructureReports for a draw with PLAYOFF returns 2 structures when firstStageSequenceOnly: false', () => {
+  const drawId = 'M1';
+  const drawProfiles = [
+    {
+      eventName: `SINGLES MAIN DRAW`,
+      drawType: 'SINGLE_ELIMINATION',
+      category: { categoryName: '18U' },
+      generate: true,
+      seedsCount: 4,
+      drawSize: 8,
+      drawId,
+    },
+  ];
+
+  const tournamentExtensions = [
+    { name: 'level', value: { level: { orderIndex: 2 } } },
+    { name: 'sectionCode', value: '001' },
+    { name: 'districtCode', value: '002' },
+  ];
+
+  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    completeAllMatchUps: true,
+    tournamentExtensions,
+    drawProfiles,
+  });
+
+  // Add 3rd-4th playoff and consolation structures
+  tournamentEngine.setState(tournamentRecord);
+
+  const {
+    drawDefinition: {
+      structures: [{ structureId }],
+    },
+  } = tournamentEngine.getEvent({ drawId });
+
+  const result = tournamentEngine.addPlayoffStructures({
+    playoffStructureNameBase: '3-4 Playoff',
+    playoffPositions: [3, 4],
+    structureId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  // Add a consolation structure
+  /*
+  tournamentEngine.addConsolationStructures({
+    structureName: 'Consolation',
+    consolationType: 'FEED_IN',
+    drawId,
+  });
+  */
+
+  // Complete all matches in the draw, including the new structures
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  matchUps.forEach(({ matchUpId }) => {
+    tournamentEngine.setMatchUpStatus({
+      outcome: { winningSide: 1 }, // Mark side 1 as the winner for all matches
+      matchUpId,
+      drawId,
+    });
+  });
+
+  const {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+
+  // Generate structure reports
+  const { structureReports, eventStructureReports } = tournamentEngine.getStructureReports({
+    extensionProfiles: [
+      { name: 'level', label: 'levelOrder', accessor: 'level.orderIndex' },
+      { name: 'districtCode' },
+      { name: 'sectionCode' },
+    ],
+    firstStageSequenceOnly: false,
+  });
+
+  // Validate structure reports
+  expect(structureReports.length).toEqual(2); // Main, Playoff, and Consolation
+
+  // Validate event structure reports
+  eventStructureReports.forEach((report) => {
+    expect(report.totalPositionManipulations).toEqual(0);
+    expect(report.generatedDrawsCount).toEqual(1);
+    expect(report.drawDeletionsCount).toEqual(0);
+  });
+
+  // Validate participants and entry reports
+  const { participantEntryReports, tournamentEntryReport, eventReports } = tournamentEngine.getEntryStatusReports();
+  expect(eventReports.length).toEqual(drawProfiles.length);
+
+  const { participants } = tournamentEngine.getParticipants({
+    participantFilters: {
+      participantTypes: [INDIVIDUAL],
+      participantRoles: [COMPETITOR],
+    },
+    withScaleValues: true,
+    withEvents: true,
+    withDraws: true,
+  });
+
+  const individualParticipantsWithEvents = participants.filter(
+    ({ events, participantType }) => events.length && participantType === INDIVIDUAL,
+  );
+
+  expect(tournamentEntryReport.individualParticipantsCount).toEqual(participants.length);
+  expect(tournamentEntryReport.drawDefinitionsCount).toEqual(1);
+  expect(tournamentEntryReport.eventsCount).toEqual(1);
+
+  expect(tournamentEntryReport.nonParticipatingEntriesCount + participantEntryReports.length).toEqual(
+    participants.length,
+  );
+
+  expect(participantEntryReports.length).toEqual(individualParticipantsWithEvents.length);
 });
