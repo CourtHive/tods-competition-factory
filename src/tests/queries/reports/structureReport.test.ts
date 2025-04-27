@@ -347,15 +347,6 @@ it('getStructureReports for a draw with PLAYOFF returns 2 structures when firstS
   });
   expect(result.success).toEqual(true);
 
-  // Add a consolation structure
-  /*
-  tournamentEngine.addConsolationStructures({
-    structureName: 'Consolation',
-    consolationType: 'FEED_IN',
-    drawId,
-  });
-  */
-
   // Complete all matches in the draw, including the new structures
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
   matchUps.forEach(({ matchUpId }) => {
@@ -365,10 +356,6 @@ it('getStructureReports for a draw with PLAYOFF returns 2 structures when firstS
       drawId,
     });
   });
-
-  const {
-    drawDefinition: { structures },
-  } = tournamentEngine.getEvent({ drawId });
 
   // Generate structure reports
   const { structureReports, eventStructureReports } = tournamentEngine.getStructureReports({
