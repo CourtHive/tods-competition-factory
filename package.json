@@ -109,11 +109,11 @@
     }
   },
   "devDependencies": {
-    "@babel/core": "7.26.10",
-    "@babel/plugin-transform-nullish-coalescing-operator": "7.26.6",
-    "@babel/plugin-transform-optional-chaining": "7.25.9",
-    "@babel/preset-env": "7.26.9",
-    "@babel/preset-typescript": "7.27.0",
+    "@babel/core": "7.27.1",
+    "@babel/plugin-transform-nullish-coalescing-operator": "7.27.1",
+    "@babel/plugin-transform-optional-chaining": "7.27.1",
+    "@babel/preset-env": "7.27.2",
+    "@babel/preset-typescript": "7.27.1",
     "@commitlint/cli": "19.8.0",
     "@commitlint/config-conventional": "19.8.0",
     "@dep-tree/cli": "0.23.4",
