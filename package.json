@@ -157,7 +157,7 @@
     "eslint-module-utils": "2.12.0",
     "eslint-plugin-compat": "6.0.2",
     "eslint-plugin-import": "2.31.0",
-    "eslint-plugin-prettier": "5.4.0",
+    "eslint-plugin-prettier": "5.5.4",
     "eslint-plugin-sonarjs": "3.0.2",
     "esm": "3.2.25",
     "fs-extra": "11.3.0",
