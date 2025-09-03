@@ -195,10 +195,12 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
     event,
   } = params;
 
+  const isAdHocDraw = drawDefinition.drawType === AD_HOC;
+
   if (!stage) return { error: MISSING_STAGE };
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(participantIds)) return { error: INVALID_PARTICIPANT_IDS };
-  if (!getValidStage({ stage, drawDefinition })) {
+  if (!isAdHocDraw && !getValidStage({ stage, drawDefinition })) {
     return { error: INVALID_STAGE };
   }
 
@@ -217,11 +219,16 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
     entryStatus,
     stage,
   });
-  if (!ignoreStageSpace && !spaceAvailable.success) {
+  if (!ignoreStageSpace && !spaceAvailable.success && !isAdHocDraw) {
     return { error: spaceAvailable.error };
   }
   const positionsAvailable = spaceAvailable.positionsAvailable ?? 0;
-  if (!ignoreStageSpace && stage !== VOLUNTARY_CONSOLATION && positionsAvailable < participantIds.length)
+  if (
+    !ignoreStageSpace &&
+    !isAdHocDraw &&
+    stage !== VOLUNTARY_CONSOLATION &&
+    positionsAvailable < participantIds.length
+  )
     return { error: PARTICIPANT_COUNT_EXCEEDS_DRAW_SIZE };
 
   const duplicateEntries: string[] = [];
