@@ -85,6 +85,7 @@ type SetMatchUpStateArgs = {
   outcome?: any;
   event?: Event;
   score?: any;
+  propagateExitStatusToBackdraw?: boolean;
 };
 
 export function setMatchUpState(params: SetMatchUpStateArgs): any {

@@ -37,6 +37,7 @@ type SetMatchUpStatusArgs = {
   notes?: string;
   event?: Event;
   outcome?: any;
+  propagateExitStatusToBackdraw?: boolean;
 };
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
@@ -68,6 +69,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     schedule,
     event,
     notes,
+    propagateExitStatusToBackdraw = false,
   } = params;
 
   const matchUpFormat = params.matchUpFormat || params.outcome?.matchUpFormat;
@@ -127,5 +129,6 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     schedule,
     event,
     notes,
+    propagateExitStatusToBackdraw,
   });
 }

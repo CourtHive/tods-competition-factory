@@ -1,4 +1,5 @@
 import { attemptToSetMatchUpStatusBYE } from '@Mutate/matchUps/matchUpStatus/attemptToSetMatchUpStatusBYE';
+import { propagateExitStatusToBackdraw } from './propagateExitStatusToBackdraw';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
 import { doubleExitAdvancement } from '@Mutate/drawDefinitions/positionGovernor/doubleExitAdvancement';
@@ -11,14 +12,72 @@ import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '@Constants/
 import {
   BYE,
   CANCELLED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
+  RETIRED,
   TO_BE_PLAYED,
   WALKOVER,
 } from '@Constants/matchUpStatusConstants';
+import {
+  COMPASS,
+  CURTIS_CONSOLATION,
+  FEED_IN_CHAMPIONSHIP,
+  FEED_IN_CHAMPIONSHIP_TO_QF,
+  FEED_IN_CHAMPIONSHIP_TO_R16,
+  FEED_IN_CHAMPIONSHIP_TO_SF,
+  FIRST_MATCH_LOSER_CONSOLATION,
+  MODIFIED_FEED_IN_CHAMPIONSHIP,
+  VOLUNTARY_CONSOLATION,
+} from '@Constants/drawDefinitionConstants';
 
 export function attemptToSetMatchUpStatus(params) {
-  const { tournamentRecord, drawDefinition, matchUpStatus, structure, matchUp } = params;
+  const {
+    tournamentRecord,
+    drawDefinition,
+    matchUpStatus,
+    structure,
+    matchUp,
+    event,
+    allowBackdrawParticipation,
+    propagateExitStatusToBackdraw: propagateExitStatusToBackdrawFlag,
+  } = params;
+
+  // Propagate exit status to backdraw if relevant
+  const EXIT_STATUSES = [WALKOVER, RETIRED, DEFAULTED];
+  const APPLICABLE_DRAWS_FOR_BACKDRAW_PROPAGATION = [
+    COMPASS,
+    FIRST_MATCH_LOSER_CONSOLATION,
+    CURTIS_CONSOLATION,
+    FEED_IN_CHAMPIONSHIP_TO_QF,
+    FEED_IN_CHAMPIONSHIP_TO_SF,
+    FEED_IN_CHAMPIONSHIP_TO_R16,
+    VOLUNTARY_CONSOLATION,
+    MODIFIED_FEED_IN_CHAMPIONSHIP,
+    FEED_IN_CHAMPIONSHIP,
+  ];
+  if (
+    matchUpStatus &&
+    EXIT_STATUSES.includes(matchUpStatus) &&
+    APPLICABLE_DRAWS_FOR_BACKDRAW_PROPAGATION.includes(drawDefinition?.drawType) &&
+    matchUp?.sides &&
+    propagateExitStatusToBackdrawFlag
+  ) {
+    // Find the losing participantId
+    const losingSide = matchUp.sides.find(
+      (side) => side && side.participantId && (!side.winner || side.winner === false),
+    );
+    if (losingSide && losingSide.participantId) {
+      propagateExitStatusToBackdraw({
+        tournamentRecord,
+        drawDefinition,
+        losingParticipantId: losingSide.participantId,
+        matchUpStatus,
+        event,
+        allowBackdrawParticipation,
+      });
+    }
+  }
 
   const teamRoundRobinContext = !!(
     matchUp.tieMatchUps &&
