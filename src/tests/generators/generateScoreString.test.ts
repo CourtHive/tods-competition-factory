@@ -40,6 +40,12 @@ test('can generate matchUp set scores with set tiebreak', () => {
   let result = generateScoreString({ setTBlast: false, sets, autoComplete: true });
   expect(result).toEqual('6(3)-7 7-6(12) 3-0');
 
+  // Test to make it clear what `setTBlast` means:
+  // when true, the tiebreak score always appears last in set score string
+  // when false, the tiebreak score is listed in parentheses after the losing set score
+  result = generateScoreString({ setTBlast: true, sets, autoComplete: true });
+  expect(result).toEqual('6-7(3) 7-6(12) 3-0');
+
   result = generateScoreString({ setTBlast: false, sets, autoComplete: true, reversed: true });
   expect(result).toEqual('7-6(3) 6(12)-7 0-3');
 });

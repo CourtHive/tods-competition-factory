@@ -21,7 +21,7 @@ type GenerateScoreString = {
   matchUpFormat?: string;
   winnerFirst?: boolean;
   winningSide?: number;
-  setTBlast?: boolean;
+  setTBlast?: boolean; // when true, the tiebreak score always appears last in set score string; when false, the tiebreak score is listed in parentheses after the losing set score
   reversed?: boolean;
   sets: any;
 };

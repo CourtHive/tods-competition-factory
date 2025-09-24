@@ -29,7 +29,7 @@ type SetMatchUpStatusArgs = {
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
   tournamentId?: string;
-  setTBlast?: boolean;
+  setTBlast?: boolean; // when true, the tiebreak score always appears last in set score string; when false, the tiebreak score is listed in parentheses after the losing set score
   matchUpId: string;
   eventId?: string;
   drawId?: string;
