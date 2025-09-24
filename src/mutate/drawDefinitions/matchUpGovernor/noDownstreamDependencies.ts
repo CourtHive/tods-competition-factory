@@ -50,8 +50,6 @@ export function noDownstreamDependencies(params) {
     (params.isCollectionMatchUp && params.dualMatchUp.winningSide && !params.projectedWinningSide) ||
     (matchUp.winningSide && !winningSide && !checkScoreHasValue({ score }));
 
-  const statusNotTBP = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
-
   const removeDirected = (removeScore) => {
     let connectedStructures;
     const { structure, drawDefinition, dualMatchUp, disableAutoCalc } = params;
@@ -90,11 +88,16 @@ export function noDownstreamDependencies(params) {
     return scoreModification(params);
   }
 
+  // if matchUpStatus is being changed for a DUAL MATCH and the new status is CANCELLED or ABANDONED
+  // then winningSide of the dualMatchUp should be changed. This boolean triggers that logic in attemptToSetWinningSide
   const triggerDualWinningSide = [CANCELLED, ABANDONED].includes(matchUpStatus) && params.dualWinningSideChange;
+
+  // if a matchUpStatus is provided and it is not TO_BE_PLAYED then an attempt to set matchUpStatus is valid
+  const statusNotToBePlayed = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
   const result = ((winningSide || triggerDualWinningSide) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||
-    (statusNotTBP && attemptToSetMatchUpStatus(params)) ||
+    (statusNotToBePlayed && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected(removeScore)) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) || {
       ...SUCCESS, // unknown condition
