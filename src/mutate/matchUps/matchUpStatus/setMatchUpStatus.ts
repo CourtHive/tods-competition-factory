@@ -23,6 +23,7 @@ type SetMatchUpStatusArgs = {
   policyDefinitions?: PolicyDefinitions;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
+  propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
@@ -59,6 +60,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
 
   const {
     disableScoreValidation,
+    propagateExitStatus,
     policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
@@ -116,6 +118,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     allowChangePropagation,
     disableScoreValidation,
     score: outcome?.score,
+    propagateExitStatus,
     tournamentRecords,
     policyDefinitions,
     tournamentRecord,

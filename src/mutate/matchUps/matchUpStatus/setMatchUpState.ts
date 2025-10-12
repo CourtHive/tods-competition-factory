@@ -56,6 +56,7 @@ import {
   TO_BE_PLAYED,
   validMatchUpStatuses,
   WALKOVER,
+  DEFAULTED,
 } from '@Constants/matchUpStatusConstants';
 
 // NOTE: Internal method for setting matchUpStatus or score and winningSide, not to be confused with setMatchUpStatus
@@ -67,6 +68,7 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
+  propagateExitStatus?: boolean;
   projectedWinningSide?: number;
   matchUpStatusCodes?: string[];
   tournamentRecord?: Tournament;
@@ -99,6 +101,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
+    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -284,6 +287,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
+    propagateExitStatus,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -492,6 +496,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
+  propagateExitStatus,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -519,6 +524,14 @@ function checkParticipants({
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
 
+  if (
+    matchUpStatus &&
+    [WALKOVER, DEFAULTED].includes(matchUpStatus) &&
+    participantsCount === 1 &&
+    propagateExitStatus
+  ) {
+    return { ...SUCCESS };
+  }
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
