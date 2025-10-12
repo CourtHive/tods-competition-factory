@@ -209,12 +209,12 @@ test('doubleExitAdvancement of BYE encountering drawPosition', () => {
     ['match-1-1', 'BYE'],
   ]);
 
-  let setStatusResult = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 1 },
     matchUpId: 'match-1-3',
     drawId,
   });
-  setStatusResult = tournamentEngine.setMatchUpStatus({
+  let setStatusResult = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 1 },
     matchUpId: 'match-1-4',
     drawId,
