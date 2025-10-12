@@ -6,14 +6,18 @@ import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { Module } from '@nestjs/common';
 
+function isValidJwtExpiresIn(val: string): boolean {
+  // Only allow numbers or numbers with single unit: s, m, h, d, w, M, y
+  return /^(\d+|(\d+)([smhdwMy]))$/.test(val);
+}
+
+const rawValidity = process.env.JWT_VALIDITY;
+const expiresIn: any = rawValidity && isValidJwtExpiresIn(rawValidity) ? rawValidity : '1d';
+
 @Module({
   imports: [
+    JwtModule.register({ signOptions: { expiresIn }, secret: process.env.JWT_SECRET, global: true }),
     UsersModule,
-    JwtModule.register({
-      signOptions: { expiresIn: process.env.JWT_VALIDITY || '1d' },
-      secret: process.env.JWT_SECRET,
-      global: true,
-    }),
   ],
   providers: [
     AuthService,
