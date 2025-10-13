@@ -2,13 +2,13 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
 // constants
 import { ABANDONED, CANCELLED, COMPLETED, DEFAULTED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 
 export function attemptToModifyScore(params) {
   const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
@@ -36,6 +36,7 @@ export function attemptToModifyScore(params) {
 
   pushGlobalLog({
     propagateExitStatus: params.propagateExitStatus,
+    winningSide: params.winningSide,
     matchUpId: matchUp?.matchUpId,
     method: stack,
     validToScore,
@@ -48,6 +49,8 @@ export function attemptToModifyScore(params) {
   const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
+    // if we are propagating exit status, do not set winningSide
+    winningSide: params.propagateExitStatus ? undefined : params.winningSide,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: updatedMatchUpStatus,
     context: stack,

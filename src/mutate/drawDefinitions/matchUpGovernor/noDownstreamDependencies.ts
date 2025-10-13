@@ -108,15 +108,16 @@ export function noDownstreamDependencies(params) {
   const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(matchUpStatus);
 
   pushGlobalLog({
-    propagateExitStatus,
     color: 'brightgreen',
+    propagateExitStatus,
+    statusNotToBePlayed,
     method: stack,
     winningSide,
   });
 
   const result = ((winningSide || triggerDualWinningSide || propagateExitStatus) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||
-    ((propagateExitStatus || statusNotToBePlayed) && attemptToSetMatchUpStatus(params)) ||
+    (statusNotToBePlayed && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected(removeScore)) ||
     (matchUp && scoreModification({ ...params, removeScore: true })) || {
       ...SUCCESS, // unknown condition

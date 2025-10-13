@@ -2,6 +2,7 @@ import { printGlobalLog } from '@Functions/global/globalLog';
 import tournamentEngine from '@Tests/engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
+import fs from 'fs';
 
 // constants
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
@@ -67,4 +68,11 @@ test('can propagate an exit status', () => {
   console.log({ southLoserMatchUp });
   //expect(southLoserMatchUp?.matchUpStatus).toEqual('WALKOVER');
   printGlobalLog(log);
+
+  const fileName = `propagateExitStatus.tods.json`;
+  const dirPath = './src/scratch/';
+  if (fs.existsSync(dirPath)) {
+    const output = `${dirPath}${fileName}`;
+    fs.writeFileSync(output, JSON.stringify(tournamentEngine.getTournament(), null, 2));
+  }
 });

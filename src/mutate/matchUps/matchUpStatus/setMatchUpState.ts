@@ -118,6 +118,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     color: 'brightyellow',
     method: stack,
     matchUpStatus,
+    winningSide,
     matchUpId,
   });
 

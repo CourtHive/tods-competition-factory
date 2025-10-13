@@ -15,6 +15,12 @@ import { SUCCESS } from '@Constants/resultConstants';
 
 export function directParticipants(params) {
   const stack = 'directParticipants';
+
+  pushGlobalLog({
+    color: 'brightmagenta',
+    method: stack,
+  });
+
   const result = attemptToModifyScore(params);
 
   if (result.error) return decorateResult({ result, stack });
@@ -90,8 +96,10 @@ export function directParticipants(params) {
       winnerMatchUpId: winnerMatchUp?.matchUpId,
       loserMatchUpId: loserMatchUp?.matchUpId,
       color: 'brightmagenta',
+      loserDrawPosition,
       method: stack,
       matchUpStatus,
+      winningSide,
       matchUpId,
     });
 
@@ -116,6 +124,7 @@ export function directParticipants(params) {
     if (loserMatchUp) {
       const result = directLoser({
         sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceWinningSide: winningSide,
         loserMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,

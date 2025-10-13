@@ -3,6 +3,7 @@ import { directParticipants } from '@Mutate/matchUps/drawPositions/directPartici
 import { checkConnectedStructures } from './checkConnectedStructures';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { attemptToModifyScore } from './attemptToModifyScore';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { replaceQualifier } from './replaceQualifier';
 import { placeQualifier } from './placeQualifier';
@@ -21,6 +22,12 @@ export function attemptToSetWinningSide(params) {
   if (dualMatchUp?._disableAutoCalc && disableAutoCalc !== false) {
     return attemptToModifyScore(params);
   }
+
+  pushGlobalLog({
+    color: 'green',
+    method: stack,
+    winningSide,
+  });
 
   if (matchUp.winningSide && matchUp.winningSide !== winningSide) {
     // only applies when progression is based on WIN_RATIO, e.g. ROUND_ROBIN_WITH_PLAYOFF

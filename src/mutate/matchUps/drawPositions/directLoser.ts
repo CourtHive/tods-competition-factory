@@ -33,6 +33,7 @@ export function directLoser(params) {
     projectedWinningSide,
     sourceMatchUpStatus,
     loserDrawPosition,
+    sourceWinningSide,
     tournamentRecord,
     loserTargetLink,
     drawDefinition,
@@ -101,7 +102,7 @@ export function directLoser(params) {
   );
 
   const loserAlreadyDirected = targetMatchUpPositionAssignments?.some(
-    (assignment) => assignment.participantId === loserParticipantId,
+    (assignment) => assignment.participantId && loserParticipantId && assignment.participantId === loserParticipantId,
   );
 
   const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
@@ -111,14 +112,14 @@ export function directLoser(params) {
     matchUpId: loserMatchUp?.matchUpId,
     loserAlreadyDirected,
     propagateExitStatus,
+    sourceStructureId,
+    targetStructureId,
+    loserDrawPosition,
     color: 'brightred',
     method: stack,
   });
 
   if (loserAlreadyDirected) {
-    if (propagateExitStatus && loserMatchUp?.matchUpId && sourceMatchUpStatus) {
-      return progressExitStatus();
-    }
     return { ...SUCCESS, stack };
   }
 
@@ -281,6 +282,8 @@ export function directLoser(params) {
     });
 
     if (loserMatchUp?.matchUpId && sourceMatchUpStatus) {
+      // TODO: validate that winningSide is correct...
+      const winningSide = isFeedRound ? 2 : sourceWinningSide;
       const result = setMatchUpState({
         matchUpId: loserMatchUp.matchUpId,
         matchUpStatus: sourceMatchUpStatus,
@@ -288,6 +291,7 @@ export function directLoser(params) {
         propagateExitStatus: true,
         tournamentRecord,
         drawDefinition,
+        winningSide,
         event,
       });
       return decorateResult({ result, stack });
