@@ -3,6 +3,7 @@ import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDraw
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
@@ -84,6 +85,15 @@ export function directParticipants(params) {
         byeMatchUp,
       },
     } = targetData;
+
+    pushGlobalLog({
+      winnerMatchUpId: winnerMatchUp?.matchUpId,
+      loserMatchUpId: loserMatchUp?.matchUpId,
+      color: 'brightmagenta',
+      method: stack,
+      matchUpStatus,
+      matchUpId,
+    });
 
     if (winnerMatchUp) {
       const result = directWinner({

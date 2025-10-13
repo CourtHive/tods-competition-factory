@@ -8,6 +8,7 @@ import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { ABANDONED, CANCELLED, COMPLETED, DEFAULTED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
 export function attemptToModifyScore(params) {
   const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
@@ -26,10 +27,19 @@ export function attemptToModifyScore(params) {
   const stack = 'attemptToModifyScore';
   const hasAdHocSides =
     (isAdHoc({ structure }) && participantsCount === 1) || (matchUpStatus === DEFAULTED && participantsCount);
+  const propagateExitStatus = params.propagateExitStatus;
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
-    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
+    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
+    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
+
+  pushGlobalLog({
+    propagateExitStatus: params.propagateExitStatus,
+    matchUpId: matchUp?.matchUpId,
+    method: stack,
+    validToScore,
+  });
 
   if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 

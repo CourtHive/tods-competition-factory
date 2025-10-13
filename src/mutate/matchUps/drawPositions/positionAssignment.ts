@@ -18,6 +18,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '@Functions/global/extractors';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -74,6 +75,13 @@ export function assignDrawPosition({
   positionAssignments?: PositionAssignment[];
 } {
   const stack = 'assignDrawPosition';
+
+  pushGlobalLog({
+    matchUpStatus: sourceMatchUpStatus,
+    color: 'yellow',
+    method: stack,
+    structureId,
+  });
 
   if (!participantId && !isQualifierPosition)
     return decorateResult({ result: { error: MISSING_PARTICIPANT_ID }, stack });

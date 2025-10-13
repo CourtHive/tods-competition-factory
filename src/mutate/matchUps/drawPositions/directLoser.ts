@@ -8,6 +8,7 @@ import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { setMatchUpState } from '../matchUpStatus/setMatchUpState';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
@@ -103,7 +104,21 @@ export function directLoser(params) {
     (assignment) => assignment.participantId === loserParticipantId,
   );
 
+  const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
+
+  pushGlobalLog({
+    matchUpStatus: sourceMatchUpStatus,
+    matchUpId: loserMatchUp?.matchUpId,
+    loserAlreadyDirected,
+    propagateExitStatus,
+    color: 'brightred',
+    method: stack,
+  });
+
   if (loserAlreadyDirected) {
+    if (propagateExitStatus && loserMatchUp?.matchUpId && sourceMatchUpStatus) {
+      return progressExitStatus();
+    }
     return { ...SUCCESS, stack };
   }
 
@@ -118,6 +133,16 @@ export function directLoser(params) {
   const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
   const isFeedRound = loserTargetLink.target.roundNumber > 1 && unfilledTargetMatchUpDrawPositions?.length;
   const isFirstRoundValidDrawPosition = loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
+
+  pushGlobalLog({
+    matchUpStatus: sourceMatchUpStatus,
+    matchUpId: loserMatchUp?.matchUpId,
+    isFirstRoundValidDrawPosition,
+    propagateExitStatus,
+    color: 'brightred',
+    method: stack,
+    isFeedRound,
+  });
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
@@ -247,6 +272,13 @@ export function directLoser(params) {
 
   function progressExitStatus() {
     const stack = 'progressExitStatus';
+
+    pushGlobalLog({
+      matchUpId: loserMatchUp?.matchUpId,
+      matchUpStatus: sourceMatchUpStatus,
+      color: 'magenta',
+      method: stack,
+    });
 
     if (loserMatchUp?.matchUpId && sourceMatchUpStatus) {
       const result = setMatchUpState({

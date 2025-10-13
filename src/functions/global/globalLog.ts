@@ -36,7 +36,7 @@ export function printGlobalLog(purge?) {
         return `${logColors.white}${key}: ${keyColor}${line[key]}`;
       })
       .join(', ');
-    const tabs = method?.length < 15 ? `\t\t` : '\t';
+    const tabs = (method?.length <= 12 && '\t\t\t') || (method?.length <= 20 && `\t\t`) || '\t';
     return [newline ? '\n' : '', methodColor, method, tabs, logColors.white, body, logColors.reset, '\n'].join('');
   });
   if (modifiedText?.length) console.log(...modifiedText);

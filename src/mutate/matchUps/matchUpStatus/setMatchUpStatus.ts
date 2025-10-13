@@ -3,6 +3,8 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findPolicy } from '@Acquire/findPolicy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -42,6 +44,7 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
   if (paramsCheck.error) return paramsCheck;
+  const stack = 'setMatchUpStatus';
 
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {
@@ -53,7 +56,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
       drawId: params.drawId,
       tournamentRecord,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ stack, result });
     if (result.drawDefinition) params.drawDefinition = result.drawDefinition;
     params.event = result.event;
   }
@@ -72,6 +75,12 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     notes,
   } = params;
 
+  pushGlobalLog({
+    color: 'brightyellow',
+    method: stack,
+    matchUpId,
+  });
+
   const matchUpFormat = params.matchUpFormat || params.outcome?.matchUpFormat;
 
   const { policy } = findPolicy({
@@ -89,7 +98,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const { outcome, setTBlast } = params;
 
   if (outcome?.winningSide && ![1, 2].includes(outcome.winningSide)) {
-    return { error: INVALID_WINNING_SIDE };
+    return decorateResult({ result: { error: INVALID_WINNING_SIDE }, stack });
   }
 
   if (matchUpFormat) {
@@ -100,7 +109,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
       matchUpId,
       event,
     });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ stack, result });
   }
 
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {

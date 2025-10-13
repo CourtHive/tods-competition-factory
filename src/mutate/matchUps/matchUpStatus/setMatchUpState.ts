@@ -90,7 +90,7 @@ type SetMatchUpStateArgs = {
 };
 
 export function setMatchUpState(params: SetMatchUpStateArgs): any {
-  const stack = 'setMatchUpStatus';
+  const stack = 'setMatchUpState';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER
   if (params.matchUpStatus && [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)) params.score = undefined;
@@ -113,6 +113,13 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     event,
     score,
   } = params;
+
+  pushGlobalLog({
+    color: 'brightyellow',
+    method: stack,
+    matchUpStatus,
+    matchUpId,
+  });
 
   // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -532,10 +539,11 @@ function checkParticipants({
   ) {
     return { ...SUCCESS };
   }
+
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
-      context: { matchUpStatus, requiredParticipants },
+      context: { matchUpStatus, requiredParticipants, propagateExitStatus, participantsCount },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }
