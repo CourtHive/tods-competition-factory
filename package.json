@@ -128,7 +128,7 @@
     "@nestjs/schematics": "11.0.9",
     "@nestjs/swagger": "11.2.0",
     "@nestjs/testing": "11.1.6",
-    "@rollup/plugin-babel": "6.0.4",
+    "@rollup/plugin-babel": "6.1.0",
     "@rollup/plugin-commonjs": "28.0.6",
     "@rollup/plugin-json": "6.1.0",
     "@rollup/plugin-node-resolve": "16.0.2",
