@@ -30,9 +30,12 @@ export function printGlobalLog(purge?) {
     const body = bodyKeys
       .map((key) => {
         const keyColor =
-          keyColors && Object.keys(keyColors).includes(key) && logColors[keyColors[key]]
-            ? logColors[keyColors[key]]
-            : logColors.brightwhite;
+          (line[key] === undefined && logColors.red) ||
+          (keyColors &&
+            Object.keys(keyColors).includes(key) &&
+            logColors[keyColors[key]] &&
+            logColors[keyColors[key]]) ||
+          logColors.brightwhite;
         return `${logColors.white}${key}: ${keyColor}${line[key]}`;
       })
       .join(', ');
