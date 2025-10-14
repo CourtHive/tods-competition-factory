@@ -5,13 +5,13 @@ import { expect, test } from 'vitest';
 import fs from 'fs';
 
 // constants
+import { COMPLETED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { COMPLETED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
 
-test('can propagate an exit status', () => {
+test.only('can propagate an exit status', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -19,11 +19,11 @@ test('can propagate an exit status', () => {
     setState: true,
   });
 
-  tournamentEngine.devContext(false);
+  tournamentEngine.devContext(true);
 
   let matchUpId = 'matchUp-1-1';
   let result = tournamentEngine.setMatchUpStatus({
-    outcome: { matchUpStatus: WALKOVER, winningSide: 2 },
+    outcome: { matchUpStatus: RETIRED, winningSide: 2 },
     propagateExitStatus: true,
     matchUpId,
     drawId,
@@ -32,9 +32,11 @@ test('can propagate an exit status', () => {
 
   const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
   let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(matchUp?.matchUpStatus).toEqual(RETIRED);
+
+  // when propagating RETIRED status, the loserMatchUp should be marked as WALKOVER
   let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
-  expect(loserMatchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
 
   // TODO: question is whether the CONSOLATION matchUp with WALKOVER and no winningSide should be considered a downstream dependency
   // and whether the WALKOVER status should be removed when trying to remove the result from the original matchUp
@@ -44,6 +46,7 @@ test('can propagate an exit status', () => {
     matchUpId,
     drawId,
   });
+  console.log(result);
   expect(result.success).toEqual(true);
 
   matchUp = factory.tournamentEngine
@@ -58,17 +61,22 @@ test('can propagate an exit status', () => {
   printGlobalLog(true);
 });
 
-test.skip('can propagate an exit status', () => {
+test('can propagate an exit status', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
     drawProfiles: [
-      { drawId, drawSize: 32, drawType: COMPASS, idPrefix, uuids: ['a1', 'a2', 'a3', 'a4', 'a5', 'a6', 'a7', 'a8'] },
+      // uuids are popped and therefore assigned in reverse order
+      // in this instance the uuids are assigned to structureIds in the order they are generated
+      { drawId, drawSize: 32, drawType: COMPASS, idPrefix, uuids: ['a8', 'a7', 'a6', 'a5', 'a4', 'a3', 'a2', 'a1'] },
     ],
     setState: true,
   });
 
+  // set this to true to see the glovalLog printout at the end of the test
+  // as long as the pushGlobalLog function has been called at some point
   tournamentEngine.devContext(false);
+
   let matchUpId = 'matchUp-East-RP-1-1';
   let result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: WALKOVER, winningSide: 2 },
@@ -80,13 +88,13 @@ test.skip('can propagate an exit status', () => {
 
   const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
   const matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
   const westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
-  expect(westLoserMatchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
   const southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
-  expect(southLoserMatchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
   const southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
-  expect(southEastLoserMatchUp?.matchUpStatus).toEqual('WALKOVER');
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
 
   tournamentEngine.devContext(false);
 
