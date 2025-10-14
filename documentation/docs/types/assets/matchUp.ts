@@ -1,24 +1,18 @@
 export const matchUp = {
-  collectionId:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"only applies to tieMatchUps\\"}',
+  collectionId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"only applies to tieMatchUps\\"}',
   collectionPosition:
     '{\\"type\\":\\"number\\",\\"required\\":\\"false\\",\\"note\\":\\"only applies to tieMatchUps\\"}',
-  drawPositions:
-    '{\\"type\\":\\"number\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
-  endDate:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
-  indoorOutdoor:
-    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
-  finishingPositionRange:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"positionRange\\",\\"required\\":\\"false\\"}',
+  drawPositions: '{\\"type\\":\\"number\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  endDate: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
+  indoorOutdoor: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
+  finishingPositionRange: '{\\"type\\":\\"object\\",\\"object\\":\\"positionRange\\",\\"required\\":\\"false\\"}',
   finishingRound: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   loserMatchUpId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   matchUpDuration: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   matchUpFormat:
     '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"TODS matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
   matchUpId: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\"}',
-  matchUpStatus:
-    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"true\\"}',
+  matchUpStatus: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"true\\"}',
   matchUpStatusCodes:
     '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\",\\"note\\":\\"provider specific\\"}',
   matchUpType:
@@ -27,20 +21,13 @@ export const matchUp = {
   roundName: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   roundNumber: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
   roundPosition: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',
-  score:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"score\\",\\"required\\":\\"false\\"}',
-  sides:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"side\\",\\"required\\":\\"false\\"}',
-  startDate:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
-  surfaceCategory:
-    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
-  tieFormat:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"tieFormat\\",\\"required\\":\\"false\\"}',
-  tieMatchUps:
-    '{\\"type\\":\\"object\\",\\"object\\":\\"matchUp\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
-  winningSide:
-    '{\\"type\\":\\"number\\",\\"required\\":\\"false\\",\\"note\\":\\"1 or 2\\"}',
+  score: '{\\"type\\":\\"object\\",\\"object\\":\\"score\\",\\"required\\":\\"false\\"}',
+  sides: '{\\"type\\":\\"object\\",\\"object\\":\\"side\\",\\"required\\":\\"false\\"}',
+  startDate: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
+  surfaceCategory: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
+  tieFormat: '{\\"type\\":\\"object\\",\\"object\\":\\"tieFormat\\",\\"required\\":\\"false\\"}',
+  tieMatchUps: '{\\"type\\":\\"object\\",\\"object\\":\\"matchUp\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  winningSide: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\",\\"note\\":\\"1 or 2\\"}',
   winnerMatchUpId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
 };
 
