@@ -1,27 +1,27 @@
-import { findStructure } from '@Acquire/findStructure';
-import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
-import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpSubstitutions';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
-import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { numericSort } from '@Tools/sorting';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
+import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { setMatchUpState } from '../matchUpStatus/setMatchUpState';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
+import { findStructure } from '@Acquire/findStructure';
+import { numericSort } from '@Tools/sorting';
 
 // constants
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_POSITION_OCCUPIED,
   INVALID_DRAW_POSITION,
   MISSING_MATCHUP,
   MISSING_PARTICIPANT_ID,
 } from '@Constants/errorConditionConstants';
-import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { SUCCESS } from '@Constants/resultConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -29,10 +29,10 @@ import { SUCCESS } from '@Constants/resultConstants';
 export function directLoser(params) {
   const {
     loserMatchUpDrawPositionIndex,
+    sourceMatchUpStatusCodes,
     inContextDrawMatchUps,
     projectedWinningSide,
     sourceMatchUpStatus,
-    sourceMatchUpStatusCodes,
     loserDrawPosition,
     sourceWinningSide,
     tournamentRecord,

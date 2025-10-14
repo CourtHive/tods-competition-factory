@@ -1,12 +1,12 @@
-import mocksEngine from '@Assemblies/engines/mock';
 import { printGlobalLog } from '@Functions/global/globalLog';
 import tournamentEngine from '@Tests/engines/syncEngine';
-import fs from 'fs';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
+import fs from 'fs';
 
 // constants
-import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { COMPLETED, DEFAULTED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
