@@ -290,8 +290,8 @@ export function directLoser(params) {
       // TODO: validate that winningSide is correct...
       const winningSide = isFeedRound ? 2 : sourceWinningSide;
       const result = setMatchUpState({
-        matchUpId: loserMatchUp.matchUpId,
         matchUpStatusCodes: sourceMatchUpStatusCodes,
+        matchUpId: loserMatchUp.matchUpId,
         allowChangePropagation: true,
         propagateExitStatus: true,
         tournamentRecord,
