@@ -5,7 +5,9 @@ import { logColors } from './logColors';
 const globalLog: any[] = [];
 
 export function pushGlobalLog(value: any, devContextOverride?) {
+  // the simplest use case is just log a string which is assumed to be a method name
   if (isString(value)) value = { method: value };
+  // otherwise log an object with arbitrary properties
   if (devContextOverride || getDevContext()) globalLog.push(value);
 }
 
