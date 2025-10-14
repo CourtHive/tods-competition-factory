@@ -13,7 +13,7 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants
-import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -105,13 +105,14 @@ export function directLoser(params) {
     (assignment) => assignment.participantId && loserParticipantId && assignment.participantId === loserParticipantId,
   );
 
-  const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
+  const validExitToPropagate =
+    params.propagateExitStatus && [RETIRED, WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
 
   pushGlobalLog({
     matchUpStatus: sourceMatchUpStatus,
     matchUpId: loserMatchUp?.matchUpId,
     loserAlreadyDirected,
-    propagateExitStatus,
+    validExitToPropagate,
     sourceStructureId,
     targetStructureId,
     loserDrawPosition,
@@ -139,7 +140,7 @@ export function directLoser(params) {
     matchUpStatus: sourceMatchUpStatus,
     matchUpId: loserMatchUp?.matchUpId,
     isFirstRoundValidDrawPosition,
-    propagateExitStatus,
+    validExitToPropagate,
     color: 'brightred',
     method: stack,
     isFeedRound,
@@ -167,8 +168,8 @@ export function directLoser(params) {
       event,
     });
     if (result.error) return decorateResult({ result, stack });
-    // if propagateExitStatus is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && params.propagateExitStatus) return progressExitStatus();
+    // if validExitToPropagate is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
+    if (!result.error && validExitToPropagate && params.propagateExitStatus) return progressExitStatus();
   } else {
     const error = !targetDrawPositionIsUnfilled ? DRAW_POSITION_OCCUPIED : INVALID_DRAW_POSITION;
     return decorateResult({
@@ -266,7 +267,7 @@ export function directLoser(params) {
       : { error: MISSING_PARTICIPANT_ID };
 
     // if propagateExitStatus is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && params.propagateExitStatus) return progressExitStatus();
+    if (!result.error && validExitToPropagate && params.propagateExitStatus) return progressExitStatus();
 
     return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }
@@ -281,16 +282,19 @@ export function directLoser(params) {
       method: stack,
     });
 
+    // RETIRED should not be propagated as an exit status
+    const matchUpStatus = ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
+
     if (loserMatchUp?.matchUpId && sourceMatchUpStatus) {
       // TODO: validate that winningSide is correct...
       const winningSide = isFeedRound ? 2 : sourceWinningSide;
       const result = setMatchUpState({
         matchUpId: loserMatchUp.matchUpId,
-        matchUpStatus: sourceMatchUpStatus,
         allowChangePropagation: true,
         propagateExitStatus: true,
         tournamentRecord,
         drawDefinition,
+        matchUpStatus,
         winningSide,
         event,
       });
