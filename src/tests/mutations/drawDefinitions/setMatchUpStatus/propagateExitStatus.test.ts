@@ -32,7 +32,7 @@ test.for([
     {
       matchUpStatus: RETIRED,
       winningSide: 2,
-      matchUpStatusCodes: ['RJ'], //illness
+      matchUpStatusCodes: ['RJ'], //Injury
     },
     { expectedBackDrawMatchUpStatus: WALKOVER, expectedBackDrawMatchUpStatusCodes: ['RJ'] },
   ],
