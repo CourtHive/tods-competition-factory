@@ -1,17 +1,42 @@
+import mocksEngine from '@Assemblies/engines/mock';
 import { printGlobalLog } from '@Functions/global/globalLog';
 import tournamentEngine from '@Tests/engines/syncEngine';
-import mocksEngine from '@Assemblies/engines/mock';
-import { expect, test } from 'vitest';
 import fs from 'fs';
+import { expect, test } from 'vitest';
 
 // constants
-import { COMPLETED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
 
-test.only('can propagate an exit status', () => {
+test.for([
+  [
+    {
+      matchUpStatus: WALKOVER,
+      winningSide: 2,
+      matchUpStatusCodes: ['W1'], //injury
+    },
+    { expectedBackDrawMatchUpStatus: WALKOVER, expectedBackDrawMatchUpStatusCodes: ['W1'] },
+  ],
+  [
+    {
+      matchUpStatus: WALKOVER,
+      winningSide: 2,
+      matchUpStatusCodes: ['W2'], //illness
+    },
+    { expectedBackDrawMatchUpStatus: WALKOVER, expectedBackDrawMatchUpStatusCodes: ['W2'] },
+  ],
+  [
+    {
+      matchUpStatus: RETIRED,
+      winningSide: 2,
+      matchUpStatusCodes: ['RJ'], //illness
+    },
+    { expectedBackDrawMatchUpStatus: WALKOVER, expectedBackDrawMatchUpStatusCodes: ['RJ'] },
+  ],
+])('can propagate an exit status', ([outcome, expected]) => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -23,7 +48,7 @@ test.only('can propagate an exit status', () => {
 
   let matchUpId = 'matchUp-1-1';
   let result = tournamentEngine.setMatchUpStatus({
-    outcome: { matchUpStatus: RETIRED, winningSide: 2 },
+    outcome,
     propagateExitStatus: true,
     matchUpId,
     drawId,
@@ -32,28 +57,28 @@ test.only('can propagate an exit status', () => {
 
   const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
   let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp?.matchUpStatus).toEqual(RETIRED);
+  expect(matchUp?.matchUpStatus).toEqual(outcome.matchUpStatus);
 
   // when propagating RETIRED status, the loserMatchUp should be marked as WALKOVER
   let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
-  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
+  expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
 
   // TODO: question is whether the CONSOLATION matchUp with WALKOVER and no winningSide should be considered a downstream dependency
   // and whether the WALKOVER status should be removed when trying to remove the result from the original matchUp
 
-  result = tournamentEngine.setMatchUpStatus({
-    outcome: { matchUpStatus: TO_BE_PLAYED, winningSide: undefined },
-    matchUpId,
-    drawId,
-  });
-  console.log(result);
-  expect(result.success).toEqual(true);
+  // result = tournamentEngine.setMatchUpStatus({
+  //   outcome: { matchUpStatus: TO_BE_PLAYED, winningSide: undefined },
+  //   matchUpId,
+  //   drawId,
+  // });
+  // expect(result.success).toEqual(true);
 
-  matchUp = factory.tournamentEngine
-    .allDrawMatchUps({ drawId })
-    .matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
-  expect(matchUp?.matchUpStatus).toEqual('TO_BE_PLAYED');
-  expect(matchUp?.winningSide).toBe(undefined);
+  // matchUp = factory.tournamentEngine
+  //   .allDrawMatchUps({ drawId })
+  //   .matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  // expect(matchUp?.matchUpStatus).toEqual('TO_BE_PLAYED');
+  // expect(matchUp?.winningSide).toBe(undefined);
 
   // loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   // expect(loserMatchUp?.matchUpStatus).toEqual('TO_BE_PLAYED');

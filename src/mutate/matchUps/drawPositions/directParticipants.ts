@@ -1,12 +1,12 @@
+import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { attemptToModifyScore } from '@Mutate/drawDefinitions/matchUpGovernor/attemptToModifyScore';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
-import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
-import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
-import { directWinner } from './directWinner';
+import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { directLoser } from './directLoser';
+import { directWinner } from './directWinner';
 
 // constants
 import { MISSING_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
@@ -36,6 +36,7 @@ export function directParticipants(params) {
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
+    matchUpStatusCodes,
     dualMatchUp,
     matchUpsMap,
     winningSide,
@@ -124,6 +125,7 @@ export function directParticipants(params) {
     if (loserMatchUp) {
       const result = directLoser({
         sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceMatchUpStatusCodes: matchUpStatusCodes || [],
         sourceWinningSide: winningSide,
         loserMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
