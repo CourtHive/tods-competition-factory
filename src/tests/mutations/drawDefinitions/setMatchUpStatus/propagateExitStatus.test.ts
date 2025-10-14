@@ -6,7 +6,7 @@ import { expect, test } from 'vitest';
 
 // constants
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { COMPLETED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { COMPLETED, DEFAULTED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
@@ -14,6 +14,7 @@ const factory = { tournamentEngine };
 test.for([
   [
     {
+      //outcome
       matchUpStatus: WALKOVER,
       winningSide: 2,
       matchUpStatusCodes: ['W1'], //injury
@@ -22,6 +23,7 @@ test.for([
   ],
   [
     {
+      //outcome
       matchUpStatus: WALKOVER,
       winningSide: 2,
       matchUpStatusCodes: ['W2'], //illness
@@ -30,6 +32,17 @@ test.for([
   ],
   [
     {
+      //outcome
+      matchUpStatus: DEFAULTED,
+      winningSide: 2,
+      matchUpStatusCodes: ['DM'], //misconduct
+    },
+    { expectedBackDrawMatchUpStatus: DEFAULTED, expectedBackDrawMatchUpStatusCodes: ['DM'] },
+  ],
+  [
+    {
+      //outcome
+      // when propagating RETIRED status, the loserMatchUp should be marked as WALKOVER
       matchUpStatus: RETIRED,
       winningSide: 2,
       matchUpStatusCodes: ['RJ'], //Injury
@@ -59,7 +72,6 @@ test.for([
   let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(matchUp?.matchUpStatus).toEqual(outcome.matchUpStatus);
 
-  // when propagating RETIRED status, the loserMatchUp should be marked as WALKOVER
   let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
