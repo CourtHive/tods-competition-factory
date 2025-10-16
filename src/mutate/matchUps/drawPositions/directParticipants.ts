@@ -30,9 +30,10 @@ export function directParticipants(params) {
 
   const {
     dualWinningSideChange,
-    projectedWinningSide,
     inContextDrawMatchUps,
+    projectedWinningSide,
     propagateExitStatus,
+    matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
@@ -124,6 +125,7 @@ export function directParticipants(params) {
     if (loserMatchUp) {
       const result = directLoser({
         sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceMatchUpStatusCodes: matchUpStatusCodes || [],
         sourceWinningSide: winningSide,
         loserMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
