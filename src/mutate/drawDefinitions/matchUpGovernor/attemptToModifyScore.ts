@@ -49,8 +49,7 @@ export function attemptToModifyScore(params) {
   const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
-    // if we are propagating exit status, do not set winningSide
-    winningSide: params.propagateExitStatus ? undefined : params.winningSide,
+    winningSide: params.winningSide,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: updatedMatchUpStatus,
     context: stack,

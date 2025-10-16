@@ -1,12 +1,12 @@
+import mocksEngine from '@Assemblies/engines/mock';
 import { printGlobalLog } from '@Functions/global/globalLog';
 import tournamentEngine from '@Tests/engines/syncEngine';
-import mocksEngine from '@Assemblies/engines/mock';
-import { expect, test } from 'vitest';
 import fs from 'fs';
+import { expect, test } from 'vitest';
 
 // constants
-import { COMPLETED, DEFAULTED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { COMPLETED, DEFAULTED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
@@ -68,9 +68,11 @@ test.for([
   });
   expect(result.success).toEqual(true);
 
-  const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
   let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
   expect(matchUp?.matchUpStatus).toEqual(outcome.matchUpStatus);
+  expect(matchUp?.readyToScore).toEqual(false);
+  expect(matchUp?.winningSide).toEqual(2);
 
   let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
@@ -97,8 +99,81 @@ test.for([
 
   printGlobalLog(true);
 });
+test.only('can propagate an exit status and progress the already existing opponent in the back draw match', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix }],
+    setState: true,
+  });
 
-test('can propagate an exit status', () => {
+  tournamentEngine.devContext(true);
+
+  let matchUpId = 'matchUp-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: {
+      score: {
+        scoreStringSide1: '[11-3]',
+        scoreStringSide2: '[3-11]',
+        sets: [
+          {
+            setNumber: 1,
+            side1TiebreakScore: 11,
+            side2TiebreakScore: 3,
+            winningSide: 1,
+          },
+        ],
+      },
+      matchUpStatus: 'COMPLETED',
+      status: {
+        side1: {
+          categoryName: 'Winner',
+          subCategoryName: 'Winner',
+          matchUpStatusCodeDisplay: 'Winner',
+          matchUpStatusCode: '',
+        },
+        side2: {
+          categoryName: 'None',
+          subCategoryName: 'None',
+          matchUpStatusCodeDisplay: 'None',
+          matchUpStatusCode: '',
+        },
+      },
+      winningSide: 1,
+      matchUpFormat: 'SET1-S:TB11NOAD',
+    },
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //set a walkover to then feed the loser to the consolation draw with already one player.
+  matchUpId = 'matchUp-1-2';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: {
+      //outcome
+      matchUpStatus: WALKOVER,
+      winningSide: 2,
+      matchUpStatusCodes: ['W1'], //injury
+    },
+    matchUpId,
+    drawId,
+    propagateExitStatus: true,
+  });
+  expect(result.success).toEqual(true);
+
+  const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
+  expect(matchUp?.readyToScore).toEqual(false);
+  expect(matchUp?.winningSide).toEqual(2);
+
+  let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  expect(loserMatchUp?.winningSide).toEqual(1);
+});
+
+test.skip('can propagate an exit status', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({

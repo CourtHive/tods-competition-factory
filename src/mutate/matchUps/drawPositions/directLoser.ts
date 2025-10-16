@@ -284,19 +284,48 @@ export function directLoser(params) {
     });
 
     // RETIRED should not be propagated as an exit status
-    const matchUpStatus = ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
+    const carryOverMatchUpStatus =
+      ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
 
     if (loserMatchUp?.matchUpId && sourceMatchUpStatus) {
       // TODO: validate that winningSide is correct...
-      const winningSide = isFeedRound ? 2 : sourceWinningSide;
+      let winningSide: number | undefined = undefined;
+      //trying to work out how we can carry over differen status codes
+      //for the different players
+      const statusCodes: string[] = [...sourceMatchUpStatusCodes];
+      const participantSide = loserMatchUp.sides.find((s) => s.participantId);
+      //is there already a participant set in the loserMatchUp
+      //and do they also have status codes?
+      //SV: we need to consider this in TDesk as atm we are always showing
+      //the first status codes.
+      if (participantSide && loserMatchUp.matchUpStatusCodes?.length > 0) {
+        statusCodes.splice(0, 0, loserMatchUp.matchUpStatusCodes[0]);
+      }
+      //the loser match up is not already marked as a WO or DEFAULT
+      if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
+        //if there is already a participant, make that participant the winner
+        if (participantSide) {
+          winningSide = participantSide.sideNumber;
+        } else {
+          //there is no opponent yet so we make side 2 the winner
+          //this is to make sure the auto progress will kick in as soon as 
+          //a non WO/DEFAUL opponent is set.
+          winningSide = 2;
+          //SV: we need to consider this in TDesk as we are showing a green tick
+          //against the empty slot.
+        }
+      }
+      //TODO: we need to consider the scenarios where both participants in the backdraw 
+      //are WO, or WO and DEFAULT, and then treat it as a DOUBLE WO to make the WO status progress.
+
       const result = setMatchUpState({
-        matchUpStatusCodes: sourceMatchUpStatusCodes,
+        matchUpStatusCodes: statusCodes,
         matchUpId: loserMatchUp.matchUpId,
         allowChangePropagation: true,
         propagateExitStatus: true,
         tournamentRecord,
         drawDefinition,
-        matchUpStatus,
+        matchUpStatus: carryOverMatchUpStatus,
         winningSide,
         event,
       });
