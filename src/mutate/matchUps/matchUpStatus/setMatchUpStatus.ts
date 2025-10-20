@@ -23,11 +23,12 @@ import { PolicyDefinitions } from '@Types/factoryTypes';
 type SetMatchUpStatusArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
+  allowSingleParticipantWO?: boolean;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
+  drawDefinition: DrawDefinition;
   propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
-  drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
@@ -63,6 +64,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
 
   const {
     disableScoreValidation,
+    allowSingleParticipantWO,
     propagateExitStatus,
     policyDefinitions,
     tournamentRecord,
@@ -124,6 +126,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
+    allowSingleParticipantWO,
     allowChangePropagation,
     disableScoreValidation,
     score: outcome?.score,

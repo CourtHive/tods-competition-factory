@@ -68,6 +68,7 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
+  allowSingleParticipantWO?: boolean;
   propagateExitStatus?: boolean;
   projectedWinningSide?: number;
   matchUpStatusCodes?: string[];
@@ -101,6 +102,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
+    allowSingleParticipantWO,
     propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
@@ -295,7 +297,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
-    propagateExitStatus,
+    allowSingleParticipantWO,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -504,7 +506,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
-  propagateExitStatus,
+  allowSingleParticipantWO,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -536,7 +538,7 @@ function checkParticipants({
     matchUpStatus &&
     [WALKOVER, DEFAULTED].includes(matchUpStatus) &&
     participantsCount === 1 &&
-    propagateExitStatus
+    allowSingleParticipantWO
   ) {
     return { ...SUCCESS };
   }
@@ -544,7 +546,7 @@ function checkParticipants({
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
-      context: { matchUpStatus, requiredParticipants, propagateExitStatus, participantsCount },
+      context: { matchUpStatus, requiredParticipants, propagateExitStatus: allowSingleParticipantWO, participantsCount },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }

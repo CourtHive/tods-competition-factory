@@ -27,15 +27,15 @@ export function attemptToModifyScore(params) {
   const stack = 'attemptToModifyScore';
   const hasAdHocSides =
     (isAdHoc({ structure }) && participantsCount === 1) || (matchUpStatus === DEFAULTED && participantsCount);
-  const propagateExitStatus = params.propagateExitStatus;
+  const allowSingleParticipantWO = params.allowSingleParticipantWO;
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
-    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
+    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && allowSingleParticipantWO);
 
   pushGlobalLog({
-    propagateExitStatus: params.propagateExitStatus,
+    propagateExitStatus: params.allowSingleParticipantWO,
     winningSide: params.winningSide,
     matchUpId: matchUp?.matchUpId,
     method: stack,

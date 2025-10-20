@@ -8,12 +8,13 @@ import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { setMatchUpState } from '../matchUpStatus/setMatchUpState';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants
-import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DEFAULTED, DOUBLE_WALKOVER, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -35,6 +36,7 @@ export function directLoser(params) {
     sourceMatchUpStatus,
     loserDrawPosition,
     sourceWinningSide,
+    sourceMatchUpId,
     tournamentRecord,
     loserTargetLink,
     drawDefinition,
@@ -286,46 +288,63 @@ export function directLoser(params) {
     // RETIRED should not be propagated as an exit status
     const carryOverMatchUpStatus =
       ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
-
-    if (loserMatchUp?.matchUpId && sourceMatchUpStatus) {
-      // TODO: validate that winningSide is correct...
+    //get the updated in context match ups so we have all the sides info
+    const inContextMatchUps = getAllDrawMatchUps({
+      inContext: true,
+      drawDefinition,
+      matchUpsMap,
+    })?.matchUps;
+    let loserMatchUpStatus = carryOverMatchUpStatus;
+    //find the updated loser match up
+    const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
+    if (updatedLoserMatchUp?.matchUpId && sourceMatchUpStatus) {
       let winningSide: number | undefined = undefined;
-      //trying to work out how we can carry over differen status codes
-      //for the different players
-      const statusCodes: string[] = [...sourceMatchUpStatusCodes];
-      const participantSide = loserMatchUp.sides.find((s) => s.participantId);
-      //is there already a participant set in the loserMatchUp
-      //and do they also have status codes?
-      //SV: we need to consider this in TDesk as atm we are always showing
-      //the first status codes.
-      if (participantSide && loserMatchUp.matchUpStatusCodes?.length > 0) {
-        statusCodes.splice(0, 0, loserMatchUp.matchUpStatusCodes[0]);
-      }
-      //the loser match up is not already marked as a WO or DEFAULT
-      if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
-        //if there is already a participant, make that participant the winner
-        if (participantSide) {
-          winningSide = participantSide.sideNumber;
+      let statusCodes: string[] = updatedLoserMatchUp.matchUpStatusCodes ?? ["",""];
+      //find the loser participant side in the loser match up
+      const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
+      //set the original status code to the correct side in the loser match
+      if (loserParticipantSide?.sideNumber) {
+        //find out how many aasigned participants are already in the loser match up
+        const participantsCount = updatedLoserMatchUp?.sides?.reduce((count, current) => {
+          return current?.participantId ? count + 1 : count;
+        }, 0);
+        //if only one we need to bring over the status codes and map it to the
+        //correct side, and assign the empty side as the winner
+        if (participantsCount === 1) {
+          winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
+          //set the original status code from the original status codes
+          //this is flawed a bit, or at least the TDesk ui, as even if there are two participants
+          //for a WO/DEFAULT, the status code is always the first element.
+          statusCodes[0] = sourceMatchUpStatusCodes[0];
         } else {
-          //there is no opponent yet so we make side 2 the winner
-          //this is to make sure the auto progress will kick in as soon as 
-          //a non WO/DEFAUL opponent is set.
-          winningSide = 2;
-          //SV: we need to consider this in TDesk as we are showing a green tick
-          //against the empty slot.
+          //there was already a participant in the loser matchup
+          //if the loser match is not already a WO or DEFAULT
+          if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
+            //let's set the opponent as the winner
+            winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
+          } else {
+            //workaroudn for statys codes
+            const currentStatusCode = statusCodes[0]
+            //set the original status code to the correct participant in the loser match up
+            statusCodes[loserParticipantSide.sideNumber - 1] = sourceMatchUpStatusCodes[0];
+            const otherSide = loserParticipantSide.sideNumber === 1 ? 2 : 1
+            statusCodes[otherSide-1] = currentStatusCode
+            //both participants are either WO or DEFAULT
+            loserMatchUpStatus = DOUBLE_WALKOVER;
+            winningSide = undefined;
+          }
         }
       }
-      //TODO: we need to consider the scenarios where both participants in the backdraw 
-      //are WO, or WO and DEFAULT, and then treat it as a DOUBLE WO to make the WO status progress.
 
       const result = setMatchUpState({
-        matchUpStatusCodes: statusCodes,
+        matchUpStatus: loserMatchUpStatus,
         matchUpId: loserMatchUp.matchUpId,
+        matchUpStatusCodes: statusCodes,
         allowChangePropagation: true,
-        propagateExitStatus: true,
+        allowSingleParticipantWO: true,
+        propagateExitStatus: false,
         tournamentRecord,
         drawDefinition,
-        matchUpStatus: carryOverMatchUpStatus,
         winningSide,
         event,
       });
