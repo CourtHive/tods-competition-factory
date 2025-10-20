@@ -6,7 +6,7 @@ import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
-  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } = params;
+  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink , propagateExitStatus} = params;
 
   const fmlcBYE = relevantLink?.linkCondition === FIRST_MATCHUP && targetData?.matchUp?.matchUpStatus === BYE;
   if (fmlcBYE) return false;
@@ -30,7 +30,9 @@ export function isActiveDownstream(params) {
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  //SV CHANGE
+  //Here, if we are propagating the status to back draws, we don't consider them active.
+  const loserMatchUpExit = propagateExitStatus || ([DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant);
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
