@@ -1,28 +1,28 @@
+import { findStructure } from '@Acquire/findStructure';
+import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpSubstitutions';
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
-import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
+import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
-import { setMatchUpState } from '../matchUpStatus/setMatchUpState';
-import { decorateResult } from '@Functions/global/decorateResult';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { pushGlobalLog } from '@Functions/global/globalLog';
-import { findStructure } from '@Acquire/findStructure';
+import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { numericSort } from '@Tools/sorting';
+import { setMatchUpState } from '../matchUpStatus/setMatchUpState';
 
 // constants
-import { DEFAULTED, DOUBLE_WALKOVER, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
-import { SUCCESS } from '@Constants/resultConstants';
 import {
   DRAW_POSITION_OCCUPIED,
   INVALID_DRAW_POSITION,
   MISSING_MATCHUP,
   MISSING_PARTICIPANT_ID,
 } from '@Constants/errorConditionConstants';
+import { DEFAULTED, DOUBLE_WALKOVER, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
@@ -297,9 +297,15 @@ export function directLoser(params) {
     let loserMatchUpStatus = carryOverMatchUpStatus;
     //find the updated loser match up
     const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
-    if (updatedLoserMatchUp?.matchUpId && sourceMatchUpStatus) {
+    if (updatedLoserMatchUp?.matchUpId && loserMatchUpStatus) {
       let winningSide: number | undefined = undefined;
-      let statusCodes: string[] = updatedLoserMatchUp.matchUpStatusCodes ?? ["",""];
+      let statusCodes: (string | { previousMatchUpStatus })[] = updatedLoserMatchUp.matchUpStatusCodes ?? [];
+      //get rid of the double walkover special status codes
+      //and replace them with simple string ones
+      const isMatchFromDoubleWO = statusCodes.find((sc) =>
+        typeof sc === 'string' ? sc : sc.previousMatchUpStatus === DOUBLE_WALKOVER,
+      );
+      statusCodes = isMatchFromDoubleWO ? ['WO'] : statusCodes;
       //find the loser participant side in the loser match up
       const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
       //set the original status code to the correct side in the loser match
@@ -308,9 +314,14 @@ export function directLoser(params) {
         const participantsCount = updatedLoserMatchUp?.sides?.reduce((count, current) => {
           return current?.participantId ? count + 1 : count;
         }, 0);
-        //if only one we need to bring over the status codes and map it to the
+
+        //if only one we need to bring over the status code and map it to the
         //correct side, and assign the empty side as the winner
-        if (participantsCount === 1) {
+        //we also consider outcomes from a double walkover in the main draw, which
+        //will not bring over a participant but it will bring over the status code.
+        //So we make sure there is only one participant and no existing status codes, otherwise
+        //it should be set as a double walkover.
+        if (participantsCount === 1 && statusCodes.length === 0) {
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           //set the original status code from the original status codes
           //this is flawed a bit, or at least the TDesk ui, as even if there are two participants
@@ -323,12 +334,12 @@ export function directLoser(params) {
             //let's set the opponent as the winner
             winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           } else {
-            //workaroudn for statys codes
-            const currentStatusCode = statusCodes[0]
+            //workaroudn for status codes
+            const currentStatusCode = statusCodes[0];
             //set the original status code to the correct participant in the loser match up
             statusCodes[loserParticipantSide.sideNumber - 1] = sourceMatchUpStatusCodes[0];
-            const otherSide = loserParticipantSide.sideNumber === 1 ? 2 : 1
-            statusCodes[otherSide-1] = currentStatusCode
+            const otherSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
+            statusCodes[otherSide - 1] = currentStatusCode;
             //both participants are either WO or DEFAULT
             loserMatchUpStatus = DOUBLE_WALKOVER;
             winningSide = undefined;

@@ -536,7 +536,9 @@ function checkParticipants({
 
   if (
     matchUpStatus &&
-    [WALKOVER, DEFAULTED].includes(matchUpStatus) &&
+    //we want to allow wo, default and double walkover inn the consolation draw
+    //to have only one particpiant when they are caused by an exit propagation 
+    [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
     participantsCount === 1 &&
     allowSingleParticipantWO
   ) {
