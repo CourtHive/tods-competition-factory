@@ -1,12 +1,18 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { printGlobalLog } from '@Functions/global/globalLog';
 import tournamentEngine from '@Tests/engines/syncEngine';
-import fs from 'fs';
 import { expect, test } from 'vitest';
 
 // constants
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
-import { COMPLETED, DEFAULTED, RETIRED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  DEFAULTED,
+  DOUBLE_DEFAULT,
+  DOUBLE_WALKOVER,
+  RETIRED,
+  TO_BE_PLAYED,
+  WALKOVER,
+} from '@Constants/matchUpStatusConstants';
 import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
@@ -49,7 +55,7 @@ test.for([
     },
     { expectedBackDrawMatchUpStatus: WALKOVER, expectedBackDrawMatchUpStatusCodes: ['RJ'] },
   ],
-])('can propagate an exit status', ([outcome, expected]) => {
+])('can propagate an %s exit status and result in a %s', ([outcome, expected]) => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -77,29 +83,141 @@ test.for([
   let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
-
-  // TODO: question is whether the CONSOLATION matchUp with WALKOVER and no winningSide should be considered a downstream dependency
-  // and whether the WALKOVER status should be removed when trying to remove the result from the original matchUp
-
-  // result = tournamentEngine.setMatchUpStatus({
-  //   outcome: { matchUpStatus: TO_BE_PLAYED, winningSide: undefined },
-  //   matchUpId,
-  //   drawId,
-  // });
-  // expect(result.success).toEqual(true);
-
-  // matchUp = factory.tournamentEngine
-  //   .allDrawMatchUps({ drawId })
-  //   .matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
-  // expect(matchUp?.matchUpStatus).toEqual('TO_BE_PLAYED');
-  // expect(matchUp?.winningSide).toBe(undefined);
-
-  // loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
-  // expect(loserMatchUp?.matchUpStatus).toEqual('TO_BE_PLAYED');
-
-  printGlobalLog(true);
 });
-test.only('can propagate an exit status and progress the already existing opponent in the back draw match', () => {
+
+test.for([
+  [
+    {
+      //outcome
+      matchUpStatus: WALKOVER,
+      winningSide: 1,
+      matchUpStatusCodes: ['W1'], //injury
+    },
+    { expectedBackDrawMatchUpStatus: DOUBLE_WALKOVER, expectedBackDrawMatchUpStatusCodes: ['WO', 'W1'] },
+  ],
+  [
+    {
+      //outcome
+      matchUpStatus: WALKOVER,
+      winningSide: 2,
+      matchUpStatusCodes: ['W1'], //injury
+    },
+    { expectedBackDrawMatchUpStatus: DOUBLE_WALKOVER, expectedBackDrawMatchUpStatusCodes: ['WO', 'W1'] },
+  ],
+  [
+    {
+      //outcome
+      matchUpStatus: DEFAULTED,
+      winningSide: 1,
+      matchUpStatusCodes: ['DM'],
+    },
+    { expectedBackDrawMatchUpStatus: DOUBLE_WALKOVER, expectedBackDrawMatchUpStatusCodes: ['WO', 'DM'] },
+  ],
+  [
+    {
+      //outcome
+      matchUpStatus: DEFAULTED,
+      winningSide: 2,
+      matchUpStatusCodes: ['DM'],
+    },
+    { expectedBackDrawMatchUpStatus: DOUBLE_WALKOVER, expectedBackDrawMatchUpStatusCodes: ['WO', 'DM'] },
+  ],
+])(
+  'can propagate a %s to a consolation match with already the result of a double walkover, resulting in %s',
+  ([outcome, expected]) => {
+    const idPrefix = 'matchUp';
+    const drawId = 'drawId';
+    mocksEngine.generateTournamentRecord({
+      drawProfiles: [{ drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix }],
+      setState: true,
+    });
+
+    tournamentEngine.devContext(true);
+
+    //setting first match as DOUBLE WALKOVER
+    const firstMatchUpId = 'matchUp-1-1';
+    let result = tournamentEngine.setMatchUpStatus({
+      outcome: {
+        //outcome
+        matchUpStatus: DOUBLE_WALKOVER,
+        matchUpStatusCodes: ['WOWO', 'WOWO'],
+      },
+      matchUpId: firstMatchUpId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    //setting second match as a WALKOVER
+    const secondMatchUpId = 'matchUp-1-2';
+    result = tournamentEngine.setMatchUpStatus({
+      outcome,
+      propagateExitStatus: true,
+      matchUpId: secondMatchUpId,
+      drawId,
+    });
+    expect(result.success).toEqual(true);
+
+    const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+    let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === secondMatchUpId);
+    expect(matchUp?.matchUpStatus).toEqual(outcome.matchUpStatus);
+    expect(matchUp?.readyToScore).toEqual(false);
+    expect(matchUp?.winningSide).toEqual(outcome.winningSide);
+    //consolation match should result in a DOUBLE_WALKOVER
+    let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+    expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
+    expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
+  },
+);
+
+test('can propagate a default to a consolation match with already the result of a double default, resulting in a DOUBLE_WALKOVER', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix }],
+    setState: true,
+  });
+
+  tournamentEngine.devContext(true);
+
+  //setting first match as DOUBLE DEFAULT
+  const firstMatchUpId = 'matchUp-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: {
+      //outcome
+      matchUpStatus: DOUBLE_DEFAULT,
+      matchUpStatusCodes: ['DD', 'DD'],
+    },
+    matchUpId: firstMatchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //setting second match as a DEFAULT
+  const secondMatchUpId = 'matchUp-1-2';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: {
+      matchUpStatus: DEFAULTED,
+      winningSide: 2,
+      matchUpStatusCodes: ['DM'],
+    },
+    propagateExitStatus: true,
+    matchUpId: secondMatchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  const matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === secondMatchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(DEFAULTED);
+  expect(matchUp?.readyToScore).toEqual(false);
+  expect(matchUp?.winningSide).toEqual(2);
+  //consolation match should result in a DOUBLE_WALKOVER
+  let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(loserMatchUp?.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  expect(loserMatchUp?.matchUpStatusCodes).toEqual(['WO', 'DM']);
+});
+
+test('can propagate an exit status and progress the already existing opponent in the back draw match', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -173,7 +291,7 @@ test.only('can propagate an exit status and progress the already existing oppone
   expect(loserMatchUp?.winningSide).toEqual(1);
 });
 
-test.skip('can propagate an exit status', () => {
+test.skip('can propagate an exit status in a compass draw', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -184,10 +302,6 @@ test.skip('can propagate an exit status', () => {
     ],
     setState: true,
   });
-
-  // set this to true to see the glovalLog printout at the end of the test
-  // as long as the pushGlobalLog function has been called at some point
-  tournamentEngine.devContext(false);
 
   let matchUpId = 'matchUp-East-RP-1-1';
   let result = tournamentEngine.setMatchUpStatus({
@@ -203,12 +317,10 @@ test.skip('can propagate an exit status', () => {
   expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
   const westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
-  const southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
-  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
-  const southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
-  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
-
-  tournamentEngine.devContext(false);
+  // const southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  // expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  // const southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  // expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
 
   // create an outcome for completing matchUps
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({
@@ -283,13 +395,4 @@ test.skip('can propagate an exit status', () => {
     return result.success;
   });
   expect(unique(scoreResults)).toEqual([true]);
-
-  const fileName = `propagateExitStatus.tods.json`;
-  const dirPath = './src/scratch/';
-  if (fs.existsSync(dirPath)) {
-    const output = `${dirPath}${fileName}`;
-    fs.writeFileSync(output, JSON.stringify(tournamentEngine.getTournament(), null, 2));
-  }
-
-  printGlobalLog(true);
 });
