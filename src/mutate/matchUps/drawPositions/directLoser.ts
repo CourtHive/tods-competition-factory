@@ -299,25 +299,22 @@ export function directLoser(params) {
     const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
     if (updatedLoserMatchUp?.matchUpId && loserMatchUpStatus) {
       let winningSide: number | undefined = undefined;
-      let statusCodes: (string | { previousMatchUpStatus })[] = updatedLoserMatchUp.matchUpStatusCodes ?? [];
       //get rid of the double walkover special status codes
       //and replace them with simple string ones
-      const isMatchFromDoubleWO = statusCodes.find((sc) =>
-        typeof sc === 'string' ? sc : sc.previousMatchUpStatus === DOUBLE_WALKOVER,
-      );
-      statusCodes = isMatchFromDoubleWO ? ['WO'] : statusCodes;
+      //it's a bit of a broad check but I think only double WO will set status codes as objects
+      const statusCodes: string[] = updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => typeof sc === 'string' ? sc : 'WO' ) ?? [];
       //find the loser participant side in the loser match up
       const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
       //set the original status code to the correct side in the loser match
       if (loserParticipantSide?.sideNumber) {
-        //find out how many aasigned participants are already in the loser match up
+        //find out how many assigned participants are already in the loser match up
         const participantsCount = updatedLoserMatchUp?.sides?.reduce((count, current) => {
           return current?.participantId ? count + 1 : count;
         }, 0);
 
-        //if only one we need to bring over the status code and map it to the
-        //correct side, and assign the empty side as the winner
-        //we also consider outcomes from a double walkover in the main draw, which
+        //if only one participant we need to bring over the status code and 
+        //set it as the only one, and assign the empty side as the winner.
+        //We also consider outcomes from a double walkover in the main draw, which
         //will not bring over a participant but it will bring over the status code.
         //So we make sure there is only one participant and no existing status codes, otherwise
         //it should be set as a double walkover.
@@ -334,13 +331,15 @@ export function directLoser(params) {
             //let's set the opponent as the winner
             winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           } else {
-            //workaroudn for status codes
+            //both participants are either WO or DEFAULT
+            
+            //workaround for status codes
             const currentStatusCode = statusCodes[0];
             //set the original status code to the correct participant in the loser match up
             statusCodes[loserParticipantSide.sideNumber - 1] = sourceMatchUpStatusCodes[0];
             const otherSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
             statusCodes[otherSide - 1] = currentStatusCode;
-            //both participants are either WO or DEFAULT
+
             loserMatchUpStatus = DOUBLE_WALKOVER;
             winningSide = undefined;
           }
