@@ -33,10 +33,9 @@ export function directLoser(params) {
     sourceMatchUpStatusCodes,
     inContextDrawMatchUps,
     projectedWinningSide,
+    propagateExitStatus,
     sourceMatchUpStatus,
     loserDrawPosition,
-    sourceWinningSide,
-    sourceMatchUpId,
     tournamentRecord,
     loserTargetLink,
     drawDefinition,
@@ -109,7 +108,7 @@ export function directLoser(params) {
   );
 
   const validExitToPropagate =
-    params.propagateExitStatus && [RETIRED, WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
+    propagateExitStatus && [RETIRED, WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
 
   pushGlobalLog({
     matchUpStatus: sourceMatchUpStatus,
@@ -172,7 +171,7 @@ export function directLoser(params) {
     });
     if (result.error) return decorateResult({ result, stack });
     // if validExitToPropagate is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && validExitToPropagate && params.propagateExitStatus) return progressExitStatus();
+    if (!result.error && validExitToPropagate && propagateExitStatus) return progressExitStatus();
   } else {
     const error = !targetDrawPositionIsUnfilled ? DRAW_POSITION_OCCUPIED : INVALID_DRAW_POSITION;
     return decorateResult({
@@ -270,7 +269,7 @@ export function directLoser(params) {
       : { error: MISSING_PARTICIPANT_ID };
 
     // if propagateExitStatus is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && validExitToPropagate && params.propagateExitStatus) return progressExitStatus();
+    if (!result.error && validExitToPropagate && propagateExitStatus) return progressExitStatus();
 
     return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }
@@ -302,7 +301,8 @@ export function directLoser(params) {
       //get rid of the double walkover special status codes
       //and replace them with simple string ones
       //it's a bit of a broad check but I think only double WO will set status codes as objects
-      const statusCodes: string[] = updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => typeof sc === 'string' ? sc : 'WO' ) ?? [];
+      const statusCodes: string[] =
+        updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => (typeof sc === 'string' ? sc : 'WO')) ?? [];
       //find the loser participant side in the loser match up
       const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
       //set the original status code to the correct side in the loser match
@@ -312,7 +312,7 @@ export function directLoser(params) {
           return current?.participantId ? count + 1 : count;
         }, 0);
 
-        //if only one participant we need to bring over the status code and 
+        //if only one participant we need to bring over the status code and
         //set it as the only one, and assign the empty side as the winner.
         //We also consider outcomes from a double walkover in the main draw, which
         //will not bring over a participant but it will bring over the status code.
@@ -332,7 +332,7 @@ export function directLoser(params) {
             winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           } else {
             //both participants are either WO or DEFAULT
-            
+
             //workaround for status codes
             const currentStatusCode = statusCodes[0];
             //set the original status code to the correct participant in the loser match up

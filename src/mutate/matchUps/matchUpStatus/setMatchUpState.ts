@@ -103,7 +103,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     allowChangePropagation,
     disableScoreValidation,
     allowSingleParticipantWO,
-    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
