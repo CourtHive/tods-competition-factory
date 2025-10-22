@@ -147,7 +147,7 @@ test.for([
     });
     expect(result.success).toEqual(true);
 
-    //setting second match as a WALKOVER
+    //setting second match based on input
     const secondMatchUpId = 'matchUp-1-2';
     result = tournamentEngine.setMatchUpStatus({
       outcome,
@@ -176,8 +176,6 @@ test('can propagate a default to a consolation match with already the result of 
     drawProfiles: [{ drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix }],
     setState: true,
   });
-
-  tournamentEngine.devContext(true);
 
   //setting first match as DOUBLE DEFAULT
   const firstMatchUpId = 'matchUp-1-1';
@@ -291,7 +289,7 @@ test('can propagate an exit status and progress the already existing opponent in
   expect(loserMatchUp?.winningSide).toEqual(1);
 });
 
-test.skip('can propagate an exit status in a compass draw', () => {
+test('can propagate an exit status in a compass draw', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -317,10 +315,10 @@ test.skip('can propagate an exit status in a compass draw', () => {
   expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
   const westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
   expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
-  // const southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
-  // expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
-  // const southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
-  // expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  const southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  const southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
 
   // create an outcome for completing matchUps
   const { outcome } = mocksEngine.generateOutcomeFromScoreString({

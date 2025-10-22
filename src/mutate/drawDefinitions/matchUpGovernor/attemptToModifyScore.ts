@@ -11,7 +11,7 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
+  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled, propagateExitStatus } =
     params;
 
   const matchUpStatusIsValid =
@@ -27,15 +27,14 @@ export function attemptToModifyScore(params) {
   const stack = 'attemptToModifyScore';
   const hasAdHocSides =
     (isAdHoc({ structure }) && participantsCount === 1) || (matchUpStatus === DEFAULTED && participantsCount);
-  const allowSingleParticipantWO = params.allowSingleParticipantWO;
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
-    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && allowSingleParticipantWO);
+    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
 
   pushGlobalLog({
-    propagateExitStatus: params.allowSingleParticipantWO,
+    propagateExitStatus: propagateExitStatus,
     winningSide: params.winningSide,
     matchUpId: matchUp?.matchUpId,
     method: stack,

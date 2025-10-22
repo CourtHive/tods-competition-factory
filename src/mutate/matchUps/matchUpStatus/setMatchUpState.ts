@@ -68,12 +68,11 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
-  allowSingleParticipantWO?: boolean;
-  propagateExitStatus?: boolean;
-  projectedWinningSide?: number;
-  matchUpStatusCodes?: string[];
-  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  matchUpStatusCodes?: string[];
+  projectedWinningSide?: number;
+  propagateExitStatus?: boolean;
+  tournamentRecord?: Tournament;
   autoCalcDisabled?: boolean;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
@@ -102,7 +101,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
-    allowSingleParticipantWO,
+    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -296,7 +295,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
-    allowSingleParticipantWO,
+    propagateExitStatus,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -450,7 +449,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
 function winningSideWithDownstreamDependencies(params) {
   const { matchUp, winningSide, matchUpTieId, dualWinningSideChange } = params;
-  if (winningSide === matchUp.winningSide || (matchUpTieId && !dualWinningSideChange)) {
+  if (
+    winningSide === matchUp.winningSide ||
+    (matchUpTieId && !dualWinningSideChange)
+  ) {
     return applyMatchUpValues(params);
   } else {
     return decorateResult({
@@ -505,7 +507,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
-  allowSingleParticipantWO,
+  propagateExitStatus,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -536,10 +538,10 @@ function checkParticipants({
   if (
     matchUpStatus &&
     //we want to allow wo, default and double walkover inn the consolation draw
-    //to have only one particpiant when they are caused by an exit propagation 
+    //to have only one particpiant when they are caused by an exit propagation
     [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
     participantsCount === 1 &&
-    allowSingleParticipantWO
+    propagateExitStatus
   ) {
     return { ...SUCCESS };
   }
@@ -547,7 +549,7 @@ function checkParticipants({
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
-      context: { matchUpStatus, requiredParticipants, propagateExitStatus: allowSingleParticipantWO, participantsCount },
+      context: { matchUpStatus, requiredParticipants, propagateExitStatus: propagateExitStatus, participantsCount },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }

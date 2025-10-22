@@ -6,7 +6,7 @@ import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
-  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink , propagateExitStatus} = params;
+  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } = params;
 
   const fmlcBYE = relevantLink?.linkCondition === FIRST_MATCHUP && targetData?.matchUp?.matchUpStatus === BYE;
   if (fmlcBYE) return false;
@@ -30,9 +30,12 @@ export function isActiveDownstream(params) {
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  //SV CHANGE
-  //Here, if we are propagating the status to back draws, we don't consider them active.
-  const loserMatchUpExit = propagateExitStatus || ([DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant);
+  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  //if we are dealing with a loser match up that is a result of a propagated exit (WO/DEFAULT) 
+  //we do not want to consider it as an active downstream.
+  const isLoserMatchUpAPropagatedExitStatus =
+    loserMatchUp?.winningSide && [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) &&
+    !!propagatedLoserParticipant;
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
@@ -40,10 +43,11 @@ export function isActiveDownstream(params) {
   // unless one of its downstream matchUps is active
 
   if (
-    (loserMatchUp?.winningSide && !loserMatchUpExit) ||
-    (winnerMatchUp?.winningSide &&
-      winnerDrawPositionsCount === 2 &&
-      (!winnerMatchUp.feedRound || ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
+    !isLoserMatchUpAPropagatedExitStatus &&
+    ((loserMatchUp?.winningSide && !loserMatchUpExit) ||
+      (winnerMatchUp?.winningSide &&
+        winnerDrawPositionsCount === 2 &&
+        (!winnerMatchUp.feedRound || ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus))))
   ) {
     return true;
   }
