@@ -2,10 +2,14 @@ import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 
-// constants and types
-import { completedMatchUpStatuses, DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import {
+  COMPLETED,
+  completedMatchUpStatuses,
+  DOUBLE_DEFAULT,
+  DOUBLE_WALKOVER,
+} from '@Constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
-import { AD_HOC } from '@Constants/drawDefinitionConstants';
+import { AD_HOC, WINNER } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -80,7 +84,6 @@ export function assignMatchUpSideParticipant({
       const existingSide = matchUp.sides?.find((side) => side.sideNumber === currentSideNumber) ?? {
         sideNumber: currentSideNumber,
       };
-
       return sideNumber === currentSideNumber ? { ...existingSide, participantId } : existingSide;
     });
 
@@ -89,6 +92,18 @@ export function assignMatchUpSideParticipant({
     if (noSideNumberProvided) {
       for (const side of matchUp.sides) {
         if (side.sideNumber) side.sideNumber = 3 - side.sideNumber;
+      }
+    }
+
+    // auto-advance if the other side has a carried-over exit status
+    const carriedOverStatuses = ['WALKOVER', 'RETIRED', 'DEFAULTED', 'WITHDRAWN'];
+    const assignedSide = matchUp.sides.find((side) => side.participantId === participantId);
+    if (assignedSide) {
+      const otherSide = matchUp.sides.find((side) => side.sideNumber !== assignedSide.sideNumber);
+      if (otherSide && otherSide.participantId && carriedOverStatuses.includes(otherSide.matchUpStatus)) {
+        // Auto-advance the newly assigned participant
+        assignedSide.matchUpStatus = WINNER;
+        matchUp.matchUpStatus = COMPLETED;
       }
     }
 
