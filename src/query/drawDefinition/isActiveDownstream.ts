@@ -38,7 +38,7 @@ export function isActiveDownstream(params) {
   //the problem is that clearing a score in the main draw does not completely clear the loser match
   //if the loser match is a propagated exit. This is becuase it does not set the match status to TO_BE_PLAYED
   //and it does not clear the status codes. Based on the discussion with Charles I thought we would not manage the undo
-  //so here I was attempting to stop the user clearing a score if a downstream match was a propagated exist.
+  //so here I was attempting to stop the user clearing a score if a downstream match was a propagated exit.
   const isLoserMatchUpAPropagatedExitStatus = 
     loserMatchUp?.winningSide && [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus)
   //we want to figure out if the command is for clearing the score as this
