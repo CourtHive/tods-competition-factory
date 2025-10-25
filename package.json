@@ -136,7 +136,7 @@
     "@rollup/plugin-typescript": "12.3.0",
     "@swc/cli": "0.7.8",
     "@swc/core": "1.13.5",
-    "@types/express": "5.0.3",
+    "@types/express": "5.0.4",
     "@types/jest": "30.0.0",
     "@types/node": "22.18.12",
     "@types/supertest": "6.0.3",
