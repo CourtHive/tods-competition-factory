@@ -164,7 +164,7 @@
     "globals": "16.4.0",
     "husky": "9.1.7",
     "jest": "30.2.0",
-    "lint-staged": "16.2.5",
+    "lint-staged": "16.2.6",
     "pinst": "3.0.0",
     "prettier": "3.6.2",
     "prettier-eslint": "16.4.2",
