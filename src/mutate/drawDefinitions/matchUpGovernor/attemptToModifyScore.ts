@@ -11,8 +11,16 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
-    params;
+  const {
+    matchUpStatusCodes,
+    matchUpStatus,
+    structure,
+    matchUp,
+    dualMatchUp,
+    inContextMatchUp,
+    autoCalcDisabled,
+    propagateExitStatus,
+  } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -27,7 +35,6 @@ export function attemptToModifyScore(params) {
   const stack = 'attemptToModifyScore';
   const hasAdHocSides =
     (isAdHoc({ structure }) && participantsCount === 1) || (matchUpStatus === DEFAULTED && participantsCount);
-  const propagateExitStatus = params.propagateExitStatus;
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
@@ -35,7 +42,7 @@ export function attemptToModifyScore(params) {
     ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
 
   pushGlobalLog({
-    propagateExitStatus: params.propagateExitStatus,
+    propagateExitStatus: propagateExitStatus,
     winningSide: params.winningSide,
     matchUpId: matchUp?.matchUpId,
     method: stack,
@@ -49,8 +56,7 @@ export function attemptToModifyScore(params) {
   const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
-    // if we are propagating exit status, do not set winningSide
-    winningSide: params.propagateExitStatus ? undefined : params.winningSide,
+    winningSide: params.winningSide,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: updatedMatchUpStatus,
     context: stack,

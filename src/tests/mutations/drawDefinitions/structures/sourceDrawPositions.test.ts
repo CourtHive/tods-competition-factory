@@ -2,6 +2,7 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { simpleAddition } from '@Functions/reducers/simpleAddition';
 import { feedInChampionship } from '../primitives/feedIn';
 import { mocksEngine } from '@Assemblies/engines/mock';
+import { tournamentEngine } from '@Engines/syncEngine';
 import { generateRange } from '@Tools/arrays';
 import { it, test, expect } from 'vitest';
 import { isOdd } from '@Tools/math';
@@ -9,7 +10,6 @@ import { isOdd } from '@Tools/math';
 // constants
 import { BOTTOM_UP, CONSOLATION, FEED_IN_CHAMPIONSHIP_TO_SF, MAIN, TOP_DOWN } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_FEED_IN } from '@Constants/policyConstants';
-import { tournamentEngine } from 'src';
 
 const feedPolicy = {
   roundGroupedOrder: [

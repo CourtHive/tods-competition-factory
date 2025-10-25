@@ -1,4 +1,4 @@
-import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '@Tests/helpers/generateMatchUpOutcome';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { setsValues } from './roundRobinSetsValues';
 import mocksEngine from '@Assemblies/engines/mock';

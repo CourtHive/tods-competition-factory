@@ -68,11 +68,11 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
-  propagateExitStatus?: boolean;
-  projectedWinningSide?: number;
-  matchUpStatusCodes?: string[];
-  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  matchUpStatusCodes?: string[];
+  projectedWinningSide?: number;
+  propagateExitStatus?: boolean;
+  tournamentRecord?: Tournament;
   autoCalcDisabled?: boolean;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
@@ -449,7 +449,10 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
 function winningSideWithDownstreamDependencies(params) {
   const { matchUp, winningSide, matchUpTieId, dualWinningSideChange } = params;
-  if (winningSide === matchUp.winningSide || (matchUpTieId && !dualWinningSideChange)) {
+  if (
+    winningSide === matchUp.winningSide ||
+    (matchUpTieId && !dualWinningSideChange)
+  ) {
     return applyMatchUpValues(params);
   } else {
     return decorateResult({
@@ -534,7 +537,9 @@ function checkParticipants({
 
   if (
     matchUpStatus &&
-    [WALKOVER, DEFAULTED].includes(matchUpStatus) &&
+    //we want to allow wo, default and double walkover inn the consolation draw
+    //to have only one particpiant when they are caused by an exit propagation
+    [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
     participantsCount === 1 &&
     propagateExitStatus
   ) {
@@ -544,7 +549,7 @@ function checkParticipants({
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
-      context: { matchUpStatus, requiredParticipants, propagateExitStatus, participantsCount },
+      context: { matchUpStatus, requiredParticipants, propagateExitStatus: propagateExitStatus, participantsCount },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }

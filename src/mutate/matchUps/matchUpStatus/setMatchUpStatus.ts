@@ -25,9 +25,9 @@ type SetMatchUpStatusArgs = {
   policyDefinitions?: PolicyDefinitions;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
+  drawDefinition: DrawDefinition;
   propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
-  drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;

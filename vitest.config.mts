@@ -32,7 +32,6 @@ export default defineConfig({
         branches: 83,
         lines: 95,
       },
-      all: true,
     },
   },
   resolve: {
