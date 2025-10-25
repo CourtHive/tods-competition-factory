@@ -1,6 +1,6 @@
+import { generateMatchUpOutcome } from '@Tests/helpers/generateMatchUpOutcome';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { isCompletedStructure } from '@Query/drawDefinition/structureActions';
-import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
 import { generateRange, intersection } from '@Tools/arrays';
 import { mocksEngine } from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';

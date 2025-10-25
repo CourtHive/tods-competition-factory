@@ -4,7 +4,7 @@ import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyPa
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '@Tests/helpers/generateMatchUpOutcome';
 import { chunkArray, intersection } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 import { setsValues } from './roundRobinSetsValues';
