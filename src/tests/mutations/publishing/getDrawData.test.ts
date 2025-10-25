@@ -1,7 +1,7 @@
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
 import { mocksEngine } from '@Assemblies/engines/mock';
-import { tournamentEngine } from 'src';
+import { tournamentEngine } from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // types
