@@ -12,6 +12,7 @@ import { INVALID_WINNING_SIDE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
+import { progressExitStatus } from '../drawPositions/progressExitStatus';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -109,7 +110,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     );
   }
 
-  return setMatchUpState({
+  const result = setMatchUpState({
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
@@ -128,4 +129,28 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   });
+  if (result.context?.progressExitStatus) {
+    let iterate = true;
+    let failsafe = 0;
+    while (iterate && failsafe < 10) {
+      iterate = false;
+      failsafe += 1;
+      const progressResult = progressExitStatus({
+        sourceMatchUpStatusCodes: result.context.sourceMatchUpStatusCodes,
+        sourceMatchUpStatus: result.context.sourceMatchUpStatus,
+        loserParticipantId: result.context.loserParticipantId,
+        propagateExitStatus: params.propagateExitStatus,
+        tournamentRecord: params.tournamentRecord,
+        loserMatchUp: result.context.loserMatchUp,
+        matchUpsMap: result.context.matchUpsMap,
+        drawDefinition: params.drawDefinition,
+        event: params.event,
+      });
+      if (progressResult.context?.loserMatchUp) {
+        Object.assign(result.context, progressResult.context);
+        iterate = true;
+      }
+    }
+  }
+  return decorateResult({ result, stack });
 }

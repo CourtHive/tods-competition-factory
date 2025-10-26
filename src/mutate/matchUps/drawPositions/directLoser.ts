@@ -10,10 +10,14 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
+// remove circular dependency
+// import { progressExitStatus } from './progressExitStatus';
+
 // constants
 import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   DRAW_POSITION_OCCUPIED,
   INVALID_DRAW_POSITION,
@@ -23,7 +27,7 @@ import {
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
-export function directLoser(params) {
+export function directLoser(params): ResultType {
   const {
     loserMatchUpDrawPositionIndex,
     inContextDrawMatchUps,
@@ -85,6 +89,7 @@ export function directLoser(params) {
     (assignment) => assignment.drawPosition === loserDrawPosition,
   );
   const loserParticipantId = relevantAssignment?.participantId;
+  const context = { loserParticipantId };
 
   const targetStructureId = loserTargetLink.target.structureId;
   const { positionAssignments: targetPositionAssignments } = structureAssignedDrawPositions({
@@ -118,9 +123,11 @@ export function directLoser(params) {
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (isFirstRoundValidDrawPosition) {
     const result = asssignLoserDrawPosition();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (loserParticipantId && isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
