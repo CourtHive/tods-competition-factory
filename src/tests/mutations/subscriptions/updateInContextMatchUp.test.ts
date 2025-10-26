@@ -4,7 +4,7 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
 // constants
-import { SINGLE_ELIMINATION } from 'src/constants/drawDefinitionConstants';
+import { SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 it('should provide a context update when a matchUp is updated', () => {
   const inContextMatchUps: any[] = [];
