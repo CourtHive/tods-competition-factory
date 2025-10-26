@@ -1,5 +1,6 @@
 import tournamentEngine from '@Tests/engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
+import { unique } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 // constants
@@ -13,7 +14,6 @@ import {
   TO_BE_PLAYED,
   WALKOVER,
 } from '@Constants/matchUpStatusConstants';
-import { unique } from '@Tools/arrays';
 
 const factory = { tournamentEngine };
 
