@@ -31,13 +31,18 @@ export function isActiveDownstream(params) {
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
   const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
-  //if we are dealing with a loser match up that is a result of a propagated exit (WO/DEFAULT) 
+  //if we are dealing with a loser match up that is a result of a propagated exit (WO/DEFAULT)
   //we do not want to consider it as an active downstream.
-  const loserMatchUpParticipantsCount = loserMatchUp?.sides?.reduce((acc, current) => current?.participant ? ++acc : acc, 0)
+  const loserMatchUpParticipantsCount = loserMatchUp?.sides?.reduce(
+    (acc, current) => (current?.participant ? ++acc : acc),
+    0,
+  );
   //to identify a propagated exit (WO/DEFAULT) a match will be WO/DEFAULT, have a winning side,
   //and have only one participant (the WO/DF player).
-  const isLoserMatchUpAPropagatedExitStatus = loserMatchUpParticipantsCount === 1 &&
-    loserMatchUp?.winningSide && [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) &&
+  const isLoserMatchUpAPropagatedExitStatus =
+    loserMatchUpParticipantsCount === 1 &&
+    loserMatchUp?.winningSide &&
+    [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) &&
     !!propagatedLoserParticipant;
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;

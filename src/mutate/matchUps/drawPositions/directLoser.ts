@@ -4,33 +4,33 @@ import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssig
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
 import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
+// remove circular dependency
+// import { progressExitStatus } from './progressExitStatus';
+
 // constants
-import { DEFAULTED, DOUBLE_WALKOVER, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   DRAW_POSITION_OCCUPIED,
   INVALID_DRAW_POSITION,
-  MISSING_MATCHUP,
   MISSING_PARTICIPANT_ID,
 } from '@Constants/errorConditionConstants';
 
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
-export function directLoser(params) {
+export function directLoser(params): ResultType {
   const {
     loserMatchUpDrawPositionIndex,
-    sourceMatchUpStatusCodes,
     inContextDrawMatchUps,
     projectedWinningSide,
     propagateExitStatus,
@@ -92,6 +92,7 @@ export function directLoser(params) {
     (assignment) => assignment.drawPosition === loserDrawPosition,
   );
   const loserParticipantId = relevantAssignment?.participantId;
+  const context = { loserParticipantId };
 
   const targetStructureId = loserTargetLink.target.structureId;
   const { positionAssignments: targetPositionAssignments } = structureAssignedDrawPositions({
@@ -150,9 +151,11 @@ export function directLoser(params) {
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (isFirstRoundValidDrawPosition) {
     const result = asssignLoserDrawPosition();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (loserParticipantId && isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
@@ -171,7 +174,9 @@ export function directLoser(params) {
     });
     if (result.error) return decorateResult({ result, stack });
     // if validExitToPropagate is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && validExitToPropagate && propagateExitStatus) return progressExitStatus();
+    if (!result.error && validExitToPropagate && propagateExitStatus) {
+      return { stack, context: { progressExitStatus: true, loserParticipantId } };
+    }
   } else {
     const error = !targetDrawPositionIsUnfilled ? DRAW_POSITION_OCCUPIED : INVALID_DRAW_POSITION;
     return decorateResult({
@@ -231,7 +236,7 @@ export function directLoser(params) {
     }
   }
 
-  return { ...SUCCESS, stack };
+  return { ...SUCCESS, stack, context };
 
   function loserLinkFedFMLC() {
     const stack = 'loserLinkFedFMLC';
@@ -269,97 +274,10 @@ export function directLoser(params) {
       : { error: MISSING_PARTICIPANT_ID };
 
     // if propagateExitStatus is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
-    if (!result.error && validExitToPropagate && propagateExitStatus) return progressExitStatus();
-
-    return decorateResult({ result, stack: 'assignLoserDrawPosition' });
-  }
-
-  function progressExitStatus() {
-    const stack = 'progressExitStatus';
-
-    pushGlobalLog({
-      matchUpId: loserMatchUp?.matchUpId,
-      matchUpStatus: sourceMatchUpStatus,
-      color: 'magenta',
-      method: stack,
-    });
-
-    // RETIRED should not be propagated as an exit status
-    const carryOverMatchUpStatus =
-      ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
-    //get the updated in context match ups so we have all the sides info
-    const inContextMatchUps = getAllDrawMatchUps({
-      inContext: true,
-      drawDefinition,
-      matchUpsMap,
-    })?.matchUps;
-    let loserMatchUpStatus = carryOverMatchUpStatus;
-    //find the updated loser match up
-    const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
-    if (updatedLoserMatchUp?.matchUpId && loserMatchUpStatus) {
-      let winningSide: number | undefined = undefined;
-      //get rid of the double walkover special status codes
-      //and replace them with simple string ones
-      //it's a bit of a broad check but I think only double WO will set status codes as objects
-      const statusCodes: string[] =
-        updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => (typeof sc === 'string' ? sc : 'WO')) ?? [];
-      //find the loser participant side in the loser match up
-      const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
-      //set the original status code to the correct side in the loser match
-      if (loserParticipantSide?.sideNumber) {
-        //find out how many assigned participants are already in the loser match up
-        const participantsCount = updatedLoserMatchUp?.sides?.reduce((count, current) => {
-          return current?.participantId ? count + 1 : count;
-        }, 0);
-
-        //if only one participant we need to bring over the status code and
-        //set it as the only one, and assign the empty side as the winner.
-        //We also consider outcomes from a double walkover in the main draw, which
-        //will not bring over a participant but it will bring over the status code.
-        //So we make sure there is only one participant and no existing status codes, otherwise
-        //it should be set as a double walkover.
-        if (participantsCount === 1 && statusCodes.length === 0) {
-          winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
-          //set the original status code from the original status codes
-          //this is flawed a bit, or at least the TDesk ui, as even if there are two participants
-          //for a WO/DEFAULT, the status code is always the first element.
-          statusCodes[0] = sourceMatchUpStatusCodes[0];
-        } else {
-          //there was already a participant in the loser matchup
-          //if the loser match is not already a WO or DEFAULT
-          if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
-            //let's set the opponent as the winner
-            winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
-          } else {
-            //both participants are either WO or DEFAULT
-
-            //workaround for status codes
-            const currentStatusCode = statusCodes[0];
-            //set the original status code to the correct participant in the loser match up
-            statusCodes[loserParticipantSide.sideNumber - 1] = sourceMatchUpStatusCodes[0];
-            const otherSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
-            statusCodes[otherSide - 1] = currentStatusCode;
-
-            loserMatchUpStatus = DOUBLE_WALKOVER;
-            winningSide = undefined;
-          }
-        }
-      }
-
-      const result = setMatchUpState({
-        matchUpStatus: loserMatchUpStatus,
-        matchUpId: loserMatchUp.matchUpId,
-        matchUpStatusCodes: statusCodes,
-        allowChangePropagation: true,
-        propagateExitStatus,
-        tournamentRecord,
-        drawDefinition,
-        winningSide,
-        event,
-      });
-      return decorateResult({ result, stack });
+    if (!result.error && validExitToPropagate && propagateExitStatus) {
+      return { stack, context: { progressExitStatus: true } };
     }
 
-    return decorateResult({ result: { error: MISSING_MATCHUP }, stack });
+    return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }
 }
