@@ -11,8 +11,16 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled, propagateExitStatus } =
-    params;
+  const {
+    matchUpStatusCodes,
+    matchUpStatus,
+    structure,
+    matchUp,
+    dualMatchUp,
+    inContextMatchUp,
+    autoCalcDisabled,
+    propagateExitStatus,
+  } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
