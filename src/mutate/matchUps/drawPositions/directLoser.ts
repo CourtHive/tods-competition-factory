@@ -11,9 +11,6 @@ import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
-// remove circular dependency
-// import { progressExitStatus } from './progressExitStatus';
-
 // constants
 import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
