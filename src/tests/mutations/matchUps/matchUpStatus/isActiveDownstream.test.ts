@@ -262,8 +262,8 @@ it('Does NOT mark downstream as active if the consolation match has the result o
   let southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
   expect(southEastLoserMatchUp?.matchUpStatus).toEqual(BYE);
 
-  //trying to clear the score on any of the first two matches in EAST should fail
-  //because they will have an active downstream
+  //trying to clear the score on any of the first two matches in EAST should work
+  //because they will have no active downstream
   matchUpId = 'matchUp-East-RP-1-1';
   result = tournamentEngine.setMatchUpStatus({
     outcome: { scoreStringSide1: '', scoreStringSide2: '', matchUpStatus: TO_BE_PLAYED },
