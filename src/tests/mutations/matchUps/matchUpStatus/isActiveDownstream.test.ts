@@ -1,11 +1,11 @@
-import { tournamentEngine } from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { it, expect } from 'vitest';
+import { tournamentEngine } from '@Engines/syncEngine';
+import { expect, it } from 'vitest';
 
 // Constants
-import { CANNOT_CHANGE_WINNING_SIDE } from '@Constants/errorConditionConstants';
-import { WALKOVER } from '@Constants/matchUpStatusConstants';
 import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
+import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 it('will not allow winningSide change when active downstream', () => {
   mocksEngine.generateTournamentRecord({
@@ -92,4 +92,194 @@ it('will not allow winningSide change when active downstream', () => {
   const walkoverPropagatedParticipant = southFinal.sides[0].participant;
 
   expect(initialWoPropagatedParticipant.participantId).not.toEqual(walkoverPropagatedParticipant.participantId);
+});
+
+it('Does mark a downstream as active if we are trying to reset the score for one of the source matches of a propagated exit status consolation match with both players set', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      // uuids are popped and therefore assigned in reverse order
+      // in this instance the uuids are assigned to structureIds in the order they are generated
+      { drawId, drawSize: 32, drawType: COMPASS, idPrefix, uuids: ['a8', 'a7', 'a6', 'a5', 'a4', 'a3', 'a2', 'a1'] },
+    ],
+    setState: true,
+  });
+
+  //let's set the first match in EAST as a WALKOVER
+  //and we propgate the exit status
+  let matchUpId = 'matchUp-East-RP-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: WALKOVER, winningSide: 2 },
+    propagateExitStatus: true,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+  //let's set the second match in EAST as a normal score
+  matchUpId = 'matchUp-East-RP-1-2';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { winningSide: 2, scoreStringSide1: '11-3', scoreStringSide2: '3-11' },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //the first Match in WEST should be a WALKOVER with a winner
+
+  let matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(COMPLETED);
+  let westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  let southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  let southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+
+  //trying to clear the score on any of the first two matches in EAST should fail
+  //because they will have an active downstream
+  matchUpId = 'matchUp-East-RP-1-1';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { scoreStringSide1: '', scoreStringSide2: '', matchUpStatus: TO_BE_PLAYED },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+  matchUpId = 'matchUp-East-RP-1-2';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { score: { scoreStringSide1: '', scoreStringSide2: '' }, matchUpStatus: TO_BE_PLAYED },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+
+  //and make sure that the existing matches have not been changed
+  matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(COMPLETED);
+  westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+});
+
+it('Does mark downstream as active if we are trying to reset the score for one of the source matches of a propagated exit status consolation match with only one player', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      // uuids are popped and therefore assigned in reverse order
+      // in this instance the uuids are assigned to structureIds in the order they are generated
+      { drawId, drawSize: 32, drawType: COMPASS, idPrefix, uuids: ['a8', 'a7', 'a6', 'a5', 'a4', 'a3', 'a2', 'a1'] },
+    ],
+    setState: true,
+  });
+
+  //let's set the first match in EAST as a WALKOVER
+  //and we propgate the exit status
+  let matchUpId = 'matchUp-East-RP-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: WALKOVER, winningSide: 2 },
+    propagateExitStatus: true,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //the first Match in WEST should be a WALKOVER with a winner
+
+  let matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
+  let westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  let southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  let southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+
+  //trying to clear the score on any of the first two matches in EAST should fail
+  //because they will have an active downstream
+  matchUpId = 'matchUp-East-RP-1-1';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { score: { scoreStringSide1: '', scoreStringSide2: '' }, matchUpStatus: TO_BE_PLAYED },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+
+  //and make sure that the existing matches have not been changed
+  matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
+  westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+});
+
+it('Does NOT mark downstream as active if the consolation match has the result of a double walkover and allows to clear score in source match', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      // uuids are popped and therefore assigned in reverse order
+      // in this instance the uuids are assigned to structureIds in the order they are generated
+      { drawId, drawSize: 32, drawType: COMPASS, idPrefix, uuids: ['a8', 'a7', 'a6', 'a5', 'a4', 'a3', 'a2', 'a1'] },
+    ],
+    setState: true,
+  });
+
+  //let's set the first match in EAST as a WALKOVER
+  //and we propgate the exit status
+  let matchUpId = 'matchUp-East-RP-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: DOUBLE_WALKOVER },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //the first Match in WEST should be WALKOVER with a winner
+  //but no participants
+  let matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(DOUBLE_WALKOVER);
+  let westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  let southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(BYE);
+  let southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(BYE);
+
+  //trying to clear the score on any of the first two matches in EAST should fail
+  //because they will have an active downstream
+  matchUpId = 'matchUp-East-RP-1-1';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { scoreStringSide1: '', scoreStringSide2: '', matchUpStatus: TO_BE_PLAYED },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(TO_BE_PLAYED);
+  westLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(westLoserMatchUp?.matchUpStatus).toEqual(TO_BE_PLAYED);
+  southLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === westLoserMatchUp?.loserMatchUpId);
+  expect(southLoserMatchUp?.matchUpStatus).toEqual(TO_BE_PLAYED);
+  southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
+  expect(southEastLoserMatchUp?.matchUpStatus).toEqual(TO_BE_PLAYED);
 });
