@@ -61,7 +61,7 @@ export function isActiveDownstream(params) {
     (isLoserMatchUpAPropagatedExitStatus && isClearScore) ||
     //if the downstream has not a propagated exit we run the existing checks,
     //otherwise we let them set the score. This is to counter act the fact
-    //that propagated exit status matches can be marked as WALKOVER wiht only one
+    //that propagated exit status matches can be marked as WALKOVER with only one
     //participant. This would have been marked as an active downstream before.
     (!isLoserMatchUpAPropagatedExitStatus &&
       ((loserMatchUp?.winningSide && !loserMatchUpExit) ||
