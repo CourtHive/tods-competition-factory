@@ -1,7 +1,7 @@
 import { allPlayoffPositionsFilled, isCompletedStructure } from '@Query/drawDefinition/structureActions';
 import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { generateMatchUpOutcome } from 'src/tests/helpers/generateMatchUpOutcome';
+import { generateMatchUpOutcome } from '@Tests/helpers/generateMatchUpOutcome';
 import { chunkArray, intersection } from '@Tools/arrays';
 import { findStructure } from '@Acquire/findStructure';
 import tournamentEngine from '@Engines/syncEngine';

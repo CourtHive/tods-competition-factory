@@ -26,7 +26,6 @@ export default defineConfig({
         '**/types/**',
       ],
       provider: 'v8',
-      all: true,
     },
   },
   resolve: {

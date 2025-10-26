@@ -1,7 +1,7 @@
-import mocksEngine from '@Assemblies/engines/mock';
+import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { tournamentEngine } from '@Engines/syncEngine';
-import { getStructureMatchUps } from '@Query/structure/getStructureMatchUps';
+import mocksEngine from '@Assemblies/engines/mock';
 import { describe, expect, it } from 'vitest';
 
 describe('resetQualifyingStructure()', () => {
