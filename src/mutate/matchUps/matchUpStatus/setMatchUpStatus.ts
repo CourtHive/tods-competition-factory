@@ -141,9 +141,12 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   });
+
+  // if exit status propagation is enabled, progress the exit status and iterate until complete
   if (result.context?.progressExitStatus) {
     let iterate = true;
     let failsafe = 0;
+
     while (iterate && failsafe < 10) {
       iterate = false;
       failsafe += 1;
@@ -158,6 +161,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
         drawDefinition: params.drawDefinition,
         event: params.event,
       });
+
       if (progressResult.context?.loserMatchUp) {
         Object.assign(result.context, progressResult.context);
         iterate = true;
