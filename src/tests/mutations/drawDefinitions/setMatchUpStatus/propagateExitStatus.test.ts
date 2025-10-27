@@ -66,7 +66,7 @@ test.for([
   tournamentEngine.devContext(true);
 
   let matchUpId = 'matchUp-1-1';
-  let result = tournamentEngine.setMatchUpStatus({
+  let result =tournamentEngine.setMatchUpStatus({
     outcome,
     propagateExitStatus: true,
     matchUpId,
@@ -84,6 +84,64 @@ test.for([
   expect(loserMatchUp?.matchUpStatus).toEqual(expected.expectedBackDrawMatchUpStatus);
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
 });
+
+test(`it sets the correct status codes in a consolation match when a WO is propagated to a match with already an opponent.`, () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix }],
+    setState: true,
+  });
+
+  tournamentEngine.devContext(true);
+
+  let matchUpId = 'matchUp-1-1';
+  let result =tournamentEngine.setMatchUpStatus({
+    outcome:{
+      score: {
+          scoreStringSide: "[11-3]",
+          scoreStringSide2: "[3-11]",
+      },
+      matchUpStatus:COMPLETED,
+      matchUpStatusCodes: [],
+      winningSide: 1,
+    },
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  let matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(COMPLETED);
+  expect(matchUp?.readyToScore).toEqual(false);
+  expect(matchUp?.winningSide).toEqual(1);
+
+  matchUpId = 'matchUp-1-2';
+  result =tournamentEngine.setMatchUpStatus({
+    outcome: 
+    {
+      //outcome
+      matchUpStatus: WALKOVER,
+      winningSide: 2,
+      matchUpStatusCodes: ['W2'], //illness
+    },
+    propagateExitStatus:true,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //making sure we get the updated matchups data
+  matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  //get the updated loser matchup
+  let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  //this should have the status codes set
+  expect(loserMatchUp?.matchUpStatusCodes).toEqual(['W2'])
+
+})
 
 test.for([
   [
