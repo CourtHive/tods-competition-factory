@@ -4,7 +4,7 @@ import { unique } from '@Tools/arrays';
 import { expect, test } from 'vitest';
 
 // constants
-import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { COMPASS, CURTIS_CONSOLATION, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 import {
   COMPLETED,
   DEFAULTED,
@@ -451,4 +451,89 @@ test('can propagate an exit status in a compass draw', () => {
     return result.success;
   });
   expect(unique(scoreResults)).toEqual([true]);
+});
+
+test('can automatically progress the winner in a feed in round that already had a propagated WO participant fed in', () => {
+  const idPrefix = 'm';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      {
+        drawId,
+        drawSize: 32,
+        drawType: CURTIS_CONSOLATION,
+        idPrefix,
+        outcomes: [
+          {
+            roundPosition: 1,
+            scoreString: '6-2 6-1',
+            roundNumber: 1,
+            winningSide: 1,
+          },
+          {
+            scoreString: '6-2 6-1',
+            roundPosition: 2,
+            roundNumber: 1,
+            winningSide: 1,
+          },
+          {
+            roundPosition: 15,
+            scoreString: '6-2 6-1',
+            roundNumber: 1,
+            winningSide: 1,
+          },
+          {
+            scoreString: '6-2 6-1',
+            roundPosition: 16,
+            roundNumber: 1,
+            winningSide: 1,
+          },
+        ],
+      },
+    ],
+    setState: true,
+  });
+  //setting round 2 match 1 as a WO and propagating the exit to the consolation draw
+  let matchUpId = 'm-2-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: WALKOVER, winningSide: 2, matchUpStatusCodes:['W0'] },
+    propagateExitStatus: true,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //making sure the consolation draw is now set as a WO
+  const consolationFedInMatchUpId = 'm-c0-2-8';
+  let matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  let consolationFedInMatchUp = matchUps?.find((matchUp) => matchUp.matchUpId === consolationFedInMatchUpId);
+  expect(consolationFedInMatchUp?.matchUpStatus).toEqual(WALKOVER);
+
+  //now we set the score for the first round consolation draw that will progress to the consolationFedInMatchUp
+  const { outcome } = mocksEngine.generateOutcomeFromScoreString({
+    matchUpStatus: COMPLETED,
+    scoreString: '6-1 6-1',
+    winningSide: 1,
+  });
+  let firstRoundConsolationMatchUpId = 'm-c0-1-8';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome,
+    matchUpId: firstRoundConsolationMatchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //check that the winner has progress to consolationFedInMatchUp and also then progress to round 3
+  matchUps = factory.tournamentEngine.allDrawMatchUps({ drawId, inContext: true }).matchUps;
+  consolationFedInMatchUp = matchUps?.find((matchUp) => matchUp.matchUpId === consolationFedInMatchUpId);
+  expect(consolationFedInMatchUp?.matchUpStatus).toEqual(WALKOVER);
+  expect(consolationFedInMatchUp?.winningSide).toEqual(2);
+  const winnerParticipantId = consolationFedInMatchUp?.sides[consolationFedInMatchUp?.winningSide-1].participantId;
+  
+  const round3ConsolationMatchUpId = 'm-c0-3-4'
+  const round3ConsolationMatchUp = matchUps?.find((matchUp) => matchUp.matchUpId === round3ConsolationMatchUpId);
+  expect(round3ConsolationMatchUp?.sides?.[0].participantId).toBeUndefined
+  //making sure the progressed player is the one that was mark as the winner in the fed in round
+  expect(round3ConsolationMatchUp?.sides?.[1].participantId).toEqual(winnerParticipantId)
+  
 });
