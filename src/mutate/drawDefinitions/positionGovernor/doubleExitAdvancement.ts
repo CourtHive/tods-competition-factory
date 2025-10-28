@@ -33,7 +33,12 @@ export function doubleExitAdvancement(params) {
 
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const { loserTargetLink } = targetLinks;
-    if (appliedPolicies?.progression?.doubleExitPropagateBye) {
+    if (
+      appliedPolicies?.progression?.doubleExitPropagateBye ||
+      //we also want to propagate a double exit as a BYE if we are targeting
+      //the fed in participant
+      (loserMatchUp.feedRound && loserMatchUp.sides?.[0]?.participantFed)
+    ) {
       const result = advanceByeToLoserMatchUp({
         loserTargetDrawPosition,
         tournamentRecord,

@@ -2,7 +2,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-import { DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, BYE } from '@Constants/matchUpStatusConstants';
 import { CONSOLATION, FEED_IN_CHAMPIONSHIP, MAIN } from '@Constants/drawDefinitionConstants';
 
 it('properly handles produced Exit fed into consolation structure', () => {
@@ -12,6 +12,7 @@ it('properly handles produced Exit fed into consolation structure', () => {
   } = mocksEngine.generateTournamentRecord({
     drawProfiles: [
       {
+        idPrefix: 'm',
         drawType: FEED_IN_CHAMPIONSHIP,
         participantsCount: 5,
         drawSize: 8,
@@ -36,10 +37,10 @@ it('properly handles produced Exit fed into consolation structure', () => {
   });
   expect(result.success).toEqual(true);
 
-  // SECOND: find the CONSOLATION matchUp and confirm the presence of the produced WALKOVER
+  // SECOND: find the CONSOLATION matchUp and confirm the presence of the produced BYE
   matchUps = tournamentEngine.allTournamentMatchUps().matchUps;
   targetMatchUp = matchUps.find(
-    ({ stage, roundNumber, matchUpStatus }) => stage === CONSOLATION && roundNumber === 2 && matchUpStatus === WALKOVER,
+    ({matchUpId, matchUpStatus, stage}) => matchUpId === targetMatchUp.loserMatchUpId && matchUpStatus === BYE && stage === CONSOLATION
   );
 
   // NOTE: whether the MAIN matchUp was in the Top Half or Bottom Half effects location in CONSOLATION
