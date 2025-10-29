@@ -10,7 +10,6 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
@@ -91,7 +90,6 @@ export function assignDrawPositionBye({
   if (!structureId) ({ structureId } = structure);
 
   const stack = 'assignDrawPositionBye';
-  pushGlobalLog({ method: stack, color: 'cyan', drawPosition });
 
   if (!matchUpsMap) {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
@@ -337,9 +335,6 @@ export function advanceDrawPosition({
   matchUpId,
   event,
 }: AdvanceDrawPositionType) {
-  const stack = 'advanceDrawPosition';
-  pushGlobalLog({ method: stack, color: 'cyan', drawPositionToAdvance });
-
   const matchUp = matchUpsMap.drawMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   const inContextMatchUp = inContextDrawMatchUps.find((matchUp) => matchUp.matchUpId === matchUpId);
   const structureId = inContextMatchUp?.structureId;
@@ -498,18 +493,6 @@ function advanceWinner({
     drawPositions,
   });
 
-  const changedDrawPosition = noContextWinnerMatchUp.drawPositions.find(
-    (position) => !twoDrawPositions.includes(position),
-  );
-
-  pushGlobalLog({
-    method: stack,
-    color: 'brightyellow',
-    changedDrawPosition,
-    pairedDrawPositionIsBye,
-    drawPositionIsBye,
-  });
-
   modifyMatchUpNotice({
     tournamentId: tournamentRecord?.tournamentId,
     matchUp: noContextWinnerMatchUp,
@@ -588,9 +571,6 @@ function assignFedDrawPositionBye({
   event,
 }: AssignFedDrawPositionByeType) {
   const { roundNumber } = loserMatchUp;
-
-  const stack = 'assignFedDrawPositionBye';
-  pushGlobalLog({ method: stack, color: 'cyan', loserTargetDrawPosition });
 
   const mappedMatchUps = matchUpsMap?.mappedMatchUps || {};
   const loserStructureMatchUps = mappedMatchUps[loserMatchUp.structureId].matchUps;

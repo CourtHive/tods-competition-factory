@@ -3,8 +3,8 @@ import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpSc
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { lastSetFormatIsTimed } from '@Query/matchUp/lastSetFormatisTimed';
 import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
-import { checkConnectedStructures } from './checkConnectedStructures';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { attemptToModifyScore } from './attemptToModifyScore';
@@ -17,10 +17,12 @@ import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
   CANCELLED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   TO_BE_PLAYED,
+  WALKOVER,
 } from '@Constants/matchUpStatusConstants';
 
 export function noDownstreamDependencies(params) {
@@ -95,7 +97,9 @@ export function noDownstreamDependencies(params) {
   // if a matchUpStatus is provided and it is not TO_BE_PLAYED then an attempt to set matchUpStatus is valid
   const statusNotToBePlayed = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
-  const result = ((winningSide || triggerDualWinningSide) && attemptToSetWinningSide(params)) ||
+  const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(matchUpStatus);
+
+  const result = ((winningSide || triggerDualWinningSide || propagateExitStatus) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||
     (statusNotToBePlayed && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected(removeScore)) ||

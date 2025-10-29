@@ -11,9 +11,11 @@ import { directLoser } from './directLoser';
 import { MISSING_DRAW_POSITIONS } from '@Constants/errorConditionConstants';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
-export function directParticipants(params) {
+export function directParticipants(params): ResultType {
   const stack = 'directParticipants';
+
   const result = attemptToModifyScore(params);
 
   if (result.error) return decorateResult({ result, stack });
@@ -23,8 +25,10 @@ export function directParticipants(params) {
 
   const {
     dualWinningSideChange,
-    projectedWinningSide,
     inContextDrawMatchUps,
+    projectedWinningSide,
+    propagateExitStatus,
+    matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
@@ -72,6 +76,7 @@ export function directParticipants(params) {
 
     const winningDrawPosition = drawPositions[winningIndex];
     const loserDrawPosition = drawPositions[losingIndex];
+    const context = {};
 
     const {
       targetLinks: { loserTargetLink, winnerTargetLink, byeTargetLink },
@@ -105,10 +110,13 @@ export function directParticipants(params) {
     if (loserMatchUp) {
       const result = directLoser({
         sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+        sourceMatchUpStatusCodes: matchUpStatusCodes || [],
+        sourceWinningSide: winningSide,
         loserMatchUpDrawPositionIndex,
         sourceMatchUpId: matchUpId,
         inContextDrawMatchUps,
         projectedWinningSide,
+        propagateExitStatus,
         loserDrawPosition,
         tournamentRecord,
         loserTargetLink,
@@ -119,6 +127,14 @@ export function directParticipants(params) {
         dualMatchUp,
         event,
       });
+      if (result.context?.progressExitStatus) {
+        Object.assign(context, result.context, {
+          sourceMatchUpStatus: (matchUpStatusIsValid && matchUpStatus) || COMPLETED,
+          sourceMatchUpStatusCodes: matchUpStatusCodes || [],
+          loserMatchUp,
+          matchUpsMap,
+        });
+      }
       if (result.error) return decorateResult({ result, stack });
     }
 
@@ -135,9 +151,8 @@ export function directParticipants(params) {
       });
       if (result.error) return decorateResult({ result, stack });
     }
+    return decorateResult({ result: { ...SUCCESS, ...annotate }, stack, context });
   } else {
     return decorateResult({ result: { error: MISSING_DRAW_POSITIONS }, stack });
   }
-
-  return decorateResult({ result: { ...SUCCESS, ...annotate }, stack });
 }
