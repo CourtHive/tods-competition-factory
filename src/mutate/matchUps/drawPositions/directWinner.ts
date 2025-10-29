@@ -9,6 +9,7 @@ import { findStructure } from '@Acquire/findStructure';
 
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 
 export function directWinner({
   winnerMatchUpDrawPositionIndex,
@@ -24,7 +25,7 @@ export function directWinner({
   dualMatchUp,
   matchUpsMap,
   event,
-}) {
+}): ResultType {
   const stack = 'directWinner';
 
   if (winnerTargetLink) {
@@ -112,7 +113,7 @@ export function directWinner({
       if (structure?.stage !== QUALIFYING) {
         const error = 'winner target position unavaiallble';
         console.log(error);
-        return { error };
+        decorateResult({ stack, result: { error } });
       }
     }
 

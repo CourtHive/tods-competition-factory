@@ -106,6 +106,10 @@ export function assignMatchUpDrawPosition({
       [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
       matchUp.matchUpStatus) ||
     TO_BE_PLAYED;
+  
+  //are we going to a match already marked as a WO becuase it was propagated from the main draw?
+  const isWalkover = 
+      !!([WALKOVER, DEFAULTED].includes(matchUp?.matchUpStatus) && matchUp?.winningSide)
 
   if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
@@ -121,8 +125,11 @@ export function assignMatchUpDrawPosition({
           inContextDrawMatchUps,
           drawPosition,
           matchUpId,
-        })) ||
-      undefined;
+        }))
+      //if the match is already marked as a WO with a winning side
+      //we keep the winning side
+      || (isWalkover && matchUp.winningSide)
+      || undefined;
 
     if (matchUp?.matchUpStatusCodes) {
       updateMatchUpStatusCodes({
@@ -138,7 +145,8 @@ export function assignMatchUpDrawPosition({
     Object.assign(matchUp, {
       drawPositions: updatedDrawPositions,
       winningSide: exitWinningSide,
-      matchUpStatus,
+      //we keep the current status if it is already marked as WO
+      matchUpStatus: isWalkover ? matchUp?.matchUpStatus : matchUpStatus,
     });
 
     modifyMatchUpNotice({
@@ -185,6 +193,20 @@ export function assignMatchUpDrawPosition({
         }
       }
     }
+  }
+  //we want to automatically progress the winner if the match was already marked as a walkover
+  else if (positionAssigned && isWalkover) {
+    if (winnerMatchUp) {
+        const result = assignMatchUpDrawPosition({
+          matchUpId: winnerMatchUp.matchUpId,
+          inContextDrawMatchUps,
+          tournamentRecord,
+          drawDefinition,
+          drawPosition,
+          matchUpsMap,
+        });
+        if (result.error) return result;
+    }
   } else if (winnerMatchUp && inContextMatchUp && !inContextMatchUp.feedRound) {
     const { pairedPreviousMatchUpIsDoubleExit } = getPairedPreviousMatchUpIsDoubleExit({
       targetMatchUp: matchUp,
@@ -204,8 +226,7 @@ export function assignMatchUpDrawPosition({
       });
       if (result.error) return result;
     }
-  }
-
+  } 
   // if { matchUpType: TEAM } then also assign the default lineUp to the appopriate side
   if (matchUp?.matchUpType === TEAM) {
     const inContextTargetMatchUp = inContextDrawMatchUps?.find(({ matchUpId }) => matchUpId === matchUp.matchUpId);

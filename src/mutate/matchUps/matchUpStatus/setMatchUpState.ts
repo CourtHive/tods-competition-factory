@@ -19,7 +19,6 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { validateScore } from '@Validators/validateScore';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
@@ -56,6 +55,7 @@ import {
   TO_BE_PLAYED,
   validMatchUpStatuses,
   WALKOVER,
+  DEFAULTED,
 } from '@Constants/matchUpStatusConstants';
 
 // NOTE: Internal method for setting matchUpStatus or score and winningSide, not to be confused with setMatchUpStatus
@@ -67,10 +67,11 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
-  projectedWinningSide?: number;
-  matchUpStatusCodes?: string[];
-  tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
+  matchUpStatusCodes?: string[];
+  projectedWinningSide?: number;
+  propagateExitStatus?: boolean;
+  tournamentRecord?: Tournament;
   autoCalcDisabled?: boolean;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
@@ -88,7 +89,7 @@ type SetMatchUpStateArgs = {
 };
 
 export function setMatchUpState(params: SetMatchUpStateArgs): any {
-  const stack = 'setMatchUpStatus';
+  const stack = 'setMatchUpState';
 
   // always clear score if DOUBLE_WALKOVER or WALKOVER
   if (params.matchUpStatus && [WALKOVER, DOUBLE_WALKOVER].includes(params.matchUpStatus)) params.score = undefined;
@@ -99,6 +100,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
+    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -284,6 +286,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
+    propagateExitStatus,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -417,13 +420,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const matchUpWinner = (winningSide && !matchUpTieId) || params.projectedWinningSide;
 
-  pushGlobalLog({
-    activeDownstream,
-    matchUpWinner,
-    method: stack,
-    winningSide,
-  });
-
   // when autoCalcDisabled for TEAM matchUps then noDownstreamDependencies can change collectionMatchUp status
   // const result = ((!activeDownstream || params.autoCalcDisabled) && noDownstreamDependencies(params)) ||
   const result = (!activeDownstream && noDownstreamDependencies(params)) ||
@@ -492,6 +488,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
+  propagateExitStatus,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -519,10 +516,21 @@ function checkParticipants({
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
 
+  if (
+    matchUpStatus &&
+    //we want to allow wo, default and double walkover inn the consolation draw
+    //to have only one particpiant when they are caused by an exit propagation
+    [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
+    participantsCount === 1 &&
+    propagateExitStatus
+  ) {
+    return { ...SUCCESS };
+  }
+
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',
-      context: { matchUpStatus, requiredParticipants },
+      context: { matchUpStatus, requiredParticipants, propagateExitStatus: propagateExitStatus, participantsCount },
       result: { error: INVALID_MATCHUP_STATUS },
     });
   }
