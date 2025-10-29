@@ -252,6 +252,7 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
         scoringActive,
         isRoundRobin,
         roundProfile,
+        matchUpsMap,
         structure,
         context,
         matchUp,

@@ -16,9 +16,9 @@ import { unique } from '@Tools/arrays';
 import { getSide } from './getSide';
 
 // constants and types
+import { BYE, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { CONSOLATION, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
-import { QUALIFYING } from '@Constants/drawDefinitionConstants';
-import { BYE } from '@Constants/matchUpStatusConstants';
 import { MIXED } from '@Constants/genderConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { SINGLES } from '@Constants/matchUpTypes';
@@ -35,6 +35,7 @@ import {
 import {
   ContextContent,
   ContextProfile,
+  MatchUpsMap,
   ParticipantMap,
   PolicyDefinitions,
   ScheduleTiming,
@@ -64,6 +65,7 @@ type AddMatchUpContextArgs = {
   usePublishState?: boolean;
   afterRecoveryTimes?: any;
   matchUp: HydratedMatchUp;
+  matchUpsMap: MatchUpsMap;
   roundNamingProfile?: any;
   scoringActive?: boolean;
   isRoundRobin?: boolean;
@@ -103,6 +105,7 @@ export function addMatchUpContext({
   isRoundRobin,
   roundProfile,
   sideLineUps,
+  matchUpsMap,
   structure,
   context,
   matchUp,
@@ -350,6 +353,31 @@ export function addMatchUpContext({
             }
           }
 
+          const hasExitFromMainDraw = (
+            matchUpId: string,
+            participantId: string,
+            matchUps: MatchUpsMap,
+            structureStageSequence: number,
+          ) => {
+            structureStageSequence--;
+            const parentMatchUp = matchUps.drawMatchUps.find((m) => {
+              //need to identify the parent matches for the correct participant
+              //but I cannot do that because matchUpsMap does not have the participants info
+              m.loserMatchUpId === matchUpId && m.sides?.find((s) => s.participantId === participantId);
+            });
+            if (!parentMatchUp) return false; //probably need to log an error or something
+            if (structureStageSequence === 0)
+              return [WALKOVER, DEFAULTED].includes(parentMatchUp.matchUpStatus);
+            else return hasExitFromMainDraw(parentMatchUp.matchUpId, participantId, matchUps, structureStageSequence);
+          };
+
+          //figure out if participant had a wo/deffault/withdrawl exit from the main draw, if so mark it.
+          participant.carriedOverStatus =
+            stage === CONSOLATION &&
+            structure.stageSequence &&
+            participant.participantId &&
+            hasExitFromMainDraw(matchUp.matchUpId, participant.participantId, matchUpsMap, structure.stageSequence);
+
           if (hydrateParticipants !== false) {
             Object.assign(side, { participant });
           } else {
@@ -458,6 +486,7 @@ export function addMatchUpContext({
         matchUpTieId,
         isRoundRobin,
         roundProfile,
+        matchUpsMap,
         matchUp,
         event,
 
