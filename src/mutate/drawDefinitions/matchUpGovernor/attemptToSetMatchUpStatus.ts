@@ -5,7 +5,6 @@ import { doubleExitAdvancement } from '@Mutate/drawDefinitions/positionGovernor/
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
@@ -49,11 +48,6 @@ export function attemptToSetMatchUpStatus(params) {
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
     });
 
-  pushGlobalLog({
-    propagateExitStatus: params.propagateExitStatus,
-    matchUpStatus: params.matchUpStatus,
-    method: stack,
-  });
   return (
     (unrecognized && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||
     (onlyModifyScore && scoreModification(params)) ||
@@ -94,8 +88,6 @@ function scoreModification(params) {
   const stack = 'scoreModification';
 
   const removeDirected = params.isCollectionMatchUp && params.dualMatchUp?.winningSide && !params.projectedWinningSide;
-
-  pushGlobalLog({ method: stack, matchUpStatus: params.matchUpStatus, removeDirected });
 
   if (removeDirected) {
     const result = removeDirectedParticipants(params);

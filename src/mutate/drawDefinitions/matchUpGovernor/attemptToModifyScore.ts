@@ -2,7 +2,6 @@ import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsG
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 
 // constants
@@ -40,14 +39,6 @@ export function attemptToModifyScore(params) {
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
     ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
-
-  pushGlobalLog({
-    propagateExitStatus: propagateExitStatus,
-    winningSide: params.winningSide,
-    matchUpId: matchUp?.matchUpId,
-    method: stack,
-    validToScore,
-  });
 
   if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 

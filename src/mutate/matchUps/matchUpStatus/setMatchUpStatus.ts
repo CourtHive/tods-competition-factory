@@ -3,8 +3,8 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
+import { progressExitStatus } from '../drawPositions/progressExitStatus';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findPolicy } from '@Acquire/findPolicy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -14,7 +14,6 @@ import { INVALID_WINNING_SIDE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
-import { progressExitStatus } from '../drawPositions/progressExitStatus';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -75,12 +74,6 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   } = params;
-
-  pushGlobalLog({
-    color: 'brightyellow',
-    method: stack,
-    matchUpId,
-  });
 
   const matchUpFormat = params.matchUpFormat || params.outcome?.matchUpFormat;
 

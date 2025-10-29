@@ -3,7 +3,6 @@ import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDraw
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { directWinner } from './directWinner';
 import { directLoser } from './directLoser';
@@ -17,14 +16,9 @@ import { ResultType } from '@Types/factoryTypes';
 export function directParticipants(params): ResultType {
   const stack = 'directParticipants';
 
-  pushGlobalLog({
-    color: 'brightmagenta',
-    method: stack,
-  });
-
   const result = attemptToModifyScore(params);
 
-  if ('error' in result && result.error) return decorateResult({ result, stack });
+  if (result.error) return decorateResult({ result, stack });
   const matchUpStatusIsValid = isDirectingMatchUpStatus({
     matchUpStatus: params.matchUpStatus,
   });
@@ -94,17 +88,6 @@ export function directParticipants(params): ResultType {
         byeMatchUp,
       },
     } = targetData;
-
-    pushGlobalLog({
-      winnerMatchUpId: winnerMatchUp?.matchUpId,
-      loserMatchUpId: loserMatchUp?.matchUpId,
-      color: 'brightmagenta',
-      loserDrawPosition,
-      method: stack,
-      matchUpStatus,
-      winningSide,
-      matchUpId,
-    });
 
     if (winnerMatchUp) {
       const result = directWinner({

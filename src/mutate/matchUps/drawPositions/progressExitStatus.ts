@@ -1,7 +1,6 @@
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { DEFAULTED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -19,13 +18,6 @@ export function progressExitStatus({
   event,
 }) {
   const stack = 'progressExitStatus';
-
-  pushGlobalLog({
-    matchUpId: loserMatchUp?.matchUpId,
-    matchUpStatus: sourceMatchUpStatus,
-    color: 'magenta',
-    method: stack,
-  });
 
   // RETIRED should not be propagated as an exit status
   const carryOverMatchUpStatus =

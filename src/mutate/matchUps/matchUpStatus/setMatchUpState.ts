@@ -19,7 +19,6 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { addExtension } from '@Mutate/extensions/addExtension';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { validateScore } from '@Validators/validateScore';
 import { findDrawMatchUp } from '@Acquire/findDrawMatchUp';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
@@ -113,14 +112,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     event,
     score,
   } = params;
-
-  pushGlobalLog({
-    color: 'brightyellow',
-    method: stack,
-    matchUpStatus,
-    winningSide,
-    matchUpId,
-  });
 
   // Check for missing parameters ---------------------------------------------
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -429,13 +420,6 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const matchUpWinner = (winningSide && !matchUpTieId) || params.projectedWinningSide;
 
-  pushGlobalLog({
-    activeDownstream,
-    matchUpWinner,
-    method: stack,
-    winningSide,
-  });
-
   // when autoCalcDisabled for TEAM matchUps then noDownstreamDependencies can change collectionMatchUp status
   // const result = ((!activeDownstream || params.autoCalcDisabled) && noDownstreamDependencies(params)) ||
   const result = (!activeDownstream && noDownstreamDependencies(params)) ||
@@ -449,10 +433,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
 function winningSideWithDownstreamDependencies(params) {
   const { matchUp, winningSide, matchUpTieId, dualWinningSideChange } = params;
-  if (
-    winningSide === matchUp.winningSide ||
-    (matchUpTieId && !dualWinningSideChange)
-  ) {
+  if (winningSide === matchUp.winningSide || (matchUpTieId && !dualWinningSideChange)) {
     return applyMatchUpValues(params);
   } else {
     return decorateResult({

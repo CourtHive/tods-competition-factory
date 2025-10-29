@@ -2,12 +2,11 @@ import { removeLineUpSubstitutions } from '@Mutate/drawDefinitions/removeLineUpS
 import { assignDrawPositionBye } from '@Mutate/matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
-import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
+import { assignSeed } from '@Mutate/drawDefinitions/entryGovernor/seedAssignment';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { decorateResult } from '@Functions/global/decorateResult';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
@@ -108,18 +107,6 @@ export function directLoser(params): ResultType {
   const validExitToPropagate =
     propagateExitStatus && [RETIRED, WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
 
-  pushGlobalLog({
-    matchUpStatus: sourceMatchUpStatus,
-    matchUpId: loserMatchUp?.matchUpId,
-    loserAlreadyDirected,
-    validExitToPropagate,
-    sourceStructureId,
-    targetStructureId,
-    loserDrawPosition,
-    color: 'brightred',
-    method: stack,
-  });
-
   if (loserAlreadyDirected) {
     return { ...SUCCESS, stack };
   }
@@ -135,16 +122,6 @@ export function directLoser(params): ResultType {
   const targetDrawPositionIsUnfilled = unfilledTargetMatchUpDrawPositions?.includes(targetMatchUpDrawPosition);
   const isFeedRound = loserTargetLink.target.roundNumber > 1 && unfilledTargetMatchUpDrawPositions?.length;
   const isFirstRoundValidDrawPosition = loserTargetLink.target.roundNumber === 1 && targetDrawPositionIsUnfilled;
-
-  pushGlobalLog({
-    matchUpStatus: sourceMatchUpStatus,
-    matchUpId: loserMatchUp?.matchUpId,
-    isFirstRoundValidDrawPosition,
-    validExitToPropagate,
-    color: 'brightred',
-    method: stack,
-    isFeedRound,
-  });
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();

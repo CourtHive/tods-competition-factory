@@ -8,7 +8,6 @@ import { checkConnectedStructures } from './checkConnectedStructures';
 import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { attemptToModifyScore } from './attemptToModifyScore';
-import { pushGlobalLog } from '@Functions/global/globalLog';
 import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
 
@@ -29,13 +28,6 @@ import {
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
   const stack = 'noDownStreamDependencies';
-
-  pushGlobalLog({
-    matchUpId: matchUp?.matchUpId,
-    color: 'brightred',
-    method: stack,
-    matchUpStatus,
-  });
 
   const doubleExitCleanup =
     [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp?.matchUpStatus) &&
@@ -106,14 +98,6 @@ export function noDownstreamDependencies(params) {
   const statusNotToBePlayed = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
 
   const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(matchUpStatus);
-
-  pushGlobalLog({
-    color: 'brightgreen',
-    propagateExitStatus,
-    statusNotToBePlayed,
-    method: stack,
-    winningSide,
-  });
 
   const result = ((winningSide || triggerDualWinningSide || propagateExitStatus) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||

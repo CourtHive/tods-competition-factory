@@ -1,11 +1,11 @@
-import mocksEngine from '@Assemblies/engines/mock';
 import { tournamentEngine } from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 // Constants
-import { COMPASS } from '@Constants/drawDefinitionConstants';
 import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 it('will not allow winningSide change when active downstream', () => {
   mocksEngine.generateTournamentRecord({
