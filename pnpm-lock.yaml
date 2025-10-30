@@ -69,8 +69,8 @@ importers:
         specifier: 6.1.0
         version: 6.1.0(@babel/core@7.28.5)(@types/babel__core@7.20.5)(rollup@4.52.5)
       '@rollup/plugin-commonjs':
-        specifier: 28.0.9
-        version: 28.0.9(rollup@4.52.5)
+        specifier: 29.0.0
+        version: 29.0.0(rollup@4.52.5)
       '@rollup/plugin-json':
         specifier: 6.1.0
         version: 6.1.0(rollup@4.52.5)
@@ -1757,8 +1757,8 @@ packages:
       rollup:
         optional: true
 
-  '@rollup/plugin-commonjs@28.0.9':
-    resolution: {integrity: sha512-PIR4/OHZ79romx0BVVll/PkwWpJ7e5lsqFa3gFfcrFPWwLXLV39JVUzQV9RKjWerE7B845Hqjj9VYlQeieZ2dA==}
+  '@rollup/plugin-commonjs@29.0.0':
+    resolution: {integrity: sha512-U2YHaxR2cU/yAiwKJtJRhnyLk7cifnQw0zUpISsocBDoHDJn+HTV74ABqnwr5bEgWUwFZC9oFL6wLe21lHu5eQ==}
     engines: {node: '>=16.0.0 || 14 >= 14.17'}
     peerDependencies:
       rollup: ^2.68.0||^3.0.0||^4.0.0
@@ -7615,7 +7615,7 @@ snapshots:
   '@jridgewell/trace-mapping@0.3.25':
     dependencies:
       '@jridgewell/resolve-uri': 3.1.2
-      '@jridgewell/sourcemap-codec': 1.5.0
+      '@jridgewell/sourcemap-codec': 1.5.5
 
   '@jridgewell/trace-mapping@0.3.29':
     dependencies:
@@ -7891,14 +7891,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  '@rollup/plugin-commonjs@28.0.9(rollup@4.52.5)':
+  '@rollup/plugin-commonjs@29.0.0(rollup@4.52.5)':
     dependencies:
       '@rollup/pluginutils': 5.1.2(rollup@4.52.5)
       commondir: 1.0.1
       estree-walker: 2.0.2
       fdir: 6.5.0(picomatch@4.0.3)
       is-reference: 1.2.1
-      magic-string: 0.30.17
+      magic-string: 0.30.21
       picomatch: 4.0.3
     optionalDependencies:
       rollup: 4.52.5
