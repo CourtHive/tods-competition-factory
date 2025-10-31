@@ -17,7 +17,7 @@ import { getSide } from './getSide';
 
 // constants and types
 import { BYE, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { CONSOLATION, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
 import { MIXED } from '@Constants/genderConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -353,31 +353,22 @@ export function addMatchUpContext({
             }
           }
 
-          const hasExitFromMainDraw = (
-            matchUpId: string,
-            participantId: string,
-            matchUps: MatchUpsMap,
-            structureStageSequence: number,
-          ) => {
-            structureStageSequence--;
-            const parentMatchUp = matchUps.drawMatchUps.find((m) => {
-              //need to identify the parent matches for the correct participant
-              //but I cannot do that because matchUpsMap does not have the participants info
-              m.loserMatchUpId === matchUpId && m.sides?.find((s) => s.participantId === participantId);
-            });
-            if (!parentMatchUp) return false; //probably need to log an error or something
-            if (structureStageSequence === 0)
-              return [WALKOVER, DEFAULTED].includes(parentMatchUp.matchUpStatus);
-            else return hasExitFromMainDraw(parentMatchUp.matchUpId, participantId, matchUps, structureStageSequence);
-          };
+          //----------------------------------------------------
+          //Here we want to mark sides that have a carried over status from one of the parent
+          //matches. This does not completely work as are not able to identify the correct side
+          //as we do not have participants' details.
+          //Atm we are just making some assumptions,but these assumptions break as soon as you change the score
+          //of the consolation match. e.g. it starts marking the wrong side as the carried over status.
+          //figure out if participant had a wo/default/withdrawl exit from the previous match, if so mark it.
+          const upStreamWOExits = matchUpsMap.drawMatchUps.filter(
+            m => m.loserMatchUpId === matchUp.matchUpId && [WALKOVER, DEFAULTED].includes(m.matchUpStatus)
+          )
+          side.carriedOverStatus =
+            upStreamWOExits.length === 2 || //both participants came from a WO so we can mark them both as carry over
+            (upStreamWOExits.length === 1 && matchUp.winningSide && side.sideNumber !== matchUp.winningSide); //if only one we assume the non winning participant was a WO
+            
 
-          //figure out if participant had a wo/deffault/withdrawl exit from the main draw, if so mark it.
-          participant.carriedOverStatus =
-            stage === CONSOLATION &&
-            structure.stageSequence &&
-            participant.participantId &&
-            hasExitFromMainDraw(matchUp.matchUpId, participant.participantId, matchUpsMap, structure.stageSequence);
-
+          //----------------------------------------------------
           if (hydrateParticipants !== false) {
             Object.assign(side, { participant });
           } else {
