@@ -64,6 +64,7 @@ type SetMatchUpStateArgs = {
   tournamentRecords?: { [key: string]: Tournament };
   policyDefinitions?: PolicyDefinitions;
   appliedPolicies?: PolicyDefinitions;
+  carriedOverStatusSides?: boolean[];
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;

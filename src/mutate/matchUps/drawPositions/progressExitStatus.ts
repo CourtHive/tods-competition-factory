@@ -34,6 +34,7 @@ export function progressExitStatus({
 
   //find the updated loser match up
   const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
+  const carriedOverStatusSides = updatedLoserMatchUp?._carriedOverStatusSides ?? [false, false];
   if (updatedLoserMatchUp?.matchUpId && loserMatchUpStatus) {
     let winningSide: number | undefined = undefined;
     //get rid of the double walkover special status codes
@@ -45,6 +46,7 @@ export function progressExitStatus({
     const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
     //set the original status code to the correct side in the loser match
     if (loserParticipantSide?.sideNumber) {
+      carriedOverStatusSides[loserParticipantSide.sideNumber-1] = true
       //find out how many assigned participants are already in the loser match up
       const participantsCount = updatedLoserMatchUp?.sides?.reduce((count, current) => {
         return current?.participantId ? count + 1 : count;
@@ -96,6 +98,7 @@ export function progressExitStatus({
       drawDefinition,
       winningSide,
       event,
+      carriedOverStatusSides,
     });
     return decorateResult({ result, stack, context: { progressExitStatus: true } });
   }

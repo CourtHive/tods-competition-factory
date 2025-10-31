@@ -17,10 +17,12 @@ import { unique } from '@Tools/arrays';
 import { DrawDefinition, Event, MatchUp, MatchUpStatusUnion, Tournament } from '@Types/tournamentTypes';
 import { MATCHUP_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { UPDATE_INCONTEXT_MATCHUP } from '@Constants/topicConstants';
+import { MatchUpsMap, PolicyDefinitions } from '@Types/factoryTypes';
+import { removeExtension } from '@Mutate/extensions/removeExtension';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
+import { addExtension } from '@Mutate/extensions/addExtension';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
-import { PolicyDefinitions } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { TEAM } from '@Constants/matchUpTypes';
 import {
@@ -46,10 +48,12 @@ import {
 type ModifyMatchUpScoreArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   appliedPolicies?: PolicyDefinitions;
+  carriedOverStatusSides?: boolean[];
+  drawDefinition?: DrawDefinition;
   tournamentRecord?: Tournament;
   matchUpStatusCodes?: string[];
-  drawDefinition?: DrawDefinition;
   removeWinningSide?: boolean;
+  matchUpsMap?:MatchUpsMap;
   matchUpFormat?: string;
   removeScore?: boolean;
   winningSide?: number;
@@ -68,9 +72,11 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
   let structure;
 
   const {
+    carriedOverStatusSides,
     matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
+    matchUpsMap,
     matchUpStatus,
     removeScore,
     winningSide,
@@ -112,6 +118,21 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
   }
 
   if ((matchUpStatus && [WALKOVER, DOUBLE_WALKOVER].includes(matchUpStatus)) || removeScore) {
+    
+    //TODO: we want to remove the carriedOverStatusSides extension for a consolation match only
+    //if one of the parent matches has been cleared and not when we clear the score for itself.
+
+    //if one of the parent matches is a WO,DEF then do not remove the carriedOverStatusSides extensions.
+    //figure out if participant had a wo/default/withdrawl exit from the previous match, if so mark it.
+    const upStreamWOExits = matchUpsMap?.drawMatchUps.find(
+      (m) => m.loserMatchUpId === matchUp.matchUpId && [WALKOVER, DEFAULTED].includes(m.matchUpStatus),
+    );
+    if (!upStreamWOExits) {
+      removeExtension({
+        name: 'carriedOverStatusSides',
+        element: matchUp,
+      });
+    }
     Object.assign(matchUp, { ...toBePlayed });
   } else if (score) {
     matchUp.score = score;
@@ -123,9 +144,18 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
   if (matchUpFormat) matchUp.matchUpFormat = matchUpFormat;
   if (matchUpStatusCodes) matchUp.matchUpStatusCodes = matchUpStatusCodes;
   if (winningSide) matchUp.winningSide = winningSide;
-
-  // removeWinningSide directive calculated upstream
-  if (params.removeWinningSide) matchUp.winningSide = undefined;
+  if (carriedOverStatusSides) {
+    addExtension({
+      element: matchUp,
+      extension: {
+        name: 'carriedOverStatusSides',
+        value: carriedOverStatusSides,
+      },
+    });
+  }
+  if (params.removeWinningSide)
+    // removeWinningSide directive calculated upstream
+    matchUp.winningSide = undefined;
 
   if (!structure && drawDefinition) {
     ({ structure } = findDrawMatchUp({
@@ -209,9 +239,9 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
 
   const tournamentId = tournamentRecord?.tournamentId;
   const sendInContext = getTopics().topics.includes(UPDATE_INCONTEXT_MATCHUP);
-  const matchUpsMap = (sendInContext || defaultedProcessCodes) && getMatchUpsMap({ drawDefinition });
+  const updatedMatchUpsMap = (sendInContext || defaultedProcessCodes) && getMatchUpsMap({ drawDefinition });
   const inContextMatchUp =
-    matchUpsMap &&
+    updatedMatchUpsMap &&
     getAllDrawMatchUps({
       // client will not normally be receiving participants for the first time...
       // ... and should therefore already have groupings / ratings / rankings for participants
@@ -221,7 +251,7 @@ export function modifyMatchUpScore(params: ModifyMatchUpScoreArgs) {
       tournamentRecord, // required to hydrate participants
       inContext: true,
       drawDefinition,
-      matchUpsMap,
+      matchUpsMap: updatedMatchUpsMap,
     }).matchUps?.[0];
 
   if (sendInContext && inContextMatchUp) {
