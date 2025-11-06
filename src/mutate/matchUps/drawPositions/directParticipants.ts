@@ -17,7 +17,7 @@ export function directParticipants(params): ResultType {
   const stack = 'directParticipants';
   const result = attemptToModifyScore(params);
 
-  if ('error' in result && result.error) return decorateResult({ result, stack });
+  if (result.error) return decorateResult({ result, stack });
   const matchUpStatusIsValid = isDirectingMatchUpStatus({
     matchUpStatus: params.matchUpStatus,
   });
