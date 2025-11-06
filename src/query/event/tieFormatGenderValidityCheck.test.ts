@@ -27,8 +27,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: MIXED },
       error: INVALID_GENDER,
-      gender: 'MIXED',
       valid: false,
     },
   },
@@ -39,8 +39,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: ANY },
       error: INVALID_GENDER,
-      gender: 'ANY',
       valid: false,
     },
   },
@@ -51,8 +51,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: FEMALE },
       error: INVALID_GENDER,
-      gender: 'FEMALE',
       valid: false,
     },
   },
@@ -63,8 +63,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: MALE },
       error: INVALID_GENDER,
-      gender: 'MALE',
       valid: false,
     },
   },
@@ -75,8 +75,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: MIXED },
       error: INVALID_GENDER,
-      gender: 'MIXED',
       valid: false,
     },
   },
@@ -94,8 +94,8 @@ const scenarios = [
     },
     expectation: {
       stack: ['tieFormatGenderValidityCheck'],
+      context: { gender: ANY },
       error: INVALID_GENDER,
-      gender: 'ANY',
       valid: false,
     },
   },
