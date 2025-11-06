@@ -6,6 +6,7 @@ import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -364,6 +365,12 @@ export function removeDirectedBye({
 }: RemoveDirectedByeArgs) {
   const structureId = targetLink.target.structureId;
   const stack = 'removeDirectedBye';
+
+  pushGlobalLog({
+    color: 'brightyellow',
+    method: stack,
+    drawPosition,
+  });
 
   const result = clearDrawPosition({
     inContextDrawMatchUps,

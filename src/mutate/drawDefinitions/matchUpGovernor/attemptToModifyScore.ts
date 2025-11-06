@@ -10,16 +10,8 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const {
-    matchUpStatusCodes,
-    matchUpStatus,
-    structure,
-    matchUp,
-    dualMatchUp,
-    inContextMatchUp,
-    autoCalcDisabled,
-    propagateExitStatus,
-  } = params;
+  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
+    params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -37,8 +29,7 @@ export function attemptToModifyScore(params) {
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
-    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
-    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
+    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
 
   if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 
@@ -47,7 +38,6 @@ export function attemptToModifyScore(params) {
   const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
-    winningSide: params.winningSide,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: updatedMatchUpStatus,
     context: stack,
