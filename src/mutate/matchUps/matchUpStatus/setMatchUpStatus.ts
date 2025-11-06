@@ -3,8 +3,6 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
-import { progressExitStatus } from '../drawPositions/progressExitStatus';
-import { decorateResult } from '@Functions/global/decorateResult';
 import { findPolicy } from '@Acquire/findPolicy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -25,9 +23,8 @@ type SetMatchUpStatusArgs = {
   policyDefinitions?: PolicyDefinitions;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
-  drawDefinition: DrawDefinition;
-  propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
+  drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
   enableAutoCalc?: boolean;
   matchUpFormat?: string;
@@ -44,7 +41,6 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
   if (paramsCheck.error) return paramsCheck;
-  const stack = 'setMatchUpStatus';
 
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {
@@ -56,14 +52,13 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
       drawId: params.drawId,
       tournamentRecord,
     });
-    if (result.error) return decorateResult({ stack, result });
+    if (result.error) return result;
     if (result.drawDefinition) params.drawDefinition = result.drawDefinition;
     params.event = result.event;
   }
 
   const {
     disableScoreValidation,
-    propagateExitStatus,
     policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
@@ -92,7 +87,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const { outcome, setTBlast } = params;
 
   if (outcome?.winningSide && ![1, 2].includes(outcome.winningSide)) {
-    return decorateResult({ result: { error: INVALID_WINNING_SIDE }, stack });
+    return { error: INVALID_WINNING_SIDE };
   }
 
   if (matchUpFormat) {
@@ -103,7 +98,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
       matchUpId,
       event,
     });
-    if (result.error) return decorateResult({ stack, result });
+    if (result.error) return result;
   }
 
   if (outcome?.score?.sets && !outcome.score.scoreStringSide1) {
@@ -114,14 +109,13 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     );
   }
 
-  const result = setMatchUpState({
+  return setMatchUpState({
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
     allowChangePropagation,
     disableScoreValidation,
     score: outcome?.score,
-    propagateExitStatus,
     tournamentRecords,
     policyDefinitions,
     tournamentRecord,
@@ -134,32 +128,4 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   });
-
-  // if exit status propagation is enabled, progress the exit status and iterate until complete
-  if (result.context?.progressExitStatus) {
-    let iterate = true;
-    let failsafe = 0;
-
-    while (iterate && failsafe < 10) {
-      iterate = false;
-      failsafe += 1;
-      const progressResult = progressExitStatus({
-        sourceMatchUpStatusCodes: result.context.sourceMatchUpStatusCodes,
-        sourceMatchUpStatus: result.context.sourceMatchUpStatus,
-        loserParticipantId: result.context.loserParticipantId,
-        propagateExitStatus: params.propagateExitStatus,
-        tournamentRecord: params.tournamentRecord,
-        loserMatchUp: result.context.loserMatchUp,
-        matchUpsMap: result.context.matchUpsMap,
-        drawDefinition: params.drawDefinition,
-        event: params.event,
-      });
-
-      if (progressResult.context?.loserMatchUp) {
-        Object.assign(result.context, progressResult.context);
-        iterate = true;
-      }
-    }
-  }
-  return decorateResult({ result, stack });
 }

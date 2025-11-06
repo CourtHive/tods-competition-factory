@@ -39,7 +39,7 @@ it('can validate entries', () => {
     eventId,
   });
   expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
-  expect(result.context.mismatchedGender.length).toEqual(femaleParticipantIds.length);
+  expect(result.mismatchedGender.length).toEqual(femaleParticipantIds.length);
 
   result = tournamentEngine.addEventEntries({
     participantIds: femaleParticipantIds,

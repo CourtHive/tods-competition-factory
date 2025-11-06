@@ -11,7 +11,7 @@ export const logColors = {
   brightyellow: '\x1b[93m',
   blue: '\x1b[34m',
   brightblue: '\x1b[94m',
-  pinkbackground: '\x1b[105m',
+  lightblue: '\x1b[105m',
   magenta: '\x1b[35m',
   brightmagenta: '\x1b[95m',
   cyan: '\x1b[36m',
