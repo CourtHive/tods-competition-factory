@@ -3,6 +3,8 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
+import { progressExitStatus } from '../drawPositions/progressExitStatus';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { findPolicy } from '@Acquire/findPolicy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -12,7 +14,6 @@ import { INVALID_WINNING_SIDE } from '@Constants/errorConditionConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
-import { progressExitStatus } from '../drawPositions/progressExitStatus';
 
 /**
  * Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object.
@@ -24,6 +25,7 @@ type SetMatchUpStatusArgs = {
   policyDefinitions?: PolicyDefinitions;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
+  propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
@@ -42,6 +44,8 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
   if (paramsCheck.error) return paramsCheck;
+
+  const stack = 'setMatchUpStatus';
 
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {

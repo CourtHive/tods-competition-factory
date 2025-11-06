@@ -67,6 +67,7 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
+  propagateExitStatus?: boolean;
   projectedWinningSide?: number;
   matchUpStatusCodes?: string[];
   tournamentRecord?: Tournament;

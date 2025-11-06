@@ -24,8 +24,9 @@ export function directParticipants(params): ResultType {
 
   const {
     dualWinningSideChange,
-    projectedWinningSide,
     inContextDrawMatchUps,
+    projectedWinningSide,
+    matchUpStatusCodes,
     tournamentRecord,
     drawDefinition,
     matchUpStatus,
