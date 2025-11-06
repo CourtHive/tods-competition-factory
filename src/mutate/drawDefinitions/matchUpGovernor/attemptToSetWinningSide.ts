@@ -14,6 +14,7 @@ import { SUCCESS } from '@Constants/resultConstants';
 export function attemptToSetWinningSide(params) {
   const stack = 'attemptToSetWinningSide';
   let connectedStructures;
+  const context = {};
 
   const { appliedPolicies, disableAutoCalc, drawDefinition, dualMatchUp, winningSide, structure, matchUp } = params;
 
@@ -39,7 +40,9 @@ export function attemptToSetWinningSide(params) {
     if (result.error) return result;
   }
 
+  // Seems we need a while loop here to handle repeated propagation of exit statuses?
   const result = directParticipants(params);
+  if (result.context?.progressExitStatus) Object.assign(context, result.context);
   if (result.error) return decorateResult({ result, stack });
 
   let qualifierReplaced, qualifierPlaced;
@@ -58,6 +61,7 @@ export function attemptToSetWinningSide(params) {
       connectedStructures,
       qualifierReplaced,
       qualifierPlaced,
+      context,
     }),
     stack,
   });

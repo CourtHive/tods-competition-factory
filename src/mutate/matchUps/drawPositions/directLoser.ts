@@ -11,9 +11,10 @@ import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 
 // constants
-import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   DRAW_POSITION_OCCUPIED,
   INVALID_DRAW_POSITION,
@@ -23,11 +24,12 @@ import {
 /*
   FIRST_MATCH_LOSER_CONSOLATION linkCondition... check whether it is a participant's first 
 */
-export function directLoser(params) {
+export function directLoser(params): ResultType {
   const {
     loserMatchUpDrawPositionIndex,
     inContextDrawMatchUps,
     projectedWinningSide,
+    propagateExitStatus,
     sourceMatchUpStatus,
     loserDrawPosition,
     tournamentRecord,
@@ -38,6 +40,7 @@ export function directLoser(params) {
     matchUpsMap,
     event,
   } = params;
+
   const stack = 'directLoser';
   const loserLinkCondition = loserTargetLink.linkCondition;
   const targetMatchUpDrawPositions = loserMatchUp.drawPositions || [];
@@ -85,6 +88,7 @@ export function directLoser(params) {
     (assignment) => assignment.drawPosition === loserDrawPosition,
   );
   const loserParticipantId = relevantAssignment?.participantId;
+  const context = { loserParticipantId };
 
   const targetStructureId = loserTargetLink.target.structureId;
   const { positionAssignments: targetPositionAssignments } = structureAssignedDrawPositions({
@@ -97,11 +101,14 @@ export function directLoser(params) {
   );
 
   const loserAlreadyDirected = targetMatchUpPositionAssignments?.some(
-    (assignment) => assignment.participantId === loserParticipantId,
+    (assignment) => assignment.participantId && loserParticipantId && assignment.participantId === loserParticipantId,
   );
 
+  const validExitToPropagate =
+    propagateExitStatus && [RETIRED, WALKOVER, DEFAULTED].includes(sourceMatchUpStatus || '');
+
   if (loserAlreadyDirected) {
-    return { ...SUCCESS };
+    return { ...SUCCESS, stack };
   }
 
   const unfilledTargetMatchUpDrawPositions = targetMatchUpPositionAssignments
@@ -118,9 +125,11 @@ export function directLoser(params) {
 
   if (fedDrawPositionFMLC) {
     const result = loserLinkFedFMLC();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (isFirstRoundValidDrawPosition) {
     const result = asssignLoserDrawPosition();
+    if (result.context) Object.assign(context, result.context);
     if (result.error) return decorateResult({ result, stack });
   } else if (loserParticipantId && isFeedRound) {
     // if target.roundNumber > 1 then it is a feed round and should always take the lower drawPosition
@@ -138,6 +147,10 @@ export function directLoser(params) {
       event,
     });
     if (result.error) return decorateResult({ result, stack });
+    // if validExitToPropagate is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
+    if (!result.error && validExitToPropagate && propagateExitStatus) {
+      return { stack, context: { progressExitStatus: true, loserParticipantId } };
+    }
   } else {
     const error = !targetDrawPositionIsUnfilled ? DRAW_POSITION_OCCUPIED : INVALID_DRAW_POSITION;
     return decorateResult({
@@ -197,7 +210,7 @@ export function directLoser(params) {
     }
   }
 
-  return { ...SUCCESS };
+  return decorateResult({ result: { ...SUCCESS }, stack, context });
 
   function loserLinkFedFMLC() {
     const stack = 'loserLinkFedFMLC';
@@ -233,6 +246,11 @@ export function directLoser(params) {
           event,
         })
       : { error: MISSING_PARTICIPANT_ID };
+
+    // if propagateExitStatus is true get the matchUpId of the targetMatchUp and set its status to the sourceMatchUpStatus
+    if (!result.error && validExitToPropagate && propagateExitStatus) {
+      return { stack, context: { progressExitStatus: true } };
+    }
 
     return decorateResult({ result, stack: 'assignLoserDrawPosition' });
   }

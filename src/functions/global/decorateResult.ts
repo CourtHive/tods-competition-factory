@@ -7,6 +7,7 @@ import { ResultType } from '@Types/factoryTypes';
 type DecorateResultArgs = {
   context?: { [key: string]: any };
   stack?: string | string[];
+  error?: any;
   result: any;
   info?: any;
 };
@@ -20,7 +21,8 @@ export function decorateResult({ context, result, stack, info }: DecorateResultA
     result.info = info;
   }
   if (result && typeof context === 'object' && Object.keys(context).length) {
-    Object.assign(result, definedAttributes(context));
+    if (!result.context) result.context = {};
+    Object.assign(result.context, definedAttributes(context));
   }
 
   if (result && !result?.error && !result?.success) {

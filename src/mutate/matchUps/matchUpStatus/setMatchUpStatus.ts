@@ -3,6 +3,8 @@ import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentR
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { matchUpScore } from '@Assemblies/generators/matchUps/matchUpScore';
+import { progressExitStatus } from '../drawPositions/progressExitStatus';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { findPolicy } from '@Acquire/findPolicy';
 import { findEvent } from '@Acquire/findEvent';
 
@@ -23,6 +25,7 @@ type SetMatchUpStatusArgs = {
   policyDefinitions?: PolicyDefinitions;
   disableScoreValidation?: boolean;
   allowChangePropagation?: boolean;
+  propagateExitStatus?: boolean;
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   disableAutoCalc?: boolean;
@@ -41,6 +44,8 @@ type SetMatchUpStatusArgs = {
 export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
   const paramsCheck = checkRequiredParameters(params, [{ [MATCHUP_ID]: true, [DRAW_DEFINITION]: true }]);
   if (paramsCheck.error) return paramsCheck;
+
+  const stack = 'setMatchUpStatus';
 
   const tournamentRecords = resolveTournamentRecords(params);
   if (!params.drawDefinition) {
@@ -109,7 +114,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     );
   }
 
-  return setMatchUpState({
+  const result = setMatchUpState({
     matchUpStatusCodes: outcome?.matchUpStatusCodes,
     matchUpStatus: outcome?.matchUpStatus,
     winningSide: outcome?.winningSide,
@@ -128,4 +133,28 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     event,
     notes,
   });
+  if (result.context?.progressExitStatus) {
+    let iterate = true;
+    let failsafe = 0;
+    while (iterate && failsafe < 10) {
+      iterate = false;
+      failsafe += 1;
+      const progressResult = progressExitStatus({
+        sourceMatchUpStatusCodes: result.context.sourceMatchUpStatusCodes,
+        sourceMatchUpStatus: result.context.sourceMatchUpStatus,
+        loserParticipantId: result.context.loserParticipantId,
+        propagateExitStatus: params.propagateExitStatus,
+        tournamentRecord: params.tournamentRecord,
+        loserMatchUp: result.context.loserMatchUp,
+        matchUpsMap: result.context.matchUpsMap,
+        drawDefinition: params.drawDefinition,
+        event: params.event,
+      });
+      if (progressResult.context?.loserMatchUp) {
+        Object.assign(result.context, progressResult.context);
+        iterate = true;
+      }
+    }
+  }
+  return decorateResult({ result, stack });
 }
