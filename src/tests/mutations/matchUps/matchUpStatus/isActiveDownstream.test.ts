@@ -5,7 +5,7 @@ import { expect, it } from 'vitest';
 // Constants
 import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { COMPASS } from '@Constants/drawDefinitionConstants';
+import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
 it('will not allow winningSide change when active downstream', () => {
   mocksEngine.generateTournamentRecord({
@@ -167,6 +167,55 @@ it('Does mark a downstream as active if we are trying to reset the score for one
   expect(southLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
   southEastLoserMatchUp = matchUps?.find((mU) => mU.matchUpId === southLoserMatchUp?.loserMatchUpId);
   expect(southEastLoserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+});
+
+it('Does mark downstream as active if we are trying to reset the score for one of the source matches of a propagated exit status consolation match with only one player', () => {
+  const idPrefix = 'matchUp';
+  const drawId = 'drawId';
+  mocksEngine.generateTournamentRecord({
+    drawProfiles: [
+      // uuids are popped and therefore assigned in reverse order
+      // in this instance the uuids are assigned to structureIds in the order they are generated
+      { drawId, drawSize: 32, drawType: FIRST_MATCH_LOSER_CONSOLATION, idPrefix },
+    ],
+    setState: true,
+  });
+
+  //let's set the first match in MAIN as a WALKOVER
+  //and we propgate the exit status
+  let matchUpId = 'matchUp-1-1';
+  let result = tournamentEngine.setMatchUpStatus({
+    outcome: { matchUpStatus: WALKOVER, winningSide: 2 },
+    propagateExitStatus: true,
+    matchUpId,
+    drawId,
+  });
+  expect(result.success).toEqual(true);
+
+  //the first Match in CONSOLATION should be a WALKOVER with a winner
+  let matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  let matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
+  let loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
+
+  //trying to clear the score on any of the first two matches in MAIN should fail
+  //because they will have an active downstream
+  matchUpId = 'matchUp-1-1';
+  result = tournamentEngine.setMatchUpStatus({
+    outcome: { score: { scoreStringSide1: '', scoreStringSide2: '' }, matchUpStatus: TO_BE_PLAYED },
+    propagateExitStatus: false,
+    matchUpId,
+    drawId,
+  });
+  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+
+  //and make sure that the existing matches have not been changed
+  matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
+  matchUp = matchUps?.find((matchUp) => matchUp.matchUpId === matchUpId);
+  expect(matchUp?.matchUpStatus).toEqual(WALKOVER);
+  loserMatchUp = matchUps?.find((mU) => mU.matchUpId === matchUp?.loserMatchUpId);
+  expect(loserMatchUp?.matchUpStatus).toEqual(WALKOVER);
 });
 
 it('Does mark downstream as active if we are trying to reset the score for one of the source matches of a propagated exit status consolation match with only one player', () => {
