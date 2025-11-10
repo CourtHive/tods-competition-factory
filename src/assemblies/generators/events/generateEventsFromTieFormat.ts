@@ -1,5 +1,7 @@
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { addEventEntries } from '@Mutate/entries/addEventEntries';
+import { coercedGender } from '@Helpers/coercedGender';
+import { isGendered } from '@Validators/isGendered';
 import { addEvent } from '@Mutate/events/addEvent';
 import { UUID, UUIDS } from '@Tools/UUID';
 
@@ -33,7 +35,7 @@ export function generateEventsFromTieFormat(params: GenerateEventsFromTieFormatA
   const tieFormat = params.tieFormat || tieFormatDefaults({ namedFormat: params.tieFormatName });
   const uuids = params.uuids || [UUIDS(tieFormat.collectionDefinitions.length)];
 
-  const genderedParticipants = { [MALE]: [], [FEMALE]: [] };
+  const genderedParticipants = { [MALE]: [] as string[], [FEMALE]: [] as string[] };
   if (params.addEntriesFromTeams) {
     const teamParticipants = params.tournamentRecord.participants?.filter(
       (p) => p.participantType === TEAM_PARTICIPANT,
@@ -45,8 +47,9 @@ export function generateEventsFromTieFormat(params: GenerateEventsFromTieFormatA
     for (const participant of params.tournamentRecord.participants ?? []) {
       if (individualParticipantIds?.includes(participant.participantId)) {
         const gender = participant.person?.sex;
-        if (gender && [MALE, FEMALE].includes(gender)) {
-          genderedParticipants[gender].push(participant.participantId);
+        if (gender && isGendered(gender)) {
+          const coerced = coercedGender(gender);
+          if (coerced) genderedParticipants[coerced].push(participant.participantId);
         }
       }
     }

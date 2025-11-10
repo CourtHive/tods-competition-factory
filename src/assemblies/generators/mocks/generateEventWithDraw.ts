@@ -18,9 +18,12 @@ import { publishEvent } from '@Mutate/publishing/publishEvent';
 import { generateParticipants } from './generateParticipants';
 import { generateRange, intersection } from '@Tools/arrays';
 import { definedAttributes } from '@Tools/definedAttributes';
+import { coercedGender } from '@Helpers/coercedGender';
 import { processTieFormat } from './processTieFormat';
 import { addFlight } from '@Mutate/events/addFlight';
+import { isGendered } from '@Validators/isGendered';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { isFemale } from '@Validators/isFemale';
 import { isObject } from '@Tools/objects';
 import { coerceEven } from '@Tools/math';
 import { UUID } from '@Tools/UUID';
@@ -166,8 +169,9 @@ export function generateEventWithDraw(params) {
         drawSize,
       }));
       Object.keys(genders).forEach((key) => {
-        if ([MALE, FEMALE].includes(key) && genders[key]) {
-          gendersCount[key] = drawSize * genders[key];
+        const coerced = coercedGender(key);
+        if (coerced && isGendered(key) && genders[coerced]) {
+          gendersCount[coerced] = drawSize * genders[coerced];
         }
       });
       individualParticipantCount = teamSize * ((drawSize || 0) + qualifyingParticipantsCount);
@@ -213,7 +217,7 @@ export function generateEventWithDraw(params) {
         : [];
       const femaleIndividualParticipantIds = genders[FEMALE]
         ? unique
-            .filter(({ participantType, person }) => participantType === INDIVIDUAL && person?.sex === FEMALE)
+            .filter(({ participantType, person }) => participantType === INDIVIDUAL && isFemale(person?.sex))
             .map(getParticipantId)
         : [];
       const remainingParticipantIds = unique

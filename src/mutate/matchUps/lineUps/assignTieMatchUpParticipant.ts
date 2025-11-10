@@ -21,7 +21,6 @@ import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
-import { FEMALE, MALE } from '@Constants/genderConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
@@ -34,6 +33,8 @@ import {
   PARTICIPANT_NOT_FOUND,
   TEAM_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
+import { isGendered } from '@Validators/isGendered';
+import { coercedGender } from '@Helpers/coercedGender';
 
 type AssignMatchUpSideParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -115,8 +116,8 @@ export function assignTieMatchUpParticipantId(
 
   if (
     genderEnforced &&
-    [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
-    inContextTieMatchUp?.gender !== participantToAssign.person?.sex
+    isGendered(inContextTieMatchUp?.gender) &&
+    coercedGender(inContextTieMatchUp?.gender) !== coercedGender(participantToAssign.person?.sex)
   ) {
     return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
   }

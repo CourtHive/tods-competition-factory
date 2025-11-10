@@ -2,12 +2,12 @@ import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventTyp
 import { addParticipants } from '@Mutate/participants/addParticipants';
 import { getParticipantId } from '@Functions/global/extractors';
 import { generateParticipants } from './generateParticipants';
+import { isGendered } from '@Validators/isGendered';
 
 // constants and types
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
-import { FEMALE, MALE } from '@Constants/genderConstants';
 import { Participant } from '@Types/tournamentTypes';
 
 export function generateEventParticipants(params) {
@@ -36,7 +36,7 @@ export function generateEventParticipants(params) {
     ? mainParticipantsCount + qualifyingParticipantsCount
     : (eventProfile.participantsProfile?.participantsCount ?? 0);
 
-  const sex = [MALE, FEMALE].includes(gender) ? gender : undefined;
+  const sex = isGendered(gender) ? gender : undefined;
 
   const idPrefix = participantsProfile?.idPrefix ? `E-${eventIndex}-${participantsProfile?.idPrefix}` : undefined;
   const { participants: uniqueFlightParticipants } = generateParticipants({
