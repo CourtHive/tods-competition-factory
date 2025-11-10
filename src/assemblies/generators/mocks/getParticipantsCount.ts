@@ -133,7 +133,6 @@ export function getParticipantsCount({ participantsProfile, eventProfiles, drawP
     }
   }
 
-  // if (participantsCount === undefined) participantsCount = 32;
   if (participantsCount === undefined) {
     participantsCount = !eventProfiles?.length && !drawProfiles?.length ? 32 : 0;
   }
