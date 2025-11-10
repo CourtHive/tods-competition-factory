@@ -145,6 +145,19 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
         }
 
         if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
+          // Check gender for gendered doubles events with ungrouped entries
+          if (
+            event.gender &&
+            genderEnforced &&
+            ![MIXED, ANY].includes(event.gender) &&
+            (event.gender as string) !== participant.person?.sex
+          ) {
+            mismatchedGender.push({
+              participantId: participant.participantId,
+              sex: participant.person?.sex,
+            });
+            return false;
+          }
           return true;
         }
 
