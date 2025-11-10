@@ -76,6 +76,9 @@ export function progressExitStatus({
         if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
           //let's set the opponent as the winner
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
+          //carry over the status code to the losing side (WO/DEFAULT participant)
+          const loserSideIndex = loserParticipantSide.sideNumber - 1;
+          statusCodes[loserSideIndex] = sourceMatchUpStatusCodes[0] || 'WO';
         } else {
           //both participants are either WO or DEFAULT
 
