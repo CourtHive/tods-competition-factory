@@ -24,8 +24,6 @@ import { TEAM } from '@Constants/participantConstants';
 export function processLeagueProfiles(params): any {
   const { tournamentRecord, leagueProfiles, eventIds, venueIds, drawIds, allUniqueParticipantIds, uuids } = params;
 
-  // const teams = {};
-
   let leaguesCount = 0;
   for (const leagueProfile of leagueProfiles) {
     const entries: Entry[] = [];
