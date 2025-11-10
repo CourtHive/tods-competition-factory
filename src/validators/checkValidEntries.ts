@@ -7,7 +7,6 @@ import { Entry, Event, Participant, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { ParticipantMap, PolicyDefinitions } from '@Types/factoryTypes';
-import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { DOUBLES_EVENT, TEAM_EVENT } from '@Constants/eventConstants';
 import { WITHDRAWN } from '@Constants/entryStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -17,6 +16,10 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANTS,
 } from '@Constants/errorConditionConstants';
+import { isAny } from './isAny';
+import { isGendered } from './isGendered';
+import { isMixed } from './isMixed';
+import { coercedGender } from '@Helpers/coercedGender';
 
 type CheckValidEntriesArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -118,9 +121,9 @@ function getValidGender(params) {
   const validPairGender =
     !eventGender ||
     !pairGender?.length ||
-    ANY === eventGender ||
-    ([MALE, FEMALE].includes(eventGender) && pairGender[0] === eventGender) ||
-    (MIXED === eventGender &&
+    isAny(eventGender) ||
+    (isGendered(eventGender) && coercedGender(pairGender[0]) === coercedGender(eventGender)) ||
+    (isMixed(eventGender) &&
       ((pairGender.length === 1 && participant.individualParticipantIds?.length === 1) || pairGender.length === 2));
 
   const personGender = participant?.person?.sex as unknown;
@@ -128,8 +131,9 @@ function getValidGender(params) {
   const validPersonGender =
     !participant?.person ||
     !eventGender ||
-    [ANY, MIXED].includes(eventGender) ||
-    ([MALE, FEMALE].includes(eventGender) && personGender === eventGender);
+    isMixed(eventGender) ||
+    isAny(eventGender) ||
+    (isGendered(eventGender) && coercedGender(personGender) === coercedGender(eventGender));
 
   return !genderEnforced || (validPairGender && validPersonGender);
 }

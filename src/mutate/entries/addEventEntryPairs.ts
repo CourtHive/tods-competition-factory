@@ -12,13 +12,16 @@ import { UUID } from '@Tools/UUID';
 import { DrawDefinition, EntryStatusUnion, Event, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
 import { INVALID_EVENT_TYPE, INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 import { EVENT, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
-import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { ADD_PARTICIPANTS } from '@Constants/topicConstants';
 import { ALTERNATE } from '@Constants/entryStatusConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import { DOUBLES } from '@Constants/matchUpTypes';
+import { isMale } from '@Validators/isMale';
+import { isFemale } from '@Validators/isFemale';
+import { isMixed } from '@Validators/isMixed';
+import { isAny } from '@Validators/isAny';
 
 /**
  * Add PAIR participant to an event
@@ -69,20 +72,20 @@ export function addEventEntryPairs(params: AddEventEntryPairsArgs) {
     // invalid if not two participantIds
     if (pair.length !== 2) return true;
     // NOT invalid if event.gender is ANY or no gender is specified
-    if (!event.gender || event.gender === ANY) return false;
+    if (!event.gender || isAny(event.gender)) return false;
     // invalid if either participantId does not exist in genderMap
     if (!genderMap.has(pair[0]) || !genderMap.has(pair[1])) return true;
 
     const participantGenders = pair.map((id) => genderMap.get(id));
     // invalid if event.gender is MALE/FEMALE and both participants do not match
     let invalidParticiapntGenders =
-      (event.gender === MALE && (participantGenders[0] !== MALE || participantGenders[1] !== MALE)) ||
-      (event.gender === FEMALE && (participantGenders[0] !== FEMALE || participantGenders[1] !== FEMALE));
+      (isMale(event.gender) && (!isMale(participantGenders[0]) || !isMale(participantGenders[1]))) ||
+      (isFemale(event.gender) && (!isFemale(participantGenders[0]) || !isFemale(participantGenders[1])));
 
     // invalid if event.gender is MIXED and participant genders are not different
-    if (event.gender === MIXED) {
+    if (isMixed(event.gender)) {
       participantGenders.sort(stringSort);
-      if (participantGenders[0] !== FEMALE || participantGenders[1] !== MALE) invalidParticiapntGenders = true;
+      if (!isFemale(participantGenders[0]) || !isMale(participantGenders[1])) invalidParticiapntGenders = true;
     }
 
     return invalidParticiapntGenders;

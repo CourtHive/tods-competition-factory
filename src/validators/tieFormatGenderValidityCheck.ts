@@ -1,8 +1,11 @@
 import { decorateResult } from '@Functions/global/decorateResult';
+import { coercedGender } from '@Helpers/coercedGender';
+import { isGendered } from './isGendered';
+import { isMixed } from './isMixed';
+import { isAny } from './isAny';
 
 // constants and types
 import { INVALID_GENDER } from '@Constants/errorConditionConstants';
-import { ANY, FEMALE, MALE, MIXED } from '@Constants/genderConstants';
 import { GenderUnion } from '@Types/tournamentTypes';
 import { DOUBLES } from '@Constants/matchUpTypes';
 import { ResultType } from '@Types/factoryTypes';
@@ -19,14 +22,19 @@ export const anyMixedError = 'events with { gender: ANY } can not contain MIXED 
 export function tieFormatGenderValidityCheck(params: GenderValidityCheckArgs): ResultType {
   const stack = 'tieFormatGenderValidityCheck';
   const { referenceGender, matchUpType, gender } = params;
-  if (referenceGender && gender && [MALE, FEMALE].includes(referenceGender) && referenceGender !== gender)
+  if (
+    referenceGender &&
+    gender &&
+    isGendered(referenceGender) &&
+    coercedGender(referenceGender) !== coercedGender(gender)
+  )
     return decorateResult({
       result: { valid: false, error: INVALID_GENDER },
       context: { gender },
       stack,
     });
 
-  if (referenceGender === MIXED && (gender === ANY || (gender === MIXED && matchUpType !== DOUBLES))) {
+  if (isMixed(referenceGender) && (isAny(gender) || (isMixed(gender) && matchUpType !== DOUBLES))) {
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },
       info: mixedGenderError,
@@ -34,7 +42,7 @@ export function tieFormatGenderValidityCheck(params: GenderValidityCheckArgs): R
     });
   }
 
-  if (referenceGender === ANY && gender === MIXED && matchUpType !== DOUBLES)
+  if (isAny(referenceGender) && isMixed(gender) && matchUpType !== DOUBLES)
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },
       info: anyMixedError,

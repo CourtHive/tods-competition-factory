@@ -614,10 +614,16 @@ export interface CollectionValueProfile {
 }
 
 enum GenderEnum {
-  ANY = 'ANY',
+  FEMALE_ABBR = 'F',
+  MIXED_ABBR = 'X',
+  MALE_ABBR = 'M',
+  ANY_ABBR = 'A',
+
   FEMALE = 'FEMALE',
-  MALE = 'MALE',
+  OTHER = 'OTHER',
   MIXED = 'MIXED',
+  MALE = 'MALE',
+  ANY = 'ANY',
 }
 export type GenderUnion = keyof typeof GenderEnum;
 

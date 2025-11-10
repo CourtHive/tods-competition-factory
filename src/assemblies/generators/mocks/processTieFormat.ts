@@ -1,11 +1,14 @@
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import tieFormatDefaults from '../templates/tieFormatDefaults';
+import { coercedGender } from '@Helpers/coercedGender';
+import { isGendered } from '@Validators/isGendered';
+import { isMixed } from '@Validators/isMixed';
+import { isObject } from '@Tools/objects';
 import { UUID } from '@Tools/UUID';
 
 // constants
 import { FEMALE, MIXED, OTHER, MALE, ANY } from '@Constants/genderConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
-import { isObject } from '@Tools/objects';
 
 export function processTieFormat(params) {
   const { alternatesCount = 0, tieFormatName, drawSize } = params;
@@ -24,10 +27,11 @@ export function processTieFormat(params) {
   tieFormat?.collectionDefinitions?.filter(Boolean).forEach((collectionDefinition) => {
     const { category, collectionId, matchUpType, matchUpCount, gender } = collectionDefinition;
 
-    if ([MALE, FEMALE].includes(gender)) {
+    if (isGendered(gender)) {
+      const coerced = coercedGender(gender);
       const required = matchUpCount * (matchUpType === DOUBLES ? 2 : 1);
-      if (genders[gender] < required) genders[gender] = required;
-    } else if (gender === MIXED) {
+      if (coerced && genders[coerced] < required) genders[coerced] = required;
+    } else if (isMixed(gender)) {
       if (genders[MALE] < matchUpCount) genders[MALE] = matchUpCount;
       if (genders[FEMALE] < matchUpCount) genders[FEMALE] = matchUpCount;
     }

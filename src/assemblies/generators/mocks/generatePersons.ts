@@ -2,21 +2,23 @@ import { generateRange, randomMember, randomPop, shuffleArray } from '@Tools/arr
 import { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { generatePersonData } from './generatePersonData';
+import { isFemale } from '@Validators/isFemale';
 import { dateFromDay } from '@Tools/dateTime';
-import { countries } from '@Fixtures/countryData';
 import { ensureInt } from '@Tools/ensureInt';
+import { isMale } from '@Validators/isMale';
 
 // constants
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { MALE, FEMALE } from '@Constants/genderConstants';
+import { countries } from '@Fixtures/countryData';
 
 export function generatePersons(params?) {
   let count = params?.count || 1;
   const { personExtensions, consideredDate, isMock = true, gendersCount, personData, category, sex } = params || {};
   if (isNaN(count)) return { error: INVALID_VALUES };
 
-  const maleCount = gendersCount?.[MALE] || (sex === MALE && count) || 0;
-  const femaleCount = gendersCount?.[FEMALE] || (sex === FEMALE && count) || 0;
+  const maleCount = gendersCount?.[MALE] || (isMale(sex) && count) || 0;
+  const femaleCount = gendersCount?.[FEMALE] || (isFemale(sex) && count) || 0;
   count = Math.max(count, maleCount + femaleCount);
   const defaultCount = count - (maleCount + femaleCount);
 
