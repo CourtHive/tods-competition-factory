@@ -1,6 +1,7 @@
 import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { DEFAULTED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -18,6 +19,13 @@ export function progressExitStatus({
   event,
 }) {
   const stack = 'progressExitStatus';
+
+  pushGlobalLog({
+    matchUpId: loserMatchUp?.matchUpId,
+    matchUpStatus: sourceMatchUpStatus,
+    color: 'magenta',
+    method: stack,
+  });
 
   // RETIRED should not be propagated as an exit status
   const carryOverMatchUpStatus =
@@ -68,8 +76,6 @@ export function progressExitStatus({
         if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
           //let's set the opponent as the winner
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
-          //we still want to bring over the original status codes
-          statusCodes[0] = sourceMatchUpStatusCodes[0];
         } else {
           //both participants are either WO or DEFAULT
 

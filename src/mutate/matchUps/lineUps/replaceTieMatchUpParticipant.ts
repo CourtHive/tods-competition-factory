@@ -17,7 +17,6 @@ import POLICY_MATCHUP_ACTIONS_DEFAULT from '@Fixtures/policies/POLICY_MATCHUP_AC
 import { LineUp, PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
-import { FEMALE, MALE } from '@Constants/genderConstants';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { PAIR } from '@Constants/participantConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -30,6 +29,8 @@ import {
   NOT_FOUND,
   PARTICIPANT_NOT_FOUND,
 } from '@Constants/errorConditionConstants';
+import { isGendered } from '@Validators/isGendered';
+import { coercedGender } from '@Helpers/coercedGender';
 
 type ReplaceTieMatchUpParticipantIdArgs = {
   policyDefinitions?: PolicyDefinitions;
@@ -109,8 +110,8 @@ export function replaceTieMatchUpParticipantId(params: ReplaceTieMatchUpParticip
   const genderEnforced = (params.enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
   if (
     genderEnforced &&
-    [MALE, FEMALE].includes(inContextTieMatchUp?.gender) &&
-    inContextTieMatchUp?.gender !== newParticipant?.person?.sex
+    isGendered(inContextTieMatchUp?.gender) &&
+    coercedGender(inContextTieMatchUp?.gender) !== coercedGender(newParticipant?.person?.sex)
   ) {
     return { error: INVALID_PARTICIPANT, info: 'Gender mismatch' };
   }

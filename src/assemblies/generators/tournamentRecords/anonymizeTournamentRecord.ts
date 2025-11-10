@@ -12,6 +12,8 @@ import { GROUP, INDIVIDUAL, PAIR, TEAM } from '@Constants/participantConstants';
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
 import { FEMALE, MALE, OTHER } from '@Constants/genderConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { isGendered } from '@Validators/isGendered';
+import { coercedGender } from '@Helpers/coercedGender';
 
 export function anonymizeTournamentRecord({
   keepExtensions = [], // e.g. ['level']
@@ -208,8 +210,9 @@ export function anonymizeTournamentRecord({
   const gendersCount = individualParticipants.reduce(
     (counts, participant) => {
       const gender = participant.person?.sex;
-      if ([MALE, FEMALE].includes(gender)) {
-        counts[gender] += 1;
+      const coerced = coercedGender(gender);
+      if (coerced && isGendered(gender)) {
+        counts[coerced] += 1;
       } else {
         counts[OTHER] += 1;
       }

@@ -1,6 +1,6 @@
 import { tournamentEngine } from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { expect, it } from 'vitest';
+import { it, expect } from 'vitest';
 
 // Constants
 import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';

@@ -210,7 +210,7 @@ export function directLoser(params): ResultType {
     }
   }
 
-  return { ...SUCCESS, stack, context };
+  return decorateResult({ result: { ...SUCCESS }, stack, context });
 
   function loserLinkFedFMLC() {
     const stack = 'loserLinkFedFMLC';

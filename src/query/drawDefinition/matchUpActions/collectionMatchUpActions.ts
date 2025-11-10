@@ -2,6 +2,8 @@ import { isAvailableAction } from '@Query/drawDefinition/positionActions/actionP
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
 import { getParticipantId } from '@Functions/global/extractors';
+import { isMixed } from '@Validators/isMixed';
+import { isAny } from '@Validators/isAny';
 
 // constants and types
 import { completedMatchUpStatuses } from '@Constants/matchUpStatusConstants';
@@ -10,7 +12,6 @@ import { POLICY_TYPE_MATCHUP_ACTIONS } from '@Constants/policyConstants';
 import { ASSIGN_PARTICIPANT } from '@Constants/positionActionConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { HydratedMatchUp, HydratedSide } from '@Types/hydrated';
-import { ANY, MIXED } from '@Constants/genderConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
 import { MatchUp } from '@Types/tournamentTypes';
 import {
@@ -56,7 +57,7 @@ export function collectionMatchUpActions({
   const validActions: any = [];
   const firstFoundSide: any = inContextMatchUp.sides?.find((side: any) => side.participant);
   const assignedGender =
-    inContextMatchUp.gender === MIXED &&
+    isMixed(inContextMatchUp.gender) &&
     inContextMatchUp.sideNumber &&
     inContextMatchUp.sides?.filter((side: any) => side.particiapntId).length === 1 &&
     firstFoundSide?.participant?.person?.sex;
@@ -84,10 +85,10 @@ export function collectionMatchUpActions({
       ({ participantId, person }) =>
         !existingParticipantIds?.includes(participantId) &&
         (!gender ||
-          gender === ANY ||
+          isAny(gender) ||
           person.sex === gender ||
           // case where one gendered member has been assigned
-          (gender === MIXED && !assignedGender) ||
+          (isMixed(gender) && !assignedGender) ||
           (assignedGender && person.sex !== assignedGender)),
     ),
   );
