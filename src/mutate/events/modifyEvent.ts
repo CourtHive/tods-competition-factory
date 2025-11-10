@@ -8,6 +8,8 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { validateCategory } from '@Validators/validateCategory';
 import { getFlightProfile } from '@Query/event/getFlightProfile';
 import { setEventDates } from './setEventDates';
+import { isMixed } from '@Validators/isMixed';
+import { isAny } from '@Validators/isAny';
 import { unique } from '@Tools/arrays';
 
 // constants and types
@@ -15,7 +17,6 @@ import { Category, Event, Tournament, EventTypeUnion, GenderUnion, TieFormat } f
 import { ALTERNATE, STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { DOUBLES, SINGLES, TEAM } from '@Constants/eventConstants';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
-import { ANY, MIXED } from '@Constants/genderConstants';
 import { OBJECT } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
@@ -195,10 +196,10 @@ function checkGenderUpdates({ noFlightsNoDraws, enteredParticipantGenders, event
   const validGender =
     !enteredParticipantGenders.length ||
     !eventUpdates.gender ||
-    eventUpdates.gender === ANY ||
+    isAny(eventUpdates.gender) ||
     (enteredParticipantGenders.length === 1 && enteredParticipantGenders[0] === eventUpdates.gender) ||
     // MIXED is only a valid gender change if there are no draws or flights
-    (noFlightsNoDraws && eventUpdates.gender === MIXED);
+    (noFlightsNoDraws && isMixed(eventUpdates.gender));
 
   return eventUpdates.gender && !validGender
     ? decorateResult({

@@ -8,6 +8,7 @@ import { addExtension } from '@Mutate/extensions/addExtension';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { removeEventEntries } from './removeEventEntries';
 import { isUngrouped } from '@Query/entries/isUngrouped';
+import { coercedGender } from '@Helpers/coercedGender';
 
 // constants and types
 import { DrawDefinition, EntryStatusUnion, Event, Extension, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
@@ -20,7 +21,6 @@ import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { ROUND_TARGET } from '@Constants/extensionConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { MAIN } from '@Constants/drawDefinitionConstants';
-import { ANY, MIXED } from '@Constants/genderConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { unique } from '@Tools/arrays';
 import {
@@ -30,6 +30,8 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
+import { isAny } from '@Validators/isAny';
+import { isMixed } from '@Validators/isMixed';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -134,8 +136,9 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
           validSingles &&
           (!event.gender ||
             !genderEnforced ||
-            [MIXED, ANY].includes(event.gender) ||
-            (event.gender as string) === participant.person?.sex)
+            isMixed(event.gender) ||
+            isAny(event.gender) ||
+            coercedGender(event.gender) === coercedGender(participant.person?.sex))
         ) {
           return true;
         }
@@ -149,8 +152,8 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
           if (
             event.gender &&
             genderEnforced &&
-            ![MIXED, ANY].includes(event.gender) &&
-            (event.gender as string) !== participant.person?.sex
+            !(isMixed(event.gender) || isAny(event.gender)) &&
+            coercedGender(event.gender) !== coercedGender(participant.person?.sex)
           ) {
             mismatchedGender.push({
               participantId: participant.participantId,
@@ -165,8 +168,8 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
           validSingles &&
           event.gender &&
           genderEnforced &&
-          ![MIXED, ANY].includes(event.gender) &&
-          (event.gender as string) !== participant.person?.sex
+          !(isMixed(event.gender) || isAny(event.gender)) &&
+          coercedGender(event.gender) !== coercedGender(participant.person?.sex)
         ) {
           mismatchedGender.push({
             participantId: participant.participantId,

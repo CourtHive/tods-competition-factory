@@ -13,7 +13,7 @@ import { isNumeric } from '@Tools/math';
 import { CollectionAssignment, DrawDefinition, Event, TieFormat, Tournament } from '@Types/tournamentTypes';
 import { DOUBLES_MATCHUP, SINGLES_MATCHUP } from '@Constants/matchUpTypes';
 import { DIRECT_ACCEPTANCE } from '@Constants/entryStatusConstants';
-import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { FEMALE, MALE } from '@Constants/genderConstants';
 import { ResultType, LineUp } from '@Types/factoryTypes';
 import { COMPETITOR } from '@Constants/participantRoles';
 import { DESCENDING } from '@Constants/sortingConstants';
@@ -29,6 +29,9 @@ import {
   INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
+import { coercedGender } from '@Helpers/coercedGender';
+import { isGendered } from '@Validators/isGendered';
+import { isMixed } from '@Validators/isMixed';
 
 type GenerateLineUpsArgs = {
   useDefaultEventRanking?: boolean;
@@ -135,8 +138,8 @@ export function generateLineUps(params: GenerateLineUpsArgs): ResultType & {
         const participantIds: string[] = [];
         generateRange(0, singlesMatchUp ? 1 : 2).forEach((i) => {
           const nextParticipantId = typeSort?.find((participant) => {
-            const targetGender =
-              gender && (([MALE, FEMALE].includes(gender) && gender) || (gender === MIXED && [MALE, FEMALE][i]));
+            const coerced = coercedGender(gender);
+            const targetGender = coerced && ((isGendered(gender) && coerced) || (isMixed(gender) && [MALE, FEMALE][i]));
             return (
               (!targetGender || targetGender === participant.person?.sex) &&
               !collectionParticipantIds.includes(participant.participantId)
