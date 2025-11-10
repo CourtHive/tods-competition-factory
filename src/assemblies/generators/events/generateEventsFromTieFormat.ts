@@ -3,6 +3,7 @@ import { addEventEntries } from '@Mutate/entries/addEventEntries';
 import { coercedGender } from '@Helpers/coercedGender';
 import { isGendered } from '@Validators/isGendered';
 import { addEvent } from '@Mutate/events/addEvent';
+import { isMixed } from '@Validators/isMixed';
 import { UUID, UUIDS } from '@Tools/UUID';
 
 // Constants
@@ -11,7 +12,7 @@ import { EntryStatusUnion, Event, TieFormat, Tournament } from '@Types/tournamen
 import { DIRECT_ACCEPTANCE, UNGROUPED } from '@Constants/entryStatusConstants';
 import tieFormatDefaults from '@Generators/templates/tieFormatDefaults';
 import { TEAM_PARTICIPANT } from '@Constants/participantConstants';
-import { FEMALE, MALE, MIXED } from '@Constants/genderConstants';
+import { FEMALE, MALE, OTHER } from '@Constants/genderConstants';
 import { DOUBLES_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
@@ -71,10 +72,9 @@ export function generateEventsFromTieFormat(params: GenerateEventsFromTieFormatA
 
     if (params.addEntriesFromTeams) {
       const entryStatus = eventType === DOUBLES_EVENT ? UNGROUPED : params.entryStatus || DIRECT_ACCEPTANCE;
-      const participantIds =
-        eventGender === MIXED
-          ? [...genderedParticipants[MALE], ...genderedParticipants[FEMALE]]
-          : (genderedParticipants[eventGender] ?? []);
+      const participantIds = isMixed(eventGender)
+        ? [...genderedParticipants[MALE], ...genderedParticipants[FEMALE]]
+        : (genderedParticipants[coercedGender(eventGender) || OTHER] ?? []);
 
       if (participantIds.length) {
         const result = addEventEntries({

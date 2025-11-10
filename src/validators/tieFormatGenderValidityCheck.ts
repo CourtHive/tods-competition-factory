@@ -6,7 +6,6 @@ import { isAny } from './isAny';
 
 // constants and types
 import { INVALID_GENDER } from '@Constants/errorConditionConstants';
-import { ANY, MIXED } from '@Constants/genderConstants';
 import { GenderUnion } from '@Types/tournamentTypes';
 import { DOUBLES } from '@Constants/matchUpTypes';
 import { ResultType } from '@Types/factoryTypes';
@@ -43,7 +42,7 @@ export function tieFormatGenderValidityCheck(params: GenderValidityCheckArgs): R
     });
   }
 
-  if (referenceGender === ANY && gender === MIXED && matchUpType !== DOUBLES)
+  if (isAny(referenceGender) && isMixed(gender) && matchUpType !== DOUBLES)
     return decorateResult({
       result: { error: INVALID_GENDER, valid: false },
       info: anyMixedError,
