@@ -208,5 +208,6 @@
       "rollup",
       "unrs-resolver"
     ]
-  }
+  },
+  "packageManager": "pnpm@10.15.1"
 }

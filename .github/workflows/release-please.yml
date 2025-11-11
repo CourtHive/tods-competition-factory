@@ -1,0 +1,45 @@
+name: release-please
+
+on:
+    push:
+        branches:
+            - master
+
+jobs:
+    release-please:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Release Please
+              id: release
+              uses: google-github-actions/release-please-action@v4
+              with:
+                  release-type: node
+
+            - name: Checkout repository
+              if: steps.release.outputs.release_created == 'true'
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              if: steps.release.outputs.release_created == 'true'
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  registry-url: "https://registry.npmjs.org/"
+
+            - name: Install pnpm
+              if: steps.release.outputs.release_created == 'true'
+              uses: pnpm/action-setup@v3
+
+            - name: Install dependencies
+              if: steps.release.outputs.release_created == 'true'
+              run: pnpm install --frozen-lockfile
+
+            - name: Build package
+              if: steps.release.outputs.release_created == 'true'
+              run: pnpm run build
+
+            - name: Publish to npm
+              if: steps.release.outputs.release_created == 'true'
+              env:
+                  NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+              run: pnpm publish --access public
