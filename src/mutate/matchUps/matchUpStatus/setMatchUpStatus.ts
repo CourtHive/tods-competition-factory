@@ -64,6 +64,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
 
   const {
     disableScoreValidation,
+    propagateExitStatus,
     policyDefinitions,
     tournamentRecord,
     disableAutoCalc,
@@ -121,6 +122,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     allowChangePropagation,
     disableScoreValidation,
     score: outcome?.score,
+    propagateExitStatus,
     tournamentRecords,
     policyDefinitions,
     tournamentRecord,

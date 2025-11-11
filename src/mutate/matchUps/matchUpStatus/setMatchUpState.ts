@@ -49,6 +49,7 @@ import {
   BYE,
   CANCELLED,
   COMPLETED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
@@ -67,8 +68,8 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
-  propagateExitStatus?: boolean;
   projectedWinningSide?: number;
+  propagateExitStatus?: boolean;
   matchUpStatusCodes?: string[];
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
@@ -100,6 +101,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
+    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -285,6 +287,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
+    propagateExitStatus,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -493,6 +496,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
+  propagateExitStatus,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -519,7 +523,16 @@ function checkParticipants({
       positionAssignments
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
-
+  if (
+    matchUpStatus &&
+    //we want to allow wo, default and double walkover inn the consolation draw
+    //to have only one particpiant when they are caused by an exit propagation
+    [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
+    participantsCount === 1 &&
+    propagateExitStatus
+  ) {
+    return { ...SUCCESS };
+  }
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',

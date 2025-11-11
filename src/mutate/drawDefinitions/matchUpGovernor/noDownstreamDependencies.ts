@@ -17,10 +17,12 @@ import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
   CANCELLED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   TO_BE_PLAYED,
+  WALKOVER
 } from '@Constants/matchUpStatusConstants';
 
 export function noDownstreamDependencies(params) {
@@ -94,8 +96,10 @@ export function noDownstreamDependencies(params) {
 
   // if a matchUpStatus is provided and it is not TO_BE_PLAYED then an attempt to set matchUpStatus is valid
   const statusNotToBePlayed = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
+  
+  const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(matchUpStatus);
 
-  const result = ((winningSide || triggerDualWinningSide) && attemptToSetWinningSide(params)) ||
+  const result = ((winningSide || triggerDualWinningSide || propagateExitStatus) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||
     (statusNotToBePlayed && attemptToSetMatchUpStatus(params)) ||
     (removeWinningSide && removeDirected(removeScore)) ||
