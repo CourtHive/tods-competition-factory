@@ -174,7 +174,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
     while (iterate && failsafe < 10) {
       iterate = false;
       failsafe += 1;
-      
+
       // DECISION: Call progressExitStatus to set status on consolation matchUp
       // WHY: Participant has been directed to consolation matchUp by directLoser,
       // now we need to set that matchUp's status (e.g., WALKOVER if only one participant)
@@ -189,7 +189,7 @@ export function setMatchUpStatus(params: SetMatchUpStatusArgs) {
         drawDefinition: params.drawDefinition,
         event: params.event,
       });
-      
+
       // DECISION: Continue iterating if there's another level of consolation
       // WHY: The consolation matchUp itself might feed into another consolation level
       // If progressResult returns another loserMatchUp, we need to process that too
