@@ -5,6 +5,7 @@ import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { DEFAULTED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { OUTCOME_WALKOVER } from '@Helpers/keyValueScore/constants';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 
 export function progressExitStatus({
@@ -48,7 +49,7 @@ export function progressExitStatus({
     //and replace them with simple string ones
     //it's a bit of a broad check but I think only double WO will set status codes as objects
     const statusCodes: string[] =
-      updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => (typeof sc === 'string' ? sc : 'WO')) ?? [];
+      updatedLoserMatchUp.matchUpStatusCodes?.map((sc) => (typeof sc === 'string' ? sc : OUTCOME_WALKOVER)) ?? [];
     //find the loser participant side in the loser match up
     const loserParticipantSide = updatedLoserMatchUp.sides?.find((s) => s.participantId === loserParticipantId);
     //set the original status code to the correct side in the loser match
@@ -76,6 +77,9 @@ export function progressExitStatus({
         if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
           //let's set the opponent as the winner
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
+          //carry over the status code to the losing side (WO/DEFAULT participant)
+          const loserSideIndex = loserParticipantSide.sideNumber - 1;
+          statusCodes[loserSideIndex] = sourceMatchUpStatusCodes[0] || 'WO';
         } else {
           //both participants are either WO or DEFAULT
 
