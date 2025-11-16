@@ -16,7 +16,7 @@ import { numericSort } from '@Tools/sorting';
 
 // constants and types
 import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '@Types/tournamentTypes';
-import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -70,6 +70,7 @@ type AssignDrawPositionByeArgs = {
   structure?: Structure;
   drawPosition: number;
   structureId?: string;
+  loserMatchUp?: MatchUp;
   event?: Event;
 };
 
@@ -79,6 +80,7 @@ export function assignDrawPositionBye({
   tournamentRecord,
   drawDefinition,
   drawPosition,
+  loserMatchUp,
   matchUpsMap,
   structureId,
   structure,
@@ -108,9 +110,13 @@ export function assignDrawPositionBye({
     return { ...SUCCESS };
   }
 
+  //
+  const hasPropagatedStatus = !!(loserMatchUp && matchUpsMap.drawMatchUps.find(
+    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && [DEFAULTED, WALKOVER].includes(m.matchUpStatus),
+  ));
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);
-  if (drawPositionIsActive) {
+  if (drawPositionIsActive && !hasPropagatedStatus) {
     return { error: DRAW_POSITION_ACTIVE };
   }
 
@@ -120,7 +126,7 @@ export function assignDrawPositionBye({
   const { filled, containsBye, assignedParticipantId } = drawPositionFilled(positionAssignment);
   if (containsBye) return { ...SUCCESS }; // nothing to be done
 
-  if (filled && !containsBye) {
+  if (filled && !containsBye && !hasPropagatedStatus) {
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
   }
 
@@ -153,6 +159,11 @@ export function assignDrawPositionBye({
   positionAssignments?.forEach((assignment) => {
     if (assignment.drawPosition === drawPosition) {
       assignment.bye = true;
+      //let's clear up the participant from the assignment
+      //if it was there because of a propagated exit.
+      if (hasPropagatedStatus) {
+        assignment.participantId = undefined
+      }
     }
   });
 
