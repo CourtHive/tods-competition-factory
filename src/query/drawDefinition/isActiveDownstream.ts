@@ -1,8 +1,9 @@
 import { positionTargets } from '@Query/matchUp/positionTargets';
+import { isExit } from '@Validators/isExit';
 
 // constants
-import { BYE, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
@@ -30,7 +31,7 @@ export function isActiveDownstream(params) {
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  const loserMatchUpExit = isExit(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
@@ -41,7 +42,7 @@ export function isActiveDownstream(params) {
     (loserMatchUp?.winningSide && !loserMatchUpExit) ||
     (winnerMatchUp?.winningSide &&
       winnerDrawPositionsCount === 2 &&
-      (!winnerMatchUp.feedRound || ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus)))
+      (!winnerMatchUp.feedRound || !isExit(winnerMatchUp?.matchUpStatus)))
   ) {
     return true;
   }

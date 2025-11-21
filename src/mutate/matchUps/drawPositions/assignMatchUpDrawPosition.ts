@@ -10,6 +10,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { assignDrawPositionBye } from './assignDrawPositionBye';
+import { isExit } from '@Validators/isExit';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
@@ -23,12 +24,10 @@ import { TEAM } from '@Constants/matchUpTypes';
 import {
   BYE,
   COMPLETED,
-  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   RETIRED,
   TO_BE_PLAYED,
-  WALKOVER,
 } from '@Constants/matchUpStatusConstants';
 
 type AssignMatchUpDrawPositionArgs = {
@@ -94,9 +93,7 @@ export function assignMatchUpDrawPosition({
   );
   const isByeMatchUp = matchUpAssignments?.find(({ bye }) => bye);
   const isDoubleExitExit =
-    matchUp?.matchUpStatus &&
-    [WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus) &&
-    updatedDrawPositions.filter(Boolean).length < 2;
+    matchUp?.matchUpStatus && isExit(matchUp.matchUpStatus) && updatedDrawPositions.filter(Boolean).length < 2;
 
   matchUpStatus =
     (isByeMatchUp && BYE) ||

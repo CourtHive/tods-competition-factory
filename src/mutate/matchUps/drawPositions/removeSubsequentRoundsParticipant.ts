@@ -4,10 +4,11 @@ import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { findStructure } from '@Acquire/findStructure';
+import { isExit } from '@Validators/isExit';
 
 // constants and types
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -118,13 +119,11 @@ function removeDrawPosition({
   const matchUpContainsBye = matchUpAssignments.filter((assignment) => assignment.bye).length;
 
   matchUp.matchUpStatus =
-    (matchUpContainsBye && BYE) ||
-    ([DEFAULTED, WALKOVER].includes(matchUp.matchUpStatus) && matchUp.matchUpStatus) ||
-    TO_BE_PLAYED;
+    (matchUpContainsBye && BYE) || (isExit(matchUp.matchUpStatus) && matchUp.matchUpStatus) || TO_BE_PLAYED;
 
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // ... and the winningSide must be removed
-  if ([WALKOVER, DEFAULTED].includes(matchUp.matchUpStatus)) matchUp.winningSide = undefined;
+  if (isExit(matchUp.matchUpStatus)) matchUp.winningSide = undefined;
 
   if (matchUp.matchUpStatusCodes) {
     updateMatchUpStatusCodes({
