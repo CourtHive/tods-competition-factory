@@ -12,10 +12,10 @@ import { extensionsToAttributes } from '@Tools/makeDeepCopy';
 import { processSides } from '@Query/matchUps/processSides';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { stringSort } from '@Functions/sorters/stringSort';
+import { isExit } from '@Validators/isExit';
 import { isObject } from '@Tools/objects';
 
 // constants and types
-import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
@@ -580,7 +580,7 @@ export function getParticipantEntries(params) {
           for (const consideredItem of scheduleItemsToConsider) {
             const ignoreItem =
               consideredItem.matchUpId === scheduleItem.matchUpId ||
-              ([WALKOVER, DEFAULTED].includes(consideredItem.matchUpStatus) && !consideredItem.checkScoreHasValue);
+              (isExit(consideredItem.matchUpStatus) && !consideredItem.checkScoreHasValue);
             if (ignoreItem) continue;
 
             // if there is a matchType change (SINGLES => DOUBLES or vice versa) then there is potentially a different timeAfterRecovery

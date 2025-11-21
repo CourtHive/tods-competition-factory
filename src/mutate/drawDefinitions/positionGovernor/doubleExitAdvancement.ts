@@ -8,6 +8,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { findStructure } from '@Acquire/findStructure';
+import { isExit } from '@Validators/isExit';
 import { overlap } from '@Tools/arrays';
 
 // constants
@@ -28,7 +29,7 @@ export function doubleExitAdvancement(params) {
   // if the loserMatchUp is a WALKOVER or DEFAULTED and has no participants assigned, then it is an 'empty' exit
   // an 'empty' exit is an exit propagated by a double walkover or double default
   const loserMatchUpIsEmptyExit =
-    [WALKOVER, DEFAULTED].includes(loserMatchUp?.matchUpStatus) &&
+    isExit(loserMatchUp?.matchUpStatus) &&
     !loserMatchUp.sides?.map((side) => side.participantId ?? side.participant).filter(Boolean).length;
 
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
@@ -156,7 +157,7 @@ function conditionallyAdvanceDrawPosition(params) {
     undefined;
 
   // assign the WALKOVER status to targetMatchUp
-  const existingExit = [WALKOVER, DEFAULTED].includes(noContextTargetMatchUp.matchUpStatus) && !drawPositions.length;
+  const existingExit = isExit(noContextTargetMatchUp.matchUpStatus) && !drawPositions.length;
   const isFinal = noContextTargetMatchUp.finishingRound === 1;
 
   const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
@@ -295,7 +296,7 @@ function conditionallyAdvanceDrawPosition(params) {
           drawDefinition,
           matchUpsMap,
         });
-      } else if ([WALKOVER, DEFAULTED].includes(nextWinnerMatchUp.matchUpStatus)) {
+      } else if (isExit(nextWinnerMatchUp.matchUpStatus)) {
         // if the next targetMatchUp is a double walkover or double default
         const result = doubleExitAdvancement({
           ...params,
@@ -330,7 +331,7 @@ function conditionallyAdvanceDrawPosition(params) {
       });
     }
 
-    const matchUpStatus = [WALKOVER, DEFAULTED].includes(noContextNextWinnerMatchUp.matchUpStatus) ? EXIT : DOUBLE_EXIT;
+    const matchUpStatus = isExit(noContextNextWinnerMatchUp.matchUpStatus) ? EXIT : DOUBLE_EXIT;
 
     const result = modifyMatchUpScore({
       matchUpId: noContextNextWinnerMatchUp.matchUpId,
