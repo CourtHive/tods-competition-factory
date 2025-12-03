@@ -3,7 +3,7 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { it, expect } from 'vitest';
 
 // Constants
-import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
+import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS, PROPAGATED_EXITS_DOWNSTREAM } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
 
@@ -142,12 +142,12 @@ it('Does mark a downstream as active if we are trying to reset the score for one
   //because they will have an active downstream
   matchUpId = 'matchUp-East-RP-1-1';
   result = tournamentEngine.setMatchUpStatus({
-    outcome: { scoreStringSide1: '', scoreStringSide2: '', matchUpStatus: TO_BE_PLAYED },
+    outcome: { score: { scoreStringSide1: '', scoreStringSide2: '' }, matchUpStatus: TO_BE_PLAYED },
     propagateExitStatus: false,
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+  expect(result.error).toEqual(PROPAGATED_EXITS_DOWNSTREAM);
   matchUpId = 'matchUp-East-RP-1-2';
   result = tournamentEngine.setMatchUpStatus({
     outcome: { score: { scoreStringSide1: '', scoreStringSide2: '' }, matchUpStatus: TO_BE_PLAYED },
@@ -155,7 +155,7 @@ it('Does mark a downstream as active if we are trying to reset the score for one
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+  expect(result.error).toEqual(PROPAGATED_EXITS_DOWNSTREAM);
 
   //and make sure that the existing matches have not been changed
   matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
@@ -208,7 +208,7 @@ it('Does mark downstream as active if we are trying to reset the score for one o
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+  expect(result.error).toEqual(PROPAGATED_EXITS_DOWNSTREAM);
 
   //and make sure that the existing matches have not been changed
   matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;
@@ -262,7 +262,7 @@ it('Does mark downstream as active if we are trying to reset the score for one o
     matchUpId,
     drawId,
   });
-  expect(result.error).toEqual(INCOMPATIBLE_MATCHUP_STATUS);
+  expect(result.error).toEqual(PROPAGATED_EXITS_DOWNSTREAM);
 
   //and make sure that the existing matches have not been changed
   matchUps = tournamentEngine.allDrawMatchUps({ drawId }).matchUps;

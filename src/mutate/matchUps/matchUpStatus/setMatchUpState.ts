@@ -2,6 +2,7 @@ import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGoverno
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems/scheduleItems';
+import { hasPropagatedExitDownstream } from '@Query/drawDefinition/hasPropagatedExitDownstream';
 import { getProjectedDualWinningSide } from '@Query/matchUp/getProjectedDualWinningSide';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
@@ -42,6 +43,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
+  PROPAGATED_EXITS_DOWNSTREAM,
 } from '@Constants/errorConditionConstants';
 import {
   ABANDONED,
@@ -181,6 +183,20 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     matchUp,
   });
 
+  //we want to figure out if the command is for clearing the score as this
+  //can have downstream effects.
+  const isClearScore =
+    matchUpStatus === TO_BE_PLAYED && score?.scoreStringSide1 === '' && score?.scoreStringSide2 === '' && !winningSide;
+
+  const propagatedExitDownStream = hasPropagatedExitDownstream(params)
+
+  //if we try to clear a score but there are downstream propagated statuses 
+  //we error
+  if (propagatedExitDownStream && isClearScore) {
+   return {
+     error: PROPAGATED_EXITS_DOWNSTREAM,
+   }; 
+  }
   // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
   const activeDownstream = isActiveDownstream(params);
 
