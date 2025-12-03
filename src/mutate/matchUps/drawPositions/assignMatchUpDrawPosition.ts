@@ -103,6 +103,9 @@ export function assignMatchUpDrawPosition({
       [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
       matchUp.matchUpStatus) ||
     TO_BE_PLAYED;
+  
+  //are we going to a match already marked as a WO becuase it was propagated from the main draw?
+  const isPropagatedExit = !!(isExit(matchUp?.matchUpStatus) && matchUp?.winningSide);
 
   if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
@@ -118,8 +121,11 @@ export function assignMatchUpDrawPosition({
           inContextDrawMatchUps,
           drawPosition,
           matchUpId,
-        })) ||
-      undefined;
+        }))
+      //if the match is already marked as a WO with a winning side
+      //we keep the winning side
+      || (isPropagatedExit && matchUp.winningSide)
+      || undefined;
 
     if (matchUp?.matchUpStatusCodes) {
       updateMatchUpStatusCodes({
@@ -135,7 +141,8 @@ export function assignMatchUpDrawPosition({
     Object.assign(matchUp, {
       drawPositions: updatedDrawPositions,
       winningSide: exitWinningSide,
-      matchUpStatus,
+      //we keep the current status if it is already marked as WO
+      matchUpStatus: isPropagatedExit ? matchUp?.matchUpStatus : matchUpStatus,
     });
 
     modifyMatchUpNotice({
@@ -181,6 +188,20 @@ export function assignMatchUpDrawPosition({
           console.log('winnerMatchUp in different structure... participant is in different targetDrawPosition');
         }
       }
+    }
+  }
+  //we want to automatically progress the winner if the match was already marked as a walkover
+  else if (positionAssigned && isPropagatedExit) {
+    if (winnerMatchUp) {
+      const result = assignMatchUpDrawPosition({
+        matchUpId: winnerMatchUp.matchUpId,
+        inContextDrawMatchUps,
+        tournamentRecord,
+        drawDefinition,
+        drawPosition,
+        matchUpsMap,
+      });
+      if (result.error) return result;
     }
   } else if (winnerMatchUp && inContextMatchUp && !inContextMatchUp.feedRound) {
     const { pairedPreviousMatchUpIsDoubleExit } = getPairedPreviousMatchUpIsDoubleExit({

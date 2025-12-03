@@ -2,6 +2,7 @@ import { noDownstreamDependencies } from '@Mutate/drawDefinitions/matchUpGoverno
 import { generateTieMatchUpScore } from '@Assemblies/generators/tieMatchUpScore/generateTieMatchUpScore';
 import { isDirectingMatchUpStatus, isNonDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { addMatchUpScheduleItems } from '@Mutate/matchUps/schedule/scheduleItems/scheduleItems';
+import { hasPropagatedExitDownstream } from '@Query/drawDefinition/hasPropagatedExitDownstream';
 import { getProjectedDualWinningSide } from '@Query/matchUp/getProjectedDualWinningSide';
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
@@ -42,6 +43,7 @@ import {
   MATCHUP_NOT_FOUND,
   MISSING_DRAW_DEFINITION,
   NO_VALID_ACTIONS,
+  PROPAGATED_EXITS_DOWNSTREAM,
 } from '@Constants/errorConditionConstants';
 import {
   ABANDONED,
@@ -49,6 +51,7 @@ import {
   BYE,
   CANCELLED,
   COMPLETED,
+  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
@@ -67,8 +70,8 @@ type SetMatchUpStateArgs = {
   matchUpStatus?: MatchUpStatusUnion;
   allowChangePropagation?: boolean;
   disableScoreValidation?: boolean;
-  propagateExitStatus?: boolean;
   projectedWinningSide?: number;
+  propagateExitStatus?: boolean;
   matchUpStatusCodes?: string[];
   tournamentRecord?: Tournament;
   drawDefinition: DrawDefinition;
@@ -100,6 +103,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const {
     allowChangePropagation,
     disableScoreValidation,
+    propagateExitStatus,
     tournamentRecords,
     tournamentRecord,
     disableAutoCalc,
@@ -179,6 +183,20 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
     matchUp,
   });
 
+  //we want to figure out if the command is for clearing the score as this
+  //can have downstream effects.
+  const isClearScore =
+    matchUpStatus === TO_BE_PLAYED && score?.scoreStringSide1 === '' && score?.scoreStringSide2 === '' && !winningSide;
+
+  const propagatedExitDownStream = hasPropagatedExitDownstream(params)
+
+  //if we try to clear a score but there are downstream propagated statuses 
+  //we error
+  if (propagatedExitDownStream && isClearScore) {
+   return {
+     error: PROPAGATED_EXITS_DOWNSTREAM,
+   }; 
+  }
   // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
   const activeDownstream = isActiveDownstream(params);
 
@@ -285,6 +303,7 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
 
   const participantCheck = checkParticipants({
     assignedDrawPositions,
+    propagateExitStatus,
     inContextMatchUp,
     appliedPolicies,
     drawDefinition,
@@ -493,6 +512,7 @@ function applyMatchUpValues(params) {
 
 function checkParticipants({
   assignedDrawPositions,
+  propagateExitStatus,
   inContextMatchUp,
   appliedPolicies,
   drawDefinition,
@@ -519,7 +539,16 @@ function checkParticipants({
       positionAssignments
         ?.filter((assignment) => assignedDrawPositions.includes(assignment.drawPosition))
         .every((assignment) => assignment.participantId));
-
+  if (
+    matchUpStatus &&
+    //we want to allow wo, default and double walkover inn the consolation draw
+    //to have only one particpiant when they are caused by an exit propagation
+    [WALKOVER, DEFAULTED, DOUBLE_WALKOVER].includes(matchUpStatus) &&
+    participantsCount === 1 &&
+    propagateExitStatus
+  ) {
+    return { ...SUCCESS };
+  }
   if (matchUpStatus && particicipantsRequiredMatchUpStatuses.includes(matchUpStatus) && !requiredParticipants) {
     return decorateResult({
       info: 'matchUpStatus requires assigned participants',

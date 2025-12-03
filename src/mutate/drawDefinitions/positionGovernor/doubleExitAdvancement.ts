@@ -32,6 +32,8 @@ export function doubleExitAdvancement(params) {
     isExit(loserMatchUp?.matchUpStatus) &&
     !loserMatchUp.sides?.map((side) => side.participantId ?? side.participant).filter(Boolean).length;
 
+  const loserMatchUpIsDoubleExit = loserMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
+
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const { loserTargetLink } = targetLinks;
     if (
@@ -50,10 +52,11 @@ export function doubleExitAdvancement(params) {
         event,
       });
       if (result.error) return decorateResult({ result, stack });
-    } else if (!loserMatchUpIsEmptyExit) {
+    } else if (!loserMatchUpIsDoubleExit) {
       // only attemp to advance the loserMatchUp if it is not an 'empty' exit present
       const { feedRound, drawPositions, matchUpId } = loserMatchUp;
-      const walkoverWinningSide = feedRound ? 2 : 2 - drawPositions.indexOf(loserTargetDrawPosition);
+      let walkoverWinningSide: number | undefined = feedRound ? 2 : 2 - drawPositions.indexOf(loserTargetDrawPosition);
+      walkoverWinningSide = loserMatchUpIsEmptyExit ? loserMatchUp.winningSide : walkoverWinningSide;
       const result = conditionallyAdvanceDrawPosition({
         ...params,
         targetMatchUp: loserMatchUp,
@@ -63,9 +66,8 @@ export function doubleExitAdvancement(params) {
         matchUpId,
       });
       if (result.error) return decorateResult({ result, stack });
-    }
+    } 
   }
-
   if (winnerMatchUp) {
     const result = conditionallyAdvanceDrawPosition({
       ...params,
@@ -79,6 +81,7 @@ export function doubleExitAdvancement(params) {
 
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
+
 
 // 1. Assigns a WALKOVER or DEFAULTED status to the winnerMatchUp
 // 2. Advances any drawPosition that is already present
@@ -361,7 +364,15 @@ function conditionallyAdvanceDrawPosition(params) {
 }
 
 function advanceByeToLoserMatchUp(params) {
-  const { loserTargetDrawPosition, tournamentRecord, loserTargetLink, drawDefinition, matchUpsMap, event } = params;
+  const {
+    loserTargetDrawPosition,
+    tournamentRecord,
+    loserTargetLink,
+    drawDefinition,
+    matchUpsMap,
+    event,
+    loserMatchUp,
+  } = params;
   const structureId = loserTargetLink?.target?.structureId;
   const { structure } = findStructure({ drawDefinition, structureId });
   if (!structure) return { error: MISSING_STRUCTURE };
@@ -372,6 +383,7 @@ function advanceByeToLoserMatchUp(params) {
     drawDefinition,
     structureId,
     matchUpsMap,
+    loserMatchUp,
     event,
   });
 }
