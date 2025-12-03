@@ -105,7 +105,7 @@ export function assignMatchUpDrawPosition({
     TO_BE_PLAYED;
   
   //are we going to a match already marked as a WO becuase it was propagated from the main draw?
-  const isWalkover = !!([WALKOVER, DEFAULTED].includes(matchUp?.matchUpStatus) && matchUp?.winningSide);
+  const isWalkover = !!(isExit(matchUp?.matchUpStatus) && matchUp?.winningSide);
 
   if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
