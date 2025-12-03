@@ -1,4 +1,5 @@
 import { positionTargets } from '@Query/matchUp/positionTargets';
+import { isExit } from '@Validators/isExit';
 
 // constants
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
@@ -34,7 +35,7 @@ export function isActiveDownstream(params) {
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  const loserMatchUpExit = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  const loserMatchUpExit = isExit(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
 
   const isLoserMatchUpWO = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus);
 
@@ -55,7 +56,7 @@ export function isActiveDownstream(params) {
     ((loserMatchUp?.winningSide && !loserMatchUpExit) ||
       (winnerMatchUp?.winningSide &&
         winnerDrawPositionsCount === 2 &&
-        (!winnerMatchUp.feedRound || ![WALKOVER, DEFAULTED].includes(winnerMatchUp?.matchUpStatus))))
+        (!winnerMatchUp.feedRound || !isExit(winnerMatchUp?.matchUpStatus))))
   ) {
     return true;
   }

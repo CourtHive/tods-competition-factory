@@ -2,11 +2,12 @@ import { setMatchUpState } from '@Mutate/matchUps/matchUpStatus/setMatchUpState'
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { pushGlobalLog } from '@Functions/global/globalLog';
+import { isExit } from '@Validators/isExit';
 
 // constants
-import { DEFAULTED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { OUTCOME_WALKOVER } from '@Helpers/keyValueScore/constants';
+import { DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
+import { OUTCOME_WALKOVER } from '@Helpers/keyValueScore/constants';
 
 export function progressExitStatus({
   sourceMatchUpStatusCodes,
@@ -29,8 +30,7 @@ export function progressExitStatus({
   });
 
   // RETIRED should not be propagated as an exit status
-  const carryOverMatchUpStatus =
-    ([WALKOVER, DEFAULTED].includes(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
+  const carryOverMatchUpStatus = (isExit(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
   // get the updated inContext match ups so we have all the sides info
   // existing inContextDrawMatchUps is out of date
   const inContextMatchUps = getAllDrawMatchUps({
@@ -74,7 +74,7 @@ export function progressExitStatus({
       } else {
         //there was already a participant in the loser matchup
         //if the loser match is not already a WO or DEFAULT
-        if (![WALKOVER, DEFAULTED].includes(loserMatchUp.matchUpStatus)) {
+        if (!isExit(loserMatchUp.matchUpStatus)) {
           //let's set the opponent as the winner
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           //we still want to bring over the original status codes

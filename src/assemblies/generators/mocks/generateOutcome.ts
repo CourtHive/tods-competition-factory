@@ -6,6 +6,7 @@ import { generateRange, randomPop } from '@Tools/arrays';
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { randomInt, weightedRandom } from '@Tools/math';
 import { analyzeSet } from '@Query/matchUp/analyzeSet';
+import { isExit } from '@Validators/isExit';
 
 // constants and fixtures
 import { INVALID_MATCHUP_FORMAT, INVALID_VALUES } from '@Constants/errorConditionConstants';
@@ -81,7 +82,7 @@ export function generateOutcome(params) {
   ])[1];
 
   const noScore = { sets: [], scoreStringSide1: '', side2ScoreString: '' };
-  if ([WALKOVER, DEFAULTED].includes(matchUpStatus)) {
+  if (isExit(matchUpStatus)) {
     winningSide = winningSide || randomInt(1, 2);
     const outcome = {
       score: noScore,

@@ -12,11 +12,12 @@ import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { ensureInt } from '@Tools/ensureInt';
+import { isExit } from '@Validators/isExit';
 import { overlap } from '@Tools/arrays';
 
 // constants and types
 import { DrawDefinition, Event, PositionAssignment, Structure, Tournament } from '@Types/tournamentTypes';
-import { BYE, DEFAULTED, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { CONTAINER, DRAW } from '@Constants/drawDefinitionConstants';
 import { MatchUpsMap, ResultType } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -399,9 +400,7 @@ function removeDrawPosition({
 
   const newMatchUpStatus =
     (matchUpContainsBye && BYE) ||
-    (targetMatchUp.matchUpStatus &&
-      [DEFAULTED, WALKOVER].includes(targetMatchUp.matchUpStatus) &&
-      targetMatchUp.matcHUpStatus) ||
+    (targetMatchUp.matchUpStatus && isExit(targetMatchUp.matchUpStatus) && targetMatchUp.matcHUpStatus) ||
     TO_BE_PLAYED;
 
   targetMatchUp.matchUpStatus = newMatchUpStatus;
@@ -409,8 +408,7 @@ function removeDrawPosition({
   // if the matchUpStatus is WALKOVER then it is DOUBLE_WALKOVER produced
   // if the matchUpStatus is DEFAULTED then it is DOUBLE_DEFAULT produced
   // ... and the winningSide must be removed
-  if (targetMatchUp.matchUpStatus && [WALKOVER, DEFAULTED].includes(targetMatchUp.matchUpStatus))
-    targetMatchUp.winningSide = undefined;
+  if (targetMatchUp.matchUpStatus && isExit(targetMatchUp.matchUpStatus)) targetMatchUp.winningSide = undefined;
 
   const removedDrawPosition = initialDrawPositions?.find(
     (position) => !targetMatchUp.drawPositions?.includes(position),
