@@ -105,7 +105,7 @@ export function assignMatchUpDrawPosition({
     TO_BE_PLAYED;
   
   //are we going to a match already marked as a WO becuase it was propagated from the main draw?
-  const isWalkover = !!(isExit(matchUp?.matchUpStatus) && matchUp?.winningSide);
+  const isPropagatedExit = !!(isExit(matchUp?.matchUpStatus) && matchUp?.winningSide);
 
   if (matchUp && positionAdded) {
     // necessary to update inContextDrawMatchUps
@@ -124,7 +124,7 @@ export function assignMatchUpDrawPosition({
         }))
       //if the match is already marked as a WO with a winning side
       //we keep the winning side
-      || (isWalkover && matchUp.winningSide)
+      || (isPropagatedExit && matchUp.winningSide)
       || undefined;
 
     if (matchUp?.matchUpStatusCodes) {
@@ -142,7 +142,7 @@ export function assignMatchUpDrawPosition({
       drawPositions: updatedDrawPositions,
       winningSide: exitWinningSide,
       //we keep the current status if it is already marked as WO
-      matchUpStatus: isWalkover ? matchUp?.matchUpStatus : matchUpStatus,
+      matchUpStatus: isPropagatedExit ? matchUp?.matchUpStatus : matchUpStatus,
     });
 
     modifyMatchUpNotice({
@@ -191,7 +191,7 @@ export function assignMatchUpDrawPosition({
     }
   }
   //we want to automatically progress the winner if the match was already marked as a walkover
-  else if (positionAssigned && isWalkover) {
+  else if (positionAssigned && isPropagatedExit) {
     if (winnerMatchUp) {
       const result = assignMatchUpDrawPosition({
         matchUpId: winnerMatchUp.matchUpId,
