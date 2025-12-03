@@ -3,6 +3,7 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { isExit } from '@Validators/isExit';
 
 // constants
 import { ABANDONED, CANCELLED, COMPLETED, DEFAULTED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -38,7 +39,7 @@ export function attemptToModifyScore(params) {
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
     params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
-    ([WALKOVER, DEFAULTED].includes(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
+    (isExit(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
 
   if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 

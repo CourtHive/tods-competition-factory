@@ -1,29 +1,28 @@
-import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
-import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
-import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
-import { lastSetFormatIsTimed } from '@Query/matchUp/lastSetFormatisTimed';
-import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
-import { checkConnectedStructures } from './checkConnectedStructures';
-import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
-import { attemptToSetWinningSide } from './attemptToSetWinningSide';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { removeDirectedParticipants } from '@Mutate/matchUps/drawPositions/removeDirectedParticipants';
+import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
+import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
+import { checkScoreHasValue } from '@Query/matchUp/checkScoreHasValue';
+import { lastSetFormatIsTimed } from '@Query/matchUp/lastSetFormatisTimed';
 import { attemptToModifyScore } from './attemptToModifyScore';
+import { attemptToSetMatchUpStatus } from './attemptToSetMatchUpStatus';
+import { attemptToSetWinningSide } from './attemptToSetWinningSide';
+import { checkConnectedStructures } from './checkConnectedStructures';
 import { removeDoubleExit } from './removeDoubleExit';
 import { removeQualifier } from './removeQualifier';
+import { isExit } from '@Validators/isExit';
 
 // constants
-import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
-import { SUCCESS } from '@Constants/resultConstants';
 import {
   ABANDONED,
   CANCELLED,
-  DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
   INCOMPLETE,
   TO_BE_PLAYED,
-  WALKOVER
 } from '@Constants/matchUpStatusConstants';
+import { POLICY_TYPE_PROGRESSION } from '@Constants/policyConstants';
+import { SUCCESS } from '@Constants/resultConstants';
 
 export function noDownstreamDependencies(params) {
   const { matchUp, matchUpStatus, score, winningSide } = params;
@@ -96,8 +95,8 @@ export function noDownstreamDependencies(params) {
 
   // if a matchUpStatus is provided and it is not TO_BE_PLAYED then an attempt to set matchUpStatus is valid
   const statusNotToBePlayed = matchUpStatus && matchUpStatus !== TO_BE_PLAYED;
-  
-  const propagateExitStatus = params.propagateExitStatus && [WALKOVER, DEFAULTED].includes(matchUpStatus);
+
+  const propagateExitStatus = params.propagateExitStatus && isExit(matchUpStatus);
 
   const result = ((winningSide || triggerDualWinningSide || propagateExitStatus) && attemptToSetWinningSide(params)) ||
     (scoreWithNoWinningSide && removeDirected(removeScore)) ||

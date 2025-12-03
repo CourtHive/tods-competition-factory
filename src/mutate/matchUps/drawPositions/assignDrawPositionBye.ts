@@ -13,10 +13,11 @@ import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
+import { isExit } from '@Validators/isExit';
 
 // constants and types
 import { DrawDefinition, Event, MatchUp, Structure, Tournament } from '@Types/tournamentTypes';
-import { BYE, TO_BE_PLAYED, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { BYE, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { CONTAINER } from '@Constants/drawDefinitionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -112,7 +113,7 @@ export function assignDrawPositionBye({
 
   //
   const hasPropagatedStatus = !!(loserMatchUp && matchUpsMap.drawMatchUps.find(
-    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && [DEFAULTED, WALKOVER].includes(m.matchUpStatus),
+    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus),
   ));
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);

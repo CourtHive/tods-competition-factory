@@ -35,9 +35,9 @@ export function isActiveDownstream(params) {
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  const loserMatchUpExit = isExit(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  const isLoserMatchUpWO = isExit(loserMatchUp?.matchUpStatus);
+  const loserMatchUpExit = isLoserMatchUpWO && !propagatedLoserParticipant;
 
-  const isLoserMatchUpWO = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus);
 
   //to identify a propagated exit (WO/DEFAULT) for matches that are WO/DEFAULT, have a winning side,
   //and have only one participant (the WO/DF player).

@@ -1,4 +1,5 @@
-import { DEFAULTED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
+import { isExit } from '@Validators/isExit';
 
 export function hasPropagatedExitDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
@@ -8,9 +9,9 @@ export function hasPropagatedExitDownstream(params) {
     targetMatchUps: { loserMatchUp },
   } = targetData;
 
-  const isLoserMatchUpWO = [DEFAULTED, WALKOVER].includes(loserMatchUp?.matchUpStatus);
+  const isLoserMatchUpWO = isExit(loserMatchUp?.matchUpStatus);
   const hasLoserMatchUpUpstreamWOMatches = !!matchUpsMap?.drawMatchUps.find(
-    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && [DEFAULTED, WALKOVER].includes(m.matchUpStatus),
+    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus),
   );
 
   //if there is a downstream match with two propagated exits we mark it as active
