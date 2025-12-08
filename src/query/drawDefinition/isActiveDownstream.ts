@@ -3,7 +3,7 @@ import { isExit } from '@Validators/isExit';
 
 // constants
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
-import { BYE, DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { BYE } from '@Constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
