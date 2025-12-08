@@ -7,12 +7,7 @@ import { BYE } from '@Constants/matchUpStatusConstants';
 
 export function isActiveDownstream(params) {
   // relevantLink is passed in iterative calls (see below)
-  const {
-    inContextDrawMatchUps,
-    targetData,
-    drawDefinition,
-    relevantLink,
-  } = params;
+  const { inContextDrawMatchUps, targetData, drawDefinition, relevantLink } = params;
 
   const fmlcBYE = relevantLink?.linkCondition === FIRST_MATCHUP && targetData?.matchUp?.matchUpStatus === BYE;
   if (fmlcBYE) return false;
@@ -37,7 +32,6 @@ export function isActiveDownstream(params) {
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
   const isLoserMatchUpWO = isExit(loserMatchUp?.matchUpStatus);
   const loserMatchUpExit = isLoserMatchUpWO && !propagatedLoserParticipant;
-
 
   //to identify a propagated exit (WO/DEFAULT) for matches that are WO/DEFAULT, have a winning side,
   //and have only one participant (the WO/DF player).
