@@ -5,7 +5,7 @@ import { pushGlobalLog } from '@Functions/global/globalLog';
 import { isExit } from '@Validators/isExit';
 
 // constants
-import { DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { OUTCOME_WALKOVER } from '@Helpers/keyValueScore/constants';
 
@@ -30,7 +30,9 @@ export function progressExitStatus({
   });
 
   // RETIRED should not be propagated as an exit status
-  const carryOverMatchUpStatus = (isExit(sourceMatchUpStatus) && sourceMatchUpStatus) || WALKOVER;
+  const carryOverMatchUpStatus =
+    (isExit(sourceMatchUpStatus) && (sourceMatchUpStatus !== RETIRED) && sourceMatchUpStatus)
+    || WALKOVER;
   // get the updated inContext match ups so we have all the sides info
   // existing inContextDrawMatchUps is out of date
   const inContextMatchUps = getAllDrawMatchUps({
