@@ -184,7 +184,7 @@
     "typescript": "5.9.3",
     "variable-diff": "2.0.2",
     "vite": "7.2.7",
-    "vite-tsconfig-paths": "5.1.4",
+    "vite-tsconfig-paths": "6.0.1",
     "vitest": "4.0.15"
   },
   "lint-staged": {
