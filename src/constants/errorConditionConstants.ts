@@ -267,6 +267,10 @@ export const INCOMPATIBLE_MATCHUP_STATUS = {
   message: 'Incompatible matchUpStatus',
   code: 'ERR_INCOMPATIBLE_MATCHUP_STATUS',
 };
+export const PROPAGATED_EXITS_DOWNSTREAM = {
+  message: 'Propagated exits downstream',
+  code: 'ERR_PROPAGATED_EXITS_DOWNSTREAM',
+};
 export const INVALID_MATCHUP_STATUS = {
   message: 'Invalid matchUpStatus',
   code: 'ERR_INVALID_MATCHUP_STATUS',

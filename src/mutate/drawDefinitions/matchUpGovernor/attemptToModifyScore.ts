@@ -3,6 +3,7 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { isDirectingMatchUpStatus } from '@Query/matchUp/checkStatusType';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
+import { isExit } from '@Validators/isExit';
 
 // constants
 import { ABANDONED, CANCELLED, COMPLETED, DEFAULTED, INCOMPLETE, WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -10,8 +11,16 @@ import { MISSING_ASSIGNMENTS } from '@Constants/errorConditionConstants';
 import { POLICY_TYPE_SCORING } from '@Constants/policyConstants';
 
 export function attemptToModifyScore(params) {
-  const { matchUpStatusCodes, matchUpStatus, structure, matchUp, dualMatchUp, inContextMatchUp, autoCalcDisabled } =
-    params;
+  const {
+    propagateExitStatus,
+    matchUpStatusCodes,
+    autoCalcDisabled,
+    inContextMatchUp,
+    matchUpStatus,
+    dualMatchUp,
+    structure,
+    matchUp,
+  } = params;
 
   const matchUpStatusIsValid =
     isDirectingMatchUpStatus({ matchUpStatus }) ||
@@ -29,7 +38,8 @@ export function attemptToModifyScore(params) {
   const validToScore =
     hasAdHocSides ||
     drawPositionsAssignedParticipantIds({ structure, matchUp, inContextMatchUp }) ||
-    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false;
+    params.appliedPolicies?.[POLICY_TYPE_SCORING]?.requireParticipantsForScoring === false ||
+    (isExit(matchUpStatus) && participantsCount === 1 && propagateExitStatus);
 
   if (!validToScore) return decorateResult({ result: { error: MISSING_ASSIGNMENTS }, stack });
 
@@ -38,6 +48,7 @@ export function attemptToModifyScore(params) {
   const updatedMatchUpStatus = matchUpStatusIsValid ? matchUpStatus : (params.winningSide && COMPLETED) || INCOMPLETE;
   const result = modifyMatchUpScore({
     ...params,
+    winningSide: params.winningSide,
     matchUpStatusCodes: (matchUpStatusIsValid && matchUpStatusCodes) || [],
     matchUpStatus: updatedMatchUpStatus,
     context: stack,

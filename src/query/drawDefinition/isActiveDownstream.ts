@@ -27,22 +27,30 @@ export function isActiveDownstream(params) {
 
   // NOTE: produced WALKOVER, DEFAULTEED fed into consolation structures should NOT be considered active
   // IF: the loserMatchUp has no further downstream matchUps or there is no propagated loserParticipant (e.g. DOUBLE_EXIT)
-
   const loserExitPropagation = loserTargetData?.targetMatchUps?.loserMatchUp;
   const loserIndex = loserTargetData?.targetMatchUps?.loserMatchUpDrawPositionIndex;
   const propagatedLoserParticipant = loserExitPropagation?.sides[loserIndex]?.participant;
-  const loserMatchUpExit = isExit(loserMatchUp?.matchUpStatus) && !propagatedLoserParticipant;
+  const isLoserMatchUpWO = isExit(loserMatchUp?.matchUpStatus);
+  const loserMatchUpExit = isLoserMatchUpWO && !propagatedLoserParticipant;
+
+  //to identify a propagated exit (WO/DEFAULT) for matches that are WO/DEFAULT, have a winning side,
+  //and have only one participant (the WO/DF player).
+  const loserMatchUpParticipantsCount =
+    loserMatchUp?.sides?.reduce((acc, current) => (current?.participant ? ++acc : acc), 0) ?? 0;
+  const isLoserMatchUpWalkoverWithOnePlayer =
+    //this catches downstream matches marked as WO with only one participant
+    loserMatchUp?.winningSide && isLoserMatchUpWO && loserMatchUpParticipantsCount === 1;
 
   const winnerDrawPositionsCount = winnerMatchUp?.drawPositions?.filter(Boolean).length || 0;
 
   // if a winnerMatchUp contains a WALKOVER and its source matchUps have no winningSides it cannot be considered active
   // unless one of its downstream matchUps is active
-
   if (
-    (loserMatchUp?.winningSide && !loserMatchUpExit) ||
-    (winnerMatchUp?.winningSide &&
-      winnerDrawPositionsCount === 2 &&
-      (!winnerMatchUp.feedRound || !isExit(winnerMatchUp?.matchUpStatus)))
+    !isLoserMatchUpWalkoverWithOnePlayer &&
+    ((loserMatchUp?.winningSide && !loserMatchUpExit) ||
+      (winnerMatchUp?.winningSide &&
+        winnerDrawPositionsCount === 2 &&
+        (!winnerMatchUp.feedRound || !isExit(winnerMatchUp?.matchUpStatus))))
   ) {
     return true;
   }
