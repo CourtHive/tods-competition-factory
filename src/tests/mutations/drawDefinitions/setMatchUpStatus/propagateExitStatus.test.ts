@@ -17,7 +17,7 @@ import {
 
 const factory = { tournamentEngine };
 
-test.skip.for([
+test.for([
   [
     {
       //outcome
@@ -85,7 +85,7 @@ test.skip.for([
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(expected.expectedBackDrawMatchUpStatusCodes);
 });
 
-test.skip(`it sets the correct status codes in a consolation match when a WO is propagated to a match with already an opponent.`, () => {
+test(`it sets the correct status codes in a consolation match when a WO is propagated to a match with already an opponent.`, () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -141,7 +141,7 @@ test.skip(`it sets the correct status codes in a consolation match when a WO is 
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(['W2']);
 });
 
-test.skip.for([
+test.for([
   [
     {
       //outcome
@@ -225,7 +225,7 @@ test.skip.for([
   },
 );
 
-test.skip('can propagate a default to a consolation match with already the result of a double default, resulting in a DOUBLE_WALKOVER', () => {
+test('can propagate a default to a consolation match with already the result of a double default, resulting in a DOUBLE_WALKOVER', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -271,7 +271,7 @@ test.skip('can propagate a default to a consolation match with already the resul
   expect(loserMatchUp?.matchUpStatusCodes).toEqual(['WO', 'DM']);
 });
 
-test.skip('can propagate an exit status and progress the already existing opponent in the back draw match', () => {
+test('can propagate an exit status and progress the already existing opponent in the back draw match', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -345,7 +345,7 @@ test.skip('can propagate an exit status and progress the already existing oppone
   expect(loserMatchUp?.winningSide).toEqual(1);
 });
 
-test.skip('can propagate an exit status in a compass draw', () => {
+test('can propagate an exit status in a compass draw', () => {
   const idPrefix = 'matchUp';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({
@@ -451,7 +451,7 @@ test.skip('can propagate an exit status in a compass draw', () => {
   expect(unique(scoreResults)).toEqual([true]);
 });
 
-test.skip('can automatically progress the winner in a feed in round that already had a propagated WO participant fed in', () => {
+test('can automatically progress the winner in a feed in round that already had a propagated WO participant fed in', () => {
   const idPrefix = 'm';
   const drawId = 'drawId';
   mocksEngine.generateTournamentRecord({

@@ -16,7 +16,7 @@ import { instanceCount } from '@Tools/arrays';
 import { ErrorType, MISSING_DRAW_POSITIONS, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DrawDefinition, DrawLink, Event, Tournament } from '@Types/tournamentTypes';
 import { FIRST_MATCHUP } from '@Constants/drawDefinitionConstants';
-import { TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
+import { DOUBLE_WALKOVER, TO_BE_PLAYED } from '@Constants/matchUpStatusConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import { MatchUpsMap } from '@Types/factoryTypes';
@@ -310,8 +310,16 @@ function removeDirectedLoser({
   });
 
   if (sourceMatchUpId && sourceMatchUpStatus) {
-    // TODO: update matchUpStatusCodes if necessary
-    // console.log({ sourceMatchUpId, sourceMatchUpStatus });
+    //It could be that the loser match up was already a double walkover with one propagated
+    //exit with a player and the other participant as a produced exit from a parent double WO.
+    //We then want to remove the specific WO reason for the participant as the participant
+    //has been removed from the draw positions and this is now a straight double WO.
+    //In case the loser matchup was not a double WO we jsut remove the status codes.
+    //
+    //TODO: figure out what happens for non Dobule WO loser matchups. Does it reset status codes that should
+    //instead been kept? not sure how to test this.
+    const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
+    targetMatchUp.matchUpStatusCodes = sourceMatchUpStatus === DOUBLE_WALKOVER ? ['WO', 'WO'] : [];
   }
 
   // remove participant from seedAssignments

@@ -4,6 +4,7 @@ import { countGames, countSets, countPoints } from './scoreCounters';
 import { calculatePercentages } from './calculatePercentages';
 import { intersection } from '@Tools/arrays';
 import { ensureInt } from '@Tools/ensureInt';
+import { isExit } from '@Validators/isExit';
 
 // constants and types
 import { completedMatchUpStatuses, DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -408,7 +409,7 @@ function processOutcome({ winningParticipantId, losingParticipantId, participant
     if (matchUpStatus === RETIRED) participantResults[losingParticipantId].retirements += 1;
 
     // attribute to catch all scenarios where participant terminated matchUp irregularly
-    if ([DEFAULTED, RETIRED, WALKOVER].includes(matchUpStatus))
+    if (isExit(matchUpStatus))
       participantResults[losingParticipantId].allDefaults += 1;
 
     participantResults[losingParticipantId].matchUpsLost += 1;

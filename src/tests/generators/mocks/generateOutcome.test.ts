@@ -31,7 +31,9 @@ it.each(generateRange(0, iterations))('can generate score strings for matchUpFor
   });
   expect(outcome.matchUpStatus).toEqual(RETIRED);
   expect([1, 2].includes(outcome.winningSide)).toEqual(true);
-  expect(outcome.score.sets.pop().winningSide).toBeUndefined();
+  expect(outcome.score.sets).toEqual([]);
+  expect(outcome.score.scoreStringSide1).toEqual('');
+  expect(outcome.score.side2ScoreString).toEqual('');
 
   ({ outcome } = mocksEngine.generateOutcome({
     matchUpStatusProfile: { [DEFAULTED]: 100 },
