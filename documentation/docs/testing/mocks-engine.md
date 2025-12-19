@@ -91,6 +91,16 @@ const eventProfiles = [
       categoryName: 'U12',
     },
     matchUpFormat: FORMAT_STANDARD,
+    participantsProfile: {},
+    policyDefinitions: {},
+    eventExtensions: [],
+    surfaceCategory: '',
+    tieFormatName: '',
+    processCodes: [],
+    discipline: '',
+    eventLevel: '',
+    timeItems: [],
+    ballType: '',
     drawProfiles: [
       {
         drawSize: 16,

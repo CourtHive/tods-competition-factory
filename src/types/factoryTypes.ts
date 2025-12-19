@@ -468,6 +468,7 @@ export type GenerateDrawDefinitionArgs = {
   hydrateCollections?: boolean;
   tournamentRecord: Tournament;
   matchUpType?: EventTypeUnion;
+  hydrateRoundNames?: boolean;
   drawTypeCoercion?: boolean;
   ignoreStageSpace?: boolean;
   qualifyingProfiles?: any[];
