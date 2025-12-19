@@ -99,26 +99,15 @@ it.each(scenarios)('DrawMatic events can be generated using eventProfiles', (sce
 });
 
 it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { participantsCount: 20 },
+  const participantsCount = 20;
+  const eventId = 'eventId';
+  mocksEngine.generateTournamentRecord({
+    eventProfiles: [{ eventId, eventName: 'Match Play', participantsProfile: { participantsCount } }],
+    setState: true,
   });
 
-  tournamentEngine.setState(tournamentRecord);
-
-  const { participants } = tournamentEngine.getParticipants();
-
-  const {
-    event: { eventId },
-  } = tournamentEngine.addEvent({
-    event: { eventName: 'Match Play' },
-  });
-
-  const participantIds = participants.map((p) => p.participantId);
-  let result = tournamentEngine.addEventEntries({ eventId, participantIds });
-  expect(result.success).toEqual(true);
-
-  result = tournamentEngine.generateDrawDefinition({
-    drawSize: participantIds.length,
+  let result = tournamentEngine.generateDrawDefinition({
+    drawSize: participantsCount,
     drawType: AD_HOC,
     eventId,
   });
@@ -193,8 +182,9 @@ it('can use drawMatic to generate rounds in existing AD_HOC draws', () => {
 });
 
 it('cannot use drawMatic when there are no entries present', () => {
+  const participantsCount = 20;
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { participantsCount: 20 },
+    participantsProfile: { participantsCount },
   });
 
   tournamentEngine.setState(tournamentRecord);

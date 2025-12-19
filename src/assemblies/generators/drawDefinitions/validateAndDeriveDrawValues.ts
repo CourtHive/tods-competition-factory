@@ -109,11 +109,13 @@ function getConsideredEntries({ considerEventEntries = true, drawEntries, eventE
 
 function getPolicies(params) {
   const { tournamentRecord, event } = params;
-  const appliedPolicies =
-    getAppliedPolicies({
+  const appliedPolicies = {
+    ...params?.appliedPolicies,
+    ...(getAppliedPolicies({
       tournamentRecord,
       event,
-    }).appliedPolicies ?? {};
+    }).appliedPolicies ?? {}),
+  };
 
   const policyDefinitions = makeDeepCopy(params.policyDefinitions ?? {}, false, true);
   return { appliedPolicies, policyDefinitions };
