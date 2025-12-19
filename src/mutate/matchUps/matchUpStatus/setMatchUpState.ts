@@ -188,14 +188,12 @@ export function setMatchUpState(params: SetMatchUpStateArgs): any {
   const isClearScore =
     matchUpStatus === TO_BE_PLAYED && score?.scoreStringSide1 === '' && score?.scoreStringSide2 === '' && !winningSide;
 
-  const propagatedExitDownStream = hasPropagatedExitDownstream(params)
+  const propagatedExitDownStream = hasPropagatedExitDownstream(params);
 
-  //if we try to clear a score but there are downstream propagated statuses 
+  //if we try to clear a score but there are downstream propagated statuses
   //we error
   if (propagatedExitDownStream && isClearScore) {
-   return {
-     error: PROPAGATED_EXITS_DOWNSTREAM,
-   }; 
+    return { error: PROPAGATED_EXITS_DOWNSTREAM };
   }
   // with propagating winningSide changes, activeDownstream does not apply to collection matchUps
   const activeDownstream = isActiveDownstream(params);
