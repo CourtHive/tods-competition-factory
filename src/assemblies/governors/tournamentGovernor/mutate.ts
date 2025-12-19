@@ -1,3 +1,4 @@
+export { hydrateTournamentRecord } from '@Mutate/base/hydrateTournamentRecord';
 export { setTournamentStatus } from '@Mutate/tournaments/setTournamentStatus';
 export { removeOnlineResource } from '@Mutate/base/removeOnlineResource';
 export { removeExtension } from '@Mutate/extensions/removeExtension';

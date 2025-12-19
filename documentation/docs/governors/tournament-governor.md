@@ -99,6 +99,23 @@ engine.addTournamentExtension({
 
 ---
 
+## hydrateTournamentRecord
+
+Currently only accepts the directive `hydrateRoundNames: true`. Use of `eventProfiles` is optional and allows granularity in application of round naming policy at the event level. If `eventProfiles` is used the top level `directives` and `policyDefinitions` are not necessary.
+
+````js
+engine.hydrateTournamentRecord({
+  policyDefinitions: POLICY_ROUND_NAMING_DEFAULT,
+  directives: { hydrateRoundNames: true },
+  eventProfiles: [{
+    directives: { hydrateRoundNames: true }
+    policyDefinitions: {},
+    eventId: 'eventId',
+  }]
+})
+
+---
+
 ## newTournamentRecord
 
 Creates a new tournamentRecord in shared state.
@@ -109,7 +126,7 @@ engine.newTournamentRecord({
 });
 
 const { tournamentRecord } = engine.getTournament();
-```
+````
 
 ---
 
