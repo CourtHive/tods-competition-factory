@@ -1,4 +1,6 @@
 import { addVoluntaryConsolationStructure } from '@Mutate/drawDefinitions/addVoluntaryConsolationStructure';
+import { getMappedStructureMatchUps, getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
+import { getRoundContextProfile } from '@Query/matchUps/getRoundContextProfile';
 import { getDrawFormat } from '@Generators/drawDefinitions/getDrawFormat';
 import { getParticipants } from '@Query/participants/getParticipants';
 import { decorateResult } from '@Functions/global/decorateResult';
@@ -13,6 +15,7 @@ import {
 // constants and types
 import { ErrorType, INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { GenerateDrawDefinitionArgs, ResultType } from '@Types/factoryTypes';
+import { POLICY_TYPE_ROUND_NAMING } from '@Constants/policyConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
@@ -103,6 +106,44 @@ export function generateDrawDefinition(params: GenerateDrawDefinitionArgs): Resu
       drawDefinition,
       matchUpType,
     });
+  }
+
+  if (params.hydrateRoundNames) {
+    const roundNamingPolicy = appliedPolicies?.[POLICY_TYPE_ROUND_NAMING];
+    if (roundNamingPolicy) {
+      const matchUpsMap = getMatchUpsMap({ drawDefinition });
+      drawDefinition.structures?.forEach((structure) => {
+        const matchUps = getMappedStructureMatchUps({
+          structureId: structure.structureId,
+          matchUpsMap,
+        });
+        const result = getRoundContextProfile({
+          roundNamingPolicy,
+          drawDefinition,
+          structure,
+          matchUps,
+        });
+        const { roundNamingProfile, roundProfile } = result;
+
+        // account for structures within structures (round robins)
+        const structures = structure.structures || [structure];
+        structures.forEach((itemStructure) => {
+          (itemStructure.matchUps ?? []).forEach((matchUp) => {
+            const roundNumber = matchUp?.roundNumber?.toString();
+            if (roundNumber) {
+              const roundName = roundNamingProfile?.[roundNumber]?.roundName;
+              const abbreviatedRoundName = roundNamingProfile?.[roundNumber]?.abbreviatedRoundName;
+              const feedRound = roundProfile?.[roundNumber]?.feedRound;
+              Object.assign(matchUp, {
+                abbreviatedRoundName,
+                feedRound,
+                roundName,
+              });
+            }
+          });
+        });
+      });
+    }
   }
 
   return {
