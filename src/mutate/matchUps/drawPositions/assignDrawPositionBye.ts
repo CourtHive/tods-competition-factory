@@ -96,9 +96,7 @@ export function assignDrawPositionBye({
   const stack = 'assignDrawPositionBye';
   pushGlobalLog({ method: stack, color: 'cyan', drawPosition });
 
-  if (!matchUpsMap) {
-    matchUpsMap = getMatchUpsMap({ drawDefinition });
-  }
+  matchUpsMap ??= getMatchUpsMap({ drawDefinition });
   const { positionAssignments } = getPositionAssignments({ structure });
   const { activeDrawPositions } = getStructureDrawPositionProfiles({
     drawDefinition,
@@ -112,9 +110,10 @@ export function assignDrawPositionBye({
   }
 
   //
-  const hasPropagatedStatus = !!(loserMatchUp && matchUpsMap.drawMatchUps.find(
-    (m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus),
-  ));
+  const hasPropagatedStatus = !!(
+    loserMatchUp &&
+    matchUpsMap.drawMatchUps.find((m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus))
+  );
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);
   if (drawPositionIsActive && !hasPropagatedStatus) {
@@ -163,7 +162,7 @@ export function assignDrawPositionBye({
       //let's clear up the participant from the assignment
       //if it was there because of a propagated exit.
       if (hasPropagatedStatus) {
-        assignment.participantId = undefined
+        assignment.participantId = undefined;
       }
     }
   });

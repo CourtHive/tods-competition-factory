@@ -17,25 +17,6 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
     return !finalRound || matchUp.roundNumber > finalRound ? matchUp.roundNumber : finalRound;
   }, undefined);
 
-  /*
-  const initialRounds = [1, 2].map((roundNumber) => {
-    const feedProfile = roundNumber % 2 ? TOP_DOWN : BOTTOM_UP;
-    return {
-      linkType: LOSER,
-      source: {
-        roundNumber,
-        structureId: mainStructure.structureId,
-      },
-      target: {
-        feedProfile,
-        roundNumber: 1,
-        positionInterleave: { offset: roundNumber - 1, interleave: 1 },
-        structureId: consolationStructure.structureId,
-      },
-    };
-  });
-  */
-
   const fedRounds = roundsFed.map((roundNumber, i) => {
     const roundsFedIndex = roundsFed.indexOf(roundNumber);
     const feedProfile = roundsFedIndex % 2 ? TOP_DOWN : BOTTOM_UP;
@@ -95,6 +76,5 @@ export function doubleEliminationLinks({ mainStructure, consolationStructure, de
     },
   ];
 
-  // return [...initialRounds, ...fedRounds, finalistsLink, ...deciderLinks];
   return [...fedRounds, finalistsLink, ...deciderLinks];
 }

@@ -409,8 +409,7 @@ function processOutcome({ winningParticipantId, losingParticipantId, participant
     if (matchUpStatus === RETIRED) participantResults[losingParticipantId].retirements += 1;
 
     // attribute to catch all scenarios where participant terminated matchUp irregularly
-    if (isExit(matchUpStatus))
-      participantResults[losingParticipantId].allDefaults += 1;
+    if (isExit(matchUpStatus)) participantResults[losingParticipantId].allDefaults += 1;
 
     participantResults[losingParticipantId].matchUpsLost += 1;
   }
