@@ -31,8 +31,7 @@ export function progressExitStatus({
 
   // RETIRED should not be propagated as an exit status
   const carryOverMatchUpStatus =
-    (isExit(sourceMatchUpStatus) && (sourceMatchUpStatus !== RETIRED) && sourceMatchUpStatus)
-    || WALKOVER;
+    (isExit(sourceMatchUpStatus) && sourceMatchUpStatus !== RETIRED && sourceMatchUpStatus) || WALKOVER;
   // get the updated inContext match ups so we have all the sides info
   // existing inContextDrawMatchUps is out of date
   const inContextMatchUps = getAllDrawMatchUps({

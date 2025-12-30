@@ -66,7 +66,7 @@ export function doubleExitAdvancement(params) {
         matchUpId,
       });
       if (result.error) return decorateResult({ result, stack });
-    } 
+    }
   }
   if (winnerMatchUp) {
     const result = conditionallyAdvanceDrawPosition({
@@ -81,7 +81,6 @@ export function doubleExitAdvancement(params) {
 
   return decorateResult({ result: { ...SUCCESS }, stack });
 }
-
 
 // 1. Assigns a WALKOVER or DEFAULTED status to the winnerMatchUp
 // 2. Advances any drawPosition that is already present

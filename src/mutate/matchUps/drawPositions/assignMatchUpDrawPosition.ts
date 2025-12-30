@@ -103,7 +103,7 @@ export function assignMatchUpDrawPosition({
       [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus) &&
       matchUp.matchUpStatus) ||
     TO_BE_PLAYED;
-  
+
   //are we going to a match already marked as a WO becuase it was propagated from the main draw?
   const isPropagatedExit = !!(isExit(matchUp?.matchUpStatus) && matchUp?.winningSide);
 
@@ -121,11 +121,11 @@ export function assignMatchUpDrawPosition({
           inContextDrawMatchUps,
           drawPosition,
           matchUpId,
-        }))
+        })) ||
       //if the match is already marked as a WO with a winning side
       //we keep the winning side
-      || (isPropagatedExit && matchUp.winningSide)
-      || undefined;
+      (isPropagatedExit && matchUp.winningSide) ||
+      undefined;
 
     if (matchUp?.matchUpStatusCodes) {
       updateMatchUpStatusCodes({
