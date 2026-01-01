@@ -256,6 +256,10 @@ export function addMatchUpContext({
           } else if (setFormat?.tiebreakSet || setFormat?.timed) {
             set.tiebreakSet = true;
           }
+          if (set.tiebreakSet && [1, 2].includes(set.winningSide)) {
+            set.side1Score = set.winningSide === 1 ? 1 : 0;
+            set.side2Score = set.winningSide === 2 ? 1 : 0;
+          }
           return set;
         });
     }
