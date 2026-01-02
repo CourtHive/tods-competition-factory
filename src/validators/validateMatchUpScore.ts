@@ -89,12 +89,20 @@ export function validateSetScore(
   // Either explicit tiebreak scores, OR score pattern indicates tiebreak was played
   const hasExplicitTiebreak = side1TiebreakScore !== undefined || side2TiebreakScore !== undefined;
   const isImplicitTiebreak = setTo && winnerScore === setTo + 1 && loserScore === setTo;
-  const hasTiebreak = hasExplicitTiebreak || isImplicitTiebreak;
+  
+  // Lenient tiebreak detection: if score is (tiebreakAt-1)-(tiebreakAt-2),
+  // assume it might be a tiebreak set with missing tiebreak scores
+  // Example: 7-6 in SET1-S:8/TB7 (loserScore=6, tiebreakAt-2=6, winnerScore=7, tiebreakAt-1=7)
+  // This provides lenient validation for pro sets where tiebreak scores weren't recorded
+  const isLikelyTiebreak = tiebreakAt && winnerScore === tiebreakAt - 1 && loserScore === tiebreakAt - 2;
+  
+  const hasTiebreak = hasExplicitTiebreak || isImplicitTiebreak || isLikelyTiebreak;
 
   if (hasTiebreak) {
     // Tiebreak set validation
     // Winner should have setTo+1 games, loser should have setTo games (e.g., 7-6 not 6-6)
-    if (setTo) {
+    // UNLESS it's a "likely tiebreak" (lenient detection), in which case skip strict validation
+    if (setTo && !isLikelyTiebreak) {
       if (winnerScore !== setTo + 1) {
         return {
           isValid: false,
@@ -237,8 +245,15 @@ export function validateMatchUpScore(
   const bestOfMatch = matchUpFormat?.match(/SET(\d+)/)?.[1];
   const bestOfSets = bestOfMatch ? parseInt(bestOfMatch) : 3;
 
-  // Check if this is an irregular ending (allows incomplete scores)
+  // Check if this appears to be an incomplete match:
+  // - At least one set is missing winningSide (in-progress)
+  const hasIncompleteSet = sets.some((set) => !set.winningSide);
+  
+  // Allow incomplete scores if:
+  // 1. Irregular ending (RETIRED, WALKOVER, DEFAULTED)
+  // 2. No matchUpStatus AND at least one set is missing winningSide (in-progress)
   const isIrregularEnding = ['RETIRED', 'WALKOVER', 'DEFAULTED'].includes(matchUpStatus || '');
+  const allowIncomplete = isIrregularEnding || (!matchUpStatus && hasIncompleteSet);
 
   // Validate each set against matchUpFormat
   for (let i = 0; i < sets.length; i++) {
@@ -246,7 +261,7 @@ export function validateMatchUpScore(
     // For SET1: any set is the deciding set (bestOf=1)
     // For SET3/SET5: check if we're at the final set position (i+1 === bestOfSets)
     const isDecidingSet = bestOfSets === 1 || (i + 1) === bestOfSets;
-    const setValidation = validateSetScore(sets[i], matchUpFormat, isDecidingSet, isIrregularEnding);
+    const setValidation = validateSetScore(sets[i], matchUpFormat, isDecidingSet, allowIncomplete);
     if (!setValidation.isValid) {
       return {
         isValid: false,
