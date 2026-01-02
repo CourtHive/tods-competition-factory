@@ -24,23 +24,29 @@ const SetFormatSelector = ({ matchUpFormatParsed, hasFinalSet, isFinalSet, disab
   const [commonState, setCommonState] = useState(initialState);
 
   const counts =
-    (['S', 'TB'].indexOf(commonState.what) >= 0 && [1, 3, 5].map((key) => ({ key, name: key }))) ||
+    (['S', 'TB'].includes(commonState.what) && [1, 3, 5].map((key) => ({ key, name: key }))) ||
     [1, 3, 5].map((key) => ({ key, name: key }));
-  const whatTo =
-    commonState.what === 'T'
-      ? [10, 15, 20, 25, 30, 45, 60, 90].map((key) => ({
-          name: `${key} Minutes`,
-          key,
-        }))
-      : commonState.what === 'TB'
-        ? [5, 7, 9, 10, 11, 12, 15, 21].map((key) => ({
-            name: `to ${key}`,
-            key,
-          }))
-        : [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => ({
-            name: `to ${key}`,
-            key,
-          }));
+  
+  const getWhatToOptions = () => {
+    if (commonState.what === 'T') {
+      return [10, 15, 20, 25, 30, 45, 60, 90].map((key) => ({
+        name: `${key} Minutes`,
+        key,
+      }));
+    }
+    if (commonState.what === 'TB') {
+      return [5, 7, 9, 10, 11, 12, 15, 21].map((key) => ({
+        name: `to ${key}`,
+        key,
+      }));
+    }
+    return [1, 2, 3, 4, 5, 6, 7, 8, 9].map((key) => ({
+      name: `to ${key}`,
+      key,
+    }));
+  };
+  
+  const whatTo = getWhatToOptions();
 
   const finalFixed = 'final';
   const finals = [{ key: 'final', name: 'Final Set' }];
@@ -52,7 +58,7 @@ const SetFormatSelector = ({ matchUpFormatParsed, hasFinalSet, isFinalSet, disab
           { key: 'bestof', name: 'Best Of' },
           { key: 'exact', name: 'Exactly' },
         ];
-  const isDisabled = (what) => (disabled || []).indexOf(what) >= 0;
+  const isDisabled = (what) => (disabled || []).includes(what);
   const bestOfSingular = [
     { key: 'S', name: 'Set' },
     { key: 'TB', name: 'Tiebreak' },

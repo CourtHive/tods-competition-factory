@@ -243,6 +243,84 @@ console.log(sets)
 
 ---
 
+## validateSetScore
+
+Validates a single set score against matchUpFormat rules. Returns `{ isValid: boolean, error?: string }`.
+
+Supports all matchUpFormat variations including:
+- Standard formats (SET3-S:6/TB7)
+- Tiebreak-only sets (SET1-S:TB10, SET3-S:TB7)
+- Pro sets (SET1-S:8/TB7)
+- Short sets (SET3-S:4/TB7)
+- NOAD formats (SET3-S:6NOAD/TB7NOAD)
+
+```js
+const set = {
+  side1Score: 7,
+  side2Score: 6,
+  side1TiebreakScore: 7,
+  side2TiebreakScore: 5,
+};
+
+const { isValid, error } = scoreGovernor.validateSetScore({
+  set,
+  matchUpFormat: 'SET3-S:6/TB7',
+  isDecidingSet: false, // optional - whether this is the final set
+  allowIncomplete: false, // optional - allow incomplete scores (for RETIRED/DEFAULTED)
+});
+```
+
+**Tiebreak-only set example:**
+```js
+const set = { side1Score: 11, side2Score: 13 };
+const { isValid } = scoreGovernor.validateSetScore({
+  set,
+  matchUpFormat: 'SET1-S:TB10',
+});
+// isValid: true - TB10 set with valid win-by-2 score
+```
+
+---
+
+## validateMatchUpScore
+
+Validates all sets in a matchUp score against matchUpFormat rules. Returns `{ isValid: boolean, error?: string }`.
+
+Automatically handles:
+- Multiple set validation
+- Final set format variations
+- Irregular endings (RETIRED, WALKOVER, DEFAULTED)
+
+```js
+const sets = [
+  { side1Score: 6, side2Score: 4 },
+  { side1Score: 3, side2Score: 6 },
+  { side1Score: 7, side2Score: 5 },
+];
+
+const { isValid, error } = scoreGovernor.validateMatchUpScore({
+  sets,
+  matchUpFormat: 'SET3-S:6/TB7',
+  matchUpStatus: 'COMPLETED', // optional - allows incomplete scores for RETIRED/DEFAULTED
+});
+```
+
+**Best-of-3 TB10 example:**
+```js
+const sets = [
+  { side1Score: 11, side2Score: 13 },
+  { side1Score: 12, side2Score: 10 },
+];
+
+const { isValid } = scoreGovernor.validateMatchUpScore({
+  sets,
+  matchUpFormat: 'SET3-S:TB10',
+});
+// isValid: true - both TB10 sets have valid win-by-2 scores
+```
+
+---
+
 ## validateTieFormat
 
 Provides validation for `tieFormat` objects. See [tieFormats](/docs/concepts/tieFormat).

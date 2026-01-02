@@ -121,6 +121,36 @@ export function handleRetired({ score, profile, applied }) {
   return { score };
 }
 
+export function handleDefaulted({ score, profile, applied }) {
+  score = score?.toString().toLowerCase();
+  
+  // Match patterns like "6-3 3-6 DEF" or "6-3 3-6 DEFAULTED"
+  const re = /^(.*\d+.*)(def|defaulted)+[A-Za-z ]*$/; // at least one digit
+  if (re.test(score)) {
+    const [leading] = score.match(re).slice(1);
+    applied.push('handleDefaulted');
+    return { score: leading.trim(), matchUpStatus: 'defaulted', applied };
+  }
+
+  const providerDefaulted = profile?.matchUpStatuses?.defaulted;
+  const additionalDefaulted = Array.isArray(providerDefaulted) 
+    ? providerDefaulted 
+    : [providerDefaulted].filter(Boolean);
+
+  // accommodate other variations
+  const defaulted = ['dft', ...additionalDefaulted].find((def) => score?.endsWith(def));
+
+  if (defaulted) {
+    applied.push('handleDefaulted');
+    return {
+      matchUpStatus: 'defaulted',
+      score: score?.replace(defaulted, '').trim(),
+      applied,
+    };
+  }
+  return { score };
+}
+
 export function removeDanglingBits({ score, attributes }) {
   if (score.endsWith(' am') || score.endsWith(' pm')) score = '';
 
@@ -235,6 +265,7 @@ export const transforms = {
   matchKnownPatterns: matchKnownPatterns,
   removeDanglingBits: removeDanglingBits,
   removeErroneous: removeErroneous,
+  handleDefaulted: handleDefaulted,
   handleWalkover: handleWalkover,
   properTiebreak: properTiebreak,
   handleNumeric: handleNumeric,

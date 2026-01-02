@@ -1,3 +1,4 @@
+export { validateSetScore, validateMatchUpScore } from '@Validators/validateMatchUpScore';
 export { isValidMatchUpFormat } from '@Validators/isValidMatchUpFormat';
 export { validateTieFormat } from '@Validators/validateTieFormat';
 export { validateScore } from '@Validators/validateScore';

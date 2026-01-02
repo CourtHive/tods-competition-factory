@@ -11,6 +11,7 @@ const processingOrder = [
   'handleNumeric',
   'handleWalkover',
   'handleRetired',
+  'handleDefaulted',
   'replaceOh',
   'stringScore',
   'punctuationAdjustments',
