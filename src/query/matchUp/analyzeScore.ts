@@ -32,7 +32,10 @@ export function analyzeScore({
     [0, 0],
   );
   const matchUpWinningSideIndex = winningSide ? winningSide - 1 : undefined;
-  const matchUpLosingSideIndex = matchUpWinningSideIndex !== undefined ? 1 - matchUpWinningSideIndex : undefined;
+  const matchUpLosingSideIndex =
+    matchUpWinningSideIndex !== undefined && [0, 1].includes(matchUpWinningSideIndex)
+      ? 1 - matchUpWinningSideIndex
+      : undefined;
   const winningSideSetsCount = matchUpWinningSideIndex !== undefined && setsWinCounts[matchUpWinningSideIndex];
   const losingSideSetsCount = matchUpLosingSideIndex !== undefined && setsWinCounts[matchUpLosingSideIndex];
 

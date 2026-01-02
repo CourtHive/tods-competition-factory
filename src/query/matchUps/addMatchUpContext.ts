@@ -256,6 +256,10 @@ export function addMatchUpContext({
           } else if (setFormat?.tiebreakSet || setFormat?.timed) {
             set.tiebreakSet = true;
           }
+          if (set.tiebreakSet && [1, 2].includes(set.winningSide)) {
+            set.side1Score = set.winningSide === 1 ? 1 : 0;
+            set.side2Score = set.winningSide === 2 ? 1 : 0;
+          }
           return set;
         });
     }
@@ -350,12 +354,12 @@ export function addMatchUpContext({
             }
           }
 
-          if (hydrateParticipants !== false) {
-            Object.assign(side, { participant });
-          } else {
+          if (hydrateParticipants === false) {
             // when hydrateParticipants is false, only add entryStatus and entryStage to side.participant, because unique to this context
             // it is expected that receiving client will have access to participant data and can hydrate as needed
             Object.assign(side, { participant: { entryStage, entryStatus } });
+          } else {
+            Object.assign(side, { participant });
           }
         }
       }
@@ -477,8 +481,7 @@ export function addMatchUpContext({
     });
   }
 
-  const hasParticipants =
-    matchUpWithContext.sides && matchUpWithContext.sides.filter((side) => side?.participantId).length === 2;
+  const hasParticipants = matchUpWithContext.sides?.filter((side) => side?.participantId).length === 2;
   const hasNoWinner = !matchUpWithContext.winningSide;
   const readyToScore = scoringActive && hasParticipants && hasNoWinner;
   Object.assign(matchUpWithContext, { readyToScore, hasContext: true });

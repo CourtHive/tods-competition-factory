@@ -24,17 +24,15 @@ const Configurator = () => {
   const handleOnChange = (value) => setMatchUpFormatParsed(value);
 
   return (
-    <>
-      <Paper className={classes.paper} elevation={2}>
-        <Typography variant="h5" component="h3" style={{ marginBottom: '1em' }}>
-          {'TODS MatchUp Format Code Generator'}
-        </Typography>
-        <Typography variant="h5" component="h3" style={{ color: 'blue' }}>
-          {matchUpFormatCode.stringify(matchUpFormatParsed)}
-        </Typography>
-        <MatchUpFormatForm matchUpFormatParsed={matchUpFormatParsed} onChange={handleOnChange} />
-      </Paper>
-    </>
+    <Paper className={classes.paper} elevation={2}>
+      <Typography variant="h5" component="h3" style={{ marginBottom: '1em' }}>
+        {'TODS MatchUp Format Code Generator'}
+      </Typography>
+      <Typography variant="h5" component="h3" style={{ color: 'blue' }}>
+        {matchUpFormatCode.stringify(matchUpFormatParsed)}
+      </Typography>
+      <MatchUpFormatForm matchUpFormatParsed={matchUpFormatParsed} onChange={handleOnChange} />
+    </Paper>
   );
 };
 

@@ -93,7 +93,7 @@ export function countGames({
 
       const { side1Score, side2Score } = set;
 
-      if (isGamesBased(based)) {
+      if (isGamesBased(based) && !isTiebreakSet) {
         gamesTally[0].push(ensureInt(side1Score || 0));
         gamesTally[1].push(ensureInt(side2Score || 0));
       }

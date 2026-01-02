@@ -42,27 +42,25 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
 
   const renderCustomScoring = () => {
     return (
-      <>
-        <Grid container direction="row" justify="flex-start" className={classes.row}>
-          <Grid item>
+      <Grid container direction="row" justify="flex-start" className={classes.row}>
+        <Grid item>
+          <SetFormatSelector
+            matchUpFormatParsed={matchUpFormatParsed}
+            disabled={disabled}
+            onChange={setsUpdate}
+            hasFinalSet={hasFinalSet}
+          />
+          {!hasFinalSet || timed ? null : (
             <SetFormatSelector
               matchUpFormatParsed={matchUpFormatParsed}
               disabled={disabled}
+              isFinalSet={true}
               onChange={setsUpdate}
               hasFinalSet={hasFinalSet}
             />
-            {!hasFinalSet || timed ? null : (
-              <SetFormatSelector
-                matchUpFormatParsed={matchUpFormatParsed}
-                disabled={disabled}
-                isFinalSet={true}
-                onChange={setsUpdate}
-                hasFinalSet={hasFinalSet}
-              />
-            )}
-          </Grid>
+          )}
         </Grid>
-      </>
+      </Grid>
     );
   };
 
@@ -92,14 +90,12 @@ const MatchUpFormatForm = ({ disabled, matchUpFormatParsed, onChange }) => {
 
   const renderPreDefinedScoring = () => {
     return (
-      <>
-        <FormControl style={{ minWidth: 120, width: '100%', margin: 0, padding: 0 }}>
-          <InputLabel>{'Scoring'}</InputLabel>
-          <MuiSelect value={activeMatchUpFormat()} onChange={scoringFormatChanged}>
-            {defaultMatchUpFormats.map(renderMatchUpFormat)}
-          </MuiSelect>
-        </FormControl>
-      </>
+      <FormControl style={{ minWidth: 120, width: '100%', margin: 0, padding: 0 }}>
+        <InputLabel>{'Scoring'}</InputLabel>
+        <MuiSelect value={activeMatchUpFormat()} onChange={scoringFormatChanged}>
+          {defaultMatchUpFormats.map(renderMatchUpFormat)}
+        </MuiSelect>
+      </FormControl>
     );
   };
 

@@ -21,7 +21,27 @@ export function generateOutcomeFromScoreString(params) {
     };
   if (winningSide && ![1, 2, undefined].includes(winningSide)) return { error: INVALID_VALUES, winningSide };
 
-  const neutralParsedSets = scoreString && parseScoreString({ scoreString });
+  const neutralParsedSets = scoreString && parseScoreString({ scoreString, matchUpFormat });
+  
+  // Check if score string uses bracket notation (tiebreak-only format)
+  // Bracket notation [11-13] is already in side order (side1-side2), not winner-loser order
+  const isBracketNotation = scoreString?.trim().startsWith('[');
+  
+  // If winningSide not provided and matchUpFormat is available, try to infer from parsed sets
+  let inferredWinningSide = winningSide;
+  if (!inferredWinningSide && matchUpFormat && neutralParsedSets) {
+    // Count sets won by each side
+    const setsWon = { side1: 0, side2: 0 };
+    neutralParsedSets.forEach((set: any) => {
+      if (set.winningSide === 1) setsWon.side1++;
+      else if (set.winningSide === 2) setsWon.side2++;
+    });
+    
+    // Determine match winner based on sets won
+    if (setsWon.side1 > setsWon.side2) inferredWinningSide = 1;
+    else if (setsWon.side2 > setsWon.side1) inferredWinningSide = 2;
+  }
+  
   const score: any = {};
   const winningScoreString = generateScoreString({
     sets: neutralParsedSets,
@@ -34,19 +54,24 @@ export function generateOutcomeFromScoreString(params) {
     matchUpFormat,
     setTBlast,
   });
-  if (winningSide === 2) {
+  
+  // For bracket notation, don't swap based on winningSide - it's already in side order
+  if (isBracketNotation) {
+    score.scoreStringSide1 = winningScoreString;
+    score.scoreStringSide2 = losingScoreString;
+  } else if (inferredWinningSide === 2) {
     score.scoreStringSide1 = losingScoreString;
     score.scoreStringSide2 = winningScoreString;
   } else {
     score.scoreStringSide1 = winningScoreString;
     score.scoreStringSide2 = losingScoreString;
   }
-  score.sets = parseScoreString({ scoreString: score.scoreStringSide1 });
+  score.sets = parseScoreString({ scoreString: score.scoreStringSide1, matchUpFormat });
 
   return definedAttributes({
     outcome: {
       matchUpStatus,
-      winningSide,
+      winningSide: inferredWinningSide,
       score,
     },
   });

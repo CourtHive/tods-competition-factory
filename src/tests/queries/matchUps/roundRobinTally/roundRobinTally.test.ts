@@ -284,23 +284,6 @@ it('properly orders round robin participants; drawSize: 5, SET3-S:4/TB7-F:TB7', 
   });
   tournamentEngine.setState(tournamentRecord);
 
-  /*
-  // visual verification
-  const { matchUps } = tournamentEngine.allDrawMatchUps({
-    drawId,
-    inContext: true,
-  });
-  console.log(
-    matchUps
-      .filter(({ matchUpStatus }) => matchUpStatus !== 'BYE')
-      .map(({ drawPositions, score, winningSide }) => ({
-        drawPositions,
-        winningSide,
-        score,
-      }))
-  );
-  */
-
   const expectations = [
     {
       drawPosition: 1,

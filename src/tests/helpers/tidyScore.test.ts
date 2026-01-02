@@ -659,6 +659,15 @@ const scores = [
   { score: 'wo', expectation: { matchUpStatus: 'WALKOVER' } },
   { score: 'walkover', expectation: { matchUpStatus: 'WALKOVER' } },
 
+  // DEFAULTED matchUpStatus
+  { score: '6-3 3-6 def', expectation: { score: '6-3 3-6', matchUpStatus: 'DEFAULTED' } },
+  { score: '6-3 3-6 DEF', expectation: { score: '6-3 3-6', matchUpStatus: 'DEFAULTED' } },
+  { score: '6-3 defaulted', expectation: { score: '6-3', matchUpStatus: 'DEFAULTED' } },
+  { score: '6-3 DEFAULTED', expectation: { score: '6-3', matchUpStatus: 'DEFAULTED' } },
+  { score: '6-3 3-6 Defaulted', expectation: { score: '6-3 3-6', matchUpStatus: 'DEFAULTED' } },
+  { score: '(6-3)(3-6)def', expectation: { score: '6-3 3-6', matchUpStatus: 'DEFAULTED' } },
+  { score: '6/3 6/4 defaulted', expectation: { score: '6-3 6-4', matchUpStatus: 'DEFAULTED' } },
+
   {
     score: '6/1, 6/7(3 7), 7/6(7, 4)',
     expectation: { score: '6-1 6-7(3) 7-6(4)' },
