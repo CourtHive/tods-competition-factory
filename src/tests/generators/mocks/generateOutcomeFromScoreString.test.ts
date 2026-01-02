@@ -120,9 +120,7 @@ it('can generate outcome for TB12 format [12-14]', () => {
   expect(outcome.score.sets[0].winningSide).toEqual(2);
 });
 
-// TODO: Best of 3 TB10 currently has limitation - second set [10-12] is parsed as match tiebreak
-// This is because parsing logic uses setNumber === 1 heuristic. Need to pass matchUpFormat to parser.
-it.skip('can generate outcome for best of 3 TB10 format', () => {
+it('can generate outcome for best of 3 TB10 format', () => {
   const values = {
     scoreString: '[11-13] [10-12]',
     matchUpFormat: 'SET3-S:TB10',
@@ -139,8 +137,7 @@ it.skip('can generate outcome for best of 3 TB10 format', () => {
   expect(outcome.winningSide).toEqual(2);
 });
 
-// TODO: WinningSide inference - currently factory doesn't infer winningSide from score alone
-it.skip('can handle TB10 format without winningSide (should infer from score)', () => {
+it('can handle TB10 format without winningSide (should infer from score)', () => {
   const values = {
     scoreString: '[11-13]',
     matchUpFormat: 'SET1-S:TB10',

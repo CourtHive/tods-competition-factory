@@ -1,8 +1,10 @@
 import { getTiebreakComplement } from '@Query/matchUp/getComplement';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 
 type ParseScoreArgs = {
   scoreString: string;
   tiebreakTo?: number;
+  matchUpFormat?: string;
 };
 
 type ParsedSetString = {
@@ -20,7 +22,20 @@ type ParseSetArgs = {
 };
 
 // utility function just to allow testing with string score entry
-export function parseScoreString({ tiebreakTo = 7, scoreString = '' }: ParseScoreArgs) {
+export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpFormat }: ParseScoreArgs) {
+  // Check if matchUpFormat indicates tiebreak-only sets (TB10, TB7, etc.)
+  let isTiebreakOnlyFormat = false;
+  if (matchUpFormat) {
+    try {
+      const parsed = parse(matchUpFormat);
+      const tiebreakSetTo = parsed?.setFormat?.tiebreakSet?.tiebreakTo;
+      const regularSetTo = parsed?.setFormat?.setTo;
+      isTiebreakOnlyFormat = !!tiebreakSetTo && !regularSetTo;
+    } catch (e) {
+      // Ignore parse errors
+    }
+  }
+  
   return scoreString
     ?.split(' ')
     .filter(Boolean)
@@ -49,17 +64,16 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '' }: ParseScor
       // 1. Tiebreak-only set (TB10): [11-13] -> side1Score=11, side2Score=13
       // 2. Match tiebreak: [10-3] -> side1TiebreakScore=10, side2TiebreakScore=3
       // 
-      // Heuristic: If this is the FIRST set (setNumber === 1), treat as tiebreak-only (TB10)
-      // If it's a later set, treat as match tiebreak
+      // Use matchUpFormat if available, otherwise fall back to setNumber heuristic
       const bracketedScores = bracketed[1].split('-').map((score) => parseInt(score));
       
-      if (setNumber === 1) {
-        // First set with brackets = tiebreak-only format (TB10)
+      if (isTiebreakOnlyFormat || setNumber === 1) {
+        // Tiebreak-only format (TB10) - scores go into side1Score/side2Score
         side1Score = bracketedScores[0];
         side2Score = bracketedScores[1];
         winningSide = (side1Score > side2Score && 1) || (side1Score < side2Score && 2) || undefined;
       } else {
-        // Later set with brackets = match tiebreak (no game scores)
+        // Match tiebreak (no game scores) - scores go into tiebreak fields
         side1TiebreakScore = bracketedScores[0];
         side2TiebreakScore = bracketedScores[1];
         winningSide = (side1TiebreakScore > side2TiebreakScore && 1) || (side1TiebreakScore < side2TiebreakScore && 2) || undefined;
