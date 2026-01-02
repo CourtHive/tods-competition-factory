@@ -22,6 +22,11 @@ export function generateOutcomeFromScoreString(params) {
   if (winningSide && ![1, 2, undefined].includes(winningSide)) return { error: INVALID_VALUES, winningSide };
 
   const neutralParsedSets = scoreString && parseScoreString({ scoreString });
+  
+  // Check if score string uses bracket notation (tiebreak-only format)
+  // Bracket notation [11-13] is already in side order (side1-side2), not winner-loser order
+  const isBracketNotation = scoreString?.trim().startsWith('[');
+  
   const score: any = {};
   const winningScoreString = generateScoreString({
     sets: neutralParsedSets,
@@ -34,7 +39,12 @@ export function generateOutcomeFromScoreString(params) {
     matchUpFormat,
     setTBlast,
   });
-  if (winningSide === 2) {
+  
+  // For bracket notation, don't swap based on winningSide - it's already in side order
+  if (isBracketNotation) {
+    score.scoreStringSide1 = winningScoreString;
+    score.scoreStringSide2 = losingScoreString;
+  } else if (winningSide === 2) {
     score.scoreStringSide1 = losingScoreString;
     score.scoreStringSide2 = winningScoreString;
   } else {

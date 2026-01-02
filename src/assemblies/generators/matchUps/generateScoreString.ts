@@ -76,7 +76,12 @@ export function generateScoreString(
     const t2 = side2TiebreakScore || (isNumeric(side2TiebreakScore) || (tbscores && autoComplete) ? 0 : '');
 
     if (isTiebreakSet) {
-      const tiebreakScore = reverseScores ? [t2, t1] : [t1, t2];
+      // For tiebreak-only sets (TB10), check if scores are in side1Score/side2Score or tiebreak scores
+      // If game scores exist and no tiebreak scores, use game scores (these are actually tiebreak points)
+      const useGameScores = hasGameScores(currentSet) && !tbscores;
+      const score1 = useGameScores ? side1Score : t1;
+      const score2 = useGameScores ? side2Score : t2;
+      const tiebreakScore = reverseScores ? [score2, score1] : [score1, score2];
       return `[${tiebreakScore.join('-')}]`;
     }
 
