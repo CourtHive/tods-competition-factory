@@ -3,6 +3,9 @@
  */
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 
+// constants
+import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
+
 /**
  * Validate a single set score against matchUpFormat rules
  */
@@ -18,11 +21,11 @@ export function validateSetScore(
   if (!parsed) return { isValid: true }; // Can't validate if parse fails
 
   // Use finalSetFormat if it exists and this is the deciding set, otherwise use setFormat
-  const setFormat = (isDecidingSet && parsed.finalSetFormat) ? parsed.finalSetFormat : parsed.setFormat;
+  const setFormat = isDecidingSet && parsed.finalSetFormat ? parsed.finalSetFormat : parsed.setFormat;
   if (!setFormat) return { isValid: true };
 
   const { setTo, tiebreakAt, tiebreakFormat, tiebreakSet } = setFormat;
-  
+
   // Check if this is a tiebreak-only format (SET1-S:TB10)
   // Tiebreak-only sets have tiebreakSet.tiebreakTo but no regular setTo
   const tiebreakSetTo = tiebreakSet?.tiebreakTo;
@@ -44,17 +47,14 @@ export function validateSetScore(
     // Examples: SET1-S:TB10 means first to 10 points, win by 2
     // Valid scores: [10-12], [11-13], [33-35]
     // Invalid scores: [3-6], [35-3], [11-9], [10-10]
-    
     // Allow incomplete if irregular ending
     if (allowIncomplete) {
       return { isValid: true };
     }
-    
     // Both scores must be present
     if (side1Score === 0 && side2Score === 0) {
       return { isValid: false, error: 'Tiebreak-only set requires both scores' };
     }
-    
     // Winner must reach at least tiebreakSetTo
     if (winnerScore < tiebreakSetTo) {
       return {
@@ -62,7 +62,6 @@ export function validateSetScore(
         error: `Tiebreak-only set winner must reach at least ${tiebreakSetTo}, got ${winnerScore}`,
       };
     }
-    
     // Loser must be at least tiebreakSetTo - 1
     // This prevents scores like 35-3 (should be 35-33)
     // Check this BEFORE scoreDiff to give more specific error message
@@ -72,7 +71,6 @@ export function validateSetScore(
         error: `Tiebreak-only set loser must be at least ${tiebreakSetTo - 1} when winner exceeds ${tiebreakSetTo}, got ${loserScore}`,
       };
     }
-    
     // Must win by exactly 2 points
     if (scoreDiff !== 2) {
       return {
@@ -80,7 +78,6 @@ export function validateSetScore(
         error: `Tiebreak-only set must be won by exactly 2 points, got ${winnerScore}-${loserScore}`,
       };
     }
-    
     // Valid tiebreak-only set
     return { isValid: true };
   }
@@ -89,13 +86,13 @@ export function validateSetScore(
   // Either explicit tiebreak scores, OR score pattern indicates tiebreak was played
   const hasExplicitTiebreak = side1TiebreakScore !== undefined || side2TiebreakScore !== undefined;
   const isImplicitTiebreak = setTo && winnerScore === setTo + 1 && loserScore === setTo;
-  
+
   // Lenient tiebreak detection: if score is (tiebreakAt-1)-(tiebreakAt-2),
   // assume it might be a tiebreak set with missing tiebreak scores
   // Example: 7-6 in SET1-S:8/TB7 (loserScore=6, tiebreakAt-2=6, winnerScore=7, tiebreakAt-1=7)
   // This provides lenient validation for pro sets where tiebreak scores weren't recorded
   const isLikelyTiebreak = tiebreakAt && winnerScore === tiebreakAt - 1 && loserScore === tiebreakAt - 2;
-  
+
   const hasTiebreak = hasExplicitTiebreak || isImplicitTiebreak || isLikelyTiebreak;
 
   if (hasTiebreak) {
@@ -147,7 +144,7 @@ export function validateSetScore(
     }
   } else {
     // Regular set validation (no tiebreak)
-    
+
     // CRITICAL VALIDATION: If there's a tiebreak format AND either side is setTo+1,
     // the other must be >= setTo-1 (2-game margin required)
     // This prevents invalid scores like 3-7, 4-7, etc. but allows 5-7, 6-7
@@ -167,7 +164,7 @@ export function validateSetScore(
         };
       }
     }
-    
+
     // For incomplete scores (irregular endings), we're more lenient
     if (allowIncomplete) {
       // Basic validation: scores can't exceed reasonable limits
@@ -243,16 +240,16 @@ export function validateMatchUpScore(
 
   // Parse matchUpFormat once
   const bestOfMatch = matchUpFormat?.match(/SET(\d+)/)?.[1];
-  const bestOfSets = bestOfMatch ? parseInt(bestOfMatch) : 3;
+  const bestOfSets = bestOfMatch ? Number.parseInt(bestOfMatch) : 3;
 
   // Check if this appears to be an incomplete match:
   // - At least one set is missing winningSide (in-progress)
   const hasIncompleteSet = sets.some((set) => !set.winningSide);
-  
+
   // Allow incomplete scores if:
   // 1. Irregular ending (RETIRED, WALKOVER, DEFAULTED)
   // 2. No matchUpStatus AND at least one set is missing winningSide (in-progress)
-  const isIrregularEnding = ['RETIRED', 'WALKOVER', 'DEFAULTED'].includes(matchUpStatus || '');
+  const isIrregularEnding = [RETIRED, WALKOVER, DEFAULTED].includes(matchUpStatus || '');
   const allowIncomplete = isIrregularEnding || (!matchUpStatus && hasIncompleteSet);
 
   // Validate each set against matchUpFormat
@@ -260,7 +257,7 @@ export function validateMatchUpScore(
     // Check if this is the deciding set (the last possible set in the match)
     // For SET1: any set is the deciding set (bestOf=1)
     // For SET3/SET5: check if we're at the final set position (i+1 === bestOfSets)
-    const isDecidingSet = bestOfSets === 1 || (i + 1) === bestOfSets;
+    const isDecidingSet = bestOfSets === 1 || i + 1 === bestOfSets;
     const setValidation = validateSetScore(sets[i], matchUpFormat, isDecidingSet, allowIncomplete);
     if (!setValidation.isValid) {
       return {
