@@ -64,16 +64,18 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       // 1. Tiebreak-only set (TB10): [11-13] -> side1Score=11, side2Score=13
       // 2. Match tiebreak: [10-3] -> side1TiebreakScore=10, side2TiebreakScore=3
       // 
-      // Use matchUpFormat if available, otherwise fall back to setNumber heuristic
+      // CRITICAL: Only treat as tiebreak-only format if matchUpFormat explicitly indicates it
+      // Without matchUpFormat context, brackets always mean match tiebreak (traditional behavior)
       const bracketedScores = bracketed[1].split('-').map((score) => parseInt(score));
       
-      if (isTiebreakOnlyFormat || setNumber === 1) {
-        // Tiebreak-only format (TB10) - scores go into side1Score/side2Score
+      if (isTiebreakOnlyFormat) {
+        // Tiebreak-only format (TB10) with explicit matchUpFormat - scores go into side1Score/side2Score
         side1Score = bracketedScores[0];
         side2Score = bracketedScores[1];
         winningSide = (side1Score > side2Score && 1) || (side1Score < side2Score && 2) || undefined;
       } else {
         // Match tiebreak (no game scores) - scores go into tiebreak fields
+        // This is the default/traditional interpretation of [N-M]
         side1TiebreakScore = bracketedScores[0];
         side2TiebreakScore = bracketedScores[1];
         winningSide = (side1TiebreakScore > side2TiebreakScore && 1) || (side1TiebreakScore < side2TiebreakScore && 2) || undefined;
