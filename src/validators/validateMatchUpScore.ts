@@ -62,20 +62,27 @@ export function validateSetScore(
         error: `Tiebreak-only set winner must reach at least ${tiebreakSetTo}, got ${winnerScore}`,
       };
     }
-    // Loser must be at least tiebreakSetTo - 1
-    // This prevents scores like 35-3 (should be 35-33)
-    // Check this BEFORE scoreDiff to give more specific error message
-    if (loserScore < tiebreakSetTo - 1) {
+    // Must win by at least 2 points
+    if (scoreDiff < 2) {
       return {
         isValid: false,
-        error: `Tiebreak-only set loser must be at least ${tiebreakSetTo - 1} when winner exceeds ${tiebreakSetTo}, got ${loserScore}`,
+        error: `Tiebreak-only set must be won by at least 2 points, got ${winnerScore}-${loserScore}`,
       };
     }
-    // Must win by exactly 2 points
-    if (scoreDiff !== 2) {
+    // If winner is exactly tiebreakSetTo, loser must be at most tiebreakSetTo - 2
+    // (e.g., 10-8, 10-7, 10-6, etc. for TB10)
+    if (winnerScore === tiebreakSetTo && loserScore > tiebreakSetTo - 2) {
       return {
         isValid: false,
-        error: `Tiebreak-only set must be won by exactly 2 points, got ${winnerScore}-${loserScore}`,
+        error: `Tiebreak-only set at ${tiebreakSetTo}-${loserScore} requires playing past ${tiebreakSetTo}`,
+      };
+    }
+    // If winner exceeds tiebreakSetTo, must maintain 2-point margin (win-by-2 rule)
+    // (e.g., 11-9, 12-10, 13-11, etc.)
+    if (winnerScore > tiebreakSetTo && scoreDiff !== 2) {
+      return {
+        isValid: false,
+        error: `Tiebreak-only set past ${tiebreakSetTo} must be won by exactly 2 points, got ${winnerScore}-${loserScore}`,
       };
     }
     // Valid tiebreak-only set

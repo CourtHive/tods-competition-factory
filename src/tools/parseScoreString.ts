@@ -23,14 +23,14 @@ type ParseSetArgs = {
 
 // utility function just to allow testing with string score entry
 export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpFormat }: ParseScoreArgs) {
-  // Check if matchUpFormat indicates tiebreak-only sets (TB10, TB7, etc.)
-  let isTiebreakOnlyFormat = false;
+  // Parse matchUpFormat to check for tiebreak-only sets
+  let parsedFormat: any;
+  let bestOfSets = 3;
   if (matchUpFormat) {
     try {
-      const parsed = parse(matchUpFormat);
-      const tiebreakSetTo = parsed?.setFormat?.tiebreakSet?.tiebreakTo;
-      const regularSetTo = parsed?.setFormat?.setTo;
-      isTiebreakOnlyFormat = !!tiebreakSetTo && !regularSetTo;
+      parsedFormat = parse(matchUpFormat);
+      const bestOfMatch = matchUpFormat?.match(/SET(\d+)/)?.[1];
+      bestOfSets = bestOfMatch ? parseInt(bestOfMatch) : 3;
     } catch (e) {
       // Ignore parse errors
     }
@@ -52,6 +52,19 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
     // 2. Match tiebreak/supertiebreak as part of regular set: 7-5 5-7 [10-3]
     // We distinguish by checking if brackets START the set string
     const isTiebreakOnlySet = set?.startsWith('[') && bracketed;
+    
+    // Check if THIS specific set is a tiebreak-only format
+    // For formats like SET3-S:6/TB7 F:TB10, only the deciding set (set 3) uses finalSetFormat
+    let isTiebreakOnlyFormat = false;
+    if (parsedFormat && isTiebreakOnlySet) {
+      const isDecidingSet = setNumber === bestOfSets;
+      const setFormat = isDecidingSet ? parsedFormat.finalSetFormat : parsedFormat.setFormat;
+      if (setFormat) {
+        const tiebreakSetTo = setFormat.tiebreakSet?.tiebreakTo;
+        const regularSetTo = setFormat.setTo;
+        isTiebreakOnlyFormat = !!tiebreakSetTo && !regularSetTo;
+      }
+    }
     
     let side1Score: number | undefined;
     let side2Score: number | undefined;
