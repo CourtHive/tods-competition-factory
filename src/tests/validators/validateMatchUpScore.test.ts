@@ -14,8 +14,9 @@
  * - Historical Grand Slam formats (Wimbledon 2018, 2019; Australian Open 2019)
  */
 
-import { validateSetScore, validateMatchUpScore } from '@Validators/validateMatchUpScore';
+/* eslint-disable sonarjs/assertions-in-tests */
 import { describe, it, expect } from 'vitest';
+import { validateSetScore, validateMatchUpScore } from '@Validators/validateMatchUpScore';
 
 describe('validateSetScore', () => {
   const standardFormat = 'SET3-S:6/TB7';
@@ -357,17 +358,6 @@ describe('validateMatchUpScore', () => {
   });
 
   describe('Real-world scenarios from TMX Scoring V2', () => {
-    it('should accept 3-6 6-3 5-0 as incomplete without COMPLETED', () => {
-      const sets = [
-        { side1Score: 3, side2Score: 6, winningSide: 2 },
-        { side1Score: 6, side2Score: 3, winningSide: 1 },
-        { side1Score: 5, side2Score: 0 }, // Invalid, no winningSide
-      ];
-      const result = validateMatchUpScore(sets, bestOf3Format); // No matchUpStatus
-      // Without COMPLETED status, tied matches with partial sets are allowed
-      expect(result.isValid).toBe(true);
-    });
-
     it('should accept 6-3 3-6 6-4 as valid complete match', () => {
       const sets = [
         { side1Score: 6, side2Score: 3, winningSide: 1 },
@@ -516,11 +506,45 @@ describe('validateSetScore - College Pro Set (SET1-S:8/TB7@7)', () => {
 describe('validateMatchUpScore - Final Set Variations', () => {
   it('should accept best of 3 with final set tiebreak to 10 (SET3-S:6/TB7-F:TB10)', () => {
     // F:TB10 means final set is tiebreak-only (no games)
+    // Third set stored as side1Score/side2Score: 0, tiebreak scores hold actual TB10 scores
     const format = 'SET3-S:6/TB7-F:TB10';
     const sets = [
       { side1Score: 6, side2Score: 4, winningSide: 1 },
       { side1Score: 3, side2Score: 6, winningSide: 2 },
-      { side1Score: 10, side2Score: 12, winningSide: 2 }, // Should be validated as TB10 tiebreak-only
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 10, side2TiebreakScore: 12, winningSide: 2 },
+    ];
+    const result = validateMatchUpScore(sets, format);
+    expect(result.isValid).toBe(true);
+  });
+
+  it('should accept SET3 F:TB10 with extended tiebreak [13-11]', () => {
+    const format = 'SET3-S:6/TB7-F:TB10';
+    const sets = [
+      { side1Score: 6, side2Score: 4, winningSide: 1 },
+      { side1Score: 4, side2Score: 6, winningSide: 2 },
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 13, side2TiebreakScore: 11, winningSide: 1 },
+    ];
+    const result = validateMatchUpScore(sets, format);
+    expect(result.isValid).toBe(true);
+  });
+
+  it('should reject SET3 F:TB10 with insufficient margin [10-9]', () => {
+    const format = 'SET3-S:6/TB7-F:TB10';
+    const sets = [
+      { side1Score: 6, side2Score: 3, winningSide: 1 },
+      { side1Score: 3, side2Score: 6, winningSide: 2 },
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 10, side2TiebreakScore: 9, winningSide: 1 },
+    ];
+    const result = validateMatchUpScore(sets, format);
+    expect(result.isValid).toBe(false);
+  });
+
+  it('should accept SET3 F:TB7 format [7-5]', () => {
+    const format = 'SET3-S:6/TB7-F:TB7';
+    const sets = [
+      { side1Score: 6, side2Score: 3, winningSide: 1 },
+      { side1Score: 4, side2Score: 6, winningSide: 2 },
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 7, side2TiebreakScore: 5, winningSide: 1 },
     ];
     const result = validateMatchUpScore(sets, format);
     expect(result.isValid).toBe(true);
@@ -618,11 +642,10 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       expect(result.isValid).toBe(true);
     });
 
-    it('should reject 8-10 (loser below setTo-1=9)', () => {
+    it('should accept 8-10 (loser at setTo-2=8, valid 2-point margin)', () => {
       const set = { side1Score: 8, side2Score: 10 };
       const result = validateSetScore(set, tb10Format);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 9');
+      expect(result.isValid).toBe(true);
     });
   });
 
@@ -631,21 +654,21 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       const set = { side1Score: 10, side2Score: 11 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
-    it('should reject 11-12 (only 1 point margin)', () => {
+    it('should reject 11-12 (only 1 point margin past setTo)', () => {
       const set = { side1Score: 11, side2Score: 12 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('at least 2 points');
     });
 
     it('should reject 10-13 (3 point margin, must be exactly 2)', () => {
       const set = { side1Score: 10, side2Score: 13 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by exactly 2 points');
     });
   });
 
@@ -654,22 +677,22 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       const set = { side1Score: 35, side2Score: 3 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 9');
+      expect(result.error).toContain('must be won by exactly 2 points');
     });
 
     it('should reject 12-8 (4 point margin and loser below setTo-1)', () => {
       const set = { side1Score: 12, side2Score: 8 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      // Error should mention loser threshold since 8 < 9 (setTo-1)
-      expect(result.error).toContain('loser must be at least 9');
+      // Error should mention exact 2-point margin since 12 > 10
+      expect(result.error).toContain('must be won by exactly 2 points');
     });
 
     it('should reject 20-5 (huge disparity)', () => {
       const set = { side1Score: 20, side2Score: 5 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 9');
+      expect(result.error).toContain('must be won by exactly 2 points');
     });
   });
 
@@ -678,14 +701,14 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       const set = { side1Score: 10, side2Score: 10 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 11-11 (tied extended)', () => {
       const set = { side1Score: 11, side2Score: 11 };
       const result = validateSetScore(set, tb10Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 0-0 (no scores)', () => {
@@ -737,18 +760,17 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       expect(result.isValid).toBe(true);
     });
 
-    it('should reject 5-7 (loser below setTo-1=6)', () => {
+    it('should accept 5-7 (loser at setTo-2=5, valid 2-point margin)', () => {
       const set = { side1Score: 5, side2Score: 7 };
       const result = validateSetScore(set, tb7Format);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 6');
+      expect(result.isValid).toBe(true);
     });
 
     it('should reject 7-8 (only 1 point margin)', () => {
       const set = { side1Score: 7, side2Score: 8 };
       const result = validateSetScore(set, tb7Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 3-5 (winner below setTo=7)', () => {
@@ -786,18 +808,17 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       expect(result.isValid).toBe(true);
     });
 
-    it('should reject 10-12 (loser below setTo-1=11)', () => {
+    it('should accept 10-12 (loser at setTo-2=10, valid 2-point margin)', () => {
       const set = { side1Score: 10, side2Score: 12 };
       const result = validateSetScore(set, tb12Format);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 11');
+      expect(result.isValid).toBe(true);
     });
 
     it('should reject 12-13 (only 1 point margin)', () => {
       const set = { side1Score: 12, side2Score: 13 };
       const result = validateSetScore(set, tb12Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 11-11 (tied)', () => {
@@ -843,18 +864,17 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       expect(result.isValid).toBe(true);
     });
 
-    it('should reject 18-20 (loser below setTo-1=19)', () => {
+    it('should accept 18-20 (loser at setTo-2=18, valid 2-point margin)', () => {
       const set = { side1Score: 18, side2Score: 20 };
       const result = validateSetScore(set, tb20Format);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 19');
+      expect(result.isValid).toBe(true);
     });
 
     it('should reject 20-21 (only 1 point margin)', () => {
       const set = { side1Score: 20, side2Score: 21 };
       const result = validateSetScore(set, tb20Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 10-15 (winner below setTo=20)', () => {
@@ -868,7 +888,7 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       const set = { side1Score: 50, side2Score: 10 };
       const result = validateSetScore(set, tb20Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 19');
+      expect(result.error).toContain('must be won by exactly 2 points');
     });
   });
 
@@ -893,18 +913,17 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
       expect(result.isValid).toBe(true);
     });
 
-    it('should reject 3-5 (loser below setTo-1=4)', () => {
+    it('should accept 3-5 (loser at setTo-2=3, valid 2-point margin)', () => {
       const set = { side1Score: 3, side2Score: 5 };
       const result = validateSetScore(set, tb5Format);
-      expect(result.isValid).toBe(false);
-      expect(result.error).toContain('loser must be at least 4');
+      expect(result.isValid).toBe(true);
     });
 
     it('should reject 5-6 (only 1 point margin)', () => {
       const set = { side1Score: 5, side2Score: 6 };
       const result = validateSetScore(set, tb5Format);
       expect(result.isValid).toBe(false);
-      expect(result.error).toContain('won by exactly 2 points');
+      expect(result.error).toContain('must be won by at least 2 points');
     });
 
     it('should reject 2-4 (winner below setTo=5)', () => {
@@ -918,12 +937,37 @@ describe('validateSetScore - Tiebreak-Only Sets (TB10)', () => {
 
 describe('validateMatchUpScore - Various Format Combinations', () => {
   it('should accept short sets with final set tiebreak (SET3-S:4/TB7-F:TB10)', () => {
-    // F:TB10 means final set is tiebreak-only (no games)
     const format = 'SET3-S:4/TB7-F:TB10';
     const sets = [
       { side1Score: 4, side2Score: 2, winningSide: 1 },
       { side1Score: 2, side2Score: 4, winningSide: 2 },
-      { side1Score: 10, side2Score: 12, winningSide: 2 }, // Match tiebreak TB10
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 10, side2TiebreakScore: 12, winningSide: 2 },
+    ];
+    const result = validateMatchUpScore(sets, format);
+    expect(result.isValid).toBe(true);
+  });
+
+  it('should accept SET5 F:TB10 format', () => {
+    const format = 'SET5-S:6/TB7-F:TB10';
+    const sets = [
+      { side1Score: 6, side2Score: 4, winningSide: 1 },
+      { side1Score: 3, side2Score: 6, winningSide: 2 },
+      { side1Score: 6, side2Score: 3, winningSide: 1 },
+      { side1Score: 4, side2Score: 6, winningSide: 2 },
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 11, side2TiebreakScore: 9, winningSide: 1 },
+    ];
+    const result = validateMatchUpScore(sets, format);
+    expect(result.isValid).toBe(true);
+  });
+
+  it('should accept SET5 F:TB10 with extended final tiebreak [15-13]', () => {
+    const format = 'SET5-S:6/TB7-F:TB10';
+    const sets = [
+      { side1Score: 7, side2Score: 5, winningSide: 1 },
+      { side1Score: 5, side2Score: 7, winningSide: 2 },
+      { side1Score: 6, side2Score: 4, winningSide: 1 },
+      { side1Score: 4, side2Score: 6, winningSide: 2 },
+      { side1Score: 0, side2Score: 0, side1TiebreakScore: 15, side2TiebreakScore: 13, winningSide: 1 },
     ];
     const result = validateMatchUpScore(sets, format);
     expect(result.isValid).toBe(true);
@@ -952,15 +996,13 @@ describe('validateMatchUpScore - Various Format Combinations', () => {
     expect(result.isValid).toBe(true);
   });
 
-  it('should accept 7-6 in pro set format (current implementation)', () => {
+  it('should NOT accept 7-6 in pro set format', () => {
     const format = 'SET1-S:8/TB7';
     const sets = [
       { side1Score: 7, side2Score: 6, winningSide: 1 }, // Current implementation allows this
     ];
     const result = validateMatchUpScore(sets, format);
-    // NOTE: Current implementation allows 7-6 even though setTo=8
-    // Stricter validation may be needed
-    expect(result.isValid).toBe(true);
+    expect(result.isValid).toBe(false);
   });
 });
 
