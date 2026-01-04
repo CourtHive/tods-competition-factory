@@ -121,3 +121,25 @@ const result = matchUpFormatCode.stringify({
   setFormat: { timed: true, minutes: 20 },
 });
 ```
+
+## Note on NoAD in Tiebreak Formats (Non-Standard Extension)
+
+:::caution Non-Standard Extension
+The use of `NOAD` applied to tiebreak formats (e.g., `TB10NOAD`) is a **non-standard extension** for recreational tennis use and is **not part of the official ITF Tennis Open Data Standards (TODS) specification**.
+:::
+
+### Standard TODS Behavior
+- `NOAD` is officially documented only for game-level scoring (e.g., `SET3-S:6NOAD`)
+- All standard tennis tiebreak formats require win-by-2:
+  - 7-point tiebreak: first to 7, win by 2 → valid scores: 7-5, 8-6, 9-7, etc.
+  - 10-point match tiebreak: first to 10, win by 2 → valid scores: 10-8, 11-9, 12-10, etc.
+
+### Non-Standard Extension: `NOAD` in Tiebreaks
+When `NOAD` is applied to a tiebreak format (e.g., `SET3-S:6/TB7@5-F:TB10NOAD`):
+- **Behavior**: Changes `winBy` from 2 to 1 (first to reach `tiebreakTo` wins immediately)
+- **Example**: `TB10NOAD` allows scores like [10-9], [10-8] (winner needs exactly 10 points)
+- **Use case**: Recreational leagues and club play for time management
+- **Not recognized by**: ITF, ATP, WTA, USTA official formats
+
+### Implementation Note
+This implementation supports `tiebreakSet.NoAD` to enable recreational formats, but developers should be aware this is an extension beyond the TODS specification. When interoperating with other TODS-compliant systems, tiebreak `NOAD` notation may not be recognized or may be interpreted differently.
