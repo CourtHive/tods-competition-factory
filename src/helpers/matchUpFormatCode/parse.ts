@@ -139,6 +139,11 @@ function parseTiebreakFormat(formatstring: string): TiebreakFormat | undefined |
         if (modifier && typeof modifier === 'string' && !isConvertableInteger(modifier)) {
           result.modifier = modifier;
         }
+        // NOTE: NoAD in tiebreaks is a NON-STANDARD EXTENSION for recreational use.
+        // Official TODS only defines NoAD for game-level scoring (no deuce/advantage).
+        // Standard tennis tiebreaks always require win-by-2 (e.g., 10-8, 11-9, 12-10).
+        // NoAD in tiebreaks changes winBy from 2 to 1 (first to tiebreakTo wins).
+        // This is not recognized by ITF, ATP, WTA, or USTA official formats.
         if (NoAD) result.NoAD = true;
         return result;
       } else {

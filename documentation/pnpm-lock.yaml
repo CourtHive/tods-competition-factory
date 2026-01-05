@@ -37,7 +37,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.8.0
-        version: 0.8.8
+        version: 0.8.9
       material-ui:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -57,8 +57,8 @@ importers:
         specifier: 0.20.0
         version: 0.20.0(@types/react@18.3.27)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.2.35
-        version: 2.2.35
+        specifier: 2.2.36
+        version: 2.2.36
 
 packages:
 
@@ -2287,8 +2287,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.8.8:
-    resolution: {integrity: sha512-KY0h0XeEBIcO7NR2lPjNkz8UsmojB33SKCvH6XzMlarhJTHxFz8l2GWWPyGTPXdb1G4ZYEyoT5pCaVmOKRFdGw==}
+  courthive-components@0.8.9:
+    resolution: {integrity: sha512-0CQ89+2DS1Eo/aAIac9pwdIhk1xr7YN+OQF8Cn9K6pDrMhZrw+hWGVe4Pe8vxdFRPduXuDkfQd4YwU4x2shXvQ==}
     engines: {node: '>=16.16.0 < 25'}
 
   cross-fetch@3.1.8:
@@ -5472,12 +5472,12 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  tods-competition-factory@2.2.34:
-    resolution: {integrity: sha512-UA1H3MFNwLaLowkt5Kuq5fgi8KxjuCNP9uMmCaUtyzOeBh9p96peGrhKhRzSDisUf2tB6FrQzoHhQW61agP0XA==}
-    engines: {node: '>=20'}
-
   tods-competition-factory@2.2.35:
     resolution: {integrity: sha512-wWsEXMBeDUDDxjB2mAQIQYRKIXnMah37vgQNURMuGEv3oXAoIGI8c3BYW/nBajadTMBtdbNu3etdrcVcnGR9sQ==}
+    engines: {node: '>=20'}
+
+  tods-competition-factory@2.2.36:
+    resolution: {integrity: sha512-nxwM+NihMIZEZVvgNNIH6B3elrH9SZVaWiKzDcK8lyG2OuChNta4PaI1AOR67yACfciBKL6QInaNzbkGUUnrvA==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -9164,7 +9164,7 @@ snapshots:
       typescript: 5.3.3
     optional: true
 
-  courthive-components@0.8.8:
+  courthive-components@0.8.9:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -9174,7 +9174,7 @@ snapshots:
       class-variance-authority: 0.7.1
       classnames: 2.5.1
       dayjs: 1.11.19
-      tods-competition-factory: 2.2.35
+      tods-competition-factory: 2.2.36
       vanillajs-datepicker: 1.3.4
 
   cross-fetch@3.1.8(encoding@0.1.13):
@@ -12940,9 +12940,9 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  tods-competition-factory@2.2.34: {}
-
   tods-competition-factory@2.2.35: {}
+
+  tods-competition-factory@2.2.36: {}
 
   toidentifier@1.0.1: {}
 
