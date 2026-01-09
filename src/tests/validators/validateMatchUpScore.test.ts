@@ -428,15 +428,15 @@ describe('validateSetScore - Fast4 (SET3-S:4/TB5@3)', () => {
     expect(result.isValid).toBe(true);
   });
 
-  it('should reject 4-3 (insufficient margin for Fast4)', () => {
+  it('should accept 4-3 (won after tiebreak at 3-3)', () => {
     const set = {
       side1Score: 4,
       side2Score: 3,
-      // No tiebreak - validation requires 2-game margin
+      // Valid: tiebreak played at 3-3, winner reached 4
     };
     const result = validateSetScore(set, fast4Format);
-    // Validation correctly requires 2-game margin even in Fast4
-    expect(result.isValid).toBe(false);
+    // With tiebreakAt=3, setTo=4: score 4-3 means tiebreak was played and won
+    expect(result.isValid).toBe(true);
   });
 
   it('should accept 4-2 in Fast4 format', () => {
@@ -491,15 +491,15 @@ describe('validateSetScore - College Pro Set (SET1-S:8/TB7@7)', () => {
     expect(result.isValid).toBe(true);
   });
 
-  it('should reject 8-7 (insufficient margin for college pro set)', () => {
+  it('should accept 8-7 (won after tiebreak at 7-7)', () => {
     const set = {
       side1Score: 8,
       side2Score: 7,
-      // No tiebreak - validation requires 2-game margin
+      // Valid: tiebreak played at 7-7, winner reached 8
     };
     const result = validateSetScore(set, collegeProSetFormat);
-    // Validation correctly requires 2-game margin
-    expect(result.isValid).toBe(false);
+    // With tiebreakAt=7, setTo=8: score 8-7 means tiebreak was played and won
+    expect(result.isValid).toBe(true);
   });
 });
 
@@ -1041,5 +1041,79 @@ describe('validateSetScore - NOAD Format (SET3-S:6NOAD/TB7NOAD)', () => {
     const result = validateSetScore(set, noadFormat);
     // In NOAD, 6-4 should still be valid (2-game margin)
     expect(result.isValid).toBe(true);
+  });
+});
+
+describe('validateSetScore - S:5/TB9@4 format (tiebreakAt = setTo - 1)', () => {
+  const s5at4Format = 'SET1-S:5/TB9@4';
+
+  describe('Valid scores', () => {
+    it('should accept 5-0 (winner at setTo)', () => {
+      const set = { side1Score: 5, side2Score: 0 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should accept 5-1 (winner at setTo with 2-game margin)', () => {
+      const set = { side1Score: 5, side2Score: 1 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should accept 5-2 (winner at setTo with 2-game margin)', () => {
+      const set = { side1Score: 5, side2Score: 2 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should accept 5-3 (winner at setTo with 2-game margin)', () => {
+      const set = { side1Score: 5, side2Score: 3 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+    });
+
+    it('should accept 5-4 (winner at setTo after tiebreak)', () => {
+      // This is the key test case - after tiebreak at 4-4, winner gets to 5
+      const set = { side1Score: 5, side2Score: 4 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+      expect(result.error).toBeUndefined();
+    });
+
+    it('should accept 4-5 (loser at tiebreakAt, winner at setTo)', () => {
+      const set = { side1Score: 4, side2Score: 5 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(true);
+    });
+  });
+
+  describe('Invalid scores', () => {
+    it('should reject 5-5 (no 2-game margin)', () => {
+      const set = { side1Score: 5, side2Score: 5 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain('2 games');
+    });
+
+    it('should reject 4-4 without tiebreak (incomplete set)', () => {
+      const set = { side1Score: 4, side2Score: 4 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(false);
+      // Error is "winner must reach 5" because no one won yet
+      expect(result.error).toContain('reach 5');
+    });
+
+    it('should reject 6-4 (winner exceeded setTo+1)', () => {
+      const set = { side1Score: 6, side2Score: 4 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(false);
+    });
+
+    it('should reject 4-2 (winner did not reach setTo)', () => {
+      const set = { side1Score: 4, side2Score: 2 };
+      const result = validateSetScore(set, s5at4Format);
+      expect(result.isValid).toBe(false);
+      expect(result.error).toContain('reach 5');
+    });
   });
 });
