@@ -117,18 +117,23 @@ export function validateSetScore(
 
   if (hasTiebreak) {
     // Tiebreak set validation
-    // Winner should have setTo+1 games, loser should have setTo games (e.g., 7-6 not 6-6)
-    if (setTo) {
-      if (winnerScore !== setTo + 1) {
+    // Pattern depends on tiebreakAt:
+    // - If tiebreakAt === setTo: winner at setTo+1, loser at setTo (e.g., 7-6 for S:6@6)
+    // - If tiebreakAt < setTo: winner at setTo, loser at tiebreakAt (e.g., 5-4 for S:5@4)
+    if (setTo && tiebreakAt) {
+      const expectedWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
+      const expectedLoserScore = tiebreakAt;
+      
+      if (winnerScore !== expectedWinnerScore) {
         return {
           isValid: false,
-          error: `Tiebreak set winner must have ${setTo + 1} games, got ${winnerScore}`,
+          error: `Tiebreak set winner must have ${expectedWinnerScore} games, got ${winnerScore}`,
         };
       }
-      if (loserScore !== setTo) {
+      if (loserScore !== expectedLoserScore) {
         return {
           isValid: false,
-          error: `Tiebreak set loser must have ${setTo} games when tied, got ${loserScore}`,
+          error: `Tiebreak set loser must have ${expectedLoserScore} games, got ${loserScore}`,
         };
       }
     }
@@ -206,8 +211,13 @@ export function validateSetScore(
       };
     }
 
-    // Must have 2-game margin
-    if (scoreDiff < 2) {
+    // Check if a tiebreak was played (affects margin requirements)
+    // Special case: winner at setTo, loser at tiebreakAt (e.g., 5-4 for S:5@4)
+    // This means tiebreak was played and won - margin of 1 is valid
+    const isTiebreakWon = tiebreakAt && winnerScore === setTo && loserScore === tiebreakAt && scoreDiff === 1;
+
+    // Must have 2-game margin (unless tiebreak was played and won)
+    if (scoreDiff < 2 && !isTiebreakWon) {
       return {
         isValid: false,
         error: `Set must be won by at least 2 games, got ${winnerScore}-${loserScore}`,
@@ -216,18 +226,21 @@ export function validateSetScore(
 
     // Check maximum score based on tiebreak rules
     if (tiebreakAt) {
-      // Tiebreak format: once loser reaches tiebreakAt, must go to tiebreak
-      if (loserScore >= tiebreakAt) {
+      // Tiebreak format: once BOTH sides reach tiebreakAt, must go to tiebreak
+      // Exception: if winner is already at setTo and loser at tiebreakAt, tiebreak was already played
+      if (loserScore >= tiebreakAt && !isTiebreakWon) {
         return {
           isValid: false,
           error: `When tied at ${tiebreakAt}-${tiebreakAt}, must play tiebreak. Use format like ${tiebreakAt + 1}-${tiebreakAt}(5)`,
         };
       }
       // Winner can be at most setTo+1 when tiebreak is available
-      if (winnerScore > setTo + 1) {
+      // Exception: for tiebreakAt < setTo, winner can only be setTo (not setTo+1)
+      const maxWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
+      if (winnerScore > maxWinnerScore) {
         return {
           isValid: false,
-          error: `With tiebreak format, set score cannot exceed ${setTo + 1}-${setTo - 1}. Got ${winnerScore}-${loserScore}`,
+          error: `With tiebreak format, set score cannot exceed ${maxWinnerScore}-${tiebreakAt}. Got ${winnerScore}-${loserScore}`,
         };
       }
     } else if (winnerScore > setTo + 10) {
