@@ -108,10 +108,22 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       // Handle tiebreak game score in parentheses: 7-6(5)
       if (tiebreak) {
         const setTiebreakLowScore = tiebreak[1];
+        
+        // Extract tiebreakTo from matchUpFormat for this specific set
+        let setSpecificTiebreakTo = tiebreakTo; // Default
+        if (parsedFormat) {
+          const isDecidingSet = setNumber === bestOfSets;
+          const setFormat =
+            isDecidingSet && parsedFormat.finalSetFormat ? parsedFormat.finalSetFormat : parsedFormat.setFormat;
+          if (setFormat?.tiebreakFormat?.tiebreakTo) {
+            setSpecificTiebreakTo = setFormat.tiebreakFormat.tiebreakTo;
+          }
+        }
+        
         const side1TiebreakPerspective = getTiebreakComplement({
           lowValue: setTiebreakLowScore,
           isSide1: winningSide === 2,
-          tiebreakTo,
+          tiebreakTo: setSpecificTiebreakTo,
         });
         if (Array.isArray(side1TiebreakPerspective)) {
           [side1TiebreakScore, side2TiebreakScore] = side1TiebreakPerspective;
