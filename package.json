@@ -138,7 +138,7 @@
     "@swc/core": "1.15.8",
     "@types/express": "5.0.6",
     "@types/jest": "30.0.0",
-    "@types/node": "24.10.4",
+    "@types/node": "24.10.7",
     "@types/supertest": "6.0.3",
     "@typescript-eslint/eslint-plugin": "8.52.0",
     "@typescript-eslint/parser": "8.52.0",
@@ -184,7 +184,7 @@
     "typescript": "5.9.3",
     "variable-diff": "2.0.2",
     "vite": "7.3.1",
-    "vite-tsconfig-paths": "6.0.3",
+    "vite-tsconfig-paths": "6.0.4",
     "vitest": "4.0.16"
   },
   "lint-staged": {
