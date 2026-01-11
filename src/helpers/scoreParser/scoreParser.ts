@@ -97,7 +97,7 @@ export function tidyScore(params) {
   let isValid = isValidPattern(score);
   if (!isValid) {
     // Hail Mary: extract only the numbers from the string
-    score = incomingScore.toString().replace(/\D/g, '');
+    score = incomingScore.toString().replaceAll(/\D/g, '');
     if (attributes?.removed) {
       attributes.removed = undefined;
     }

@@ -15,20 +15,205 @@ import { generateFlights } from './generateFlights';
 
 // constants and fixtures
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';
-import defaultRatingsParameters from '@Fixtures/ratings/ratingsParameters';
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
+function processExistingEvent({ event, eventProfile, tournamentRecord, allUniqueParticipantIds, drawIds }) {
+  const { gender, category, eventType } = event;
+  const { drawProfiles, publish } = eventProfile;
+
+  const eventParticipantType =
+    (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
+    (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
+    eventType;
+
+  if (drawProfiles) {
+    const { stageParticipantsCount, uniqueParticipantsCount, uniqueParticipantStages } = getStageParticipantsCount({
+      drawProfiles,
+      category,
+      gender,
+    });
+
+    const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
+      ? generateEventParticipants({
+          event: { eventType, category, gender },
+          uniqueParticipantsCount,
+          participantsProfile: eventProfile.participantsProfile,
+          ratingsParameters: eventProfile.ratingsParameters,
+          tournamentRecord,
+          eventProfile,
+          uuids: eventProfile.uuids,
+        })
+      : {};
+
+    allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+    const { stageParticipants } = getStageParticipants({
+      targetParticipants: tournamentRecord.participants || [],
+      allUniqueParticipantIds,
+      stageParticipantsCount,
+      eventParticipantType,
+    });
+
+    let result: any = generateFlights({
+      uniqueDrawParticipants,
+      autoEntryPositions: eventProfile.autoEntryPositions,
+      stageParticipants,
+      tournamentRecord,
+      drawProfiles,
+      category,
+      gender,
+      event,
+    });
+    if (result.error) return result;
+
+    result = generateFlightDrawDefinitions({
+      matchUpStatusProfile: eventProfile.matchUpStatusProfile,
+      completeAllMatchUps: eventProfile.completeAllMatchUps,
+      randomWinningSide: eventProfile.randomWinningSide,
+      tournamentRecord,
+      drawProfiles,
+      isMock: eventProfile.isMock,
+      event,
+    });
+    if (result.error) return result;
+
+    drawIds.push(...result.drawIds);
+  }
+
+  if (publish) {
+    publishEvent({ tournamentRecord, event });
+  }
+
+  return SUCCESS;
+}
+
+function findEventByProfile(events, eventProfile) {
+  return events?.find(
+    (event, index) =>
+      (eventProfile.eventIndex !== undefined && index === eventProfile.eventIndex) ||
+      (eventProfile.eventName && event.eventName === eventProfile.eventName) ||
+      (eventProfile.eventId && event.eventId === eventProfile.eventId),
+  );
+}
+
+function processEventProfiles({ eventProfiles, tournamentRecord, allUniqueParticipantIds, eventIds, drawIds, params }) {
+  let eventIndex = tournamentRecord.events?.length || 0;
+
+  for (const eventProfile of eventProfiles) {
+    const event = findEventByProfile(tournamentRecord.events, eventProfile);
+
+    if (event) {
+      const result = processExistingEvent({
+        event,
+        eventProfile: { ...eventProfile, ...params },
+        tournamentRecord,
+        allUniqueParticipantIds,
+        drawIds,
+      });
+      if (result.error) return result;
+    } else {
+      const result: any = generateEventWithFlights({
+        startDate: tournamentRecord.startDate,
+        allUniqueParticipantIds,
+        matchUpStatusProfile: params.matchUpStatusProfile,
+        participantsProfile: params.participantsProfile,
+        completeAllMatchUps: params.completeAllMatchUps,
+        autoEntryPositions: params.autoEntryPositions,
+        randomWinningSide: params.randomWinningSide,
+        ratingsParameters: eventProfile.ratingsParameters,
+        tournamentRecord,
+        eventProfile,
+        eventIndex,
+        uuids: params.uuids,
+      });
+      if (result.error) return result;
+
+      const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
+
+      if (generatedDrawIds) drawIds.push(...generatedDrawIds);
+      eventIds.push(eventId);
+
+      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+      eventIndex += 1;
+    }
+  }
+
+  return SUCCESS;
+}
+
+function processDrawProfiles({ drawProfiles, tournamentRecord, allUniqueParticipantIds, eventIds, drawIds, params }) {
+  let drawIndex = (tournamentRecord.events || [])
+    .flatMap((event) => event.drawDefinitions?.map(() => 1) || [])
+    .reduce((a, b) => a + b, 0);
+
+  for (const drawProfile of drawProfiles) {
+    let result = generateEventWithDraw({
+      startDate: tournamentRecord.startDate,
+      allUniqueParticipantIds,
+      matchUpStatusProfile: params.matchUpStatusProfile,
+      participantsProfile: params.participantsProfile,
+      completeAllMatchUps: params.completeAllMatchUps,
+      autoEntryPositions: params.autoEntryPositions,
+      hydrateCollections: params.hydrateCollections,
+      randomWinningSide: params.randomWinningSide,
+      ratingsParameters: params.ratingsParameters,
+      tournamentRecord,
+      drawProfile,
+      drawIndex,
+      uuids: params.uuids,
+    });
+    if (result.error) return result;
+
+    const { drawId, eventId, event, uniqueParticipantIds } = result;
+
+    result = addEvent({ tournamentRecord, event, internalUse: true });
+    if (result.error) return result;
+
+    if (drawId) drawIds.push(drawId);
+    eventIds.push(eventId);
+
+    if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+    drawIndex += 1;
+  }
+
+  return SUCCESS;
+}
+
+function applySchedulingProfile({ schedulingProfile, autoSchedule, periodLength, tournamentRecord }) {
+  let scheduledRounds;
+  let schedulerResult = {};
+
+  if (schedulingProfile?.length) {
+    const tournamentRecords = {
+      [tournamentRecord.tournamentId]: tournamentRecord,
+    };
+    const result = setSchedulingProfile({
+      tournamentRecords,
+      schedulingProfile,
+    });
+    if (result.error) return result;
+
+    if (autoSchedule) {
+      const { tournamentId } = tournamentRecord;
+      const tournamentRecords = { [tournamentId]: tournamentRecord };
+
+      schedulerResult = scheduleProfileRounds({
+        tournamentRecords,
+        periodLength,
+      });
+    }
+  }
+
+  return { scheduledRounds, schedulerResult };
+}
+
 export function modifyTournamentRecord(params) {
   const {
-    ratingsParameters = defaultRatingsParameters,
     participantsProfile = {},
-    matchUpStatusProfile,
-    completeAllMatchUps,
-    autoEntryPositions,
-    hydrateCollections,
-    randomWinningSide,
     schedulingProfile,
     tournamentRecord,
     autoSchedule,
@@ -36,7 +221,6 @@ export function modifyTournamentRecord(params) {
     periodLength,
     venueProfiles,
     drawProfiles,
-    isMock,
     uuids,
   } = params;
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
@@ -46,12 +230,7 @@ export function modifyTournamentRecord(params) {
   const drawIds: string[] = [];
 
   eventProfiles?.forEach((eventProfile) => {
-    const event = tournamentRecord.events?.find(
-      (event, index) =>
-        (eventProfile.eventIndex !== undefined && index === eventProfile.eventIndex) ||
-        (eventProfile.eventName && event.eventName === eventProfile.eventName) ||
-        (eventProfile.eventId && event.eventId === eventProfile.eventId),
-    );
+    const event = findEventByProfile(tournamentRecord.events, eventProfile);
 
     if (event?.gender) {
       eventProfile.gender = event.gender;
@@ -74,175 +253,40 @@ export function modifyTournamentRecord(params) {
   if (!result.success) return result;
 
   if (eventProfiles) {
-    let eventIndex = tournamentRecord.events?.length || 0;
-    for (const eventProfile of eventProfiles) {
-      const { ratingsParameters } = eventProfile;
-
-      const event = tournamentRecord.events?.find(
-        (event, index) =>
-          (eventProfile.eventIndex !== undefined && index === eventProfile.eventIndex) ||
-          (eventProfile.eventName && event.eventName === eventProfile.eventName) ||
-          (eventProfile.eventId && event.eventId === eventProfile.eventId),
-      );
-
-      if (!event) {
-        const result: any = generateEventWithFlights({
-          startDate: tournamentRecord.startDate,
-          allUniqueParticipantIds,
-          matchUpStatusProfile,
-          participantsProfile,
-          completeAllMatchUps,
-          autoEntryPositions,
-          randomWinningSide,
-          ratingsParameters,
-          tournamentRecord,
-          eventProfile,
-          eventIndex,
-          uuids,
-        });
-        if (result.error) return result;
-
-        const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
-
-        if (generatedDrawIds) drawIds.push(...generatedDrawIds);
-        eventIds.push(eventId);
-
-        if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-        eventIndex += 1;
-      } else {
-        const { gender, category, eventType } = event;
-        const { drawProfiles, publish } = eventProfile;
-
-        const eventParticipantType =
-          (isMatchUpEventType(SINGLES)(eventType) && INDIVIDUAL) ||
-          (isMatchUpEventType(DOUBLES)(eventType) && PAIR) ||
-          eventType;
-
-        if (drawProfiles) {
-          const { stageParticipantsCount, uniqueParticipantsCount, uniqueParticipantStages } =
-            getStageParticipantsCount({
-              drawProfiles,
-              category,
-              gender,
-            });
-
-          const { uniqueDrawParticipants = [], uniqueParticipantIds = [] } = uniqueParticipantStages
-            ? generateEventParticipants({
-                event: { eventType, category, gender },
-                uniqueParticipantsCount,
-                participantsProfile,
-                ratingsParameters,
-                tournamentRecord,
-                eventProfile,
-                uuids,
-              })
-            : {};
-
-          allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-          const { stageParticipants } = getStageParticipants({
-            targetParticipants: tournamentRecord.participants || [],
-            allUniqueParticipantIds,
-            stageParticipantsCount,
-            eventParticipantType,
-          });
-
-          let result: any = generateFlights({
-            uniqueDrawParticipants,
-            autoEntryPositions,
-            stageParticipants,
-            tournamentRecord,
-            drawProfiles,
-            category,
-            gender,
-            event,
-          });
-          if (result.error) return result;
-
-          result = generateFlightDrawDefinitions({
-            matchUpStatusProfile,
-            completeAllMatchUps,
-            randomWinningSide,
-            tournamentRecord,
-            drawProfiles,
-            isMock,
-            event,
-          });
-          if (result.error) return result;
-
-          drawIds.push(...result.drawIds);
-        }
-
-        if (publish) {
-          publishEvent({ tournamentRecord, event });
-        }
-      }
-    }
+    const eventResult = processEventProfiles({
+      eventProfiles,
+      tournamentRecord,
+      allUniqueParticipantIds,
+      eventIds,
+      drawIds,
+      params,
+    });
+    if (eventResult.error) return eventResult;
   }
 
   if (drawProfiles) {
-    let drawIndex = (tournamentRecord.events || [])
-      .map((event) => event.drawDefinitions?.map(() => 1) || [])
-      .flat()
-      .reduce((a, b) => a + b, 0);
-
-    for (const drawProfile of drawProfiles) {
-      let result = generateEventWithDraw({
-        startDate: tournamentRecord.startDate,
-        allUniqueParticipantIds,
-        matchUpStatusProfile,
-        participantsProfile,
-        completeAllMatchUps,
-        autoEntryPositions,
-        hydrateCollections,
-        randomWinningSide,
-        ratingsParameters,
-        tournamentRecord,
-        drawProfile,
-        drawIndex,
-        uuids,
-      });
-      if (result.error) return result;
-
-      const { drawId, eventId, event, uniqueParticipantIds } = result;
-
-      result = addEvent({ tournamentRecord, event, internalUse: true });
-      if (result.error) return result;
-
-      if (drawId) drawIds.push(drawId);
-      eventIds.push(eventId);
-
-      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-      drawIndex += 1;
-    }
+    const drawResult = processDrawProfiles({
+      drawProfiles,
+      tournamentRecord,
+      allUniqueParticipantIds,
+      eventIds,
+      drawIds,
+      params,
+    });
+    if (drawResult.error) return drawResult;
   }
 
   const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles }) : [];
 
-  let scheduledRounds;
-  let schedulerResult = {};
-  if (schedulingProfile?.length) {
-    const tournamentRecords = {
-      [tournamentRecord.tournamentId]: tournamentRecord,
-    };
-    const result = setSchedulingProfile({
-      tournamentRecords,
-      schedulingProfile,
-    });
-    if (result.error) return result;
+  const schedulingResult = applySchedulingProfile({
+    schedulingProfile,
+    autoSchedule,
+    periodLength,
+    tournamentRecord,
+  });
+  if (schedulingResult.error) return schedulingResult;
 
-    if (autoSchedule) {
-      const { tournamentId } = tournamentRecord;
-      const tournamentRecords = { [tournamentId]: tournamentRecord };
-
-      schedulerResult = scheduleProfileRounds({
-        tournamentRecords,
-        periodLength,
-      });
-    }
-  }
+  const { scheduledRounds, schedulerResult } = schedulingResult;
 
   const totalParticipantsCount = tournamentRecord.participants.length;
 
