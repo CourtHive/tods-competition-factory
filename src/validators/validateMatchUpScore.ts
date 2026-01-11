@@ -10,6 +10,252 @@ import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { DEFAULTED, RETIRED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
 /**
+ * Helper functions to reduce cognitive complexity
+ */
+function validateTiebreakOnlySet(
+  winnerScore: number,
+  loserScore: number,
+  scoreDiff: number,
+  tiebreakSetTo: number,
+  allowIncomplete: boolean,
+): { isValid: boolean; error?: string } {
+  if (allowIncomplete) {
+    return { isValid: true };
+  }
+
+  if (winnerScore === 0 && loserScore === 0) {
+    return { isValid: false, error: 'Tiebreak-only set requires both scores' };
+  }
+
+  if (winnerScore < tiebreakSetTo) {
+    return {
+      isValid: false,
+      error: `Tiebreak-only set winner must reach at least ${tiebreakSetTo}, got ${winnerScore}`,
+    };
+  }
+
+  if (scoreDiff < 2) {
+    return {
+      isValid: false,
+      error: `Tiebreak-only set must be won by at least 2 points, got ${winnerScore}-${loserScore}`,
+    };
+  }
+
+  if (winnerScore === tiebreakSetTo && loserScore > tiebreakSetTo - 2) {
+    return {
+      isValid: false,
+      error: `Tiebreak-only set at ${tiebreakSetTo}-${loserScore} requires playing past ${tiebreakSetTo}`,
+    };
+  }
+
+  if (winnerScore > tiebreakSetTo && scoreDiff !== 2) {
+    return {
+      isValid: false,
+      error: `Tiebreak-only set past ${tiebreakSetTo} must be won by exactly 2 points, got ${winnerScore}-${loserScore}`,
+    };
+  }
+
+  return { isValid: true };
+}
+
+function validateTiebreakSetGames(
+  winnerScore: number,
+  loserScore: number,
+  setTo: number,
+  tiebreakAt: number,
+): { isValid: boolean; error?: string } {
+  const expectedWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
+  const expectedLoserScore = tiebreakAt;
+
+  if (winnerScore !== expectedWinnerScore) {
+    return {
+      isValid: false,
+      error: `Tiebreak set winner must have ${expectedWinnerScore} games, got ${winnerScore}`,
+    };
+  }
+  if (loserScore !== expectedLoserScore) {
+    return {
+      isValid: false,
+      error: `Tiebreak set loser must have ${expectedLoserScore} games, got ${loserScore}`,
+    };
+  }
+  return { isValid: true };
+}
+
+function validateExplicitTiebreakScore(
+  side1TiebreakScore: number,
+  side2TiebreakScore: number,
+  tiebreakFormat: any,
+): { isValid: boolean; error?: string } {
+  const tbWinnerScore = Math.max(side1TiebreakScore || 0, side2TiebreakScore || 0);
+  const tbLoserScore = Math.min(side1TiebreakScore || 0, side2TiebreakScore || 0);
+  const tbDiff = tbWinnerScore - tbLoserScore;
+  const tbTo = tiebreakFormat.tiebreakTo || 7;
+
+  if (tbWinnerScore < tbTo) {
+    return {
+      isValid: false,
+      error: `Tiebreak winner must reach ${tbTo} points, got ${tbWinnerScore}`,
+    };
+  }
+  if (tbDiff < 2) {
+    return {
+      isValid: false,
+      error: `Tiebreak must be won by 2 points, got ${tbWinnerScore}-${tbLoserScore}`,
+    };
+  }
+  if (tbLoserScore >= tbTo - 1 && tbDiff > 2) {
+    return {
+      isValid: false,
+      error: `Tiebreak score ${tbWinnerScore}-${tbLoserScore} is invalid`,
+    };
+  }
+  return { isValid: true };
+}
+
+function validateTwoGameMargin(
+  side1Score: number,
+  side2Score: number,
+  setTo: number,
+  tiebreakAt: number | undefined,
+): { isValid: boolean; error?: string } {
+  if (!tiebreakAt) return { isValid: true };
+
+  if (side1Score === setTo + 1 && side2Score < setTo - 1) {
+    return {
+      isValid: false,
+      error: `With tiebreak format, if side 1 has ${setTo + 1} games, side 2 must be at least ${setTo - 1}, got ${side2Score}`,
+    };
+  }
+  if (side2Score === setTo + 1 && side1Score < setTo - 1) {
+    return {
+      isValid: false,
+      error: `With tiebreak format, if side 2 has ${setTo + 1} games, side 1 must be at least ${setTo - 1}, got ${side1Score}`,
+    };
+  }
+  return { isValid: true };
+}
+
+function validateRegularSetCompletion(
+  winnerScore: number,
+  loserScore: number,
+  scoreDiff: number,
+  setTo: number,
+  tiebreakAt: number | undefined,
+): { isValid: boolean; error?: string } {
+  if (winnerScore < setTo) {
+    return {
+      isValid: false,
+      error: `Set winner must reach ${setTo} games, got ${winnerScore}`,
+    };
+  }
+
+  const isTiebreakWon = tiebreakAt && winnerScore === setTo && loserScore === tiebreakAt && scoreDiff === 1;
+
+  if (scoreDiff < 2 && !isTiebreakWon) {
+    return {
+      isValid: false,
+      error: `Set must be won by at least 2 games, got ${winnerScore}-${loserScore}`,
+    };
+  }
+
+  if (tiebreakAt) {
+    if (loserScore >= tiebreakAt && !isTiebreakWon) {
+      return {
+        isValid: false,
+        error: `When tied at ${tiebreakAt}-${tiebreakAt}, must play tiebreak. Use format like ${tiebreakAt + 1}-${tiebreakAt}(5)`,
+      };
+    }
+    const maxWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
+    if (winnerScore > maxWinnerScore) {
+      return {
+        isValid: false,
+        error: `With tiebreak format, set score cannot exceed ${maxWinnerScore}-${tiebreakAt}. Got ${winnerScore}-${loserScore}`,
+      };
+    }
+  } else if (winnerScore > setTo + 10) {
+    return {
+      isValid: false,
+      error: `Set score ${winnerScore}-${loserScore} exceeds reasonable limits`,
+    };
+  }
+
+  return { isValid: true };
+}
+
+function parseSetScores(
+  set: any,
+  isTiebreakOnlyFormat: boolean,
+  hasTiebreakScores: boolean,
+): { side1Score: number; side2Score: number; side1TiebreakScore: number; side2TiebreakScore: number } {
+  const side1TiebreakScore = set.side1TiebreakScore;
+  const side2TiebreakScore = set.side2TiebreakScore;
+  const side1Score = isTiebreakOnlyFormat && hasTiebreakScores ? side1TiebreakScore : set.side1Score || set.side1 || 0;
+  const side2Score = isTiebreakOnlyFormat && hasTiebreakScores ? side2TiebreakScore : set.side2Score || set.side2 || 0;
+
+  return { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore };
+}
+
+function validateTiebreakSet(
+  winnerScore: number,
+  loserScore: number,
+  setTo: number,
+  tiebreakAt: number,
+  side1TiebreakScore: number,
+  side2TiebreakScore: number,
+  tiebreakFormat: any,
+): { isValid: boolean; error?: string } {
+  if (setTo && tiebreakAt) {
+    const validation = validateTiebreakSetGames(winnerScore, loserScore, setTo, tiebreakAt);
+    if (!validation.isValid) return validation;
+  }
+
+  const hasExplicitTiebreak = side1TiebreakScore !== undefined || side2TiebreakScore !== undefined;
+  if (hasExplicitTiebreak && tiebreakFormat) {
+    return validateExplicitTiebreakScore(side1TiebreakScore, side2TiebreakScore, tiebreakFormat);
+  }
+
+  return { isValid: true };
+}
+
+function validateIncompleteSet(
+  winnerScore: number,
+  loserScore: number,
+  setTo: number | undefined,
+): { isValid: boolean; error?: string } {
+  if (setTo && (winnerScore > setTo + 10 || loserScore > setTo + 10)) {
+    return {
+      isValid: false,
+      error: `Set score ${winnerScore}-${loserScore} exceeds expected range for ${setTo}-game sets`,
+    };
+  }
+  return { isValid: true };
+}
+
+function validateRegularSet(
+  scores: { side1: number; side2: number; winner: number; loser: number; diff: number },
+  setFormat: { setTo: number | undefined; tiebreakAt: number | undefined },
+  allowIncomplete: boolean | undefined,
+): { isValid: boolean; error?: string } {
+  const { side1: side1Score, side2: side2Score, winner: winnerScore, loser: loserScore, diff: scoreDiff } = scores;
+  const { setTo, tiebreakAt } = setFormat;
+  if (setTo && tiebreakAt) {
+    const marginValidation = validateTwoGameMargin(side1Score, side2Score, setTo, tiebreakAt);
+    if (!marginValidation.isValid) return marginValidation;
+  }
+
+  if (allowIncomplete) {
+    return validateIncompleteSet(winnerScore, loserScore, setTo);
+  }
+
+  if (setTo) {
+    return validateRegularSetCompletion(winnerScore, loserScore, scoreDiff, setTo, tiebreakAt);
+  }
+
+  return { isValid: true };
+}
+
+/**
  * Validate a single set score against matchUpFormat rules
  */
 export function validateSetScore(
@@ -18,242 +264,55 @@ export function validateSetScore(
   isDecidingSet?: boolean,
   allowIncomplete?: boolean,
 ): { isValid: boolean; error?: string } {
-  if (!matchUpFormat) return { isValid: true }; // Can't validate without format
+  if (!matchUpFormat) return { isValid: true };
 
   const parsed = parse(matchUpFormat);
-  if (!parsed) return { isValid: true }; // Can't validate if parse fails
+  if (!parsed) return { isValid: true };
 
-  // Use finalSetFormat if it exists and this is the deciding set, otherwise use setFormat
   const setFormat = isDecidingSet && parsed.finalSetFormat ? parsed.finalSetFormat : parsed.setFormat;
   if (!setFormat) return { isValid: true };
 
   const { setTo, tiebreakAt, tiebreakFormat, tiebreakSet } = setFormat;
 
-  // Check if this is a tiebreak-only format (SET1-S:TB10)
-  // Tiebreak-only sets have tiebreakSet.tiebreakTo but no regular setTo
   const tiebreakSetTo = tiebreakSet?.tiebreakTo;
   const isTiebreakOnlyFormat = !!tiebreakSetTo && !setTo;
 
-  // For tiebreak-only sets, scores can be in side1TiebreakScore/side2TiebreakScore
-  // OR in side1Score/side2Score (legacy/main inputs)
-  const side1TiebreakScore = set.side1TiebreakScore;
-  const side2TiebreakScore = set.side2TiebreakScore;
-  const hasTiebreakScores = side1TiebreakScore !== undefined && side2TiebreakScore !== undefined;
-
-  // Note: Set type validation (tiebreak-only vs regular) is handled at the freeText level
-  // where bracket notation [10-8] can be inspected. At this level, we can't reliably distinguish
-  // because tiebreak-only sets can have any scores (3-6, 10-12, etc.)
-
-  // For tiebreak-only format, prefer tiebreak scores if available
-  const side1Score = isTiebreakOnlyFormat && hasTiebreakScores ? side1TiebreakScore : set.side1Score || set.side1 || 0;
-  const side2Score = isTiebreakOnlyFormat && hasTiebreakScores ? side2TiebreakScore : set.side2Score || set.side2 || 0;
+  const hasTiebreakScores = set.side1TiebreakScore !== undefined && set.side2TiebreakScore !== undefined;
+  const { side1Score, side2Score, side1TiebreakScore, side2TiebreakScore } = parseSetScores(
+    set,
+    isTiebreakOnlyFormat,
+    hasTiebreakScores,
+  );
 
   const winnerScore = Math.max(side1Score, side2Score);
   const loserScore = Math.min(side1Score, side2Score);
   const scoreDiff = winnerScore - loserScore;
 
-  // ===========================
-  // TIEBREAK-ONLY SET VALIDATION (TB10, TB7, etc.)
-  // ===========================
   if (isTiebreakOnlyFormat) {
-    // For tiebreak-only sets, the entire set is a tiebreak (no games, just points)
-    // Examples: SET1-S:TB10 means first to 10 points, win by 2
-    // Valid scores: [10-12], [11-13], [33-35]
-    // Invalid scores: [3-6], [35-3], [11-9], [10-10]
-
-    // Allow incomplete if irregular ending
-    if (allowIncomplete) {
-      return { isValid: true };
-    }
-
-    // Both scores must be present
-    if (side1Score === 0 && side2Score === 0) {
-      return { isValid: false, error: 'Tiebreak-only set requires both scores' };
-    }
-
-    // Winner must reach at least tiebreakSetTo
-    if (winnerScore < tiebreakSetTo) {
-      return {
-        isValid: false,
-        error: `Tiebreak-only set winner must reach at least ${tiebreakSetTo}, got ${winnerScore}`,
-      };
-    }
-
-    // Must win by at least 2 points
-    if (scoreDiff < 2) {
-      return {
-        isValid: false,
-        error: `Tiebreak-only set must be won by at least 2 points, got ${winnerScore}-${loserScore}`,
-      };
-    }
-
-    // If winner is exactly tiebreakSetTo, loser must be at most tiebreakSetTo - 2
-    // (e.g., 10-8, 10-7, 10-6, etc. for TB10)
-    if (winnerScore === tiebreakSetTo && loserScore > tiebreakSetTo - 2) {
-      return {
-        isValid: false,
-        error: `Tiebreak-only set at ${tiebreakSetTo}-${loserScore} requires playing past ${tiebreakSetTo}`,
-      };
-    }
-
-    // If winner exceeds tiebreakSetTo, must maintain 2-point margin (win-by-2 rule)
-    // (e.g., 11-9, 12-10, 13-11, etc.)
-    if (winnerScore > tiebreakSetTo && scoreDiff !== 2) {
-      return {
-        isValid: false,
-        error: `Tiebreak-only set past ${tiebreakSetTo} must be won by exactly 2 points, got ${winnerScore}-${loserScore}`,
-      };
-    }
-
-    // Valid tiebreak-only set
-    return { isValid: true };
+    return validateTiebreakOnlySet(winnerScore, loserScore, scoreDiff, tiebreakSetTo, allowIncomplete ?? false);
   }
 
-  // Check for tiebreak set
-  // Either explicit tiebreak scores, OR score pattern indicates tiebreak was played
   const hasExplicitTiebreak = side1TiebreakScore !== undefined || side2TiebreakScore !== undefined;
   const isImplicitTiebreak = setTo && winnerScore === setTo + 1 && loserScore === setTo;
   const hasTiebreak = hasExplicitTiebreak || isImplicitTiebreak;
 
   if (hasTiebreak) {
-    // Tiebreak set validation
-    // Pattern depends on tiebreakAt:
-    // - If tiebreakAt === setTo: winner at setTo+1, loser at setTo (e.g., 7-6 for S:6@6)
-    // - If tiebreakAt < setTo: winner at setTo, loser at tiebreakAt (e.g., 5-4 for S:5@4)
-    if (setTo && tiebreakAt) {
-      const expectedWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
-      const expectedLoserScore = tiebreakAt;
-      
-      if (winnerScore !== expectedWinnerScore) {
-        return {
-          isValid: false,
-          error: `Tiebreak set winner must have ${expectedWinnerScore} games, got ${winnerScore}`,
-        };
-      }
-      if (loserScore !== expectedLoserScore) {
-        return {
-          isValid: false,
-          error: `Tiebreak set loser must have ${expectedLoserScore} games, got ${loserScore}`,
-        };
-      }
-    }
-
-    // Validate explicit tiebreak score if present and format specified
-    if (hasExplicitTiebreak && tiebreakFormat) {
-      const tbWinnerScore = Math.max(side1TiebreakScore || 0, side2TiebreakScore || 0);
-      const tbLoserScore = Math.min(side1TiebreakScore || 0, side2TiebreakScore || 0);
-      const tbDiff = tbWinnerScore - tbLoserScore;
-      const tbTo = tiebreakFormat.tiebreakTo || 7;
-
-      // Winner must reach tbTo with 2-point margin, or go past tbTo with 2-point margin
-      if (tbWinnerScore < tbTo) {
-        return {
-          isValid: false,
-          error: `Tiebreak winner must reach ${tbTo} points, got ${tbWinnerScore}`,
-        };
-      }
-      if (tbDiff < 2) {
-        return {
-          isValid: false,
-          error: `Tiebreak must be won by 2 points, got ${tbWinnerScore}-${tbLoserScore}`,
-        };
-      }
-      // If loser is at tbTo-1 or higher, winner must be exactly 2 ahead
-      if (tbLoserScore >= tbTo - 1 && tbDiff > 2) {
-        return {
-          isValid: false,
-          error: `Tiebreak score ${tbWinnerScore}-${tbLoserScore} is invalid`,
-        };
-      }
-    }
-  } else {
-    // Regular set validation (no tiebreak)
-
-    // CRITICAL VALIDATION: If there's a tiebreak format AND either side is setTo+1,
-    // the other must be >= setTo-1 (2-game margin required)
-    // This prevents invalid scores like 3-7, 4-7, etc. but allows 5-7, 6-7
-    // For advantage sets (no tiebreak), scores like 7-5, 8-6 are valid
-    if (setTo && tiebreakAt) {
-      // Only enforce this rule when tiebreak format exists
-      if (side1Score === setTo + 1 && side2Score < setTo - 1) {
-        return {
-          isValid: false,
-          error: `With tiebreak format, if side 1 has ${setTo + 1} games, side 2 must be at least ${setTo - 1}, got ${side2Score}`,
-        };
-      }
-      if (side2Score === setTo + 1 && side1Score < setTo - 1) {
-        return {
-          isValid: false,
-          error: `With tiebreak format, if side 2 has ${setTo + 1} games, side 1 must be at least ${setTo - 1}, got ${side1Score}`,
-        };
-      }
-    }
-
-    // For incomplete scores (irregular endings), we're more lenient
-    if (allowIncomplete) {
-      // Basic validation: scores can't exceed reasonable limits
-      if (setTo && (winnerScore > setTo + 10 || loserScore > setTo + 10)) {
-        return {
-          isValid: false,
-          error: `Set score ${winnerScore}-${loserScore} exceeds expected range for ${setTo}-game sets`,
-        };
-      }
-      // Allow any incomplete score (including 6-6 for RET/WO/DEF)
-      return { isValid: true };
-    }
-
-    // Full validation for completed matches
-    // Winner must reach setTo
-    if (setTo && winnerScore < setTo) {
-      return {
-        isValid: false,
-        error: `Set winner must reach ${setTo} games, got ${winnerScore}`,
-      };
-    }
-
-    // Check if a tiebreak was played (affects margin requirements)
-    // Special case: winner at setTo, loser at tiebreakAt (e.g., 5-4 for S:5@4)
-    // This means tiebreak was played and won - margin of 1 is valid
-    const isTiebreakWon = tiebreakAt && winnerScore === setTo && loserScore === tiebreakAt && scoreDiff === 1;
-
-    // Must have 2-game margin (unless tiebreak was played and won)
-    if (scoreDiff < 2 && !isTiebreakWon) {
-      return {
-        isValid: false,
-        error: `Set must be won by at least 2 games, got ${winnerScore}-${loserScore}`,
-      };
-    }
-
-    // Check maximum score based on tiebreak rules
-    if (tiebreakAt) {
-      // Tiebreak format: once BOTH sides reach tiebreakAt, must go to tiebreak
-      // Exception: if winner is already at setTo and loser at tiebreakAt, tiebreak was already played
-      if (loserScore >= tiebreakAt && !isTiebreakWon) {
-        return {
-          isValid: false,
-          error: `When tied at ${tiebreakAt}-${tiebreakAt}, must play tiebreak. Use format like ${tiebreakAt + 1}-${tiebreakAt}(5)`,
-        };
-      }
-      // Winner can be at most setTo+1 when tiebreak is available
-      // Exception: for tiebreakAt < setTo, winner can only be setTo (not setTo+1)
-      const maxWinnerScore = tiebreakAt === setTo ? setTo + 1 : setTo;
-      if (winnerScore > maxWinnerScore) {
-        return {
-          isValid: false,
-          error: `With tiebreak format, set score cannot exceed ${maxWinnerScore}-${tiebreakAt}. Got ${winnerScore}-${loserScore}`,
-        };
-      }
-    } else if (winnerScore > setTo + 10) {
-      // No tiebreak (NOAD or advantage set): can go beyond setTo+1 with 2-game margin
-      // But check reasonable upper limit (no set should go beyond setTo+10)
-      return {
-        isValid: false,
-        error: `Set score ${winnerScore}-${loserScore} exceeds reasonable limits`,
-      };
-    }
+    return validateTiebreakSet(
+      winnerScore,
+      loserScore,
+      setTo,
+      tiebreakAt,
+      side1TiebreakScore,
+      side2TiebreakScore,
+      tiebreakFormat,
+    );
   }
 
-  return { isValid: true };
+  return validateRegularSet(
+    { side1: side1Score, side2: side2Score, winner: winnerScore, loser: loserScore, diff: scoreDiff },
+    { setTo, tiebreakAt },
+    allowIncomplete,
+  );
 }
 
 /**
