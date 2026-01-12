@@ -96,25 +96,25 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   }
 
   if (publishedDrawIds?.length) {
-    if (!params.contextFilters) params.contextFilters = {};
-    if (!params.contextFilters?.drawIds) {
-      params.contextFilters.drawIds = publishedDrawIds;
-    } else {
+    params.contextFilters ??= {};
+    if (params.contextFilters.drawIds) {
       params.contextFilters.drawIds = params.contextFilters.drawIds.filter((drawId) =>
         publishedDrawIds.includes(drawId),
       );
+    } else {
+      params.contextFilters.drawIds = publishedDrawIds;
     }
   }
 
   if (tournamentPublishStatus?.eventIds?.length) {
-    if (!params.matchUpFilters) params.matchUpFilters = {};
+    params.matchUpFilters ??= {};
     if (params.matchUpFilters?.eventIds) {
-      if (!params.matchUpFilters.eventIds.length) {
-        params.matchUpFilters.eventIds = tournamentPublishStatus.eventIds;
-      } else {
+      if (params.matchUpFilters.eventIds.length) {
         params.matchUpFilters.eventIds = params.matchUpFilters.eventIds.filter((eventId) =>
           tournamentPublishStatus.eventIds.includes(eventId),
         );
+      } else {
+        params.matchUpFilters.eventIds = tournamentPublishStatus.eventIds;
       }
     } else {
       params.matchUpFilters.eventIds = tournamentPublishStatus.eventIds;
@@ -122,14 +122,14 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   }
 
   if (tournamentPublishStatus?.scheduledDates?.length) {
-    if (!params.matchUpFilters) params.matchUpFilters = {};
+    params.matchUpFilters ??= {};
     if (params.matchUpFilters.scheduledDates) {
-      if (!params.matchUpFilters.scheduledDates.length) {
-        params.matchUpFilters.scheduledDates = tournamentPublishStatus.scheduledDates;
-      } else {
+      if (params.matchUpFilters.scheduledDates.length) {
         params.matchUpFilters.scheduledDates = params.matchUpFilters.scheduledDates.filter((scheduledDate) =>
           tournamentPublishStatus.scheduledDates.includes(scheduledDate),
         );
+      } else {
+        params.matchUpFilters.scheduledDates = tournamentPublishStatus.scheduledDates;
       }
     } else {
       params.matchUpFilters.scheduledDates = tournamentPublishStatus.scheduledDates;
@@ -138,7 +138,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
 
   // optimization: if all completed matchUps have already been retrieved, skip the hydration process
   if (alwaysReturnCompleted) {
-    if (!params.matchUpFilters) params.matchUpFilters = {};
+    params.matchUpFilters ??= {};
     if (params.matchUpFilters?.excludeMatchUpStatuses?.length) {
       if (!params.matchUpFilters.excludeMatchUpStatuses.includes(COMPLETED)) {
         params.matchUpFilters.excludeMatchUpStatuses.push(COMPLETED);
@@ -218,7 +218,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
 
   if (withCourtGridRows) {
     const { rows, courtPrefix } = courtGridRows({
-      minRowsCount: minCourtGridRows,
+      minRowsCount: Math.max(minCourtGridRows || 0, dateMatchUps.length || 0),
       courtsData,
     });
     result.courtPrefix = courtPrefix; /* pass through for access to internal defaults by consumer */
