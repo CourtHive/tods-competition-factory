@@ -7,10 +7,10 @@ export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData }) 
   const maxCourtOrder = courtsData?.reduce((order, court) => {
     const matchUps = court.matchUps || [];
     const courtOrder = Math.max(0, ...matchUps.map((m) => m.schedule.courtOrder || 0));
-    return courtOrder > order ? courtOrder : order;
+    return Math.max(courtOrder, order);
   }, 1);
 
-  const rowsCount = minRowsCount ? Math.max(minRowsCount, maxCourtOrder) : maxCourtOrder;
+  const rowsCount = Math.max(minRowsCount || 0, maxCourtOrder);
 
   const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
     matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
