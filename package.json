@@ -142,8 +142,8 @@
     "@types/supertest": "6.0.3",
     "@typescript-eslint/eslint-plugin": "8.53.0",
     "@typescript-eslint/parser": "8.53.0",
-    "@vitest/coverage-v8": "4.0.16",
-    "@vitest/ui": "4.0.16",
+    "@vitest/coverage-v8": "4.0.17",
+    "@vitest/ui": "4.0.17",
     "agadoo": "^3.0.0",
     "ajv": "8.17.1",
     "ajv-formats": "3.0.1",
@@ -185,7 +185,7 @@
     "variable-diff": "2.0.2",
     "vite": "7.3.1",
     "vite-tsconfig-paths": "6.0.4",
-    "vitest": "4.0.16"
+    "vitest": "4.0.17"
   },
   "lint-staged": {
     "*.{js,ts}": "eslint --cache --fix",
