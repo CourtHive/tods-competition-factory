@@ -163,21 +163,51 @@ function parseTiebreakFormat(formatstring: string): TiebreakFormat | undefined |
 
 function parseTimedSet(formatstring: string): SetFormat | undefined {
   const timestring = formatstring.slice(1);
-  const parts = timestring.match(/^(\d+)(@?[A-Za-z]*)/);
+  
+  // Parse T{minutes}[P|G|A][/TB{n}]
+  // Examples: T10, T10A, T10P/TB1, T10G/TB1
+  const parts = timestring.match(/^(\d+)([PGA])?(?:\/TB(\d+))?(@?[A-Za-z]*)?/);
   const minutes = getNumber(parts?.[1]);
   if (!minutes) return;
+  
   const setFormat: SetFormat = { timed: true, minutes };
-  const based = parts?.[2];
-  const validModifier = [undefined, 'P', 'G'].includes(based);
-  if (based && !validModifier) {
-    const modifier = timestring.match(/^(\d+)(@)([A-Za-z]+)$/)?.[3];
+  
+  // Parse scoring method (P, G, or A)
+  const scoringMethod = parts?.[2];
+  if (scoringMethod === 'A') {
+    setFormat.based = 'A';
+  } else if (scoringMethod === 'P') {
+    setFormat.based = 'P';
+  } else if (scoringMethod === 'G') {
+    setFormat.based = 'G';
+  }
+  // If no suffix, leave 'based' undefined (games is default)
+  
+  // Parse set-level tiebreak (if present)
+  // Note: This is notation only for tournament directors
+  const setTiebreakTo = parts?.[3];
+  if (setTiebreakTo) {
+    const tiebreakToNumber = getNumber(setTiebreakTo);
+    if (tiebreakToNumber) {
+      setFormat.tiebreakFormat = { tiebreakTo: tiebreakToNumber };
+    }
+  }
+  
+  // Handle legacy modifiers (backward compatibility)
+  const legacyModifier = parts?.[4];
+  const validModifier = [undefined, 'P', 'G', ''].includes(legacyModifier);
+  if (legacyModifier && !validModifier) {
+    const modifier = timestring.match(/^(\d+)([PGA])?(?:\/TB\d+)?(@)([A-Za-z]+)$/)?.[4];
     if (modifier) {
       setFormat.modifier = modifier;
       return setFormat;
     }
     return;
   }
-  if (based) setFormat.based = parts[2];
+  
+  // Keep 'based' for backward compatibility
+  if (legacyModifier) setFormat.based = legacyModifier;
+  
   return setFormat;
 }
 

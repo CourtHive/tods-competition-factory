@@ -169,9 +169,9 @@ const singleSetTimed = [
     },
   },
   {
-    format: 'T120G',
+    format: 'T120',
     obj: {
-      setFormat: { timed: true, based: 'G', minutes: 120 },
+      setFormat: { timed: true, minutes: 120 },
       simplified: true,
       bestOf: 1,
     },
