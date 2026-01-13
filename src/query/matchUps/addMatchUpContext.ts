@@ -180,7 +180,7 @@ export function addMatchUpContext({
   // if part of a tie matchUp and collectionDefinition has a category definition, prioritize
   const matchUpCategory = collectionDefinition?.category
     ? {
-        ...(context?.category || {}),
+        ...context?.category,
         ...collectionDefinition.category,
       }
     : (context?.category ?? event?.category);
@@ -209,7 +209,7 @@ export function addMatchUpContext({
     ...onlyDefined(context),
     ...onlyDefined({
       matchUpFormat: matchUpType === TEAM ? undefined : matchUpFormat,
-      tieFormat: matchUpType !== TEAM ? undefined : tieFormat,
+      tieFormat: matchUpType === TEAM ? tieFormat : undefined,
       gender: collectionDefinition?.gender ?? event?.gender,
       endDate: matchUp.endDate ?? endDate,
       discipline: event?.discipline,
@@ -253,11 +253,11 @@ export function addMatchUpContext({
           const setNumber = i + 1;
           const isDecidingSet = setNumber === bestOf;
           const currentSetFormat = isDecidingSet && finalSetFormat ? finalSetFormat : setFormat;
-          
+
           // Check if this set is tiebreak-only (not timed)
           const isTiebreakOnly = currentSetFormat?.tiebreakSet && !currentSetFormat?.timed;
           const isTimed = currentSetFormat?.timed;
-          
+
           if (isTiebreakOnly) {
             // Only mark as tiebreakSet for actual tiebreak-only sets (TB10, TB1, etc.)
             set.tiebreakSet = true;
@@ -269,9 +269,9 @@ export function addMatchUpContext({
           } else if (isTimed) {
             // For timed sets, mark as tiebreakSet for backwards compatibility
             // but DO NOT modify the scores - they are actual point totals
-            set.tiebreakSet = true;
+            set.timed = true;
           }
-          
+
           return set;
         });
     }
