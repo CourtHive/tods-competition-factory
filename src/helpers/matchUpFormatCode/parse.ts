@@ -55,9 +55,13 @@ export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
 function setsMatch(formatstring: string): any {
   const parts = formatstring.split('-');
 
-  const setsCount = getNumber(parts[0].slice(3));
-  const bestOf = setsCount === 1 || setsCount % 2 !== 0 ? setsCount : undefined;
-  const exactly = setsCount !== 1 && setsCount % 2 === 0 ? setsCount : undefined;
+  const setsPart = parts[0].slice(3);
+  const hasExactlySuffix = setsPart.endsWith('X');
+  const setsCountString = hasExactlySuffix ? setsPart.slice(0, -1) : setsPart;
+  const setsCount = getNumber(setsCountString);
+  // Special case: SET1 and SET1X are both treated as bestOf: 1
+  const bestOf = hasExactlySuffix && setsCount !== 1 ? undefined : setsCount;
+  const exactly = hasExactlySuffix && setsCount !== 1 ? setsCount : undefined;
   const setFormat = parts && parseSetFormat(parts[1]);
   const finalSetFormat = parts && parseSetFormat(parts[2]);
   const timed = (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);

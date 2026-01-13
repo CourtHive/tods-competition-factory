@@ -367,7 +367,7 @@ it('supports modifiers for timed sets', () => {
 });
 
 it('supports an even number of timed sets', () => {
-  const format = 'SET4-S:T10P';
+  const format = 'SET4X-S:T10P';
   const parsed = matchUpFormatCode.parse(format);
   expect(parsed).toEqual({
     setFormat: { timed: true, minutes: 10, based: 'P' },
@@ -376,7 +376,7 @@ it('supports an even number of timed sets', () => {
   const stringified = matchUpFormatCode.stringify(parsed);
   expect(stringified).toEqual(format);
 
-  const withFinalSetFormat = 'SET4-S:T10P-F:T5P';
+  const withFinalSetFormat = 'SET4X-S:T10P-F:T5P';
   const finalSetParsed = matchUpFormatCode.parse(withFinalSetFormat);
   expect(finalSetParsed).toEqual({
     finalSetFormat: { timed: true, minutes: 5, based: 'P' },
@@ -387,8 +387,53 @@ it('supports an even number of timed sets', () => {
   expect(stringifiedWithFinalSet).toEqual(withFinalSetFormat);
 });
 
-it('rejects an even number of non-timed sets', () => {
+it('accepts odd bestOf and rejects even non-timed sets without X suffix', () => {
   const format = 'SET4-S:6';
   const parsed = matchUpFormatCode.parse(format);
-  expect(parsed).toBeUndefined();
+  expect(parsed).toEqual({ bestOf: 4, setFormat: { setTo: 6, noTiebreak: true } });
+  
+  const format2 = 'SET4X-S:6';
+  const parsed2 = matchUpFormatCode.parse(format2);
+  expect(parsed2).toBeUndefined();
+});
+
+it('can parse and stringify "exactly" with X suffix for timed sets', () => {
+  const format1 = 'SET3X-S:T10';
+  const parsed1 = matchUpFormatCode.parse(format1);
+  expect(parsed1).toEqual({ exactly: 3, setFormat: { timed: true, minutes: 10 } });
+  const stringified1 = matchUpFormatCode.stringify(parsed1);
+  expect(stringified1).toEqual(format1);
+
+  const format2 = 'SET2X-S:T20';
+  const parsed2 = matchUpFormatCode.parse(format2);
+  expect(parsed2).toEqual({ exactly: 2, setFormat: { timed: true, minutes: 20 } });
+  const stringified2 = matchUpFormatCode.stringify(parsed2);
+  expect(stringified2).toEqual(format2);
+
+  const format3 = 'SET3-S:6/TB7';
+  const parsed3 = matchUpFormatCode.parse(format3);
+  expect(parsed3).toEqual({ bestOf: 3, setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } } });
+  const stringified3 = matchUpFormatCode.stringify(parsed3);
+  expect(stringified3).toEqual(format3);
+});
+
+it('treats SET1 and SET1X as equivalent (both use bestOf: 1)', () => {
+  // Parse SET1 → bestOf: 1
+  const format1 = 'SET1-S:T10';
+  const parsed1 = matchUpFormatCode.parse(format1);
+  expect(parsed1).toEqual({ bestOf: 1, setFormat: { timed: true, minutes: 10 } });
+  const stringified1 = matchUpFormatCode.stringify(parsed1);
+  expect(stringified1).toEqual(format1);
+
+  // Parse SET1X → bestOf: 1 (not exactly: 1)
+  const format2 = 'SET1X-S:T10';
+  const parsed2 = matchUpFormatCode.parse(format2);
+  expect(parsed2).toEqual({ bestOf: 1, setFormat: { timed: true, minutes: 10 } });
+  const stringified2 = matchUpFormatCode.stringify(parsed2);
+  expect(stringified2).toEqual('SET1-S:T10'); // Stringifies as SET1, not SET1X
+
+  // Stringify { exactly: 1 } → SET1 (not SET1X)
+  const parsed3 = { exactly: 1, setFormat: { timed: true, minutes: 15 } };
+  const stringified3 = matchUpFormatCode.stringify(parsed3);
+  expect(stringified3).toEqual('SET1-S:T15'); // No X suffix
 });
