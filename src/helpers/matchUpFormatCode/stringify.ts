@@ -28,7 +28,9 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
   if (matchUpFormatObject.setFormat?.timed && matchUpFormatObject.simplified && setLimit === 1) {
     return timedSetFormat(matchUpFormatObject.setFormat);
   }
-  const setLimitCode = (setLimit && `${SET}${setLimit}`) || '';
+  // Special case: both bestOf: 1 and exactly: 1 stringify as 'SET1' (no X suffix)
+  const exactlySuffix = exactly && exactly !== 1 ? 'X' : '';
+  const setLimitCode = (setLimit && `${SET}${setLimit}${exactlySuffix}`) || '';
   const setCountValue = stringifySet(matchUpFormatObject.setFormat, preserveRedundant);
   const setCode = (setCountValue && `S:${setCountValue}`) || '';
   const finalSetCountValue = stringifySet(matchUpFormatObject.finalSetFormat, preserveRedundant);
