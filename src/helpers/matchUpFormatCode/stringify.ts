@@ -14,7 +14,9 @@ function getNumber(formatstring) {
 }
 
 function timedSetFormat(matchUpFormatObject) {
-  let value = `T${matchUpFormatObject.minutes}`;
+  // Extract minutes from timed object if present
+  const minutes = matchUpFormatObject.timed?.minutes ?? matchUpFormatObject.minutes;
+  let value = `T${minutes}`;
   
   // Add scoring method suffix (A or P, omit G since it's default)
   // Only add if not already in the value (for backward compatibility)
