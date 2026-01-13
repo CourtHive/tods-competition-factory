@@ -2,7 +2,7 @@ import { SET, NOAD } from '@Constants/matchUpFormatConstants';
 import { isObject } from '@Tools/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
-  if (!isObject(matchUpFormatObject)) undefined;
+  if (!isObject(matchUpFormatObject)) return undefined;
   if ((matchUpFormatObject?.bestOf || matchUpFormatObject?.exactly) && matchUpFormatObject?.setFormat) {
     return getSetFormat(matchUpFormatObject, preserveRedundant);
   }
@@ -10,12 +10,12 @@ export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
 }
 
 function getNumber(formatstring) {
-  return !isNaN(Number(formatstring)) && Number(formatstring);
+  return !Number.isNaN(Number(formatstring)) && Number(formatstring);
 }
 
 function timedSetFormat(matchUpFormatObject) {
   let value = `T${matchUpFormatObject.minutes}`;
-  
+
   // Add scoring method suffix (A or P, omit G since it's default)
   // Only add if not already in the value (for backward compatibility)
   if (matchUpFormatObject.based === 'A') {
@@ -24,15 +24,15 @@ function timedSetFormat(matchUpFormatObject) {
     value += 'P';
   }
   // Games-based ('G' or undefined) is default, no suffix needed
-  
+
   // Add set-level tiebreak if present
   if (matchUpFormatObject.tiebreakFormat?.tiebreakTo) {
     value += `/TB${matchUpFormatObject.tiebreakFormat.tiebreakTo}`;
   }
-  
+
   // Legacy modifier support (for formats with @)
   if (matchUpFormatObject.modifier) value += `@${matchUpFormatObject.modifier}`;
-  
+
   return value;
 }
 
@@ -61,7 +61,7 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
   const valid = setLimitCode && setCountValue;
 
   if (valid) {
-    return [setLimitCode, setCode, finalSetCode].filter((f) => f).join('-');
+    return [setLimitCode, setCode, finalSetCode].filter(Boolean).join('-');
   }
   return undefined;
 }
