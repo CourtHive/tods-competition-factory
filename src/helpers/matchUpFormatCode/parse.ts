@@ -25,6 +25,8 @@ type SetFormat = {
   setTo?: number;
 };
 
+type SetFormatResult = SetFormat | undefined | false;
+
 export type ParsedFormat = {
   finalSetFormat?: any;
   simplified?: boolean;
@@ -78,44 +80,71 @@ function setsMatch(formatstring: string): any {
   if (validSetsCount && validSetsFormat && validFinalSet) return result;
 }
 
-function parseSetFormat(formatstring: string): SetFormat | undefined | false {
-  if (formatstring?.[1] === ':') {
-    const parts = formatstring.split(':');
-    const setType = setTypes[parts[0]];
-    const setFormatString = parts[1];
-    if (setType && setFormatString) {
-      const isTiebreakSet = setFormatString.startsWith('TB');
-      if (isTiebreakSet) {
-        const tiebreakSet = parseTiebreakFormat(setFormatString);
-        if (tiebreakSet === false) return false;
-        return typeof tiebreakSet === 'object' ? { tiebreakSet } : undefined;
-      }
-      const timedSet = setFormatString.startsWith('T');
-      if (timedSet) return parseTimedSet(setFormatString);
+function parseSetFormat(formatstring: string): SetFormatResult {
+  if (formatstring?.[1] !== ':') return undefined;
 
-      const parts = formatstring.match(/^[FS]:(\d+)([A-Za-z]*)/);
-      const NoAD = (parts && isNoAD(parts[2])) || false;
-      const validNoAD = !parts?.[2] || NoAD;
-      const setTo = parts ? getNumber(parts[1]) : undefined;
-      const tiebreakAtValue = parseTiebreakAt(setFormatString);
-      const validTiebreakAt = tiebreakAtValue !== false;
-      const tiebreakAt = (validTiebreakAt && tiebreakAtValue) || setTo;
-      const tiebreakFormat = parseTiebreakFormat(setFormatString.split('/')[1]);
-      const validTiebreak = tiebreakFormat !== false;
-      const result: SetFormat = { setTo };
-      if (NoAD) result.NoAD = true;
-      if (tiebreakFormat) {
-        result.tiebreakFormat = tiebreakFormat;
-        result.tiebreakAt = tiebreakAt;
-      } else {
-        result.noTiebreak = true;
-      }
+  const parts = formatstring.split(':');
+  const setType = setTypes[parts[0]];
+  const setFormatString = parts[1];
 
-      return (setTo && validNoAD && validTiebreak && validTiebreakAt && result) || false;
-    }
+  if (!setType || !setFormatString) return undefined;
+
+  return parseSetFormatString(formatstring, setFormatString);
+}
+
+function parseSetFormatString(formatstring: string, setFormatString: string): SetFormatResult {
+  if (setFormatString.startsWith('TB')) {
+    return parseTiebreakSetFormat(setFormatString);
   }
 
-  return undefined;
+  if (setFormatString.startsWith('T')) {
+    return parseTimedSet(setFormatString);
+  }
+
+  return parseStandardSetFormat(formatstring, setFormatString);
+}
+
+function parseTiebreakSetFormat(setFormatString: string): SetFormatResult {
+  const tiebreakSet = parseTiebreakFormat(setFormatString);
+  if (tiebreakSet === false) return false;
+  return typeof tiebreakSet === 'object' ? { tiebreakSet } : undefined;
+}
+
+function parseStandardSetFormat(formatstring: string, setFormatString: string): SetFormat | false {
+  const parts = /^[FS]:(\d+)([A-Za-z]*)/.exec(formatstring);
+  const NoAD = (parts && isNoAD(parts[2])) || false;
+  const validNoAD = !parts?.[2] || NoAD;
+  const setTo = parts ? getNumber(parts[1]) : undefined;
+
+  const tiebreakAtValue = parseTiebreakAt(setFormatString);
+  const validTiebreakAt = tiebreakAtValue !== false;
+  const tiebreakAt = (validTiebreakAt && tiebreakAtValue) || setTo;
+
+  const tiebreakFormat = parseTiebreakFormat(setFormatString.split('/')[1]);
+  const validTiebreak = tiebreakFormat !== false;
+
+  if (!setTo || !validNoAD || !validTiebreak || !validTiebreakAt) return false;
+
+  return buildSetFormatResult(setTo, NoAD, tiebreakFormat, tiebreakAt);
+}
+
+function buildSetFormatResult(
+  setTo: number,
+  NoAD: boolean,
+  tiebreakFormat: TiebreakFormat | undefined,
+  tiebreakAt: string | number | undefined,
+): SetFormat {
+  const result: SetFormat = { setTo };
+  if (NoAD) result.NoAD = true;
+
+  if (tiebreakFormat) {
+    result.tiebreakFormat = tiebreakFormat;
+    result.tiebreakAt = tiebreakAt;
+  } else {
+    result.noTiebreak = true;
+  }
+
+  return result;
 }
 
 function parseTiebreakAt(setFormatString: string, expectNumber: boolean = true) {
@@ -129,49 +158,50 @@ function parseTiebreakAt(setFormatString: string, expectNumber: boolean = true) 
 }
 
 function parseTiebreakFormat(formatstring: string): TiebreakFormat | undefined | false {
-  if (formatstring) {
-    if (formatstring.startsWith('TB')) {
-      const modifier = parseTiebreakAt(formatstring, false);
-      const parts = formatstring.match(/^TB(\d+)([A-Za-z]*)/);
-      const tiebreakToString = parts?.[1];
-      const NoAD = parts && isNoAD(parts[2]);
-      const validNoAD = !parts?.[2] || NoAD;
-      const tiebreakTo = getNumber(tiebreakToString);
-      if (tiebreakTo && validNoAD) {
-        const result: TiebreakFormat = { tiebreakTo };
-        // modifiers cannot be numeric
-        if (modifier && typeof modifier === 'string' && !isConvertableInteger(modifier)) {
-          result.modifier = modifier;
-        }
-        // NOTE: NoAD in tiebreaks is a NON-STANDARD EXTENSION for recreational use.
-        // Official TODS only defines NoAD for game-level scoring (no deuce/advantage).
-        // Standard tennis tiebreaks always require win-by-2 (e.g., 10-8, 11-9, 12-10).
-        // NoAD in tiebreaks changes winBy from 2 to 1 (first to tiebreakTo wins).
-        // This is not recognized by ITF, ATP, WTA, or USTA official formats.
-        if (NoAD) result.NoAD = true;
-        return result;
-      } else {
-        return false;
-      }
-    } else {
-      return false;
-    }
+  if (!formatstring) return undefined;
+  if (!formatstring.startsWith('TB')) return false;
+
+  return parseTiebreakDetails(formatstring);
+}
+
+function parseTiebreakDetails(formatstring: string): TiebreakFormat | false {
+  const modifier = parseTiebreakAt(formatstring, false);
+  const parts = /^TB(\d+)([A-Za-z]*)/.exec(formatstring);
+  const tiebreakToString = parts?.[1];
+  const NoAD = parts && isNoAD(parts[2]);
+  const validNoAD = !parts?.[2] || NoAD;
+  const tiebreakTo = getNumber(tiebreakToString);
+
+  if (!tiebreakTo || !validNoAD) return false;
+
+  const result: TiebreakFormat = { tiebreakTo };
+
+  // modifiers cannot be numeric
+  if (modifier && typeof modifier === 'string' && !isConvertableInteger(modifier)) {
+    result.modifier = modifier;
   }
 
-  return undefined;
+  // NOTE: NoAD in tiebreaks is a NON-STANDARD EXTENSION for recreational use.
+  // Official TODS only defines NoAD for game-level scoring (no deuce/advantage).
+  // Standard tennis tiebreaks always require win-by-2 (e.g., 10-8, 11-9, 12-10).
+  // NoAD in tiebreaks changes winBy from 2 to 1 (first to tiebreakTo wins).
+  // This is not recognized by ITF, ATP, WTA, or USTA official formats.
+  if (NoAD) result.NoAD = true;
+
+  return result;
 }
 
 function parseTimedSet(formatstring: string): SetFormat | undefined {
   const timestring = formatstring.slice(1);
-  
+
   // Parse T{minutes}[P|G|A][/TB{n}]
   // Examples: T10, T10A, T10P/TB1, T10G/TB1
-  const parts = timestring.match(/^(\d+)([PGA])?(?:\/TB(\d+))?(@?[A-Za-z]*)?/);
+  const parts = /^(\d+)([PGA])?(?:\/TB(\d+))?(@?[A-Za-z]*)?/.exec(timestring);
   const minutes = getNumber(parts?.[1]);
   if (!minutes) return;
-  
+
   const setFormat: SetFormat = { timed: true, minutes };
-  
+
   // Parse scoring method (P, G, or A)
   const scoringMethod = parts?.[2];
   if (scoringMethod === 'A') {
@@ -182,7 +212,7 @@ function parseTimedSet(formatstring: string): SetFormat | undefined {
     setFormat.based = 'G';
   }
   // If no suffix, leave 'based' undefined (games is default)
-  
+
   // Parse set-level tiebreak (if present)
   // Note: This is notation only for tournament directors
   const setTiebreakTo = parts?.[3];
@@ -192,29 +222,30 @@ function parseTimedSet(formatstring: string): SetFormat | undefined {
       setFormat.tiebreakFormat = { tiebreakTo: tiebreakToNumber };
     }
   }
-  
+
   // Handle legacy modifiers (backward compatibility)
   const legacyModifier = parts?.[4];
   const validModifier = [undefined, 'P', 'G', ''].includes(legacyModifier);
   if (legacyModifier && !validModifier) {
-    const modifier = timestring.match(/^(\d+)([PGA])?(?:\/TB\d+)?(@)([A-Za-z]+)$/)?.[4];
+    const modifier = /^(\d+)([PGA])?(?:\/TB\d+)?(@)([A-Za-z]+)$/.exec(timestring)?.[4];
     if (modifier) {
       setFormat.modifier = modifier;
       return setFormat;
     }
     return;
   }
-  
+
   // Keep 'based' for backward compatibility
   if (legacyModifier) setFormat.based = legacyModifier;
-  
+
   return setFormat;
 }
 
 function isNoAD(formatstring) {
-  return formatstring && formatstring.indexOf(NOAD) >= 0;
+  return formatstring?.includes(NOAD);
 }
 
-function getNumber(formatstring) {
-  return !isNaN(Number(formatstring)) ? Number(formatstring) : 0;
+function getNumber(formatstring: string | undefined) {
+  const num = Number(formatstring);
+  return Number.isNaN(num) ? 0 : num;
 }
