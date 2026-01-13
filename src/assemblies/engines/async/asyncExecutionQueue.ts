@@ -27,7 +27,7 @@ export async function asyncExecutionQueue(engine: FactoryEngine, directives: Dir
     if (!methods[methodName]) return logMethodNotFound({ methodName, start, params });
 
     if (pipe) {
-      const lastResult = results[results.length - 1];
+      const lastResult = results.at(-1);
       const pipeKeys = Object.keys(pipe);
       for (const pipeKey of pipeKeys) {
         if (lastResult[pipeKey]) params[pipeKey] = lastResult[pipeKey];
