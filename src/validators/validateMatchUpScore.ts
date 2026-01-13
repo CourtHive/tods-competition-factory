@@ -272,6 +272,32 @@ export function validateSetScore(
   const setFormat = isDecidingSet && parsed.finalSetFormat ? parsed.finalSetFormat : parsed.setFormat;
   if (!setFormat) return { isValid: true };
 
+  // Handle timed sets (based: 'A'/'P'/'G' or timed: true)
+  if (setFormat.timed) {
+    // For timed sets, just validate that scores exist if set is complete
+    if (!allowIncomplete) {
+      const side1Score = set.side1Score ?? 0;
+      const side2Score = set.side2Score ?? 0;
+      
+      // At least one side should have a score for completed timed set
+      if (side1Score === 0 && side2Score === 0) {
+        return { isValid: false, error: 'Timed set requires at least one side to have scored' };
+      }
+      
+      // For points-based (not aggregate), tied scores need tiebreak if format specifies
+      if (setFormat.based === 'P') {
+        if (side1Score === side2Score && side1Score > 0 && setFormat.tiebreakFormat) {
+          const hasTiebreak = set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined;
+          if (!hasTiebreak) {
+            return { isValid: false, error: 'Tied timed set requires tiebreak' };
+          }
+        }
+      }
+      // For aggregate ('A'), tied individual sets are fine - winner determined by total aggregate
+    }
+    return { isValid: true };
+  }
+
   const { setTo, tiebreakAt, tiebreakFormat, tiebreakSet } = setFormat;
 
   const tiebreakSetTo = tiebreakSet?.tiebreakTo;
