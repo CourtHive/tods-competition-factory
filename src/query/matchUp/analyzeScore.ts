@@ -81,15 +81,52 @@ export function analyzeScore({
       return !excessiveSetScore;
     });
 
-  const calculatedWinningSide =
-    ((!matchUpFormat || maxSetsCount === setsToWin) &&
-      maxSetsInstances === 1 &&
-      setsWinCounts.indexOf(maxSetsCount) + 1) ||
-    undefined;
+  // For aggregate scoring, calculate winner based on total score across all sets
+  const isAggregateScoring =
+    matchUpScoringFormat?.setFormat?.based === 'A' || matchUpScoringFormat?.finalSetFormat?.based === 'A';
+
+  let calculatedWinningSide;
+  if (isAggregateScoring && sets.length > 0) {
+    // Sum all scores across all sets (excluding tiebreak-only sets)
+    const aggregateTotals = sets.reduce(
+      (totals, set) => {
+        // Only count sets with side scores (not tiebreak-only sets)
+        if (set.side1Score !== undefined || set.side2Score !== undefined) {
+          totals[0] += set.side1Score ?? 0;
+          totals[1] += set.side2Score ?? 0;
+        }
+        return totals;
+      },
+      [0, 0],
+    );
+
+    // Winner is side with highest aggregate score (if not tied)
+    if (aggregateTotals[0] > aggregateTotals[1]) {
+      calculatedWinningSide = 1;
+    } else if (aggregateTotals[1] > aggregateTotals[0]) {
+      calculatedWinningSide = 2;
+    } else {
+      // If tied, look for final tiebreak set
+      const tiebreakSet = sets.find(
+        (set) => set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined,
+      );
+      if (tiebreakSet) {
+        calculatedWinningSide = tiebreakSet.winningSide;
+      }
+    }
+  } else {
+    // Standard "sets won" logic
+    calculatedWinningSide =
+      ((!matchUpFormat || maxSetsCount === setsToWin) &&
+        maxSetsInstances === 1 &&
+        setsWinCounts.indexOf(maxSetsCount) + 1) ||
+      undefined;
+  }
 
   const valid = !!(
     validSets &&
-    ((winningSide && winningSideSetsCount > losingSideSetsCount && winningSide === calculatedWinningSide) ||
+    ((winningSide && isAggregateScoring && winningSide === calculatedWinningSide) ||
+      (winningSide && !isAggregateScoring && winningSideSetsCount > losingSideSetsCount && winningSide === calculatedWinningSide) ||
       (winningSide && irregularEnding) ||
       (!winningSide &&
         !calculatedWinningSide &&
