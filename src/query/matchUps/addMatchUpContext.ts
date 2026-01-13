@@ -251,15 +251,27 @@ export function addMatchUpContext({
         .sort((a, b) => a.setNumber - b.setNumber)
         .map((set, i) => {
           const setNumber = i + 1;
-          if (setNumber === bestOf) {
-            if (finalSetFormat?.tiebreakSet || finalSetFormat?.timed) set.tiebreakSet = true;
-          } else if (setFormat?.tiebreakSet || setFormat?.timed) {
+          const isDecidingSet = setNumber === bestOf;
+          const currentSetFormat = isDecidingSet && finalSetFormat ? finalSetFormat : setFormat;
+          
+          // Check if this set is tiebreak-only (not timed)
+          const isTiebreakOnly = currentSetFormat?.tiebreakSet && !currentSetFormat?.timed;
+          const isTimed = currentSetFormat?.timed;
+          
+          if (isTiebreakOnly) {
+            // Only mark as tiebreakSet for actual tiebreak-only sets (TB10, TB1, etc.)
+            set.tiebreakSet = true;
+            // For tiebreak-only sets, normalize scores to 1-0 or 0-1
+            if ([1, 2].includes(set.winningSide)) {
+              set.side1Score = set.winningSide === 1 ? 1 : 0;
+              set.side2Score = set.winningSide === 2 ? 1 : 0;
+            }
+          } else if (isTimed) {
+            // For timed sets, mark as tiebreakSet for backwards compatibility
+            // but DO NOT modify the scores - they are actual point totals
             set.tiebreakSet = true;
           }
-          if (set.tiebreakSet && [1, 2].includes(set.winningSide)) {
-            set.side1Score = set.winningSide === 1 ? 1 : 0;
-            set.side2Score = set.winningSide === 2 ? 1 : 0;
-          }
+          
           return set;
         });
     }
