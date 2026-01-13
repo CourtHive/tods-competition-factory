@@ -64,6 +64,10 @@ function generateScoreForWinnerOrder(neutralParsedSets, inferredWinningSide, mat
   const winningScoreString = generateScoreString({ sets: neutralParsedSets, matchUpFormat, setTBlast });
   const losingScoreString = generateScoreString({ sets: neutralParsedSets, reversed: true, matchUpFormat, setTBlast });
 
+  // Handle error cases from generateScoreString
+  if (typeof winningScoreString !== 'string') return winningScoreString;
+  if (typeof losingScoreString !== 'string') return losingScoreString;
+
   const scoreStringSide1 = inferredWinningSide === 2 ? losingScoreString : winningScoreString;
   const scoreStringSide2 = inferredWinningSide === 2 ? winningScoreString : losingScoreString;
 

@@ -29,9 +29,9 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
   if (matchUpFormat) {
     try {
       parsedFormat = parse(matchUpFormat);
-      const bestOfMatch = matchUpFormat?.match(/SET(\d+)/)?.[1];
+      const bestOfMatch = /SET(\d+)/.exec(matchUpFormat)?.[1];
       bestOfSets = bestOfMatch ? Number.parseInt(bestOfMatch) : 3;
-    } catch (_e) {
+    } catch {
       // Ignore parse errors
     }
   }
@@ -81,7 +81,7 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       //
       // CRITICAL: Only treat as tiebreak-only format if matchUpFormat explicitly indicates it
       // Without matchUpFormat context, brackets always mean match tiebreak (traditional behavior)
-      const bracketedScores = bracketed[1].split('-').map((score) => parseInt(score));
+      const bracketedScores = bracketed[1].split('-').map((score) => Number.parseInt(score));
 
       if (isTiebreakOnlyFormat) {
         // Tiebreak-only format (TB10) with explicit matchUpFormat - scores go into side1Score/side2Score
@@ -108,7 +108,7 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       // Handle tiebreak game score in parentheses: 7-6(5)
       if (tiebreak) {
         const setTiebreakLowScore = tiebreak[1];
-        
+
         // Extract tiebreakTo from matchUpFormat for this specific set
         let setSpecificTiebreakTo = tiebreakTo; // Default
         if (parsedFormat) {
@@ -119,7 +119,7 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
             setSpecificTiebreakTo = setFormat.tiebreakFormat.tiebreakTo;
           }
         }
-        
+
         const side1TiebreakPerspective = getTiebreakComplement({
           lowValue: setTiebreakLowScore,
           isSide1: winningSide === 2,
@@ -131,7 +131,7 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       }
 
       // Handle match tiebreak/supertiebreak in brackets (when not at start): 7-5 5-7 [10-3]
-      if (bracketed && !isTiebreakOnlySet) {
+      if (bracketed) {
         const matchTiebreakScores = bracketed[1].split('-').map((score) => Number.parseInt(score));
         side1TiebreakScore = matchTiebreakScores[0];
         side2TiebreakScore = matchTiebreakScores[1];
