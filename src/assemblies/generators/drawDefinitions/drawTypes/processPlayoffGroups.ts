@@ -100,7 +100,7 @@ export function processPlayoffGroups({
   for (const playoffGroup of playoffGroups) {
     const finishingPositions = playoffGroup.finishingPositions;
     const positionsPlayedOff =
-      positionRangeMap && finishingPositions.map((p) => positionRangeMap[p]?.finishingPositions).flat();
+      positionRangeMap && finishingPositions.flatMap((p: number) => positionRangeMap[p]?.finishingPositions ?? []);
 
     const participantsInDraw = groupCount * finishingPositions.length;
     const drawSize = nextPowerOf2(participantsInDraw);
