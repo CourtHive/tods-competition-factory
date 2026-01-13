@@ -18,6 +18,7 @@ function validateTiebreakOnlySet(
   scoreDiff: number,
   tiebreakSetTo: number,
   allowIncomplete: boolean,
+  NoAD: boolean = false,
 ): { isValid: boolean; error?: string } {
   if (allowIncomplete) {
     return { isValid: true };
@@ -34,13 +35,24 @@ function validateTiebreakOnlySet(
     };
   }
 
-  if (scoreDiff < 2) {
+  // NoAD tiebreaks require win by 1, regular tiebreaks require win by 2
+  const requiredWinBy = NoAD ? 1 : 2;
+  
+  if (scoreDiff < requiredWinBy) {
     return {
       isValid: false,
-      error: `Tiebreak-only set must be won by at least 2 points, got ${winnerScore}-${loserScore}`,
+      error: NoAD
+        ? `Tiebreak-only set (NoAD) must be won by at least 1 point, got ${winnerScore}-${loserScore}`
+        : `Tiebreak-only set must be won by at least 2 points, got ${winnerScore}-${loserScore}`,
     };
   }
 
+  // For NoAD tiebreaks, winner just needs to reach tiebreakTo
+  if (NoAD) {
+    return { isValid: true };
+  }
+
+  // For regular tiebreaks, check win-by-2 rules
   if (winnerScore === tiebreakSetTo && loserScore > tiebreakSetTo - 2) {
     return {
       isValid: false,
@@ -315,7 +327,8 @@ export function validateSetScore(
   const scoreDiff = winnerScore - loserScore;
 
   if (isTiebreakOnlyFormat) {
-    return validateTiebreakOnlySet(winnerScore, loserScore, scoreDiff, tiebreakSetTo, allowIncomplete ?? false);
+    const NoAD = setFormat.tiebreakSet?.NoAD ?? false;
+    return validateTiebreakOnlySet(winnerScore, loserScore, scoreDiff, tiebreakSetTo, allowIncomplete ?? false, NoAD);
   }
 
   const hasExplicitTiebreak = side1TiebreakScore !== undefined || side2TiebreakScore !== undefined;
