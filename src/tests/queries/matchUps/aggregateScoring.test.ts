@@ -5,11 +5,14 @@ import { expect, it } from 'vitest';
 // constants
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
+// types
+import type { Set } from '@Types/tournamentTypes';
+
 it('determines winner for SET1-S:T10A (single set aggregate)', () => {
   const matchUpFormat = 'SET1-S:T10A';
 
   // Test clear winner: side 1 wins 25-20
-  let score = {
+  let score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 25,
@@ -71,7 +74,7 @@ it('determines winner for SET2X-S:T10A-F:TB1 (exactly 2 sets, aggregate with fin
   const matchUpFormat = 'SET2X-S:T10A-F:TB1';
 
   // Test clear aggregate winner after 2 sets: 50-30 total
-  let score = {
+  let score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 25,
@@ -159,7 +162,7 @@ it('determines winner for SET3X-S:T10A-F:TB1 (exactly 3 sets, aggregate)', () =>
   const matchUpFormat = 'SET3X-S:T10A-F:TB1';
 
   // Test aggregate winner across 3 sets: 75 vs 60
-  let score = {
+  let score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 30,
@@ -266,7 +269,7 @@ it('handles SET3-S:T10/TB1 (best of 3 with set-level tiebreak)', () => {
 
   // Test standard best-of-3 with games-based scoring (not aggregate)
   // Winner determined by sets won, not aggregate
-  const score = {
+  const score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 10,
@@ -306,7 +309,7 @@ it('handles aggregate scoring with one-sided results', () => {
   const matchUpFormat = 'SET2X-S:T10A';
 
   // Test extreme score difference
-  const score = {
+  const score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 100,
@@ -338,7 +341,7 @@ it('handles aggregate scoring with one-sided results', () => {
 it('rejects invalid winningSide for aggregate scoring', () => {
   const matchUpFormat = 'SET2X-S:T10A';
 
-  const score = {
+  const score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 30,
@@ -370,7 +373,7 @@ it('validates aggregate with missing scores', () => {
   const matchUpFormat = 'SET3X-S:T10A';
 
   // Incomplete - only 2 of 3 sets played
-  const score = {
+  const score: { sets: Set[] } = {
     sets: [
       {
         side1Score: 25,
