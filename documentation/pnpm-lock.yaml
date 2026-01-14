@@ -37,7 +37,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.9.0
-        version: 0.9.4
+        version: 0.9.5
       material-ui:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2290,8 +2290,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.4:
-    resolution: {integrity: sha512-Vs/OVKjc6d+bDc2dZ43Om1dvBppRulCYjdzipbvfKAUtgN15/M1XEdjPTxydmFynsxhyB7rcsjyNFNx2aDu5BA==}
+  courthive-components@0.9.5:
+    resolution: {integrity: sha512-oFBxFZAPSmC+Gzdyw/P9uDdkQwXvLHOdjebK80DhqAL9BqRuboGyz++FHfL4Z0L7LxqfghLdGmFJ/UudBJhLdA==}
     engines: {node: '>=16.16.0 < 25'}
 
   cross-fetch@3.1.8:
@@ -9172,7 +9172,7 @@ snapshots:
       typescript: 5.3.3
     optional: true
 
-  courthive-components@0.9.4:
+  courthive-components@0.9.5:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -9183,7 +9183,7 @@ snapshots:
       classnames: 2.5.1
       dayjs: 1.11.19
       tippy.js: 6.3.7
-      tods-competition-factory: 2.2.42
+      tods-competition-factory: 2.2.43
       vanillajs-datepicker: 1.3.4
 
   cross-fetch@3.1.8(encoding@0.1.13):
