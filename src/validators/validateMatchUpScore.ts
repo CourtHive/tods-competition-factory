@@ -327,7 +327,8 @@ export function validateSetScore(
   const scoreDiff = winnerScore - loserScore;
 
   if (isTiebreakOnlyFormat) {
-    const NoAD = setFormat.tiebreakSet?.NoAD ?? false;
+    // Check NoAD from the set object first (set by parseScoreString), fall back to format
+    const NoAD = set.NoAD ?? setFormat.tiebreakSet?.NoAD ?? false;
     return validateTiebreakOnlySet(winnerScore, loserScore, scoreDiff, tiebreakSetTo, allowIncomplete ?? false, NoAD);
   }
 
