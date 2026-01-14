@@ -99,8 +99,7 @@ export function processLeagueProfiles(params): any {
       };
 
       homeVenueIds.forEach((venueId) => !venueIds.includes(venueId) && venueIds.push(venueId));
-      allUniqueParticipantIds.push(...individualParticipantIds);
-      allUniqueParticipantIds.push(teamParticipantId);
+      allUniqueParticipantIds.push(...individualParticipantIds, teamParticipantId);
       const result = addParticipants({
         participants: [teamParticipant, ...participants],
         tournamentRecord,

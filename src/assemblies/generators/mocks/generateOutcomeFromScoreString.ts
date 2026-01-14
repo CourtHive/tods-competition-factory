@@ -82,7 +82,7 @@ function generateScoreForWinnerOrder(neutralParsedSets, inferredWinningSide, mat
  * Generates TODS score object from parseable score string
  */
 export function generateOutcomeFromScoreString(params) {
-  const { matchUpFormat, matchUpStatus, winningSide, scoreString, setTBlast } = params;
+  const { matchUpFormat, matchUpStatus, winningSide, scoreString, setTBlast, preserveSideOrder = false } = params;
   if (!scoreString)
     return {
       outcome: {
@@ -101,7 +101,7 @@ export function generateOutcomeFromScoreString(params) {
   const isAggregateScoring = parsedFormat?.setFormat?.based === 'A' || parsedFormat?.finalSetFormat?.based === 'A';
 
   const score =
-    isBracketNotation || isAggregateScoring
+    preserveSideOrder || isBracketNotation || isAggregateScoring
       ? generateScoreForSideOrder(scoreString, matchUpFormat, setTBlast)
       : generateScoreForWinnerOrder(neutralParsedSets, inferredWinningSide, matchUpFormat, setTBlast);
 

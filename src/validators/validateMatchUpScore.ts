@@ -297,12 +297,10 @@ export function validateSetScore(
       }
 
       // For points-based (not aggregate), tied scores need tiebreak if format specifies
-      if (setFormat.based === 'P') {
-        if (side1Score === side2Score && side1Score > 0 && setFormat.tiebreakFormat) {
-          const hasTiebreak = set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined;
-          if (!hasTiebreak) {
-            return { isValid: false, error: 'Tied timed set requires tiebreak' };
-          }
+      if (setFormat.based === 'P' && side1Score === side2Score && side1Score > 0 && setFormat.tiebreakFormat) {
+        const hasTiebreak = set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined;
+        if (!hasTiebreak) {
+          return { isValid: false, error: 'Tied timed set requires tiebreak' };
         }
       }
       // For aggregate ('A'), tied individual sets are fine - winner determined by total aggregate
