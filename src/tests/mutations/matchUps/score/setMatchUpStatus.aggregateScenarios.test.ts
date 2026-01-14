@@ -1,13 +1,16 @@
-import { setMatchUpStatus } from '@Mutate/matchUps/matchUpStatus/setMatchUpStatus';
 import { mocksEngine } from '@Assemblies/engines/mock';
+import { COMPLETED } from '@Constants/tournamentConstants';
 import { tournamentEngine } from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
+
+const exactly3aggregateTimedSets = 'SET3X-S:T10A';
 
 function generateMatchUpOutcome(params: { matchUpFormat: string }) {
   const drawProfiles = [
     {
-      drawSize: 4,
+      matchUpFormat: params.matchUpFormat,
       drawType: 'SINGLE_ELIMINATION',
+      drawSize: 4,
     },
   ];
   const { tournamentRecord, drawIds } = mocksEngine.generateTournamentRecord({
@@ -27,16 +30,15 @@ function generateMatchUpOutcome(params: { matchUpFormat: string }) {
 
 it('correctly calculates aggregate winner for SET3X-S:T10A with uneven scores (30-0, 0-1, 0-1)', () => {
   const {
-    tournamentRecord,
     drawId,
     matchUps: [matchUp],
-  } = generateMatchUpOutcome({ matchUpFormat: 'SET3X-S:T10A' });
+  } = generateMatchUpOutcome({ matchUpFormat: exactly3aggregateTimedSets });
 
   // Set the matchUp format first
   const formatResult = tournamentEngine.setMatchUpFormat({
     drawId,
     matchUpId: matchUp.matchUpId,
-    matchUpFormat: 'SET3X-S:T10A',
+    matchUpFormat: exactly3aggregateTimedSets,
   });
   expect(formatResult.success).toBe(true);
 
@@ -47,8 +49,8 @@ it('correctly calculates aggregate winner for SET3X-S:T10A with uneven scores (3
   // Aggregate: side 1 = 30, side 2 = 2
   // Expected winner: side 1 (30 > 2)
   const outcome = {
-    matchUpFormat: 'SET3X-S:T10A',
-    matchUpStatus: 'COMPLETED',
+    matchUpFormat: exactly3aggregateTimedSets,
+    matchUpStatus: COMPLETED,
     score: {
       sets: [
         {
@@ -75,12 +77,10 @@ it('correctly calculates aggregate winner for SET3X-S:T10A with uneven scores (3
   };
 
   const setStatusResult = tournamentEngine.setMatchUpStatus({
-    drawId,
     matchUpId: matchUp.matchUpId,
     outcome,
+    drawId,
   });
-
-  console.log('SET3X-S:T10A (30-0, 0-1, 0-1) result:', JSON.stringify(setStatusResult, null, 2));
 
   expect(setStatusResult.success).toBe(true);
 
@@ -89,19 +89,14 @@ it('correctly calculates aggregate winner for SET3X-S:T10A with uneven scores (3
   });
 
   const updatedMatchUp = updatedMatchUps[0];
-  
-  console.log('Updated matchUp score:', JSON.stringify(updatedMatchUp.score, null, 2));
-  console.log('Updated matchUp winningSide:', updatedMatchUp.winningSide);
 
   // Verify aggregate calculation: side1 = 30, side2 = 2, so side1 wins
   expect(updatedMatchUp.winningSide).toBe(1);
   expect(updatedMatchUp.matchUpStatus).toBe('COMPLETED');
-  
+
   const aggregateSide1 = updatedMatchUp.score.sets.reduce((sum, set) => sum + (set.side1Score || 0), 0);
   const aggregateSide2 = updatedMatchUp.score.sets.reduce((sum, set) => sum + (set.side2Score || 0), 0);
-  
-  console.log('Aggregate totals:', { side1: aggregateSide1, side2: aggregateSide2 });
-  
+
   expect(aggregateSide1).toBe(30);
   expect(aggregateSide2).toBe(2);
   expect(aggregateSide1).toBeGreaterThan(aggregateSide2);
