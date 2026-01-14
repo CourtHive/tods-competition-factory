@@ -37,7 +37,7 @@ function validateTiebreakOnlySet(
 
   // NoAD tiebreaks require win by 1, regular tiebreaks require win by 2
   const requiredWinBy = NoAD ? 1 : 2;
-  
+
   if (scoreDiff < requiredWinBy) {
     return {
       isValid: false,
@@ -290,19 +290,17 @@ export function validateSetScore(
     if (!allowIncomplete) {
       const side1Score = set.side1Score ?? 0;
       const side2Score = set.side2Score ?? 0;
-      
+
       // At least one side should have a score for completed timed set
       if (side1Score === 0 && side2Score === 0) {
         return { isValid: false, error: 'Timed set requires at least one side to have scored' };
       }
-      
+
       // For points-based (not aggregate), tied scores need tiebreak if format specifies
-      if (setFormat.based === 'P') {
-        if (side1Score === side2Score && side1Score > 0 && setFormat.tiebreakFormat) {
-          const hasTiebreak = set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined;
-          if (!hasTiebreak) {
-            return { isValid: false, error: 'Tied timed set requires tiebreak' };
-          }
+      if (setFormat.based === 'P' && side1Score === side2Score && side1Score > 0 && setFormat.tiebreakFormat) {
+        const hasTiebreak = set.side1TiebreakScore !== undefined || set.side2TiebreakScore !== undefined;
+        if (!hasTiebreak) {
+          return { isValid: false, error: 'Tied timed set requires tiebreak' };
         }
       }
       // For aggregate ('A'), tied individual sets are fine - winner determined by total aggregate
@@ -327,7 +325,8 @@ export function validateSetScore(
   const scoreDiff = winnerScore - loserScore;
 
   if (isTiebreakOnlyFormat) {
-    const NoAD = setFormat.tiebreakSet?.NoAD ?? false;
+    // Check NoAD from the set object first (set by parseScoreString), fall back to format
+    const NoAD = set.NoAD ?? setFormat.tiebreakSet?.NoAD ?? false;
     return validateTiebreakOnlySet(winnerScore, loserScore, scoreDiff, tiebreakSetTo, allowIncomplete ?? false, NoAD);
   }
 
