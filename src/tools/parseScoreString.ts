@@ -14,6 +14,8 @@ type ParsedSetString = {
   side1Score?: number;
   side2Score?: number;
   setNumber: number;
+  NoAD?: boolean;
+  tiebreakSet?: boolean;
 };
 
 type ParseSetArgs = {
@@ -151,6 +153,10 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
     const isTiebreakOnlySet = set?.startsWith('[') && bracketed;
     const isTiebreakOnlyFormat = checkIsTiebreakOnlyFormat(setNumber, !!isTiebreakOnlySet);
 
+    // Check if this is a TB1 format (tiebreakTo = 1, which means NoAD)
+    const setSpecificTiebreakTo = getTiebreakToForSet(setNumber);
+    const isNoAD = isTiebreakOnlyFormat && setSpecificTiebreakTo === 1;
+
     let result: Partial<ParsedSetString>;
 
     if (isTiebreakOnlySet) {
@@ -167,6 +173,8 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
       side2TiebreakScore: result.side2TiebreakScore,
       winningSide: result.winningSide,
       setNumber,
+      ...(isNoAD && { NoAD: true }),
+      ...(isTiebreakOnlyFormat && { tiebreakSet: true }),
     };
   }
 }
