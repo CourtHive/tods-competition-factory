@@ -40,7 +40,7 @@ importers:
         version: 0.13.4
       '@nestjs/cli':
         specifier: 11.0.14
-        version: 11.0.14(@swc/cli@0.7.9(@swc/core@1.15.8)(chokidar@4.0.3))(@swc/core@1.15.8)(@types/node@24.10.8)(esbuild@0.27.2)
+        version: 11.0.14(@swc/cli@0.7.10(@swc/core@1.15.8)(chokidar@4.0.3))(@swc/core@1.15.8)(@types/node@24.10.8)(esbuild@0.27.2)
       '@nestjs/common':
         specifier: 11.1.11
         version: 11.1.11(reflect-metadata@0.2.2)(rxjs@7.8.2)
@@ -84,8 +84,8 @@ importers:
         specifier: 12.3.0
         version: 12.3.0(rollup@4.55.1)(tslib@2.8.1)(typescript@5.9.3)
       '@swc/cli':
-        specifier: 0.7.9
-        version: 0.7.9(@swc/core@1.15.8)(chokidar@4.0.3)
+        specifier: 0.7.10
+        version: 0.7.10(@swc/core@1.15.8)(chokidar@4.0.3)
       '@swc/core':
         specifier: 1.15.8
         version: 1.15.8
@@ -2020,8 +2020,8 @@ packages:
   '@standard-schema/spec@1.0.0':
     resolution: {integrity: sha512-m2bOd0f2RT9k8QJx1JN85cZYyH1RqFBdlwtkSlf4tBDYLCiiZnv1fIIwacK6cqwXavOydf0NPToMQgpKq+dVlA==}
 
-  '@swc/cli@0.7.9':
-    resolution: {integrity: sha512-AFQu3ZZ9IcdClTknxbug08S9ed/q8F3aYkO5NoZ+6IjQ5UEo1s2HN1GRKNvUslYx2EoVYxd+6xGcp6C7wwtxyQ==}
+  '@swc/cli@0.7.10':
+    resolution: {integrity: sha512-QQ36Q1VwGTT2YzvMeNe/j1x4DKS277DscNhWc57dIwQn//C+zAgvuSupMB/XkmYqPKQX+8hjn5/cHRJrMvWy0Q==}
     engines: {node: '>= 16.14.0'}
     hasBin: true
     peerDependencies:
@@ -7807,7 +7807,7 @@ snapshots:
       libphonenumber-js: 1.11.12
       validator: 13.12.0
 
-  '@nestjs/cli@11.0.14(@swc/cli@0.7.9(@swc/core@1.15.8)(chokidar@4.0.3))(@swc/core@1.15.8)(@types/node@24.10.8)(esbuild@0.27.2)':
+  '@nestjs/cli@11.0.14(@swc/cli@0.7.10(@swc/core@1.15.8)(chokidar@4.0.3))(@swc/core@1.15.8)(@types/node@24.10.8)(esbuild@0.27.2)':
     dependencies:
       '@angular-devkit/core': 19.2.19(chokidar@4.0.3)
       '@angular-devkit/schematics': 19.2.19(chokidar@4.0.3)
@@ -7828,7 +7828,7 @@ snapshots:
       webpack: 5.103.0(@swc/core@1.15.8)(esbuild@0.27.2)
       webpack-node-externals: 3.0.0
     optionalDependencies:
-      '@swc/cli': 0.7.9(@swc/core@1.15.8)(chokidar@4.0.3)
+      '@swc/cli': 0.7.10(@swc/core@1.15.8)(chokidar@4.0.3)
       '@swc/core': 1.15.8
     transitivePeerDependencies:
       - '@types/node'
@@ -8118,7 +8118,7 @@ snapshots:
 
   '@standard-schema/spec@1.0.0': {}
 
-  '@swc/cli@0.7.9(@swc/core@1.15.8)(chokidar@4.0.3)':
+  '@swc/cli@0.7.10(@swc/core@1.15.8)(chokidar@4.0.3)':
     dependencies:
       '@swc/core': 1.15.8
       '@swc/counter': 0.1.3
