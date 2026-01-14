@@ -84,7 +84,8 @@ export function parseScoreString({ tiebreakTo = 7, scoreString = '', matchUpForm
     const setFormat =
       isDecidingSet && parsedFormat.finalSetFormat ? parsedFormat.finalSetFormat : parsedFormat.setFormat;
 
-    return setFormat?.tiebreakFormat?.tiebreakTo ?? tiebreakTo;
+    // For tiebreak-only sets, check tiebreakSet.tiebreakTo first
+    return setFormat?.tiebreakSet?.tiebreakTo ?? setFormat?.tiebreakFormat?.tiebreakTo ?? tiebreakTo;
   }
 
   function parseTiebreakGame(
