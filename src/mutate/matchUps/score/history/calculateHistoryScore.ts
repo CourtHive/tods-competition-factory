@@ -31,7 +31,6 @@ export function calculateHistoryScore(params) {
   const { bestOf, finalSetFormat, setFormat } = parsedFormat;
 
   const pointProgression = ['0', '15', '30', '40', 'A', 'G'];
-  //  const statsCounters = { 1: {}, 2: {} };
   const score: any = { sets: [] };
 
   let unknowns: any[] = [];
