@@ -1,5 +1,5 @@
-import { expect, it } from 'vitest';
 import { validateSetScore, validateMatchUpScore } from '@Validators/validateMatchUpScore';
+import { expect, it } from 'vitest';
 
 // constants
 import { COMPLETED, RETIRED } from '@Constants/matchUpStatusConstants';

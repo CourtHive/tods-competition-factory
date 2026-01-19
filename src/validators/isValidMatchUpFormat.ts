@@ -23,5 +23,7 @@ export function isValidMatchUpFormat({ matchUpFormat }: { matchUpFormat: string 
 
   const stringified = stringify(parsedFormat, preserveRedundant);
 
-  return stringified === matchUpFormat;
+  // matchUpFormat is valid if parsing and then stringifying returns the original format
+  // 'G' signifies a 'game' timed format and is not included in the stringified version as it is the default interpretation
+  return stringified === matchUpFormat.replace(/G/, '');
 }
