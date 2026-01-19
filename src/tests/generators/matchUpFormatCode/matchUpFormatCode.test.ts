@@ -245,6 +245,15 @@ it('recognizes invalid formats', () => {
   });
 });
 
+it('timed formats with G are valid', () => {
+  let valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat: 'SET1-S:T20G' });
+  expect(valid).toEqual(true);
+  valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat: 'SET4X-S:T20P' });
+  expect(valid).toEqual(true);
+  valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat: 'SET4X-S:T20P-F:T20' });
+  expect(valid).toEqual(true);
+});
+
 it('recognizes valid timed formats', () => {
   singleSetTimed.forEach(({ format }) => {
     const parsed = matchUpFormatCode.parse(format);
@@ -391,7 +400,7 @@ it('accepts odd bestOf and rejects even non-timed sets without X suffix', () => 
   const format = 'SET4-S:6';
   const parsed = matchUpFormatCode.parse(format);
   expect(parsed).toEqual({ bestOf: 4, setFormat: { setTo: 6, noTiebreak: true } });
-  
+
   const format2 = 'SET4X-S:6';
   const parsed2 = matchUpFormatCode.parse(format2);
   expect(parsed2).toBeUndefined();
