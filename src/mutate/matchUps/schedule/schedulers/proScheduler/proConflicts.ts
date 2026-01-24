@@ -85,13 +85,13 @@ export function proConflicts({
 
         const matchUpParticipantIds =
           sides
-            ?.map((side: any) => [side.participant?.individualParticipantIds, side.participantId])
+            ?.flatMap((side: any) => [side.participant?.individualParticipantIds, side.participantId])
             .flat()
             .filter(Boolean) ?? [];
         const potentialMatchUpParticipantIds =
           potentialParticipants
             ?.flat()
-            .map(({ individualParticipantIds, participantId }) => [individualParticipantIds, participantId])
+            .flatMap(({ individualParticipantIds, participantId }) => [individualParticipantIds, participantId])
             .flat()
             .filter(Boolean) || [];
 
@@ -115,6 +115,58 @@ export function proConflicts({
     deps[a].sources.reduce((distance, round, index) => (round.includes(b) && index + 1) || distance, 0);
 
   const rowIssues: any[] = rowProfiles.map(() => []);
+
+  const addWarningToMatchUp = (
+    matchUpId: string,
+    warnedMatchUpIds: string[],
+    participantConflicts: { [key: string]: any },
+  ) => {
+    if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
+    if (!participantConflicts[matchUpId][SCHEDULE_WARNING]) {
+      participantConflicts[matchUpId][SCHEDULE_WARNING] = warnedMatchUpIds.filter((id) => id !== matchUpId);
+    }
+  };
+
+  const processParticipantWarnings = (
+    previousRow: Profile,
+    row: Profile,
+    participantConflicts: { [key: string]: any },
+  ) => {
+    const previousRowWarnings = row.participantIds.filter((id) => previousRow.participantIds.includes(id));
+    previousRowWarnings.forEach((participantId) => {
+      const warnedMatchUpIds = row.matchUpIds
+        .concat(previousRow.matchUpIds)
+        .filter((matchUpId) => deps[matchUpId].participantIds.includes(participantId));
+      warnedMatchUpIds.forEach((matchUpId) => {
+        addWarningToMatchUp(matchUpId, warnedMatchUpIds, participantConflicts);
+      });
+    });
+  };
+
+  const addConflictToMatchUp = (
+    matchUpId: string,
+    conflictedMatchUpIds: string[],
+    participantConflicts: { [key: string]: any },
+  ) => {
+    if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
+    if (!participantConflicts[matchUpId][SCHEDULE_CONFLICT]) {
+      participantConflicts[matchUpId][SCHEDULE_CONFLICT] = conflictedMatchUpIds.filter((id) => id !== matchUpId);
+    }
+  };
+
+  const processParticipantConflicts = (row: Profile): { [key: string]: any } => {
+    const participantConflicts: { [key: string]: any } = {};
+    const instances = instanceCount(row.participantIds);
+    const conflictedParticipantIds = new Set(Object.keys(instances).filter((key) => instances[key] > 1));
+    const conflictedMatchUpIds = row.matchUpIds.filter((matchUpId) =>
+      deps[matchUpId].participantIds.some((id) => conflictedParticipantIds.has(id)),
+    );
+    conflictedMatchUpIds.forEach((matchUpId) => {
+      addConflictToMatchUp(matchUpId, conflictedMatchUpIds, participantConflicts);
+    });
+    return participantConflicts;
+  };
+
   const annotate = (matchUpId, issue, issueType, issueIds) => {
     if (!mappedMatchUps[matchUpId].schedule[SCHEDULE_STATE]) {
       // store issue for display below by order of severity
@@ -140,34 +192,10 @@ export function proConflicts({
     const previousRow = rowIndex ? rowProfiles[rowIndex - 1] : undefined;
     const subsequentRows = rowProfiles.slice(rowIndex + 1);
 
-    const participantConflicts: { [key: string]: any } = {};
+    const participantConflicts = processParticipantConflicts(row);
 
-    const instances = instanceCount(row.participantIds);
-    const conflictedParticipantIds = Object.keys(instances).filter((key) => instances[key] > 1);
-    const conflictedMatchUpIds = row.matchUpIds.filter((matchUpId) =>
-      deps[matchUpId].participantIds.some((id) => conflictedParticipantIds.includes(id)),
-    );
-    conflictedMatchUpIds.forEach((matchUpId) => {
-      if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
-      if (!participantConflicts[matchUpId][SCHEDULE_CONFLICT]) {
-        participantConflicts[matchUpId][SCHEDULE_CONFLICT] = conflictedMatchUpIds.filter((id) => id !== matchUpId);
-      }
-    });
-
-    const previousRowWarnings =
-      previousRow && row.participantIds.filter((id) => previousRow.participantIds.includes(id));
-    if (previousRowWarnings) {
-      previousRowWarnings.forEach((participantId) => {
-        const warnedMatchUpIds = row.matchUpIds
-          .concat(previousRow.matchUpIds)
-          .filter((matchUpId) => deps[matchUpId].participantIds.includes(participantId));
-        warnedMatchUpIds.forEach((matchUpId) => {
-          if (!participantConflicts[matchUpId]) participantConflicts[matchUpId] = {};
-          if (!participantConflicts[matchUpId][SCHEDULE_WARNING]) {
-            participantConflicts[matchUpId][SCHEDULE_WARNING] = warnedMatchUpIds.filter((id) => id !== matchUpId);
-          }
-        });
-      });
+    if (previousRow) {
+      processParticipantWarnings(previousRow, row, participantConflicts);
     }
 
     row.matchUpIds.forEach((matchUpId) => {
