@@ -577,5 +577,4 @@ const { participants } = mocksEngine.generateParticipants({
 ## Next Steps
 
 - **[Tournament Generation](./mocks-engine-tournament-generation.md)** - Integrate participants into tournaments
-- **[Draw Profiles](./mocks-engine-draw-profiles.md)** - Configure draws for participants
 - **[Advanced Patterns](./mocks-engine-patterns.md)** - Common testing patterns with participants

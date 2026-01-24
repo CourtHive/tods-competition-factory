@@ -194,11 +194,7 @@ This mocksEngine documentation is organized into the following sections:
 - **[Tournament Generation](./mocks-engine-tournament-generation.md)** - Complete tournament creation
 - **[Participant Generation](./mocks-engine-participants.md)** - Individual, pair and team participants
 - **[Outcome Generation](./mocks-engine-outcomes.md)** - Generating match results and scores
-- **[Draw Profiles](./mocks-engine-draw-profiles.md)** - Configuring draw structures
-- **[Event Profiles](./mocks-engine-event-profiles.md)** - Multi-draw and multi-event scenarios
-- **[Venue Profiles](./mocks-engine-venues.md)** - Courts and scheduling infrastructure
 - **[Advanced Patterns](./mocks-engine-patterns.md)** - Common testing patterns and techniques
-- **[API Reference](./mocks-engine-api.md)** - Complete method reference
 
 ## Next Steps
 

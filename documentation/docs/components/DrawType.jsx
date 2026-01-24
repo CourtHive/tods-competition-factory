@@ -1,9 +1,21 @@
-import { compositions, renderStructure } from 'courthive-components';
-
 import { tournamentEngine, mocksEngine, tools } from 'tods-competition-factory';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const DrawType = ({ drawType, drawSize = 8 }) => {
+  const [courthiveComponents, setCourthiveComponents] = useState(null);
+
+  useEffect(() => {
+    // Dynamically import courthive-components only on client-side
+    import('courthive-components').then((module) => {
+      setCourthiveComponents(module);
+    });
+  }, []);
+
+  if (!courthiveComponents) {
+    return <div>Loading...</div>;
+  }
+
+  const { compositions, renderStructure } = courthiveComponents;
   const drawProfile = {
     seedsCount: 4,
     drawType,
