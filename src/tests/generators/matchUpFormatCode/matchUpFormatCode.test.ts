@@ -266,7 +266,7 @@ it('recognizes valid timed formats', () => {
   });
 });
 
-it('match format suite', () => {
+it('matchUpFormat suite', () => {
   // round trip conversion tests
   validFormats.forEach((sf) => {
     const parsed = matchUpFormatCode.parse(sf.format);
