@@ -123,7 +123,19 @@ module.exports = {
     {
       Testing: [
         { type: 'doc', label: 'Overview', id: 'testing/testing-overview' },
-        'testing/mocks-engine',
+        {
+          type: 'category',
+          label: 'mocksEngine',
+          collapsed: false,
+          items: [
+            'testing/mocks-engine-overview',
+            'testing/mocks-engine-getting-started',
+            'testing/mocks-engine-tournament-generation',
+            'testing/mocks-engine-participants',
+            'testing/mocks-engine-outcomes',
+            'testing/mocks-engine-patterns',
+          ],
+        },
         'testing/factory-server',
       ],
     },

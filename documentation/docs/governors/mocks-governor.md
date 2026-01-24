@@ -126,7 +126,27 @@ An additional attribute, `teamKey` is available for `participantsProfile`.
 See `engine.createTeamsFromParticipantAttributes()` for more information.
 :::
 
-:::note
+:::note Participant Profile Hierarchy
+**participantsProfile** can be specified at three levels with the following priority:
+
+1. **Draw-level** (within drawProfile) - highest priority, applies only to that draw
+2. **Event-level** (within eventProfile) - applies to all draws in that event
+3. **Tournament-level** (root level) - applies to all draws unless overridden
+
+This allows you to generate different participant demographics for different events or draws within the same tournament.
+:::
+
+:::note Policy Definition Hierarchy
+**policyDefinitions** can also be specified at three levels with the same priority:
+
+1. **Draw-level** (within drawProfile) - highest priority, applies only to that draw
+2. **Event-level** (within eventProfile) - applies to all draws in that event
+3. **Tournament-level** (root level) - applies to all draws unless overridden
+
+This allows you to specify different policies (seeding, avoidance, scoring, etc.) for different events or draws within the same tournament.
+:::
+
+:::note Scheduling Profiles
 See [Scheduling](/docs/concepts/scheduling-profile) for more information on schedulingProfiles.
 
 In the **mocksEngine** only:
@@ -155,6 +175,7 @@ const drawProfiles = [
     completionGoal, // optional - number of matchUps within draw structures to complete
 
     participantsCount: 4, // optional - ability to specify fewer participants than drawSize to generate BYEs
+    participantsProfile, // optional - draw-specific participantsProfile (overrides tournament-level)
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     uniqueParticipants, // optional boolean - defaults to false - force generation of unique participants for a draw
 
@@ -178,6 +199,7 @@ const drawProfiles = [
 const eventProfiles = [
   {
     eventName: 'U18 Male Doubles',
+    participantsProfile, // optional - event-specific participantsProfile (applies to all draws in event, overrides tournament-level)
     policyDefinitions, // optional - { [policyType]: policyDefinition, [policyType2]: policyDefinition }
     eventType: TEAM, // optional - defaults to SINGLES
     gender: MALE,
@@ -186,6 +208,7 @@ const eventProfiles = [
         drawType, // optional
         drawSize: 16, // required
         completionGoal, // optional - number of matchUps within draw structures to complete
+        participantsProfile, // optional - draw-specific participantsProfile (overrides event-level and tournament-level)
       },
     ],
   },
