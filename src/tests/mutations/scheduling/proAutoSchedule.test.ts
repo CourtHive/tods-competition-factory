@@ -71,9 +71,7 @@ it('will not scheduled earlier rounds after later rounds', () => {
   result = tournamentEngine.competitionScheduleMatchUps({ matchUpFilters: { scheduledDate: startDate } });
   expect(result.dateMatchUps.length).toEqual(26); // thus only 26 of 31 matchUps have been scheduled
 
-  const { courtIssues } = tournamentEngine.proConflicts({
-    matchUps: result.dateMatchUps,
-  });
+  const { courtIssues } = tournamentEngine.proConflicts({ matchUps: result.dateMatchUps });
   const issues = unique(
     Object.values(courtIssues)
       .flat()
