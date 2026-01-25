@@ -228,6 +228,113 @@ This document catalogs all TODO comments found in the codebase, organizing them 
 - 3-4 days: Pipelines documentation with reference architectures
 - 3-5 days: Architecture patterns discussion document with diagrams
 
+### Publishing State - Event Data Parameters Persistence
+
+**Question**: Should `eventDataParams` passed to `publishEvent()` be stored in the publish state timeItem for optional reuse by client applications?
+
+**Current Behavior**:
+
+- `publishEvent({ eventId, eventDataParams: {...} })` accepts parameters that customize the generated `eventData` payload
+- These parameters are passed through to `getEventData()` to generate the immediate payload
+- The parameters are **NOT stored** in the publish state timeItem
+- Client applications must pass their own query parameters when calling `getEventData({ usePublishState: true })`
+
+**Example Current Pattern**:
+
+```js
+// Server publishes with specific params
+engine.publishEvent({
+  eventId,
+  eventDataParams: {
+    participantsProfile: { withISO2: true, withIOC: true },
+    allParticipantResults: true,
+  },
+});
+
+// Client must specify same params independently
+const { eventData } = engine.getEventData({
+  eventId,
+  usePublishState: true,
+  participantsProfile: { withISO2: true, withIOC: true },
+  allParticipantResults: true,
+});
+```
+
+**Potential Enhancement**:
+Store `eventDataParams` in the publish state timeItem as optional defaults that client applications can use or override:
+
+```js
+// Server publishes with params that are stored
+engine.publishEvent({
+  eventId,
+  eventDataParams: {
+    participantsProfile: { withISO2: true },
+    allParticipantResults: true,
+  },
+  persistParams: true, // New option
+});
+
+// Client can use stored defaults
+const { eventData } = engine.getEventData({
+  eventId,
+  usePublishState: true,
+  usePublishedParams: true, // Use params from publish state
+});
+
+// Or override specific params
+const { eventData } = engine.getEventData({
+  eventId,
+  usePublishState: true,
+  usePublishedParams: true,
+  participantsProfile: { withIOC: true }, // Override/merge
+});
+```
+
+**Considerations**:
+
+**Pros**:
+
+- Client applications don't need to duplicate parameter configuration
+- Ensures consistency between server-published payload and client queries
+- Reduces client-side code complexity
+- Centralized control of what data clients receive
+- Easier to update all clients by changing publication params
+
+**Cons**:
+
+- Increases timeItem size (additional storage)
+- Adds complexity to publish state management
+- Different client applications may need different data profiles
+- May limit client flexibility
+- Backwards compatibility concerns
+
+**Investigation Required**:
+
+- [ ] Analyze typical client query patterns and param usage
+- [ ] Determine if most clients use identical params or vary significantly
+- [ ] Assess storage impact of persisting eventDataParams
+- [ ] Design merge strategy when clients override stored params
+- [ ] Consider versioning strategy for param schema changes
+- [ ] Evaluate security implications (can params expose sensitive data?)
+
+**Recommended Actions**:
+
+1. Survey existing client implementations to understand param usage patterns
+2. Prototype optional param persistence with `persistParams` flag
+3. Design param merge/override mechanism
+4. Consider scope: event-level only or also tournament/draw levels?
+5. Document migration path for existing clients
+6. Implement feature flag for gradual rollout
+
+**Priority**: LOW-MEDIUM - Quality of life improvement, not critical functionality
+
+**Estimated Effort**: 4-6 days
+
+- 1 day: Analysis of current usage patterns
+- 2-3 days: Implementation of param persistence and retrieval
+- 1 day: Testing and backwards compatibility
+- 1 day: Documentation updates
+
 ---
 
 ## Table of Contents
