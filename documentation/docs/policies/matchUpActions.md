@@ -926,8 +926,5 @@ matchUpActions({
 ## Related Concepts
 
 - [Actions](/docs/concepts/actions) - Understanding the actions system
-- [MatchUps](/docs/concepts/matchups) - MatchUp concepts
-- [Scoring](/docs/concepts/scoring) - Scoring matchUps
-- [Team Events](/docs/concepts/team-events) - Team tournament structure
-- [Scheduling](/docs/concepts/scheduling) - MatchUp scheduling
-- [Process Codes](/docs/concepts/process-codes) - Process code usage
+- [Policies](/docs/concepts/policies) - Policy system overview
+- [Scheduling Overview](/docs/concepts/scheduling-overview) - MatchUp scheduling concepts

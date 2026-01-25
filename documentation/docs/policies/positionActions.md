@@ -811,7 +811,5 @@ it('disabled policy returns no actions', () => {
 ## Related Concepts
 
 - [Actions](/docs/concepts/actions) - Understanding the actions system
-- [Draw Positions](/docs/concepts/draw-positions) - Draw position concepts
-- [Seeding](/docs/concepts/seeding) - Seeding participants
-- [Alternates](/docs/concepts/alternates) - Managing alternates
-- [Qualifiers](/docs/concepts/qualifiers) - Qualifier placement
+- [Draw Types](/docs/concepts/draw-types) - Understanding draw structures
+- [Policies](/docs/concepts/policies) - Policy system overview

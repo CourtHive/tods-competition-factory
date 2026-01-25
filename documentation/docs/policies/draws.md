@@ -356,7 +356,6 @@ tournamentEngine.attachPolicies({
 
 - [Draw Types](/docs/concepts/draw-types) - Understanding draw structures
 - [Round Robin with Playoff](/docs/concepts/draw-types#round-robin-with-playoff) - Complex group structures
-- [Draw Generation](/docs/concepts/draw-generation) - Creating draws
 
 ---
 
