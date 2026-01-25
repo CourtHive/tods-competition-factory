@@ -37,6 +37,7 @@ export const aggregateOrder = {
 
 // seedingProfile.positioning
 export const CLUSTER = 'CLUSTER';
+export const ADJACENT = 'ADJACENT'; // synonym for CLUSTER
 export const SEPARATE = 'SEPARATE';
 export const WATERFALL = 'WATERFALL';
 
@@ -202,6 +203,9 @@ export const drawDefinitionConstants = {
   RANDOM,
   TOP_DOWN,
   BOTTOM_UP,
+  CLUSTER,
+  ADJACENT,
+  SEPARATE,
   WATERFALL,
 
   WIN_RATIO,
