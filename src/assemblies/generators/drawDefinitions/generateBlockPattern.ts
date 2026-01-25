@@ -48,8 +48,9 @@ export function generateBlockPattern({ positioning, size }: GenerateBlockPattern
   const firstMember = (arr) => arr[0];
   const lastMember = (arr) => arr[arr.length - 1];
   const getMember = (arr, i) =>
-    (positioning && [CLUSTER, ADJACENT, WATERFALL].includes(positioning) && i % 2 ? lastMember(arr) : firstMember(arr)) ||
-    firstMember(arr);
+    (positioning && [CLUSTER, ADJACENT, WATERFALL].includes(positioning) && i % 2
+      ? lastMember(arr)
+      : firstMember(arr)) || firstMember(arr);
   const noneSelected = (chunk, i) => {
     if (chunk.every((member) => !selected.includes(member))) {
       const member = getMember(chunk, i);
