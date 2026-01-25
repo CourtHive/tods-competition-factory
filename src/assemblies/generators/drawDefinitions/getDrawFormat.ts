@@ -22,7 +22,6 @@ export function getDrawFormat(params): ResultType & { tieFormat?: TieFormat; mat
   // drawDefinition cannot have both tieFormat and matchUpFormat
   let { tieFormat, matchUpFormat } = params;
 
-  // TODO: implement use of tieFormatId and tieFormats array
   if (matchUpType === TEAM && eventType === TEAM) {
     // if there is an existingDrawDefinition which has a tieFormat on MAIN structure
     // use this tieFormat ONLY when no tieFormat is specified in params

@@ -315,9 +315,6 @@ function removeDirectedLoser({
     //We then want to remove the specific WO reason for the participant as the participant
     //has been removed from the draw positions and this is now a straight double WO.
     //In case the loser matchup was not a double WO we jsut remove the status codes.
-    //
-    //TODO: figure out what happens for non Dobule WO loser matchups. Does it reset status codes that should
-    //instead been kept? not sure how to test this.
     const targetMatchUp = matchUpsMap?.drawMatchUps?.find(({ matchUpId }) => matchUpId === loserMatchUp.matchUpId);
     targetMatchUp.matchUpStatusCodes = sourceMatchUpStatus === DOUBLE_WALKOVER ? ['WO', 'WO'] : [];
   }

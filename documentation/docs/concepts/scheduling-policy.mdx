@@ -2,39 +2,84 @@
 title: Scheduling Policy
 ---
 
-import RenderJSON from '../components/RenderJSON';
-import SchedulingPolicy from './assets/schedulingPolicy.json';
+## Scheduling Policy Overview
 
-## Scheduling policy
+A **Scheduling Policy** defines the foundational parameters that govern how tournaments are scheduled, including:
 
-A "Scheduling Policy" defines the average matchUp times and mandated recovery times for each `matchUpFormat`,
-and sets limits on the number of matchUps that may be played per-player per-day.
+- Average matchUp duration times for different formats
+- Mandated recovery times between matches
+- Daily match limits per player
+- Venue and court modification restrictions
 
-<RenderJSON data={SchedulingPolicy} root={'scheduling'} colorScheme={'summerfruit'} invertTheme={true} />
+These policies ensure intelligent scheduling that respects player welfare, venue constraints, and competitive integrity.
 
-## Overriding policies
+:::tip
+For comprehensive details on scheduling policy structure, examples, and advanced usage, see the [Scheduling Policy documentation](/docs/policies/scheduling) in the Policies section.
+:::
 
-Average `matchUpFormat` times and recovery times can be defined, or established policies can be overridden
+## Quick Examples
+
+### Attach Default Policy
 
 ```js
-// set averageTimes for a specific matchUpFormat
+import { tournamentEngine, POLICY_SCHEDULING_DEFAULT } from 'tods-competition-factory';
+
+tournamentEngine.setState(tournamentRecord);
+tournamentEngine.attachPolicies({
+  policyDefinitions: POLICY_SCHEDULING_DEFAULT
+});
+```
+
+### Override Format Timing
+
+:::tip How it Works
+`modifyMatchUpFormatTiming()` adds an extension to the tournament record that is read by scheduling functions to override default policy timing for specific formats. The extension persists at the tournament level and affects all subsequent scheduling operations.
+:::
+
+```js
+// Set averageTimes for a specific matchUpFormat
 engine.modifyMatchUpFormatTiming({
   matchUpFormat: 'SET3-S:6/TB7',
   averageTimes: [
     {
       categoryNames: ['U12', 'U14'],
-      minutes: { ['DOUBLES']: 110, default: 130 },
+      minutes: { DOUBLES: 110, default: 130 },
     },
     {
       categoryNames: ['U16', 'U18'],
-      minutes: { ['DOUBLES']: 100, default: 120 },
+      minutes: { DOUBLES: 100, default: 120 },
     },
   ],
-  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, ['DOUBLES']: 15 } }],
+  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, DOUBLES: 15 } }],
 });
+```
 
-// set dailyLimits
+### Set Daily Limits
+
+:::tip How it Works
+`setMatchUpDailyLimits()` adds an extension to the tournament record (or specific tournament in multi-tournament scenarios) that is read by scheduling functions to enforce daily match limits per participant. The extension persists at the tournament level and is checked during all scheduling operations.
+:::
+
+```js
+// Set tournament-wide daily limits
 engine.setMatchUpDailyLimits({
   dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
 });
 ```
+
+## Common Use Cases
+
+- **Youth Tournaments**: Shorter match times, longer recovery periods, stricter daily limits
+- **Wheelchair Events**: Extended match durations with appropriate recovery times
+- **Multi-Format Events**: Different timing for preliminary rounds vs. finals
+- **Championship Events**: Single-match-per-day restrictions with extended recovery
+
+:::info Further Reading
+See the complete [Scheduling Policy Reference](/docs/policies/scheduling) for:
+- Full policy structure and configuration options
+- Category-based and format-specific timing
+- Participant-specific daily limits
+- Venue modification protection
+- Policy hierarchy and inheritance
+- Advanced examples and patterns
+:::

@@ -67,7 +67,6 @@ export function noDownstreamDependencies(params) {
     }); // only relevant to WIN_RATIO progression
 
     if (connectedStructureIds.length) {
-      // TODO: return a message if there are effects in connected structures
       console.log({ connectedStructureIds });
       connectedStructures = true;
     }

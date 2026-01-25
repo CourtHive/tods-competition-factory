@@ -121,7 +121,6 @@ export function generatePositioningCandidate(params: GeneratePositioningCandidat
   }
 
   candidatePositionAssignments.forEach((assignment) => {
-    // TODO: Investigate this scenario
     if (assignment.bye && assignment.participantId) {
       const error = INVALID_ASSIGNMENT;
       errors.push(error);

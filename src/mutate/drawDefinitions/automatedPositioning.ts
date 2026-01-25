@@ -25,7 +25,6 @@ import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { HydratedMatchUp, HydratedParticipant } from '@Types/hydrated';
 import { SUCCESS } from '@Constants/resultConstants';
 
-// TODO: Throw an error if an attempt is made to automate positioning for a structure that already has completed matchUps
 type AutomatedPositioningArgs = {
   inContextDrawMatchUps?: HydratedMatchUp[];
   participants?: HydratedParticipant[];

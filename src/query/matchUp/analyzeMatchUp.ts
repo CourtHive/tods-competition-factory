@@ -6,8 +6,6 @@ import { analyzeSet } from './analyzeSet';
 import { MISSING_MATCHUP } from '@Constants/errorConditionConstants';
 import { ResultType } from '@Types/factoryTypes';
 
-// TODO: what about checking array of sets are in order? ( setNumber )
-
 export function analyzeMatchUp(params?): ResultType & {
   completedSetsHaveValidOutcomes?: boolean;
   validMatchUpWinningSide?: boolean;

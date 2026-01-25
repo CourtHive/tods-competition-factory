@@ -313,22 +313,56 @@ const { homeParticipantId } = engine.getHomeParticipantId({ matchUp });
 
 ## modifyMatchUpFormatTiming
 
+Modifies the average match duration and recovery time requirements for a specific matchUp format. This function adds an extension to the tournament record that overrides default scheduling policy timing.
+
+**How it Works:**
+
+- Adds a tournament-level extension that is read by scheduling functions
+- Persists across scheduling operations until explicitly modified or removed
+- Can be scoped to specific age categories (e.g., 'U12', 'U14')
+- Can specify different timings for SINGLES vs. DOUBLES
+- Multiple calls will merge/override previous values for the same format
+
+**Parameters:**
+
+- `matchUpFormat` - TODS matchUpFormat code (e.g., 'SET3-S:6/TB7')
+- `averageTimes` - Array of timing configurations by category
+  - `categoryNames` - Array of category names (empty array = default for all categories)
+  - `minutes` - Object with `default` and/or event type keys (e.g., SINGLES, DOUBLES)
+- `recoveryTimes` - Array of recovery configurations by category (same structure as averageTimes)
+- `event` - Optional - Scope modification to specific event
+- `drawId` - Optional - Scope modification to specific draw
+- `eventId` - Optional - Scope modification to specific event
+
+**Returns:** Standard result object with success/error status
+
 ```js
+// Modify timing for a specific format with category-based differentiation
 engine.modifyMatchUpFormatTiming({
   matchUpFormat: 'SET3-S:6/TB7',
   averageTimes: [
     {
-      categoryNames: [U12, U14],
-      minutes: { [DOUBLES]: 110, default: 130 },
+      categoryNames: ['U12', 'U14'],
+      minutes: { DOUBLES: 110, default: 130 },
     },
     {
-      categoryNames: [U16, U18],
-      minutes: { [DOUBLES]: 100, default: 120 },
+      categoryNames: ['U16', 'U18'],
+      minutes: { DOUBLES: 100, default: 120 },
     },
   ],
-  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, [DOUBLES]: 15 } }],
+  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, DOUBLES: 15 } }],
+});
+
+// Retrieve existing modifications before updating
+const { matchUpFormat, averageTimes, recoveryTimes } = engine.getModifiedMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 ```
+
+**Related Functions:**
+
+- `getModifiedMatchUpFormatTiming()` - Query existing format timing modifications
+- See [Scheduling Policy](/docs/concepts/scheduling-policy) for policy configuration
 
 ---
 
@@ -435,11 +469,47 @@ engine.resetTieFormat({
 
 ## setMatchUpDailyLimits
 
+Sets daily match limits for participants. This function adds an extension to the tournament record that is enforced by all scheduling functions to prevent over-scheduling players.
+
+**How it Works:**
+
+- Adds a tournament-level extension that is checked by scheduling functions
+- Persists across scheduling operations until explicitly modified
+- Enforced during both manual and automated scheduling
+- Can be scoped to specific tournament in multi-tournament scenarios
+- Multiple calls will override previous values entirely
+
+**Parameters:**
+
+- `dailyLimits` - Object specifying limits:
+  - `SINGLES` - Maximum singles matches per day per participant
+  - `DOUBLES` - Maximum doubles matches per day per participant
+  - `total` - Maximum total matches per day per participant (across all event types)
+- `tournamentId` - Optional - Scope to specific tournament (for multi-tournament records)
+
+**Returns:** Standard result object with success/error status
+
 ```js
+// Set tournament-wide daily limits
 engine.setMatchUpDailyLimits({
   dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
 });
+
+// Scope to specific tournament
+engine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 1, DOUBLES: 1, total: 2 },
+  tournamentId: 'tournament-123',
+});
+
+// Retrieve current daily limits
+const { matchUpDailyLimits } = engine.getMatchUpDailyLimits();
+const { SINGLES, DOUBLES, total } = matchUpDailyLimits;
 ```
+
+**Related Functions:**
+
+- `getMatchUpDailyLimits()` - Query current daily limit configuration
+- See [Scheduling Policy](/docs/concepts/scheduling-policy) for policy-based limits
 
 ---
 

@@ -105,7 +105,6 @@ export function getTournamentPoints({
 
           if (awardProfile) {
             // NOTE: for now drawSize: 0 indicates qualifying structure with no MAIN structure
-            // TODO: support for qualifying stage awardProfiles
             if (!drawSize) continue;
 
             const accessor = Array.isArray(finishingPositionRange) && Math.max(...finishingPositionRange);

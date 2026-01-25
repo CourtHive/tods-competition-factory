@@ -34,7 +34,6 @@ import {
  * collectionDefinition will be added to an event tieFormat (if present)
  * if a matchUpId is provided, will be added to matchUp.tieFormat
  * if a structureId is provided, will be added to structure.tieFormat
- * TODO: determine whether all contained instances of tieFormat should be updated
  */
 
 type AddCollectionDefinitionArgs = {

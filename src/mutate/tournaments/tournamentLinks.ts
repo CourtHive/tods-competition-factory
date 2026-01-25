@@ -51,7 +51,6 @@ export function unlinkTournaments({ tournamentRecords }: UnlinkTournamentsArgs):
     discover: true,
   });
 
-  // TODO: check the integrity of the venues attached to each tournment...
   // get all competitionScheduleMatchUps and ensure that each tournamentRecord has all venues for scheduled matchUps
 
   return decorateResult({ result, stack: 'unlinkTournaments' });

@@ -266,7 +266,6 @@ function eliminationParticipantGroups({ allDrawPositions, roundsToSeparate, matc
   const drawPositionChunks = chunkSizes.map((size) => chunkArray(firstRoundMatchUpDrawPositions, size));
 
   if (fedDrawPositions.length) {
-    // TODO: calculate chunking for fed drawPositions and add to appropriate drawPositionChunks
     // This calculation will be based on "{ roundPosition, roundNumber } = matchUp"
     // ...for matchUps which include fedDrawPositions
     console.log({ fedDrawPositions });

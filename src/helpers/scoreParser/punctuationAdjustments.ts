@@ -102,10 +102,8 @@ export function punctuationAdjustments({ score, applied }) {
       if (digits.length === 2) {
         score = score.replace(s, `(${digits})`);
       } else if (digits.length === 1 && digits === '6') {
-        // TODO: some logic to determine whether tiebreak value is expected
         score = score.replace(s, `(6-0)`);
       } else {
-        // TODO: some logic to determine whether tiebreak value is expected
         score = score.replace(s, `(${digits})`);
       }
     });
@@ -131,7 +129,6 @@ export function punctuationAdjustments({ score, applied }) {
       } else if (digits.length === 1 && parseInt(digits) < 6) {
         score = score.replace(s, `(6-${digits})`);
       } else {
-        // TODO: some logic to determine whether tiebreak value is expected
         score = score.replace(s, `(${digits})`);
       }
     });

@@ -119,7 +119,6 @@ export function getValidSeedBlocks({
     const chunkSize = firstRoundDrawPositions.length / seedingBlocksCount;
 
     if (isFeedIn) {
-      // TODO: figure this out
     } else {
       const positioning = getSeedPattern(seedingProfile);
       const drawPositionChunks = chunkArray(firstRoundDrawPositions, chunkSize);

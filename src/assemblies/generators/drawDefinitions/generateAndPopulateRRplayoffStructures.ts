@@ -84,7 +84,6 @@ export function generateAndPopulateRRplayoffStructures(params) {
     }
   }
 
-  // TODO: determine participants that are present in each playoffGroup.finishingPositions
   // OPTIONALLY: populate positionAssignments for newly generated structures
 
   const { positionAssignments } = getPositionAssignments({

@@ -5,8 +5,216 @@ title: Draw Generation
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import DrawType from '../components/DrawType';
 
-## Example
+## Visual Example
 
 Themed visualization of draws by [courthive-components](https://github.com/CourtHive/courthive-components).
 
 <BrowserOnly>{() => <DrawType drawType="COMPASS" drawSize={8} />}</BrowserOnly>
+
+## Generating Draw Definitions
+
+The Competition Factory provides `generateDrawDefinition()` as the primary convenience method for creating draw structures. This powerful function handles most common use cases for draw generation and can create draws of arbitrary complexity.
+
+### Basic Usage
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'event-123',
+  drawSize: 32,
+  drawType: 'SINGLE_ELIMINATION',
+  drawEntries: eventEntries,
+  automated: true  // Automatically place participants
+});
+```
+
+### Key Parameters
+
+**Essential Parameters:**
+- `drawSize` - Number of draw positions in the first structure (e.g., 16, 32, 64)
+- `drawEntries` - Array of participant entries (equal to or subset of event.entries)
+- `drawType` - Type of draw structure (see [Draw Types](./draw-types) for full list)
+
+**Participant Placement:**
+- `automated` - Boolean or object controlling automatic placement:
+  - `true` - Place all participants automatically
+  - `false` - Manual placement required
+  - `{ seedsOnly: true }` - Only place seeded participants and adjacent byes
+- `seededParticipants` - Array of `{ participantId, seedNumber, seedValue }`
+- `seedsCount` - Number of seeds to generate if seededParticipants not provided
+- `seedingProfile` - Positioning strategy (WATERFALL, CLUSTER, SEPARATE)
+
+**Match Configuration:**
+- `matchUpType` - SINGLES, DOUBLES, or TEAM
+- `matchUpFormat` - Default TODS matchUpFormat code for all matchUps
+- `tieFormat` - For TEAM events: `{ collectionDefinitions, winCriteria }`
+
+**Qualifying Integration:**
+- `qualifiersCount` - Number of positions reserved for qualifiers
+- `qualifyingProfiles` - Array defining complete qualifying structures
+- `qualifyingOnly` - Boolean - only include QUALIFYING stage entries
+- `qualifyingPlaceholder` - Generate placeholder qualifying structure
+
+**Advanced Options:**
+- `structureOptions` - For ROUND_ROBIN: `{ groupSize, playoffGroups }`
+- `playoffAttributes` - Custom playoff structure naming and configuration
+- `voluntaryConsolation` - Add voluntary consolation structure
+- `staggeredEntry` - Enable non-base-2 draw sizes with feed-in positions
+- `policyDefinitions` - Seeding and avoidance policies
+
+### Examples
+
+#### Simple Elimination Draw
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-open',
+  drawSize: 16,
+  drawType: 'SINGLE_ELIMINATION',
+  drawEntries: acceptedEntries,
+  seedsCount: 4,
+  automated: true
+});
+```
+
+#### Round Robin with Playoffs
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'doubles-u18',
+  drawSize: 16,
+  drawType: 'ROUND_ROBIN_WITH_PLAYOFF',
+  drawEntries: acceptedEntries,
+  structureOptions: {
+    groupSize: 4,
+    playoffGroups: [
+      { finishingPositions: [1], structureName: 'Gold Flight', drawType: 'SINGLE_ELIMINATION' },
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType: 'SINGLE_ELIMINATION' }
+    ]
+  },
+  automated: true
+});
+```
+
+#### Draw with Qualifying
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-championship',
+  drawSize: 32,
+  drawType: 'SINGLE_ELIMINATION',
+  drawEntries: allEntries,
+  qualifiersCount: 4,
+  qualifyingProfiles: [
+    {
+      roundTarget: 1,  // Qualifiers feed into Round 1 of main draw
+      structureProfiles: [
+        {
+          drawSize: 16,
+          seedsCount: 2,
+          qualifyingPositions: 4  // Top 4 advance to main draw
+        }
+      ]
+    }
+  ],
+  seedsCount: 8,
+  automated: true
+});
+```
+
+#### Compass Draw
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-compass',
+  drawSize: 8,
+  drawType: 'COMPASS',
+  drawEntries: acceptedEntries,
+  automated: true
+});
+```
+
+#### Manual Placement (Seeds Only)
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-main',
+  drawSize: 32,
+  drawType: 'SINGLE_ELIMINATION',
+  drawEntries: acceptedEntries,
+  seededParticipants: [
+    { participantId: 'player-1', seedNumber: 1, seedValue: '1' },
+    { participantId: 'player-2', seedNumber: 2, seedValue: '2' },
+    { participantId: 'player-3', seedNumber: 3, seedValue: '3-4' },
+    { participantId: 'player-4', seedNumber: 4, seedValue: '3-4' }
+  ],
+  automated: { seedsOnly: true }  // Only place seeds and adjacent byes
+});
+// Remaining participants can be placed manually or via custom logic
+```
+
+### Seeding Profiles
+
+Control how seeded participants are positioned:
+
+**WATERFALL** (for Round Robin):
+```js
+seedingProfile: { positioning: 'WATERFALL' }
+// Seeds distributed sequentially across groups: Group 1 gets seed 1, Group 2 gets seed 2, etc.
+```
+
+**CLUSTER** (for elimination):
+```js
+seedingProfile: { positioning: 'CLUSTER' }
+// Seeds positioned closely together in the draw
+```
+
+**SEPARATE** (for elimination):
+```js
+seedingProfile: { positioning: 'SEPARATE' }
+// Seeds maximally separated using standard seeding algorithm
+```
+
+**Group Seeding Threshold**:
+```js
+seedingProfile: { 
+  positioning: 'SEPARATE',
+  groupSeedingThreshold: 5  // Seeds 5+ assigned lowest value within their groups
+}
+```
+
+### Return Value
+
+`generateDrawDefinition()` returns:
+
+```js
+{
+  drawDefinition: {
+    drawId: 'uuid',
+    drawType: 'SINGLE_ELIMINATION',
+    drawSize: 32,
+    structures: [...],  // Array of structure definitions
+    links: [...],       // Participant flow between structures
+    entries: [...]      // Draw entries with position assignments
+  },
+  success: true
+}
+```
+
+### Next Steps
+
+After generating a draw definition:
+
+1. **Add to Event**: Use `addDrawDefinition()` to attach to tournament event
+2. **Modify Structure**: Use position actions to adjust participant placement
+3. **Configure Scheduling**: Set up venues, courts, and scheduling profiles
+4. **Publish**: Use `publishEvent()` to make draw visible
+
+## Related Documentation
+
+- **[Draw Types](./draw-types)** - Complete list of supported draw types and structures
+- **[Actions](./actions)** - Valid position and matchUp actions for draw management
+- **[Generation Governor](/docs/governors/generation-governor#generatedrawdefinition)** - Complete API reference
+- **[Seeding Policy](/docs/policies/seedingPolicy)** - Configuring seeding patterns
+- **[Avoidance Policy](/docs/policies/avoidance)** - Preventing same-club/nation matchups

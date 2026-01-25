@@ -104,7 +104,6 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
         const matchUpsLost = lengthOrZero(opponentOutcome.lost);
         const matchUpsWon = lengthOrZero(opponentOutcome.won);
 
-        // TODO: collect scores vs. commonOpponent; capture opponent side for proper display
         let totalGamesVsOpponent = 0;
         let totalSetsVsOpponent = 0;
         let gamesWonVsOpponent = 0;

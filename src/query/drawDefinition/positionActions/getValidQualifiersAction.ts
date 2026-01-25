@@ -127,7 +127,6 @@ export function getValidQualifiersAction({
           })
           .filter(
             ({ groupOrder, participantId }) =>
-              // TODO: is this limiting RR qualifiers to groupOrder: 1?
               groupOrder === 1 && !assignedParticipantIds.includes(participantId),
           )
           .map(({ participantId }) => participantId) ?? [];

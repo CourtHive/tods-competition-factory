@@ -80,6 +80,4 @@ it('can generate Teams and venues from leagueProfiles', () => {
   );
 
   expect(teamParticipants[0].individualParticipantIds.length).toEqual(6); // derived from tieFormat
-
-  // TODO: generate multiple tournaments, extract league events and schedule them across shared resources
 });

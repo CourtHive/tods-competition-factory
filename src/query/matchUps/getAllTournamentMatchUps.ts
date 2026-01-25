@@ -91,7 +91,6 @@ export function allTournamentMatchUps(params?: GetMatchUpsArgs): ResultType & {
         }).matchUps ?? []
       );
     })
-    // TODO: tournamentRecord.matchUps must be hydrated with participants
     // NOTE: matchUps on the tournamentRecord have no drawPositions; all data apart from participant context must be present
     .concat(...(tournamentRecord.matchUps ?? []));
 

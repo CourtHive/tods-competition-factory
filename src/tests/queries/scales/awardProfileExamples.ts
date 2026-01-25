@@ -24,7 +24,6 @@ export const awardProfileFlights = {
     4: { level: { 4: { f: [270, 176, 135, 95] }, 5: { f: [150, 98, 75, 53] }}},
     8: { level: { 4: { f: [95, 61, 47, 33] }, 5: { f: [53, 34, 26, 18] }}},
   },
-  // TODO: test perWinPoints w/ Flights
   perWinPoints: {
     participationOrders: [2, 3, 4, 5],
     level: { 4: { f: [84, 54, 42, 29] }, 5: { f: [47, 30, 23, 16] }},

@@ -4,7 +4,6 @@ import { getHistory } from './getHistory';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function addGame({ matchUp, game }) {
-  // TODO: check game validity
   if (typeof game !== 'object') return { error: INVALID_VALUES, context: { game } };
 
   // do not destructure undoHistory; it is destroyed when adding to history

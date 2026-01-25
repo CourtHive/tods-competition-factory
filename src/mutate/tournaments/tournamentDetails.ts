@@ -68,7 +68,6 @@ export function setTournamentNotes({ tournamentRecord, notes }) {
 export function setTournamentCategories({ tournamentRecord, categories }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   categories = (categories || []).filter((category) => category.categoryName && category.type);
-  // TODO: remove duplicates and include any existing event categories
   tournamentRecord.tournamentCategories = categories;
 
   addNotice({

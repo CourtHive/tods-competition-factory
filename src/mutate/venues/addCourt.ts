@@ -110,7 +110,6 @@ export function addCourts(params: ACArgs) {
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const { venue } = findVenue({ tournamentRecord, venueId });
     if (venue) {
-      // TODO: create courts before adding to each tournamentRecord
       const result = courtsAdd({ ...params, tournamentRecord });
       for (const court of result?.courts ?? []) {
         courtIds.push(court?.courtId);

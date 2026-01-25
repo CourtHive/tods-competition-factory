@@ -99,7 +99,6 @@ test('drawProfile scenario coverage', () => {
   tournamentEngine.setState(tournamentRecord);
 });
 
-// TODO: check BYE placement
 // BYE always go to drawPosition: 2
 test.each([5, 6, 7, 8, 9])('drawProfile participant generation', (drawSize) => {
   const drawProfiles = [

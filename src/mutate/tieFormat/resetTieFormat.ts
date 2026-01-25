@@ -19,8 +19,6 @@ import { ResultType } from '@Types/factoryTypes';
  * modify the matchUp's tieMatchUps to correspond to the tieFormat found further up the hierarchy
  */
 
-// TODO: if a reference to a tieFormat is removed (tieFormatId), check whether tieFormat can be excised from { tieFormats }
-
 type ResetTieFormatArgs = {
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;

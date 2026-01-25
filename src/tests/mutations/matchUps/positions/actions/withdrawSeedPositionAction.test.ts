@@ -6,7 +6,6 @@ import { REMOVE_SEED } from '@Constants/positionActionConstants';
 import { MALE } from '@Constants/genderConstants';
 import { DOUBLES_EVENT, SINGLES_EVENT } from '@Constants/eventConstants';
 
-// TODO: complete!
 it('can re-position seeds when a seed is withdrawn', () => {
   const targetDrawId = 'someCompletedMatchUps';
   const drawProfiles = [

@@ -47,8 +47,6 @@ export function resetQualifyingStructure({
     drawDefinition,
   });
 
-  // TODO: add modifyPositionAssignmentsNotice, modifySeedAssignmentsNotice
-
   modifyDrawNotice({
     tournamentId: tournamentRecord?.tournamentId,
     eventId: event?.eventId,

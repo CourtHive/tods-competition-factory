@@ -39,7 +39,6 @@ export function modifyEventMatchUpFormatTiming(params: ModifyEventMatchUpFormatT
 
   const newTiming = (timing) => {
     if (timing.categoryTypes?.includes(categoryType)) {
-      // TODO
       console.log('encountered:', { categoryType });
     }
     if (timing.categoryNames?.includes(categoryName)) {

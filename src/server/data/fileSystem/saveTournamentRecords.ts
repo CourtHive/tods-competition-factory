@@ -16,7 +16,6 @@ export async function saveTournamentRecords(params?: {
 
   fs.ensureDirSync(`./src/data/fileSystem/storage`);
 
-  // TODO: ensure valid tournamentRecords
   for (const tournamentId of Object.keys(tournamentRecords)) {
     const content = JSON.stringify(tournamentRecords[tournamentId], null, 2);
     const tournamentFile = `./src/data/fileSystem/storage/${tournamentId}.tods.json`;

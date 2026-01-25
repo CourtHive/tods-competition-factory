@@ -49,7 +49,6 @@ export function modifyDrawDefinition({
   }
 
   if (flight) {
-    // TODO: any relevant changes to flightProfile
     const extension = {
       name: FLIGHT_PROFILE,
       value: {
@@ -68,7 +67,6 @@ export function modifyDrawDefinition({
         drawDefinition,
       });
     }
-    // TODO: any relevant changes to drawDefinition
     modifyDrawNotice({
       tournamentId: tournamentRecord?.tournamentId,
       drawDefinition,

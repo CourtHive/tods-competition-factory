@@ -4,7 +4,6 @@ import { getHistory } from './getHistory';
 import { INVALID_VALUES, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 export function addPoint({ matchUp, point }) {
-  // TODO: check point validity
   if (!point || !matchUp) return { error: MISSING_VALUE };
   if (typeof point !== 'object') return { error: INVALID_VALUES, context: { point } };
 

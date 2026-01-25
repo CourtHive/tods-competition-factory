@@ -39,10 +39,6 @@ export function modifyCourtAvailability({
   const dateResult = validDateAvailability({ dateAvailability });
   if (dateResult.error) return dateResult;
 
-  // TODO: build up a map of affected dates and:
-  // 1. whether aggregate time on given dates has increased or decreased
-  // 2. specific periods of time on given dates that are no longer available
-
   const { updatedDateAvailability, totalMergeCount } = sortAndMergeDateAvailability(dateAvailability);
   dateAvailability = updatedDateAvailability;
 
@@ -56,7 +52,6 @@ export function modifyCourtAvailability({
     courtId,
   });
 
-  // TODO: check whether there are matchUps which are no longer possible to play
   // In the first instance, matchUps which are explicitly scheduled on the court for times which are no longer available
   // NOTE: see dateAvailability.test.ts
   if (courtMatchUps?.length) {
@@ -78,8 +73,6 @@ export function modifyCourtAvailability({
       }
     }
   }
-  // TODO: In the second instance, if there is reduced aggregate court time matchUps scheduled on the affected dates (but not specific court)
-  // would have scheduling impacts impacts
 
   if (court) {
     court.dateAvailability = dateAvailability;

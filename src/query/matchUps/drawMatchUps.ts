@@ -103,9 +103,6 @@ export function getDrawMatchUps(params): GroupsMatchUpsResult {
     matchUpsMap = getMatchUpsMap({ drawDefinition });
   }
 
-  // TODO: get QUALIFYING/MAIN { stageSequence: 1 } seedAssignments
-  // ...optionally pass these seedAssignments to other stage structures
-
   const exitProfiles = drawDefinition && getExitProfiles({ drawDefinition }).exitProfiles;
 
   structures.forEach((structure) => {

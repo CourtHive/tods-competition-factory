@@ -51,8 +51,8 @@ export function modifyParticipant(params) {
     participantName,
     participantRole,
     participantType,
-    onlineResources, // TODO: validate onlineResources
-    contacts, // TODO: validate contacts
+    onlineResources,
+    contacts,
     person,
   } = participant;
 
@@ -182,14 +182,10 @@ function updatePerson({ updateParticipantName, existingParticipant, newValues, p
   }
 
   if (birthdate && isValidDateString(birthdate)) {
-    // TODO: validate that birthdate is not in the future
-    // TODO: validate that birthdate is valid for event categories where participant is entered
-    // TODO: validate that birthdate is valid for all tournamentCategories
     newPersonValues.birthdate = birthdate;
   }
 
   if (tennisId && isString(tennisId)) {
-    // TODO: validate format of the tennisId
     newPersonValues.tennisId = tennisId;
   }
 

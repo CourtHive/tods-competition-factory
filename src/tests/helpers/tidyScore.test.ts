@@ -271,7 +271,6 @@ const scores = [
   { score: '(6, 0)(6,4)', expectation: { score: '6-0 6-4' } },
   { score: '(6,0)(6,4)', expectation: { score: '6-0 6-4' } },
 
-  // TODO: integrity check set score for sanity
   { score: '(8-7) 6', expectation: { score: '8-7(6)' } }, // arguable that 6 is the tiebreak score
 
   // smashedSets

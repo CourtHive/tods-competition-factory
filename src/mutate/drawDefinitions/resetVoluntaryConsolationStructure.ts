@@ -25,8 +25,6 @@ export function resetVoluntaryConsolationStructure({ tournamentRecord, drawDefin
     drawDefinition,
   });
 
-  // TODO: add modifyPositionAssignmentsNotice, modifySeedAssignmentsNotice
-
   if (resetEntries) {
     drawDefinition.entries = drawDefinition.entries.filter((entry) => entry.entryStage !== VOLUNTARY_CONSOLATION);
   }

@@ -13,7 +13,6 @@ export const POLICY_SCORING_DEFAULT = {
     },
     /**
      * requireParticipantsForScoring is used to specify that both participants must be present before a matchUp can be scored
-     * TODO: the converse is that a scored matchUp cannot have participants removed
      */
     requireParticipantsForScoring: false,
     /**

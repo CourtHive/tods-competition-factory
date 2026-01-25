@@ -104,7 +104,7 @@ export function jinnScheduler({
         venues,
       });
 
-    const maxScheduleTimeAttempts = 10; // TODO: calculate this based on max court start/end range and averageMinutes
+    const maxScheduleTimeAttempts = 10;
     let schedulingIterations = 0;
     let schedulingComplete;
     const failSafe = 10;
@@ -184,7 +184,6 @@ export function jinnScheduler({
 
             const averageMatchUpMinutes = details.greatestAverageMinutes;
             // details.minutesMap?.[matchUpId]?.averageMinutes;
-            // TODO: check the previous scheduled matchUp for each participantId/potentialParticipantId
             // CHECK: if the matchUpType has changed for ALL PARTICIPANTS from SINGLE/DOUBLES use typeChangeRecoveryMinutes
 
             const { conflicts } = checkRequestConflicts({

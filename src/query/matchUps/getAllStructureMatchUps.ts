@@ -126,8 +126,6 @@ export function getAllStructureMatchUps(params: GetAllStructureMatchUps) {
     });
   }
 
-  // TODO: code is shared with matchUpActions.js
-  // TODO: extend testing to restrict for MAIN while leaving consolation unrestricted
   const { appliedPolicies: drawAppliedPolicies } = getAppliedPolicies({ drawDefinition });
   const appliedPolicies = {
     ...params.tournamentAppliedPolicies,

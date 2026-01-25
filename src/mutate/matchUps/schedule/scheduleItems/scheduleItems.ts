@@ -326,10 +326,6 @@ export function addMatchUpScheduledDate({
 }: AddScheduleAttributeArgs & { scheduledDate?: string }): ResultType {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
 
-  // TODO: if there is existing scheduledDate and no other relevant timeItems, delete prior
-
-  // TODO: check that scheduledDate is within range of event dates / tournament dates
-  // TODO: check that 1) scheduledDate is valid date and 2) is in range for tournament
   // this must be done in tournamentEngine wrapper
 
   const validDate = dateToSchedule && dateValidation.test(dateToSchedule);
@@ -397,8 +393,6 @@ export function addMatchUpOfficial({
   officialType?: string;
 }) {
   if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
-  // TODO: check that 1) participantId has the appropriate participantRole
 
   if (!participantId) return { error: MISSING_PARTICIPANT_ID };
 

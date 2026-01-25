@@ -1,7 +1,6 @@
 import { POLICY_TYPE_PARTICIPANT } from '@Constants/policyConstants';
 
 export const POLICY_PRIVACY_DEFAULT = {
-  // TODO: this should be 'privacy'
   [POLICY_TYPE_PARTICIPANT]: {
     policyName: 'Participant Privacy Policy',
     participant: {

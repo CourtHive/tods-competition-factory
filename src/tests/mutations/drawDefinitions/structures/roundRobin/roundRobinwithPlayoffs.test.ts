@@ -331,7 +331,6 @@ it('can advance players in Round Robin with Playoffs with 5 per playoff structur
       {
         finishingPositions: [1],
         structureName: goldFlight,
-        // drawType: FIRST_MATCH_LOSER_CONSOLATION, // TODO: figure out why this is breaking
       },
       {
         finishingPositions: [2],
