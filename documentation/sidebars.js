@@ -3,7 +3,7 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['introduction', 'tmx', 'installation', 'migration'],
+      items: ['introduction', 'data-standards', 'time-capsule', 'tmx', 'installation', 'acknowledgements'],
     },
     {
       type: 'category',
@@ -152,6 +152,11 @@ module.exports = {
         'concepts/timeItems',
         'concepts/extensions',
       ],
+    },
+    {
+      type: 'category',
+      label: 'Migration',
+      items: ['migration'],
     },
   ],
 };

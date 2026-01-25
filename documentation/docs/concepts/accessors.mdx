@@ -4,23 +4,482 @@ title: Accessors
 
 import RenderJSON from '../components/RenderJSON';
 
-Accessors are used to specify the location of data values in JSON objects; they are strings which describe an attribute path to a value nested within an object.
-They are used in [Avoidance Policies](/docs/policies/avoidance), [scaleAttributes](/docs/concepts/scaleItems), and `participantFilters`.
+## Overview
+
+**Accessors** are path strings that specify the location of data values within nested JSON objects. They provide a simple dot-notation syntax for accessing deeply nested attributes without writing complex traversal code. Accessors are used throughout TODS for filtering, policy evaluation, and data extraction.
+
+### Key Concepts
+
+**Dot Notation**: Use dots to traverse object properties (e.g., `person.standardFamilyName`)  
+**Array Handling**: Automatically extracts values from arrays  
+**Type Safety**: Works with any JSON-compatible data structure  
+**Use Cases**: Participant filtering, avoidance policies, scale item values
+
+## Basic Syntax
+
+### Simple Property Access
+
+Access top-level properties:
 
 ```js
-// given the follwoing accessor...
-const accessor = 'individualParticipants.person.nationalityCode';
-
-// an array of nationalityCodes can be accessed from a PAIR participant
+// Participant object
 const participant = {
-  individualParticipants: [{ person: { nationalityCode } }],
-  participantType: PAIR,
+  participantId: 'player-123',
+  participantType: 'INDIVIDUAL',
+  person: {
+    standardFamilyName: 'Federer',
+    standardGivenName: 'Roger',
+    nationalityCode: 'SUI',
+    sex: 'MALE'
+  }
 };
+
+// Accessor for family name
+const accessor = 'person.standardFamilyName';
+// Returns: 'Federer'
+
+// Accessor for nationality
+const accessor2 = 'person.nationalityCode';
+// Returns: 'SUI'
 ```
 
+### Nested Property Access
+
+Traverse multiple levels:
+
+```js
+const participant = {
+  participantId: 'player-123',
+  person: {
+    addresses: [{
+      city: 'Basel',
+      country: 'Switzerland'
+    }],
+    contacts: [{
+      type: 'email',
+      value: 'roger@example.com'
+    }]
+  }
+};
+
+// Accessor for nested data
+const accessor = 'person.addresses.country';
+// Returns: ['Switzerland'] (array because addresses is an array)
+```
+
+### Array Property Access
+
+Accessors automatically handle arrays:
+
+```js
+// PAIR participant with individual participants
+const participant = {
+  participantType: 'PAIR',
+  individualParticipants: [
+    {
+      person: {
+        standardFamilyName: 'Bryan',
+        nationalityCode: 'USA'
+      }
+    },
+    {
+      person: {
+        standardFamilyName: 'Bryan',
+        nationalityCode: 'USA'
+      }
+    }
+  ]
+};
+
+// Accessor extracts from all array elements
+const accessor = 'individualParticipants.person.nationalityCode';
+// Returns: ['USA', 'USA']
+```
+
+## Common Use Cases
+
+### Participant Filtering
+
+Filter participants using accessor-based criteria:
+
+```js
+// Get all female participants
+const { participants } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      {
+        accessor: 'person.sex',
+        value: 'FEMALE'
+      }
+    ]
+  }
+});
+
+// Get participants from specific country
+const { participants: french } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      {
+        accessor: 'person.nationalityCode',
+        value: 'FRA'
+      }
+    ]
+  }
+});
+
+// Multiple filters (AND logic)
+const { participants: filtered } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      { accessor: 'person.sex', value: 'MALE' },
+      { accessor: 'person.nationalityCode', value: 'ESP' }
+    ]
+  }
+});
+```
+
+### Scale Item Values
+
+Extract numeric values from complex scale items:
+
+```js
+// Complex NTRP scale item
+const scaleItem = {
+  scaleType: 'RATING',
+  scaleValue: {
+    ntrpRating: 4.5,
+    ratingYear: '2024',
+    ustaRatingType: 'C',
+    district: 'SoCal'
+  },
+  scaleName: 'NTRP',
+  eventType: 'DOUBLES',
+  scaleDate: '2024-06-15'
+};
+
+// Use accessor to extract the numeric rating
+const scaleAttributes = {
+  scaleType: 'RATING',
+  scaleName: 'NTRP',
+  eventType: 'DOUBLES',
+  accessor: 'ntrpRating'  // Points to scaleValue.ntrpRating
+};
+
+const { scaleItem: retrieved } = tournamentEngine.getParticipantScaleItem({
+  participantId: 'player-123',
+  scaleAttributes
+});
+// The accessor extracts 4.5 from scaleValue for comparisons
+```
+
+**See:** [Scale Items](./scaleItems) for detailed scale item documentation.
+
+### Avoidance Policies
+
+Define matchUp avoidance based on participant attributes:
+
+```js
+// Avoid matching participants from same country
+const policyDefinitions = {
+  avoidance: {
+    policyName: 'Nationality Avoidance',
+    roundsToSeparate: 2,  // Keep apart for 2 rounds
+    accessor: 'person.nationalityCode'
+  }
+};
+
+tournamentEngine.attachPolicies({ policyDefinitions });
+
+// When generating draw, participants with matching nationalityCode
+// will be placed to avoid early-round matchups
+tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-main',
+  policyDefinitions
+});
+```
+
+**See:** [Avoidance Policies](/docs/policies/avoidance) for complete avoidance documentation.
+
+### Team/Pair Participant Filtering
+
+Access properties of individual participants within teams or pairs:
+
+```js
+// Get all pairs containing at least one USA player
+const { participants } = tournamentEngine.getParticipants({
+  participantFilters: {
+    participantTypes: ['PAIR'],
+    accessorValues: [
+      {
+        accessor: 'individualParticipants.person.nationalityCode',
+        value: 'USA'
+      }
+    ]
+  }
+});
+
+// Get teams with specific club affiliation
+const { participants: teams } = tournamentEngine.getParticipants({
+  participantFilters: {
+    participantTypes: ['TEAM'],
+    accessorValues: [
+      {
+        accessor: 'teamParticipants.person.club',
+        value: 'Tennis Club America'
+      }
+    ]
+  }
+});
+```
+
+## Advanced Patterns
+
+### Multiple Accessor Filters
+
+Combine multiple accessor-based filters:
+
+```js
+const { participants } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      { accessor: 'person.sex', value: 'FEMALE' },
+      { accessor: 'person.nationalityCode', value: 'GBR' },
+      { accessor: 'person.birthDate', value: '2005' }  // Birth year matching
+    ]
+  }
+});
+
+// All conditions must match (AND logic)
+```
+
+### Partial String Matching
+
+Some filter contexts support partial matching:
+
+```js
+// Filter by birth year from full date
+const { participants } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      {
+        accessor: 'person.birthDate',
+        value: '2005'  // Matches any birthDate containing '2005'
+      }
+    ]
+  }
+});
+```
+
+### Array Value Extraction
+
+When accessor path includes arrays, values are extracted from all elements:
+
+```js
+// PAIR participant
+const pair = {
+  participantType: 'PAIR',
+  individualParticipants: [
+    {
+      person: { nationalityCode: 'USA', standardFamilyName: 'Sock' }
+    },
+    {
+      person: { nationalityCode: 'AUS', standardFamilyName: 'Peers' }
+    }
+  ]
+};
+
+// Accessor extracts both nationalities
+const accessor = 'individualParticipants.person.nationalityCode';
+// Returns: ['USA', 'AUS']
+
+// Can match if ANY element matches the filter value
+```
+
+## Accessor Validation
+
+### Valid Accessor Paths
+
+```js
+// ✓ Simple property
+'participantType'
+
+// ✓ Nested property
+'person.standardFamilyName'
+
+// ✓ Deeply nested
+'person.addresses.city'
+
+// ✓ Through arrays
+'individualParticipants.person.nationalityCode'
+
+// ✓ Multiple levels with arrays
+'teamParticipants.person.contacts.value'
+```
+
+### Invalid Accessor Paths
+
+```js
+// ✗ Empty string
+''
+
+// ✗ Starting with dot
+'.person.name'
+
+// ✗ Ending with dot
+'person.name.'
+
+// ✗ Double dots
+'person..name'
+
+// ✗ Array indices (not supported)
+'individualParticipants[0].person.name'
+```
+
+## Performance Considerations
+
+### Accessor Efficiency
+
+Accessors are evaluated for each participant/item, so keep paths as short as necessary:
+
+```js
+// ✓ Efficient - direct path
+accessor: 'person.nationalityCode'
+
+// ✓ Efficient - necessary depth
+accessor: 'individualParticipants.person.nationalityCode'
+
+// ⚠ Less efficient - unnecessary depth
+accessor: 'person.details.info.data.nationality'  // If flatter structure possible
+```
+
+### Caching Considerations
+
+When filtering large participant sets repeatedly:
+
+```js
+// ✓ Good - filter once, reuse results
+const { participants: females } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [{ accessor: 'person.sex', value: 'FEMALE' }]
+  }
+});
+
+// Use 'females' array for subsequent operations
+
+// ✗ Less efficient - filtering multiple times
+// (If you need the same filtered set multiple times)
+```
+
+## Practical Examples
+
+### Tournament Entry Filters
+
+Filter participants for event entry:
+
+```js
+// Get all junior female players
+const { participants } = tournamentEngine.getParticipants({
+  participantFilters: {
+    accessorValues: [
+      { accessor: 'person.sex', value: 'FEMALE' },
+      { accessor: 'person.birthDate', value: '2006' }  // U18 players
+    ]
+  }
+});
+
+// Add them to junior girls event
+tournamentEngine.addEventEntries({
+  eventId: 'girls-u18',
+  participantIds: participants.map(p => p.participantId)
+});
+```
+
+### Nationality-Based Draws
+
+Create draws avoiding same-nation matchups:
+
+```js
+// Set nationality avoidance policy
+const policyDefinitions = {
+  avoidance: {
+    policyName: 'National Federation Avoidance',
+    roundsToSeparate: 3,
+    accessor: 'person.nationalityCode'
+  }
+};
+
+// Generate draw with avoidance
+tournamentEngine.generateDrawDefinition({
+  eventId: 'singles-main',
+  drawSize: 32,
+  seedsCount: 8,
+  policyDefinitions
+});
+
+// Participants from same country will be separated for 3 rounds
+```
+
+### Complex Scale Item Retrieval
+
+Work with multi-attribute scale values:
+
+```js
+// Set complex scale item
+tournamentEngine.setParticipantScaleItem({
+  participantId: 'player-123',
+  scaleItem: {
+    scaleType: 'RATING',
+    scaleValue: {
+      combinedRating: 9.2,
+      singlesRating: 9.5,
+      doublesRating: 8.9,
+      lastUpdated: '2024-06-15'
+    },
+    scaleName: 'CustomRating',
+    eventType: 'SINGLES',
+    scaleDate: '2024-06-15'
+  }
+});
+
+// Retrieve using accessor to combined rating
+const { scaleItem } = tournamentEngine.getParticipantScaleItem({
+  participantId: 'player-123',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'CustomRating',
+    eventType: 'SINGLES',
+    accessor: 'combinedRating'
+  }
+});
+
+console.log(scaleItem.scaleValue.combinedRating);  // 9.2
+```
+
+### Multi-Level Team Filtering
+
+Filter team participants by individual member attributes:
+
+```js
+// Get teams with at least one member from specific region
+const { participants: regionalTeams } = tournamentEngine.getParticipants({
+  participantFilters: {
+    participantTypes: ['TEAM'],
+    accessorValues: [
+      {
+        accessor: 'teamParticipants.person.region',
+        value: 'Northern California'
+      }
+    ]
+  }
+});
+
+// Teams where ANY member matches the region will be included
+```
+
+## Live Editor Example
+
 In the **Live Editor** below, the accessor `"person.sex"` is used to target `FEMALE` participants.
-Change the accessor value in the `participantFilters` to `MALE` or uncomment the `person.nationalityCode`
-filter to see the **Participants Count** change.
+Change the accessor value or uncomment the `person.nationalityCode` filter to see the results change.
 
 ```jsx live
 function AccessorsDemo(props) {
@@ -50,3 +509,10 @@ function AccessorsDemo(props) {
   return <Participants data={tournamentParticipants} />;
 }
 ```
+
+## Related Documentation
+
+- **[Scale Items](./scaleItems)** - Using accessors with scale values
+- **[Participants](./participants)** - Participant data structure
+- **[Avoidance Policies](/docs/policies/avoidance)** - Matchup avoidance configuration
+- **[Participant Governor](/docs/governors/participant-governor)** - Participant management methods

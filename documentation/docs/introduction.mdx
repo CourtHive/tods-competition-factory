@@ -6,43 +6,51 @@ slug: /
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import DrawType from './components/DrawType';
 
-## Tournament Business Rules
+The **Competition Factory** represents a fundamental shift in how tournament management systems are architected. By separating tournament operations from infrastructure concerns, it enables unprecedented flexibility in deployment architectures while ensuring data integrity and long-term accessibility.
 
-The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations.
-Factory functions embody the "business rules" required by Tournament Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
+### Configurable Tournament Operations
 
-The rules governing the creation of draws, seeding, and participant movement can be present on a standalone client, on a server, or both.
-An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX), or a client can communicate with a server which utilizes a database, or simply the file system.
-Server deployments support highly scaleable asynchronous processing models in **Node.js**.
+The **Competition Factory** is a collection of functions for transforming and mutating tournament records. Core engines capture the types of state transitions fundamental to running tournaments - draw generation, participant assignments, matchUp scheduling, score recording, and outcome determination.
+
+Rather than hardcoding tournament structures or embedding business rules in database stored procedures, the factory is configured through **JSON policy definitions** and **JSON-described tournament structures**. This architectural approach provides:
+
+- **Deployment Flexibility**: Operations can execute on standalone clients, servers, or both
+- **Platform Independence**: An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX), communicate with a server, or operate entirely offline
+- **Scalable Architectures**: Server deployments support highly scalable asynchronous processing models in **Node.js**
+- **Configurable Behavior**: Reasonable defaults for all operations, with extensive configuration options through policy definitions
+- **Consistent Results**: The same configuration produces identical tournament structures regardless of where operations execute
 
 <BrowserOnly>{() => <DrawType drawSize={4} />}</BrowserOnly>
 
-## State Engines
+### Cross-Sport Applicability
 
-The **Competition Factory** includes synchronous and asynchronous "state engines" which provide services for managing the state of a tournament record as well as subscriptions, notifications and logging.
+While the **Competition Factory** utilizes the **[Tennis Open Data Standards (TODS)](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, the data structures and configurable operations apply to tournaments across many sports. The factory has already been successfully deployed across **five racquet sports**, demonstrating the universality of its architectural approach to competition management.
 
-## Data Standards
+### State Management and Extensibility
 
-The **Competition Factory** utilizes the **[Tennis Open Data Standards](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, **(TODS)**,
-which provide a document-based representation of all of the elements of a tournament including participants, events, draws, matchUps, contacts, and references to online resources.
-Although the data standard is emerging in the sport of Tennis, **_the data structures apply to tournaments in many sports_**.
+The **Competition Factory** includes synchronous and asynchronous **state engines** that provide services for:
+- Managing tournament record state throughout event lifecycles
+- Publishing subscriptions for real-time data synchronization
+- Notifications and logging for audit trails
+- Middleware integration for custom business logic
 
-## Time Capsule
+This architecture enables both real-time tournament management during active events and comprehensive historical analysis of completed competitions.
 
-After a tournament has been completed, a **TODS** file can be considered a "time capsule" of all the information related to the constructrion and management of a tournament.
-This means that complete historical data is available in one cross-platform, database-independent JSON file, removing all concerns about keeping software maintenance contracts active in order to retain access to data,
-as well as any reliance on applications which interpret database schemas.
+### Liberation from Legacy Constraints
 
-## Interactive Examples
+Traditional tournament management systems have created significant operational and financial burdens:
 
-:::tip
-This documentation includes Live Code Editors to enable direct interaction with the APIs.
-:::
+- **Vendor Lock-In**: Dependence on active maintenance contracts to access historical data
+- **Database Complexity**: Reliance on specific database platforms, versions, and licensing
+- **Schema Evolution**: Business logic tightly coupled to database schemas that evolve over time
+- **Deployment Overhead**: Complex infrastructure requirements including third-party database licenses
+- **Data Migration**: Painful transitions when systems are upgraded or replaced
 
-```jsx live
-function GiveThanks(props) {
-  const thanks = tournamentEngine.credits();
+The **Competition Factory** eliminates these constraints through document-based data standards and configurable tournament operations, providing organizations with complete control over their tournament data and operational infrastructure.
 
-  return <pre>{thanks}</pre>;
-}
-```
+## Learn More
+
+- **[Data Standards](./data-standards)** - Understanding TODS and the importance of standardized tournament data
+- **[Time Capsule](./time-capsule)** - How TODS documents preserve complete tournament history
+- **[State Engines](/docs/engines/state-engines)** - Managing tournament state and subscriptions
+- **[Acknowledgements](./acknowledgements)** - Contributors and interactive examples
