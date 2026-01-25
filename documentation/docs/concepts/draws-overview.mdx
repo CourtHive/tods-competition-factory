@@ -25,18 +25,20 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   drawSize: 32,
   drawType: 'SINGLE_ELIMINATION',
   drawEntries: eventEntries,
-  automated: true  // Automatically place participants
+  automated: true, // Automatically place participants
 });
 ```
 
 ### Key Parameters
 
 **Essential Parameters:**
+
 - `drawSize` - Number of draw positions in the first structure (e.g., 16, 32, 64)
 - `drawEntries` - Array of participant entries (equal to or subset of event.entries)
 - `drawType` - Type of draw structure (see [Draw Types](./draw-types) for full list)
 
 **Participant Placement:**
+
 - `automated` - Boolean or object controlling automatic placement:
   - `true` - Place all participants automatically
   - `false` - Manual placement required
@@ -46,17 +48,20 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 - `seedingProfile` - Positioning strategy (WATERFALL, CLUSTER, SEPARATE)
 
 **Match Configuration:**
+
 - `matchUpType` - SINGLES, DOUBLES, or TEAM
 - `matchUpFormat` - Default TODS matchUpFormat code for all matchUps
 - `tieFormat` - For TEAM events: `{ collectionDefinitions, winCriteria }`
 
 **Qualifying Integration:**
+
 - `qualifiersCount` - Number of positions reserved for qualifiers
 - `qualifyingProfiles` - Array defining complete qualifying structures
 - `qualifyingOnly` - Boolean - only include QUALIFYING stage entries
 - `qualifyingPlaceholder` - Generate placeholder qualifying structure
 
 **Advanced Options:**
+
 - `structureOptions` - For ROUND_ROBIN: `{ groupSize, playoffGroups }`
 - `playoffAttributes` - Custom playoff structure naming and configuration
 - `voluntaryConsolation` - Add voluntary consolation structure
@@ -74,7 +79,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   drawType: 'SINGLE_ELIMINATION',
   drawEntries: acceptedEntries,
   seedsCount: 4,
-  automated: true
+  automated: true,
 });
 ```
 
@@ -90,10 +95,10 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     groupSize: 4,
     playoffGroups: [
       { finishingPositions: [1], structureName: 'Gold Flight', drawType: 'SINGLE_ELIMINATION' },
-      { finishingPositions: [2], structureName: 'Silver Flight', drawType: 'SINGLE_ELIMINATION' }
-    ]
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType: 'SINGLE_ELIMINATION' },
+    ],
   },
-  automated: true
+  automated: true,
 });
 ```
 
@@ -108,18 +113,18 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   qualifiersCount: 4,
   qualifyingProfiles: [
     {
-      roundTarget: 1,  // Qualifiers feed into Round 1 of main draw
+      roundTarget: 1, // Qualifiers feed into Round 1 of main draw
       structureProfiles: [
         {
           drawSize: 16,
           seedsCount: 2,
-          qualifyingPositions: 4  // Top 4 advance to main draw
-        }
-      ]
-    }
+          qualifyingPositions: 4, // Top 4 advance to main draw
+        },
+      ],
+    },
   ],
   seedsCount: 8,
-  automated: true
+  automated: true,
 });
 ```
 
@@ -131,7 +136,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   drawSize: 8,
   drawType: 'COMPASS',
   drawEntries: acceptedEntries,
-  automated: true
+  automated: true,
 });
 ```
 
@@ -147,9 +152,9 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     { participantId: 'player-1', seedNumber: 1, seedValue: '1' },
     { participantId: 'player-2', seedNumber: 2, seedValue: '2' },
     { participantId: 'player-3', seedNumber: 3, seedValue: '3-4' },
-    { participantId: 'player-4', seedNumber: 4, seedValue: '3-4' }
+    { participantId: 'player-4', seedNumber: 4, seedValue: '3-4' },
   ],
-  automated: { seedsOnly: true }  // Only place seeds and adjacent byes
+  automated: { seedsOnly: true }, // Only place seeds and adjacent byes
 });
 // Remaining participants can be placed manually or via custom logic
 ```
@@ -159,26 +164,36 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 Control how seeded participants are positioned:
 
 **WATERFALL** (for Round Robin):
+
 ```js
-seedingProfile: { positioning: 'WATERFALL' }
+seedingProfile: {
+  positioning: 'WATERFALL';
+}
 // Seeds distributed sequentially across groups: Group 1 gets seed 1, Group 2 gets seed 2, etc.
 ```
 
-**CLUSTER** (for elimination):
+**ADJACENT** (for elimination):
+
 ```js
-seedingProfile: { positioning: 'CLUSTER' }
+seedingProfile: {
+  positioning: 'ADJACENT';
+}
 // Seeds positioned closely together in the draw
 ```
 
 **SEPARATE** (for elimination):
+
 ```js
-seedingProfile: { positioning: 'SEPARATE' }
+seedingProfile: {
+  positioning: 'SEPARATE';
+}
 // Seeds maximally separated using standard seeding algorithm
 ```
 
 **Group Seeding Threshold**:
+
 ```js
-seedingProfile: { 
+seedingProfile: {
   positioning: 'SEPARATE',
   groupSeedingThreshold: 5  // Seeds 5+ assigned lowest value within their groups
 }

@@ -574,3 +574,53 @@ it('seeding policy works with actual draw generation', () => {
   const seedNumbers = seedAssignments.map((sa) => sa.seedNumber).sort((a, b) => a - b);
   expect(seedNumbers).toEqual([1, 2, 3, 4, 5, 6, 7, 8]);
 });
+
+it('ADJACENT produces same seed placement as CLUSTER', () => {
+  const adjacentPolicy = {
+    [POLICY_TYPE_SEEDING]: {
+      seedingProfile: { positioning: ADJACENT },
+      validSeedPositions: { ignore: true },
+      duplicateSeedNumbers: true,
+      drawSizeProgression: true,
+      seedsCountThresholds: [{ drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }],
+    },
+  };
+
+  const clusterPolicy = {
+    [POLICY_TYPE_SEEDING]: {
+      seedingProfile: { positioning: CLUSTER },
+      validSeedPositions: { ignore: true },
+      duplicateSeedNumbers: true,
+      drawSizeProgression: true,
+      seedsCountThresholds: [{ drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }],
+    },
+  };
+
+  // Generate draws with both policies
+  const { tournamentRecord: adjacentRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, participantsCount: 32, seedsCount: 8, policyDefinitions: adjacentPolicy }],
+  });
+
+  const { tournamentRecord: clusterRecord } = mocksEngine.generateTournamentRecord({
+    drawProfiles: [{ drawSize: 32, participantsCount: 32, seedsCount: 8, policyDefinitions: clusterPolicy }],
+  });
+
+  tournamentEngine.setState(adjacentRecord);
+  const adjacentStructure = adjacentRecord.events[0].drawDefinitions[0].structures[0];
+  const adjacentSeedAssignments = adjacentStructure.seedAssignments;
+  const adjacentDrawPositions = adjacentSeedAssignments
+    .map((sa) => ({ seed: sa.seedNumber, pos: sa.seedValue }))
+    .sort((a, b) => a.seed - b.seed)
+    .map((item) => item.pos);
+
+  tournamentEngine.setState(clusterRecord);
+  const clusterStructure = clusterRecord.events[0].drawDefinitions[0].structures[0];
+  const clusterSeedAssignments = clusterStructure.seedAssignments;
+  const clusterDrawPositions = clusterSeedAssignments
+    .map((sa) => ({ seed: sa.seedNumber, pos: sa.seedValue }))
+    .sort((a, b) => a.seed - b.seed)
+    .map((item) => item.pos);
+
+  // Seeds should be placed in identical positions
+  expect(adjacentDrawPositions).toEqual(clusterDrawPositions);
+});

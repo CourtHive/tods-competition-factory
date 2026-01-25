@@ -10,7 +10,7 @@ import { findStructure } from '@Acquire/findStructure';
 
 // constants and types
 import { generateBlockPattern, getSubBlock } from '../../assemblies/generators/drawDefinitions/generateBlockPattern';
-import { CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '@Constants/drawDefinitionConstants';
+import { ADJACENT, CLUSTER, CONTAINER, QUALIFYING, WATERFALL } from '@Constants/drawDefinitionConstants';
 import { INVALID_SEED_POSITION, MISSING_STRUCTURE } from '@Constants/errorConditionConstants';
 import { PolicyDefinitions, SeedBlock, SeedingProfile } from '@Types/factoryTypes';
 import { DrawDefinition, Structure } from '@Types/tournamentTypes';
@@ -284,7 +284,7 @@ function constructPower2Blocks(params) {
   const blocks: any[] = [];
 
   const { seedBlocks } = getSeedBlocks({
-    cluster: getSeedPattern(seedingProfile) === CLUSTER,
+    cluster: [CLUSTER, ADJACENT].includes(getSeedPattern(seedingProfile)),
     participantsCount: baseDrawSize,
     roundRobinGroupsCount,
   });
