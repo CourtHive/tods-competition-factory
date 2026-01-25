@@ -14,6 +14,222 @@ This document catalogs all TODO comments found in the codebase, organizing them 
 
 ---
 
+## Critical Questions for Investigation
+
+### Date Validation Consistency
+
+**Question**: Does the factory have consistent date string validation across all date-accepting functions, and is it uniformly applied?
+
+**Context**:
+
+- The factory requires ISO 8601 date format (`YYYY-MM-DD`) for all date operations
+- Date validation regex exists: `validDateString = /^[\d]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][\d]|3[0-1])$/`
+- Validation function exists: `isValidDateString()` in `tools/dateTime.ts`
+- `INVALID_DATE` error constant exists for date validation failures
+
+**Observations**:
+
+- Scheduling functions (`scheduleMatchUps`, `scheduleProfileRounds`, etc.) validate dates using `isValidDateString`
+- Tournament date operations validate dates before processing
+- Venue date availability validates dates before saving
+- **Scale items (`setParticipantScaleItem`) do NOT validate `scaleDate` format** - only checks for required attributes
+- `addMatchUpScheduledDate` validates date format
+- Category age details validate date format
+
+**Potential Issues**:
+
+1. Scale items accept any string as `scaleDate` without format validation
+2. Inconsistent date validation may allow malformed dates into the system
+3. Operations consuming dates may fail silently or produce unexpected results
+4. No centralized date validation strategy - scattered throughout codebase
+
+**Investigation Required**:
+
+- [ ] Audit all date-accepting functions for validation implementation
+- [ ] Identify functions that accept dates without validation
+- [ ] Determine impact of malformed dates on system behavior
+- [ ] Create comprehensive test suite for date validation
+- [ ] Consider adding date validation to parameter checking framework
+- [ ] Add date format validation to scale items, time items, and other date consumers
+
+**Recommended Actions**:
+
+1. Add date validation to `isValidScaleItem()` in `mutate/participants/scaleItems/addScaleItems.ts`
+2. Create centralized date validation helper that returns descriptive errors
+3. Add date validation to time item operations
+4. Update parameter checking to include date format validation
+5. Add automated tests ensuring all date parameters are validated
+6. Document date format requirements prominently in API documentation
+
+**Priority**: HIGH - Data integrity issue that could lead to incorrect tournament records
+
+**Estimated Effort**: 3-5 days
+
+- 1 day: Comprehensive audit of date usage
+- 1-2 days: Add missing validation
+- 1 day: Create test coverage
+- 0.5 day: Documentation updates
+
+### Avoidance Policy Testing
+
+**Question**: Are all avoidance policy patterns and accessor combinations fully tested?
+
+**Context**:
+
+- Avoidance policies documentation has been significantly expanded with comprehensive examples
+- Multiple accessor patterns are documented (nationality, club, region, extensions, directives)
+- Complex scenarios include: partial matching with `significantCharacters`, combined policies, extension-based avoidance
+- Documentation includes 6 distinct practical examples covering various use cases
+
+**Testing Coverage Required**:
+
+1. **Basic Accessor Patterns**:
+   - [ ] Simple attribute accessors (`person.nationalityCode`)
+   - [ ] Nested attribute accessors (`person.organisation.organisationName`)
+   - [ ] Array-based accessors (`individualParticipants.person.nationalityCode`)
+   - [ ] Deep nested accessors (`person.addresses.city`, `person.addresses.postalCode`)
+
+2. **Accessor Features**:
+   - [ ] `significantCharacters` partial matching with various lengths (2, 3, 5 characters)
+   - [ ] `includeIds` filtering to restrict avoidance to specific participants
+   - [ ] Multiple accessor paths for same attribute (INDIVIDUAL vs PAIR)
+   - [ ] Extension-based accessors (underscore-prefixed)
+
+3. **Directive-Based Avoidance**:
+   - [ ] `pairParticipants` directive (avoid doubles partners in singles)
+   - [ ] `teamParticipants` directive (avoid teammates in singles)
+   - [ ] `groupParticipants` directive (avoid group members)
+   - [ ] Combined directive + key accessor policies
+
+4. **Separation Strategies**:
+   - [ ] Single round avoidance (`roundsToSeparate: 1`)
+   - [ ] Multiple round avoidance (2, 3, 4+ rounds)
+   - [ ] Maximum separation (`roundsToSeparate: undefined`)
+   - [ ] Target divisions calculation
+
+5. **Combined Policies**:
+   - [ ] Multiple keys in same policy (nationality + club)
+   - [ ] Multiple directives in same policy
+   - [ ] Mixed keys and directives
+   - [ ] Conflicting avoidance requirements
+
+6. **Edge Cases**:
+   - [ ] More participants from same group than available positions
+   - [ ] Seeded players with avoidance constraints
+   - [ ] Small draws with many groups (impossible to satisfy all constraints)
+   - [ ] Missing/null accessor values
+   - [ ] Empty string accessor values
+   - [ ] Numeric vs string accessor values
+
+7. **Documented Examples**:
+   - [ ] Nationality avoidance (basic example)
+   - [ ] Club/organization avoidance
+   - [ ] Regional avoidance with postal codes and `significantCharacters`
+   - [ ] Combined avoidance policies (nationality + club + doubles partners)
+   - [ ] Custom extension avoidance (academy example)
+   - [ ] Round robin bracket distribution
+
+8. **Integration Testing**:
+   - [ ] Avoidance with seed blocks
+   - [ ] Avoidance in qualifying draws
+   - [ ] Avoidance in round robin structures
+   - [ ] Avoidance with byes
+   - [ ] Avoidance with feed-in consolation
+
+**Priority**: MEDIUM-HIGH - Core functionality with complex logic requiring comprehensive validation
+
+**Estimated Effort**: 5-7 days
+
+- 1-2 days: Test infrastructure for avoidance validation
+- 2-3 days: Implement test coverage for all patterns
+- 1 day: Edge case testing
+- 1 day: Integration testing and documentation
+
+### Missing Documentation - Data Concepts
+
+**Question**: Are auditing, data pipelines, and TODS architecture patterns adequately documented?
+
+**Context**:
+
+- Factory has extensions for auditing (positionActions, drawDeletions, tieFormatModifications)
+- Subscriptions system enables real-time data synchronization
+- TODS documents serve dual purposes: active tournament state and historical time capsules
+- Production systems need guidance on bulk processing and cross-tournament querying
+
+**Missing Documentation**:
+
+1. **Data => Auditing Documentation Page**
+   - Purpose and scope of auditing in TODS
+   - Built-in auditing extensions (positionActions, drawDeletions, tieFormatModifications)
+   - When to use extensions vs external auditing services
+   - Audit trail reconstruction from time items and extensions
+   - Best practices for audit data retention and anonymization
+   - Integration with external auditing systems
+
+2. **Data => Pipelines Documentation Page**
+   - Building data processing pipelines for bulk TODS JSON processing
+   - ETL patterns for extracting data from TODS documents
+   - Transforming TODS data for analytical databases
+   - Loading historical tournament data into SQL/NoSQL stores
+   - Batch vs streaming processing considerations
+   - Performance optimization for processing large tournament archives
+   - Error handling and validation in pipeline processing
+   - Example architectures (AWS, GCP, Azure, on-premise)
+
+3. **Discussion Document: TODS Architecture Patterns**
+   - **Active Tournament State**:
+     - TODS as mutable working document during tournament
+     - Real-time updates and state management
+     - Concurrency and conflict resolution
+     - Performance considerations for live operations
+   - **Time Capsule Pattern**:
+     - TODS as immutable historical record post-tournament
+     - Complete reconstruction of tournament state
+     - Extensions and time items for temporal data
+     - Archival and long-term storage strategies
+   - **Cross-Tournament Querying**:
+     - SQL data stores independent of TODS documents
+     - When to use SQL vs TODS document queries
+     - Normalized data models for analytical queries
+     - Aggregations across tournaments, participants, events
+     - Historical trend analysis and reporting
+   - **Real-Time Synchronization**:
+     - Subscriptions system for keeping SQL stores current
+     - Event-driven architecture patterns
+     - Incremental updates vs full refreshes
+     - Handling subscription failures and recovery
+     - Performance implications of real-time sync
+   - **Bulk Pipeline Processing**:
+     - Re-processing historical TODS documents
+     - Populating analytical data stores from archives
+     - Idempotent pipeline design
+     - Schema evolution and migration strategies
+     - Handling TODS version differences
+   - **Hybrid Approach**:
+     - When to use TODS documents directly vs SQL queries
+     - Combining real-time subscriptions with batch processing
+     - Cache invalidation strategies
+     - Data consistency guarantees
+
+**Recommended Actions**:
+
+1. Create Data => Auditing documentation page covering audit trail patterns
+2. Create Data => Pipelines documentation page with ETL patterns and examples
+3. Create architecture discussion document covering TODS usage patterns
+4. Add examples of subscription-based real-time sync implementation
+5. Provide reference architectures for common deployment scenarios
+6. Document trade-offs between different approaches
+
+**Priority**: MEDIUM - Important for production deployments and architectural guidance
+
+**Estimated Effort**: 8-12 days
+
+- 2-3 days: Auditing documentation with examples
+- 3-4 days: Pipelines documentation with reference architectures
+- 3-5 days: Architecture patterns discussion document with diagrams
+
+---
+
 ## Table of Contents
 
 1. [Score Parsing & Validation](#1-score-parsing--validation)

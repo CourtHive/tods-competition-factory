@@ -1,25 +1,477 @@
 ---
-title: Context / Hydration
+title: MatchUp Context & Hydration
 ---
 
-**MatchUps** can be returned with contextual information that is not part of the TODS document node from which they originated.
-The process of adding context is also referred to as "hydration".
+## Overview
 
-Contextual information for `matchUps` includes information about the `structures, drawDefinitions` and `events` within which they are embeded;
-`drawPositions` are resolved using `positionAssignments` to the `participants`.
+**Context** (or **hydration**) is the process of enriching matchUp objects with additional information from their containing structures (draws, events, tournaments). By default, all matchUp retrieval methods return hydrated matchUps with contextual data that makes them easier to work with in applications.
 
-Additional contextual information can be passed into methods for retrieving `matchUps` via the `context` attribute,
-and any `extensions` can be converted to attributes accessible as attributes beginning with an underscore.
+### Key Concepts
 
-## matchUps
+**Hydration**: Adding contextual information not stored directly on the matchUp  
+**inContext**: Parameter controlling whether context is added (default: `true`)  
+**Deep Copies**: All returned matchUps are deep copies, safe to modify  
+**Extensions**: Custom data automatically converted to underscore-prefixed attributes  
+**Participant Hydration**: Participants attached to matchUp sides
 
-All API calls which return **matchUps** return deep copies with context.
-Attributes that are added for **matchUps** include: `structureId, structureName, drawId, eventId, eventName, tournamentId` and `tournamentName`.
+## Default Behavior
 
-All `matchUps` that are returned **inContext** include converted extensions. See **makeDeepCopy** in [Tools](../tools/make-deep-copy).
+By default, **all matchUp retrieval methods return hydrated matchUps**:
 
-In the **Live Editor** example below, `{ inContext: false }` overrides the default behavior.
-Change the value to `true` and compare the `matchUp` objects to see the difference when context is added.
+```js
+// These are equivalent:
+const { matchUps: m1 } = tournamentEngine.allTournamentMatchUps();
+const { matchUps: m2 } = tournamentEngine.allTournamentMatchUps({ inContext: true });
+
+// Matchups include context
+console.log(m1[0].tournamentName);  // ✓ Available
+console.log(m1[0].eventName);       // ✓ Available
+console.log(m1[0].roundName);       // ✓ Available
+
+// To get raw matchUps without context:
+const { matchUps: raw } = tournamentEngine.allTournamentMatchUps({
+  inContext: false
+});
+console.log(raw[0].tournamentName);  // ✗ undefined
+```
+
+## Context Attributes Added
+
+### Tournament/Event/Draw Context
+
+Every hydrated matchUp includes identifiers and names from its hierarchy:
+
+```js
+{
+  matchUpId: 'match-123',
+  
+  // Tournament context
+  tournamentId: 'tournament-456',
+  tournamentName: 'Summer Championships',
+  
+  // Event context
+  eventId: 'event-789',
+  eventName: 'Men\'s Singles',
+  eventType: 'SINGLES',
+  
+  // Draw context
+  drawId: 'draw-012',
+  drawName: 'Main Draw',
+  
+  // Structure context
+  structureId: 'structure-345',
+  structureName: 'Qualifying',
+  structureOrder: 1,
+  structureAbbreviation: 'Q'
+}
+```
+
+### Round Information
+
+Round details help understand match position in draw:
+
+```js
+{
+  roundNumber: 2,
+  roundName: 'Round of 16',
+  roundPosition: 3,
+  
+  // For team events
+  roundOrder: 1,
+  
+  // Playoff rounds (consolation/playoff structures)
+  finishingPositionRange: {
+    winner: [9, 16],
+    loser: [17, 32]
+  }
+}
+```
+
+### Scheduling Context
+
+When scheduled, matchUps include venue and court information:
+
+```js
+{
+  schedule: {
+    scheduledDate: '2024-06-15',
+    scheduledTime: '14:00',
+    courtId: 'court-5',
+    courtName: 'Court 5',
+    venueId: 'venue-123',
+    startTime: '2024-06-15T14:05:00Z',
+    endTime: '2024-06-15T15:45:00Z'
+  },
+  
+  // Additional venue context
+  venueName: 'Stadium',
+  venueAbbreviation: 'STD',
+  
+  // Order of play
+  courtOrder: 2,  // Second match on this court
+  scheduleTime: '14:00'
+}
+```
+
+### Participant Hydration
+
+Participants are automatically attached to matchUp sides:
+
+```js
+{
+  sides: [
+    {
+      sideNumber: 1,
+      participantId: 'player-1',
+      
+      // Hydrated participant
+      participant: {
+        participantId: 'player-1',
+        participantType: 'INDIVIDUAL',
+        participantRole: 'COMPETITOR',
+        person: {
+          personId: 'person-1',
+          standardFamilyName: 'Federer',
+          standardGivenName: 'Roger',
+          nationalityCode: 'SUI'
+        }
+      }
+    },
+    {
+      sideNumber: 2,
+      participantId: 'player-2',
+      participant: {
+        participantId: 'player-2',
+        participantType: 'INDIVIDUAL',
+        person: {
+          standardFamilyName: 'Nadal',
+          standardGivenName: 'Rafael',
+          nationalityCode: 'ESP'
+        }
+      }
+    }
+  ]
+}
+```
+
+**See:** [Participant Context](./participant-context) for participant hydration options.
+
+## Next MatchUps (Progression)
+
+The `nextMatchUps` parameter adds winner/loser progression information:
+
+```js
+const { matchUps } = tournamentEngine.allDrawMatchUps({
+  drawId: 'draw-123',
+  nextMatchUps: true
+});
+
+matchUps.forEach(matchUp => {
+  // Winner progression
+  if (matchUp.winnerTo) {
+    console.log('Winner advances to:');
+    console.log(`  MatchUp: ${matchUp.winnerTo.matchUpId}`);
+    console.log(`  Round: ${matchUp.winnerTo.roundNumber}`);
+    console.log(`  Position: ${matchUp.winnerTo.roundPosition}`);
+  }
+  
+  // Loser progression (feed-in/consolation)
+  if (matchUp.loserTo) {
+    console.log('Loser feeds to:');
+    console.log(`  MatchUp: ${matchUp.loserTo.matchUpId}`);
+    console.log(`  Round: ${matchUp.loserTo.roundNumber}`);
+  }
+});
+```
+
+### Example: Final Match Progression
+
+```js
+{
+  matchUpId: 'semifinal-1',
+  roundName: 'Semifinals',
+  
+  winnerTo: {
+    matchUpId: 'final',
+    roundNumber: 4,
+    roundName: 'Final',
+    roundPosition: 1
+  },
+  
+  loserTo: {
+    matchUpId: 'bronze-medal',
+    roundNumber: 4,
+    roundName: 'Bronze Medal Match',
+    roundPosition: 1
+  }
+}
+```
+
+## Extensions Handling
+
+Extensions (custom data) are automatically converted to underscore-prefixed attributes:
+
+```js
+// Original matchUp has extension
+{
+  matchUpId: 'match-123',
+  extensions: [
+    {
+      name: 'courtPreference',
+      value: 'Stadium Court'
+    },
+    {
+      name: 'broadcastMatch',
+      value: true
+    }
+  ]
+}
+
+// When hydrated, extensions become attributes
+const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+console.log(matchUps[0]._courtPreference);  // 'Stadium Court'
+console.log(matchUps[0]._broadcastMatch);   // true
+
+// Original extensions array still present
+console.log(matchUps[0].extensions);  // Array of extension objects
+```
+
+### Extension Name Conversion
+
+Extension names are converted to camelCase with underscore prefix:
+
+```js
+// Extension name → Attribute name
+'courtPreference'      → _courtPreference
+'broadcast_match'      → _broadcastMatch
+'estimated-duration'   → _estimatedDuration
+'PRIORITY_LEVEL'       → _priorityLevel
+```
+
+**See:** [Extensions](./extensions) for detailed extension documentation.
+
+## Context Filters
+
+Use `contextFilters` to retrieve matchUps based on contextual attributes:
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  contextFilters: {
+    // Schedule-based filters
+    scheduledDate: '2024-06-15',
+    scheduledDates: ['2024-06-15', '2024-06-16'],
+    venueIds: ['venue-123'],
+    courtIds: ['court-1', 'court-2'],
+    
+    // Structure filters
+    stages: ['QUALIFYING', 'MAIN'],
+    structureIds: ['structure-1'],
+    
+    // Round filters
+    roundNumbers: [1, 2],
+    
+    // Event filters
+    eventIds: ['event-123'],
+    
+    // Draw filters
+    drawIds: ['draw-456']
+  }
+});
+```
+
+**See:** [MatchUp Filtering](./matchup-filtering) for comprehensive filtering options.
+
+## Performance Considerations
+
+### When to Disable Context
+
+Disable context when:
+- Processing large numbers of matchUps for internal calculations
+- Only need core matchUp data (IDs, scores, status)
+- Implementing high-frequency operations
+
+```js
+// Fast: minimal data
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  inContext: false
+});
+
+// Full featured: more memory/processing
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  inContext: true
+});
+```
+
+### Deep Copy Overhead
+
+All hydrated matchUps are deep copies, ensuring data integrity but using more memory:
+
+```js
+// Get hydrated matchUps
+const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+// Safe to modify without affecting tournament state
+matchUps[0].customProperty = 'value';  // ✓ Safe
+delete matchUps[0].roundName;          // ✓ Safe
+
+// Tournament state unchanged
+const { matchUps: fresh } = tournamentEngine.allTournamentMatchUps();
+console.log(fresh[0].customProperty);  // undefined
+console.log(fresh[0].roundName);       // Still present
+```
+
+## Participant Context Control
+
+Control how participants are hydrated within matchUps:
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  // Include full participant details (default)
+  inContext: true,
+  
+  // Exclude specific PII
+  policyDefinitions: {
+    participant: {
+      excludePersonDetails: ['addresses', 'contacts']
+    }
+  }
+});
+
+// Participants included but privacy respected
+matchUps[0].sides.forEach(side => {
+  console.log(side.participant.person.standardFamilyName);  // ✓ Available
+  console.log(side.participant.person.addresses);           // ✗ undefined
+});
+```
+
+**See:** [Participant Context](./participant-context) for complete hydration options.
+
+## Additional Context Parameters
+
+### Custom Context Data
+
+Pass additional contextual data to retrieval methods:
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  context: {
+    myCustomField: 'value',
+    applicationData: { key: 'value' }
+  }
+});
+
+// Custom context available on all matchUps
+matchUps.forEach(matchUp => {
+  console.log(matchUp.myCustomField);      // 'value'
+  console.log(matchUp.applicationData);    // { key: 'value' }
+});
+```
+
+### Tournament Record Context
+
+When working with tournament records directly, context can be passed:
+
+```js
+import { getMatchUps } from 'tods-competition-factory';
+
+const matchUps = getMatchUps({
+  tournamentRecord,
+  inContext: true,
+  context: {
+    additionalData: 'value'
+  }
+});
+```
+
+## Practical Examples
+
+### Display Match Information
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  matchUpFilters: {
+    matchUpStatuses: ['TO_BE_PLAYED']
+  },
+  contextFilters: {
+    scheduledDate: '2024-06-15'
+  }
+});
+
+matchUps.forEach(matchUp => {
+  console.log(`${matchUp.tournamentName}`);
+  console.log(`  ${matchUp.eventName} - ${matchUp.roundName}`);
+  console.log(`  ${matchUp.courtName} at ${matchUp.scheduleTime}`);
+  
+  matchUp.sides.forEach(side => {
+    const name = side.participant?.person?.standardFamilyName || 'TBD';
+    console.log(`    ${name}`);
+  });
+});
+```
+
+### Results with Full Context
+
+```js
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  matchUpFilters: {
+    matchUpStatuses: ['COMPLETED']
+  }
+});
+
+matchUps.forEach(matchUp => {
+  const winner = matchUp.sides.find(s => s.sideNumber === matchUp.winningSide);
+  const loser = matchUp.sides.find(s => s.sideNumber !== matchUp.winningSide);
+  
+  console.log(`${matchUp.eventName} ${matchUp.roundName}`);
+  console.log(`  ${winner.participant.person.standardFamilyName} d.`);
+  console.log(`  ${loser.participant.person.standardFamilyName}`);
+  console.log(`  ${matchUp.score.scoreStringSide1}`);
+  
+  // Custom extension data
+  if (matchUp._broadcastMatch) {
+    console.log('  [BROADCAST MATCH]');
+  }
+});
+```
+
+### Build Draw Bracket
+
+```js
+const { matchUps } = tournamentEngine.allDrawMatchUps({
+  drawId: 'draw-123',
+  nextMatchUps: true
+});
+
+// Group by round
+const rounds = matchUps.reduce((acc, matchUp) => {
+  const round = matchUp.roundNumber;
+  if (!acc[round]) acc[round] = [];
+  acc[round].push(matchUp);
+  return acc;
+}, {});
+
+// Display bracket structure
+Object.entries(rounds)
+  .sort(([a], [b]) => a - b)
+  .forEach(([roundNum, matches]) => {
+    console.log(`\n${matches[0].roundName}:`);
+    matches.forEach(matchUp => {
+      console.log(`  Match ${matchUp.roundPosition}`);
+      matchUp.sides.forEach(side => {
+        const name = side.participant?.person?.standardFamilyName || 'BYE';
+        console.log(`    ${name}`);
+      });
+      if (matchUp.winnerTo) {
+        console.log(`    → Winner to Round ${matchUp.winnerTo.roundNumber}`);
+      }
+    });
+  });
+```
+
+## Live Editor Example
+
+In the **Live Editor** example below, toggle `inContext` between `true` and `false` to see the difference:
 
 ```jsx live
 function ContextDemo(props) {
@@ -29,9 +481,17 @@ function ContextDemo(props) {
   tournamentEngine.setState(tournamentRecord);
 
   const { matchUps } = tournamentEngine.allTournamentMatchUps({
-    inContext: false,
+    inContext: true,  // Change to false to see raw matchUps
   });
 
   return <MatchUps data={matchUps} />;
 }
 ```
+
+## Related Documentation
+
+- **[MatchUp Overview](./matchup-overview)** - Core matchUp concepts and types
+- **[MatchUp Filtering](./matchup-filtering)** - Comprehensive filtering options
+- **[Participant Context](./participant-context)** - Participant hydration details
+- **[Extensions](./extensions)** - Custom data and extensions
+- **[Query Governor](/docs/governors/query-governor#alltournamentmatchups)** - Complete API reference

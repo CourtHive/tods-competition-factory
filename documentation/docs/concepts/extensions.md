@@ -4,110 +4,838 @@ title: Extensions
 
 ## Overview
 
-Extensions are used to capture information necesary for the processing/mutation of tournament data while a tournamnet is in process, and to capture calculated results, for instance Round Robin group finishing positions, which are not defined in TODS. Extensions capture configuration parameters as part of the tournament "time capsule" to ensure that what happened during a tournament can be reconstructed.
+**Extensions** capture configuration parameters, calculated results, and custom data that are not part of the core TODS specification. They further extend the tournament "time capsule" - ensuring what happened during a tournament can be accurately reconstructed.
 
-Extensions can exist on any attribute within a TODS `tournamentRecord`. Each extension has `{ name, value }` attributes and there should never be more than one extension with a given name in an `.extensions` array.
+### Key Concepts
 
-### APPLIED_POLICIES
+**Non-Temporal Data**: Unlike [Time Items](./timeItems), extensions don't track changes over time  
+**Name-Value Pairs**: Each extension has `{ name, value }` structure  
+**Uniqueness**: Only one extension with a given name per `.extensions` array  
+**Hierarchical Scope**: Extensions can exist on any TODS document element  
+**Factory Constants**: Pre-defined extension names recognized by the factory  
+**Custom Extensions**: User-defined extensions for application-specific data
 
-Regularly attached to `tournamentRecords`, `events` and `drawDefinitions`; can also be attached to `structures`. Many factory methods will check for policies which are "in scope", meaning within the object hierarchy. Policies can be attached at any time programmatically; they are attached automatically to `drawDefinitions` if any `policyDefinitions` are passed to `generateDrawDefinition()`.
+### Extension Structure
 
-### DELEGATED_OUTCOME
+```typescript
+type Extension = {
+  name: string;    // Unique identifier within the extensions array
+  value: any;      // Any JSON-serializable data
+};
 
-Used to capture `matchUp` outcomes which are not "official", meaning they may have been sourced from a third party application for the purposes of display prior to the entry of an official result.
+// On any TODS element
+{
+  extensions: Extension[];
+}
+```
 
-### DISABLED
+### Location in TODS
 
-The presence of this extension indicates that a resource (`court` or `venue`) has been disabled such that scheduling methods cannot use the resource.
+Extensions can be attached to any element in a tournament record:
 
-### DISABLE_LINKS
+- Tournament Record (top level)
+- Events
+- Draw Definitions
+- Structures
+- MatchUps
+- Participants
+- Venues/Courts
 
-In certain conditions, when allowed by positioning policies, participants may have their drawPositions swapped in non-MAIN structures. When this occurs the normal logic of participant progression is broken and links must be disabled to avoid data corruption.
+## Factory-Recognized Extensions
 
-### DISABLE_AUTO_CALC
+The factory internally uses and recognizes the following extension names (constants):
 
-When manual scoring is enabled for TEAM `matchUps`, the automatic calculation of TEAM results is disabled by the presence of this extension.
+### Configuration & Policy Extensions
 
-### DISPLAY
+**`appliedPolicies`** - Policies applied to tournament element
 
-Specific to client applications. Storage of display preferences for e.g. an `event`, a `drawDefinition`, or a `structure`.
+Attached to: `tournamentRecords`, `events`, `drawDefinitions`, `structures`
 
-### DRAW_DELETIONS
+Purpose: Captures which policies are "in scope" within the object hierarchy. Policies can be attached programmatically or automatically during draw generation.
 
-When no external auditing service is available, `drawDefinitions` which are deleted can be stored on the `tournamentRecord`.
+```js
+{
+  name: 'appliedPolicies',
+  value: {
+    seeding: { seedingProfile: 'WTN', ... },
+    avoidance: { roundsToSeparate: 3, ... }
+  }
+}
+```
 
-### ENTRY_PROFILE
+**`schedulingProfile`** - Auto scheduler configuration
 
-Stores limitations set on the number of accepted entries for an `event`; can include number of qualifiers, number of allowed wildcards, and maximum drawSize
+Attached to: `tournamentRecords`, `events`
 
-### FACTORY
+Purpose: Stores iteratively-edited scheduling profile before running the auto scheduler.
 
-Used to capture version of factory that created/mutated the `tournamentRecord`.
+```js
+{
+  name: 'schedulingProfile',
+  value: [
+    {
+      scheduleDate: '2024-06-15',
+      venues: [{ venueId: 'venue-1', rounds: [...] }]
+    }
+  ]
+}
+```
 
-### FLIGHT_PROFILE
+**`scheduleLimits`** - Match daily limits override
 
-Captures flight names and draw entries when `event` entries are split into multiple flights before `drawDefinitions` are generated.
+Attached to: `matchUps`
 
-### GROUPING_ATTRIBUTE
+Purpose: Overrides policy-defined daily limits for specific matchUps.
 
-Stores the `person` or `participant` attribute that was used to generate TEAM `participants`.
+```js
+{
+  name: 'scheduleLimits',
+  value: {
+    SINGLES: 2,
+    DOUBLES: 1,
+    TOTAL: 2
+  }
+}
+```
 
-### LINEUPS
+**`scheduleTiming`** - Match format timing override
 
-Stores the most recent `lineUp` for each TEAM progressing through a `structure`; enables default assignments to be presented in hydrated SINGLES/DOUBLES `tieMatchUps` prior to actual `lineUps` being saved to TEAM `matchUps`.
+Attached to: `matchUps`
 
-### LINKED_TOURNAMENTS
+Purpose: Overrides policy-defined timing for specific matchUp formats.
 
-When two or more tournaments are being run using shared `venues` the association between the tournaments is captured in this extension so that client applications can know to load multiple `tournamentRecords` when scheduling.
+```js
+{
+  name: 'scheduleTiming',
+  value: {
+    'SET3-S:6/TB7': {
+      averageMinutes: 90,
+      recoveryMinutes: 30
+    }
+  }
+}
+```
 
-### MATCHUP_HISTORY
+### Draw Generation & Structure Extensions
 
-Captures point-by-point score progression in a condensed format that can later be expanded to full TODS.
+**`entryProfile`** - Entry limitations
 
-### PARTICIPANT_REPRESENTATIVES
+Attached to: `events`
 
-Stores a record of participant representatives present as witnesses during the making of a draw (old school, when manually drawing positions out of a 'hat').
+Purpose: Stores limitations on accepted entries including qualifiers, wildcards, and maximum draw size.
 
-### PERSON_REQUESTS
+```js
+{
+  name: 'entryProfile',
+  value: {
+    maxDrawSize: 32,
+    qualifiers: 4,
+    wildcards: 4
+  }
+}
+```
 
-Captures scheduling requests. Consumed by the scheduler to attempt to accommodate participants; can be used to simply capture and display scheduling requests.
+**`flightProfile`** - Flight names and entries
 
-### POSITION_ACTIONS
+Attached to: `events`
 
-When no external auditing service is available, `positionAction` telemetry can be stored on the `tournamentRecord`.
+Purpose: Captures flight configuration when event entries are split into multiple flights before draw generation.
 
-### RANKING_POINTS
+```js
+{
+  name: 'flightProfile',
+  value: {
+    flights: [
+      { flightNumber: 1, drawEntries: [...] },
+      { flightNumber: 2, drawEntries: [...] }
+    ]
+  }
+}
+```
 
-Add the ability to capture points generated by `event` outcomes to `tournamentRecords` for the purpose of displaying points awarded in real time as `participants` advance through draw `structures`.
+**`drawProfile`** - Draw-specific configuration
 
-### ROUND_TARGET
+Attached to: `drawDefinitions`
 
-Supports the generation of qualifying structures which feed in to different rounds of MAIN stage structures; also used to annotate `event.entries` to specify rounds at which a participant will enter a "staggered entry" structure.
+Purpose: Stores draw generation parameters and configuration.
 
-### SCHEDULE_LIMITS
+```js
+{
+  name: 'drawProfile',
+  value: {
+    automated: true,
+    seedsCount: 8,
+    drawType: 'ELIMINATION'
+  }
+}
+```
 
-Stores `matchUp` "daily limits"; overrides any policies that may be attached.
+**`eventProfile`** - Event-specific configuration
 
-### SCHEDULE_TIMING
+Attached to: `events`
 
-Stores `matchUpFormat` timing; overrides any policies that may be attached.
+Purpose: Stores event-level configuration and parameters.
 
-### SCHEDULING_PROFILE
+```js
+{
+  name: 'eventProfile',
+  value: {
+    category: 'U18',
+    gender: 'FEMALE',
+    surfaceType: 'HARD'
+  }
+}
+```
 
-A `schuedulingProfile` is used to run the Auto Scheduler. This extension allows for the iterative editing of a scheduling profile before the Auto Scheduler is run.
+**`disableLinks`** - Link disabling for position swaps
 
-### STATUS_DETAIL
+Attached to: `structures`
 
-Not used by the factory. Third party extension for annotating the entry status of participants.
+Purpose: When positioning policies allow draw position swaps in non-MAIN structures, normal progression logic breaks and links must be disabled to avoid data corruption.
 
-### SUB_ORDER
+```js
+{
+  name: 'disableLinks',
+  value: true
+}
+```
 
-When there are ties in calculating of Round Robin `groupOrder`, the SUB_ORDER extension can be added to capture a manual determination of the order for tied positions.
+**`roundTarget`** - Qualifying feed-in rounds
 
-### TALLY
+Attached to: `structures`, `event.entries`
 
-Stores calcualated `participantResults` on `positionAssignments` for a `structure`. Used to determine `groupOrder` in Round Robin structures.
+Purpose: Supports qualifying structures feeding into different rounds of MAIN structures; also annotates entries for "staggered entry" structures.
 
-### TIE_FORMAT_MODIFICATIONS
+```js
+{
+  name: 'roundTarget',
+  value: {
+    roundNumber: 2,  // Feed into round 2 of main draw
+    structureId: 'main-structure-id'
+  }
+}
+```
 
-When no external auditing service is available, modifications to `tieFormats` during the course of an event can be captured on the `tournamentRecord`.
+### Team Event Extensions
+
+**`groupingAttribute`** - Team generation attribute
+
+Attached to: `participants` (TEAM type)
+
+Purpose: Stores the person/participant attribute used to generate TEAM participants.
+
+```js
+{
+  name: 'groupingAttribute',
+  value: 'club'  // Teams generated by club affiliation
+}
+```
+
+**`lineUps`** - Team lineup defaults
+
+Attached to: `structures`
+
+Purpose: Stores most recent lineup for each TEAM progressing through structure. Enables default assignments in hydrated SINGLES/DOUBLES tie matchUps before actual lineups are saved.
+
+```js
+{
+  name: 'lineUps',
+  value: {
+    'team-1': [
+      { participantId: 'player-1', collectionPosition: 1 },
+      { participantId: 'player-2', collectionPosition: 2 }
+    ]
+  }
+}
+```
+
+**`disableAutoCalc`** - Manual TEAM scoring
+
+Attached to: `matchUps` (TEAM type)
+
+Purpose: When manual scoring is enabled for TEAM matchUps, disables automatic calculation of team results.
+
+```js
+{
+  name: 'disableAutoCalc',
+  value: true
+}
+```
+
+### Scoring & Results Extensions
+
+**`delegatedOutcome`** - Unofficial results
+
+Attached to: `matchUps`
+
+Purpose: Captures matchUp outcomes sourced from third-party applications for display purposes prior to official result entry.
+
+```js
+{
+  name: 'delegatedOutcome',
+  value: {
+    score: {
+      sets: [
+        { side1Score: 6, side2Score: 4, winningSide: 1 },
+        { side1Score: 6, side2Score: 2, winningSide: 1 }
+      ]
+    },
+    winningSide: 1,
+    source: 'external-app'
+  }
+}
+```
+
+**`tally`** - Round robin results
+
+Attached to: `positionAssignments` (within structures)
+
+Purpose: Stores calculated participant results for structure positions. Used to determine group order in round robin structures.
+
+```js
+{
+  name: 'tally',
+  value: {
+    matchUpsWon: 4,
+    matchUpsLost: 1,
+    setsWon: 9,
+    setsLost: 3,
+    gamesWon: 54,
+    gamesLost: 38
+  }
+}
+```
+
+**`subOrder`** - Tie-breaking order
+
+Attached to: `positionAssignments`
+
+Purpose: When ties occur in round robin group order calculation, captures manual determination of order for tied positions.
+
+```js
+{
+  name: 'subOrder',
+  value: 2  // Second place among tied participants
+}
+```
+
+**`rankingPoints`** - Points awarded
+
+Attached to: `tournamentRecords`
+
+Purpose: Enables capturing points generated by event outcomes for real-time display as participants advance through structures.
+
+```js
+{
+  name: 'rankingPoints',
+  value: {
+    'player-1': { singles: 250, doubles: 100 },
+    'player-2': { singles: 150 }
+  }
+}
+```
+
+### Scheduling & Venue Extensions
+
+**`disabled`** - Resource disabling
+
+Attached to: `courts`, `venues`
+
+Purpose: Indicates resource has been disabled and scheduling methods cannot use it.
+
+```js
+{
+  name: 'disabled',
+  value: true
+}
+```
+
+**`linkedTournamentsIds`** - Multi-tournament scheduling
+
+Attached to: `tournamentRecords`
+
+Purpose: When multiple tournaments share venues, captures the association so client applications know to load all tournament records for scheduling.
+
+```js
+{
+  name: 'linkedTournamentsIds',
+  value: ['tournament-1', 'tournament-2', 'tournament-3']
+}
+```
+
+**`personRequests`** - Scheduling requests
+
+Attached to: `participants`, `events`, `tournamentRecords`
+
+Purpose: Captures scheduling requests from participants. Consumed by scheduler to accommodate requests or simply display them.
+
+```js
+{
+  name: 'personRequests',
+  value: [
+    {
+      personId: 'person-1',
+      requestType: 'DO_NOT_SCHEDULE',
+      date: '2024-06-15',
+      startTime: '09:00',
+      endTime: '11:00'
+    }
+  ]
+}
+```
+
+### Participant & Registration Extensions
+
+**`registration`** - Registration data
+
+Attached to: `participants`
+
+Purpose: Captures registration-related information and metadata.
+
+```js
+{
+  name: 'registration',
+  value: {
+    registrationDate: '2024-05-01',
+    registrationId: 'REG-12345',
+    paymentStatus: 'PAID'
+  }
+}
+```
+
+**`participantRepresentatives`** - Draw witnesses
+
+Attached to: `drawDefinitions`
+
+Purpose: Records participant representatives present as witnesses during manual draw creation (traditional "hat draw").
+
+```js
+{
+  name: 'participantRepresentatives',
+  value: [
+    { participantId: 'player-1', representativeName: 'John Coach' },
+    { participantId: 'player-2', representativeName: 'Jane Manager' }
+  ]
+}
+```
+
+**`statusDetail`** - Entry status annotation
+
+Attached to: `event.entries`
+
+Purpose: Third-party extension (not used by factory) for annotating entry status of participants.
+
+```js
+{
+  name: 'statusDetail',
+  value: {
+    status: 'CONFIRMED',
+    notes: 'Paid in full, medical clearance received'
+  }
+}
+```
+
+**`eventWithdrawalRequests`** - Withdrawal tracking
+
+Attached to: `events`
+
+Purpose: Tracks participant withdrawal requests from events.
+
+```js
+{
+  name: 'eventWithdrawalRequests',
+  value: [
+    {
+      participantId: 'player-1',
+      requestDate: '2024-06-10',
+      reason: 'Injury'
+    }
+  ]
+}
+```
+
+**`activeSuspension`** - Participant suspension
+
+Attached to: `participants`
+
+Purpose: Indicates participant has active suspension affecting eligibility.
+
+```js
+{
+  name: 'activeSuspension',
+  value: {
+    startDate: '2024-05-01',
+    endDate: '2024-08-31',
+    reason: 'Code violation'
+  }
+}
+```
+
+### Auditing & System Extensions
+
+**`factory`** - Factory version tracking
+
+Attached to: `tournamentRecords`
+
+Purpose: Captures version of factory (and other TODS processors) that created/mutated the tournament record.
+
+```js
+{
+  name: 'factory',
+  value: {
+    version: '2.2.49',
+    lastModified: '2024-06-15T10:30:00Z'
+  }
+}
+```
+
+**`drawDeletions`** - Deleted draw audit
+
+Attached to: `tournamentRecords`
+
+Purpose: When no external auditing service is available, stores deleted draw definitions for audit purposes.
+
+```js
+{
+  name: 'drawDeletions',
+  value: [
+    {
+      drawId: 'draw-123',
+      drawName: 'Main Draw',
+      deletedAt: '2024-06-14T15:00:00Z',
+      deletedBy: 'user-456'
+    }
+  ]
+}
+```
+
+**`positionActions`** - Position action telemetry
+
+Attached to: `tournamentRecords`
+
+Purpose: When no external auditing service is available, stores position action telemetry.
+
+```js
+{
+  name: 'positionActions',
+  value: [
+    {
+      action: 'ASSIGN_PARTICIPANT',
+      drawPosition: 1,
+      participantId: 'player-1',
+      timestamp: '2024-06-14T14:00:00Z'
+    }
+  ]
+}
+```
+
+**`tieFormatModifications`** - Tie format audit
+
+Attached to: `tournamentRecords`
+
+Purpose: When no external auditing service is available, captures modifications to tie formats during the course of an event.
+
+```js
+{
+  name: 'tieFormatModifications',
+  value: [
+    {
+      tieFormatId: 'format-1',
+      modifiedAt: '2024-06-15T09:00:00Z',
+      changes: { collectionDefinitions: [...] }
+    }
+  ]
+}
+```
+
+**`context`** - Creation context
+
+Attached to: `venues`, `courts`, and other elements
+
+Purpose: Captures context in which a resource was added (metadata about creation).
+
+```js
+{
+  name: 'context',
+  value: {
+    createdBy: 'user-123',
+    createdAt: '2024-06-01T10:00:00Z',
+    source: 'mobile-app'
+  }
+}
+```
+
+### Display & UI Extensions
+
+**`display`** - Display preferences
+
+Attached to: `events`, `drawDefinitions`, `structures`
+
+Purpose: Client application-specific storage for display preferences.
+
+```js
+{
+  name: 'display',
+  value: {
+    viewMode: 'bracket',
+    showSeeds: true,
+    highlightedParticipants: ['player-1', 'player-2']
+  }
+}
+```
+
+## Custom Extensions
+
+Applications can define custom extensions for application-specific data not covered by factory constants.
+
+### Naming Conventions
+
+Use descriptive, unique names that won't conflict with factory extensions:
+
+```js
+// ✓ GOOD - Clear, specific names
+{ name: 'broadcastSchedule', value: { ... } }
+{ name: 'sponsorData', value: { ... } }
+{ name: 'mediaRequirements', value: { ... } }
+{ name: 'facilityAccess', value: { ... } }
+
+// ✗ AVOID - Generic or conflicting names
+{ name: 'data', value: { ... } }
+{ name: 'info', value: { ... } }
+{ name: 'config', value: { ... } }
+```
+
+### Custom Extension Examples
+
+**Broadcast Information**:
+
+```js
+tournamentEngine.addMatchUpExtension({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  extension: {
+    name: 'broadcastSchedule',
+    value: {
+      channel: 'ESPN',
+      broadcastTime: '14:00',
+      commentators: ['John Smith', 'Jane Doe'],
+    },
+  },
+});
+```
+
+**Facility Requirements**:
+
+```js
+tournamentEngine.addEventExtension({
+  eventId: 'singles-main',
+  extension: {
+    name: 'facilityRequirements',
+    value: {
+      courtSurface: 'HARD',
+      lighting: 'REQUIRED',
+      spectatorCapacity: 500,
+    },
+  },
+});
+```
+
+**Sponsor Data**:
+
+```js
+tournamentEngine.addTournamentExtension({
+  extension: {
+    name: 'sponsorData',
+    value: {
+      titleSponsor: 'Acme Corp',
+      courtSponsors: {
+        'court-1': 'Beta LLC',
+        'court-2': 'Gamma Inc',
+      },
+    },
+  },
+});
+```
+
+## Working with Extensions
+
+### Adding Extensions
+
+```js
+// Add to tournament
+tournamentEngine.addTournamentExtension({
+  extension: {
+    name: 'customData',
+    value: { ... }
+  }
+});
+
+// Add to event
+tournamentEngine.addEventExtension({
+  eventId: 'singles-main',
+  extension: {
+    name: 'eventCustomData',
+    value: { ... }
+  }
+});
+
+// Add to draw
+tournamentEngine.addDrawDefinitionExtension({
+  drawId: 'draw-123',
+  extension: {
+    name: 'drawCustomData',
+    value: { ... }
+  }
+});
+
+// Add to matchUp
+tournamentEngine.addMatchUpExtension({
+  matchUpId: 'match-456',
+  drawId: 'draw-123',
+  extension: {
+    name: 'matchUpCustomData',
+    value: { ... }
+  }
+});
+```
+
+### Retrieving Extensions
+
+```js
+// From tournament record
+const tournament = tournamentEngine.getTournament();
+const customExt = tournament.extensions?.find((e) => e.name === 'customData');
+
+// From event
+const { event } = tournamentEngine.getEvent({ eventId: 'singles-main' });
+const eventExt = event.extensions?.find((e) => e.name === 'eventCustomData');
+
+// From draw
+const { drawDefinition } = tournamentEngine.getDrawDefinition({ drawId: 'draw-123' });
+const drawExt = drawDefinition.extensions?.find((e) => e.name === 'drawCustomData');
+
+// From matchUp (with context)
+const { matchUp } = tournamentEngine.findMatchUp({
+  matchUpId: 'match-456',
+  inContext: true,
+});
+const matchUpExt = matchUp.extensions?.find((e) => e.name === 'matchUpCustomData');
+```
+
+### Updating Extensions
+
+Extensions are updated by removing the old one and adding the new one (or using update methods):
+
+```js
+// Remove extension
+tournamentEngine.removeTournamentExtension({
+  name: 'customData',
+});
+
+// Add updated version
+tournamentEngine.addTournamentExtension({
+  extension: {
+    name: 'customData',
+    value: updatedValue,
+  },
+});
+```
+
+### Extension Hydration
+
+When retrieving data with `inContext: true`, extensions are automatically converted to underscore-prefixed attributes:
+
+```js
+// MatchUp has extension
+{
+  extensions: [
+    {
+      name: 'broadcastSchedule',
+      value: { channel: 'ESPN' },
+    },
+  ];
+}
+
+// When hydrated
+const { matchUps } = tournamentEngine.allTournamentMatchUps({
+  inContext: true,
+});
+
+console.log(matchUps[0]._broadcastSchedule); // { channel: 'ESPN' }
+console.log(matchUps[0].extensions); // Original array still present
+```
+
+**See:** [MatchUp Context](./matchup-context#extensions-handling) for details on extension hydration.
+
+## Extensions vs Time Items
+
+Choose the appropriate mechanism for your data:
+
+| Feature        | Extensions                                     | Time Items                                              |
+| -------------- | ---------------------------------------------- | ------------------------------------------------------- |
+| **Purpose**    | Configuration, calculated results, custom data | Temporal data with effective dates                      |
+| **History**    | Single value (current state)                   | Multiple values over time                               |
+| **Timestamps** | No timestamps                                  | itemDate and createdAt                                  |
+| **Use Cases**  | Policies, profiles, preferences, metadata      | Rankings, ratings, schedule changes, status transitions |
+| **Hydration**  | Underscore-prefixed attributes                 | Extracted to `.schedule` for matchUps                   |
+
+**Example Decision**:
+
+- **Use Extension**: Store broadcast channel assignment (doesn't change over time)
+- **Use Time Item**: Track court assignments (may change, need history)
+
+## Best Practices
+
+### Uniqueness
+
+Only one extension with a given name per element:
+
+```js
+// ✓ CORRECT - One extension per name
+{
+  extensions: [{ name: 'customData', value: { field1: 'value1', field2: 'value2' } }];
+}
+
+// ✗ WRONG - Duplicate names
+{
+  extensions: [
+    { name: 'customData', value: { field1: 'value1' } },
+    { name: 'customData', value: { field2: 'value2' } }, // Duplicate!
+  ];
+}
+```
+
+### Value Types
+
+Use appropriate JSON-serializable types:
+
+```js
+// ✓ GOOD - JSON-serializable
+{ name: 'config', value: { enabled: true, count: 5, items: ['a', 'b'] } }
+{ name: 'timestamp', value: '2024-06-15T10:00:00Z' }
+
+// ✗ AVOID - Non-serializable
+{ name: 'config', value: new Date() }  // Date object
+{ name: 'callback', value: function() {} }  // Function
+```
+
+### Factory Constant Names
+
+Avoid using factory-recognized extension names for custom extensions:
+
+```js
+// ✗ AVOID - Conflicts with factory constants
+{ name: 'appliedPolicies', value: myCustomValue }
+{ name: 'schedulingProfile', value: myCustomValue }
+
+// ✓ GOOD - Unique custom names
+{ name: 'myApp_policies', value: myCustomValue }
+{ name: 'myApp_schedule', value: myCustomValue }
+```
+
+## Related Documentation
+
+- **[Time Items](./timeItems)** - Temporal data with effective dates
+- **[MatchUp Context](./matchup-context#extensions-handling)** - Extension hydration
+- **[Participant Context](./participant-context)** - Participant extensions
+- **[Policies Overview](/docs/policies/avoidance)** - Applied policies extension
