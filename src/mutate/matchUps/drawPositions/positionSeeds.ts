@@ -122,7 +122,6 @@ function positionSeedBlock({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { avoidance } = appliedPolicies ?? {};
   if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
-    // TODO: 'implement seed placement avoidance';
   }
 
   const seedPositions: number[] = [];

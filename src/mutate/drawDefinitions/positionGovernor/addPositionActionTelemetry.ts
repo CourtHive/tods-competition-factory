@@ -8,7 +8,6 @@ import { MAIN } from '@Constants/drawDefinitionConstants';
 import { PolicyDefinitions } from '@Types/factoryTypes';
 
 // updates 'positionActions' extension to keep track of positionActions by end-user
-// TODO: consider adding timestamp attribute to positionAction object
 
 type AddPositionActionTelemetry = {
   appliedPolicies?: PolicyDefinitions;

@@ -180,7 +180,6 @@ export function getCategoryAgeDetails(params: ParseArgs) {
 
   if (isCombined) {
     // min and max birthdates are not relevant
-    // TODO: utility function to calculate combined age given two birthdates?
     ageMaxDate = undefined;
     ageMinDate = undefined;
     ageMax = undefined;

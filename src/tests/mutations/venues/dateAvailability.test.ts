@@ -209,7 +209,6 @@ it('can add events, venues, and modify court availbility', () => {
   });
   expect(Object.keys(result.matchUpScheduleTimes).length).toEqual(matchUps.length);
 
-  // TODO: scheduling policy specify that e.g. SF rounds should begin at the same time
   expect(Object.values(result.matchUpScheduleTimes)).toEqual([
     '09:00', // QF
     '09:00', // QF

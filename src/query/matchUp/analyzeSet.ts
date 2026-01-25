@@ -171,7 +171,7 @@ function checkValidStandardSetOutcome({ setObject, setFormat, sideGameScores, si
       }
 
       if (isNaN(tiebreakTo)) {
-        return { result: false, error: { message: 'tiebreakTo error' } }; // TODO: test this
+        return { result: false, error: { message: 'tiebreakTo error' } };
       }
 
       const meetsTiebreakTo = !!(
@@ -269,7 +269,7 @@ function checkValidTiebreakSetOutcome({ setObject, setFormat, sideTiebreakScores
   }
 
   if (isNaN(tiebreakTo)) {
-    return { result: false, error: { message: 'tiebreakTo error' } }; // TODO: test this
+    return { result: false, error: { message: 'tiebreakTo error' } };
   }
 
   const meetsTiebreakTo = !!sideTiebreakScores?.find((tiebreakScore) => tiebreakScore >= tiebreakTo);

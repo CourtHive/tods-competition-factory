@@ -76,7 +76,6 @@ export function collectionGroupUpdate({
   const result = validateTieFormat({ tieFormat: prunedTieFormat });
   if (result.error) return result;
 
-  // TODO: implement use of tieFormats and tieFormatId
   if (eventId && event) {
     event.tieFormat = prunedTieFormat;
     // NOTE: there is not yet a modifyEventNotice

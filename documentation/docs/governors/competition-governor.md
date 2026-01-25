@@ -335,7 +335,6 @@ console.log(result2.success); // true
 - Does not affect venues, participants, schedules, or other extensions
 - Required before creating new link structure with different tournaments
 - Use `removeExtension({ name: 'linkedTournaments' })` for same effect
-- Future TODO: Verify venue integrity after unlinking (ensure scheduled matchUps still have venues)
 
 ---
 

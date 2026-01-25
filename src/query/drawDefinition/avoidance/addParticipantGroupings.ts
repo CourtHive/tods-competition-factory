@@ -24,7 +24,6 @@ export function addParticipantGroupings({
   const groupParticipants = participantsWithGroupings.filter((participant) => participant.participantType === GROUP);
 
   // should pairParticipants only consider those that are in the same event as current draw?
-  // TODO: this requires access to the parent event which is not currently in scope
   const pairParticipants = participantsWithGroupings.filter((participant) => participant.participantType === PAIR);
 
   participantsWithGroupings.forEach((participant) => {

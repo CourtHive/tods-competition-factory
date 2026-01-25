@@ -130,7 +130,6 @@ export function generateEventWithDraw(params) {
       ? drawSize
       : drawProfile.participantsCount) || 0;
 
-  // TODO: implement use of tieFormats and tieFormatId
   const event = { eventName, eventType, tieFormat, category, eventId, gender };
 
   if (Array.isArray(timeItems)) {
@@ -463,7 +462,6 @@ export function generateEventWithDraw(params) {
           });
           if (result.error) return result;
         }
-        // TODO: check if RRWPO & automate & complete
         return undefined;
       };
 

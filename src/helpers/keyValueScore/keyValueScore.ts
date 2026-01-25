@@ -58,8 +58,6 @@ export function keyValueMatchUpScore(params) {
       scoreString, // required for present test suites
       winningSide,
       matchUpStatus,
-      // TODO: this should use the autocomplete function of matchUpScore
-      // and the expected behavior is therefore different than keyValueScore
       score: { sets, scoreStringSide1: scoreString },
     };
   }
@@ -117,7 +115,6 @@ export function keyValueScore(params) {
   }
 
   if (CLOSERS.includes(value)) {
-    // TODO: not sure this is necessary
     value = SPACE_KEY;
   }
 

@@ -118,7 +118,6 @@ export function getValidAssignmentActions({
 
     participantsAvailable?.forEach((participant) => {
       const entry = (drawDefinition.entries ?? []).find((entry) => entry.participantId === participant.participantId);
-      // TODO: determine if this is in fact used downstream
       participant.entryPosition = entry?.entryPosition;
     });
     if (participantsAvailable?.length) {

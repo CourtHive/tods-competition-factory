@@ -450,7 +450,6 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   [0, 2, 4]
     .map((i) => targetTieMatchUps[i].matchUpId)
     .forEach((matchUpId) => {
-      // TODO: assignCollectionPositions for players in each matchUp
       const matchUpStatusResult = tournamentEngine.setMatchUpStatus({
         matchUpId,
         outcome,
@@ -480,8 +479,6 @@ it('can modify collectionDefinitions for a tieFormat on a structure', () => {
   expect(result.error).toEqual(INVALID_TIE_FORMAT);
 
   /**
-   // TODO: before this can be done, lineUp adjustments need to be implemented
-   // collectionPositions need to be shuffled around...
   result = tournamentEngine.modifyCollectionDefinition({
     updateInProgressMatchUps: true,
     matchUpId: targetMatchUpId,

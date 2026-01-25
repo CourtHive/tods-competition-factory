@@ -33,8 +33,6 @@ const defaultStatusProfile = {
   [DEFAULTED]: 4,
 };
 
-// TODO: timed sets && NoAd
-
 /**
  *
  * @param {string} matchUpFormat - optional - TODS matchUpFormat code string - defaults to 'SET3-S:6/TB7'

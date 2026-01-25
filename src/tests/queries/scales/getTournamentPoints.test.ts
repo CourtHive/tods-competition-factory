@@ -10,9 +10,6 @@ import { SINGLES } from '@Constants/eventConstants';
 import { CURTIS_CONSOLATION, MAIN, SINGLE_ELIMINATION } from '@Constants/drawDefinitionConstants';
 
 const awardProfiles = [
-  // TODO: requireWinDefault - to get points for a default there must be at least one win
-  // TODO: requireWalkoverDefault - to get points for a default there must be at least one win
-  // TODO: flights - filter by flightNumbers and assign discount to different flights
   /*
   {
     requireWinDefault: false,
@@ -42,7 +39,7 @@ const awardProfiles = [
   {
     eventTypes: [SINGLES],
     drawTypes: [],
-    finishingStageSequence: 1, // TODO: will need to derive for QUALIFYING
+    finishingStageSequence: 1,
     finishingRound: { 1: { won: 30, lost: 15 }, 2: { won: 15 } },
   },
 ];

@@ -275,7 +275,6 @@ export function modifyCollectionDefinition({
     modifications.push({ collectionId, matchUpCount });
   }
   if (matchUpType && sourceCollectionDefinition.matchUpType !== matchUpType) {
-    // TODO: updateTieFormat needs to support
     // targetCollectionDefinition.matchUpType = matchUpType;
     // modifications.push({ collectionId, matchUpType });
     return decorateResult({
@@ -289,7 +288,6 @@ export function modifyCollectionDefinition({
     modifications.push({ collectionId, category });
   }
   if (gender && sourceCollectionDefinition.gender !== gender) {
-    // TODO: remove all inappropriately gendered participants
     targetCollectionDefinition.gender = gender;
     modifications.push({ collectionId, gender });
   }

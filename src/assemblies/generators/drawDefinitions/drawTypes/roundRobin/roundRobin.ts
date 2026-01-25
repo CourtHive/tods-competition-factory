@@ -127,7 +127,6 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
 
 function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   if (appliedPolicies) {
-    // TODO: policy to set groupSizeLimit
   }
 
   let groupSize = structureOptions?.groupSize;

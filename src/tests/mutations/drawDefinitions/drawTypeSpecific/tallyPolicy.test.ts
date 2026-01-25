@@ -23,8 +23,6 @@ test('roundRobinTally policy can specify tally by games only', () => {
         setsCreditForWalkovers: true,
         setsCreditForDefaults: true,
         // NOTE: at present "walkovers" and "defaults" are sub sorts within tied groups, but participants are not entirely disqualified
-        // disqualifyDefaults: true, // TODO: implement and test => disqualified participants are pushed to the bottom of the group order
-        // disqualifyWalkovers: true, //TODO: implement and test =>  disqualified participants are pushed to the bottom of the group order
       },
     },
 

@@ -78,7 +78,6 @@ export function modifyEvent(params: ModifyEventArgs): ResultType {
   return { ...SUCCESS };
 }
 
-// TODO: test framework for modifying event.category
 function checkCategoryUpdates(params) {
   const category = params.eventUpdates?.category;
   if (!category) return { ...SUCCESS };

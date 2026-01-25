@@ -31,7 +31,6 @@ export function attemptToSetWinningSide(params) {
       matchUp,
     });
     if (connectedStructureIds.length) {
-      // TODO: return a message if there are effects in connected structures
       console.log({ connectedStructureIds });
       connectedStructures = true;
     }

@@ -51,7 +51,5 @@ export function removeSeededParticipant({
       context: { participantId },
     });
 
-  // TODO: implement rotation of seeded players
-
   return { ...SUCCESS };
 }

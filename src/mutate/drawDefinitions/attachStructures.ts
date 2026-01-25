@@ -67,7 +67,6 @@ export function attachStructures({
       stack,
     });
 
-  // TODO: ensure that all links are valid and reference structures that are/will be included in the drawDefinition
   if (links.length) drawDefinition.links?.push(...links);
 
   const generatedStructureIds = structures.map(({ structureId }) => structureId);

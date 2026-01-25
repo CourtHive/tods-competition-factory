@@ -52,7 +52,6 @@ export function getValidAlternatesAction({
     (action) => action.type === ASSIGN_PARTICIPANT,
   )?.availableParticipantIds;
 
-  // TODO: document policy options
   const otherFlightEntries = appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.otherFlightEntries;
   const restrictQualifyingAlternates = appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS]?.restrictQualifyingAlternates;
 

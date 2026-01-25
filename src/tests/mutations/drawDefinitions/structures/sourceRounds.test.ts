@@ -85,7 +85,6 @@ it('can correctly derive source rounds for final positions in FIRST_MATCH_LOSER_
     playoffPositions: [15],
   }));
 
-  // TODO: This should perhaps be [1, 2] since with FMLC both rounds can produce 13-16
   expect(playoffSourceRounds).toEqual([2]);
   expect(playoffPositionsReturned).toEqual([13, 14, 15, 16]);
 });

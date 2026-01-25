@@ -212,7 +212,6 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
 
   if (isByeMatchUp) return { validActions, isByeMatchUp };
 
-  // TODO: implement method action and pass participants whose role is REFEREE
   if (isAvailableAction({ policyActions, action: REFEREE })) {
     validActions.push({ type: REFEREE, payload: { matchUpId } });
   }

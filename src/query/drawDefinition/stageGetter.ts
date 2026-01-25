@@ -105,7 +105,7 @@ export function getStageEntries({
       structureId,
     });
     if (error) {
-      console.log('playoff entries error'); // TODO: bubble this up...
+      console.log('playoff entries error');
     }
     return (playoffEntries?.length ? playoffEntries : entries).filter(
       (entry) => !placementGroup || entry.placementGroup === placementGroup,
@@ -161,7 +161,6 @@ function getPlayoffEntries({ provisionalPositioning, drawDefinition, structureId
             .filter(Boolean),
         );
 
-        // TODO: ignore structures where finishingPositions are not unique
         const uniqueFinishingPositions = Object.keys(results).reduce((unique: any, key) => {
           const result = results[key];
           const finishingPosition = result.groupOrder || (provisionalPositioning && result.provisionalOrder);

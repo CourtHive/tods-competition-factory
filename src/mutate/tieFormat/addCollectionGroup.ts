@@ -23,8 +23,6 @@ export function addCollectionGroup({
   const stack = 'addCollectionGroup';
   if (!Array.isArray(collectionIds)) return decorateResult({ result: { error: MISSING_VALUE }, stack });
 
-  // TODO: validate groupDefinition
-
   let result = !matchUp
     ? getTieFormat({
         drawDefinition,
@@ -54,9 +52,7 @@ export function addCollectionGroup({
         result: { error: INVALID_VALUES },
         stack,
       });
-    // TODO: calculate the total value of the collectionDefinition
     // either matchUpCount * matchUpValue or collectionValue or collectionValueProfiles total
-    // if not gropuDEfinition.winCriteria.aggregateValue then caluculate valueGoal automatically
   }
 
   const maxGroupNumber = (tieFormat.collectionGroups || []).reduce(

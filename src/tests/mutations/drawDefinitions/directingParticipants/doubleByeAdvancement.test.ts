@@ -245,8 +245,6 @@ it('can create double bye and replace bye with alternate', () => {
     structureId,
     drawId,
   });
-  // TODO: complete this test?
-  // ({ matchUps } = tournamentEngine.allDrawMatchUps({ drawId }));
 });
 
 function replaceWithBye({ drawId, structureId, drawPosition, expectations }) {

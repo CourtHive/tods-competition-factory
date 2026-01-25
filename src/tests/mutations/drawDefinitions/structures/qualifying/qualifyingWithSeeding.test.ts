@@ -10,7 +10,6 @@ import { COMPETITOR } from '@Constants/participantRoles';
 import { SINGLES } from '@Constants/eventConstants';
 import { ELO } from '@Constants/ratingConstants';
 
-// TODO: unPublishEventSeeding - unPublish only MAIN or only QUALIFYING or both...
 const scenarios = [
   {
     qualifyingPositions: 4,

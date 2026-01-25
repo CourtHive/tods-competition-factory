@@ -299,7 +299,7 @@ it('returns correct positionActions for BYE positions where paired participants 
   options = result.validActions?.map((validAction) => validAction.type);
   expect(options.includes(ADD_PENALTY)).toEqual(true);
   expect(options.includes(ADD_NICKNAME)).toEqual(true);
-  expect(options.includes(ASSIGN_BYE)).toEqual(true); // TODO: policy setting whether to allow double byes
+  expect(options.includes(ASSIGN_BYE)).toEqual(true);
   expect(options.includes(REMOVE_ASSIGNMENT)).toEqual(true);
   expect(options.includes(ALTERNATE_PARTICIPANT)).toEqual(true); // in this case there are 2 alternates
   expect(options.includes(SWAP_PARTICIPANTS)).toEqual(true);

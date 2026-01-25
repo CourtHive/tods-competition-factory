@@ -118,8 +118,6 @@ export function generateFlightDrawDefinitions({
           if (result?.error) return result;
         }
 
-        // TODO: enable { outcomes: [] } in eventProfile: { drawProfiles }
-
         const completionGoal = drawProfile?.completionGoal;
         const manual = drawProfile?.automated === false;
 

@@ -73,10 +73,6 @@ export function getParticipantsCount({ participantsProfile, eventProfiles, drawP
     }
   };
 
-  /*
-   * TODO: let categories = []; // use when generating participants
-   */
-
   eventProfiles?.forEach((eventProfile) => {
     const {
       tieFormatName: eventTieFormatName,

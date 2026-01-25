@@ -27,7 +27,6 @@ export function setDelegatedOutcome({ drawDefinition, matchUpId, outcome, matchU
     return { error: INVALID_VALUES };
   }
 
-  // TODO: check validity of outcome
   const extension = {
     name: DELEGATED_OUTCOME,
     value: outcome,

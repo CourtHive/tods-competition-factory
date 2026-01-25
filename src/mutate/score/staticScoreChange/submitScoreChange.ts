@@ -66,7 +66,6 @@ function getModifiedSet(params) {
       }
     }
   } else if (isGameValue) {
-    // TODO: check if value is valid point value
     if (sideNumber === 1) {
       modifiedSet.side1PointScore = value;
     } else if (sideNumber === 2) {

@@ -5,7 +5,6 @@ import { SUCCESS } from '@Constants/resultConstants';
 import { Court } from '@Types/tournamentTypes';
 
 // bulk update when tournament dates change
-// TODO: check to see if court is present in other linked tournaments
 export function updateCourtAvailability({ tournamentRecord }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 

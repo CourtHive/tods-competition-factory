@@ -357,8 +357,6 @@ test.each([tournamentEngine])(
 
     const qualifyingMatchUps = Object.values(qualifyingStructure.roundMatchUps).flat();
 
-    // TODO: it is necessary to SCHEDULE the qualifying matchUps before the structureDetail publishing can be tested
-
     let matchUpContextIds = qualifyingMatchUps.map(({ drawId, matchUpId }: any) => ({
       tournamentId: tournamentRecord.tournamentId,
       matchUpId,

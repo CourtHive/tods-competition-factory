@@ -89,7 +89,6 @@ test('hydrated consolation matchUps include seeding when participants advance', 
   expect(consolationStructure.seedAssignments.length).toEqual(2);
 
   /*
-  TODO: check finishingPositionRange for FMLC consolation structure
   console.log(
     matchUps.map(({ finishingPositionRange }) => finishingPositionRange)
   );

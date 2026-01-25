@@ -20,8 +20,8 @@ type InitializeStructureSeedAssignmentsArgs = {
   drawSizeProgression?: boolean;
   seedingProfile?: SeedingProfile;
   drawDefinition: DrawDefinition;
-  participantsCount?: number; // TODO: migrate to participantsCount
-  participantCount?: number; // TODO: migrate to participantsCount
+  participantsCount?: number;
+  participantCount?: number;
   structureId: string;
   seedsCount: number;
 };
