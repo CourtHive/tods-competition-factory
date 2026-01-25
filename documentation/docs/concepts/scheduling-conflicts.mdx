@@ -2,46 +2,409 @@
 title: Conflict Reporting
 ---
 
-import RenderJSON from '../components/RenderJSON';
-import tournamentParticipants from './assets/tournamentParticipants.json';
+## Overview
 
-## Schedule Conflict Reporting
+Schedule conflict reporting identifies players who have overlapping match commitments that violate recovery time requirements or scheduling policies. The Competition Factory automatically detects and reports these conflicts to help tournament directors maintain player welfare and schedule integrity.
 
-Schedule Conflicts are reported for participants that are returned from `engine.getParticipants`.
+## How Conflict Detection Works
 
-The attribute `scheduleConflicts` is an array of objects containing pairs of `matchUpIds`
-that have been scheduled at times that conflict with each other based on either the **scheduling policy**
-that is in force, or a specified `scheduledMinutesDifference`, which overrides the default behavior.
+Conflicts are detected when a player's matches are scheduled too close together, based on:
 
-:::note
-`matchUpIds` in the `scheduleConflicts` array may refer to either a participant's `matchUps` or their `potentialMatchUps` which are defined as those `matchUps`
-in which they will appear if they either win or lose `matchUps` in which they are already present.
-:::
+1. **Scheduling Policy**: Uses format-specific average match times and recovery periods
+2. **Actual Match End Times**: If available, uses real completion time plus recovery
+3. **Custom Thresholds**: Optionally override with specific minute differences
 
-A **scheduling policy** defines average match times for different scoring formats as well as recovery times between **_matchUpTypes_**.
-A conflict occurs when a matchUp's `scheduledTime + averageMinutes + recoveryMinutes`, or `endTime + recoveryMinutes` (if available) is greater than the `scheduledTime` of any other participant `matchUp`.
+### Conflict Calculation
+
+A conflict occurs when:
+
+```
+Match 1 projected end time + recovery time > Match 2 scheduled start time
+```
+
+Where:
+
+- **Projected end time** = `scheduledTime + averageMinutes` OR actual `endTime`
+- **Recovery time** = Policy-defined rest period (format and category specific)
+- **Match 2 start time** = Next scheduled match for the player
+
+## Retrieving Conflict Information
+
+### Basic Conflict Detection
 
 ```js
+import { tournamentEngine } from 'tods-competition-factory';
+
 const {
   participants,
-  participantIdsWithConflicts, // array of participantIds which have scheduling conflicts
-} = engine.getParticipants({
+  participantIdsWithConflicts, // Array of participantIds with conflicts
+} = tournamentEngine.getParticipants({
+  withMatchUps: true,
+  scheduleAnalysis: true,
+});
+
+// Check for conflicts
+if (participantIdsWithConflicts.length > 0) {
+  console.log(`${participantIdsWithConflicts.length} players have scheduling conflicts`);
+
+  // Get detailed conflict information
+  const conflictedPlayers = participants.filter((p) => participantIdsWithConflicts.includes(p.participantId));
+
+  conflictedPlayers.forEach((player) => {
+    console.log(`${player.participantName}:`);
+    player.scheduleConflicts.forEach((conflict) => {
+      console.log(`  Match ${conflict.matchUpId1} conflicts with ${conflict.matchUpId2}`);
+    });
+  });
+}
+```
+
+### Custom Conflict Threshold
+
+Override policy defaults with a specific minute difference:
+
+```js
+const { participants, participantIdsWithConflicts } = tournamentEngine.getParticipants({
   scheduleAnalysis: {
-    scheduledMinutesDifference: 60, // optional - scheduling conflicts determined by scheduledTime difference between matchUps
+    scheduledMinutesDifference: 60, // Flag any matches within 60 minutes
   },
-  withStatistics,
-  withOpponents,
-  withMatchUps,
+  withMatchUps: true,
 });
 ```
 
-### Example participants with schedule conflicts
+This approach:
 
-<RenderJSON
-  data={tournamentParticipants}
-  root={'tournamentParticipants'}
-  colorScheme={'summerfruit'}
-  invertTheme={true}
-  expandRoot={true}
-  expandToLevel={1}
-/>
+- **Ignores** policy-defined recovery times
+- **Flags** any matches scheduled less than 60 minutes apart
+- **Useful for** quick validation or stricter requirements
+
+## Conflict Data Structure
+
+Participants with conflicts include a `scheduleConflicts` array:
+
+```ts
+type Participant = {
+  participantId: string;
+  participantName: string;
+  scheduleConflicts?: Array<{
+    matchUpId1: string;
+    matchUpId2: string;
+    gap?: number; // Minutes between matches (if calculable)
+    required?: number; // Required minutes based on policy
+  }>;
+  matchUps?: MatchUp[]; // Player's scheduled matches
+  potentialMatchUps?: MatchUp[]; // Future possible matches
+};
+```
+
+### Conflict Types
+
+**1. Confirmed Conflicts** - Both matches have scheduled times:
+
+```js
+{
+  matchUpId1: 'match-123',  // First match
+  matchUpId2: 'match-456',  // Second match
+  gap: 45,                  // Actual minutes between matches
+  required: 60              // Required recovery time
+}
+```
+
+**2. Potential Conflicts** - Involves future/conditional matches:
+
+```js
+{
+  matchUpId1: 'match-123',  // Current match
+  matchUpId2: 'match-789',  // Potential future match (if player wins)
+  gap: 30,
+  required: 60
+}
+```
+
+## Understanding Potential Matches
+
+:::note Potential MatchUps
+`potentialMatchUps` are matches a player will participate in based on winning or losing their current match. The conflict detector considers these to prevent scheduling issues in later rounds.
+:::
+
+Example scenario:
+
+- Player has Semifinals match at 2:00 PM
+- Finals scheduled at 4:00 PM (if player wins)
+- Recovery time required: 90 minutes
+- **Conflict detected**: Not enough time between potential end (3:30 PM + recovery) and finals start (4:00 PM)
+
+## Resolution Strategies
+
+### 1. Identify All Conflicts
+
+```js
+const { participants, participantIdsWithConflicts } = tournamentEngine.getParticipants({
+  scheduleAnalysis: true,
+  withMatchUps: true,
+  withPotentialMatchUps: true,
+});
+
+// Group conflicts by severity
+const criticalConflicts = [];
+const minorConflicts = [];
+
+participants
+  .filter((p) => p.scheduleConflicts?.length > 0)
+  .forEach((player) => {
+    player.scheduleConflicts.forEach((conflict) => {
+      const shortfall = (conflict.required || 0) - (conflict.gap || 0);
+
+      if (shortfall > 30) {
+        criticalConflicts.push({ player, conflict, shortfall });
+      } else {
+        minorConflicts.push({ player, conflict, shortfall });
+      }
+    });
+  });
+
+console.log(`Critical conflicts: ${criticalConflicts.length}`);
+console.log(`Minor conflicts: ${minorConflicts.length}`);
+```
+
+### 2. Reschedule Conflicting Matches
+
+```js
+// Reschedule one of the conflicting matches
+criticalConflicts.forEach(({ player, conflict }) => {
+  // Get match details
+  const match1 = player.matchUps.find((m) => m.matchUpId === conflict.matchUpId1);
+  const match2 = player.matchUps.find((m) => m.matchUpId === conflict.matchUpId2);
+
+  // Determine which match to move (usually the later one)
+  const matchToReschedule = match2;
+
+  // Calculate new time with sufficient recovery
+  const match1End = addMinutes(match1.schedule.scheduledTime, 90); // avg match time
+  const newTime = addMinutes(match1End, conflict.required);
+
+  // Apply new schedule
+  tournamentEngine.addMatchUpScheduledTime({
+    matchUpId: matchToReschedule.matchUpId,
+    scheduledTime: newTime,
+    scheduledDate: matchToReschedule.schedule.scheduledDate,
+  });
+});
+
+// Re-check for conflicts
+const { participantIdsWithConflicts: remainingConflicts } = tournamentEngine.getParticipants({
+  scheduleAnalysis: true,
+});
+
+console.log(`Remaining conflicts: ${remainingConflicts.length}`);
+```
+
+### 3. Adjust Scheduling Policy
+
+If conflicts are systematic, adjust the policy. These functions add extensions to the tournament record that are read by scheduling functions:
+
+```js
+// Increase recovery times (adds tournament-level extension)
+tournamentEngine.modifyMatchUpFormatTiming({
+  matchUpFormat: 'SET3-S:6/TB7',
+  recoveryTimes: [
+    {
+      categoryNames: [],
+      minutes: { default: 90 }, // Increased from 60
+    },
+  ],
+});
+
+// Reduce daily limits (adds tournament-level extension)
+tournamentEngine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 1, DOUBLES: 1, total: 2 }, // More restrictive
+});
+```
+
+:::note
+These modifications persist at the tournament level and affect all subsequent scheduling operations until explicitly changed.
+:::
+
+### 4. Manual Override
+
+For unavoidable conflicts (e.g., late-night match followed by early match next day):
+
+```js
+// Document the exception
+tournamentEngine.addExtension({
+  matchUpId: 'match-456',
+  extension: {
+    name: 'scheduleException',
+    value: {
+      reason: 'Tournament director approved - player consent obtained',
+      approvedBy: 'TD Name',
+      timestamp: new Date().toISOString(),
+    },
+  },
+});
+```
+
+## Best Practices
+
+### Conflict Prevention
+
+1. **Run conflict analysis before finalizing schedules**
+
+   ```js
+   // Before publishing order of play
+   const { participantIdsWithConflicts } = tournamentEngine.getParticipants({
+     scheduleAnalysis: true,
+   });
+
+   if (participantIdsWithConflicts.length > 0) {
+     console.warn('STOP: Conflicts detected - resolve before publishing');
+   }
+   ```
+
+2. **Check after each schedule change**
+   - Re-run analysis after rescheduling matches
+   - Ensure fixes don't create new conflicts
+
+3. **Consider potential matches**
+   - Enable `withPotentialMatchUps` to detect future conflicts
+   - Particularly important for semifinals/finals scheduling
+
+### Conflict Resolution Priority
+
+1. **Critical conflicts** (gap < required by 60+ minutes) - immediate resolution
+2. **Moderate conflicts** (gap < required by 30-60 minutes) - high priority
+3. **Minor conflicts** (gap < required by < 30 minutes) - evaluate case-by-case
+
+### Communication
+
+When conflicts exist:
+
+- **Notify affected players** immediately
+- **Obtain consent** if conflict cannot be resolved
+- **Document exceptions** for tournament records
+- **Explain** how the conflict will be managed (e.g., medical timeout extended, warm-up time adjusted)
+
+## Common Scenarios
+
+### Multi-Event Players
+
+Players in both singles and doubles often face conflicts:
+
+```js
+// Find multi-event players with conflicts
+const multiEventPlayers = participants.filter((p) => {
+  const eventTypes = new Set(p.matchUps?.map((m) => m.eventType));
+  return eventTypes.size > 1 && p.scheduleConflicts?.length > 0;
+});
+
+multiEventPlayers.forEach((player) => {
+  console.log(`${player.participantName} has ${player.scheduleConflicts.length} cross-event conflicts`);
+});
+```
+
+### Back-to-Back Matches
+
+Players scheduled on multiple courts simultaneously:
+
+```js
+// Detect impossible simultaneous scheduling
+const simultaneousMatches = participants.filter((p) => {
+  const matches = p.matchUps || [];
+  const times = matches.map((m) => m.schedule?.scheduledTime).filter(Boolean);
+  return new Set(times).size < times.length; // Duplicate times = simultaneous
+});
+```
+
+### Finals Day Conflicts
+
+Semifinals too close to finals:
+
+```js
+// Check specific round scheduling
+const finalists = participants.filter((p) => {
+  const hasSemifinal = p.matchUps?.some((m) => m.roundName === 'Semifinals');
+  const hasFinal = p.potentialMatchUps?.some((m) => m.roundName === 'Finals');
+  return hasSemifinal && hasFinal && p.scheduleConflicts?.length > 0;
+});
+```
+
+## Validation Workflow
+
+Complete validation before publishing schedules:
+
+```js
+// Comprehensive schedule validation
+function validateSchedule(tournamentEngine) {
+  const validation = {
+    conflicts: [],
+    warnings: [],
+    errors: [],
+  };
+
+  // 1. Check for scheduling conflicts
+  const { participantIdsWithConflicts, participants } = tournamentEngine.getParticipants({
+    scheduleAnalysis: true,
+    withMatchUps: true,
+    withPotentialMatchUps: true,
+  });
+
+  if (participantIdsWithConflicts.length > 0) {
+    validation.errors.push({
+      type: 'SCHEDULE_CONFLICT',
+      count: participantIdsWithConflicts.length,
+      details: participants
+        .filter((p) => participantIdsWithConflicts.includes(p.participantId))
+        .map((p) => ({
+          name: p.participantName,
+          conflicts: p.scheduleConflicts,
+        })),
+    });
+  }
+
+  // 2. Check daily limits
+  const overLimitPlayers = participants.filter((p) => {
+    const matchesByDate = groupBy(p.matchUps, (m) => m.schedule?.scheduledDate);
+    return Object.values(matchesByDate).some((matches) => matches.length > 3);
+  });
+
+  if (overLimitPlayers.length > 0) {
+    validation.warnings.push({
+      type: 'DAILY_LIMIT_EXCEEDED',
+      count: overLimitPlayers.length,
+    });
+  }
+
+  // 3. Check for unscheduled matches
+  const { matchUps } = tournamentEngine.allTournamentMatchUps();
+  const unscheduled = matchUps.filter((m) => !m.schedule?.scheduledTime);
+
+  if (unscheduled.length > 0) {
+    validation.warnings.push({
+      type: 'UNSCHEDULED_MATCHES',
+      count: unscheduled.length,
+    });
+  }
+
+  return validation;
+}
+
+// Run validation
+const validation = validateSchedule(tournamentEngine);
+
+if (validation.errors.length > 0) {
+  console.error('Schedule has errors - cannot publish:');
+  console.error(JSON.stringify(validation.errors, null, 2));
+} else if (validation.warnings.length > 0) {
+  console.warn('Schedule has warnings - review before publishing:');
+  console.warn(JSON.stringify(validation.warnings, null, 2));
+} else {
+  console.log('Schedule validation passed - ready to publish');
+}
+```
+
+## Related Documentation
+
+- **[Scheduling Overview](./scheduling-overview)** - Understanding scheduling workflows
+- **[Scheduling Policy](./scheduling-policy)** - Configuring recovery times and daily limits
+- **[Automated Scheduling](./automated-scheduling)** - How conflicts are prevented during auto-scheduling
+- **[Query Governor](/docs/governors/query-governor)** - API reference for getParticipants method

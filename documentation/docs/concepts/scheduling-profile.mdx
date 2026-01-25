@@ -2,45 +2,672 @@
 title: Scheduling Profile
 ---
 
-import RenderJSON from '../components/RenderJSON';
-import SchedulingProfile from './assets/schedulingProfile.json';
+## Overview
 
-## schedulingProfile
+A **Scheduling Profile** is a declarative configuration that defines which rounds from which events should be scheduled on specific dates and at specific venues. It serves as the blueprint for automated multi-day tournament scheduling, allowing the Garman scheduling algorithm to process rounds across multiple events in a coordinated manner.
 
-To support the use of the Garman formula for scheduling `matchUps` from different events,
-factory `engine` makes use of a `schedulingProfile` to define the order of `rounds` of structures within `drawDefinitions`
-to be scheduled on specific days, and then iteratively calls the Garman formula.
+**Key Benefits:**
+- **Multi-Event Coordination**: Schedule rounds from singles, doubles, and team events together
+- **Venue-Specific Planning**: Assign different events/rounds to different venues
+- **Day-by-Day Control**: Define exactly what gets scheduled each day
+- **Automated Execution**: Use `scheduleProfileRounds()` to automatically schedule all configured rounds
+- **Persistent Configuration**: Stored as tournament extension, survives save/load cycles
 
-The `schedulingProfile` is an array of profiles for the `scheduleDates` to be scheduled; it is stored as an `extension` attached to the tournament record.
-The factory provides convenience methods for creating and manipulting the `schedulingProfile`, or it can be generated externally and attached
-via `setSchedulingProfile()`.
+## Data Structure
 
-Each `scheduleDate` profile object must include the attributes `{ scheduleDate, venues }`, and the `venues` attribute must be an array of venue profile objects
-which include the attributes `{ venueId, rounds }`, where `rounds` is an array of objects with the following attributes:
+A scheduling profile is an array of date-specific configurations, each containing venue-specific round assignments.
+
+### Profile Structure
+
+```ts
+type SchedulingProfile = ScheduleDateProfile[];
+
+type ScheduleDateProfile = {
+  scheduleDate: string;        // ISO date string 'YYYY-MM-DD'
+  venues: VenueProfile[];      // Venue assignments for this date
+};
+
+type VenueProfile = {
+  venueId: string;             // UUID of venue
+  rounds: RoundProfile[];      // Rounds to schedule at this venue
+};
+
+type RoundProfile = {
+  // Required identifiers
+  tournamentId: string;        // Tournament UUID
+  eventId: string;             // Event UUID
+  drawId: string;              // Draw UUID
+  structureId: string;         // Structure UUID
+  roundNumber: number;         // Round number (1-based)
+  
+  // Optional scheduling controls
+  notBeforeTime?: string;      // 'HH:MM' - earliest start time for this round
+  roundSegment?: {
+    segmentNumber: number;     // Which segment (1-based)
+    segmentsCount: number;     // Total segments in round
+  };
+  
+  // Optional display attributes (not used by scheduling engine)
+  eventName?: string;          // Display name
+  roundName?: string;          // Display name (e.g., 'R16', 'QF', 'SF')
+  sortOrder?: number;          // Display order
+};
+```
+
+## Creating a Scheduling Profile
+
+### Manual Creation
+
+Build the profile structure manually for complete control:
 
 ```js
-[
-  {
-    // required
-    tournamentId,
-    eventId,
-    drawId,
-    structureId,
-    roundNumber,
+import { tournamentEngine } from 'tods-competition-factory';
 
-    //optional
-    notBeforeTime, // optional - 'HH:MM' timeString - TO BE IMPLEMENTED
-    roundSegment: {
-      segmentNumber, // segment which is to be scheduled
-      segmentsCount, // number of segments in a round
-    },
+// Define profile for 3-day tournament
+const schedulingProfile = [
+  // Day 1: First rounds of multiple events
+  {
+    scheduleDate: '2024-06-15',
+    venues: [
+      {
+        venueId: 'venue-main-courts',
+        rounds: [
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-singles-u18',
+            drawId: 'draw-singles-u18',
+            structureId: 'structure-main',
+            roundNumber: 1,
+            notBeforeTime: '09:00'
+          },
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-doubles-u18',
+            drawId: 'draw-doubles-u18',
+            structureId: 'structure-main',
+            roundNumber: 1,
+            notBeforeTime: '11:00'
+          }
+        ]
+      }
+    ]
   },
+  // Day 2: Later rounds
+  {
+    scheduleDate: '2024-06-16',
+    venues: [
+      {
+        venueId: 'venue-main-courts',
+        rounds: [
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-singles-u18',
+            drawId: 'draw-singles-u18',
+            structureId: 'structure-main',
+            roundNumber: 2  // R16
+          },
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-singles-u18',
+            drawId: 'draw-singles-u18',
+            structureId: 'structure-main',
+            roundNumber: 3  // QF
+          }
+        ]
+      }
+    ]
+  },
+  // Day 3: Finals
+  {
+    scheduleDate: '2024-06-17',
+    venues: [
+      {
+        venueId: 'venue-center-court',
+        rounds: [
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-singles-u18',
+            drawId: 'draw-singles-u18',
+            structureId: 'structure-main',
+            roundNumber: 4,  // SF
+            notBeforeTime: '10:00'
+          },
+          {
+            tournamentId: 'tournament-123',
+            eventId: 'event-singles-u18',
+            drawId: 'draw-singles-u18',
+            structureId: 'structure-main',
+            roundNumber: 5,  // Final
+            notBeforeTime: '14:00'
+          }
+        ]
+      }
+    ]
+  }
+];
+
+// Attach to tournament
+tournamentEngine.setState(tournamentRecord);
+const result = tournamentEngine.setSchedulingProfile({ schedulingProfile });
+
+if (result.success) {
+  console.log('Scheduling profile configured');
+}
+```
+
+### Programmatic Generation
+
+Build profiles dynamically based on tournament structure:
+
+```js
+// Get all events and their draw structures
+const { events } = tournamentEngine.getEvents();
+
+const schedulingProfile = [];
+const scheduleDates = ['2024-06-15', '2024-06-16', '2024-06-17'];
+const venueId = 'venue-main';
+
+// Assign rounds to dates
+scheduleDates.forEach((scheduleDate, dayIndex) => {
+  const rounds = [];
+  
+  events.forEach(event => {
+    event.drawDefinitions?.forEach(draw => {
+      draw.structures?.forEach(structure => {
+        const maxRound = structure.matchUps?.reduce((max, mu) => 
+          Math.max(max, mu.roundNumber), 0
+        );
+        
+        // Schedule specific rounds on specific days
+        if (dayIndex === 0 && [1].includes(structure.roundNumber)) {
+          // Day 1: Round 1
+          rounds.push({
+            tournamentId: event.tournamentId,
+            eventId: event.eventId,
+            drawId: draw.drawId,
+            structureId: structure.structureId,
+            roundNumber: 1,
+            eventName: event.eventName
+          });
+        } else if (dayIndex === 1 && maxRound >= 2) {
+          // Day 2: Round 2
+          rounds.push({
+            tournamentId: event.tournamentId,
+            eventId: event.eventId,
+            drawId: draw.drawId,
+            structureId: structure.structureId,
+            roundNumber: 2,
+            eventName: event.eventName
+          });
+        }
+        // ... more logic
+      });
+    });
+  });
+  
+  if (rounds.length > 0) {
+    schedulingProfile.push({
+      scheduleDate,
+      venues: [{ venueId, rounds }]
+    });
+  }
+});
+
+tournamentEngine.setSchedulingProfile({ schedulingProfile });
+```
+
+## Using Scheduling Profiles
+
+### Automated Scheduling
+
+Once a profile is configured, use `scheduleProfileRounds()` to automatically schedule all defined rounds:
+
+```js
+// Schedule all rounds defined in the profile
+const result = tournamentEngine.scheduleProfileRounds({
+  periodLength: 30,                          // Scheduling block size in minutes (see note below)
+  checkPotentialRequestConflicts: true       // Consider potential matchUp conflicts
+});
+
+// Handle results
+const {
+  scheduledDates,           // Array of dates where matches were scheduled
+  scheduledMatchUpIds,      // All successfully scheduled matchUpIds
+  noTimeMatchUpIds,         // MatchUps that couldn't be fit into available time
+  overLimitMatchUpIds,      // MatchUps blocked by daily limits
+  requestConflicts          // Array of { date, conflicts } for participant conflicts
+} = result;
+
+console.log(`Scheduled ${scheduledMatchUpIds.length} matches`);
+console.log(`${noTimeMatchUpIds.length} matches need more court time`);
+console.log(`${overLimitMatchUpIds.length} matches blocked by daily limits`);
+```
+
+:::tip What is periodLength?
+`periodLength` defines the scheduling block size in minutes (default: 30). It controls:
+- **Time slot granularity**: Creates time blocks at regular intervals (e.g., 30 minutes = 9:00, 9:30, 10:00, ...)
+- **Match grouping**: Groups matches by duration relative to block size for efficient scheduling
+- **Court utilization**: Smaller blocks (15 min) = finer control; larger blocks (60 min) = simpler but may waste time
+
+**Recommended values:**
+- 15 minutes: Short format tournaments (Fast4, no-ad)
+- 30 minutes: Standard tournaments (best of 3 sets) ← Most common
+- 60 minutes: Long format events (best of 5 sets)
+
+See [Period Length documentation](/docs/concepts/automated-scheduling#period-length-scheduling-block-size) for detailed explanation.
+:::
+
+### Partial Scheduling
+
+Schedule specific dates from the profile:
+
+```js
+// Schedule only specific dates
+const result = tournamentEngine.scheduleProfileRounds({
+  scheduleDates: ['2024-06-15', '2024-06-16'],  // Only these dates
+  periodLength: 30
+});
+```
+
+### Clear and Reschedule
+
+Clear existing schedules before applying profile:
+
+```js
+// Clear specific dates
+const result = tournamentEngine.scheduleProfileRounds({
+  clearScheduleDates: ['2024-06-15'],  // Clear these dates first
+  scheduleDates: ['2024-06-15'],       // Then reschedule
+  periodLength: 30
+});
+
+// Clear ALL dates in profile
+const result = tournamentEngine.scheduleProfileRounds({
+  clearScheduleDates: true,  // Clear all dates in profile
+  periodLength: 30
+});
+```
+
+### Dry Run
+
+Preview scheduling without making changes:
+
+```js
+const result = tournamentEngine.scheduleProfileRounds({
+  dryRun: true,  // Don't actually schedule, just report what would happen
+  periodLength: 30
+});
+
+console.log('Would schedule:', result.scheduledMatchUpIds.length);
+console.log('Would have conflicts:', result.requestConflicts.length);
+```
+
+## Validation
+
+Validate a profile before applying it:
+
+```js
+const { valid, error } = tournamentEngine.validateSchedulingProfile({
+  schedulingProfile
+});
+
+if (!valid) {
+  console.error('Invalid profile:', error);
+} else {
+  console.log('Profile is valid');
+  tournamentEngine.setSchedulingProfile({ schedulingProfile });
+}
+```
+
+**Validation Checks:**
+- All required fields present (`scheduleDate`, `venueId`, `tournamentId`, `eventId`, `drawId`, `structureId`, `roundNumber`)
+- Valid date formats
+- Referenced IDs exist in tournament
+- Round numbers valid for their structures
+- No duplicate round assignments on same date
+
+## Round Segmentation
+
+For large rounds, split scheduling across multiple sessions:
+
+```js
+{
+  scheduleDate: '2024-06-15',
+  venues: [{
+    venueId: 'venue-main',
+    rounds: [
+      // Morning session: First half of R32
+      {
+        eventId: 'event-singles',
+        drawId: 'draw-main',
+        structureId: 'structure-main',
+        roundNumber: 1,
+        notBeforeTime: '09:00',
+        roundSegment: {
+          segmentNumber: 1,    // First segment
+          segmentsCount: 2     // Split into 2 segments
+        }
+      },
+      // Afternoon session: Second half of R32
+      {
+        eventId: 'event-singles',
+        drawId: 'draw-main',
+        structureId: 'structure-main',
+        roundNumber: 1,
+        notBeforeTime: '14:00',
+        roundSegment: {
+          segmentNumber: 2,    // Second segment
+          segmentsCount: 2
+        }
+      }
+    ]
+  }]
+}
+```
+
+## Multi-Venue Scheduling
+
+Assign different events to different venues on the same day:
+
+```js
+{
+  scheduleDate: '2024-06-15',
+  venues: [
+    {
+      venueId: 'venue-center-court',
+      rounds: [
+        // Feature matches on center court
+        {
+          eventId: 'event-singles-championship',
+          drawId: 'draw-main',
+          structureId: 'structure-main',
+          roundNumber: 4,  // Semifinals
+          notBeforeTime: '13:00'
+        }
+      ]
+    },
+    {
+      venueId: 'venue-outside-courts',
+      rounds: [
+        // Earlier rounds on outside courts
+        {
+          eventId: 'event-singles-u16',
+          drawId: 'draw-main',
+          structureId: 'structure-main',
+          roundNumber: 1
+        },
+        {
+          eventId: 'event-doubles-u16',
+          drawId: 'draw-main',
+          structureId: 'structure-main',
+          roundNumber: 1
+        }
+      ]
+    }
+  ]
+}
+```
+
+## Best Practices
+
+### 1. Logical Progression
+
+Order rounds logically within each day:
+
+```js
+// Good: Logical progression
+rounds: [
+  { roundNumber: 1, eventName: 'U18 Singles' },
+  { roundNumber: 2, eventName: 'U18 Singles' },
+  { roundNumber: 1, eventName: 'U18 Doubles' }
+]
+
+// Avoid: Random ordering
+rounds: [
+  { roundNumber: 2, eventName: 'U18 Singles' },
+  { roundNumber: 1, eventName: 'U18 Doubles' },
+  { roundNumber: 1, eventName: 'U18 Singles' }
+]
+```
+
+### 2. Use notBeforeTime
+
+Prevent early rounds from delaying featured matches:
+
+```js
+{
+  scheduleDate: '2024-06-17',
+  venues: [{
+    venueId: 'venue-center-court',
+    rounds: [
+      {
+        roundNumber: 4,  // Semifinals
+        notBeforeTime: '11:00'  // Morning session
+      },
+      {
+        roundNumber: 5,  // Final
+        notBeforeTime: '15:00'  // Afternoon feature
+      }
+    ]
+  }]
+}
+```
+
+### 3. Balance Court Load
+
+Distribute matches across available venues:
+
+```js
+// Check court availability before assigning
+const { venues } = tournamentEngine.getVenues();
+
+venues.forEach(venue => {
+  const courtCount = venue.courts?.length || 0;
+  const availableHours = 8;  // Court availability hours
+  const matchesPerCourt = 6;  // Estimate
+  const capacity = courtCount * matchesPerCourt;
+  
+  console.log(`${venue.venueName}: ${capacity} matches/day capacity`);
+});
+```
+
+### 4. Consider Dependencies
+
+Schedule rounds in order that respects match dependencies:
+
+```js
+// Day 1: Round 1 must complete before Round 2 can start
+{
+  scheduleDate: '2024-06-15',
+  venues: [{
+    venueId: 'venue-main',
+    rounds: [
+      { roundNumber: 1 }  // R32
+    ]
+  }]
+},
+// Day 2: Round 2 only after Round 1 winners determined
+{
+  scheduleDate: '2024-06-16',
+  venues: [{
+    venueId: 'venue-main',
+    rounds: [
+      { roundNumber: 2 }  // R16 - depends on R32 completion
+    ]
+  }]
+}
+```
+
+## Common Scenarios
+
+### Weekend Tournament
+
+Two-day local tournament:
+
+```js
+const schedulingProfile = [
+  {
+    scheduleDate: '2024-06-15',  // Saturday
+    venues: [{
+      venueId: 'local-club',
+      rounds: [
+        { eventId: 'singles-open', roundNumber: 1 },
+        { eventId: 'singles-open', roundNumber: 2 },
+        { eventId: 'doubles-open', roundNumber: 1 }
+      ]
+    }]
+  },
+  {
+    scheduleDate: '2024-06-16',  // Sunday
+    venues: [{
+      venueId: 'local-club',
+      rounds: [
+        { eventId: 'singles-open', roundNumber: 3 },  // SF
+        { eventId: 'singles-open', roundNumber: 4, notBeforeTime: '13:00' },  // Final
+        { eventId: 'doubles-open', roundNumber: 2 },  // SF
+        { eventId: 'doubles-open', roundNumber: 3, notBeforeTime: '15:00' }   // Final
+      ]
+    }]
+  }
 ];
 ```
 
-### Example
+### Championship Week
 
-In this example additional attributes have been added by the client applications for display purposes.
-They are not required for automated scheduling to function.
+Multi-venue, multi-event championship:
 
-<RenderJSON data={SchedulingProfile} root={'schedulingProfile'} colorScheme={'summerfruit'} invertTheme={true} />
+```js
+const schedulingProfile = [
+  // Days 1-3: Qualifying and early rounds
+  ...['2024-07-01', '2024-07-02', '2024-07-03'].map(date => ({
+    scheduleDate: date,
+    venues: [
+      {
+        venueId: 'qualifying-venue',
+        rounds: qualifyingRounds
+      },
+      {
+        venueId: 'main-venue',
+        rounds: earlyMainDrawRounds
+      }
+    ]
+  })),
+  // Days 4-5: Later rounds at main venue only
+  ...['2024-07-04', '2024-07-05'].map(date => ({
+    scheduleDate: date,
+    venues: [{
+      venueId: 'main-venue',
+      rounds: laterRounds
+    }]
+  })),
+  // Day 6: Finals on center court
+  {
+    scheduleDate: '2024-07-06',
+    venues: [{
+      venueId: 'center-court',
+      rounds: finalsRounds
+    }]
+  }
+];
+```
+
+### Multi-Event Youth Tournament
+
+Age-group tournament with staggered schedules:
+
+```js
+const ageGroups = ['U12', 'U14', 'U16', 'U18'];
+const schedulingProfile = [];
+
+// Spread age groups across 4 days
+ageGroups.forEach((ageGroup, dayIndex) => {
+  const date = addDays('2024-08-01', dayIndex);
+  
+  schedulingProfile.push({
+    scheduleDate: date,
+    venues: [{
+      venueId: 'youth-center',
+      rounds: [
+        {
+          eventId: `singles-${ageGroup}`,
+          drawId: `draw-singles-${ageGroup}`,
+          structureId: 'main',
+          roundNumber: 1,
+          eventName: `${ageGroup} Singles Round 1`
+        },
+        {
+          eventId: `doubles-${ageGroup}`,
+          drawId: `draw-doubles-${ageGroup}`,
+          structureId: 'main',
+          roundNumber: 1,
+          eventName: `${ageGroup} Doubles Round 1`
+        }
+      ]
+    }]
+  });
+});
+```
+
+## Retrieving Scheduling Profile
+
+Get the current profile from tournament record:
+
+```js
+// Get as extension
+const { extension } = tournamentEngine.findExtension({
+  name: 'schedulingProfile'
+});
+
+const schedulingProfile = extension?.value;
+
+// Or query specific information
+schedulingProfile.forEach(({ scheduleDate, venues }) => {
+  console.log(`Date: ${scheduleDate}`);
+  venues.forEach(({ venueId, rounds }) => {
+    console.log(`  Venue: ${venueId}`);
+    console.log(`  Rounds: ${rounds.length}`);
+  });
+});
+```
+
+## Integration with Other Scheduling Features
+
+### Combined with Scheduling Policy
+
+Profiles work alongside scheduling policies:
+
+```js
+// Set policy for recovery times and daily limits
+tournamentEngine.attachPolicies({
+  policyDefinitions: POLICY_SCHEDULING_DEFAULT
+});
+
+tournamentEngine.setMatchUpDailyLimits({
+  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 }
+});
+
+// Then use profile for round-by-round scheduling
+tournamentEngine.setSchedulingProfile({ schedulingProfile });
+tournamentEngine.scheduleProfileRounds({ periodLength: 30 });
+// Garman scheduling will respect policy limits
+```
+
+### Pro Scheduling Mode
+
+For professional tournaments with grid scheduling:
+
+```js
+const result = tournamentEngine.scheduleProfileRounds({
+  pro: true,  // Use grid scheduling instead of Garman
+  periodLength: 30
+});
+// Uses court-specific grid placement
+```
+
+## Related Documentation
+
+- **[Scheduling Overview](./scheduling-overview)** - Understanding scheduling workflows
+- **[Automated Scheduling](./automated-scheduling)** - Garman formula details
+- **[Scheduling Policy](./scheduling-policy)** - Recovery times and daily limits
+- **[Venues and Courts](./venues-courts)** - Venue configuration
+- **[Schedule Governor](/docs/governors/schedule-governor)** - API reference for `scheduleProfileRounds()`

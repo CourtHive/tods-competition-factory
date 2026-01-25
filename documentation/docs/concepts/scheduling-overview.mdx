@@ -4,19 +4,252 @@ title: Overview
 
 ## Overview
 
-Scheduling is the process of assigning **dates**, **venues**, **courts** and **times** to tournament `matchUps`.
+Scheduling is the process of assigning **dates**, **venues**, **courts**, and **times** to tournament matchUps. The Competition Factory provides a comprehensive scheduling system that supports both manual and automated scheduling workflows, from simple club tournaments to complex multi-tournament professional events.
 
-In TODS, scheduling information is attached to `matchUps` as `timeItems` and the schedule is derived by interrogating the scheduling information attached to `matchUps`.
-This approach means that there is no master schedule object; it also means that when `drawDefinitions` or draw `structures` are removed there is no schedule to be cleared.
+## Core Concepts
 
-In the Competition Factory, scheduling is accomplished either direclty via scheduling methods such as `addMatchUpScheduledDate`, or automatically via `scheduleMatchUps` or `scheduleProfileRounds`.
+### TimeItems Architecture
 
-Automated scheduling, along with direct assignment of venues and courts, depends on having venues with courts which have defined `dateAvailability`.
+In TODS (Tennis Open Data Standards), scheduling information is attached to matchUps as `timeItems` rather than stored in a centralized schedule object. This decentralized approach provides several advantages:
 
-## Iterative Garman scheduling
+- **No orphaned schedules**: When draws or structures are deleted, their scheduling information is automatically removed
+- **Granular control**: Each matchUp independently tracks its scheduling history
+- **Audit trail**: TimeItems preserve the complete scheduling history including modifications
+- **Flexible querying**: Schedules are derived on-demand by interrogating matchUp timeItems
 
-The Competition Factory engine supports Garman scheduling of `matchUps` from multiple tournaments across shared `venues`.
+### Scheduling Methods
 
-The Garman formula calculates the times at which `matchUps` may be scheduled, taking into consideration court availability
-and average minutes per match, but it does not inherently support the **average minutes** per `matchUp` being **_different_**
-across blocks of `matchUps`.
+The Competition Factory supports multiple scheduling approaches:
+
+1. **Manual Scheduling**: Direct assignment of scheduling attributes
+   - `addMatchUpScheduledDate()` - Assign a date
+   - `addMatchUpScheduledTime()` - Assign a time
+   - `assignMatchUpVenue()` - Assign a venue
+   - `assignMatchUpCourt()` - Assign a specific court
+
+2. **Automated Scheduling**: Algorithm-driven scheduling
+   - `scheduleMatchUps()` - Schedule matchUps for a single day/venue
+   - `scheduleProfileRounds()` - Schedule across multiple days using a scheduling profile
+   - Supports Garman formula for optimal court utilization
+
+3. **Hybrid Scheduling**: Combination of manual and automated approaches
+   - Pre-assign featured matches to specific courts
+   - Auto-schedule remaining matches around fixed commitments
+   - Apply constraints and preferences via policies
+
+### Prerequisites for Scheduling
+
+Automated scheduling requires:
+
+1. **Venues with Courts**: Define tournament venues and their courts
+2. **Date Availability**: Specify when courts are available (dates, times, bookings)
+3. **Scheduling Policy**: Define average match times, recovery periods, daily limits
+4. **Match Up Formats**: Assign scoring formats to events/matchUps
+
+:::tip Getting Started
+Start with venue setup, then define court availability, attach a scheduling policy, and finally run automated scheduling or manually assign schedules.
+:::
+
+## Scheduling Workflows
+
+### Local Tournament Workflow
+
+For club or local tournaments with a single venue:
+
+1. Create venue and add courts
+2. Define court `dateAvailability` for tournament dates
+3. Attach `POLICY_SCHEDULING_DEFAULT` or custom policy
+4. Use `scheduleMatchUps()` to schedule rounds individually
+5. Review and manually adjust as needed
+
+### Multi-Day Tournament Workflow
+
+For larger tournaments spanning multiple days:
+
+1. Set up venues and court availability
+2. Create a `schedulingProfile` defining which rounds play on which days
+3. Attach appropriate scheduling policies (format timing, daily limits)
+4. Use `scheduleProfileRounds()` for automated scheduling
+5. Review conflicts and make manual adjustments
+6. Publish schedules to participants
+
+### Professional Tournament Workflow
+
+For professional circuits (ITF, ATP, WTA style):
+
+1. Define multiple venues with detailed court specifications
+2. Use **Pro Scheduling** (grid-based) for predictable scheduling
+3. Configure **Follow By** scheduling for TV and stadium courts
+4. Set up person requests (practice times, media commitments)
+5. Apply strict daily limits and recovery time policies
+6. Generate preliminary schedules with conflict detection
+7. Manual refinement for featured matches
+8. Real-time schedule updates as matches complete
+
+### Multi-Tournament Workflow
+
+For circuits or leagues sharing venues:
+
+1. Link tournament records across shared venues
+2. Define venue availability across all tournaments
+3. Create scheduling profiles for each tournament
+4. Use Garman scheduling to optimize court utilization across tournaments
+5. Apply cross-tournament conflict detection
+6. Coordinate schedules to prevent participant conflicts
+
+## Garman Scheduling
+
+The Competition Factory implements an enhanced version of the Garman scheduling algorithm, which optimally schedules matches to maximize court utilization while respecting constraints.
+
+### Standard Garman Formula
+
+The traditional Garman formula calculates available time slots based on:
+- Court availability (start/end times)
+- Average match duration
+- Number of matches to schedule
+
+**Formula**: `Available Time Slots = (Court Hours × Courts) / Average Match Duration`
+
+### Enhanced Garman Implementation
+
+The Competition Factory extends Garman scheduling to support:
+
+- **Variable match durations**: Different formats have different average times
+- **Recovery requirements**: Minimum rest between a player's matches
+- **Daily limits**: Maximum matches per player per day
+- **Multi-tournament scheduling**: Shared venues across tournaments
+- **Court preferences**: Priority courts for featured matches
+- **Person requests**: Player-specific scheduling constraints
+- **Not-before times**: Matches that can't start before a specific time
+
+### Iterative Garman Scheduling
+
+For complex scheduling scenarios, the engine uses iterative Garman scheduling:
+
+1. **Group Matches**: Group matchUps by average duration
+2. **Schedule Block**: Schedule all matches with similar duration
+3. **Update Availability**: Recalculate available courts and times
+4. **Next Block**: Schedule next group with their duration
+5. **Repeat**: Continue until all matches scheduled or constraints exhausted
+
+This approach allows matches of different durations to be efficiently scheduled while maintaining optimal court utilization.
+
+## Scheduling States
+
+MatchUps progress through several scheduling states:
+
+| State | Description | TimeItem Type |
+|-------|-------------|---------------|
+| **Unscheduled** | No scheduling information | None |
+| **Date Assigned** | Has `scheduledDate` but no time | `SCHEDULE.DATE` |
+| **Time Assigned** | Has `scheduledDate` and `scheduledTime` | `SCHEDULE.TIME` |
+| **Venue Assigned** | Assigned to a venue (may or may not have court) | `SCHEDULE.VENUE` |
+| **Court Assigned** | Assigned to a specific court | `SCHEDULE.COURT` |
+| **In Progress** | Match has started | `STATUS.${matchUpStatus}` |
+| **Completed** | Match has finished | `STATUS.COMPLETE` |
+
+:::note Scheduling Flexibility
+A matchUp can have a date/time without a venue/court (for preliminary schedules), or a venue/court without a specific time (for on-site day-of scheduling).
+:::
+
+## Scheduling Constraints
+
+The system enforces multiple types of constraints:
+
+### Hard Constraints (Must Be Satisfied)
+
+- **Court availability**: Matches can only be scheduled when courts are available
+- **Match dependencies**: Later rounds can't be scheduled before earlier rounds complete
+- **Venue capacity**: Can't schedule more simultaneous matches than available courts
+- **Time feasibility**: Match must fit within court availability window
+
+### Soft Constraints (Should Be Satisfied)
+
+- **Recovery times**: Minimum rest between a player's matches
+- **Daily limits**: Maximum matches per player per day  
+- **Not-before times**: Preferred start times for matches
+- **Court preferences**: Priority courts for seeded players or finals
+- **Person requests**: Player-specific preferences or restrictions
+
+### Conflict Detection
+
+The system automatically detects scheduling conflicts:
+
+- **Player conflicts**: Same player scheduled simultaneously
+- **Insufficient recovery**: Match scheduled before recovery period expires
+- **Daily limit violations**: Player scheduled for too many matches
+- **Venue conflicts**: More matches than available courts
+- **Booking conflicts**: Scheduled during court booking/reservation
+
+:::tip Conflict Resolution
+Use `getParticipants({ scheduleAnalysis: true })` to identify conflicts, then resolve manually or adjust scheduling constraints.
+:::
+
+## Schedule Optimization
+
+The Competition Factory provides tools for optimizing schedules:
+
+### Court Utilization
+
+- Maximize court usage throughout the day
+- Minimize court idle time
+- Balance load across courts
+- Prioritize feature courts for important matches
+
+### Player Experience
+
+- Minimize back-to-back matches
+- Respect recovery time requirements
+- Honor daily match limits
+- Accommodate player requests (practice, media, travel)
+
+### Tournament Flow
+
+- Maintain competitive integrity (proper rest for later rounds)
+- Complete rounds efficiently (minimize delays)
+- Support TV/streaming schedules (featured matches at specific times)
+- Enable spectator experience (spread exciting matches across day)
+
+## Advanced Features
+
+### Person Requests
+
+Schedule around player commitments:
+- **Do Not Schedule**: Block times when player unavailable
+- **Practice Times**: Reserved court time
+- **Media Obligations**: Press conferences, interviews
+- **Travel Windows**: Airport transfers, check-in times
+
+### Scheduling Profile
+
+Define complex multi-day schedules:
+- Which rounds play on which days
+- Which venues host which events
+- Order of play within each day
+- Coordination across multiple events
+
+### Grid-Based Scheduling
+
+Professional tournaments use grid scheduling:
+- Fixed time slots (e.g., 10:00 AM, 12:00 PM, 2:00 PM, 4:00 PM)
+- Predictable scheduling for players and spectators
+- TV-friendly programming
+- "Follow By" scheduling for stadium courts
+
+### Real-Time Adjustments
+
+Adapt schedules as tournament progresses:
+- Delay remaining matches when running behind
+- Move matches to alternate courts
+- Accelerate scheduling when ahead of schedule
+- Handle weather delays and resumptions
+
+## Related Documentation
+
+- **[Venues and Courts](./venues-courts)** - Setting up tournament venues
+- **[Scheduling Profile](./scheduling-profile)** - Multi-day scheduling configuration
+- **[Automated Scheduling](./automated-scheduling)** - Algorithm details and pseudocode
+- **[Pro Scheduling](./pro-scheduling)** - Grid-based and Follow By scheduling
+- **[Conflict Reporting](./scheduling-conflicts)** - Detecting and resolving conflicts
+- **[Scheduling Policy](./scheduling-policy)** - Configuring timing and constraints
+- **[Schedule Governor](/docs/governors/schedule-governor)** - API reference

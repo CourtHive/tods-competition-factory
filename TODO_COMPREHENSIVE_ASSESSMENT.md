@@ -554,6 +554,67 @@ This document catalogs all TODO comments found in the codebase, organizing them 
 
 ---
 
+## Additional Testing Requirements
+
+### Extension Behavior Testing
+
+The following functions add extensions to tournament records that persist across scheduling operations. These require comprehensive testing to ensure proper behavior with repeated calls and edge cases:
+
+#### `modifyMatchUpFormatTiming()`
+
+**Extension Added:** Tournament-level extension that overrides default scheduling policy timing for specific matchUp formats.
+
+**Testing Requirements:**
+
+- **Repeated Calls:** Test multiple calls with same `matchUpFormat` to verify merge/override behavior
+  - First call sets averageTimes for U12/U14 categories
+  - Second call adds U16/U18 categories - verify U12/U14 still present
+  - Third call modifies U12/U14 values - verify override works correctly
+  - Fourth call removes a category - verify proper removal
+- **Conflicting Values:** Test calls with overlapping but different category configurations
+- **Empty Category Arrays:** Test behavior of `categoryNames: []` (default for all categories)
+- **Event/Draw Scoping:** Test scoping to specific events or draws and verify isolation
+- **Persistence:** Test that extensions survive save/load cycles
+- **Query Consistency:** Verify `getModifiedMatchUpFormatTiming()` returns accurate reflection of all modifications
+- **Scheduling Integration:** Verify scheduling functions properly read and apply all accumulated modifications
+
+**Estimated Testing Scope:** 3-4 days
+
+#### `setMatchUpDailyLimits()`
+
+**Extension Added:** Tournament-level extension that enforces daily match limits per participant.
+
+**Testing Requirements:**
+
+- **Repeated Calls:** Test multiple calls to verify complete override behavior (not merge)
+  - First call sets limits: `{ SINGLES: 2, DOUBLES: 1, total: 3 }`
+  - Second call sets limits: `{ SINGLES: 1, DOUBLES: 2, total: 2 }`
+  - Verify second call completely replaces first (not merge)
+- **Tournament Scoping:** In multi-tournament scenarios, test `tournamentId` parameter isolation
+- **Null/Undefined Values:** Test behavior when some limit types are omitted
+- **Persistence:** Test that extensions survive save/load cycles
+- **Query Consistency:** Verify `getMatchUpDailyLimits()` returns current values after multiple modifications
+- **Scheduling Integration:** Verify all scheduling functions respect current limits:
+  - `scheduleMatchUps()` returns correct `overLimitMatchUpIds`
+  - `scheduleProfileRounds()` respects limits across multiple dates
+  - Manual scheduling (via `addMatchUpScheduleItems()`) validates against limits
+- **Edge Cases:**
+  - Zero limits
+  - Very high limits (stress test)
+  - Limits applied after matches already scheduled (retroactive validation)
+  - Participant in both SINGLES and DOUBLES events
+
+**Estimated Testing Scope:** 3-4 days
+
+**Priority:** MEDIUM - While not critical bugs, incorrect extension behavior could cause scheduling inconsistencies
+
+**Related Documentation:**
+
+- Both functions now fully documented in `matchup-governor.md` and `schedule-governor.md`
+- Usage examples updated in `scheduling-policy.mdx` with clarification of how extensions work
+
+---
+
 ## Conclusion
 
 This comprehensive assessment identifies **116 TODO items** requiring an estimated **260-365 days** of development effort. The recommended phased approach prioritizes data integrity and user-facing features first, followed by testing infrastructure and code quality improvements.
