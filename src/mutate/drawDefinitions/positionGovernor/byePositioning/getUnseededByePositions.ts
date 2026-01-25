@@ -5,7 +5,7 @@ import { chunkArray, shuffleArray, unique } from '@Tools/arrays';
 import { numericSort } from '@Tools/sorting';
 import { getSeedBlocks } from '../../../../query/drawDefinition/getSeedBlocks';
 
-import { CLUSTER, CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { ADJACENT, CLUSTER, CONTAINER, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 export function getUnseededByePositions({
   provisionalPositioning,
@@ -103,7 +103,7 @@ export function getUnseededByePositions({
     // and require a special case to properly calculate bye positions
     const baseDrawSize = relevantDrawPositions.length;
     const { seedBlocks } = getSeedBlocks({
-      cluster: getSeedPattern(seedingProfile) === CLUSTER,
+      cluster: [CLUSTER, ADJACENT].includes(getSeedPattern(seedingProfile)),
       participantsCount: baseDrawSize,
     });
     const blockDrawPositions = seedBlocks.map((seedBlock) =>
