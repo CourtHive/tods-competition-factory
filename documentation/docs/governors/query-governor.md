@@ -1508,17 +1508,114 @@ const {
 
 ## tallyParticipantResults
 
-:::tip
-Setting `engine.devContext({ tally: true })` will log `readableReport` to the console. In browser consoles of client applications use: `dev.context({ tally: true })` where available.
-:::
+Generates participant results and groupOrder for round robin structures. Calculates standings based on win/loss records, sets, games, points, and applies tiebreaking directives from the round robin tally policy.
+
+### Basic Usage
 
 ```js
-const { participantResults } = tallyParticipantResults({
-  policyDefinitions: mockProfile.policyDefinitions,
-  generateReport, // optional boolean; attaches { readableReport } to returned values
-  matchUps,
+const { participantResults, order, bracketComplete, report, readableReport } = tallyParticipantResults({
+  policyDefinitions, // Optional - policy with roundRobinTally configuration
+  matchUps, // Required - array of round robin matchUps
+  matchUpFormat, // Optional - default format for the structure
+  perPlayer, // Optional - expected matchUps per participant
+  subOrderMap, // Optional - sub-order mapping for playoff placement
+  pressureRating, // Optional - calculate pressure ratings
+  generateReport: false, // Optional - generate detailed tiebreaking report
 });
 ```
+
+### Return Values
+
+**participantResults** - Object keyed by participantId with statistics and placement
+
+**order** - Array of participants in final/provisional order with resolution status
+
+**bracketComplete** - Boolean indicating if all matchUps are complete
+
+**report** - Array of tiebreaking steps (when generateReport: true)
+
+**readableReport** - Human-readable tiebreaking explanation (when generateReport: true)
+
+### The generateReport Parameter
+
+When `generateReport: true`, returns detailed information about **exactly how tiebreaks were resolved**:
+
+**Why use it?**
+- **Transparency** - Show participants how their placement was determined
+- **Debugging** - Understand why specific tiebreaking directives were used  
+- **Validation** - Verify that tiebreaking followed the expected policy
+- **Documentation** - Record the complete tiebreaking process
+
+**What's included?**
+
+For each tiebreaking step:
+1. Which directive was applied (e.g., `matchUpsPct`, `headToHead.setsPct`)
+2. How participants grouped by that directive's values
+3. Whether the directive used idsFilter (head-to-head for tied participants only)
+4. Whether maxParticipants excluded the directive (skipping 3+ way ties)
+5. Which participants remained tied after the directive
+6. Final order with resolution status
+
+**Example readableReport output:**
+```
+Step 1: 4 participants were grouped by matchUpsPct
+0.75 matchUpsPct: Player A, Player B
+0.50 matchUpsPct: Player C
+0.25 matchUpsPct: Player D
+----------------------
+Step 2: 2 participants were separated by headToHead.matchUpsPct
+headToHead.matchUpsPct was calculated considering ONLY TIED PARTICIPANTS
+1.00 headToHead.matchUpsPct: Player A
+0.00 headToHead.matchUpsPct: Player B
+----------------------
+Final Order:
+1: Player A => resolved: true
+2: Player B => resolved: true
+3: Player C => resolved: true
+4: Player D => resolved: true
+```
+
+**Example usage:**
+
+```js
+const { participantResults, order, report, readableReport } = tallyParticipantResults({
+  matchUps: roundRobinMatchUps,
+  policyDefinitions: {
+    roundRobinTally: {
+      tallyDirectives: [
+        { attribute: 'matchUpsPct' },
+        { attribute: 'headToHead.matchUpsPct', idsFilter: true, maxParticipants: 2 },
+        { attribute: 'headToHead.setsPct', idsFilter: true, maxParticipants: 2 },
+        { attribute: 'setsPct' }
+      ]
+    }
+  },
+  generateReport: true
+});
+
+// Display human-readable report
+console.log(readableReport);
+
+// Analyze programmatically
+report.forEach(step => {
+  console.log(`${step.attribute}: ${step.participantIds.length} still tied`);
+  if (step.idsFilter) console.log('  → Head-to-head calculation');
+  if (step.excludedDirectives) console.log('  → Some directives skipped (maxParticipants)');
+});
+```
+
+:::tip Development Context
+Setting `engine.devContext({ tally: true })` will automatically log `readableReport` to the console during calculation, even when `generateReport: false`.
+
+In browser consoles of client applications use: `dev.context({ tally: true })` where available.
+:::
+
+### See Also
+
+- **[Round Robin Tally Policy](../policies/roundRobinTallyPolicy.md)** - Complete policy documentation
+- **[tallyDirectives](../policies/roundRobinTallyPolicy.md#tallydirectives)** - Configure tiebreaking order
+- **[idsFilter](../policies/roundRobinTallyPolicy.md#idsfilter)** - Head-to-head calculations
+- **[maxParticipants](../policies/maxParticipants.md)** - Participant count thresholds
 
 ---
 

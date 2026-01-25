@@ -892,7 +892,6 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
 
 ## Next Steps
 
-- **[Draw Profiles](./mocks-engine-draw-profiles.md)** - Deep dive into draw configuration
-- **[Event Profiles](./mocks-engine-event-profiles.md)** - Advanced event configuration
 - **[Participant Generation](./mocks-engine-participants.md)** - Individual, pairs and teams
-- **[Venue Profiles](./mocks-engine-venues.md)** - Set up courts and venues
+- **[Outcome Generation](./mocks-engine-outcomes.md)** - Generating match results
+- **[Advanced Patterns](./mocks-engine-patterns.md)** - Best practices and common patterns

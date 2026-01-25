@@ -736,6 +736,6 @@ test('complete tournament lifecycle', () => {
 
 ## Next Steps
 
-- **[API Reference](./mocks-engine-api.md)** - Complete method signatures
-- **[Draw Profiles](./mocks-engine-draw-profiles.md)** - Advanced draw configuration
-- **[Venue Profiles](./mocks-engine-venues.md)** - Court and scheduling setup
+- **[Tournament Generation](./mocks-engine-tournament-generation.md)** - Complete tournament generation options
+- **[Participant Generation](./mocks-engine-participants.md)** - Types and demographics
+- **[Outcome Generation](./mocks-engine-outcomes.md)** - Match results and scores

@@ -510,4 +510,4 @@ The generated outcomes are automatically validated against:
 
 - **[Tournament Generation](./mocks-engine-tournament-generation.md)** - Apply outcomes during generation
 - **[Advanced Patterns](./mocks-engine-patterns.md)** - Complex outcome scenarios
-- **[API Reference](./mocks-engine-api.md)** - Complete method signatures
+- **[Participant Generation](./mocks-engine-participants.md)** - Types and demographics
