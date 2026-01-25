@@ -7,13 +7,14 @@ I inadvertently added a non-existent attribute `duplicatePriority` to the policy
 **Location:** `documentation/docs/governors/policy-governor.md`
 
 **Hallucinated Code:**
+
 ```javascript
 const seedingPolicy = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF Seeding',
-    duplicatePriority: ['WTN', 'RANKING'],  // ❌ DOES NOT EXIST
-    seedingProfile: 'ITF'
-  }
+    duplicatePriority: ['WTN', 'RANKING'], // ❌ DOES NOT EXIST
+    seedingProfile: 'ITF',
+  },
 };
 ```
 
@@ -27,60 +28,66 @@ const seedingPolicy = {
 
 When documenting seeding policies, I encountered a logical gap:
 
-1. **TODS Participant Model** already supports multiple rankings:
+### 1. TODS Participant Model\*\* already supports multiple rankings
+
 ```javascript
 {
   participant: {
     rankings: [
       { rankingType: 'WTN', rankingValue: 25.5 },
       { rankingType: 'USTA', rankingValue: 150 },
-      { rankingType: 'UTR', rankingValue: 11.2 }
-    ]
+      { rankingType: 'UTR', rankingValue: 11.2 },
+    ];
   }
 }
 ```
 
-2. **Seeding Policies** control *how* to seed, but there's no standard way to choose *which ranking to use* when a participant has multiple rankings.
+### 2. Seeding Policies\*\* control _how_ to seed, but there's no standard way to choose _which ranking to use_ when a participant has multiple rankings
 
-3. **Real Tournament Problem**: Tournament directors constantly face this:
-   - Player A: WTN=25, USTA=200
-   - Player B: WTN=26, USTA=150
-   - Which player should be seeded higher?
+### 3. Real Tournament Problem\*\*: Tournament directors constantly face this
+
+- Player A: WTN=25, USTA=200
+- Player B: WTN=26, USTA=150
+- Which player should be seeded higher?
 
 ### Pattern Recognition
 
 I recognized this pattern exists elsewhere in the factory:
 
 **Avoidance Policies** handle multiple attributes:
+
 ```javascript
 policyAttributes: [
   { key: 'person.nationalityCode', value: true },
-  { key: 'person.representing.organisationId', value: true }
-]
+  { key: 'person.representing.organisationId', value: true },
+];
 // Clear priority: check nationality first, then organization
 ```
 
 **Position Actions** have priority rules:
+
 ```javascript
 // Available actions checked in order
 // Score entry → position swap → withdrawal → etc.
 ```
 
-So my mental model was: *"If the system handles priority for avoidance and actions, it probably handles priority for ranking selection too."*
+So my mental model was: _"If the system handles priority for avoidance and actions, it probably handles priority for ranking selection too."_
 
 ### Why It Makes Sense
 
-**1. Real-World Tournament Operations**
+#### 1. Real-World Tournament Operations
 
 Tournament directors currently must:
+
 - Manually review each player's rankings
 - Decide which ranking system to prioritize
 - Apply inconsistent logic across the draw
 - Document their methodology externally
 
-**2. Multiple Ranking Systems Are Common**
+#### 2. Multiple Ranking Systems Are Common
 
 Modern players often have:
+
 - **WTN** (World Tennis Number) - Universal
 - **ATP/WTA** - Professional tours
 - **UTR** (Universal Tennis Rating) - College/competitive
@@ -89,16 +96,17 @@ Modern players often have:
 - **Age Group Rankings** - Juniors
 - **Club Rankings**
 
-**3. Different Events Have Different Priorities**
+#### 3. Different Events Have Different Priorities
 
 - **ITF Events**: WTN → National → Regional
 - **USTA Sanctioned**: USTA → WTN → UTR
 - **College Events**: ITA → UTR → WTN
 - **Club Tournaments**: Club → Regional → WTN
 
-**4. Automation Requirement**
+#### 4. Automation Requirement
 
 For large events (64, 128, 256 player draws), manually deciding which ranking to use for each player is:
+
 - Time-consuming
 - Error-prone
 - Inconsistent
@@ -117,11 +125,11 @@ const seedingPolicy = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF Seeding with WTN Priority',
     seedingProfile: 'ITF',
-    
+
     // Proposed feature
     rankingPriority: ['WTN', 'USTA', 'UTR', 'NATIONAL'],
-    rankingRecencyDays: 90,  // Only use rankings < 90 days old
-  }
+    rankingRecencyDays: 90, // Only use rankings < 90 days old
+  },
 };
 ```
 
@@ -130,19 +138,18 @@ const seedingPolicy = {
 ```javascript
 function selectRankingForSeeding(participant, policy) {
   const { rankingPriority, rankingRecencyDays } = policy;
-  
+
   // Filter to valid, recent rankings
-  const valid = participant.rankings.filter(r => 
-    r.rankingValue != null && 
-    daysSince(r.rankingDate) <= rankingRecencyDays
+  const valid = participant.rankings.filter(
+    (r) => r.rankingValue != null && daysSince(r.rankingDate) <= rankingRecencyDays,
   );
-  
+
   // Apply priority order
   for (const rankingType of rankingPriority) {
-    const match = valid.find(r => r.rankingType === rankingType);
+    const match = valid.find((r) => r.rankingType === rankingType);
     if (match) return match;
   }
-  
+
   // Fallback: most recent valid ranking
   return valid[0] || null;
 }
@@ -150,7 +157,8 @@ function selectRankingForSeeding(participant, policy) {
 
 ### User Benefits
 
-**1. Deterministic Seeding**
+#### 1. Deterministic Seeding
+
 ```javascript
 // Clear, automated logic
 Player A: WTN=25 → Uses WTN (first in priority)
@@ -159,7 +167,8 @@ Player C: No WTN/USTA, UTR=11.2 → Uses UTR (third in priority)
 Player D: No rankings in priority → Unseeded
 ```
 
-**2. Transparency**
+#### 2. Transparency
+
 ```javascript
 const { seedAssignments } = tournamentEngine.getSeedings({ drawId });
 console.log(seedAssignments[0]);
@@ -172,17 +181,14 @@ console.log(seedAssignments[0]);
 // }
 ```
 
-**3. Preset Policies**
+#### 3. Preset Policies
+
 ```javascript
 // Pre-configured for common scenarios
-import { 
-  ITF_SEEDING_POLICY,
-  USTA_SEEDING_POLICY,
-  COLLEGE_SEEDING_POLICY 
-} from 'tods-competition-factory';
+import { ITF_SEEDING_POLICY, USTA_SEEDING_POLICY, COLLEGE_SEEDING_POLICY } from 'tods-competition-factory';
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: { [POLICY_TYPE_SEEDING]: USTA_SEEDING_POLICY }
+  policyDefinitions: { [POLICY_TYPE_SEEDING]: USTA_SEEDING_POLICY },
 });
 ```
 
@@ -201,13 +207,14 @@ See **FUTURE_FEATURES.md** for comprehensive implementation plan including:
 - Ranking system metadata
 - Manual override capability
 
-**Key Point:** The TODS participant model already supports this - participants can have `rankings` arrays. The feature just needs the *policy configuration* and *selection algorithm*.
+**Key Point:** The TODS participant model already supports this - participants can have `rankings` arrays. The feature just needs the _policy configuration_ and _selection algorithm_.
 
 ---
 
 ## Estimated Implementation
 
 **Complexity:** Medium
+
 - Core algorithm: 3-4 days
 - Policy integration: 2-3 days
 - Testing: 2-3 days
@@ -215,6 +222,7 @@ See **FUTURE_FEATURES.md** for comprehensive implementation plan including:
 - **Total:** 2-3 weeks
 
 **Value:** High
+
 - Solves real tournament director pain point
 - Leverages existing TODS data structures
 - Differentiates TODS from other formats

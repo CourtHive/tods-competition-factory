@@ -12,7 +12,7 @@ The **Seeding Policy** controls how seeds are positioned in draw structures, how
 {
   seeding: {
     policyName?: string;
-    
+
     seedingProfile?: {
       positioning?: 'CLUSTER' | 'ADJACENT' | 'SEPARATE' | 'WATERFALL';
       drawTypes?: {
@@ -23,15 +23,15 @@ The **Seeding Policy** controls how seeds are positioned in draw structures, how
       groupSeedingThreshold?: number;
       nonRandom?: boolean;
     };
-    
+
     validSeedPositions?: {
       ignore?: boolean;
     };
-    
+
     duplicateSeedNumbers?: boolean;
     drawSizeProgression?: boolean;
     containerByesIgnoreSeeding?: boolean;
-    
+
     seedsCountThresholds: Array<{
       drawSize: number;
       minimumParticipantCount: number;
@@ -53,13 +53,15 @@ The **Seeding Policy** controls how seeds are positioned in draw structures, how
 Provides a descriptive name for the seeding policy, useful for logging, debugging, and policy selection in administrative interfaces.
 
 **Example:**
+
 ```javascript
 {
-  policyName: 'USTA SEEDING'
+  policyName: 'USTA SEEDING';
 }
 ```
 
 **Notes:**
+
 - Used in built-in policies: `'USTA SEEDING'`, `'ITF SEEDING'`, `'SEED_BYES'`, `'NATIONAL SEEDING'`
 - Purely informational - does not affect behavior
 
@@ -89,7 +91,6 @@ Controls the default seed positioning pattern for elimination draws:
   - Creates clustered seed positions
   - Seeds may be adjacent to each other
   - Pattern alternates every other seed block
-  
 - **`ADJACENT`:** Synonym for `CLUSTER`
   - Exactly the same as CLUSTER positioning
   - Useful for clearer semantic meaning in some contexts
@@ -104,28 +105,36 @@ Controls the default seed positioning pattern for elimination draws:
 ```javascript
 // USTA/SEPARATE positioning (default)
 {
-  seedingProfile: { positioning: 'SEPARATE' }
+  seedingProfile: {
+    positioning: 'SEPARATE';
+  }
 }
 
 // ITF/CLUSTER positioning
 {
-  seedingProfile: { positioning: 'CLUSTER' }
+  seedingProfile: {
+    positioning: 'CLUSTER';
+  }
 }
 
 // ADJACENT positioning (same as CLUSTER)
 {
-  seedingProfile: { positioning: 'ADJACENT' }
+  seedingProfile: {
+    positioning: 'ADJACENT';
+  }
 }
 
 // WATERFALL positioning (for Round Robin)
 {
-  seedingProfile: { positioning: 'WATERFALL' }
+  seedingProfile: {
+    positioning: 'WATERFALL';
+  }
 }
 ```
 
 **Visual Comparison (32 draw):**
 
-```
+```text
 SEPARATE (USTA):          CLUSTER/ADJACENT (ITF):
 Seed 1: Position 1        Seed 1: Position 1
 Seed 2: Position 32       Seed 2: Position 32
@@ -138,6 +147,7 @@ Seed 8: Position 20       Seed 8: Position 25
 ```
 
 **Notes:**
+
 - SEPARATE: Seeds never adjacent, maximizes separation
 - CLUSTER/ADJACENT: Seeds may be adjacent, alternating pattern
 - WATERFALL: Only for Round Robin structures
@@ -153,6 +163,7 @@ Seed 8: Position 20       Seed 8: Position 25
 Allows different positioning strategies for different draw types within the same tournament.
 
 **Structure:**
+
 ```typescript
 drawTypes: {
   [drawType: string]: {
@@ -162,6 +173,7 @@ drawTypes: {
 ```
 
 **Example:**
+
 ```javascript
 {
   seedingProfile: {
@@ -178,12 +190,7 @@ drawTypes: {
 
 ```javascript
 // USTA style: SEPARATE for elimination, WATERFALL for Round Robin
-import { 
-  ROUND_ROBIN, 
-  ROUND_ROBIN_WITH_PLAYOFF, 
-  SEPARATE, 
-  WATERFALL 
-} from 'tods-competition-factory';
+import { ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF, SEPARATE, WATERFALL } from 'tods-competition-factory';
 
 const seedingPolicy = {
   seeding: {
@@ -191,19 +198,19 @@ const seedingPolicy = {
       positioning: SEPARATE,
       drawTypes: {
         [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: WATERFALL },
-        [ROUND_ROBIN]: { positioning: WATERFALL }
-      }
-    }
-  }
+        [ROUND_ROBIN]: { positioning: WATERFALL },
+      },
+    },
+  },
 };
 
 // ITF style: CLUSTER for all draw types
 const itfSeeding = {
   seeding: {
     seedingProfile: {
-      positioning: 'CLUSTER'
-    }
-  }
+      positioning: 'CLUSTER',
+    },
+  },
 };
 
 // Mixed positioning
@@ -213,14 +220,15 @@ const mixedSeeding = {
       positioning: 'SEPARATE',
       drawTypes: {
         ROUND_ROBIN: { positioning: 'WATERFALL' },
-        FEED_IN_CHAMPIONSHIP: { positioning: 'CLUSTER' }
-      }
-    }
-  }
+        FEED_IN_CHAMPIONSHIP: { positioning: 'CLUSTER' },
+      },
+    },
+  },
 };
 ```
 
 **Notes:**
+
 - Draw type specific positioning overrides default positioning
 - Round Robin draws typically use WATERFALL positioning
 - Elimination draws typically use SEPARATE or CLUSTER
@@ -236,15 +244,17 @@ const mixedSeeding = {
 When generating Round Robin draws, this threshold determines how seed values are processed for group seeding calculations.
 
 **Example:**
+
 ```javascript
 {
   seedingProfile: {
-    groupSeedingThreshold: 1000
+    groupSeedingThreshold: 1000;
   }
 }
 ```
 
 **Notes:**
+
 - Advanced feature - rarely needed in standard tournament operations
 - Used internally for Round Robin seed distribution calculations
 - Leave undefined for default behavior
@@ -259,6 +269,7 @@ When generating Round Robin draws, this threshold determines how seed values are
 Controls whether seed positioning uses deterministic (non-random) placement within seed blocks.
 
 **Example:**
+
 ```javascript
 {
   seedingProfile: {
@@ -269,11 +280,13 @@ Controls whether seed positioning uses deterministic (non-random) placement with
 ```
 
 **Use Cases:**
+
 - Testing and validation (deterministic results)
 - Qualification structures where positions must be predictable
 - Audit requirements for reproducibility
 
 **Notes:**
+
 - When `false` (default): Seeds randomized within their block
 - When `true`: Seeds placed deterministically
 - Does not affect which positions are valid for seeds, only their assignment order
@@ -293,6 +306,7 @@ Controls whether seed positioning uses deterministic (non-random) placement with
 When `true`, allows seeds to be placed in any draw position, ignoring standard seed block constraints.
 
 **When `ignore: false` (default):**
+
 - Seeds must be placed in valid seed block positions
 - Seed 1 must be in position 1
 - Seed 2 must be in final position
@@ -300,6 +314,7 @@ When `true`, allows seeds to be placed in any draw position, ignoring standard s
 - Enforces standard seeding patterns
 
 **When `ignore: true`:**
+
 - Seeds can be placed in any position
 - Manual seed placement is allowed
 - Useful for pre-seeded draws or special tournament formats
@@ -310,12 +325,16 @@ When `true`, allows seeds to be placed in any draw position, ignoring standard s
 ```javascript
 // Strict validation (default)
 {
-  validSeedPositions: { ignore: false }
+  validSeedPositions: {
+    ignore: false;
+  }
 }
 
 // Flexible placement
 {
-  validSeedPositions: { ignore: true }
+  validSeedPositions: {
+    ignore: true;
+  }
 }
 
 // ITF and USTA both use flexible placement
@@ -330,20 +349,21 @@ import { POLICY_SEEDING_ITF, POLICY_SEEDING_DEFAULT } from 'tods-competition-fac
 const manualSeeding = {
   seeding: {
     validSeedPositions: { ignore: true },
-    seedingProfile: { positioning: 'SEPARATE' }
-  }
+    seedingProfile: { positioning: 'SEPARATE' },
+  },
 };
 
 // Standard automated seeding (strict validation)
 const autoSeeding = {
   seeding: {
     validSeedPositions: { ignore: false },
-    seedingProfile: { positioning: 'CLUSTER' }
-  }
+    seedingProfile: { positioning: 'CLUSTER' },
+  },
 };
 ```
 
 **Notes:**
+
 - Most professional federations use `ignore: true` for flexibility
 - Set to `false` for strict adherence to seed positioning rules
 - Does not affect which seeds are assigned, only where they can be placed
@@ -358,12 +378,14 @@ const autoSeeding = {
 Allows multiple participants to share the same seed number.
 
 **When `true`:**
+
 - Multiple participants can have same seed value (e.g., three "Seed 5s")
 - Useful when player rankings are tied
 - Common in ITF and USTA tournaments
 - Seeds still placed in appropriate seed blocks
 
 **When `false`:**
+
 - Each seed number must be unique
 - Traditional seeding approach
 
@@ -372,12 +394,12 @@ Allows multiple participants to share the same seed number.
 ```javascript
 // Allow duplicate seeds (ITF/USTA standard)
 {
-  duplicateSeedNumbers: true
+  duplicateSeedNumbers: true;
 }
 
 // Traditional unique seeds
 {
-  duplicateSeedNumbers: false
+  duplicateSeedNumbers: false;
 }
 ```
 
@@ -386,25 +408,26 @@ Allows multiple participants to share the same seed number.
 ```javascript
 // ITF Junior Tournament - players with same ranking
 const participants = [
-  { participantId: '1', seedValue: 1 },  // Rank 1
-  { participantId: '2', seedValue: 2 },  // Rank 2
-  { participantId: '3', seedValue: 3 },  // Rank 3 (tied)
-  { participantId: '4', seedValue: 3 },  // Rank 3 (tied)
-  { participantId: '5', seedValue: 3 },  // Rank 3 (tied)
-  { participantId: '6', seedValue: 6 },  // Rank 6
+  { participantId: '1', seedValue: 1 }, // Rank 1
+  { participantId: '2', seedValue: 2 }, // Rank 2
+  { participantId: '3', seedValue: 3 }, // Rank 3 (tied)
+  { participantId: '4', seedValue: 3 }, // Rank 3 (tied)
+  { participantId: '5', seedValue: 3 }, // Rank 3 (tied)
+  { participantId: '6', seedValue: 6 }, // Rank 6
 ];
 
 const policy = {
   seeding: {
     duplicateSeedNumbers: true,
-    seedingProfile: { positioning: 'CLUSTER' }
-  }
+    seedingProfile: { positioning: 'CLUSTER' },
+  },
 };
 
 // All three participants with seedValue 3 are placed in seed block 3-4-5-6
 ```
 
 **Notes:**
+
 - Required for tournaments using rating-based seeding where ties occur
 - Both POLICY_SEEDING_ITF and POLICY_SEEDING_DEFAULT use `true`
 - Engine handles randomization of duplicate seeds within their blocks
@@ -419,11 +442,13 @@ const policy = {
 Automatically adjusts seeds count based on the minimum draw size that accommodates the participant count, rather than the actual participant count.
 
 **When `true`:**
+
 - Seeds count determined by next power-of-2 draw size
 - Example: 25 participants → uses 32 draw size for seed calculation
 - Results in more seeds for draws with many BYEs
 
 **When `false`:**
+
 - Seeds count determined by actual participant count
 - More conservative seeding approach
 
@@ -476,6 +501,7 @@ Automatically adjusts seeds count based on the minimum draw size that accommodat
 ```
 
 **Notes:**
+
 - Used by both ITF and USTA policies (`true`)
 - Affects tournaments with significant BYE count
 - More seeds = better competitive balance but more complex draws
@@ -490,11 +516,13 @@ Automatically adjusts seeds count based on the minimum draw size that accommodat
 Controls whether BYEs in container structures (Round Robin with Playoff) respect seed positions.
 
 **When `true`:**
+
 - BYEs are placed randomly or by other criteria
 - Seed positions do not influence BYE placement
 - Used in POLICY_SEEDING_BYES
 
 **When `false` (default):**
+
 - BYEs are placed to avoid seeded positions where possible
 - Protects seeds from BYE positions
 - Standard behavior for most tournaments
@@ -527,10 +555,10 @@ const policy = {
     seedingProfile: {
       positioning: 'SEPARATE',
       drawTypes: {
-        [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: 'WATERFALL' }
-      }
-    }
-  }
+        [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: 'WATERFALL' },
+      },
+    },
+  },
 };
 
 tournamentEngine.generateDrawDefinition({
@@ -542,6 +570,7 @@ tournamentEngine.generateDrawDefinition({
 ```
 
 **Notes:**
+
 - Only affects CONTAINER and ITEM structure types
 - Primarily used in Round Robin with Playoff draws
 - Standard elimination draws use different BYE placement logic
@@ -557,6 +586,7 @@ tournamentEngine.generateDrawDefinition({
 Defines how many seeds are allowed for each draw size based on participant count.
 
 **Structure:**
+
 ```typescript
 seedsCountThresholds: [
   {
@@ -569,6 +599,7 @@ seedsCountThresholds: [
 ```
 
 **Logic:**
+
 1. Engine determines draw size from participant count (next power of 2)
 2. Finds matching `drawSize` in thresholds
 3. Checks if participant count meets `minimumParticipantCount`
@@ -576,27 +607,29 @@ seedsCountThresholds: [
 5. If no: checks next lower threshold
 
 **Standard USTA Thresholds:**
+
 ```javascript
 seedsCountThresholds: [
-  { drawSize: 4,   minimumParticipantCount: 3,   seedsCount: 2 },
-  { drawSize: 16,  minimumParticipantCount: 12,  seedsCount: 4 },
-  { drawSize: 32,  minimumParticipantCount: 24,  seedsCount: 8 },
-  { drawSize: 64,  minimumParticipantCount: 48,  seedsCount: 16 },
-  { drawSize: 128, minimumParticipantCount: 96,  seedsCount: 32 },
-  { drawSize: 256, minimumParticipantCount: 192, seedsCount: 64 }
-]
+  { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
+  { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
+  { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+  { drawSize: 64, minimumParticipantCount: 48, seedsCount: 16 },
+  { drawSize: 128, minimumParticipantCount: 96, seedsCount: 32 },
+  { drawSize: 256, minimumParticipantCount: 192, seedsCount: 64 },
+];
 ```
 
 **Standard ITF Thresholds:**
+
 ```javascript
 seedsCountThresholds: [
-  { drawSize: 4,   minimumParticipantCount: 3,   seedsCount: 2 },
-  { drawSize: 16,  minimumParticipantCount: 12,  seedsCount: 4 },
-  { drawSize: 32,  minimumParticipantCount: 24,  seedsCount: 8 },
-  { drawSize: 64,  minimumParticipantCount: 48,  seedsCount: 16 },
-  { drawSize: 128, minimumParticipantCount: 97,  seedsCount: 32 }, // Lower threshold
-  { drawSize: 256, minimumParticipantCount: 192, seedsCount: 64 }
-]
+  { drawSize: 4, minimumParticipantCount: 3, seedsCount: 2 },
+  { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
+  { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+  { drawSize: 64, minimumParticipantCount: 48, seedsCount: 16 },
+  { drawSize: 128, minimumParticipantCount: 97, seedsCount: 32 }, // Lower threshold
+  { drawSize: 256, minimumParticipantCount: 192, seedsCount: 64 },
+];
 ```
 
 **Examples:**
@@ -607,9 +640,9 @@ const conservativePolicy = {
   seeding: {
     seedsCountThresholds: [
       { drawSize: 32, minimumParticipantCount: 28, seedsCount: 8 },
-      { drawSize: 64, minimumParticipantCount: 56, seedsCount: 16 }
-    ]
-  }
+      { drawSize: 64, minimumParticipantCount: 56, seedsCount: 16 },
+    ],
+  },
 };
 
 // Progressive seeding (fewer participants required)
@@ -617,20 +650,20 @@ const progressivePolicy = {
   seeding: {
     seedsCountThresholds: [
       { drawSize: 32, minimumParticipantCount: 20, seedsCount: 8 },
-      { drawSize: 64, minimumParticipantCount: 40, seedsCount: 16 }
-    ]
-  }
+      { drawSize: 64, minimumParticipantCount: 40, seedsCount: 16 },
+    ],
+  },
 };
 
 // Club tournament (simpler)
 const clubPolicy = {
   seeding: {
     seedsCountThresholds: [
-      { drawSize: 8,  minimumParticipantCount: 6,  seedsCount: 2 },
+      { drawSize: 8, minimumParticipantCount: 6, seedsCount: 2 },
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
-      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }
-    ]
-  }
+      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+    ],
+  },
 };
 ```
 
@@ -657,6 +690,7 @@ const clubPolicy = {
 ```
 
 **Notes:**
+
 - Thresholds must be sorted by drawSize (ascending)
 - Draw sizes must be powers of 2
 - Engine automatically finds appropriate threshold
@@ -670,16 +704,16 @@ The factory provides four pre-configured seeding policies used by major tennis f
 
 ### Comparison Table
 
-| Attribute | USTA (DEFAULT) | ITF | BYES | NATIONAL |
-|-----------|----------------|-----|------|----------|
-| **policyName** | 'USTA SEEDING' | 'ITF SEEDING' | 'SEED_BYES' | 'NATIONAL SEEDING' |
-| **positioning** | SEPARATE | CLUSTER | CLUSTER | CLUSTER |
-| **validSeedPositions.ignore** | `true` | `true` | `true` | (default: false) |
-| **duplicateSeedNumbers** | `true` | `true` | `true` | (default: false) |
-| **drawSizeProgression** | `true` | `true` | `true` | `true` |
-| **containerByesIgnoreSeeding** | (default: false) | (default: false) | `true` | (default: false) |
-| **drawTypes** | WATERFALL for RR | (none) | (none) | (none) |
-| **128-draw threshold** | 96 participants | 97 participants | 97 participants | 97 participants |
+| Attribute                      | USTA (DEFAULT)   | ITF              | BYES            | NATIONAL           |
+| ------------------------------ | ---------------- | ---------------- | --------------- | ------------------ |
+| **policyName**                 | 'USTA SEEDING'   | 'ITF SEEDING'    | 'SEED_BYES'     | 'NATIONAL SEEDING' |
+| **positioning**                | SEPARATE         | CLUSTER          | CLUSTER         | CLUSTER            |
+| **validSeedPositions.ignore**  | `true`           | `true`           | `true`          | (default: false)   |
+| **duplicateSeedNumbers**       | `true`           | `true`           | `true`          | (default: false)   |
+| **drawSizeProgression**        | `true`           | `true`           | `true`          | `true`             |
+| **containerByesIgnoreSeeding** | (default: false) | (default: false) | `true`          | (default: false)   |
+| **drawTypes**                  | WATERFALL for RR | (none)           | (none)          | (none)             |
+| **128-draw threshold**         | 96 participants  | 97 participants  | 97 participants | 97 participants    |
 
 ---
 
@@ -690,6 +724,7 @@ The factory provides four pre-configured seeding policies used by major tennis f
 **Use Case:** USTA tournaments, US Open, most US-based tournaments
 
 **Full Policy:**
+
 ```javascript
 import { POLICY_SEEDING_DEFAULT } from 'tods-competition-factory';
 
@@ -720,6 +755,7 @@ import { POLICY_SEEDING_DEFAULT } from 'tods-competition-factory';
 ```
 
 **Key Features:**
+
 - SEPARATE positioning for elimination draws
 - WATERFALL positioning for Round Robin draws
 - Requires 96 participants for 32 seeds in 128 draw
@@ -734,6 +770,7 @@ import { POLICY_SEEDING_DEFAULT } from 'tods-competition-factory';
 **Use Case:** ITF tournaments, international play, Davis Cup, Fed Cup
 
 **Full Policy:**
+
 ```javascript
 import { POLICY_SEEDING_ITF } from 'tods-competition-factory';
 
@@ -758,11 +795,13 @@ import { POLICY_SEEDING_ITF } from 'tods-competition-factory';
 ```
 
 **Key Features:**
+
 - CLUSTER positioning (alternating pattern)
 - Only requires 97 participants for 32 seeds in 128 draw (vs USTA's 96)
 - Supports duplicate seed numbers
 
 **Difference from USTA:**
+
 - Main difference is CLUSTER vs SEPARATE positioning
 - Slightly lower threshold for 128 draw (97 vs 96)
 - No draw type specific overrides
@@ -776,6 +815,7 @@ import { POLICY_SEEDING_ITF } from 'tods-competition-factory';
 **Use Case:** Tournaments where BYEs should be distributed independently of seeding
 
 **Full Policy:**
+
 ```javascript
 import { POLICY_SEEDING_BYES } from 'tods-competition-factory';
 
@@ -801,11 +841,13 @@ import { POLICY_SEEDING_BYES } from 'tods-competition-factory';
 ```
 
 **Key Features:**
+
 - `containerByesIgnoreSeeding: true` - BYEs placed independently
 - CLUSTER positioning
 - Primarily for Round Robin with Playoff structures
 
 **Use Case:**
+
 ```javascript
 import { POLICY_SEEDING_BYES, ROUND_ROBIN_WITH_PLAYOFF } from 'tods-competition-factory';
 
@@ -814,7 +856,7 @@ tournamentEngine.generateDrawDefinition({
   policyDefinitions: POLICY_SEEDING_BYES,
   participants: myParticipants,
   drawSize: 16,
-  seedsCount: 4
+  seedsCount: 4,
 });
 // BYEs will be distributed without regard to seed positions
 ```
@@ -828,6 +870,7 @@ tournamentEngine.generateDrawDefinition({
 **Use Case:** National tournaments, regional play
 
 **Full Policy:**
+
 ```javascript
 import { POLICY_SEEDING_NATIONAL } from 'tods-competition-factory';
 
@@ -850,6 +893,7 @@ import { POLICY_SEEDING_NATIONAL } from 'tods-competition-factory';
 ```
 
 **Key Features:**
+
 - Simplified policy (fewer attributes)
 - CLUSTER positioning
 - Standard thresholds
@@ -857,6 +901,7 @@ import { POLICY_SEEDING_NATIONAL } from 'tods-competition-factory';
 - No `duplicateSeedNumbers` (unique seeds only)
 
 **Difference from ITF:**
+
 - More restrictive (no duplicate seeds, strict validation)
 - Otherwise identical thresholds and positioning
 
@@ -889,17 +934,17 @@ const customSeedingPolicy = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'Custom Club Policy',
     seedingProfile: {
-      positioning: SEPARATE
+      positioning: SEPARATE,
     },
     duplicateSeedNumbers: false,
     drawSizeProgression: true,
     validSeedPositions: { ignore: false },
     seedsCountThresholds: [
-      { drawSize: 8,  minimumParticipantCount: 6,  seedsCount: 2 },
+      { drawSize: 8, minimumParticipantCount: 6, seedsCount: 2 },
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
-      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }
-    ]
-  }
+      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+    ],
+  },
 };
 
 tournamentEngine.generateDrawDefinition({
@@ -913,12 +958,12 @@ tournamentEngine.generateDrawDefinition({
 ### Mixed Draw Type Seeding
 
 ```javascript
-import { 
+import {
   POLICY_TYPE_SEEDING,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SEPARATE,
-  WATERFALL
+  WATERFALL,
 } from 'tods-competition-factory';
 
 const mixedPolicy = {
@@ -927,31 +972,31 @@ const mixedPolicy = {
       positioning: SEPARATE, // Default for elimination
       drawTypes: {
         [ROUND_ROBIN]: { positioning: WATERFALL },
-        [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: WATERFALL }
-      }
+        [ROUND_ROBIN_WITH_PLAYOFF]: { positioning: WATERFALL },
+      },
     },
     duplicateSeedNumbers: true,
     drawSizeProgression: true,
     validSeedPositions: { ignore: true },
     seedsCountThresholds: [
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
-      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }
-    ]
-  }
+      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+    ],
+  },
 };
 
 // Elimination draw uses SEPARATE
 tournamentEngine.generateDrawDefinition({
   drawType: 'SINGLE_ELIMINATION',
   policyDefinitions: mixedPolicy,
-  drawSize: 32
+  drawSize: 32,
 });
 
 // Round Robin uses WATERFALL
 tournamentEngine.generateDrawDefinition({
   drawType: ROUND_ROBIN,
   policyDefinitions: mixedPolicy,
-  drawSize: 16
+  drawSize: 16,
 });
 ```
 
@@ -964,20 +1009,18 @@ const adjacentSeeding = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'Adjacent Seeding',
     seedingProfile: {
-      positioning: ADJACENT // Same as CLUSTER
+      positioning: ADJACENT, // Same as CLUSTER
     },
     duplicateSeedNumbers: true,
     validSeedPositions: { ignore: true },
     drawSizeProgression: true,
-    seedsCountThresholds: [
-      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }
-    ]
-  }
+    seedsCountThresholds: [{ drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }],
+  },
 };
 
 tournamentEngine.generateDrawDefinition({
   policyDefinitions: adjacentSeeding,
-  drawSize: 32
+  drawSize: 32,
 });
 ```
 
@@ -998,7 +1041,7 @@ tournamentEngine.generateDrawDefinition({
 tournamentEngine.generateDrawDefinition({
   policyDefinitions: POLICY_SEEDING_DEFAULT,
   participants,
-  seedsCount: 4 // Manual override
+  seedsCount: 4, // Manual override
 });
 ```
 
@@ -1011,22 +1054,22 @@ const qualifyingSeeding = {
   [POLICY_TYPE_SEEDING]: {
     seedingProfile: {
       positioning: CLUSTER,
-      nonRandom: true // Deterministic for qualifying
+      nonRandom: true, // Deterministic for qualifying
     },
     validSeedPositions: { ignore: true },
     drawSizeProgression: true,
     seedsCountThresholds: [
       { drawSize: 16, minimumParticipantCount: 12, seedsCount: 4 },
-      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }
-    ]
-  }
+      { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
+    ],
+  },
 };
 
 tournamentEngine.generateDrawDefinition({
   stage: QUALIFYING,
   policyDefinitions: qualifyingSeeding,
   drawSize: 16,
-  seedsCount: 4
+  seedsCount: 4,
 });
 ```
 
@@ -1039,9 +1082,9 @@ const progressivePolicy = {
     drawSizeProgression: true, // Key setting
     seedsCountThresholds: [
       { drawSize: 32, minimumParticipantCount: 20, seedsCount: 8 },
-      { drawSize: 64, minimumParticipantCount: 40, seedsCount: 16 }
-    ]
-  }
+      { drawSize: 64, minimumParticipantCount: 40, seedsCount: 16 },
+    ],
+  },
 };
 
 // Conservative: Require more participants for seeds
@@ -1050,9 +1093,9 @@ const conservativePolicy = {
     drawSizeProgression: false,
     seedsCountThresholds: [
       { drawSize: 32, minimumParticipantCount: 28, seedsCount: 8 },
-      { drawSize: 64, minimumParticipantCount: 56, seedsCount: 16 }
-    ]
-  }
+      { drawSize: 64, minimumParticipantCount: 56, seedsCount: 16 },
+    ],
+  },
 };
 
 // 25 participants:
@@ -1073,10 +1116,10 @@ import { POLICY_SEEDING_DEFAULT } from 'tods-competition-factory';
 // Setup
 const players = [
   // 28 players with various rankings
-  { participantId: '1', seedValue: 1 },   // Top seed
-  { participantId: '2', seedValue: 2 },   // Second seed
-  { participantId: '3', seedValue: 3 },   // Tied at rank 3
-  { participantId: '4', seedValue: 3 },   // Tied at rank 3
+  { participantId: '1', seedValue: 1 }, // Top seed
+  { participantId: '2', seedValue: 2 }, // Second seed
+  { participantId: '3', seedValue: 3 }, // Tied at rank 3
+  { participantId: '4', seedValue: 3 }, // Tied at rank 3
   { participantId: '5', seedValue: 5 },
   { participantId: '6', seedValue: 6 },
   { participantId: '7', seedValue: 7 },
@@ -1086,16 +1129,16 @@ const players = [
 
 // Create tournament
 tournamentEngine.newTournamentRecord({
-  tournamentName: 'USTA Junior Championships'
+  tournamentName: 'USTA Junior Championships',
 });
 
 const eventId = tournamentEngine.addEvent({
-  eventName: 'Boys 18 Singles'
+  eventName: 'Boys 18 Singles',
 }).eventId;
 
 tournamentEngine.addEventEntries({
   eventId,
-  participantIds: players.map(p => p.participantId)
+  participantIds: players.map((p) => p.participantId),
 });
 
 // Generate draw with USTA seeding
@@ -1169,10 +1212,7 @@ const { drawId: mainDrawId } = tournamentEngine.generateDrawDefinition({
 ### Scenario 3: Club Round Robin with Playoff
 
 ```javascript
-import { 
-  POLICY_SEEDING_BYES,
-  ROUND_ROBIN_WITH_PLAYOFF 
-} from 'tods-competition-factory';
+import { POLICY_SEEDING_BYES, ROUND_ROBIN_WITH_PLAYOFF } from 'tods-competition-factory';
 
 // 14 players for club tournament
 const clubPlayers = [
@@ -1184,11 +1224,11 @@ const clubPlayers = [
 ];
 
 tournamentEngine.newTournamentRecord({
-  tournamentName: 'Club Championships'
+  tournamentName: 'Club Championships',
 });
 
 const eventId = tournamentEngine.addEvent({
-  eventName: 'Club Singles'
+  eventName: 'Club Singles',
 }).eventId;
 
 // Generate Round Robin with Playoff
@@ -1198,7 +1238,7 @@ const { drawId } = tournamentEngine.generateDrawDefinition({
   policyDefinitions: POLICY_SEEDING_BYES, // Use BYES policy
   participants: clubPlayers,
   drawSize: 16,
-  seedsCount: 4
+  seedsCount: 4,
 });
 
 // Result:
@@ -1299,11 +1339,13 @@ The engine determines seeds count automatically:
 BYEs are placed differently based on policy:
 
 **Standard (containerByesIgnoreSeeding: false):**
+
 - BYEs avoid seed positions
 - BYEs placed to protect seeds
 - Unseeded positions preferred for BYEs
 
 **BYES Policy (containerByesIgnoreSeeding: true):**
+
 - BYEs distributed independently
 - Container structures only (Round Robin with Playoff)
 - Even distribution across groups
@@ -1320,56 +1362,10 @@ When `seedingProfile.drawTypes` is defined:
 4. If not found: uses default `seedingProfile.positioning`
 
 **Common overrides:**
+
 - Round Robin: WATERFALL
 - Elimination: SEPARATE or CLUSTER
 - Feed-In: CLUSTER
-
----
-
-### Positioning Patterns Visualized
-
-**32 Draw - SEPARATE (USTA):**
-```
-Round 1                Quarter    Semi    Final
-1  Seed 1 ────┐
-               ├───────┐
-17 (BYE)  ────┘       │
-                      ├─────┐
-9  (Player) ──┐       │     │
-               ├───────┘     │
-25 (Player) ──┘             │
-                            ├────── Champion
-5  Seed 5 ────┐             │
-               ├───────┐     │
-21 (Player) ──┘       │     │
-                      ├─────┘
-13 (Player) ──┐       │
-               ├───────┘
-29 (Player) ──┘
-...
-```
-
-**32 Draw - CLUSTER/ADJACENT (ITF):**
-```
-Round 1                Quarter    Semi    Final
-1  Seed 1 ────┐
-               ├───────┐
-17 (BYE)  ────┘       │
-                      ├─────┐
-16 Seed 3 ────┐       │     │
-               ├───────┘     │
-9  (Player) ──┘             │
-                            ├────── Champion
-8  Seed 5 ────┐             │
-               ├───────┐     │
-25 (Player) ──┘       │     │
-                      ├─────┘
-24 Seed 7 ────┐       │
-               ├───────┘
-...
-```
-
-Note the difference: CLUSTER places seeds closer together (16, 8, 24), SEPARATE spreads them apart (5, 13).
 
 ---
 
@@ -1380,12 +1376,12 @@ When `duplicateSeedNumbers: true`:
 ```javascript
 // Input:
 const participants = [
-  { seedValue: 1 },  // Seed 1
-  { seedValue: 2 },  // Seed 2
-  { seedValue: 3 },  // All three tied at seed 3
+  { seedValue: 1 }, // Seed 1
+  { seedValue: 2 }, // Seed 2
+  { seedValue: 3 }, // All three tied at seed 3
   { seedValue: 3 },
   { seedValue: 3 },
-  { seedValue: 6 },  // Seed 6
+  { seedValue: 6 }, // Seed 6
 ];
 
 // Behavior:
@@ -1402,14 +1398,17 @@ Engine randomly distributes duplicate seeds within their appropriate blocks.
 ### Performance Considerations
 
 **Large Draws:**
+
 - 256+ draws with 64 seeds: complex calculations
 - Recommendation: Use `nonRandom: false` (default) for faster generation
 
 **Many Participants:**
+
 - 200+ participants: threshold checking is O(n)
 - Sorted thresholds allow early exit
 
 **Draw Generation Time:**
+
 - SEPARATE: Fastest (straightforward algorithm)
 - CLUSTER/ADJACENT: Slightly slower (alternating logic)
 - WATERFALL: Moderate (sequential assignment)
@@ -1449,17 +1448,15 @@ Seeding policy works with:
 - **MatchUp Actions Policy:** Seeds affect matchUp constraints
 
 Example:
+
 ```javascript
-import { 
-  POLICY_SEEDING_ITF,
-  POLICY_TYPE_AVOIDANCE 
-} from 'tods-competition-factory';
+import { POLICY_SEEDING_ITF, POLICY_TYPE_AVOIDANCE } from 'tods-competition-factory';
 
 const combinedPolicies = {
   ...POLICY_SEEDING_ITF,
   [POLICY_TYPE_AVOIDANCE]: {
     // Avoidance rules
-  }
+  },
 };
 
 tournamentEngine.generateDrawDefinition({
@@ -1475,6 +1472,7 @@ tournamentEngine.generateDrawDefinition({
 ### Query Methods
 
 #### `getSeedBlocks()`
+
 Retrieves valid seed blocks for a draw structure.
 
 ```javascript
@@ -1482,30 +1480,32 @@ import { getSeedBlocks } from 'tods-competition-factory';
 
 const { seedBlocks } = getSeedBlocks({
   participantsCount: 32,
-  cluster: true // CLUSTER/ADJACENT positioning
+  cluster: true, // CLUSTER/ADJACENT positioning
 });
 
 // Returns: [[1], [32], [16, 17], [8, 9, 24, 25], ...]
 ```
 
 #### `getValidSeedBlocks()`
+
 Gets valid seed blocks for a specific structure with policy applied.
 
 ```javascript
 const { validSeedBlocks } = getValidSeedBlocks({
   structure,
   drawDefinition,
-  appliedPolicies: POLICY_SEEDING_ITF
+  appliedPolicies: POLICY_SEEDING_ITF,
 });
 ```
 
 #### `getStructureSeedAssignments()`
+
 Retrieves current seed assignments in a structure.
 
 ```javascript
 tournamentEngine.getStructureSeedAssignments({
   drawId,
-  structureId
+  structureId,
 });
 ```
 
@@ -1514,6 +1514,7 @@ tournamentEngine.getStructureSeedAssignments({
 ### Mutation Methods
 
 #### `assignSeed()`
+
 Assigns a seed to a specific participant.
 
 ```javascript
@@ -1521,11 +1522,12 @@ tournamentEngine.assignSeed({
   drawId,
   participantId: 'player-123',
   seedNumber: 1,
-  seedValue: 1
+  seedValue: 1,
 });
 ```
 
 #### `clearDrawSeeding()`
+
 Removes all seed assignments from a draw.
 
 ```javascript
@@ -1533,6 +1535,7 @@ tournamentEngine.clearDrawSeeding({ drawId });
 ```
 
 #### `generateDrawDefinition()`
+
 Primary method for draw generation with seeding policy.
 
 ```javascript
@@ -1554,44 +1557,46 @@ Every draw structure uses `seedAssignments` to associate unique `participantIds`
 
 ```typescript
 type SeedAssignment = {
-  seedNumber: number;      // Unique seed number (1, 2, 3, ...)
-  seedValue: string;       // Display value (can be same for multiple seeds)
-  participantId: string;   // Unique participant identifier
+  seedNumber: number; // Unique seed number (1, 2, 3, ...)
+  seedValue: string; // Display value (can be same for multiple seeds)
+  participantId: string; // Unique participant identifier
 };
 
 // Example:
 const seedAssignments = [
   {
     seedNumber: 1,
-    seedValue: "1",
-    participantId: "772C5CA9-C092-418C-AC6F-A6B584BD2D37"
+    seedValue: '1',
+    participantId: '772C5CA9-C092-418C-AC6F-A6B584BD2D37',
   },
   {
     seedNumber: 2,
-    seedValue: "2",
-    participantId: "267BAA81-5A38-4AAF-9EA3-E434A1ED63AD"
+    seedValue: '2',
+    participantId: '267BAA81-5A38-4AAF-9EA3-E434A1ED63AD',
   },
   {
     seedNumber: 3,
-    seedValue: "3-4",  // Can have custom display value
-    participantId: "ABC123..."
+    seedValue: '3-4', // Can have custom display value
+    participantId: 'ABC123...',
   },
   {
     seedNumber: 4,
-    seedValue: "3-4",  // Same display value as seed 3
-    participantId: "DEF456..."
-  }
+    seedValue: '3-4', // Same display value as seed 3
+    participantId: 'DEF456...',
+  },
 ];
 ```
 
 ### Key Points
 
 **Unique Seed Numbers:**
+
 - Only one `participantId` may be assigned to each `seedNumber`
 - Seed numbers are always unique within a draw structure
 - Seed numbers determine seed block placement
 
 **Custom Seed Values:**
+
 - Each seed assignment may have a custom `seedValue` for display
 - Multiple seeds can share the same `seedValue` (e.g., "5-8" for seeds 5, 6, 7, 8)
 - Useful for showing seed ranges on printed draws
@@ -1601,31 +1606,31 @@ const seedAssignments = [
 ```javascript
 // Standard seeding (unique values)
 const standardSeeds = [
-  { seedNumber: 1, seedValue: "1", participantId: "p1" },
-  { seedNumber: 2, seedValue: "2", participantId: "p2" },
-  { seedNumber: 3, seedValue: "3", participantId: "p3" },
-  { seedNumber: 4, seedValue: "4", participantId: "p4" }
+  { seedNumber: 1, seedValue: '1', participantId: 'p1' },
+  { seedNumber: 2, seedValue: '2', participantId: 'p2' },
+  { seedNumber: 3, seedValue: '3', participantId: 'p3' },
+  { seedNumber: 4, seedValue: '4', participantId: 'p4' },
 ];
 
 // Grouped seeding (same display value)
 const groupedSeeds = [
-  { seedNumber: 5, seedValue: "5-8", participantId: "p5" },
-  { seedNumber: 6, seedValue: "5-8", participantId: "p6" },
-  { seedNumber: 7, seedValue: "5-8", participantId: "p7" },
-  { seedNumber: 8, seedValue: "5-8", participantId: "p8" }
+  { seedNumber: 5, seedValue: '5-8', participantId: 'p5' },
+  { seedNumber: 6, seedValue: '5-8', participantId: 'p6' },
+  { seedNumber: 7, seedValue: '5-8', participantId: 'p7' },
+  { seedNumber: 8, seedValue: '5-8', participantId: 'p8' },
 ];
 
 // Duplicate seed numbers scenario (when duplicateSeedNumbers: true)
 // Five participants with equivalent rankings all appear as seed "4"
 const duplicateSeeds = [
-  { seedNumber: 1, seedValue: "1", participantId: "p1" },
-  { seedNumber: 2, seedValue: "2", participantId: "p2" },
-  { seedNumber: 3, seedValue: "3", participantId: "p3" },
-  { seedNumber: 4, seedValue: "4", participantId: "p4" },  // From 3-4 block
-  { seedNumber: 5, seedValue: "4", participantId: "p5" },  // From 5-8 block
-  { seedNumber: 6, seedValue: "4", participantId: "p6" },  // From 5-8 block
-  { seedNumber: 7, seedValue: "4", participantId: "p7" },  // From 5-8 block
-  { seedNumber: 8, seedValue: "4", participantId: "p8" }   // From 5-8 block
+  { seedNumber: 1, seedValue: '1', participantId: 'p1' },
+  { seedNumber: 2, seedValue: '2', participantId: 'p2' },
+  { seedNumber: 3, seedValue: '3', participantId: 'p3' },
+  { seedNumber: 4, seedValue: '4', participantId: 'p4' }, // From 3-4 block
+  { seedNumber: 5, seedValue: '4', participantId: 'p5' }, // From 5-8 block
+  { seedNumber: 6, seedValue: '4', participantId: 'p6' }, // From 5-8 block
+  { seedNumber: 7, seedValue: '4', participantId: 'p7' }, // From 5-8 block
+  { seedNumber: 8, seedValue: '4', participantId: 'p8' }, // From 5-8 block
 ];
 ```
 
@@ -1635,7 +1640,7 @@ const duplicateSeeds = [
 // Get seed assignments for a structure
 tournamentEngine.getStructureSeedAssignments({
   drawId,
-  structureId
+  structureId,
 });
 
 // Returns:
@@ -1650,7 +1655,7 @@ tournamentEngine.getStructureSeedAssignments({
 // Get participant with seeding information
 tournamentEngine.getParticipants({
   withSeeding: true,
-  withEvents: true
+  withEvents: true,
 });
 
 // Returns participants with events[].seedValue populated
@@ -1659,17 +1664,20 @@ tournamentEngine.getParticipants({
 ### Important Notes
 
 **Seed Block Placement:**
+
 - Seed number determines which seed block the participant is placed in
 - Seed value is for display only - does not affect placement
 - Even with same seed value, seed numbers must be unique
 
 **Display Scenarios:**
+
 - Some providers display seeds 5-8 all with value "5-8"
 - Some providers display all tied participants with same seed number on draw
 - ITF often shows "3/4" for seeds in the 3-4 block
 - USTA typically shows individual seed numbers
 
 **With `duplicateSeedNumbers: true`:**
+
 - Engine allows multiple participants to share the same `seedValue`
 - Useful when player rankings are tied
 - All participants in a seed block can show same display value
@@ -1699,6 +1707,7 @@ The **Seeding Policy** is one of the most critical tournament policies, controll
 6. **Flexible vs strict** seed position validation
 
 **Four built-in policies provided:**
+
 - **POLICY_SEEDING_DEFAULT** - USTA style (SEPARATE positioning)
 - **POLICY_SEEDING_ITF** - ITF style (CLUSTER positioning)
 - **POLICY_SEEDING_BYES** - BYE placement ignores seeding
