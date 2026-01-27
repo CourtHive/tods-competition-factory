@@ -23,19 +23,19 @@ export function calculatePercentages({
         ? totalSets
         : perPlayer * (bracketSetsToWin || 0) || setsWon + setsLost;
     let setsPct = Math.round((setsWon / setsTotal) * precision) / precision;
-    if (setsPct === Infinity || isNaN(setsPct)) setsPct = setsTotal;
+    if (setsPct === Infinity || Number.isNaN(setsPct)) setsPct = setsTotal;
 
     const tieMatchUpsWon = participantResults[participantId].tieMatchUpsWon;
     const tieMatchUpsLost = participantResults[participantId].tieMatchUpsLost;
     const tieMatchUpsTotal = tieMatchUpsWon + tieMatchUpsLost;
     let tieMatchUpsPct = Math.round((tieMatchUpsWon / tieMatchUpsTotal) * precision) / precision;
-    if (tieMatchUpsPct === Infinity || isNaN(tieMatchUpsPct)) tieMatchUpsPct = tieMatchUpsWon;
+    if (tieMatchUpsPct === Infinity || Number.isNaN(tieMatchUpsPct)) tieMatchUpsPct = tieMatchUpsWon;
 
     const matchUpsWon = participantResults[participantId].matchUpsWon;
     const matchUpsLost = participantResults[participantId].matchUpsLost;
     const matchUpsTotal = matchUpsWon + matchUpsLost;
     let matchUpsPct = Math.round((matchUpsWon / matchUpsTotal) * precision) / precision;
-    if (matchUpsPct === Infinity || isNaN(matchUpsPct)) matchUpsPct = matchUpsWon;
+    if (matchUpsPct === Infinity || Number.isNaN(matchUpsPct)) matchUpsPct = matchUpsWon;
 
     const gamesWon = participantResults[participantId].gamesWon || 0;
     const gamesLost = participantResults[participantId].gamesLost || 0;
@@ -45,11 +45,11 @@ export function calculatePercentages({
         ? totalGames
         : Math.max(minimumExpectedGames, gamesWon + gamesLost);
     let gamesPct = Math.round((gamesWon / gamesTotal) * precision) / precision;
-    if (gamesPct === Infinity || isNaN(gamesPct)) gamesPct = 0;
+    if (gamesPct === Infinity || Number.isNaN(gamesPct)) gamesPct = 0;
 
     const pointsTotal = participantResults[participantId].pointsWon + participantResults[participantId].pointsLost;
     let pointsPct = Math.round((participantResults[participantId].pointsWon / pointsTotal) * precision) / precision;
-    if (pointsPct === Infinity || isNaN(pointsPct)) pointsPct = 0;
+    if (pointsPct === Infinity || Number.isNaN(pointsPct)) pointsPct = 0;
 
     participantResults[participantId].setsWon = setsWon;
     participantResults[participantId].setsLost = setsLost;

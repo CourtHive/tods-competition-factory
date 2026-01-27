@@ -35,15 +35,14 @@ export function analyzeDraws({ tournamentRecord }): {
   const eventsMap = {};
 
   const eventDraws = tournamentRecord.events
-    ?.map((event) => {
+    ?.flatMap((event: any) => {
       const eventId = event.eventId;
       eventsMap[eventId] = event;
-      return (event?.drawDefinitions || []).map((drawDefinition) => ({
+      return (event?.drawDefinitions || []).map((drawDefinition: any) => ({
         drawDefinition,
         eventId,
       }));
     })
-    .flat()
     .filter(Boolean);
 
   eventDraws.forEach(({ drawDefinition, eventId }) => {
@@ -89,12 +88,12 @@ export function analyzeDraws({ tournamentRecord }): {
         roundProfile &&
         Object.keys(roundProfile)
           .filter((roundNumber) => !roundProfile[roundNumber].inactiveRound)
-          .map((roundNumber) => parseInt(roundNumber));
+          .map((roundNumber) => Number.parseInt(roundNumber));
       const inactiveRounds =
         roundProfile &&
         Object.keys(roundProfile)
           .filter((roundNumber) => roundProfile[roundNumber].inactiveRound)
-          .map((roundNumber) => parseInt(roundNumber));
+          .map((roundNumber) => Number.parseInt(roundNumber));
       const inactiveStructure = roundProfile && Object.values(roundProfile).every((profile) => profile.inactiveRound);
 
       return {

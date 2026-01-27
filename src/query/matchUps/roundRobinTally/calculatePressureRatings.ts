@@ -28,8 +28,8 @@ export function calculatePressureRatings({ participantResults, sides, score }) {
 }
 
 export function getSideValues({ side1ConvertedRating, side2ConvertedRating, score }) {
-  const highRating = side1ConvertedRating > side2ConvertedRating ? side1ConvertedRating : side2ConvertedRating;
-  const lowRating = side1ConvertedRating > side2ConvertedRating ? side2ConvertedRating : side1ConvertedRating;
+  const highRating = Math.max(side1ConvertedRating, side2ConvertedRating);
+  const lowRating = Math.min(side1ConvertedRating, side2ConvertedRating);
   const ratingsDifference = Math.abs(side1ConvertedRating - side2ConvertedRating);
   const eloRatingRange = ratingsParameters[ELO].range;
   const rangeMax = Math.max(...eloRatingRange);

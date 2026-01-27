@@ -74,7 +74,7 @@ export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUp
     const maxRoundNumber = Math.max(
       ...Object.keys(roundMatchUps)
         .map((key) => ensureInt(key))
-        .filter((f) => !isNaN(f)),
+        .filter((f) => !Number.isNaN(f)),
     );
     const maxRoundMatchUpsCount = roundMatchUps[maxRoundNumber]?.length;
     // when considering a structue, if rounds do not progress to a final round which contains one matchUp
@@ -116,10 +116,10 @@ export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUp
   let feedRoundIndex = 0;
   const roundNumbers = Object.keys(roundMatchUps)
     .map((key) => ensureInt(key))
-    .filter((f) => !isNaN(f));
+    .filter((f) => !Number.isNaN(f));
   roundNumbers.forEach((roundNumber) => {
     const currentRoundMatchUps = roundMatchUps[roundNumber].sort((a, b) => a.roundPosition - b.roundPosition);
-    const currentRoundDrawPositions = currentRoundMatchUps.map((matchUp) => matchUp?.drawPositions || []).flat();
+    const currentRoundDrawPositions = currentRoundMatchUps.flatMap((matchUp) => matchUp?.drawPositions || []);
 
     roundProfile[roundNumber].roundNumber = roundNumber; // convenience
 
@@ -205,7 +205,7 @@ export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUp
     }
   });
 
-  const roundsNotPowerOf2 = !!Object.values(roundProfile).find(({ matchUpsCount }) => !isPowerOf2(matchUpsCount));
+  const roundsNotPowerOf2 = !!Object.values(roundProfile).some(({ matchUpsCount }) => !isPowerOf2(matchUpsCount));
 
   const hasNoRoundPositions = matchUps.some((matchUp) => !matchUp.roundPosition);
 

@@ -5,7 +5,7 @@ const add = (a, b) => (a || 0) + (b || 0);
 export function getBand(spread: number | [number], bandProfiles: { [key: string]: number }) {
   const spreadValue = Array.isArray(spread) ? spread[0] : spread;
   return (
-    (isNaN(spreadValue) && WALKOVER) ||
+    (Number.isNaN(spreadValue) && WALKOVER) ||
     (spreadValue <= bandProfiles[DECISIVE] && DECISIVE) ||
     (spreadValue <= bandProfiles[ROUTINE] && ROUTINE) ||
     COMPETITIVE

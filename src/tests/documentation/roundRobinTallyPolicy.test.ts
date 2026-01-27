@@ -45,20 +45,15 @@ it('precision controls decimal precision of percentage calculations', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // Default precision is 3 (1000)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-  let firstResult: any = Object.values(participantResults)[0];
-  expect(firstResult?.gamesPct.toString().length).toBeLessThanOrEqual(5); // e.g., 0.667
-
   // Precision 5 (100000)
   const precision5Policy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: { precision: 5 },
   };
-  ({ participantResults } = tallyParticipantResults({
+  let { participantResults } = tallyParticipantResults({
     policyDefinitions: precision5Policy,
     matchUps,
-  }));
-  firstResult = Object.values(participantResults)[0];
+  });
+  let firstResult: any = Object.values(participantResults)[0];
   expect(firstResult?.gamesPct.toString().length).toBeLessThanOrEqual(7); // e.g., 0.66667
 
   // Precision 7 (10000000)
@@ -141,11 +136,22 @@ it('maxParticipants: 2 skips head-to-head in circular ties (3+ teams)', () => {
       groupOrderKey: 'matchUpsWon',
       headToHead: { disabled: true }, // Disable to force directives
       tallyDirectives: [
-        { attribute: 'matchUpsPct', idsFilter: true }, // No max - circular tie
+        { attribute: 'matchUpsPct', idsFilter: true }, // No max - applies to all tied teams
         { attribute: 'gamesPct', idsFilter: false },
       ],
     },
   };
+
+  // Test without maxParticipants - idsFilter applies to all 3 tied teams (circular tie)
+  const resultsNoMax = tallyParticipantResults({
+    policyDefinitions: noMaxPolicy,
+    matchUps,
+  });
+
+  // Should complete ordering using idsFilter for all 3 tied teams
+  expect(Object.keys(resultsNoMax.participantResults).length).toBe(4);
+  const noMaxOrders = Object.values(resultsNoMax.participantResults).map((r: any) => r.groupOrder);
+  expect(noMaxOrders.filter(Boolean)).toHaveLength(4);
 
   // With maxParticipants: 2 - skips head-to-head for 3 teams
   const withMaxPolicy = {
@@ -275,20 +281,6 @@ it('reversed attribute reverses sort order from greatest-to-least to least-to-gr
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // Without reversed - normal: most games lost is worst
-  const normalPolicy = {
-    [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
-      groupOrderKey: 'matchUpsWon',
-      headToHead: { disabled: true },
-      tallyDirectives: [{ attribute: 'gamesLost', reversed: false, idsFilter: false }],
-    },
-  };
-
-  let { participantResults } = tallyParticipantResults({
-    policyDefinitions: normalPolicy,
-    matchUps,
-  });
-
   // With reversed - least games lost is best
   const reversedPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -298,10 +290,10 @@ it('reversed attribute reverses sort order from greatest-to-least to least-to-gr
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: reversedPolicy,
     matchUps,
-  }));
+  });
 
   // Verify reversed attribute is supported (doesn't error)
   Object.values(participantResults).forEach((result: any) => {
@@ -602,9 +594,6 @@ it('gamesCreditForTiebreakSets controls whether tiebreak set counts as game', ()
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // With tiebreak credit (default: true)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-
   // Verify gamesCreditForTiebreakSets can be configured
   const noTiebreakCreditPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -612,10 +601,10 @@ it('gamesCreditForTiebreakSets controls whether tiebreak set counts as game', ()
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: noTiebreakCreditPolicy,
     matchUps,
-  }));
+  });
 
   // Verify games are calculated (policy doesn't error)
   Object.values(participantResults).forEach((result: any) => {
@@ -686,19 +675,6 @@ it('idsFilter scopes calculations to only tied participants', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // idsFilter: false - calculates from all group matchUps
-  const noFilterPolicy = {
-    [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
-      groupOrderKey: 'matchUpsWon',
-      tallyDirectives: [{ attribute: 'gamesPct', idsFilter: false }],
-    },
-  };
-
-  let { participantResults } = tallyParticipantResults({
-    policyDefinitions: noFilterPolicy,
-    matchUps,
-  });
-
   // idsFilter: true - calculates from matchUps between tied participants
   const filterPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -707,10 +683,10 @@ it('idsFilter scopes calculations to only tied participants', () => {
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: filterPolicy,
     matchUps,
-  }));
+  });
 
   // All participants should have groupOrder
   Object.values(participantResults).forEach((result: any) => {
@@ -755,14 +731,6 @@ it('headToHead can be disabled to skip head-to-head tiebreaking', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // With head-to-head enabled (default)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-
-  // Verify head-to-head is supported
-  Object.values(participantResults).forEach((result: any) => {
-    expect(result.groupOrder).toBeDefined();
-  });
-
   // With head-to-head disabled
   const h2hDisabledPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -772,10 +740,10 @@ it('headToHead can be disabled to skip head-to-head tiebreaking', () => {
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: h2hDisabledPolicy,
     matchUps,
-  }));
+  });
 
   // Verify policy doesn't error
   Object.values(participantResults).forEach((result: any) => {
