@@ -56,7 +56,9 @@ export function updateTimeAfterRecovery({
     const matchUpTypeChange = individualParticipantProfiles[participantId].priorMatchUpType !== matchUp.matchUpType;
 
     // if matchUpType of previous matchUp is different, use typeChangeTimeAfterRecovery (if available)
-    const recoveryValue = matchUpTypeChange ? typeChangeTimeAfterRecovery || timeAfterRecovery : timeAfterRecovery;
+    const recoveryValue: string = matchUpTypeChange
+      ? typeChangeTimeAfterRecovery || timeAfterRecovery
+      : timeAfterRecovery;
 
     // check whether this participantId is potential or actual for this matchUp
     if (potentialIndividualParticipantIds.includes(participantId)) {

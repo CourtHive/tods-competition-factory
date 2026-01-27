@@ -31,25 +31,27 @@ export function getCategoryAgeDetails(params: ParseArgs) {
   if (!isValidCategory) return { error: INVALID_CATEGORY };
 
   const consideredDate = params.consideredDate ?? extractDate(new Date().toLocaleDateString('sv'));
-  if (!isValidDateString(consideredDate)) return { error: INVALID_DATE };
+  if (!consideredDate || !isValidDateString(consideredDate)) return { error: INVALID_DATE };
 
   const [consideredYear] = consideredDate
     .split('-')
     .slice(0, 3)
-    .map((n) => parseInt(n));
+    .map((n) => Number.parseInt(n));
 
   const previousDayDate = dateStringDaysChange(consideredDate, -1);
+  if (!previousDayDate) return { error: INVALID_DATE };
   const [previousDayMonth, previousDay] = previousDayDate
     .split('-')
     .slice(1, 3)
-    .map((n) => parseInt(n));
+    .map((n) => Number.parseInt(n));
   const previousMonthDay = `${zeroPad(previousDayMonth)}-${zeroPad(previousDay)}`;
 
   const nextDayDate = dateStringDaysChange(consideredDate, 1);
+  if (!nextDayDate) return { error: INVALID_DATE };
   const [nextDayMonth, nextDay] = nextDayDate
     .split('-')
     .slice(1, 3)
-    .map((n) => parseInt(n));
+    .map((n) => Number.parseInt(n));
   const nextMonthDay = `${zeroPad(nextDayMonth)}-${zeroPad(nextDay)}`;
 
   let calculatedAgeMaxDate = ageMin && dateStringDaysChange(consideredDate, -1 * 365 * ageMin);
@@ -155,7 +157,7 @@ export function getCategoryAgeDetails(params: ParseArgs) {
 
   const processCode = (code) => {
     const [pre, age, post] = (code.match(prePost) || []).slice(1);
-    const ageInt = parseInt(age);
+    const ageInt = Number.parseInt(age);
     if (pre === 'U') {
       if (category.ageMaxDate && category.ageMaxDate !== ageMaxDate) {
         addError(`Invalid submitted ageMaxDate: ${category.ageMaxDate}`);
@@ -174,8 +176,8 @@ export function getCategoryAgeDetails(params: ParseArgs) {
       oPost(ageInt);
     }
 
-    ageMaxDate = ageMaxDate ?? calculatedAgeMaxDate;
-    ageMinDate = ageMinDate ?? calculatedAgeMinDate;
+    ageMaxDate = (ageMaxDate ?? calculatedAgeMaxDate) || undefined;
+    ageMinDate = (ageMinDate ?? calculatedAgeMinDate) || undefined;
   };
 
   if (isCombined) {
@@ -196,7 +198,7 @@ export function getCategoryAgeDetails(params: ParseArgs) {
       ageMinDate = constructedDate(ageMinYear, nextMonthDay);
     }
 
-    const [lowAge, highAge] = (ageCategoryCode?.match(extractCombined) ?? []).slice(1).map((n) => parseInt(n));
+    const [lowAge, highAge] = (ageCategoryCode?.match(extractCombined) ?? []).slice(1).map((n) => Number.parseInt(n));
     if (lowAge <= highAge) {
       ageMin = lowAge;
       ageMax = highAge;

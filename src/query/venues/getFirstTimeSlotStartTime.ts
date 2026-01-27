@@ -25,7 +25,7 @@ export function getFirstTimeSlotStartTime({ averageMinutes, startTime, endTime, 
         const available = timeSlotMinutes >= averageMinutes;
         if (available) {
           const timeString = extractTime(timeSlotStartTime.toISOString());
-          if (!firstTimeSlotStartTime || timeString < firstTimeSlotStartTime) {
+          if (timeString && (!firstTimeSlotStartTime || timeString < firstTimeSlotStartTime)) {
             firstTimeSlotStartTime = timeString;
           }
         }

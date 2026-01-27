@@ -101,12 +101,12 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
   } = params;
   let matchUp, warning;
 
-  if (!drawMatchUps) {
+  if (drawMatchUps) {
+    matchUp = drawMatchUps.find((drawMatchUp) => drawMatchUp.matchUpId === matchUpId);
+  } else {
     const result = findDrawMatchUp({ drawDefinition, event, matchUpId });
     if (result.error) return result;
     matchUp = result.matchUp;
-  } else {
-    matchUp = drawMatchUps.find((drawMatchUp) => drawMatchUp.matchUpId === matchUpId);
   }
 
   const {
@@ -140,12 +140,12 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
       )
       .map(({ schedule }) => {
         const isoDateString = getIsoDateString(schedule);
-        return new Date(isoDateString).getTime();
+        return new Date(isoDateString ?? '').getTime();
       });
 
     if (priorMatchUpTimes?.length) {
       const isoDateString = getIsoDateString(schedule);
-      const matchUpTime = new Date(isoDateString).getTime();
+      const matchUpTime = new Date(isoDateString ?? '').getTime();
       const maxPriorMatchUpTime = Math.max(...priorMatchUpTimes);
       if (maxPriorMatchUpTime >= matchUpTime) {
         if (errorOnAnachronism) {
@@ -314,41 +314,6 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
 
   return warning ? { ...SUCCESS, warnings: [warning] } : { ...SUCCESS };
 }
-
-/*
-export function addMatchUpScheduledDate({
-  scheduledDate: dateToSchedule,
-  removePriorValues,
-  tournamentRecord,
-  drawDefinition,
-  disableNotice,
-  matchUpId,
-}: AddScheduleAttributeArgs & { scheduledDate?: string }): ResultType {
-  if (!matchUpId) return { error: MISSING_MATCHUP_ID };
-
-  // this must be done in tournamentEngine wrapper
-
-  const validDate = dateToSchedule && dateValidation.test(dateToSchedule);
-  if (dateToSchedule && !validDate) return { error: INVALID_DATE };
-
-  const scheduledDate = extractDate(dateToSchedule);
-
-  const timeItem = {
-    itemValue: scheduledDate,
-    itemType: SCHEDULED_DATE,
-  };
-
-  return addMatchUpTimeItem({
-    duplicateValues: false,
-    removePriorValues,
-    tournamentRecord,
-    drawDefinition,
-    disableNotice,
-    matchUpId,
-    timeItem,
-  });
-}
-*/
 
 export function addMatchUpCourtOrder({
   removePriorValues,
@@ -557,8 +522,8 @@ export function addMatchUpStopTime({
     .filter((timeItem: any) => [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType))
     .sort((a, b) => timeDate(a.itemValue, scheduledDate) - timeDate(b.itemValue, scheduledDate));
 
-  const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
-  const lastRelevantTimeItemIsStop = lastRelevantTimeItem && lastRelevantTimeItem.itemType === STOP_TIME;
+  const lastRelevantTimeItem = relevantTimeItems.at(-1);
+  const lastRelevantTimeItemIsStop = lastRelevantTimeItem?.itemType === STOP_TIME;
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter((timeItem) => !lastRelevantTimeItemIsStop || timeItem.createdAt !== lastRelevantTimeItem.createdAt)
@@ -623,8 +588,8 @@ export function addMatchUpResumeTime({
     .filter((timeItem: any) => [START_TIME, RESUME_TIME, STOP_TIME].includes(timeItem?.itemType))
     .sort((a, b) => timeDate(a.itemValue, scheduledDate) - timeDate(b.itemValue, scheduledDate));
 
-  const lastRelevantTimeItem = relevantTimeItems[relevantTimeItems.length - 1];
-  const lastRelevantTimeItemIsResume = lastRelevantTimeItem && lastRelevantTimeItem.itemType === RESUME_TIME;
+  const lastRelevantTimeItem = relevantTimeItems.at(-1);
+  const lastRelevantTimeItemIsResume = lastRelevantTimeItem?.itemType === RESUME_TIME;
 
   const latestRelevantTimeValue = relevantTimeItems
     .filter((timeItem) => !lastRelevantTimeItemIsResume || timeItem.createdAt !== lastRelevantTimeItem.createdAt)

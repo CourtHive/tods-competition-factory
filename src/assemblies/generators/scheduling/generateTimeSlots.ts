@@ -20,7 +20,7 @@ export function generateTimeSlots(params: GenerateTimeSlotsArgs): ResultType & {
 
   (courtDate.bookings || [])
     .filter((booking) => !booking.bookingType || !includeBookingTypes.includes(booking.bookingType))
-    .sort((a, b) => tidyTime(a.startTime).localeCompare(tidyTime(b.startTime)))
+    .sort((a, b) => (tidyTime(a.startTime) || '').localeCompare(tidyTime(b.startTime) || ''))
     .forEach((booking) => {
       const timeSlot = {
         startTime: extractTime(startTime.toISOString()),

@@ -5,7 +5,7 @@ import { unique } from '@Tools/arrays';
 type ProcessNextMatchUpsArgs = {
   matchUpPotentialParticipantIds: { [key: string]: string[] };
   matchUpNotBeforeTimes: { [key: string]: any };
-  timeAfterRecovery?: number;
+  timeAfterRecovery?: string;
   matchUp: HydratedMatchUp;
 };
 export function processNextMatchUps({

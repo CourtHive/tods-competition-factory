@@ -182,8 +182,8 @@ export function extractTime(dateString): string | undefined {
     : tidyTime(dateString);
 }
 
-export function extractDate(dateString): string | undefined {
-  return isISODateString(dateString) || dateValidation.test(dateString) ? dateString.split('T')[0] : undefined;
+export function extractDate(dateString): string {
+  return isISODateString(dateString) || dateValidation.test(dateString) ? dateString.split('T')[0] : '';
 }
 
 export function dateStringDaysChange(dateString, daysChange): string | undefined {
@@ -307,7 +307,7 @@ export function dateFromDay(year, day, dateFormat?): string {
   return formatDate(new Date(date.setDate(day)), dateFormat); // add the number of days
 }
 
-export function timeToDate(timeString, date = undefined): Date {
+export function timeToDate(timeString, date: string | undefined = undefined): Date {
   const [hours, minutes] = (timeString || '00:00').split(':').map(zeroPad);
   const milliseconds = offsetDate(date).setHours(hours, minutes, 0, 0);
   return offsetDate(milliseconds);
