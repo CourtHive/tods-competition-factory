@@ -9,7 +9,7 @@ import themes from './themes';
 const getValueLabelStyle = ({ style }, nodeType, keyPath) => ({
   style: {
     ...style,
-    color: !Number.isNaN(keyPath[0]) && !(parseInt(keyPath, 10) % 2) ? '#33F' : style.color,
+    color: !Number.isNaN(Number(keyPath[0])) && !(Number.parseInt(keyPath, 10) % 2) ? '#33F' : style.color,
   },
 });
 

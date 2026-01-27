@@ -56,7 +56,11 @@ export function generateOutcome(params) {
   if (!isValidMatchUpFormat({ matchUpFormat })) return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object') return { error: INVALID_VALUES };
   if (defaultWithScorePercent > 100) defaultWithScorePercent = 100;
-  if (Number.isNaN(defaultWithScorePercent) || Number.isNaN(pointsPerMinute) || Number.isNaN(sideWeight))
+  if (
+    Number.isNaN(Number(defaultWithScorePercent)) ||
+    Number.isNaN(Number(pointsPerMinute)) ||
+    Number.isNaN(Number(sideWeight))
+  )
     return { error: INVALID_VALUES };
 
   const matchUpStatuses = Object.keys(matchUpStatusProfile).filter(
