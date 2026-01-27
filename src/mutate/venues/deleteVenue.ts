@@ -1,5 +1,5 @@
-import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { allCompetitionMatchUps } from '@Query/matchUps/getAllCompetitionMatchUps';
+import { deletionMessage } from '@Assemblies/generators/matchUps/deletionMessage';
 import { removeCourtAssignment } from '../matchUps/schedule/removeCourtAssignment';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';

@@ -1,4 +1,4 @@
-import { generateScoreString } from '../../assemblies/generators/matchUps/generateScoreString';
+import { generateScoreString } from '@Assemblies/generators/matchUps/generateScoreString';
 import { expect, it, test } from 'vitest';
 
 import { RETIRED } from '@Constants/matchUpStatusConstants';

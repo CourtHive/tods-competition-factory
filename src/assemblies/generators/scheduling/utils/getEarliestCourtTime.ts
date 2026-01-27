@@ -1,5 +1,5 @@
-import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
 import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
+import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
 import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
 import { getDateTimeBoundary } from './getTimeBoundary';
 
@@ -46,7 +46,7 @@ export function getEarliestCourtTime({ averageMinutes, startTime, endTime, court
     const available = timeSlotMinutes >= averageMinutes;
     if (available) {
       const timeString = extractTime(consideredStartTime.toISOString());
-      if (!first || timeString < first) first = timeString;
+      if (timeString && (!first || timeString < first)) first = timeString;
     }
     return first;
   }, undefined);

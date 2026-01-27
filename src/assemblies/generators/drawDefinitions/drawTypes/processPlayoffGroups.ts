@@ -152,8 +152,7 @@ export function processPlayoffGroups({
         sourceStructureId,
       });
 
-      links.push(playoffLink);
-      links.push(...playoffLinks);
+      links.push(playoffLink, ...playoffLinks);
       structures.push(...playoffStructures);
       finishingPositionTargets.push({
         structureId: playoffStructure.structureId,
@@ -292,8 +291,7 @@ export function processPlayoffGroups({
         sourceStructureId,
       });
 
-      links.push(playoffLink);
-      links.push(...feedInLinks);
+      links.push(playoffLink, ...feedInLinks);
       structures.push(...champitionShipStructures);
       finishingPositionTargets.push({
         structureId: playoffStructure.structureId,

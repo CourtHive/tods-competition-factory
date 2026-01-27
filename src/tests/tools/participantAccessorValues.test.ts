@@ -1,6 +1,6 @@
-import tournamentEngine from '../engines/syncEngine';
 import { getAccessorValue } from '@Tools/getAccessorValue';
-import mocksEngine from '../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 import { INDIVIDUAL, PAIR } from '@Constants/participantConstants';

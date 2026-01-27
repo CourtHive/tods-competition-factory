@@ -1,6 +1,6 @@
-import tournamentEngine from '../engines/syncEngine';
+import tournamentEngine from '@Engines/syncEngine';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import mocksEngine from '../../assemblies/engines/mock';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it, test } from 'vitest';
 import { UUID } from '@Tools/UUID';
 

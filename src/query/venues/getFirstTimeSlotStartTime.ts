@@ -1,7 +1,7 @@
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { getDateTimeBoundary } from '@Generators/scheduling/utils/getTimeBoundary';
-import { getCourtDateAvailability } from './getCourtDateAvailability';
-import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 import { extractTime, minutesDifference, timeToDate } from '@Tools/dateTime';
+import { getCourtDateAvailability } from './getCourtDateAvailability';
 
 export function getFirstTimeSlotStartTime({ averageMinutes, startTime, endTime, courts, date }) {
   // find the first timeSlot across all courts between startTime and endTime that can accommodate averageMatchUpMinutes

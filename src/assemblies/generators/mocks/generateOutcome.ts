@@ -56,7 +56,8 @@ export function generateOutcome(params) {
   if (!isValidMatchUpFormat({ matchUpFormat })) return { error: INVALID_MATCHUP_FORMAT };
   if (typeof matchUpStatusProfile !== 'object') return { error: INVALID_VALUES };
   if (defaultWithScorePercent > 100) defaultWithScorePercent = 100;
-  if (isNaN(defaultWithScorePercent) || isNaN(pointsPerMinute) || isNaN(sideWeight)) return { error: INVALID_VALUES };
+  if (Number.isNaN(defaultWithScorePercent) || Number.isNaN(pointsPerMinute) || Number.isNaN(sideWeight))
+    return { error: INVALID_VALUES };
 
   const matchUpStatuses = Object.keys(matchUpStatusProfile).filter(
     (matchUpStatus) => Object.keys(matchUpStatusConstants).includes(matchUpStatus) && matchUpStatus !== COMPLETED,
@@ -220,9 +221,7 @@ function generateSet({ weightedRange = [0, 1], pointsPerMinute, matchUpStatus, i
     return { set, incomplete, winningSideNumber };
   } else {
     // weight the range of possible low scores such that tiebreak sets are less likely
-    const range = generateRange(1, setTo + 1)
-      .map((value) => generateRange(0, setTo + 2 - value).map(() => value))
-      .flat();
+    const range = generateRange(1, setTo + 1).flatMap((value) => generateRange(0, setTo + 2 - value).map(() => value));
     const lowValue = range[randomInt(0, range.length - 1)];
 
     const scores =
@@ -256,9 +255,9 @@ function generateSet({ weightedRange = [0, 1], pointsPerMinute, matchUpStatus, i
     let tiebreakWinningSide;
     if (setAnalysis.hasTiebreakCondition || isTiebreakSet) {
       const { NoAD: tiebreakNoAd, tiebreakTo } = tiebreakFormat || tiebreakSet || {};
-      const range = generateRange(1, tiebreakTo + 1)
-        .map((value) => generateRange(0, tiebreakTo + 2 - value).map(() => value))
-        .flat();
+      const range = generateRange(1, tiebreakTo + 1).flatMap((value) =>
+        generateRange(0, tiebreakTo + 2 - value).map(() => value),
+      );
       const lowValue = range[randomInt(0, range.length - 1)];
       const scores = getTiebreakComplement({
         isSide1: true,

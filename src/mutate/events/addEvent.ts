@@ -1,5 +1,5 @@
-import tieFormatDefaults from '../../assemblies/generators/templates/tieFormatDefaults';
 import { addDrawNotice, addMatchUpsNotice } from '../notifications/drawNotifications';
+import tieFormatDefaults from '@Assemblies/generators/templates/tieFormatDefaults';
 import { addEventNotice } from '@Mutate/notifications/eventNotifications';
 import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
 import { validateTieFormat } from '@Validators/validateTieFormat';

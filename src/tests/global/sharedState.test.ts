@@ -1,5 +1,5 @@
-import tournamentEngine from '../engines/syncEngine';
-import mocksEngine from '../../assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
 test('engines share state', () => {

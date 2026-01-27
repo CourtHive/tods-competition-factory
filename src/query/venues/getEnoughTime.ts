@@ -1,5 +1,5 @@
+import { generateTimeSlots } from '@Assemblies/generators/scheduling/generateTimeSlots';
 import { minutesDifference, timeToDate } from '@Tools/dateTime';
-import { generateTimeSlots } from '../../assemblies/generators/scheduling/generateTimeSlots';
 
 export function getEnoughTime({ averageMatchUpMinutes, includeBookingTypes, periodStartTime, periodEndTime }) {
   const enoughTime = (courtDate) => {
