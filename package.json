@@ -160,7 +160,7 @@
     "eslint-plugin-compat": "6.1.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-prettier": "5.5.5",
-    "eslint-plugin-sonarjs": "3.0.5",
+    "eslint-plugin-sonarjs": "3.0.6",
     "esm": "3.2.25",
     "fs-extra": "11.3.3",
     "globals": "17.2.0",
