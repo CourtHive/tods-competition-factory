@@ -108,8 +108,8 @@ export function offsetTime(date?) {
 export function isDate(dateArg) {
   if (typeof dateArg == 'boolean') return false;
   // ignore warnings here as Number.isNaN causes the function to behave differently
-  const t = (dateArg instanceof Date && dateArg) || (!isNaN(dateArg) && new Date(dateArg)) || false;
-  return t && !isNaN(t.valueOf());
+  const t = (dateArg instanceof Date && dateArg) || (!Number.isNaN(Number(dateArg)) && new Date(dateArg)) || false;
+  return t && !Number.isNaN(Number(t.valueOf()));
 }
 
 function isValidDateRange(minDate, maxDate) {
