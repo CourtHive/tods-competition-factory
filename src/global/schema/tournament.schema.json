@@ -3344,6 +3344,12 @@
         },
         "endTime": {
           "type": "string"
+        },
+        "courtOrder": {
+          "type": "number"
+        },
+        "rowCount": {
+          "type": "number"
         }
       },
       "additionalProperties": false

@@ -69,7 +69,9 @@ export function proAutoSchedule({
         }
       }
     });
-    const availableCourts = Object.values(row).filter((c: any) => isObject(c) && !c.matchUpId);
+    const availableCourts = Object.values(row).filter(
+      (c: any) => isObject(c) && !c.matchUpId && !c.isBlocked, // Skip blocked cells
+    );
     return gridRows.concat({
       matchUpIds,
       availableCourts,

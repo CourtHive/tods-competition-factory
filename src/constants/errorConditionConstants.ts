@@ -625,6 +625,14 @@ export const COURT_EXISTS = {
   message: 'Court exists',
   code: 'ERR_EXISTING_COURT',
 };
+export const BOOKING_NOT_FOUND = {
+  message: 'Booking not found',
+  code: 'ERR_NOT_FOUND_BOOKING',
+};
+export const EXISTING_MATCHUPS = {
+  message: 'Existing matchUps conflict with booking',
+  code: 'ERR_EXISTING_MATCHUPS',
+};
 
 export const VENUE_EXISTS = {
   message: 'Venue exists',
@@ -805,6 +813,7 @@ export const SCORES_PRESENT = {
 
 export const errorConditionConstants = {
   ANACHRONISM,
+  BOOKING_NOT_FOUND,
   CANNOT_CHANGE_WINNING_SIDE,
   CANNOT_MODIFY_TIEFORMAT,
   CANNOT_MODIFY_PARTICIPANT_TYPE,
@@ -813,6 +822,7 @@ export const errorConditionConstants = {
   CATEGORY_MISMATCH,
   COURT_EXISTS,
   COURT_NOT_FOUND,
+  EXISTING_MATCHUPS,
   DRAW_DEFINITION_NOT_FOUND,
   DRAW_ID_EXISTS,
   DRAW_POSITION_ACTIVE,

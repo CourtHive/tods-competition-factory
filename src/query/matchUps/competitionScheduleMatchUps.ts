@@ -217,8 +217,10 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   };
 
   if (withCourtGridRows) {
+    const scheduledDate = params.matchUpFilters?.scheduledDate;
     const { rows, courtPrefix } = courtGridRows({
       minRowsCount: Math.max(minCourtGridRows || 0, dateMatchUps.length || 0),
+      scheduledDate,
       courtsData,
     });
     result.courtPrefix = courtPrefix; /* pass through for access to internal defaults by consumer */
