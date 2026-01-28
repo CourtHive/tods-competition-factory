@@ -1,0 +1,159 @@
+---
+title: Categories
+---
+
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import CategoryEditorDemo from '../../components/CategoryEditorDemo';
+
+## Overview
+
+Categories define the eligibility criteria and characteristics of an event. Categories can be based on age, rating level, or a combination of both. All drawDefinitions within an event share the same category, ensuring consistent eligibility rules.
+
+## Category Structure
+
+```js
+const category = {
+  categoryName: 'Boys Under 18', // Display name
+  ageCategoryCode: '18U', // ITF TODS age code
+  ageMax: 18, // Maximum age (calculated)
+  ageMinDate: '2006-01-01', // Minimum birth date (calculated)
+  ratingType: 'UTR', // Optional rating system
+  ratingMin: 8.0, // Optional minimum rating
+  ratingMax: 12.0, // Optional maximum rating
+  ballType: 'TYPE1FAST', // Optional ball specification
+  notes: 'Additional information', // Optional notes
+};
+```
+
+## Interactive Category Editor
+
+Try the Category editor to build complete category definitions:
+
+<BrowserOnly>{() => <CategoryEditorDemo />}</BrowserOnly>
+
+## Category Types
+
+### AGE-BASED
+
+Categories defined by age restrictions using [Age Category Codes](/docs/codes/age-category):
+
+```js
+const ageCategory = {
+  categoryName: 'Girls U16',
+  ageCategoryCode: '16U',
+  ballType: 'TYPE1FAST',
+};
+```
+
+### RATING-BASED
+
+Categories defined by rating or skill level:
+
+```js
+const ratingCategory = {
+  categoryName: 'Open 4.0-4.5',
+  ratingType: 'NTRP',
+  ratingMin: 4.0,
+  ratingMax: 4.5,
+};
+```
+
+### COMBINED (AGE + RATING)
+
+Categories with both age and rating requirements:
+
+```js
+const combinedCategory = {
+  categoryName: 'Junior Advanced U16',
+  ageCategoryCode: '16U',
+  ratingType: 'UTR',
+  ratingMin: 10.0,
+  ratingMax: 13.0,
+};
+```
+
+## Age Category Codes
+
+Age category codes follow ITF TODS standards. See [Age Category Codes](/docs/codes/age-category) for:
+- Interactive code builder
+- Format specifications  
+- Age calculation details
+
+Common formats:
+
+- **OPEN** - No age restrictions
+- **18U** or **U18** - 18 and under
+- **35O** or **O35** - 35 and over
+- **10O-18U** - Ages 10-18 (range)
+- **C50-70** - Combined ages 50-70 (team events)
+
+## Calculating Age Eligibility
+
+Use `getCategoryAgeDetails()` to determine participant eligibility:
+
+```js
+import { eventGovernor } from 'tods-competition-factory';
+
+const { ageMax, ageMin, ageMaxDate, ageMinDate } = eventGovernor.getCategoryAgeDetails({
+  category: { ageCategoryCode: '18U' },
+  consideredDate: '2024-12-31', // Tournament end date
+});
+
+// Check participant eligibility
+const isEligible = (participant) => {
+  const birthDate = participant.person?.birthDate;
+  return birthDate >= ageMinDate && birthDate <= ageMaxDate;
+};
+```
+
+### Example Usage
+
+```js
+// For a U16 event with tournament end date of 2024-12-31
+const result = eventGovernor.getCategoryAgeDetails({
+  category: { ageCategoryCode: '16U' },
+  consideredDate: '2024-12-31',
+});
+
+console.log(result);
+// {
+//   ageMax: 16,
+//   ageMinDate: '2008-01-01',
+//   ageCategoryCode: '16U'
+// }
+```
+
+## Using Categories in Events
+
+Categories are specified when creating events:
+
+```js
+const event = {
+  eventName: 'Girls U16 Singles',
+  eventType: 'SINGLES',
+  category: {
+    categoryName: 'Girls Under 16',
+    ageCategoryCode: '16U',
+    ballType: 'TYPE1FAST',
+  },
+  matchUpFormat: 'SET3-S:6/TB7',
+};
+
+tournamentEngine.addEvent({ event });
+```
+
+## Shared Category Benefits
+
+All drawDefinitions within an event share the same category, which:
+- Ensures consistent eligibility rules across all flights and draws
+- Simplifies tournament management
+- Maintains logical grouping of related competitions
+- Allows unified reporting and statistics
+- Prevents participant confusion about eligibility
+
+## Related Topics
+
+- [Age Category Codes](/docs/codes/age-category) - Interactive editor and code format
+- [Events Overview](./events-overview) - Event structure and management
+- [Entries](./entries) - Managing participant entries
+- [Event Governor](/docs/governors/event-governor) - Event management API

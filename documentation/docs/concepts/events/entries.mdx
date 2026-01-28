@@ -1,0 +1,144 @@
+---
+title: Entries
+---
+
+## Overview
+
+Participants must be entered into an event before being placed in draws. Event entries track which participants are accepted, waitlisted, or withdrawn from an event.
+
+## Adding Entries
+
+```js
+// Add multiple participants to event
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: ['player1-id', 'player2-id', 'player3-id'],
+  entryStage: 'MAIN', // MAIN, QUALIFYING, DIRECT_ACCEPTANCE
+  entryStatus: 'DIRECT_ACCEPTANCE', // Status in entry priority
+});
+```
+
+## Entry Status Values
+
+- **DIRECT_ACCEPTANCE** - Automatically accepted into the event
+- **UNGROUPED** - Entered but not yet assigned to a draw
+- **ALTERNATE** - On waitlist, may be moved to direct acceptance
+- **WITHDRAWN** - Withdrawn from the event
+
+## Drawing from Entries
+
+When generating a draw, you can specify which entries to include. If you don't provide `drawEntries`, the factory uses reasonable defaults.
+
+### Default Behavior
+
+- When an event has **only one draw**, all event entries are automatically included
+- For **multiple draws**, you must specify which entries go into each draw
+
+### Manual Entry Selection
+
+```js
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId,
+  drawSize: 32,
+  drawEntries: event.entries.filter((e) => e.entryStatus === 'DIRECT_ACCEPTANCE'),
+  automated: true,
+});
+```
+
+## Participant Assignment Best Practice
+
+Since categories pertain to events, typically a participant appears only once in an event. While it's technically possible to generate multiple draws using the same event entries, **best practice is to have participants participate in only one draw per category/event**.
+
+If you need to separate participants by skill level, use [flight profiles](./flights) rather than duplicating entries across multiple draws.
+
+## Modifying Entries
+
+### Update Entry Status
+
+```js
+tournamentEngine.modifyEventEntries({
+  eventId,
+  participantIds: ['player-id'],
+  entryStatus: 'WITHDRAWN',
+});
+```
+
+### Delete Entries
+
+```js
+tournamentEngine.deleteEventEntries({
+  eventId,
+  participantIds: ['player-id'],
+});
+```
+
+## Entry Stages
+
+Entries can be designated for different stages of competition:
+
+- **MAIN** - Main draw entries
+- **QUALIFYING** - Qualifying round entries
+- **DIRECT_ACCEPTANCE** - Directly accepted participants
+
+```js
+// Add participants to qualifying stage
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: qualifyingPlayerIds,
+  entryStage: 'QUALIFYING',
+  entryStatus: 'DIRECT_ACCEPTANCE',
+});
+```
+
+## Complete Example
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+
+// 1. Create event
+const event = {
+  eventName: 'Girls U16 Singles',
+  eventType: 'SINGLES',
+  category: {
+    categoryName: 'Girls Under 16',
+    ageCategoryCode: '16U',
+  },
+};
+
+const {
+  event: { eventId },
+} = tournamentEngine.addEvent({ event });
+
+// 2. Add accepted participants
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: acceptedPlayerIds,
+  entryStatus: 'DIRECT_ACCEPTANCE',
+  entryStage: 'MAIN',
+});
+
+// 3. Add alternates
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: alternatePlayerIds,
+  entryStatus: 'ALTERNATE',
+  entryStage: 'MAIN',
+});
+
+// 4. Generate draw (uses DIRECT_ACCEPTANCE entries by default)
+const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+  eventId,
+  drawSize: 32,
+  automated: true,
+});
+
+tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
+```
+
+## Related Topics
+
+- [Events Overview](./events-overview) - Event structure and management
+- [Categories](./categories) - Event eligibility criteria
+- [Flights](./flights) - Automatic participant segmentation
+- [Event Governor](/docs/governors/event-governor) - Event management API
+- [Participants](/docs/concepts/participants) - Participant management

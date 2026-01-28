@@ -33,6 +33,14 @@ module.exports = {
           ],
         },
         {
+          Events: [
+            'concepts/events/events-overview',
+            'concepts/events/categories',
+            'concepts/events/entries',
+            'concepts/events/flights',
+          ],
+        },
+        {
           matchUps: [
             'concepts/matchup-overview',
             'concepts/matchup-context',
