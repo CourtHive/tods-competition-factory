@@ -28,6 +28,8 @@ export { generateBookings } from '@Generators/scheduling/utils/generateBookings'
 export { validateSchedulingProfile } from '@Validators/validateSchedulingProfile';
 export { setSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 export { findMatchUpFormatTiming } from '@Acquire/findMatchUpFormatTiming';
+export { addCourtGridBooking } from '@Mutate/venues/addCourtGridBooking';
+export { removeCourtGridBooking } from '@Mutate/venues/removeCourtGridBooking';
 export {
   addMatchUpCourtOrder,
   addMatchUpStartTime,

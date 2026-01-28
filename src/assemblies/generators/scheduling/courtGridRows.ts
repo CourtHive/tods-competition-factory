@@ -1,8 +1,9 @@
+import { getGridBookings } from '@Query/venues/getGridBookings';
 import { generateRange } from '@Tools/arrays';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
-export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData }) {
+export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData, scheduledDate }) {
   if (!Array.isArray(courtsData)) return { error: INVALID_VALUES };
   const maxCourtOrder = courtsData?.reduce((order, court) => {
     const matchUps = court.matchUps || [];
@@ -15,7 +16,25 @@ export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData }) 
   const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
     matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
       const courtInfo = courtsData[courtIndex];
-      const { courtId, venueId } = courtInfo;
+      const { courtId, venueId, court } = courtInfo;
+
+      // Check if this row is blocked by a grid booking
+      if (scheduledDate && court) {
+        const { gridBookings } = getGridBookings({
+          court,
+          date: scheduledDate,
+        });
+
+        if (gridBookings.has(rowIndex + 1)) {
+          const booking = gridBookings.get(rowIndex + 1);
+          return {
+            schedule: { courtOrder: rowIndex + 1, venueId, courtId },
+            isBlocked: true,
+            booking, // Include booking info for display
+          };
+        }
+      }
+
       return {
         schedule: {
           courtOrder: rowIndex + 1,
