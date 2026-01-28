@@ -10,12 +10,9 @@ export const court = {
   onlineResources:
     '{\\"type\\":\\"object\\",\\"object\\":\\"onlineResource\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   pace: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
-  surfaceCategory:
-    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
-  surfaceType:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"ITF recognized type\\"}',
-  surfacedDate:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
+  surfaceCategory: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
+  surfaceType: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"ITF recognized type\\"}',
+  surfacedDate: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
 };
 
 export default court;
