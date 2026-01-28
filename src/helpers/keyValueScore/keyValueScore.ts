@@ -211,7 +211,7 @@ export function keyValueScore(params) {
     const leadingSide = getLeadingSide({ set });
 
     if (!analysis.isTiebreakSet) {
-      const lowTiebreakScore = parseInt(scoreString.split(open).reverse()[0]);
+      const lowTiebreakScore = Number.parseInt(scoreString.split(open).reverse()[0]);
       const highTiebreakScore = getHighTiebreakValue({
         lowValue: lowTiebreakScore,
         tiebreakTo,

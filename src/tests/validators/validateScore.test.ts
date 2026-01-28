@@ -1,8 +1,9 @@
-import { validateScore } from '@Validators/validateScore';
 import { analyzeScore } from '@Query/matchUp/analyzeScore';
-import mocksEngine from '../../assemblies/engines/mock';
+import { validateScore } from '@Validators/validateScore';
+import mocksEngine from '@Assemblies/engines/mock';
 import { it, test, expect } from 'vitest';
 
+// fixtures and types
 import { FORMAT_STANDARD } from '@Fixtures/scoring/matchUpFormats';
 import { Score } from '@Types/tournamentTypes';
 

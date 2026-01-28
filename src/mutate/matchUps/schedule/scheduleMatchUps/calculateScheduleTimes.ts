@@ -1,14 +1,15 @@
+import { calculatePeriodLength } from '@Assemblies/generators/scheduling/utils/calculatePeriodLength';
+import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '@Tools/dateTime';
 import { matchUpFormatTimes } from '@Query/extensions/matchUpFormatTiming/getMatchUpFormatTiming';
 import { getScheduleTiming } from '@Query/extensions/matchUpFormatTiming/getScheduleTiming';
 import { competitionScheduleMatchUps } from '@Query/matchUps/competitionScheduleMatchUps';
-import { calculatePeriodLength } from '../../../../assemblies/generators/scheduling/utils/calculatePeriodLength';
 import { getVenuesAndCourts } from '@Query/venues/venuesAndCourtsGetter';
 import { getMatchUpId } from '@Functions/global/extractors';
 import { getScheduleTimes } from '@Query/venues/getScheduleTimes';
-import { addMinutesToTimeString, extractTime, sameDay, timeStringMinutes } from '@Tools/dateTime';
 
-import { Tournament } from '@Types/tournamentTypes';
+// constants and types
 import { ErrorType, MISSING_TOURNAMENT_RECORDS } from '@Constants/errorConditionConstants';
+import { Tournament } from '@Types/tournamentTypes';
 
 type CalculateScheduleTimesArgs = {
   tournamentRecords: { [key: string]: Tournament };

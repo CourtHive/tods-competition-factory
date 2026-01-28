@@ -15,7 +15,7 @@ import { countries } from '@Fixtures/countryData';
 export function generatePersons(params?) {
   let count = params?.count || 1;
   const { personExtensions, consideredDate, isMock = true, gendersCount, personData, category, sex } = params || {};
-  if (isNaN(count)) return { error: INVALID_VALUES };
+  if (Number.isNaN(Number(count))) return { error: INVALID_VALUES };
 
   const maleCount = gendersCount?.[MALE] || (isMale(sex) && count) || 0;
   const femaleCount = gendersCount?.[FEMALE] || (isFemale(sex) && count) || 0;
@@ -61,7 +61,7 @@ export function generatePersons(params?) {
         person.nationalityCode &&
         (typeof person.nationalityCode !== 'string' ||
           person.nationalityCode.length > 3 ||
-          !countries.find(({ iso, ioc }) => [iso, ioc].includes(person.nationalityCode)))
+          !countries.some(({ iso, ioc }) => [iso, ioc].includes(person.nationalityCode)))
       )
         return false;
 

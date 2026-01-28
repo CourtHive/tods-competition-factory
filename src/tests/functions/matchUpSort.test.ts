@@ -1,9 +1,10 @@
 import { matchUpSort } from '@Functions/sorters/matchUpSort';
-import mocksEngine from '../../assemblies/engines/mock';
-import queryEngine from '../engines/queryEngine';
+import mocksEngine from '@Assemblies/engines/mock';
+import queryEngine from '@Engines/queryEngine';
 import { shuffleArray } from '@Tools/arrays';
 import { it, expect } from 'vitest';
 
+// constants
 import { COMPASS, CURTIS_CONSOLATION, stageOrder } from '@Constants/drawDefinitionConstants';
 
 it.each([COMPASS, CURTIS_CONSOLATION])('can accurately sort matchUps by stage and then stageSequence', (drawType) => {

@@ -1,4 +1,4 @@
-import { generateAndPopulatePlayoffStructures } from '../../assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
+import { generateAndPopulatePlayoffStructures } from '@Assemblies/generators/drawDefinitions/generateAndPopulatePlayoffStructures';
 import { attachPlayoffStructures } from './attachStructures';
 
 export function addPlayoffStructures(params) {

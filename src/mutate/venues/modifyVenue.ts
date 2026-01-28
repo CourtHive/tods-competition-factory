@@ -1,15 +1,15 @@
 import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
-import { deletionMessage } from '../../assemblies/generators/matchUps/deletionMessage';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
+import { deletionMessage } from '@Assemblies/generators/matchUps/deletionMessage';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
-import venueTemplate from '../../assemblies/generators/templates/venueTemplate';
+import venueTemplate from '@Assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { addNotice } from '@Global/state/globalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { findVenue } from '@Query/venues/findVenue';
 import { modifyCourt } from './modifyCourt';
 import { addCourt } from './addCourt';
-import { findVenue } from '../../query/venues/findVenue';
 
 // constants and types
 import { POLICY_TYPE_SCHEDULING } from '@Constants/policyConstants';

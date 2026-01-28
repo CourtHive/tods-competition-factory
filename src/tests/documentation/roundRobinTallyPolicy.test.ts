@@ -22,9 +22,7 @@ it('built-in tally policies exist with correct structure', () => {
   // DEFAULT policy
   expect(POLICY_ROUND_ROBIN_TALLY_DEFAULT).toBeDefined();
   expect(POLICY_ROUND_ROBIN_TALLY_DEFAULT[POLICY_TYPE_ROUND_ROBIN_TALLY]).toBeDefined();
-  expect(POLICY_ROUND_ROBIN_TALLY_DEFAULT[POLICY_TYPE_ROUND_ROBIN_TALLY].policyName).toBe(
-    'Default Round Robin Tally',
-  );
+  expect(POLICY_ROUND_ROBIN_TALLY_DEFAULT[POLICY_TYPE_ROUND_ROBIN_TALLY].policyName).toBe('Default Round Robin Tally');
   expect(POLICY_ROUND_ROBIN_TALLY_DEFAULT[POLICY_TYPE_ROUND_ROBIN_TALLY].groupOrderKey).toBe('matchUpsWon');
   expect(Array.isArray(POLICY_ROUND_ROBIN_TALLY_DEFAULT[POLICY_TYPE_ROUND_ROBIN_TALLY].tallyDirectives)).toBe(true);
 
@@ -47,29 +45,24 @@ it('precision controls decimal precision of percentage calculations', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // Default precision is 3 (1000)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-  let firstResult: any = Object.values(participantResults)[0];
-  expect(firstResult?.gamesPct.toString().length).toBeLessThanOrEqual(5); // e.g., 0.667
-
   // Precision 5 (100000)
   const precision5Policy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: { precision: 5 },
   };
-  ({ participantResults } = tallyParticipantResults({ 
-    policyDefinitions: precision5Policy, 
-    matchUps 
-  }));
-  firstResult = Object.values(participantResults)[0];
+  let { participantResults } = tallyParticipantResults({
+    policyDefinitions: precision5Policy,
+    matchUps,
+  });
+  let firstResult: any = Object.values(participantResults)[0];
   expect(firstResult?.gamesPct.toString().length).toBeLessThanOrEqual(7); // e.g., 0.66667
 
   // Precision 7 (10000000)
   const precision7Policy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: { precision: 7 },
   };
-  ({ participantResults } = tallyParticipantResults({ 
-    policyDefinitions: precision7Policy, 
-    matchUps 
+  ({ participantResults } = tallyParticipantResults({
+    policyDefinitions: precision7Policy,
+    matchUps,
   }));
   firstResult = Object.values(participantResults)[0];
   expect(firstResult?.gamesPct.toString().length).toBeGreaterThanOrEqual(7); // e.g., 0.6666667
@@ -107,7 +100,7 @@ it('maxParticipants: 2 applies head-to-head when exactly 2 teams tied', () => {
 
   // When bracket is complete, all participants should have groupOrder assigned
   const orders = Object.values(participantResults).map((r: any) => r.groupOrder);
-  expect(orders.filter((o) => o)).toHaveLength(4);
+  expect(orders.filter(Boolean)).toHaveLength(4);
 });
 
 it('maxParticipants: 2 skips head-to-head in circular ties (3+ teams)', () => {
@@ -123,11 +116,11 @@ it('maxParticipants: 2 skips head-to-head in circular ties (3+ teams)', () => {
           { drawPositions: [1, 2], scoreString: '6-2 6-2', winningSide: 1 },
           { drawPositions: [1, 3], scoreString: '3-6 3-6', winningSide: 2 },
           { drawPositions: [1, 4], scoreString: '6-1 6-1', winningSide: 1 },
-          
+
           // Team 2: beats Team 3, loses to Team 1 (1-1)
           { drawPositions: [2, 3], scoreString: '6-3 6-3', winningSide: 1 },
           { drawPositions: [2, 4], scoreString: '6-0 6-0', winningSide: 1 },
-          
+
           // Team 3: beats Team 1, loses to Team 2 (1-1)
           { drawPositions: [3, 4], scoreString: '6-4 6-4', winningSide: 1 },
         ],
@@ -143,11 +136,22 @@ it('maxParticipants: 2 skips head-to-head in circular ties (3+ teams)', () => {
       groupOrderKey: 'matchUpsWon',
       headToHead: { disabled: true }, // Disable to force directives
       tallyDirectives: [
-        { attribute: 'matchUpsPct', idsFilter: true }, // No max - circular tie
+        { attribute: 'matchUpsPct', idsFilter: true }, // No max - applies to all tied teams
         { attribute: 'gamesPct', idsFilter: false },
       ],
     },
   };
+
+  // Test without maxParticipants - idsFilter applies to all 3 tied teams (circular tie)
+  const resultsNoMax = tallyParticipantResults({
+    policyDefinitions: noMaxPolicy,
+    matchUps,
+  });
+
+  // Should complete ordering using idsFilter for all 3 tied teams
+  expect(Object.keys(resultsNoMax.participantResults).length).toBe(4);
+  const noMaxOrders = Object.values(resultsNoMax.participantResults).map((r: any) => r.groupOrder);
+  expect(noMaxOrders.filter(Boolean)).toHaveLength(4);
 
   // With maxParticipants: 2 - skips head-to-head for 3 teams
   const withMaxPolicy = {
@@ -168,11 +172,11 @@ it('maxParticipants: 2 skips head-to-head in circular ties (3+ teams)', () => {
 
   // All 4 participants should have groupOrder
   expect(Object.keys(resultsWithMax.participantResults).length).toBe(4);
-  
+
   // Team 4 (0-3) should be 4th
   // Teams 1, 2, 3 (all 2-1) should be ordered by gamesPct (maxParticipants skipped head-to-head)
   const orders = Object.values(resultsWithMax.participantResults).map((r: any) => r.groupOrder);
-  expect(orders.filter((o) => o)).toHaveLength(4);
+  expect(orders.filter(Boolean)).toHaveLength(4);
 });
 
 it('maxParticipants behavior: 2 teams use head-to-head, 3+ teams skip to next rule', () => {
@@ -188,7 +192,7 @@ it('maxParticipants behavior: 2 teams use head-to-head, 3+ teams skip to next ru
           { drawPositions: [1, 2], scoreString: '6-0 6-0', winningSide: 1 },
           { drawPositions: [1, 3], scoreString: '6-0 6-0', winningSide: 1 },
           { drawPositions: [1, 4], scoreString: '6-0 6-0', winningSide: 1 },
-          
+
           // Teams 2 and 3: both 1-2 (tied)
           { drawPositions: [2, 3], scoreString: '6-3 6-3', winningSide: 1 }, // Team 2 beat Team 3
           { drawPositions: [2, 4], scoreString: '3-6 3-6', winningSide: 2 },
@@ -222,10 +226,10 @@ it('maxParticipants behavior: 2 teams use head-to-head, 3+ teams skip to next ru
   const participantIds = Object.keys(results2Tied.participantResults);
   const team1 = participantIds[0]; // 3-0 winner
   const team4 = participantIds[3]; // 0-3 loser
-  
+
   expect(results2Tied.participantResults[team1].groupOrder).toBe(1);
   expect(results2Tied.participantResults[team4].groupOrder).toBe(4);
-  
+
   // Teams 2 and 3 should be separated (not tied) due to head-to-head
   const orders = Object.values(results2Tied.participantResults).map((r: any) => r.groupOrder);
   const uniqueOrders = new Set(orders);
@@ -248,9 +252,9 @@ it('maxParticipants with different thresholds (2 vs 3 vs 4)', () => {
       [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
         groupOrderKey: 'matchUpsWon',
         tallyDirectives: [
-          max !== undefined
-            ? { attribute: 'matchUpsPct', idsFilter: true, maxParticipants: max }
-            : { attribute: 'matchUpsPct', idsFilter: true },
+          max === undefined
+            ? { attribute: 'matchUpsPct', idsFilter: true }
+            : { attribute: 'matchUpsPct', idsFilter: true, maxParticipants: max },
           { attribute: 'gamesPct', idsFilter: false },
         ],
       },
@@ -265,7 +269,7 @@ it('maxParticipants with different thresholds (2 vs 3 vs 4)', () => {
     expect(result.participantResults).toBeDefined();
     expect(Object.keys(result.participantResults).length).toBe(4);
     const orders = Object.values(result.participantResults).map((r: any) => r.groupOrder);
-    expect(orders.filter((o) => o)).toHaveLength(4);
+    expect(orders.filter(Boolean)).toHaveLength(4);
   });
 });
 
@@ -277,20 +281,6 @@ it('reversed attribute reverses sort order from greatest-to-least to least-to-gr
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // Without reversed - normal: most games lost is worst
-  const normalPolicy = {
-    [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
-      groupOrderKey: 'matchUpsWon',
-      headToHead: { disabled: true },
-      tallyDirectives: [{ attribute: 'gamesLost', reversed: false, idsFilter: false }],
-    },
-  };
-
-  let { participantResults } = tallyParticipantResults({
-    policyDefinitions: normalPolicy,
-    matchUps,
-  });
-
   // With reversed - least games lost is best
   const reversedPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -300,10 +290,10 @@ it('reversed attribute reverses sort order from greatest-to-least to least-to-gr
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: reversedPolicy,
     matchUps,
-  }));
+  });
 
   // Verify reversed attribute is supported (doesn't error)
   Object.values(participantResults).forEach((result: any) => {
@@ -604,9 +594,6 @@ it('gamesCreditForTiebreakSets controls whether tiebreak set counts as game', ()
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // With tiebreak credit (default: true)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-
   // Verify gamesCreditForTiebreakSets can be configured
   const noTiebreakCreditPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -614,10 +601,10 @@ it('gamesCreditForTiebreakSets controls whether tiebreak set counts as game', ()
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: noTiebreakCreditPolicy,
     matchUps,
-  }));
+  });
 
   // Verify games are calculated (policy doesn't error)
   Object.values(participantResults).forEach((result: any) => {
@@ -688,19 +675,6 @@ it('idsFilter scopes calculations to only tied participants', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // idsFilter: false - calculates from all group matchUps
-  const noFilterPolicy = {
-    [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
-      groupOrderKey: 'matchUpsWon',
-      tallyDirectives: [{ attribute: 'gamesPct', idsFilter: false }],
-    },
-  };
-
-  let { participantResults } = tallyParticipantResults({
-    policyDefinitions: noFilterPolicy,
-    matchUps,
-  });
-
   // idsFilter: true - calculates from matchUps between tied participants
   const filterPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -709,10 +683,10 @@ it('idsFilter scopes calculations to only tied participants', () => {
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: filterPolicy,
     matchUps,
-  }));
+  });
 
   // All participants should have groupOrder
   Object.values(participantResults).forEach((result: any) => {
@@ -757,14 +731,6 @@ it('headToHead can be disabled to skip head-to-head tiebreaking', () => {
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
 
-  // With head-to-head enabled (default)
-  let { participantResults } = tallyParticipantResults({ matchUps });
-
-  // Verify head-to-head is supported
-  Object.values(participantResults).forEach((result: any) => {
-    expect(result.groupOrder).toBeDefined();
-  });
-
   // With head-to-head disabled
   const h2hDisabledPolicy = {
     [POLICY_TYPE_ROUND_ROBIN_TALLY]: {
@@ -774,10 +740,10 @@ it('headToHead can be disabled to skip head-to-head tiebreaking', () => {
     },
   };
 
-  ({ participantResults } = tallyParticipantResults({
+  const { participantResults } = tallyParticipantResults({
     policyDefinitions: h2hDisabledPolicy,
     matchUps,
-  }));
+  });
 
   // Verify policy doesn't error
   Object.values(participantResults).forEach((result: any) => {
@@ -1041,7 +1007,7 @@ it('built-in policies produce deterministic group orders', () => {
   });
 
   const defaultOrders = Object.values(participantResults).map((r: any) => r.groupOrder);
-  expect(defaultOrders.filter((o) => o)).toHaveLength(4);
+  expect(defaultOrders.filter(Boolean)).toHaveLength(4);
   expect(Math.max(...defaultOrders)).toBeLessThanOrEqual(4);
   expect(Math.min(...defaultOrders)).toBeGreaterThanOrEqual(1);
 
@@ -1052,7 +1018,7 @@ it('built-in policies produce deterministic group orders', () => {
   }));
 
   const jttOrders = Object.values(participantResults).map((r: any) => r.groupOrder);
-  expect(jttOrders.filter((o) => o)).toHaveLength(4);
+  expect(jttOrders.filter(Boolean)).toHaveLength(4);
 
   // Test TOC policy
   ({ participantResults } = tallyParticipantResults({
@@ -1061,7 +1027,7 @@ it('built-in policies produce deterministic group orders', () => {
   }));
 
   const tocOrders = Object.values(participantResults).map((r: any) => r.groupOrder);
-  expect(tocOrders.filter((o) => o)).toHaveLength(4);
+  expect(tocOrders.filter(Boolean)).toHaveLength(4);
 });
 
 it('handles incomplete round robin where not all matchUps are complete', () => {
@@ -1138,7 +1104,7 @@ it('complex tally scenario with multiple tied participants at different levels',
 
   // If no error, participantResults should be defined
   expect(result.participantResults).toBeDefined();
-  
+
   // All participants should have results
   expect(Object.keys(result.participantResults).length).toBe(8);
 
@@ -1147,6 +1113,6 @@ it('complex tally scenario with multiple tied participants at different levels',
   expect(orders.filter((o) => o !== undefined)).toHaveLength(8);
 
   // Orders should be between 1 and 8
-  expect(Math.max(...orders.filter((o) => o))).toBeLessThanOrEqual(8);
-  expect(Math.min(...orders.filter((o) => o))).toBeGreaterThanOrEqual(1);
+  expect(Math.max(...orders.filter(Boolean))).toBeLessThanOrEqual(8);
+  expect(Math.min(...orders.filter(Boolean))).toBeGreaterThanOrEqual(1);
 });

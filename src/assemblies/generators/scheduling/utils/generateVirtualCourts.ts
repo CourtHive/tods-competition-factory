@@ -26,10 +26,10 @@ export function generateVirtualCourts(params) {
     (accumulator: any, booking) => {
       const { courtId } = booking;
       if (courtId) {
-        if (!accumulator.courtBookings[courtId]) {
-          accumulator.courtBookings[courtId] = [booking];
-        } else {
+        if (accumulator.courtBookings[courtId]) {
           accumulator.courtBookings[courtId].push(booking);
+        } else {
+          accumulator.courtBookings[courtId] = [booking];
         }
       } else {
         accumulator.unassignedBookings.push(booking);
@@ -71,17 +71,15 @@ export function generateVirtualCourts(params) {
   unassignedBookings.sort((a, b) => timeStringMinutes(a.startTime) - timeStringMinutes(b.startTime));
 
   const getCourtTimeSlots = () =>
-    inProcessCourts
-      .map((court) => {
-        const courtDate = court.dateAvailability;
-        const { timeSlots = [] } = generateTimeSlots({ courtDate });
-        return {
-          courtName: court.courtName,
-          courtId: court.courtId,
-          timeSlots,
-        };
-      })
-      .flat();
+    inProcessCourts.flatMap((court) => {
+      const courtDate = court.dateAvailability;
+      const { timeSlots = [] } = generateTimeSlots({ courtDate });
+      return {
+        courtName: court.courtName,
+        courtId: court.courtId,
+        timeSlots,
+      };
+    });
 
   const assignedBookings: any[] = [];
 

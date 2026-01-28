@@ -83,7 +83,7 @@ export function getEvents({
       tournamentRecord,
     }).participantMap;
 
-    const sum = (values) => values.reduce((total, value) => total + parseFloat(value), 0);
+    const sum = (values) => values.reduce((total, value) => total + Number.parseFloat(value), 0);
 
     for (const event of eventCopies) {
       const eventType = scaleEventType ?? event.eventType;
@@ -109,7 +109,7 @@ export function getEvents({
             if (!eventsMap[eventId].ratings[scaleName]) eventsMap[eventId].ratings[scaleName] = [];
             const accessor = ratingsParameters[scaleName]?.accessor;
             if (accessor) {
-              const value = parseFloat(rating.scaleValue?.[accessor]);
+              const value = Number.parseFloat(rating.scaleValue?.[accessor]);
               if (value) eventsMap[eventId].ratings[scaleName].push(value);
             }
           }
@@ -125,13 +125,13 @@ export function getEvents({
 
       for (const participantId of participantIds) {
         const participant = participantMap?.[participantId]?.participant;
-        if (participant?.participantType !== INDIVIDUAL) {
+        if (participant?.participantType === INDIVIDUAL) {
+          processParticipant(participant);
+        } else {
           for (const individualParticipantId of participant?.individualParticipantIds ?? []) {
             const individualParticipant = participantMap?.[individualParticipantId]?.participant;
             processParticipant(individualParticipant);
           }
-        } else {
-          processParticipant(participant);
         }
       }
 
@@ -142,8 +142,8 @@ export function getEvents({
         if (!scaleRating.length) continue;
         const med = median(scaleRating)?.toFixed(2);
         eventsMap[eventId].ratingsStats[scaleName] = {
-          avg: parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
-          median: med ? parseFloat(med) : undefined,
+          avg: Number.parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
+          median: med ? Number.parseFloat(med) : undefined,
           max: Math.max(...scaleRating),
           min: Math.min(...scaleRating),
         };
@@ -158,7 +158,7 @@ export function getEvents({
                 eventsMap[eventId].draws[drawId].ratings[scaleName] = [];
               const accessor = ratingsParameters[scaleName]?.accessor;
               if (accessor) {
-                const value = parseFloat(rating.scaleValue?.[accessor]);
+                const value = Number.parseFloat(rating.scaleValue?.[accessor]);
                 if (value) {
                   eventsMap[eventId].draws[drawId].ratings[scaleName].push(value);
                 }
@@ -179,13 +179,13 @@ export function getEvents({
         };
         for (const participantId of participantIds.filter(Boolean)) {
           const participant = participantMap?.[participantId]?.participant;
-          if (participant?.participantType !== INDIVIDUAL) {
+          if (participant?.participantType === INDIVIDUAL) {
+            processParticipant(participant);
+          } else {
             for (const individualParticipantId of participant?.individualParticipantIds ?? []) {
               const individualParticipant = participantMap?.[individualParticipantId]?.participant;
               processParticipant(individualParticipant);
             }
-          } else {
-            processParticipant(participant);
           }
         }
       };
@@ -226,8 +226,8 @@ export function getEvents({
           if (!scaleRating.length) continue;
           const med = median(scaleRating)?.toFixed(2);
           eventsMap[eventId].draws[drawId].ratingsStats[scaleName] = {
-            avg: parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
-            median: med ? parseFloat(med) : undefined,
+            avg: Number.parseFloat((sum(scaleRating) / scaleRating.length).toFixed(2)),
+            median: med ? Number.parseFloat(med) : undefined,
             max: Math.max(...scaleRating),
             min: Math.min(...scaleRating),
           };

@@ -48,20 +48,21 @@ export function checkRequestConflicts({
   for (const request of relevantPersonRequests) {
     const { requestId, startTime, endTime } = request;
     const conflict =
-      (scheduleTime > startTime && scheduleTime < endTime) || (averageEnd > startTime && averageEnd < endTime);
+      (scheduleTime > startTime && scheduleTime < endTime) ||
+      (averageEnd && averageEnd > startTime && averageEnd < endTime);
     if (conflict) {
       conflicts.push({ matchUpId, request, scheduleTime });
-      if (!requestConflicts[requestId]) {
+      if (requestConflicts[requestId]) {
+        if (!requestConflicts[requestId].scheduleTimes.includes(scheduleTime))
+          requestConflicts[requestId].scheduleTimes.push(scheduleTime);
+        if (!requestConflicts[requestId].matchUpIds.includes(matchUpId))
+          requestConflicts[requestId].matchUpIds.push(matchUpId);
+      } else {
         requestConflicts[requestId] = {
           request,
           scheduleTimes: [scheduleTime],
           matchUpIds: [matchUpId],
         };
-      } else {
-        if (!requestConflicts[requestId].scheduleTimes.includes(scheduleTime))
-          requestConflicts[requestId].scheduleTimes.push(scheduleTime);
-        if (!requestConflicts[requestId].matchUpIds.includes(matchUpId))
-          requestConflicts[requestId].matchUpIds.push(matchUpId);
       }
     }
   }

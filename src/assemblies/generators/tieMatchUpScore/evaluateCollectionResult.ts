@@ -126,14 +126,14 @@ export function evaluateCollectionResult({
     sideCollectionValues = sideMatchUpValues;
   }
 
-  if (!belongsToValueGroup) {
-    sideCollectionValues.forEach((sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue || 0));
-  } else {
+  if (belongsToValueGroup) {
     groupValueGroups[collectionGroupNumber].sideWins[0] += sideWins[0] || 0;
     groupValueGroups[collectionGroupNumber].sideWins[1] += sideWins[1] || 0;
     groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted =
       groupValueGroups[collectionGroupNumber].allGroupMatchUpsCompleted && allCollectionMatchUpsCompleted;
     groupValueGroups[collectionGroupNumber].matchUpsCount += collectionMatchUps.length;
+  } else {
+    sideCollectionValues.forEach((sideCollectionValue, i) => (sideTieValues[i] += sideCollectionValue || 0));
   }
 }
 

@@ -1,4 +1,4 @@
-import structureTemplate from '../../assemblies/generators/templates/structureTemplate';
+import structureTemplate from '@Assemblies/generators/templates/structureTemplate';
 import { modifyDrawNotice } from '../notifications/drawNotifications';
 import { constantToString } from '@Tools/strings';
 

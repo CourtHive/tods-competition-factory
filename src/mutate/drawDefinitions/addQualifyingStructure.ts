@@ -1,4 +1,4 @@
-import { generateQualifyingStructure } from '../../assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
+import { generateQualifyingStructure } from '@Assemblies/generators/drawDefinitions/drawTypes/generateQualifyingStructure';
 import { attachQualifyingStructure } from './attachQualifyingStructure';
 
 // constants and types

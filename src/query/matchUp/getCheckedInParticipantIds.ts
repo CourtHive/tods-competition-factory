@@ -24,7 +24,7 @@ export function getCheckedInParticipantIds({ matchUp }: { matchUp: HydratedMatch
   if (!matchUp) return { error: MISSING_MATCHUP };
   if (!matchUp.hasContext) return { error: MISSING_CONTEXT };
 
-  if (!matchUp.sides || matchUp.sides.filter(Boolean).length !== 2) {
+  if (!matchUp.sides || matchUp?.sides.filter(Boolean).length !== 2) {
     return { error: INVALID_MATCHUP };
   }
 

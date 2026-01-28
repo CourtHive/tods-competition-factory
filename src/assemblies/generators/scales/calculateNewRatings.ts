@@ -14,7 +14,7 @@ const kDefault = () => 1;
 // https://www.stat.berkeley.edu/~aldous/157/Old_Projects/huang.pdf
 function kSet(maxCountables = 3, counted = 2) {
   const kset = maxCountables / counted;
-  return isNaN(kset) ? eloConfig.kDefault() : kset;
+  return Number.isNaN(kset) ? eloConfig.kDefault() : kset;
 }
 
 const eloConfig = {
@@ -70,7 +70,8 @@ export function calculateNewRatings(params: CalculateNewRatings) {
   const decimalPlaces = ratingParameters.decimalsCount || 0;
   const consideredRange = invertedScale ? ratingRange.slice().reverse() : ratingRange;
 
-  const inRange = (range, value) => parseFloat(value) >= Math.min(...range) && parseFloat(value) <= Math.max(...range);
+  const inRange = (range, value) =>
+    Number.parseFloat(value) >= Math.min(...range) && Number.parseFloat(value) <= Math.max(...range);
   if (!inRange(ratingRange, winnerRating) || !inRange(ratingRange, loserRating)) {
     if (!inRange(ratingRange, winnerRating)) winnerRating = ratingParameters.defaultInitialization;
     if (!inRange(ratingRange, loserRating)) loserRating = ratingParameters.defaultInitialization;
@@ -116,9 +117,9 @@ export function calculateNewRatings(params: CalculateNewRatings) {
   const updatedWinnerRating = invertedScale
     ? ratingRange[0] - convertedUpdatedWinnerRating
     : convertedUpdatedWinnerRating;
-  let newWinnerRating = parseFloat(updatedWinnerRating.toFixed(decimalPlaces));
+  let newWinnerRating = Number.parseFloat(updatedWinnerRating.toFixed(decimalPlaces));
   const updatedLoserRating = invertedScale ? ratingRange[0] - convertedUpdatedLoserRating : convertedUpdatedLoserRating;
-  let newLoserRating = parseFloat(updatedLoserRating.toFixed(decimalPlaces));
+  let newLoserRating = Number.parseFloat(updatedLoserRating.toFixed(decimalPlaces));
 
   //  if expected winner && percentageDifference > threshold don't change ratings
   const percentageDifference = Math.max(...ratingRange)

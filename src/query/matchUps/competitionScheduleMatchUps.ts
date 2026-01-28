@@ -1,7 +1,7 @@
 import { getTournamentPublishStatus } from '@Query/tournaments/getTournamentPublishStatus';
 import { getCompetitionPublishedDrawDetails } from './getCompetitionPublishedDrawDetails';
 import { scheduledSortedMatchUps } from '@Functions/sorters/scheduledSortedMatchUps';
-import { courtGridRows } from '../../assemblies/generators/scheduling/courtGridRows';
+import { courtGridRows } from '@Assemblies/generators/scheduling/courtGridRows';
 import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getCompetitionMatchUps } from './getCompetitionMatchUps';

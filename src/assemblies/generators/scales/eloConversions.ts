@@ -28,6 +28,6 @@ export function getRatingConvertedFromELO({ targetRatingType, sourceRating }) {
     sourceRange: eloRatingRange,
     value: sourceRating,
   });
-  const convertedRating = parseFloat(result.toFixed(decimalPlaces));
+  const convertedRating = Number.parseFloat(result.toFixed(decimalPlaces));
   return invertedScale ? maxTargetRatingRange - convertedRating : convertedRating;
 }

@@ -49,7 +49,7 @@ export function generateTieMatchUpScore(params: GenerateTieMatchUpScoreArgs): Ti
   if (
     !Array.isArray(sideAdjustments) ||
     sideAdjustments.length !== 2 ||
-    isNaN(sideAdjustments.reduce((a, b) => a + b))
+    Number.isNaN(sideAdjustments.reduce((a, b) => a + b))
   ) {
     return { error: INVALID_VALUES };
   }

@@ -6,8 +6,8 @@ import { ErrorType, MISSING_DATE, MISSING_TOURNAMENT_RECORDS } from '@Constants/
 import { isObject } from '@Tools/objects';
 
 export function getCompetitionDateRange({ tournamentRecords }: { tournamentRecords: TournamentRecords }): {
-  startDate?: Date;
-  endDate?: Date;
+  startDate?: string;
+  endDate?: string;
   error?: ErrorType;
 } {
   if (!isObject(tournamentRecords)) return { error: MISSING_TOURNAMENT_RECORDS };
@@ -22,12 +22,14 @@ export function getCompetitionDateRange({ tournamentRecords }: { tournamentRecor
         tournamentInfo: { startDate, endDate },
       } = getTournamentInfo({ tournamentRecord });
 
-      const dateOfStart = startDate && new Date(extractDate(startDate));
+      const extractedStart = startDate && extractDate(startDate);
+      const dateOfStart = extractedStart && new Date(extractedStart);
       if (!dateRange.startDate || (dateOfStart && dateOfStart < dateRange.startDate)) {
         dateRange.startDate = dateOfStart;
       }
 
-      const dateOfEnd = endDate && new Date(extractDate(endDate));
+      const extractedEnd = endDate && extractDate(endDate);
+      const dateOfEnd = extractedEnd && new Date(extractedEnd);
       if (!dateRange.endDate || (dateOfEnd && dateOfEnd > dateRange.endDate)) {
         dateRange.endDate = dateOfEnd;
       }
