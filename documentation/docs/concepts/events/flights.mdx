@@ -1,0 +1,201 @@
+---
+title: Flights
+---
+
+## Overview
+
+Flights allow you to automatically segment participants into multiple draws based on their ratings or rankings, all within the same event and category. Flight profiles define how participants should be distributed across multiple competitions.
+
+## Generating Flight Profiles
+
+A flight profile defines how participants should be distributed across multiple flights:
+
+```js
+const { flightProfile } = tournamentEngine.generateFlightProfile({
+  eventId,
+  flightsCount: 3, // Create 3 separate flights
+  attachFlightProfile: true, // Attach profile to event immediately
+  scaleAttributes: {
+    scaleType: 'RATING', // or 'RANKING'
+    eventType: 'SINGLES',
+    scaleName: 'WTN', // Optional: specific rating system
+  },
+  splitMethod: 'WATERFALL', // Distribution method
+});
+```
+
+## Split Methods
+
+The `splitMethod` determines how participants are distributed across flights:
+
+### WATERFALL (default)
+
+Distributes participants evenly like dealing cards.
+
+**Example with rankings 1-15 into 3 flights:**
+- Flight 1: [1, 4, 7, 10, 13]
+- Flight 2: [2, 5, 8, 11, 14]
+- Flight 3: [3, 6, 9, 12, 15]
+
+**When to use:** Creates balanced flights with mixed skill levels across all flights.
+
+### LEVEL_BASED
+
+Groups participants by skill tiers.
+
+**Example with rankings 1-15 into 3 flights:**
+- Flight 1: [1, 2, 3, 4, 5]
+- Flight 2: [6, 7, 8, 9, 10]
+- Flight 3: [11, 12, 13, 14, 15]
+
+**When to use:** Creates skill-segregated competition where top players compete separately from lower-ranked players.
+
+### SHUTTLE
+
+Snake/serpentine distribution pattern.
+
+**Example with rankings 1-15 into 3 flights:**
+- Flight 1: [1, 6, 7, 12, 13]
+- Flight 2: [2, 5, 8, 11, 14]
+- Flight 3: [3, 4, 9, 10, 15]
+
+**When to use:** Balances overall skill level across flights using a back-and-forth pattern.
+
+## Creating Draws from Flight Profiles
+
+After generating a flight profile, create the actual draw definitions:
+
+```js
+// Get the flight profile (if not already attached)
+const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
+
+// Generate draw definitions for each flight
+flightProfile.flights.forEach((flight) => {
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawEntries: flight.drawEntries, // Pre-assigned entries
+    drawName: flight.drawName, // e.g., "Flight 1", "Flight 2"
+    drawId: flight.drawId, // Unique identifier from profile
+    drawSize: 16, // Or calculate from drawEntries.length
+    automated: true, // Auto-place participants
+    eventId,
+  });
+
+  tournamentEngine.addDrawDefinition({
+    drawDefinition,
+    eventId,
+    flight, // Pass flight object for integrity check
+  });
+});
+```
+
+## Flight Management
+
+### Delete Individual Flight
+
+```js
+tournamentEngine.deleteFlightAndFlightDraw({
+  drawId: flight.drawId,
+  eventId,
+});
+```
+
+### Delete Entire Flight Profile
+
+```js
+// Removes profile and all associated draws
+tournamentEngine.deleteFlightProfileAndFlightDraws({ eventId });
+```
+
+### Update Existing Profile
+
+```js
+// Generate new profile with deleteExisting flag
+const { flightProfile } = tournamentEngine.generateFlightProfile({
+  deleteExisting: true, // Remove previous profile
+  flightsCount: 4, // Change number of flights
+  eventId,
+});
+```
+
+## Complete Example
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+
+// 1. Create event
+const event = {
+  eventName: 'Adult Mixed Doubles',
+  eventType: 'DOUBLES',
+  category: {
+    categoryName: 'Adult Open Mixed',
+    ageCategoryCode: '18O',
+  },
+};
+
+const { event: { eventId } } = tournamentEngine.addEvent({ event });
+
+// 2. Enter all participants
+tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: allPairIds,
+  entryStatus: 'DIRECT_ACCEPTANCE',
+});
+
+// 3. Generate flight profile based on ratings
+const { flightProfile } = tournamentEngine.generateFlightProfile({
+  attachFlightProfile: true, // Attach immediately
+  flightsCount: 3, // Championship, First Flight, Second Flight
+  splitMethod: 'LEVEL_BASED', // Top players in first flight
+  scaleAttributes: {
+    scaleType: 'RATING',
+    eventType: 'DOUBLES',
+    scaleName: 'NTRP',
+  },
+  eventId,
+});
+
+// 4. Generate draws for each flight
+flightProfile.flights.forEach((flight) => {
+  const { drawDefinition } = tournamentEngine.generateDrawDefinition({
+    drawEntries: flight.drawEntries,
+    drawName: flight.drawName,
+    drawId: flight.drawId,
+    drawSize: 8,
+    automated: true,
+    eventId,
+  });
+
+  tournamentEngine.addDrawDefinition({
+    drawDefinition,
+    eventId,
+    flight,
+  });
+});
+```
+
+## Scale Attributes
+
+When using `scaleAttributes`, participants without ratings/rankings are randomly distributed across flights.
+
+### Available Scale Types
+
+- **RATING** - Uses rating systems (WTN, UTR, NTRP, etc.)
+- **RANKING** - Uses ranking positions
+
+### Specifying Rating Systems
+
+```js
+scaleAttributes: {
+  scaleType: 'RATING',
+  eventType: 'SINGLES',
+  scaleName: 'WTN', // Specific rating system
+}
+```
+
+## Related Topics
+
+- [Events Overview](./events-overview) - Event structure and management
+- [Entries](./entries) - Managing participant entries
+- [Categories](./categories) - Event eligibility criteria
+- [Event Governor](/docs/governors/event-governor) - Event management API
+- [Scale Items](/docs/concepts/scaleItems) - Participant ratings and rankings

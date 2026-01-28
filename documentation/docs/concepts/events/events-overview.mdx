@@ -1,0 +1,79 @@
+---
+title: Events Overview
+---
+
+## What are Events?
+
+Events are the organizational structure within a tournament that group participants competing in the same discipline and category. Each event can contain multiple **drawDefinitions** (also called "flights") that segment participants into separate competitions while maintaining a shared category definition.
+
+### Hierarchical Structure
+
+```
+Tournament
+  └── Event (e.g., "Boys U18 Singles")
+      ├── Category (age, rating, ball type)
+      ├── Entries (participants accepted into the event)
+      └── DrawDefinitions (flights/draws)
+          ├── Main Draw
+          ├── Qualifying Draw
+          ├── Consolation Draw
+          └── Additional Flights (A Flight, B Flight, etc.)
+```
+
+## Creating Events
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+
+const event = {
+  eventName: 'Boys U18 Singles',
+  eventType: 'SINGLES', // SINGLES, DOUBLES, TEAM
+  category: {
+    categoryName: 'Boys Under 18',
+    ageCategoryCode: '18U',
+  },
+};
+
+const { event: createdEvent } = tournamentEngine.addEvent({ event });
+const eventId = createdEvent.eventId;
+```
+
+## Event Properties
+
+- **eventName** - Display name of the event
+- **eventType** - SINGLES, DOUBLES, or TEAM
+- **category** - Category definition (see [Categories](./categories))
+- **entries** - Array of participant entries (see [Entries](./entries))
+- **drawDefinitions** - Array of draws associated with this event
+- **matchUpFormat** - Default matchUp format for all draws
+- **tieFormat** - For TEAM events only
+
+## Event Types
+
+### SINGLES
+
+- Individual player competition
+- One participant per side
+
+### DOUBLES
+
+- Two-player team competition
+- Participant type must be PAIR
+
+### TEAM
+
+- Multi-player team competition
+- Requires tieFormat definition
+- See [Tie Formats](../tieFormat) for details
+
+## Multiple DrawDefinitions per Event
+
+Events can contain multiple drawDefinitions that share the same category but segment participants into separate competitions.
+
+## Related Topics
+
+- [Categories](./categories) - Define eligibility and characteristics
+- [Entries](./entries) - Manage participant entries
+- [Flights](./flights) - Automatic skill-based segmentation
+- [Draw Generation](/docs/concepts/draws-overview) - Creating drawDefinitions
+- [Event Governor](/docs/governors/event-governor) - Event management API

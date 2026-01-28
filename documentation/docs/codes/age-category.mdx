@@ -2,17 +2,77 @@
 title: Age Category Codes
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import AgeCategoryEditor from '../components/AgeCategoryEditor';
+
 Age category codes may appear on an attribute of a [`category`](../types/typedefs/#generic), which can appear in `event` and `drawDefinition` elements within a tournament record.
 
 See [ITF Standard Codes](https://itftennis.atlassian.net/wiki/spaces/TODS/pages/1272840305/Standard+Codes) for an explanation of the construction of age category codes.
 
+## Interactive Editor
+
+Try the Age Category Code editor to build and visualize age category codes:
+
+<BrowserOnly>{() => <AgeCategoryEditor />}</BrowserOnly>
+
+## Code Format
+
+Age category codes follow ITF TODS standards and support several formats:
+
+- **Open**: `OPEN` - No age restrictions
+- **Under (U)**: `18U` or `U18` - 18 and under
+- **Over (O)**: `35O` or `O35` - 35 and over
+- **Range**: `10O-18U` or `U18-10O` - Ages 10-18
+- **Combined (C)**: `C50-70` - Combined ages 50-70 (sum of team member ages)
+
+## Calculating Age Details
+
 A `consideredDate` is required for calculating `ageMaxDate` and `ageMinDate`, values which can be used to validate a `participant` entry into an event.
 
 ```js
-import { queryEngine } from 'tods-competition-factory';
+import { eventGovernor } from 'tods-competition-factory';
 
-const { ageMax, ageMin, ageMaxDate, ageMinDate } = queryEngine.getCategoryAgeDetails({
+const { ageMax, ageMin, ageMaxDate, ageMinDate } = eventGovernor.getCategoryAgeDetails({
   category: { ageCategoryCode },
   consideredDate, // required - typically the startDate or endDate of a tournament
 });
 ```
+
+### Example Usage
+
+```js
+// For an U18 event with tournament end date of 2024-12-31
+const result = eventGovernor.getCategoryAgeDetails({
+  category: { ageCategoryCode: '18U' },
+  consideredDate: '2024-12-31',
+});
+
+console.log(result);
+// {
+//   ageMax: 18,
+//   ageMinDate: '2006-01-01',  // Youngest eligible birth date
+//   ageCategoryCode: '18U'
+// }
+```
+
+## Using in Events and Draws
+
+Age category codes are typically specified when creating events or categories:
+
+```js
+import { tournamentEngine } from 'tods-competition-factory';
+
+// Add event with age category
+const event = {
+  eventName: 'Boys U18 Singles',
+  eventType: 'SINGLES',
+  category: {
+    categoryName: 'Boys Under 18',
+    ageCategoryCode: '18U'
+  }
+};
+
+tournamentEngine.addEvent({ event });
+```
+
+See the [Events and Categories](/docs/concepts/events-categories) concept page for more details on how categories work with events and drawDefinitions.
