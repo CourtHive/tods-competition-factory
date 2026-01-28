@@ -11,6 +11,11 @@ export const SCHEDULE_ERROR = 'ERROR';
 export const SCHEDULE_ISSUE = 'ISSUE';
 export const SCHEDULE_STATE = 'STATE';
 
+// Booking types for court grid bookings
+export const BLOCKED = 'BLOCKED';
+export const PRACTICE = 'PRACTICE';
+export const MAINTENANCE = 'MAINTENANCE';
+
 export const scheduleConstants = {
   SINGLES_DOUBLES,
   DOUBLES_SINGLES,
@@ -24,4 +29,8 @@ export const scheduleConstants = {
   SCHEDULE_ERROR,
   SCHEDULE_ISSUE,
   SCHEDULE_STATE,
+
+  BLOCKED,
+  PRACTICE,
+  MAINTENANCE,
 };

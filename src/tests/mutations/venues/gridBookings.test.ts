@@ -2,6 +2,8 @@ import { getGridBookings } from '@Query/venues/getGridBookings';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, describe } from 'vitest';
 
+// constants
+import { BLOCKED, PRACTICE, MAINTENANCE } from '@Constants/scheduleConstants';
 import {
   BOOKING_NOT_FOUND,
   COURT_NOT_FOUND,
@@ -16,7 +18,9 @@ describe('Grid Bookings', () => {
       expect(result.success).toEqual(true);
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
       // Add court with time-based bookings only
       const dateAvailability = [
@@ -26,13 +30,15 @@ describe('Grid Bookings', () => {
           endTime: '20:00',
           bookings: [
             // Time-based bookings
-            { startTime: '07:00', endTime: '08:30', bookingType: 'PRACTICE' },
-            { startTime: '13:30', endTime: '14:00', bookingType: 'MAINTENANCE' },
+            { startTime: '07:00', endTime: '08:30', bookingType: PRACTICE },
+            { startTime: '13:30', endTime: '14:00', bookingType: MAINTENANCE },
           ],
         },
       ];
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1', dateAvailability },
       });
@@ -43,14 +49,14 @@ describe('Grid Bookings', () => {
         scheduledDate: '2024-01-15',
         courtOrder: 1,
         rowCount: 1,
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
       });
       tournamentEngine.addCourtGridBooking({
         courtId,
         scheduledDate: '2024-01-15',
         courtOrder: 3,
         rowCount: 2,
-        bookingType: 'MAINTENANCE',
+        bookingType: MAINTENANCE,
       });
 
       const { venue: foundVenue } = tournamentEngine.findVenue({ venueId });
@@ -78,9 +84,13 @@ describe('Grid Bookings', () => {
       expect(result.success).toEqual(true);
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -102,9 +112,13 @@ describe('Grid Bookings', () => {
       expect(result.success).toEqual(true);
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -115,7 +129,7 @@ describe('Grid Bookings', () => {
         scheduledDate: '2024-01-15',
         courtOrder: 5,
         rowCount: 3,
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
       });
 
       const { venue: foundVenue } = tournamentEngine.findVenue({ venueId });
@@ -143,16 +157,20 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
 
       const result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'PRACTICE',
+        bookingType: PRACTICE,
         courtOrder: 2,
         courtId,
       });
@@ -161,23 +179,27 @@ describe('Grid Bookings', () => {
       expect(result.booking).toBeDefined();
       expect(result.booking.courtOrder).toEqual(2);
       expect(result.booking.rowCount).toEqual(1);
-      expect(result.booking.bookingType).toEqual('PRACTICE');
+      expect(result.booking.bookingType).toEqual(PRACTICE);
     });
 
     it('can add a booking blocking multiple consecutive rows', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
 
       const result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'MAINTENANCE',
+        bookingType: MAINTENANCE,
         courtOrder: 3,
         rowCount: 3,
         courtId,
@@ -194,9 +216,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -204,7 +230,7 @@ describe('Grid Bookings', () => {
       // Test zero
       let result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 0,
         courtId,
       });
@@ -213,7 +239,7 @@ describe('Grid Bookings', () => {
       // Test negative
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: -1,
         courtId,
       });
@@ -222,7 +248,7 @@ describe('Grid Bookings', () => {
       // Test non-integer
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 2.5,
         courtId,
       });
@@ -233,16 +259,20 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
 
       const result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 1,
         rowCount: 0,
         courtId,
@@ -255,7 +285,7 @@ describe('Grid Bookings', () => {
 
       const result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 1,
         courtId: 'non-existent-id',
       });
@@ -266,9 +296,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -276,7 +310,7 @@ describe('Grid Bookings', () => {
       // Add first booking at rows 3-5
       let result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'PRACTICE',
+        bookingType: PRACTICE,
         courtOrder: 3,
         rowCount: 3,
         courtId,
@@ -286,7 +320,7 @@ describe('Grid Bookings', () => {
       // Try to add overlapping booking at row 4 (conflicts)
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'MAINTENANCE',
+        bookingType: MAINTENANCE,
         courtOrder: 4,
         courtId,
       });
@@ -295,7 +329,7 @@ describe('Grid Bookings', () => {
       // Try to add overlapping booking at row 2 with rowCount 2 (conflicts with row 3)
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 2,
         rowCount: 2,
         courtId,
@@ -305,7 +339,7 @@ describe('Grid Bookings', () => {
       // Adding at row 1 should work (no conflict)
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 1,
         courtId,
       });
@@ -314,7 +348,7 @@ describe('Grid Bookings', () => {
       // Adding at row 6 should work (no conflict)
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 6,
         courtId,
       });
@@ -326,16 +360,20 @@ describe('Grid Bookings', () => {
       expect(result.success).toEqual(true);
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
 
       const bookingResult = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 1,
         courtId,
       });
@@ -353,9 +391,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -363,7 +405,7 @@ describe('Grid Bookings', () => {
       // Add booking on date 1
       let result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 2,
         courtId,
       });
@@ -372,7 +414,7 @@ describe('Grid Bookings', () => {
       // Add booking on date 2 at same row - should not conflict
       result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-16',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 2,
         courtId,
       });
@@ -385,9 +427,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -395,7 +441,7 @@ describe('Grid Bookings', () => {
       // Add booking
       let result = tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'PRACTICE',
+        bookingType: PRACTICE,
         courtOrder: 3,
         courtId,
       });
@@ -427,9 +473,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -457,9 +507,13 @@ describe('Grid Bookings', () => {
       tournamentEngine.newTournamentRecord();
 
       const venue = { venueName: 'Test Venue' };
-      const { venue: { venueId } } = tournamentEngine.addVenue({ venue });
+      const {
+        venue: { venueId },
+      } = tournamentEngine.addVenue({ venue });
 
-      const { court: { courtId } } = tournamentEngine.addCourt({
+      const {
+        court: { courtId },
+      } = tournamentEngine.addCourt({
         venueId,
         court: { courtName: 'Court 1' },
       });
@@ -467,19 +521,19 @@ describe('Grid Bookings', () => {
       // Add multiple bookings
       tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'BLOCKED',
+        bookingType: BLOCKED,
         courtOrder: 1,
         courtId,
       });
       tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'PRACTICE',
+        bookingType: PRACTICE,
         courtOrder: 3,
         courtId,
       });
       tournamentEngine.addCourtGridBooking({
         scheduledDate: '2024-01-15',
-        bookingType: 'MAINTENANCE',
+        bookingType: MAINTENANCE,
         courtOrder: 5,
         courtId,
       });

@@ -1,6 +1,7 @@
 import { getGridBookings } from '@Query/venues/getGridBookings';
 import { generateRange } from '@Tools/arrays';
 
+// constants
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 
 export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData, scheduledDate }) {
@@ -16,12 +17,12 @@ export function courtGridRows({ courtPrefix = 'C|', minRowsCount, courtsData, sc
   const rowBuilder = generateRange(0, rowsCount).map((rowIndex) => ({
     matchUps: generateRange(0, courtsData.length).map((courtIndex) => {
       const courtInfo = courtsData[courtIndex];
-      const { courtId, venueId, court } = courtInfo;
+      const { courtId, venueId } = courtInfo;
 
       // Check if this row is blocked by a grid booking
-      if (scheduledDate && court) {
+      if (scheduledDate) {
         const { gridBookings } = getGridBookings({
-          court,
+          court: courtInfo, // courtInfo IS the court object
           date: scheduledDate,
         });
 

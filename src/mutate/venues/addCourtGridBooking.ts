@@ -1,19 +1,14 @@
-
 import { getCourtDateAvailability } from '@Query/venues/getCourtDateAvailability';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { addNotice } from '@Global/state/globalState';
 import { findCourt } from '@Query/venues/findCourt';
 
 // constants and types
-import { Tournament } from '@Types/tournamentTypes';
+import { INVALID_VALUES, COURT_NOT_FOUND, EXISTING_MATCHUPS } from '@Constants/errorConditionConstants';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
-import {
-  INVALID_VALUES,
-  COURT_NOT_FOUND,
-  EXISTING_MATCHUPS,
-} from '@Constants/errorConditionConstants';
 
 type AddCourtGridBookingArgs = {
   tournamentRecord: Tournament;
@@ -29,7 +24,7 @@ type AddCourtGridBookingArgs = {
 /**
  * Adds a grid-based booking to a court, blocking one or more rows in the schedule grid.
  * Grid bookings use courtOrder (row number) instead of time-based startTime/endTime.
- * 
+ *
  * @param courtOrder - The grid row number to start blocking (1-based)
  * @param rowCount - Number of consecutive rows to block (default: 1)
  * @param bookingType - Type of booking (e.g., 'PRACTICE', 'MAINTENANCE', 'BLOCKED')
@@ -97,7 +92,7 @@ export function addCourtGridBooking(params: AddCourtGridBookingArgs): ResultType
 
   // Get or create dateAvailability for the specified date
   const courtDate = getCourtDateAvailability({ court, date: scheduledDate });
-  
+
   if (!courtDate) {
     // Create new dateAvailability entry for this date
     if (!court.dateAvailability) court.dateAvailability = [];
