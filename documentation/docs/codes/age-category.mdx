@@ -16,14 +16,3 @@ const { ageMax, ageMin, ageMaxDate, ageMinDate } = queryEngine.getCategoryAgeDet
   consideredDate, // required - typically the startDate or endDate of a tournament
 });
 ```
-
-```jsx live
-function AgeCategoryDemo(props) {
-  const result = tools.getCategoryAgeDetails({
-    category: { ageCategoryCode: '18U' },
-    consideredDate: '2022-01-01',
-  });
-
-  return <RenderJSON data={result} root={'result'} />;
-}
-```
