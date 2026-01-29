@@ -37,7 +37,7 @@ it('built-in tally policies exist with correct structure', () => {
   expect(POLICY_ROUND_ROBIN_TALLY_TOC[POLICY_TYPE_ROUND_ROBIN_TALLY].groupOrderKey).toBe('matchUpsPct');
 });
 
-it.only('precision controls decimal precision of percentage calculations', () => {
+it('precision controls decimal precision of percentage calculations', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, eventType: SINGLES }],
     completeAllMatchUps: true,
