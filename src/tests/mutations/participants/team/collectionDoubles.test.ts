@@ -525,7 +525,7 @@ it('handles pair dependencies across draws', () => {
     withDraws: true,
   }));
 
-  // expect no new pairs were created and each pairParticipant is in BOTH draws
+  // expect no new pairs were created and each pairParticipant is in both draws
   expect(pairParticipants.length).toEqual(6);
   pairParticipants.forEach((pairParticipant) => {
     expect(pairParticipant.draws.length).toEqual(1);

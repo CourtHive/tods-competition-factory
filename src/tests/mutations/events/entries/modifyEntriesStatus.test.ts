@@ -95,7 +95,7 @@ it('can modify entryStatus within event.entries', () => {
   expect(drawEntryStatuses).toEqual([DIRECT_ACCEPTANCE]);
   expect(flightEntryStatuses).toEqual([DIRECT_ACCEPTANCE]);
 
-  // when passing BOTH drawId, BOTH drawDefinition.entries and flight.drawEntries are mofidied,
+  // when passing drawId, both drawDefinition.entries and flight.drawEntries are mofidied,
   // ...but event.entries are unchanged...
   result = tournamentEngine.modifyEntriesStatus({
     participantIds: assignedParticipantIds,
