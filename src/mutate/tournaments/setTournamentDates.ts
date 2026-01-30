@@ -12,13 +12,13 @@ import { dateValidation } from '@Validators/regex';
 import { INVALID_DATE, INVALID_VALUES, SCHEDULE_NOT_CLEARED } from '@Constants/errorConditionConstants';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
 import { INVALID, VALIDATE } from '@Constants/attributeConstants';
-import { Tournament, weekdayUnion } from '@Types/tournamentTypes';
+import { Tournament, WeekdayUnion } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 
 type SetTournamentDatesArgs = {
   tournamentRecord: Tournament;
-  weekdays?: weekdayUnion[];
+  weekdays?: WeekdayUnion[];
   activeDates?: string[];
   startDate?: string;
   endDate?: string;
