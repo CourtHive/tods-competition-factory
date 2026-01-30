@@ -3,17 +3,20 @@
 ## Problem Statement
 
 The factory schema defines `CategoryUnion` as:
+
 ```typescript
 type CategoryUnion = 'AGE' | 'BOTH' | 'LEVEL';
 ```
 
 However, a major project using tods-competition-factory has extensively used `'RATING'` instead of `'LEVEL'` throughout their historical tournament data, particularly in:
+
 - Dot-delimited values (e.g., `SCALE.RATING.SINGLES.U18`)
 - Category type fields
 - Scale type references
 - Event categorization logic
 
 **The Challenge:**
+
 - Cannot simply add `'RATING'` to enum because it would make `'BOTH'` unusable/ambiguous
 - Cannot break existing tournaments with historical `'RATING'` data
 - Need to standardize on `'LEVEL'` going forward
@@ -51,18 +54,22 @@ However, a major project using tods-competition-factory has extensively used `'R
 ### Data Locations Using 'RATING'
 
 1. **Tournament Records**
+
    ```typescript
    {
-     tournamentCategories: [{
-       type: 'RATING',  // Historical data
-       ratingType: 'WTN',
-       ratingMin: 8,
-       ratingMax: 12
-     }]
+     tournamentCategories: [
+       {
+         type: 'RATING', // Historical data
+         ratingType: 'WTN',
+         ratingMin: 8,
+         ratingMax: 12,
+       },
+     ];
    }
    ```
 
 2. **Event Categories**
+
    ```typescript
    {
      event: {
@@ -75,9 +82,10 @@ However, a major project using tods-competition-factory has extensively used `'R
    ```
 
 3. **Scale Item Types** (Dot-delimited strings)
+
    ```typescript
    {
-     itemType: 'SCALE.RATING.SINGLES.U18'
+     itemType: 'SCALE.RATING.SINGLES.U18';
      //              ^^^^^^^
      // 'RATING' embedded in string format
    }
@@ -86,9 +94,11 @@ However, a major project using tods-competition-factory has extensively used `'R
 4. **Time Items / Extensions**
    ```typescript
    {
-     timeItems: [{
-       itemType: 'SCALE.RATING.DOUBLES.WTN'
-     }]
+     timeItems: [
+       {
+         itemType: 'SCALE.RATING.DOUBLES.WTN',
+       },
+     ];
    }
    ```
 
@@ -97,6 +107,7 @@ However, a major project using tods-competition-factory has extensively used `'R
 ### Phase 1: Add Mapping Layer (Factory)
 
 #### 1.1 Create Type Mapper
+
 **Location:** `factory/src/helpers/categoryTypeMapper.ts`
 
 ```typescript
@@ -113,9 +124,7 @@ export type StandardCategoryType = 'AGE' | 'BOTH' | 'LEVEL';
  * @param type - Category type (may be legacy 'RATING')
  * @returns Standard category type ('LEVEL' for 'RATING')
  */
-export function normalizeCategoryType(
-  type?: LegacyCategoryType
-): StandardCategoryType | undefined {
+export function normalizeCategoryType(type?: LegacyCategoryType): StandardCategoryType | undefined {
   if (!type) return undefined;
   return type === 'RATING' ? 'LEVEL' : type;
 }
@@ -125,14 +134,12 @@ export function normalizeCategoryType(
  * @param category - Category with potential 'RATING' type
  * @returns Category with normalized 'LEVEL' type
  */
-export function normalizeCategory<T extends { type?: string }>(
-  category: T
-): T {
+export function normalizeCategory<T extends { type?: string }>(category: T): T {
   if (!category || !category.type) return category;
-  
+
   return {
     ...category,
-    type: normalizeCategoryType(category.type as LegacyCategoryType)
+    type: normalizeCategoryType(category.type as LegacyCategoryType),
   };
 }
 
@@ -152,15 +159,15 @@ export function isRatingBasedCategory(type?: string): boolean {
  */
 export function normalizeScaleItemType(itemType?: string): string | undefined {
   if (!itemType || typeof itemType !== 'string') return itemType;
-  
+
   const parts = itemType.split('.');
   const ratingIndex = parts.indexOf('RATING');
-  
+
   if (ratingIndex !== -1) {
     parts[ratingIndex] = 'LEVEL';
     return parts.join('.');
   }
-  
+
   return itemType;
 }
 
@@ -170,27 +177,28 @@ export function normalizeScaleItemType(itemType?: string): string | undefined {
  */
 export function normalizeTournamentCategories(tournamentRecord: any): any {
   if (!tournamentRecord) return tournamentRecord;
-  
+
   const normalized = { ...tournamentRecord };
-  
+
   // Normalize tournament-level categories
   if (Array.isArray(normalized.tournamentCategories)) {
     normalized.tournamentCategories = normalized.tournamentCategories.map(normalizeCategory);
   }
-  
+
   // Normalize event categories
   if (Array.isArray(normalized.events)) {
     normalized.events = normalized.events.map((event: any) => ({
       ...event,
-      category: event.category ? normalizeCategory(event.category) : event.category
+      category: event.category ? normalizeCategory(event.category) : event.category,
     }));
   }
-  
+
   return normalized;
 }
 ```
 
 #### 1.2 Update Schema to Accept Both (Input)
+
 **Location:** `factory/src/types/tournamentTypes.ts`
 
 ```typescript
@@ -202,17 +210,18 @@ export type CategoryInputUnion = CategoryUnion | 'RATING';
 
 export interface Category {
   // ... other fields
-  type?: CategoryUnion;  // Stored type (always LEVEL, never RATING)
+  type?: CategoryUnion; // Stored type (always LEVEL, never RATING)
   // ... other fields
 }
 
 // For input validation
 export interface CategoryInput extends Omit<Category, 'type'> {
-  type?: CategoryInputUnion;  // Accept RATING on input
+  type?: CategoryInputUnion; // Accept RATING on input
 }
 ```
 
 #### 1.3 Update Validation to Normalize
+
 **Location:** `factory/src/validators/validateCategory.ts`
 
 ```typescript
@@ -220,22 +229,23 @@ import { normalizeCategory } from '@Helpers/categoryTypeMapper';
 
 export function validateCategory({ category }) {
   if (!isObject(category)) return { error: INVALID_VALUES };
-  
+
   // Normalize RATING -> LEVEL before validation
   const normalized = normalizeCategory(category);
-  
+
   const categoryDetails = getCategoryAgeDetails({ category: normalized });
   if (categoryDetails.error) return { error: categoryDetails };
-  
+
   const { ratingMax, ratingMin } = normalized;
-  
+
   // ... rest of validation using normalized category
-  
+
   return { ...categoryDetails };
 }
 ```
 
 #### 1.4 Update Mutation Methods
+
 **Location:** `factory/src/mutate/tournaments/tournamentDetails.ts`
 
 ```typescript
@@ -243,14 +253,12 @@ import { normalizeCategory } from '@Helpers/categoryTypeMapper';
 
 export function setTournamentCategories({ tournamentRecord, categories }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
-  
+
   // Normalize all categories before filtering/storing
-  categories = (categories || [])
-    .map(normalizeCategory)
-    .filter((category) => category.categoryName && category.type);
-  
+  categories = (categories || []).map(normalizeCategory).filter((category) => category.categoryName && category.type);
+
   tournamentRecord.tournamentCategories = categories;
-  
+
   // ... rest of method
 }
 ```
@@ -262,17 +270,18 @@ import { normalizeCategory } from '@Helpers/categoryTypeMapper';
 
 export function modifyEvent({ event, eventUpdates }) {
   // ... existing code
-  
+
   if (eventUpdates.category) {
     // Normalize category on update
     event.category = normalizeCategory(eventUpdates.category);
   }
-  
+
   // ... rest of method
 }
 ```
 
 #### 1.5 Update Query Methods (Return Legacy for Compatibility)
+
 **Location:** `factory/src/query/tournaments/getTournamentInfo.ts`
 
 ```typescript
@@ -286,15 +295,15 @@ export function getTournamentInfo() {
 // Option B: Add flag to return legacy format
 export function getTournamentInfo({ legacyFormat = false } = {}) {
   const tournamentRecord = getTournament().tournamentRecord;
-  
+
   if (legacyFormat && tournamentRecord.tournamentCategories) {
     // Convert LEVEL back to RATING for legacy clients
-    tournamentRecord.tournamentCategories = tournamentRecord.tournamentCategories.map(cat => ({
+    tournamentRecord.tournamentCategories = tournamentRecord.tournamentCategories.map((cat) => ({
       ...cat,
-      type: cat.type === 'LEVEL' && cat.ratingType ? 'RATING' : cat.type
+      type: cat.type === 'LEVEL' && cat.ratingType ? 'RATING' : cat.type,
     }));
   }
-  
+
   return { tournamentInfo: tournamentRecord };
 }
 ```
@@ -302,6 +311,7 @@ export function getTournamentInfo({ legacyFormat = false } = {}) {
 ### Phase 2: Migration Utility
 
 #### 2.1 Create Migration Script
+
 **Location:** `factory/src/migrate/categoryTypeMigration.ts`
 
 ```typescript
@@ -319,21 +329,19 @@ export interface MigrationReport {
  * Migrate a tournament record from RATING to LEVEL
  * Updates categories, events, time items, and scale item types
  */
-export function migrateTournamentCategoryTypes(
-  tournamentRecord: any
-): MigrationReport {
+export function migrateTournamentCategoryTypes(tournamentRecord: any): MigrationReport {
   const report: MigrationReport = {
     categoriesUpdated: 0,
     eventsUpdated: 0,
     timeItemsUpdated: 0,
     scaleItemsUpdated: 0,
-    errors: []
+    errors: [],
   };
-  
+
   try {
     // Migrate tournament categories
     if (Array.isArray(tournamentRecord.tournamentCategories)) {
-      tournamentRecord.tournamentCategories = tournamentRecord.tournamentCategories.map(cat => {
+      tournamentRecord.tournamentCategories = tournamentRecord.tournamentCategories.map((cat) => {
         if (cat.type === 'RATING') {
           report.categoriesUpdated++;
           return normalizeCategory(cat);
@@ -341,7 +349,7 @@ export function migrateTournamentCategoryTypes(
         return cat;
       });
     }
-    
+
     // Migrate event categories
     if (Array.isArray(tournamentRecord.events)) {
       tournamentRecord.events.forEach((event: any) => {
@@ -351,58 +359,55 @@ export function migrateTournamentCategoryTypes(
         }
       });
     }
-    
+
     // Migrate time items with SCALE.RATING references
     const migrateTimeItems = (items?: any[]) => {
       if (!Array.isArray(items)) return;
-      
-      items.forEach(item => {
+
+      items.forEach((item) => {
         if (item.itemType?.includes('.RATING.')) {
           item.itemType = normalizeScaleItemType(item.itemType);
           report.scaleItemsUpdated++;
         }
       });
     };
-    
+
     // Tournament-level time items
     migrateTimeItems(tournamentRecord.timeItems);
-    
+
     // Event-level time items
     tournamentRecord.events?.forEach((event: any) => {
       migrateTimeItems(event.timeItems);
-      
+
       // Draw-level time items
       event.drawDefinitions?.forEach((draw: any) => {
         migrateTimeItems(draw.timeItems);
-        
+
         // Structure-level time items
         draw.structures?.forEach((structure: any) => {
           migrateTimeItems(structure.timeItems);
         });
       });
     });
-    
+
     // Participant time items
     tournamentRecord.participants?.forEach((participant: any) => {
       migrateTimeItems(participant.timeItems);
     });
-    
   } catch (error) {
     report.errors.push({
       path: 'root',
-      error: error instanceof Error ? error.message : 'Unknown error'
+      error: error instanceof Error ? error.message : 'Unknown error',
     });
   }
-  
+
   return report;
 }
 
 /**
  * Dry-run migration to see what would change
  */
-export function analyzeTournamentCategoryTypes(
-  tournamentRecord: any
-): {
+export function analyzeTournamentCategoryTypes(tournamentRecord: any): {
   needsMigration: boolean;
   categoriesWithRating: number;
   eventsWithRating: number;
@@ -412,9 +417,9 @@ export function analyzeTournamentCategoryTypes(
     needsMigration: false,
     categoriesWithRating: 0,
     eventsWithRating: 0,
-    scaleItemsWithRating: 0
+    scaleItemsWithRating: 0,
   };
-  
+
   // Check tournament categories
   tournamentRecord.tournamentCategories?.forEach((cat: any) => {
     if (cat.type === 'RATING') {
@@ -422,7 +427,7 @@ export function analyzeTournamentCategoryTypes(
       analysis.needsMigration = true;
     }
   });
-  
+
   // Check event categories
   tournamentRecord.events?.forEach((event: any) => {
     if (event.category?.type === 'RATING') {
@@ -430,17 +435,17 @@ export function analyzeTournamentCategoryTypes(
       analysis.needsMigration = true;
     }
   });
-  
+
   // Check scale item types
   const checkTimeItems = (items?: any[]) => {
-    items?.forEach(item => {
+    items?.forEach((item) => {
       if (item.itemType?.includes('.RATING.')) {
         analysis.scaleItemsWithRating++;
         analysis.needsMigration = true;
       }
     });
   };
-  
+
   checkTimeItems(tournamentRecord.timeItems);
   tournamentRecord.participants?.forEach((p: any) => checkTimeItems(p.timeItems));
   tournamentRecord.events?.forEach((e: any) => {
@@ -450,12 +455,13 @@ export function analyzeTournamentCategoryTypes(
       d.structures?.forEach((s: any) => checkTimeItems(s.timeItems));
     });
   });
-  
+
   return analysis;
 }
 ```
 
 #### 2.2 Add Migration to Tournament Engine
+
 **Location:** `factory/src/assemblies/governors/tournamentGovernor/mutate.ts`
 
 ```typescript
@@ -465,31 +471,34 @@ export { migrateTournamentCategoryTypes, analyzeTournamentCategoryTypes } from '
 ### Phase 3: Update Dependent Components
 
 #### 3.1 courthive-components Updates
+
 **After factory migration is complete:**
 
 1. Update category editor to use 'LEVEL':
+
    ```typescript
    // Before
    options: {
-     types: ['AGE', 'RATING', 'BOTH']
+     types: ['AGE', 'RATING', 'BOTH'];
    }
-   
+
    // After
    options: {
-     types: ['AGE', 'LEVEL', 'BOTH']
+     types: ['AGE', 'LEVEL', 'BOTH'];
    }
    ```
 
 2. Update display labels:
    ```typescript
    const typeLabels = {
-     'AGE': 'Age-based',
-     'LEVEL': 'Rating-based',  // Changed from RATING
-     'BOTH': 'Age and Rating'
+     AGE: 'Age-based',
+     LEVEL: 'Rating-based', // Changed from RATING
+     BOTH: 'Age and Rating',
    };
    ```
 
 #### 3.2 TMX Updates
+
 **After factory migration is complete:**
 
 1. Update event editor to use 'LEVEL'
@@ -501,6 +510,7 @@ export { migrateTournamentCategoryTypes, analyzeTournamentCategoryTypes } from '
 #### 4.1 Migration Steps for External Projects
 
 **Step 1: Analyze Impact**
+
 ```typescript
 const analysis = tournamentEngine.analyzeTournamentCategoryTypes(tournamentRecord);
 console.log('Migration needed:', analysis.needsMigration);
@@ -510,6 +520,7 @@ console.log('Scale items:', analysis.scaleItemsWithRating);
 ```
 
 **Step 2: Test Migration (Dry Run)**
+
 ```typescript
 const clone = JSON.parse(JSON.stringify(tournamentRecord));
 const report = tournamentEngine.migrateTournamentCategoryTypes(clone);
@@ -517,6 +528,7 @@ console.log('Would update:', report);
 ```
 
 **Step 3: Backup Data**
+
 ```typescript
 // Save original tournament before migration
 const backup = JSON.stringify(tournamentRecord);
@@ -524,6 +536,7 @@ fs.writeFileSync('tournament-backup.json', backup);
 ```
 
 **Step 4: Execute Migration**
+
 ```typescript
 const report = tournamentEngine.migrateTournamentCategoryTypes(tournamentRecord);
 console.log('Migration complete:', report);
@@ -535,6 +548,7 @@ if (report.errors.length > 0) {
 ```
 
 **Step 5: Update Code**
+
 - Replace `type: 'RATING'` with `type: 'LEVEL'` in all new code
 - Update any hardcoded 'RATING' strings
 - Update type checks: `type === 'RATING'` → `type === 'LEVEL'`
@@ -563,17 +577,18 @@ function isRatingCategory(category: any): boolean {
 ### Unit Tests
 
 1. **Mapper Tests**
+
    ```typescript
    describe('categoryTypeMapper', () => {
      it('normalizes RATING to LEVEL', () => {
        expect(normalizeCategoryType('RATING')).toBe('LEVEL');
      });
-     
+
      it('preserves AGE and BOTH', () => {
        expect(normalizeCategoryType('AGE')).toBe('AGE');
        expect(normalizeCategoryType('BOTH')).toBe('BOTH');
      });
-     
+
      it('normalizes category object', () => {
        const input = { type: 'RATING', ratingType: 'WTN' };
        const output = normalizeCategory(input);
@@ -587,20 +602,16 @@ function isRatingCategory(category: any): boolean {
    describe('categoryTypeMigration', () => {
      it('migrates tournament categories', () => {
        const tournament = {
-         tournamentCategories: [
-           { type: 'RATING', categoryName: 'Test' }
-         ]
+         tournamentCategories: [{ type: 'RATING', categoryName: 'Test' }],
        };
        const report = migrateTournamentCategoryTypes(tournament);
        expect(report.categoriesUpdated).toBe(1);
        expect(tournament.tournamentCategories[0].type).toBe('LEVEL');
      });
-     
+
      it('migrates scale item types', () => {
        const tournament = {
-         timeItems: [
-           { itemType: 'SCALE.RATING.SINGLES.U18' }
-         ]
+         timeItems: [{ itemType: 'SCALE.RATING.SINGLES.U18' }],
        };
        const report = migrateTournamentCategoryTypes(tournament);
        expect(report.scaleItemsUpdated).toBe(1);
@@ -625,36 +636,43 @@ function isRatingCategory(category: any): boolean {
 ## Rollout Plan
 
 ### Phase 1: Factory Implementation (2-3 sprints)
+
 - Sprint 1: Create mapper and update validation
 - Sprint 2: Update mutation/query methods
 - Sprint 3: Add migration utility and tests
 
 ### Phase 2: External Project Testing (1-2 sprints)
+
 - Sprint 4: Test migration on sample tournament data
 - Sprint 5: Coordinate with external project team
 
 ### Phase 3: Component Updates (1 sprint)
+
 - Sprint 6: Update courthive-components and TMX
 
 ### Phase 4: Full Rollout (1-2 sprints)
+
 - Sprint 7: Deploy factory with backwards compatibility
 - Sprint 8: Monitor and support migration
 
 ## Risk Mitigation
 
 ### Data Loss Prevention
+
 - Always normalize on input, never reject 'RATING'
 - Provide migration utility with dry-run option
 - Require backups before migration
 - Log all migrations for audit trail
 
 ### Breaking Changes Prevention
+
 - Accept both 'RATING' and 'LEVEL' on input indefinitely
 - Only standardize internally to 'LEVEL'
 - Provide compatibility helpers
 - Extensive testing across projects
 
 ### Rollback Strategy
+
 - Keep backup of pre-migration data
 - Migration utility can be reversed (LEVEL → RATING)
 - Feature flag for enabling normalization
