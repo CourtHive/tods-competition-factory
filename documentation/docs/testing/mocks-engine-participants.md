@@ -2,12 +2,18 @@
 title: Participant Generation
 ---
 
+import BrowserOnly from '@docusaurus/BrowserOnly';
+import MockParticipantsDemo from '../components/MockParticipantsDemo';
+
 # Participant Generation
 
 The mocksEngine generates individual, pair and team participants with demographics, rankings, and ratings. Participants can be created standalone or as part of tournament generation.
 
+<BrowserOnly>{() => <MockParticipantsDemo />}</BrowserOnly>
+
 :::note Sex vs Gender
 In the TODS data model:
+
 - **Persons have `sex`** - A biological attribute (MALE/FEMALE) stored in the `person` object
 - **Events have `gender`** - A competition category attribute (MALE/FEMALE/MIXED/etc.) stored in the event object
 
