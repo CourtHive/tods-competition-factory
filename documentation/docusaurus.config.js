@@ -9,7 +9,6 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'CourtHive',
   projectName: 'tods-competition-factory',
-  themes: ['@docusaurus/theme-live-codeblock'],
   themeConfig: {
     navbar: {
       title: 'Competition Factory',
@@ -35,10 +34,6 @@ module.exports = {
       style: 'dark',
       links: [],
       copyright: `Copyright © ${new Date().getFullYear()} CourtHive`,
-    },
-    mermaid: {
-      theme: { light: 'neutral', dark: 'forest' },
-      // mermaidOptions: { maxTextSize: 50 },
     },
   },
   presets: [
