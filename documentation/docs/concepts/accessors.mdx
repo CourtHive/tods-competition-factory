@@ -30,8 +30,8 @@ const participant = {
     standardFamilyName: 'Federer',
     standardGivenName: 'Roger',
     nationalityCode: 'SUI',
-    sex: 'MALE'
-  }
+    sex: 'MALE',
+  },
 };
 
 // Accessor for family name
@@ -51,15 +51,19 @@ Traverse multiple levels:
 const participant = {
   participantId: 'player-123',
   person: {
-    addresses: [{
-      city: 'Basel',
-      country: 'Switzerland'
-    }],
-    contacts: [{
-      type: 'email',
-      value: 'roger@example.com'
-    }]
-  }
+    addresses: [
+      {
+        city: 'Basel',
+        country: 'Switzerland',
+      },
+    ],
+    contacts: [
+      {
+        type: 'email',
+        value: 'roger@example.com',
+      },
+    ],
+  },
 };
 
 // Accessor for nested data
@@ -79,16 +83,16 @@ const participant = {
     {
       person: {
         standardFamilyName: 'Bryan',
-        nationalityCode: 'USA'
-      }
+        nationalityCode: 'USA',
+      },
     },
     {
       person: {
         standardFamilyName: 'Bryan',
-        nationalityCode: 'USA'
-      }
-    }
-  ]
+        nationalityCode: 'USA',
+      },
+    },
+  ],
 };
 
 // Accessor extracts from all array elements
@@ -109,10 +113,10 @@ const { participants } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'person.sex',
-        value: 'FEMALE'
-      }
-    ]
-  }
+        value: 'FEMALE',
+      },
+    ],
+  },
 });
 
 // Get participants from specific country
@@ -121,10 +125,10 @@ const { participants: french } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'person.nationalityCode',
-        value: 'FRA'
-      }
-    ]
-  }
+        value: 'FRA',
+      },
+    ],
+  },
 });
 
 // Multiple filters (AND logic)
@@ -132,9 +136,9 @@ const { participants: filtered } = tournamentEngine.getParticipants({
   participantFilters: {
     accessorValues: [
       { accessor: 'person.sex', value: 'MALE' },
-      { accessor: 'person.nationalityCode', value: 'ESP' }
-    ]
-  }
+      { accessor: 'person.nationalityCode', value: 'ESP' },
+    ],
+  },
 });
 ```
 
@@ -150,11 +154,11 @@ const scaleItem = {
     ntrpRating: 4.5,
     ratingYear: '2024',
     ustaRatingType: 'C',
-    district: 'SoCal'
+    district: 'SoCal',
   },
   scaleName: 'NTRP',
   eventType: 'DOUBLES',
-  scaleDate: '2024-06-15'
+  scaleDate: '2024-06-15',
 };
 
 // Use accessor to extract the numeric rating
@@ -162,12 +166,12 @@ const scaleAttributes = {
   scaleType: 'RATING',
   scaleName: 'NTRP',
   eventType: 'DOUBLES',
-  accessor: 'ntrpRating'  // Points to scaleValue.ntrpRating
+  accessor: 'ntrpRating', // Points to scaleValue.ntrpRating
 };
 
 const { scaleItem: retrieved } = tournamentEngine.getParticipantScaleItem({
   participantId: 'player-123',
-  scaleAttributes
+  scaleAttributes,
 });
 // The accessor extracts 4.5 from scaleValue for comparisons
 ```
@@ -183,9 +187,9 @@ Define matchUp avoidance based on participant attributes:
 const policyDefinitions = {
   avoidance: {
     policyName: 'Nationality Avoidance',
-    roundsToSeparate: 2,  // Keep apart for 2 rounds
-    accessor: 'person.nationalityCode'
-  }
+    roundsToSeparate: 2, // Keep apart for 2 rounds
+    accessor: 'person.nationalityCode',
+  },
 };
 
 tournamentEngine.attachPolicies({ policyDefinitions });
@@ -194,7 +198,7 @@ tournamentEngine.attachPolicies({ policyDefinitions });
 // will be placed to avoid early-round matchups
 tournamentEngine.generateDrawDefinition({
   eventId: 'singles-main',
-  policyDefinitions
+  policyDefinitions,
 });
 ```
 
@@ -212,10 +216,10 @@ const { participants } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'individualParticipants.person.nationalityCode',
-        value: 'USA'
-      }
-    ]
-  }
+        value: 'USA',
+      },
+    ],
+  },
 });
 
 // Get teams with specific club affiliation
@@ -225,10 +229,10 @@ const { participants: teams } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'teamParticipants.person.club',
-        value: 'Tennis Club America'
-      }
-    ]
-  }
+        value: 'Tennis Club America',
+      },
+    ],
+  },
 });
 ```
 
@@ -244,9 +248,9 @@ const { participants } = tournamentEngine.getParticipants({
     accessorValues: [
       { accessor: 'person.sex', value: 'FEMALE' },
       { accessor: 'person.nationalityCode', value: 'GBR' },
-      { accessor: 'person.birthDate', value: '2005' }  // Birth year matching
-    ]
-  }
+      { accessor: 'person.birthDate', value: '2005' }, // Birth year matching
+    ],
+  },
 });
 
 // All conditions must match (AND logic)
@@ -263,10 +267,10 @@ const { participants } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'person.birthDate',
-        value: '2005'  // Matches any birthDate containing '2005'
-      }
-    ]
-  }
+        value: '2005', // Matches any birthDate containing '2005'
+      },
+    ],
+  },
 });
 ```
 
@@ -280,12 +284,12 @@ const pair = {
   participantType: 'PAIR',
   individualParticipants: [
     {
-      person: { nationalityCode: 'USA', standardFamilyName: 'Sock' }
+      person: { nationalityCode: 'USA', standardFamilyName: 'Sock' },
     },
     {
-      person: { nationalityCode: 'AUS', standardFamilyName: 'Peers' }
-    }
-  ]
+      person: { nationalityCode: 'AUS', standardFamilyName: 'Peers' },
+    },
+  ],
 };
 
 // Accessor extracts both nationalities
@@ -301,38 +305,38 @@ const accessor = 'individualParticipants.person.nationalityCode';
 
 ```js
 // ✓ Simple property
-'participantType'
+'participantType';
 
 // ✓ Nested property
-'person.standardFamilyName'
+'person.standardFamilyName';
 
 // ✓ Deeply nested
-'person.addresses.city'
+'person.addresses.city';
 
 // ✓ Through arrays
-'individualParticipants.person.nationalityCode'
+'individualParticipants.person.nationalityCode';
 
 // ✓ Multiple levels with arrays
-'teamParticipants.person.contacts.value'
+'teamParticipants.person.contacts.value';
 ```
 
 ### Invalid Accessor Paths
 
 ```js
 // ✗ Empty string
-''
+'';
 
 // ✗ Starting with dot
-'.person.name'
+'.person.name';
 
 // ✗ Ending with dot
-'person.name.'
+'person.name.';
 
 // ✗ Double dots
-'person..name'
+'person..name';
 
 // ✗ Array indices (not supported)
-'individualParticipants[0].person.name'
+'individualParticipants[0].person.name';
 ```
 
 ## Performance Considerations
@@ -343,13 +347,13 @@ Accessors are evaluated for each participant/item, so keep paths as short as nec
 
 ```js
 // ✓ Efficient - direct path
-accessor: 'person.nationalityCode'
+accessor: 'person.nationalityCode';
 
 // ✓ Efficient - necessary depth
-accessor: 'individualParticipants.person.nationalityCode'
+accessor: 'individualParticipants.person.nationalityCode';
 
 // ⚠ Less efficient - unnecessary depth
-accessor: 'person.details.info.data.nationality'  // If flatter structure possible
+accessor: 'person.details.info.data.nationality'; // If flatter structure possible
 ```
 
 ### Caching Considerations
@@ -360,8 +364,8 @@ When filtering large participant sets repeatedly:
 // ✓ Good - filter once, reuse results
 const { participants: females } = tournamentEngine.getParticipants({
   participantFilters: {
-    accessorValues: [{ accessor: 'person.sex', value: 'FEMALE' }]
-  }
+    accessorValues: [{ accessor: 'person.sex', value: 'FEMALE' }],
+  },
 });
 
 // Use 'females' array for subsequent operations
@@ -382,15 +386,15 @@ const { participants } = tournamentEngine.getParticipants({
   participantFilters: {
     accessorValues: [
       { accessor: 'person.sex', value: 'FEMALE' },
-      { accessor: 'person.birthDate', value: '2006' }  // U18 players
-    ]
-  }
+      { accessor: 'person.birthDate', value: '2006' }, // U18 players
+    ],
+  },
 });
 
 // Add them to junior girls event
 tournamentEngine.addEventEntries({
   eventId: 'girls-u18',
-  participantIds: participants.map(p => p.participantId)
+  participantIds: participants.map((p) => p.participantId),
 });
 ```
 
@@ -404,8 +408,8 @@ const policyDefinitions = {
   avoidance: {
     policyName: 'National Federation Avoidance',
     roundsToSeparate: 3,
-    accessor: 'person.nationalityCode'
-  }
+    accessor: 'person.nationalityCode',
+  },
 };
 
 // Generate draw with avoidance
@@ -413,7 +417,7 @@ tournamentEngine.generateDrawDefinition({
   eventId: 'singles-main',
   drawSize: 32,
   seedsCount: 8,
-  policyDefinitions
+  policyDefinitions,
 });
 
 // Participants from same country will be separated for 3 rounds
@@ -433,12 +437,12 @@ tournamentEngine.setParticipantScaleItem({
       combinedRating: 9.2,
       singlesRating: 9.5,
       doublesRating: 8.9,
-      lastUpdated: '2024-06-15'
+      lastUpdated: '2024-06-15',
     },
     scaleName: 'CustomRating',
     eventType: 'SINGLES',
-    scaleDate: '2024-06-15'
-  }
+    scaleDate: '2024-06-15',
+  },
 });
 
 // Retrieve using accessor to combined rating
@@ -448,11 +452,11 @@ const { scaleItem } = tournamentEngine.getParticipantScaleItem({
     scaleType: 'RATING',
     scaleName: 'CustomRating',
     eventType: 'SINGLES',
-    accessor: 'combinedRating'
-  }
+    accessor: 'combinedRating',
+  },
 });
 
-console.log(scaleItem.scaleValue.combinedRating);  // 9.2
+console.log(scaleItem.scaleValue.combinedRating); // 9.2
 ```
 
 ### Multi-Level Team Filtering
@@ -467,47 +471,13 @@ const { participants: regionalTeams } = tournamentEngine.getParticipants({
     accessorValues: [
       {
         accessor: 'teamParticipants.person.region',
-        value: 'Northern California'
-      }
-    ]
-  }
+        value: 'Northern California',
+      },
+    ],
+  },
 });
 
 // Teams where ANY member matches the region will be included
-```
-
-## Live Editor Example
-
-In the **Live Editor** below, the accessor `"person.sex"` is used to target `FEMALE` participants.
-Change the accessor value or uncomment the `person.nationalityCode` filter to see the results change.
-
-```jsx live
-function AccessorsDemo(props) {
-  // Generate a tournament record with some MALE participants
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    participantsProfile: { sex: 'MALE' },
-  });
-  tournamentEngine.setState(tournamentRecord);
-
-  // Now generate some FEMALE participants...
-  const { participants } = mocksEngine.generateParticipants({
-    participantsCount: 16,
-    sex: 'FEMALE',
-  });
-  // ... and add them to the tournament
-  tournamentEngine.addParticipants({ participants });
-
-  const { participants: tournamentParticipants } = tournamentEngine.getParticipants({
-    participantFilters: {
-      accessorValues: [
-        { accessor: 'person.sex', value: 'FEMALE' },
-        // { accessor: 'person.nationalityCode', value: 'FRA' },
-      ],
-    },
-  });
-
-  return <Participants data={tournamentParticipants} />;
-}
 ```
 
 ## Related Documentation

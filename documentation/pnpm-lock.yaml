@@ -36,8 +36,8 @@ importers:
         specifier: 2.1.1
         version: 2.1.1
       courthive-components:
-        specifier: ^0.9.8
-        version: 0.9.8
+        specifier: ^0.9.9
+        version: 0.9.9
       material-ui:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2290,8 +2290,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.8:
-    resolution: {integrity: sha512-dC+xBvDx/0D0/m8MNvythQXP8KSwrmkG2B/HGV1EtLO7h5Ocp41MpKPp/5L3uHPUzX97kEiwTm3CzuSRUqkn5g==}
+  courthive-components@0.9.9:
+    resolution: {integrity: sha512-K8o93J1J+Hh3tdmFTPUrfotHxxgEvetfbQ26hpeHidtzkX2wrikLoegDF4R7KjNY6INKz+qE6lPtapijkuYZ6g==}
     engines: {node: '>=16.16.0 < 25'}
 
   cross-fetch@3.1.8:
@@ -3033,8 +3033,8 @@ packages:
     peerDependencies:
       react: ^15.0.2 || ^16.0.0 || ^17.0.0
 
-  focus-trap@7.8.0:
-    resolution: {integrity: sha512-/yNdlIkpWbM0ptxno3ONTuf+2g318kh2ez3KSeZN5dZ8YC6AAmgeWz+GasYYiBJPFaYcSAPeu4GfhUaChzIJXA==}
+  focus-trap@8.0.0:
+    resolution: {integrity: sha512-Aa84FOGHs99vVwufDMdq2qgOwXPC2e9U66GcqBhn1/jEHPDhJaP8PYhkIbqG9lhfL5Kddk/567lj46LLHYCRUw==}
 
   follow-redirects@1.15.6:
     resolution: {integrity: sha512-wWN62YITEaOpSK584EZXJafH1AGpO8RVgElfkuXbTOrPX4fIfOyEpW/CsiNd8JdYrAoOvafRTOEnvsO++qCqFA==}
@@ -5483,10 +5483,6 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
-
-  tods-competition-factory@2.3.1:
-    resolution: {integrity: sha512-zO5HjzRFM6146j2fA9/BgBDR2+QhmJQgbmzluqa3//LCxGqPX0n0BTG5z4YdUWaeGS7luUR2ixBt8bAIgI6pYQ==}
-    engines: {node: '>=20'}
 
   tods-competition-factory@2.3.3:
     resolution: {integrity: sha512-a/eNPKKiygmoThcuxZLCov5aV+uNL2ml4dd86z1Rgu0Hq7xBDr47ixrMPr82B/QR9CjstYyFauTarshVXaE3wA==}
@@ -9178,7 +9174,7 @@ snapshots:
       typescript: 5.3.3
     optional: true
 
-  courthive-components@0.9.8:
+  courthive-components@0.9.9:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -9188,9 +9184,9 @@ snapshots:
       class-variance-authority: 0.7.1
       classnames: 2.5.1
       dayjs: 1.11.19
-      focus-trap: 7.8.0
+      focus-trap: 8.0.0
       tippy.js: 6.3.7
-      tods-competition-factory: 2.3.1
+      tods-competition-factory: 2.3.3
       vanillajs-datepicker: 1.3.4
 
   cross-fetch@3.1.8(encoding@0.1.13):
@@ -10053,7 +10049,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  focus-trap@7.8.0:
+  focus-trap@8.0.0:
     dependencies:
       tabbable: 6.4.0
 
@@ -12965,8 +12961,6 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
-
-  tods-competition-factory@2.3.1: {}
 
   tods-competition-factory@2.3.3: {}
 
