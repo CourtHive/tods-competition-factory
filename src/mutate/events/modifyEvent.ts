@@ -183,7 +183,7 @@ function getParticipantsProfile({ enteredParticipants }) {
       ? [participant.person.sex]
       : participant.individualParticpants?.map((p) => p.person?.sex) || [];
     genderAccumulator.push(...genders);
-    return !types.includes(participant.participantType) ? types.concat(participant.participantType) : types;
+    return types.includes(participant.participantType) ? types : types.concat(participant.participantType);
   }, []);
 
   const enteredParticipantGenders: string[] = unique(genderAccumulator);
