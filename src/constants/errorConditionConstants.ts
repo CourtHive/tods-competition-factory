@@ -428,6 +428,11 @@ export const INVALID_TOURNAMENT_DATES = {
   message: 'Invalid tournament dates',
   code: 'ERR_INVALID_DATES_TOURNAMENT',
 };
+export const MISSING_DATE_RANGE = {
+  message: 'Missing date range',
+  info: 'Event or tournament must have start and end dates',
+  code: 'ERR_MISSING_DATE_RANGE',
+};
 export const INVALID_TIME_ZONE = {
   message: 'Invalid Time Zone',
   code: 'ERR_INVALID_TIME_ZONE',
