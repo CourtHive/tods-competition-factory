@@ -186,11 +186,11 @@ function getTypedParticipantIdsHelper({
 
 function filterCategoryValidParticipantIds({
   typedParticipantIds,
+  categoryRejections,
   tournamentRecord,
-  event,
   startDate,
   endDate,
-  categoryRejections,
+  event,
 }: {
   typedParticipantIds: string[];
   tournamentRecord: Tournament;

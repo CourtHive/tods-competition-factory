@@ -178,7 +178,9 @@ export function completeDrawMatchUps(params): {
       event,
     }).matchUps;
     if (!matchUps.length) {
+      /*
       // console.log(structure.matchUps, drawDefinition.matchUpType);
+      */
     }
 
     const sortedMatchUpIds = matchUps
@@ -187,7 +189,7 @@ export function completeDrawMatchUps(params): {
       .map(getMatchUpId);
 
     for (const matchUpId of sortedMatchUpIds) {
-      if (!isNaN(completionGoal) && completedCount >= completionGoal) break;
+      if (!Number.isNaN(Number(completionGoal)) && completedCount >= completionGoal) break;
 
       // this is necessary to support completion of connected structures
       // it is using matchUpsMap so it has been optimizied

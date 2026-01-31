@@ -1,4 +1,5 @@
 import { getParticipantScaleItem } from '@Query/participant/getParticipantScaleItem';
+import { getCategoryAgeDetails } from '@Query/event/getCategoryAgeDetails';
 import { extractDate, isValidDateString } from '@Tools/dateTime';
 import { getAccessorValue } from '@Tools/getAccessorValue';
 
@@ -110,8 +111,24 @@ export function validateParticipantAge(
     return { valid: true };
   }
 
+  // If there's an ageCategoryCode but no ageMin/ageMax, extract them using getCategoryAgeDetails
+  let effectiveAgeMin = category.ageMin;
+  let effectiveAgeMax = category.ageMax;
+
+  if (category.ageCategoryCode && !effectiveAgeMin && !effectiveAgeMax) {
+    const categoryDetails = getCategoryAgeDetails({
+      consideredDate: startDate,
+      category,
+    });
+
+    if (!categoryDetails.error) {
+      effectiveAgeMin = categoryDetails.ageMin;
+      effectiveAgeMax = categoryDetails.ageMax;
+    }
+  }
+
   // No age restrictions
-  if (!category.ageMin && !category.ageMax) {
+  if (!effectiveAgeMin && !effectiveAgeMax) {
     return { valid: true };
   }
 
@@ -121,8 +138,8 @@ export function validateParticipantAge(
       valid: false,
       reason: 'Missing birthDate',
       details: {
-        requiredMin: category.ageMin,
-        requiredMax: category.ageMax,
+        requiredMin: effectiveAgeMin,
+        requiredMax: effectiveAgeMax,
       },
     };
   }
@@ -132,13 +149,13 @@ export function validateParticipantAge(
   const ageAtEnd = calculateAge(birthDate, endDate);
 
   // Check if valid throughout event period
-  const validAtStart = checkAgeInRange(ageAtStart, category.ageMin, category.ageMax);
-  const validAtEnd = checkAgeInRange(ageAtEnd, category.ageMin, category.ageMax);
+  const validAtStart = checkAgeInRange(ageAtStart, effectiveAgeMin, effectiveAgeMax);
+  const validAtEnd = checkAgeInRange(ageAtEnd, effectiveAgeMin, effectiveAgeMax);
 
   if (!validAtStart) {
     const rangeStr = [
-      category.ageMin === undefined ? null : `min: ${category.ageMin}`,
-      category.ageMax === undefined ? null : `max: ${category.ageMax}`,
+      effectiveAgeMin === undefined ? null : `min: ${effectiveAgeMin}`,
+      effectiveAgeMax === undefined ? null : `max: ${effectiveAgeMax}`,
     ]
       .filter(Boolean)
       .join(', ');
@@ -150,16 +167,16 @@ export function validateParticipantAge(
         birthDate,
         ageAtStart,
         ageAtEnd,
-        requiredMin: category.ageMin,
-        requiredMax: category.ageMax,
+        requiredMin: effectiveAgeMin,
+        requiredMax: effectiveAgeMax,
       },
     };
   }
 
   if (!validAtEnd) {
     const rangeStr = [
-      category.ageMin === undefined ? null : `min: ${category.ageMin}`,
-      category.ageMax === undefined ? null : `max: ${category.ageMax}`,
+      effectiveAgeMin === undefined ? null : `min: ${effectiveAgeMin}`,
+      effectiveAgeMax === undefined ? null : `max: ${effectiveAgeMax}`,
     ]
       .filter(Boolean)
       .join(', ');
@@ -171,8 +188,8 @@ export function validateParticipantAge(
         birthDate,
         ageAtStart,
         ageAtEnd,
-        requiredMin: category.ageMin,
-        requiredMax: category.ageMax,
+        requiredMin: effectiveAgeMin,
+        requiredMax: effectiveAgeMax,
       },
     };
   }
