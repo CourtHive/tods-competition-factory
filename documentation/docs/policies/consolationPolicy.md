@@ -225,4 +225,4 @@ const { drawDefinition: consolationDraw } =
 
 - `getEligibleVoluntaryConsolationParticipants` - Query eligible participants
 - `generateDrawDefinition` - Create consolation draws with eligibility filters
-- See [Consolation Structures](/docs/concepts/draw-types#consolation) for draw generation
+- See [Draw Types](/docs/concepts/draw-types#pre-defined-draw-types) for consolation draw generation

@@ -9,6 +9,9 @@ module.exports = {
   favicon: 'img/favicon.ico',
   organizationName: 'CourtHive',
   projectName: 'tods-competition-factory',
+  markdown: {
+    mermaid: true,
+  },
   themeConfig: {
     navbar: {
       title: 'Competition Factory',
