@@ -13,13 +13,15 @@ type ParseArgs = {
   consideredDate?: string;
   category?: Category;
 };
+function constructedDate(y: number, df: string) {
+  return `${y}-${df}`;
+}
+
 export function getCategoryAgeDetails(params: ParseArgs) {
   const category = params.category;
-
-  if (typeof category !== 'object') return { error: INVALID_CATEGORY };
+  if (typeof category !== 'object' || !category) return { error: INVALID_CATEGORY };
 
   let { ageCategoryCode, ageMaxDate, ageMinDate, ageMax, ageMin } = category;
-
   const categoryName = category.categoryName;
   let combinedAge;
 
@@ -37,7 +39,6 @@ export function getCategoryAgeDetails(params: ParseArgs) {
     .split('-')
     .slice(0, 3)
     .map((n) => Number.parseInt(n));
-
   const previousDayDate = dateStringDaysChange(consideredDate, -1);
   if (!previousDayDate) return { error: INVALID_DATE };
   const [previousDayMonth, previousDay] = previousDayDate
@@ -57,9 +58,7 @@ export function getCategoryAgeDetails(params: ParseArgs) {
   let calculatedAgeMaxDate = ageMin && dateStringDaysChange(consideredDate, -1 * 365 * ageMin);
   let calculatedAgeMinDate = ageMax && dateStringDaysChange(consideredDate, -1 * 365 * ageMax);
 
-  // collect errors; e.g. provided ageMin does not equal calculated ageMin
   const errors: string[] = [];
-
   const addError = (errorString: string) => !errors.includes(errorString) && errors.push(errorString);
 
   ageCategoryCode = ageCategoryCode ?? categoryName;
@@ -71,130 +70,126 @@ export function getCategoryAgeDetails(params: ParseArgs) {
   const isCombined = isBetween && ageCategoryCode?.match(extractCombined);
   const isCoded = ageCategoryCode?.match(prePost);
 
-  // construct min or max date with or without year
-  //const isYYMM = (datePart) => datePart.match(/^\d{2}-\d{2}$/);
-  const constructedDate = (y, df) => `${y}-${df}`;
+  // Helper functions extracted for clarity and reduced complexity
 
-  const uPre = (ageInt) => {
+  function handleUPre(ageInt: number) {
     const ageMinYear = consideredYear - ageInt;
     const newMinDate = constructedDate(ageMinYear, nextMonthDay);
 
-    if (category.ageMinDate && category.ageMinDate !== newMinDate)
+    if (category!.ageMinDate && category!.ageMinDate !== newMinDate)
       addError(`Invalid submitted ageMinDate: ${ageMinDate}`);
 
     ageMinDate = newMinDate;
 
     if (ageCategoryCode) {
-      if (category.ageMax && category.ageMax !== ageInt - 1) {
+      if (category!.ageMax && category!.ageMax !== ageInt - 1) {
         addError(`Invalid submitted ageMax: ${ageMax}`);
         calculatedAgeMinDate = undefined;
       }
       ageMax = ageInt - 1;
     }
-  };
+  }
 
-  const uPost = (ageInt) => {
+  function handleUPost(ageInt: number) {
     const ageMinYear = consideredYear - ageInt - 1;
     const newMinDate = constructedDate(ageMinYear, nextMonthDay);
 
-    if (category.ageMin && category.ageMin > ageInt) {
+    if (category!.ageMin && category!.ageMin > ageInt) {
       addError(`Invalid submitted ageMin: ${ageMin}`);
     }
 
-    if (category.ageMax && category.ageMax > ageInt) {
+    if (category!.ageMax && category!.ageMax > ageInt) {
       addError(`Invalid submitted ageMax: ${ageMax}`);
     }
 
-    if (category.ageMinDate && category.ageMinDate !== newMinDate)
+    if (category!.ageMinDate && category!.ageMinDate !== newMinDate)
       addError(`Invalid submitted ageMinDate: ${ageMinDate}`);
 
     ageMinDate = newMinDate;
 
     if (ageCategoryCode) {
-      if (category.ageMax && category.ageMax !== ageInt) {
+      if (category!.ageMax && category!.ageMax !== ageInt) {
         addError(`Invalid submitted ageMax: ${ageMax}`);
         calculatedAgeMaxDate = undefined;
       }
       ageMax = ageInt;
     }
-  };
+  }
 
-  const oPre = (ageInt) => {
+  function handleOPre(ageInt: number) {
     const ageMaxYear = consideredYear - ageInt;
     const newMaxDate = constructedDate(ageMaxYear, previousMonthDay);
 
-    if (category.ageMaxDate && category.ageMaxDate !== newMaxDate)
+    if (category!.ageMaxDate && category!.ageMaxDate !== newMaxDate)
       addError(`Invalid submitted ageMaxDate: ${ageMaxDate}`);
 
     ageMaxDate = newMaxDate;
 
     if (ageCategoryCode) {
-      if (category.ageMin && category.ageMin !== ageInt + 1) {
+      if (category!.ageMin && category!.ageMin !== ageInt + 1) {
         addError(`Invalid submitted ageMin: ${ageMin}`);
         calculatedAgeMaxDate = undefined;
       }
       ageMin = ageInt + 1;
     }
-  };
+  }
 
-  const oPost = (ageInt) => {
+  function handleOPost(ageInt: number) {
     const ageMaxYear = consideredYear - ageInt - 1;
     const newMaxDate = constructedDate(ageMaxYear, previousMonthDay);
 
-    if (category.ageMaxDate && category.ageMaxDate !== newMaxDate)
+    if (category!.ageMaxDate && category!.ageMaxDate !== newMaxDate)
       addError(`Invalid submitted ageMaxDate: ${ageMaxDate}`);
 
     ageMaxDate = newMaxDate;
 
     if (ageCategoryCode) {
-      if (category.ageMin && category.ageMin !== ageInt) {
+      if (category!.ageMin && category!.ageMin !== ageInt) {
         addError(`Invalid submitted ageMin: ${ageMin}`);
         calculatedAgeMaxDate = undefined;
       }
       ageMin = ageInt;
     }
-  };
+  }
 
-  const processCode = (code) => {
-    const [pre, age, post] = (code.match(prePost) || []).slice(1);
+  function processCode(code: string) {
+    const matchResult = prePost.exec(code) || [];
+    const [pre, age, post] = matchResult.slice(1);
     const ageInt = Number.parseInt(age);
     if (pre === 'U') {
-      if (category.ageMaxDate && category.ageMaxDate !== ageMaxDate) {
-        addError(`Invalid submitted ageMaxDate: ${category.ageMaxDate}`);
+      if (category!.ageMaxDate && category!.ageMaxDate !== ageMaxDate) {
+        addError(`Invalid submitted ageMaxDate: ${category!.ageMaxDate}`);
       }
-      uPre(ageInt);
+      handleUPre(ageInt);
     } else if (pre === 'O') {
-      oPre(ageInt);
+      handleOPre(ageInt);
     }
 
     if (post === 'U') {
-      if (category.ageMaxDate && category.ageMaxDate !== ageMaxDate) {
-        addError(`Invalid submitted ageMaxDate: ${category.ageMaxDate}`);
+      if (category!.ageMaxDate && category!.ageMaxDate !== ageMaxDate) {
+        addError(`Invalid submitted ageMaxDate: ${category!.ageMaxDate}`);
       }
-      uPost(ageInt);
+      handleUPost(ageInt);
     } else if (post === 'O') {
-      oPost(ageInt);
+      handleOPost(ageInt);
     }
 
     ageMaxDate = (ageMaxDate ?? calculatedAgeMaxDate) || undefined;
     ageMinDate = (ageMinDate ?? calculatedAgeMinDate) || undefined;
-  };
+  }
 
-  if (isCombined) {
-    // min and max birthdates are not relevant
+  function handleCombined() {
     ageMaxDate = undefined;
     ageMinDate = undefined;
     ageMax = undefined;
     ageMin = undefined;
 
-    if (category.ageMin) {
-      // calculate ageMaxDate
-      const ageMaxYear = consideredYear - category.ageMin;
+    if (category!.ageMin) {
+      const ageMaxYear = consideredYear - category!.ageMin;
       ageMaxDate = constructedDate(ageMaxYear, previousMonthDay);
     }
-    if (category.ageMax) {
-      // calculate ageMinDate
-      const ageMinYear = consideredYear - category.ageMax - 1;
+    if (category!.ageMax) {
+      const ageMinYear = consideredYear - category!.ageMax - 1;
       ageMinDate = constructedDate(ageMinYear, nextMonthDay);
     }
 
@@ -206,17 +201,30 @@ export function getCategoryAgeDetails(params: ParseArgs) {
     } else {
       addError(`Invalid combined age range ${ageCategoryCode}`);
     }
-  } else if (isBetween) {
-    ageCategoryCode?.split('-').forEach(processCode);
-  } else if (isCoded) {
-    processCode(ageCategoryCode);
-  } else {
-    if (ageMin) oPre(ageMin);
-    if (ageMax) uPost(ageMax);
   }
 
-  if (ageMax && category.ageMin && category.ageMin > ageMax) {
-    addError(`Invalid submitted ageMin: ${category.ageMin}`);
+  function handleDefault() {
+    if (ageMin) handleOPre(ageMin);
+    if (ageMax) handleUPost(ageMax);
+  }
+
+  // Main logic
+  function processCategoryCode() {
+    if (isCombined) {
+      handleCombined();
+    } else if (isBetween) {
+      ageCategoryCode?.split('-').forEach(processCode);
+    } else if (isCoded && ageCategoryCode) {
+      processCode(ageCategoryCode);
+    } else {
+      handleDefault();
+    }
+  }
+
+  processCategoryCode();
+
+  if (ageMax && category?.ageMin && category?.ageMin > ageMax) {
+    addError(`Invalid submitted ageMin: ${category?.ageMin}`);
     ageMin = undefined;
   }
 
