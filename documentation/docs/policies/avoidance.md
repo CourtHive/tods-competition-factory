@@ -15,7 +15,7 @@ title: Avoidance Policies
 **Single Round Avoidance**: Prevent first-round matchups between grouped players  
 **Multiple Round Avoidance**: Maximize separation throughout the draw
 
-Avoidance can be applied to [Seed Blocks](./seedingPolicy#seed-positioning-patterns) as well as unseeded players, though Seeded players may only be moved to other positions valid for the Seed Block within which they are placed.
+Avoidance can be applied to [Seed Blocks](./seedingPolicy#seedingprofilepositioning) as well as unseeded players, though Seeded players may only be moved to other positions valid for the Seed Block within which they are placed.
 
 ## Avoidance Strategies
 
@@ -433,4 +433,4 @@ tournamentEngine.generateDrawDefinition({
 - **[Participants](/docs/concepts/participants)** - Participant data structures
 - **[Extensions](/docs/concepts/extensions)** - Custom participant attributes
 - **[Seeding Policy](./seedingPolicy)** - Seed blocks and positioning patterns
-- **[Draws Governor](/docs/governors/draws-governor#generatedrawdefinition)** - Draw generation with policies
+- **[Generation Governor](/docs/governors/generation-governor#generatedrawdefinition)** - Draw generation with policies

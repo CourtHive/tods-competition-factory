@@ -726,7 +726,7 @@ console.log(Object.keys(tournamentRecords)); // IDs of tournament2 and tournamen
 
 **Related:**
 - See [Extensions](/docs/concepts/extensions) for more on tournament extensions
-- See [Linked Tournaments](/docs/engines/global-state#linked-tournaments) for linking patterns
+- See [Global State](/docs/engines/global-state) for state management patterns
 
 ---
 

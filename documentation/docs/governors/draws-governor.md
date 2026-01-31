@@ -551,7 +551,7 @@ engine.swapDrawPositionAssignments({
 
 ## updateTeamLineUp
 
-See [validateLineUp](/docs/governors/participant-governor#validateteamlineup)
+See [validateLineUp](/docs/governors/participant-governor#validatelineup)
 
 ```js
 engine.updateTeamLineUp({

@@ -41,6 +41,9 @@ module.exports = {
           ],
         },
         {
+          Draws: ['concepts/draws-overview', 'concepts/draw-types', 'concepts/actions'],
+        },
+        {
           matchUps: [
             'concepts/matchup-overview',
             'concepts/matchup-context',
@@ -49,9 +52,6 @@ module.exports = {
             'concepts/lineUp',
             'concepts/tieFormat',
           ],
-        },
-        {
-          Draws: ['concepts/draws-overview', 'concepts/draw-types', 'concepts/actions'],
         },
         {
           Scheduling: [

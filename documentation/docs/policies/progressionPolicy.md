@@ -317,5 +317,4 @@ tournamentEngine.attachPolicies({
 ## Related Concepts
 
 - [Draw Structures](/docs/concepts/draw-types) - Understanding structure types
-- [Double Elimination](/docs/concepts/draw-types#double-elimination) - Double-exit scenarios
-- [Qualifying Draws](/docs/concepts/draw-types#qualifying) - Qualifier progression
+- [Draw Types](/docs/concepts/draw-types#pre-defined-draw-types) - Double-exit and qualifying scenarios

@@ -34,47 +34,123 @@ const csv = tools.JSON2CSV(arrayOfJSON, config);
 `columnMap` should not contain new columnName(s) that are `columnTransform` keys
 :::
 
-## Example converting matchUps
+## Example: Converting MatchUps to CSV
 
-In the following example **SINGLES** and **DOUBLES** draws are generated and all `matchUps` are completed.
-The `config` object defines how `participants` for each `side` of each `matchUp` are to be extracted,
-prioritizing the `accessor` for extracting `{ participantType: PAIR }`, and falling back on the `accessor` for `participantName`.
+The following example demonstrates converting tournament matchUps to CSV format. This pattern is useful for exporting match results, generating reports, or integrating with external systems.
 
-```jsx live
-function MocksEngineDemo(props) {
-  const drawProfiles = [
-    { drawSize: 8, eventType: 'DOUBLES', matchUpFormat: 'SET3-S:4/TB7-F:TB10' },
-    { drawSize: 8, drawType: 'ROUND_ROBIN' },
-  ];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    completeAllMatchUps: true,
-    drawProfiles,
-  });
+### Setup
 
-  const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
+Generate tournament data with **SINGLES** and **DOUBLES** draws, complete all matches, and extract matchUps:
 
-  const rowJoiner = '|';
-  const config = {
-    rowJoiner,
-    delimiter: '',
-    includeTransformAccessors: true,
-    columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate', 'roundName'],
-    columnTransform: {
-      scoreString: ['score.scoreStringSide1'],
-      side1Participant1: [
-        'sides.0.participant.individualParticipants.0.participantName',
-        'sides.0.participant.participantName',
-      ],
-      side1Participant2: ['sides.0.participant.individualParticipants.1.participantName'],
-      side2Participant1: [
-        'sides.1.participant.individualParticipants.0.participantName',
-        'sides.1.participant.participantName',
-      ],
-      side2Participant2: ['sides.1.participant.individualParticipants.1.participantName'],
-    },
-  };
+```js
+import { mocksEngine, tournamentEngine, tools } from 'tods-competition-factory';
 
-  const csvMatchUps = tools.JSON2CSV(matchUps, config);
-  return <RenderCSV data={csvMatchUps} rowJoiner={rowJoiner} />;
-}
+// Generate tournament with completed matches
+const drawProfiles = [
+  { drawSize: 8, eventType: 'DOUBLES', matchUpFormat: 'SET3-S:4/TB7-F:TB10' },
+  { drawSize: 8, drawType: 'ROUND_ROBIN' },
+];
+
+const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  completeAllMatchUps: true,
+  drawProfiles,
+});
+
+// Get all matchUps from the tournament
+const { matchUps } = tournamentEngine
+  .setState(tournamentRecord)
+  .allTournamentMatchUps();
+```
+
+### Configuration
+
+The config object extracts specific columns and transforms nested participant data. The `columnTransform` uses priority-based resolution, falling back to `participantName` when `individualParticipants` (for doubles) are not present:
+
+```js
+const config = {
+  rowJoiner: '|',
+  delimiter: '',
+  includeTransformAccessors: true,
+  
+  // Basic matchUp properties to include
+  columnAccessors: ['matchUpType', 'matchUpFormat', 'endDate', 'roundName'],
+  
+  // Transform nested participant data into flat columns
+  // Arrays resolve to first found value (priority order)
+  columnTransform: {
+    scoreString: ['score.scoreStringSide1'],
+    
+    // Side 1 participants (handles both singles and doubles)
+    side1Participant1: [
+      'sides.0.participant.individualParticipants.0.participantName', // Doubles: first player
+      'sides.0.participant.participantName', // Singles: player name
+    ],
+    side1Participant2: [
+      'sides.0.participant.individualParticipants.1.participantName' // Doubles: second player
+    ],
+    
+    // Side 2 participants (handles both singles and doubles)
+    side2Participant1: [
+      'sides.1.participant.individualParticipants.0.participantName', // Doubles: first player
+      'sides.1.participant.participantName', // Singles: player name
+    ],
+    side2Participant2: [
+      'sides.1.participant.individualParticipants.1.participantName' // Doubles: second player
+    ],
+  },
+};
+```
+
+### Convert to CSV
+
+```js
+const csv = tools.JSON2CSV(matchUps, config);
+```
+
+### Result Format
+
+The resulting CSV will have columns in this order:
+
+```
+matchUpType|matchUpFormat|endDate|roundName|scoreString|side1Participant1|side1Participant2|side2Participant1|side2Participant2
+SINGLES|SET3-S:4/TB7-F:TB10|2024-01-15|Round 1|7-5 6-4|John Smith||Jane Doe|
+DOUBLES|SET3-S:4/TB7-F:TB10|2024-01-15|Round 1|6-3 7-6(5)|Alice Brown|Bob White|Carol Green|Dan Black
+```
+
+**Key Features:**
+- Singles matches leave participant2 columns empty
+- Doubles matches populate all four participant columns
+- The `|` delimiter is used for easy visual parsing
+- Nested JSON paths are flattened into column names
+- Priority-based resolution handles both singles and doubles with a single config
+
+### Common Use Cases
+
+**Export for spreadsheets:**
+```js
+const config = {
+  columnJoiner: ',',
+  delimiter: '"',
+  rowJoiner: '\n',
+  // ... column configuration
+};
+```
+
+**Custom column ordering:**
+```js
+const config = {
+  sortOrder: ['roundName', 'side1Participant1', 'side2Participant1', 'scoreString'],
+  // ... other configuration
+};
+```
+
+**Add context to all rows:**
+```js
+const config = {
+  context: {
+    tournamentName: 'US Open 2024',
+    eventName: 'Men\'s Singles',
+  },
+  // ... other configuration
+};
 ```
