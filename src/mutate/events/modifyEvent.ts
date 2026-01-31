@@ -103,9 +103,9 @@ function checkCategoryUpdates(params) {
   if (params.enteredParticipants?.length) {
     const startDate = params.eventUpdates.startDate || params.event.startDate || params.tournamentRecord.startDate;
     const endDate = params.eventUpdates.endDate || params.event.endDate || params.tournamentRecord.endDate;
-    const individualParticpants = params.enteredParticipants
-      .map((p) => (p.participantType === INDIVIDUAL ? p : (p.individualParticpants ?? [])))
-      .flat();
+    const individualParticpants = params.enteredParticipants.flatMap((p) =>
+      p.participantType === INDIVIDUAL ? [p] : (p.individualParticpants ?? []),
+    );
 
     const startAgeDetails = getCategoryAgeDetails({ category, consideredDate: startDate });
     const endAgeDetails = getCategoryAgeDetails({ category, consideredDate: endDate });
