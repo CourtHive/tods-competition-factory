@@ -86,59 +86,78 @@ function checkCategoryUpdates(params) {
   if (categoryCheck.error) return categoryCheck;
 
   if (params.event.eventType === TEAM) {
-    const drawTieFormats = params.event?.drawDefinitions?.map((draw) => getObjectTieFormat(draw)) ?? [];
-    const eventTieFormat = getObjectTieFormat(params.event);
-    const eventMatchUps = allEventMatchUps(params)?.matchUps ?? [];
-    const matchUpTieFormats = eventMatchUps.map((matchUp) => getObjectTieFormat(matchUp)) ?? [];
-    const tieFormats: TieFormat[] = [eventTieFormat, ...drawTieFormats, ...matchUpTieFormats].filter(Boolean);
-    const validCategory = tieFormats.every((tieFormat) =>
-      tieFormat.collectionDefinitions.every(
-        (cd) =>
-          !cd.category || categoryCanContain({ category: params.eventUpdates.category, childCategory: cd.category }),
-      ),
-    );
-    if (!validCategory) return decorateResult({ result: { error: INVALID_CATEGORY }, stack: params.stack });
+    const teamCategoryResult = checkTeamCategory(params);
+    if (teamCategoryResult.error) return teamCategoryResult;
   }
 
   if (params.enteredParticipants?.length) {
-    const startDate = params.eventUpdates.startDate || params.event.startDate || params.tournamentRecord.startDate;
-    const endDate = params.eventUpdates.endDate || params.event.endDate || params.tournamentRecord.endDate;
-    const individualParticpants = params.enteredParticipants.flatMap((p) =>
-      p.participantType === INDIVIDUAL ? [p] : (p.individualParticpants ?? []),
-    );
-
-    const startAgeDetails = getCategoryAgeDetails({ category, consideredDate: startDate });
-    const endAgeDetails = getCategoryAgeDetails({ category, consideredDate: endDate });
-    if (
-      startAgeDetails?.ageMinDate ||
-      startAgeDetails?.ageMaxDate ||
-      endAgeDetails?.ageMinDate ||
-      endAgeDetails?.ageMaxDate
-    ) {
-      // for every individual participant, check if they are within the age range of the new category
-      for (const individualParticipant of individualParticpants) {
-        const birthDate = individualParticipant.person?.birthDate;
-        if (!birthDate) return decorateResult({ result: { error: MISSING_BIRTH_DATE }, stack: params.stack });
-        const birthTime = new Date(birthDate).getTime();
-        if (startAgeDetails.ageMinDate || startAgeDetails.ageMaxDate) {
-          const minTime = new Date(startAgeDetails.ageMinDate).getTime();
-          const maxTime = new Date(startAgeDetails.ageMaxDate).getTime();
-          if (birthTime < minTime || birthTime > maxTime) {
-            return decorateResult({ result: { error: CATEGORY_MISMATCH }, stack: params.stack });
-          }
-        }
-        if (endAgeDetails.ageMin || endAgeDetails.ageMax) {
-          const minTime = new Date(endAgeDetails.ageMinDate).getTime();
-          const maxTime = new Date(endAgeDetails.ageMaxDate).getTime();
-          if (birthTime < minTime || birthTime > maxTime) {
-            return decorateResult({ result: { error: CATEGORY_MISMATCH }, stack: params.stack });
-          }
-        }
-      }
-    }
+    const participantAgeResult = checkParticipantAges(params, category);
+    if (participantAgeResult.error) return participantAgeResult;
   }
 
   return { ...SUCCESS };
+}
+
+function checkTeamCategory(params) {
+  const drawTieFormats = params.event?.drawDefinitions?.map((draw) => getObjectTieFormat(draw)) ?? [];
+  const eventTieFormat = getObjectTieFormat(params.event);
+  const eventMatchUps = allEventMatchUps(params)?.matchUps ?? [];
+  const matchUpTieFormats = eventMatchUps.map((matchUp) => getObjectTieFormat(matchUp)) ?? [];
+  const tieFormats: TieFormat[] = [eventTieFormat, ...drawTieFormats, ...matchUpTieFormats].filter(Boolean);
+  const validCategory = tieFormats.every((tieFormat) =>
+    tieFormat.collectionDefinitions.every(
+      (cd) =>
+        !cd.category || categoryCanContain({ category: params.eventUpdates.category, childCategory: cd.category }),
+    ),
+  );
+  if (!validCategory) return decorateResult({ result: { error: INVALID_CATEGORY }, stack: params.stack });
+  return { ...SUCCESS };
+}
+
+function checkParticipantAges(params, category) {
+  const startDate = params.eventUpdates.startDate || params.event.startDate || params.tournamentRecord.startDate;
+  const endDate = params.eventUpdates.endDate || params.event.endDate || params.tournamentRecord.endDate;
+  const individualParticpants = params.enteredParticipants.flatMap((p) =>
+    p.participantType === INDIVIDUAL ? [p] : (p.individualParticpants ?? []),
+  );
+
+  const startAgeDetails = getCategoryAgeDetails({ category, consideredDate: startDate });
+  const endAgeDetails = getCategoryAgeDetails({ category, consideredDate: endDate });
+
+  if (
+    startAgeDetails?.ageMinDate ||
+    startAgeDetails?.ageMaxDate ||
+    endAgeDetails?.ageMinDate ||
+    endAgeDetails?.ageMaxDate
+  ) {
+    for (const individualParticipant of individualParticpants) {
+      const birthDate = individualParticipant.person?.birthDate;
+      if (!birthDate) {
+        return decorateResult({ result: { error: MISSING_BIRTH_DATE }, stack: params.stack });
+      }
+      const birthTime = new Date(birthDate).getTime();
+
+      const startCheck = checkAgeAgainstDetails(birthTime, startAgeDetails, params.stack);
+      if (startCheck) return startCheck;
+
+      const endCheck = checkAgeAgainstDetails(birthTime, endAgeDetails, params.stack);
+      if (endCheck) return endCheck;
+    }
+  }
+  return { ...SUCCESS };
+}
+
+function checkAgeAgainstDetails(birthTime: number, ageDetails: any, stack: string) {
+  if (!ageDetails) return null;
+
+  if (ageDetails.ageMinDate || ageDetails.ageMaxDate) {
+    const minTime = new Date(ageDetails.ageMinDate).getTime();
+    const maxTime = new Date(ageDetails.ageMaxDate).getTime();
+    if (birthTime < minTime || birthTime > maxTime) {
+      return decorateResult({ result: { error: CATEGORY_MISMATCH }, stack });
+    }
+  }
+  return null;
 }
 
 function dateUpdates(params) {
