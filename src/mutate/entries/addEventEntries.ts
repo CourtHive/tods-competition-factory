@@ -1,3 +1,4 @@
+import { CategoryRejection, getEventDateRange, validateParticipantCategory } from './categoryValidation';
 import { isMatchUpEventType } from '@Helpers/matchUpEventTypes/isMatchUpEventType';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
 import { addDrawEntries } from '@Mutate/drawDefinitions/addDrawEntries';
@@ -49,6 +50,7 @@ type AddEventEntriesArgs = {
   entryStage?: StageTypeUnion;
   participantIds?: string[];
   extensions?: Extension[];
+  enforceCategory?: boolean;
   enforceGender?: boolean;
   extension?: Extension;
   roundTarget?: number;
@@ -56,84 +58,102 @@ type AddEventEntriesArgs = {
   event: Event;
 };
 
-export function addEventEntries(params: AddEventEntriesArgs): ResultType {
-  const {
-    suppressDuplicateEntries = true,
-    entryStatus = DIRECT_ACCEPTANCE,
-    autoEntryPositions = true,
-    enforceGender = true,
-    entryStageSequence,
-    policyDefinitions,
-    entryStage = MAIN,
-    tournamentRecord,
-    ignoreStageSpace,
-    drawDefinition,
-    roundTarget,
-    extensions,
-    extension,
-    drawId,
-    event,
-  } = params;
-
-  const stack = 'addEventEntries';
-
-  if (!Array.isArray(params.participantIds))
-    return decorateResult({ result: { error: INVALID_PARTICIPANT_IDS }, stack });
-
-  const participantIds = unique(params.participantIds ?? []);
-
-  if (!event) return { error: MISSING_EVENT };
-  if (!participantIds?.length) {
-    return decorateResult({
-      result: { error: MISSING_PARTICIPANT_IDS },
-      stack,
-    });
-  }
-
-  if (!event?.eventId) return { error: EVENT_NOT_FOUND };
-
-  const appliedPolicies = getAppliedPolicies({ tournamentRecord, event }).appliedPolicies ?? {};
-
-  const matchUpActionsPolicy =
-    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
-    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
-    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
-
-  const genderEnforced = (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
-
-  const addedParticipantIdEntries: string[] = [];
-  const removedEntries: any[] = [];
-
+function isValidSinglesGender(participant: any, event: Event, genderEnforced: boolean, mismatchedGender: any[]) {
   if (
-    (extensions && (!Array.isArray(extensions) || !extensions.every((extension) => isValidExtension({ extension })))) ||
-    (extension && !isValidExtension({ extension }))
+    event.gender &&
+    genderEnforced &&
+    !(isMixed(event.gender) || isAny(event.gender)) &&
+    coercedGender(event.gender) !== coercedGender(participant.person?.sex)
   ) {
-    return decorateResult({
-      context: definedAttributes({ extension, extensions }),
-      result: { error: INVALID_VALUES },
-      info: 'Invalid extension(s)',
-      stack,
+    mismatchedGender.push({
+      participantId: participant.participantId,
+      sex: participant.person?.sex,
     });
+    return false;
+  }
+  return true;
+}
+
+function getValidParticipantIds({
+  participantIds,
+  typedParticipantIds,
+  checkTypedParticipants,
+}: {
+  participantIds: string[];
+  typedParticipantIds: string[];
+  checkTypedParticipants: boolean;
+}): string[] {
+  return participantIds.filter(
+    (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
+  );
+}
+
+function getTypedParticipantIdsHelper({
+  tournamentRecord,
+  participantIds,
+  event,
+  entryStatus,
+  genderEnforced,
+  mismatchedGender,
+}: {
+  tournamentRecord?: Tournament;
+  participantIds: string[];
+  event: Event;
+  entryStatus: EntryStatusUnion;
+  genderEnforced: boolean;
+  mismatchedGender: any[];
+}): string[] {
+  function isValidSinglesParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return (
+      isMatchUpEventType(SINGLES)(event.eventType) &&
+      participant.participantType === INDIVIDUAL &&
+      !isUngrouped(entryStatus)
+    );
   }
 
-  const checkTypedParticipants = !!tournamentRecord;
-  const mismatchedGender: any[] = [];
-  let info;
+  function isValidDoublesParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return event.eventType === DOUBLES && participant.participantType === PAIR && !isUngrouped(entryStatus);
+  }
 
-  const typedParticipantIds =
+  function isValidUngroupedDoublesIndividual(
+    participant: any,
+    event: Event,
+    entryStatus: EntryStatusUnion,
+    genderEnforced: boolean,
+    mismatchedGender: any[],
+  ) {
+    if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
+      if (
+        event.gender &&
+        genderEnforced &&
+        !(isMixed(event.gender) || isAny(event.gender)) &&
+        coercedGender(event.gender) !== coercedGender(participant.person?.sex)
+      ) {
+        mismatchedGender.push({
+          participantId: participant.participantId,
+          sex: participant.person?.sex,
+        });
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
+
+  function isValidTeamParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return (
+      (event.eventType as string) === TEAM &&
+      (participant.participantType === TEAM || (isUngrouped(entryStatus) && participant.participantType === INDIVIDUAL))
+    );
+  }
+
+  return (
     tournamentRecord?.participants
       ?.filter((participant) => {
         if (!participantIds.includes(participant.participantId)) return false;
 
-        const validSingles =
-          isMatchUpEventType(SINGLES)(event.eventType) &&
-          participant.participantType === INDIVIDUAL &&
-          !isUngrouped(entryStatus);
-
-        const validDoubles = event.eventType === DOUBLES && participant.participantType === PAIR;
-
         if (
-          validSingles &&
+          isValidSinglesParticipant(participant, event, entryStatus) &&
           (!event.gender ||
             !genderEnforced ||
             isMixed(event.gender) ||
@@ -143,56 +163,132 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
           return true;
         }
 
-        if (validDoubles && !isUngrouped(entryStatus)) {
+        if (isValidDoublesParticipant(participant, event, entryStatus)) {
           return true;
         }
 
-        if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
-          // Check gender for gendered doubles events with ungrouped entries
-          if (
-            event.gender &&
-            genderEnforced &&
-            !(isMixed(event.gender) || isAny(event.gender)) &&
-            coercedGender(event.gender) !== coercedGender(participant.person?.sex)
-          ) {
-            mismatchedGender.push({
-              participantId: participant.participantId,
-              sex: participant.person?.sex,
-            });
-            return false;
-          }
+        if (isValidUngroupedDoublesIndividual(participant, event, entryStatus, genderEnforced, mismatchedGender)) {
           return true;
         }
 
         if (
-          validSingles &&
-          event.gender &&
-          genderEnforced &&
-          !(isMixed(event.gender) || isAny(event.gender)) &&
-          coercedGender(event.gender) !== coercedGender(participant.person?.sex)
+          isValidSinglesParticipant(participant, event, entryStatus) &&
+          !isValidSinglesGender(participant, event, genderEnforced, mismatchedGender)
         ) {
-          mismatchedGender.push({
-            participantId: participant.participantId,
-            sex: participant.person?.sex,
-          });
           return false;
         }
 
-        return (
-          (event.eventType as string) === TEAM &&
-          (participant.participantType === TEAM ||
-            (isUngrouped(entryStatus) && participant.participantType === INDIVIDUAL))
-        );
+        return isValidTeamParticipant(participant, event, entryStatus);
       })
-      .map((participant) => participant.participantId) ?? [];
-
-  const validParticipantIds = participantIds.filter(
-    (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
+      .map((participant) => participant.participantId) ?? []
   );
+}
 
-  event.entries ??= [];
-  const existingIds = new Set(event.entries.map((e: any) => e.participantId || e.participant?.participantId));
+function filterCategoryValidParticipantIds({
+  typedParticipantIds,
+  tournamentRecord,
+  event,
+  startDate,
+  endDate,
+  categoryRejections,
+}: {
+  typedParticipantIds: string[];
+  tournamentRecord: Tournament;
+  event: Event;
+  startDate: string;
+  endDate: string;
+  categoryRejections: CategoryRejection[];
+}): string[] {
+  const categoryValidParticipantIds: string[] = [];
 
+  for (const participantId of typedParticipantIds) {
+    const participant = tournamentRecord.participants?.find((p) => p.participantId === participantId);
+
+    if (!participant) {
+      // Participant not found, exclude but don't track as rejection
+      continue;
+    }
+
+    if (event.category) {
+      const rejection = validateParticipantCategory(
+        participant,
+        event.category,
+        event,
+        startDate,
+        endDate,
+        tournamentRecord,
+      );
+
+      if (rejection) {
+        categoryRejections.push(rejection);
+      } else {
+        categoryValidParticipantIds.push(participantId);
+      }
+    } else {
+      // If no category, treat as valid
+      categoryValidParticipantIds.push(participantId);
+    }
+  }
+
+  return categoryValidParticipantIds;
+}
+
+function validateCategoryHelper({
+  enforceCategory,
+  event,
+  tournamentRecord,
+  typedParticipantIds,
+  categoryRejections,
+}: {
+  enforceCategory: boolean;
+  event: Event;
+  tournamentRecord?: Tournament;
+  typedParticipantIds: string[];
+  categoryRejections: CategoryRejection[];
+}): string[] {
+  if (enforceCategory && event.category && tournamentRecord) {
+    const dateRange = getEventDateRange(event, tournamentRecord);
+
+    if (!('error' in dateRange)) {
+      const { startDate, endDate } = dateRange;
+
+      // Filter typedParticipantIds based on category validation
+      return filterCategoryValidParticipantIds({
+        typedParticipantIds,
+        tournamentRecord,
+        event,
+        startDate,
+        endDate,
+        categoryRejections,
+      });
+    }
+  }
+  return typedParticipantIds;
+}
+
+function createEntriesHelper({
+  validParticipantIds,
+  existingIds,
+  entryStatus,
+  entryStage,
+  extensions,
+  extension,
+  roundTarget,
+  entryStageSequence,
+  addedParticipantIdEntries,
+  event,
+}: {
+  validParticipantIds: string[];
+  existingIds: Set<string>;
+  entryStatus: EntryStatusUnion;
+  entryStage: StageTypeUnion;
+  extensions?: Extension[];
+  extension?: Extension;
+  roundTarget?: number;
+  entryStageSequence?: number;
+  addedParticipantIdEntries: string[];
+  event: Event;
+}) {
   validParticipantIds.forEach((participantId) => {
     if (!existingIds.has(participantId)) {
       const entry = definedAttributes({
@@ -217,31 +313,17 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
       event.entries?.push(entry);
     }
   });
+}
 
-  if (drawId && !isUngrouped(entryStage)) {
-    const result = addDrawEntries({
-      participantIds: validParticipantIds,
-      suppressDuplicateEntries,
-      autoEntryPositions,
-      entryStageSequence,
-      ignoreStageSpace,
-      drawDefinition,
-      entryStatus,
-      roundTarget,
-      entryStage,
-      extension,
-      drawId,
-      event,
-    });
-
-    // Ignore error if drawId is included but entry can't be added to drawDefinition/flightProfile
-    // return error as info to client
-    if (result.error) {
-      info = result.error;
-    }
-  }
-
-  // now remove any ungrouped participantIds which exist as part of added grouped participants
+function removeUngroupedParticipantIdsHelper({
+  tournamentRecord,
+  removedEntries,
+  event,
+}: {
+  tournamentRecord?: Tournament;
+  removedEntries: any[];
+  event: Event;
+}) {
   if (event.eventType && [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
     const enteredParticipantIds = new Set((event.entries || []).map((entry) => entry.participantId));
     const ungroupedIndividualParticipantIds = (event.entries || [])
@@ -271,12 +353,190 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
       });
     }
   }
+}
+
+// Helper to validate params and return error if needed
+function validateAddEventEntriesParams(params: AddEventEntriesArgs, stack: string) {
+  if (!Array.isArray(params.participantIds))
+    return decorateResult({ result: { error: INVALID_PARTICIPANT_IDS }, stack });
+
+  const participantIds = unique(params.participantIds ?? []);
+
+  if (!params.event) return { error: MISSING_EVENT };
+  if (!participantIds?.length) {
+    return decorateResult({
+      result: { error: MISSING_PARTICIPANT_IDS },
+      stack,
+    });
+  }
+
+  if (!params.event?.eventId) return { error: EVENT_NOT_FOUND };
+
+  return { participantIds };
+}
+
+// Helper to resolve policies and gender enforcement
+function resolvePoliciesAndGender({
+  policyDefinitions,
+  tournamentRecord,
+  event,
+  enforceGender,
+}: {
+  policyDefinitions?: PolicyDefinitions;
+  tournamentRecord?: Tournament;
+  event: Event;
+  enforceGender: boolean;
+}) {
+  const appliedPolicies = getAppliedPolicies({ tournamentRecord, event }).appliedPolicies ?? {};
+
+  const matchUpActionsPolicy =
+    policyDefinitions?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    appliedPolicies?.[POLICY_TYPE_MATCHUP_ACTIONS] ??
+    POLICY_MATCHUP_ACTIONS_DEFAULT[POLICY_TYPE_MATCHUP_ACTIONS];
+
+  const genderEnforced = (enforceGender ?? matchUpActionsPolicy?.participants?.enforceGender) !== false;
+
+  return { matchUpActionsPolicy, genderEnforced };
+}
+
+// Helper to validate extensions
+function validateExtensions(extensions?: Extension[], extension?: Extension, stack?: string) {
+  if (
+    (extensions && (!Array.isArray(extensions) || !extensions.every((extension) => isValidExtension({ extension })))) ||
+    (extension && !isValidExtension({ extension }))
+  ) {
+    return decorateResult({
+      context: definedAttributes({ extension, extensions }),
+      result: { error: INVALID_VALUES },
+      info: 'Invalid extension(s)',
+      stack,
+    });
+  }
+  return null;
+}
+
+export function addEventEntries(params: AddEventEntriesArgs): ResultType {
+  const {
+    suppressDuplicateEntries = true,
+    entryStatus = DIRECT_ACCEPTANCE,
+    autoEntryPositions = true,
+    enforceCategory = false,
+    enforceGender = true,
+    entryStageSequence,
+    policyDefinitions,
+    entryStage = MAIN,
+    tournamentRecord,
+    ignoreStageSpace,
+    drawDefinition,
+    roundTarget,
+    extensions,
+    extension,
+    drawId,
+    event,
+  } = params;
+
+  const stack = 'addEventEntries';
+
+  // Validate params
+  const paramValidation = validateAddEventEntriesParams(params, stack);
+  if ('error' in paramValidation) return paramValidation;
+  const participantIds = 'participantIds' in paramValidation ? paramValidation.participantIds : [];
+
+  // Validate extensions
+  const extensionValidation = validateExtensions(extensions, extension, stack);
+  if (extensionValidation) return extensionValidation;
+
+  // Resolve policies and gender enforcement
+  const { genderEnforced } = resolvePoliciesAndGender({
+    policyDefinitions,
+    tournamentRecord,
+    event,
+    enforceGender,
+  });
+
+  const addedParticipantIdEntries: string[] = [];
+  const removedEntries: any[] = [];
+
+  const checkTypedParticipants = !!tournamentRecord;
+  const mismatchedGender: any[] = [];
+  let info;
+
+  let typedParticipantIds = getTypedParticipantIdsHelper({
+    tournamentRecord,
+    participantIds,
+    event,
+    entryStatus,
+    genderEnforced,
+    mismatchedGender,
+  });
+
+  // Category validation
+  const categoryRejections: CategoryRejection[] = [];
+
+  typedParticipantIds = validateCategoryHelper({
+    enforceCategory,
+    event,
+    tournamentRecord,
+    typedParticipantIds,
+    categoryRejections,
+  });
+
+  const validParticipantIds = getValidParticipantIds({
+    participantIds,
+    typedParticipantIds,
+    checkTypedParticipants,
+  });
+
+  event.entries ??= [];
+  const existingIds = new Set(event.entries.map((e: any) => e.participantId || e.participant?.participantId));
+
+  createEntriesHelper({
+    validParticipantIds,
+    existingIds,
+    entryStatus,
+    entryStage,
+    extensions,
+    extension,
+    roundTarget,
+    entryStageSequence,
+    addedParticipantIdEntries,
+    event,
+  });
+
+  if (drawId && !isUngrouped(entryStage)) {
+    const result = addDrawEntries({
+      participantIds: validParticipantIds,
+      suppressDuplicateEntries,
+      autoEntryPositions,
+      entryStageSequence,
+      ignoreStageSpace,
+      drawDefinition,
+      entryStatus,
+      roundTarget,
+      entryStage,
+      extension,
+      drawId,
+      event,
+    });
+
+    // Ignore error if drawId is included but entry can't be added to drawDefinition/flightProfile
+    // return error as info to client
+    if (result.error) {
+      info = result.error;
+    }
+  }
+
+  removeUngroupedParticipantIdsHelper({ event, tournamentRecord, removedEntries });
 
   const invalidParticipantIds = validParticipantIds.length !== participantIds.length;
 
   if (invalidParticipantIds)
     return decorateResult({
-      context: { mismatchedGender, gender: event.gender },
+      context: definedAttributes({
+        categoryRejections: categoryRejections.length ? categoryRejections : undefined,
+        mismatchedGender: mismatchedGender.length ? mismatchedGender : undefined,
+        gender: event.gender,
+      }),
       result: { error: INVALID_PARTICIPANT_IDS },
       stack,
     });
@@ -291,7 +551,16 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   const removedEntriesCount = removedEntries.length;
 
   return decorateResult({
-    result: { ...SUCCESS, addedEntriesCount, removedEntriesCount },
+    result: {
+      ...SUCCESS,
+      addedEntriesCount,
+      removedEntriesCount,
+      ...(categoryRejections.length && {
+        context: definedAttributes({
+          categoryRejections,
+        }),
+      }),
+    },
     stack,
     info,
   });

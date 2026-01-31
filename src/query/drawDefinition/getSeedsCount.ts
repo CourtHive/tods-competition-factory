@@ -58,7 +58,7 @@ export function getSeedsCount(params: GetSeedsCountArgs): ResultType & { seedsCo
       stack,
     });
 
-  if (isNaN(drawSize)) {
+  if (Number.isNaN(Number(drawSize))) {
     if (participantsCount) {
       ({ drawSize } = getEliminationDrawSize({
         participantsCount,

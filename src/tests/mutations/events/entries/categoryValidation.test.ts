@@ -1,0 +1,996 @@
+import { mocksEngine } from '@Assemblies/engines/mock';
+import tournamentEngine from '@Engines/syncEngine';
+import { expect, it, describe } from 'vitest';
+
+import { INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
+import { INDIVIDUAL } from '@Constants/participantConstants';
+import { SINGLES } from '@Constants/matchUpTypes';
+
+describe('Category Validation in addEventEntries', () => {
+  describe('Age Validation', () => {
+    it('accepts participants within age range throughout event', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      // Create participant who is 15-16 during event (valid for U18)
+      const participant = {
+        participantId: 'p-valid-age',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2008-06-15', // Will be 16 during event
+          standardGivenName: 'John',
+          standardFamilyName: 'Doe',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'U18 Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Under 18',
+          ageMax: 17,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      expect(result.success).toEqual(true);
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+
+    it('rejects participants who age out during event', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-20',
+      });
+
+      // Participant turns 18 on August 10 (during event)
+      const participant = {
+        participantId: 'p-ages-out',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2006-08-10',
+          standardGivenName: 'Jane',
+          standardFamilyName: 'Smith',
+          sex: 'FEMALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'U18 Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Under 18',
+          ageMax: 17,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections).toBeDefined();
+      expect(result.context.categoryRejections.length).toEqual(1);
+
+      const rejection = result.context.categoryRejections[0];
+      expect(rejection.participantId).toEqual(participant.participantId);
+      expect(rejection.participantName).toEqual('Jane Smith');
+      expect(rejection.rejectionReasons.length).toEqual(1);
+      expect(rejection.rejectionReasons[0].type).toEqual('age');
+      expect(rejection.rejectionReasons[0].reason).toContain('Age 18');
+      expect(rejection.rejectionReasons[0].reason).toContain('outside range');
+    });
+
+    it('rejects participants too young at event start', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-too-young',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2015-01-01', // Age 9 during event
+          standardGivenName: 'Kid',
+          standardFamilyName: 'Young',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Adult Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Adults',
+          ageMin: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].type).toEqual('age');
+      expect(result.context.categoryRejections[0].rejectionReasons[0].details.ageAtStart).toEqual(9);
+    });
+
+    it('rejects participants with missing birthDate when age restrictions exist', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-no-birthdate',
+        participantType: INDIVIDUAL,
+        person: {
+          standardGivenName: 'No',
+          standardFamilyName: 'Birthday',
+          sex: 'MALE',
+          // birthDate missing
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'U18 Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Under 18',
+          ageMax: 17,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].reason).toContain('Missing birthDate');
+    });
+
+    it('accepts participants when no age restrictions', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-any-age',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'Any',
+          standardFamilyName: 'Age',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Open Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Open',
+          // No age restrictions
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+
+    it('validates age with both ageMin and ageMax', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const validParticipant = {
+        participantId: 'p-valid',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2010-01-01', // Age 14
+          standardGivenName: 'Valid',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      const tooYoung = {
+        participantId: 'p-too-young',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2016-01-01', // Age 8
+          standardGivenName: 'Too',
+          standardFamilyName: 'Young',
+          sex: 'MALE',
+        },
+      };
+
+      const tooOld = {
+        participantId: 'p-too-old',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2005-01-01', // Age 19
+          standardGivenName: 'Too',
+          standardFamilyName: 'Old',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [validParticipant, tooYoung, tooOld];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Juniors 12-18',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Juniors',
+          ageMin: 12,
+          ageMax: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      // Try to add all three
+      result = tournamentEngine.addEventEntries({
+        participantIds: [validParticipant.participantId, tooYoung.participantId, tooOld.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(2);
+
+      const rejectedIds = result.context.categoryRejections.map((r) => r.participantId);
+      expect(rejectedIds).toContain(tooYoung.participantId);
+      expect(rejectedIds).toContain(tooOld.participantId);
+      expect(rejectedIds).not.toContain(validParticipant.participantId);
+    });
+
+    it('skips age validation for combined age categories (C##-##)', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      // Participant who would be invalid for individual age check
+      const youngParticipant = {
+        participantId: 'p-young',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2015-01-01', // Age 9 - would fail normal age check
+          standardGivenName: 'Young',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      const oldParticipant = {
+        participantId: 'p-old',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '1960-01-01', // Age 64 - valid for combined 50-70
+          standardGivenName: 'Old',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [youngParticipant, oldParticipant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Combined 50-70',
+        eventType: SINGLES,
+        category: {
+          ageCategoryCode: 'C50-70', // Combined age category
+          ageMin: 50,
+          ageMax: 70,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      // With combined category, both should be accepted (validation skipped for individuals)
+      result = tournamentEngine.addEventEntries({
+        participantIds: [youngParticipant.participantId, oldParticipant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(2);
+      // No category rejections because combined categories skip individual age validation
+      expect(result.context?.categoryRejections).toBeUndefined();
+    });
+  });
+
+  describe('Rating Validation', () => {
+    it('accepts participants with valid rating', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-valid-rating',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'Good',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      // Add WTN rating
+      tournamentEngine.setParticipantScaleItem({
+        participantId: participant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 10.5,
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      const event = {
+        eventName: 'Intermediate Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Intermediate',
+          ratingType: 'WTN',
+          ratingMin: 9,
+          ratingMax: 12,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+
+    it('rejects participants with rating too low', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-low-rating',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'Low',
+          standardFamilyName: 'Rated',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      tournamentEngine.setParticipantScaleItem({
+        participantId: participant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 8,
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      const event = {
+        eventName: 'Advanced Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Advanced',
+          ratingType: 'WTN',
+          ratingMin: 9,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].type).toEqual('rating');
+      expect(result.context.categoryRejections[0].rejectionReasons[0].reason).toContain('below minimum');
+      expect(result.context.categoryRejections[0].rejectionReasons[0].details.ratingValue).toEqual(8);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].details.requiredMin).toEqual(9);
+    });
+
+    it('rejects participants with rating too high', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-high-rating',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'High',
+          standardFamilyName: 'Rated',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      tournamentEngine.setParticipantScaleItem({
+        participantId: participant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 13,
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      const event = {
+        eventName: 'Beginner Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Beginner',
+          ratingType: 'WTN',
+          ratingMax: 12,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].type).toEqual('rating');
+      expect(result.context.categoryRejections[0].rejectionReasons[0].reason).toContain('above maximum');
+    });
+
+    it('rejects participants with missing rating', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-no-rating',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'No',
+          standardFamilyName: 'Rating',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      // No rating added
+
+      const event = {
+        eventName: 'Rated Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Rated',
+          ratingType: 'WTN',
+          ratingMin: 9,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons[0].reason).toContain('Missing WTN rating');
+    });
+
+    it('accepts participants when no rating restrictions', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-any-rating',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2000-01-01',
+          standardGivenName: 'Any',
+          standardFamilyName: 'Rating',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Open Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Open',
+          // No rating restrictions
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+  });
+
+  describe('Combined Validation', () => {
+    it('rejects participants failing both age and rating', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-double-fail',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2016-01-01', // Too young (age 8)
+          standardGivenName: 'Double',
+          standardFamilyName: 'Fail',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      tournamentEngine.setParticipantScaleItem({
+        participantId: participant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 7, // Too low
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      const event = {
+        eventName: 'Junior Advanced',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Junior Advanced',
+          ageMin: 12,
+          ageMax: 18,
+          ratingType: 'WTN',
+          ratingMin: 9,
+          ratingMax: 12,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].rejectionReasons.length).toEqual(2);
+
+      const reasons = result.context.categoryRejections[0].rejectionReasons;
+      const ageReason = reasons.find((r) => r.type === 'age');
+      const ratingReason = reasons.find((r) => r.type === 'rating');
+
+      expect(ageReason).toBeDefined();
+      expect(ratingReason).toBeDefined();
+    });
+
+    it('adds valid participants and rejects invalid ones', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const validParticipant = {
+        participantId: 'p-valid',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2010-01-01', // Age 14
+          standardGivenName: 'Valid',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      const invalidParticipant = {
+        participantId: 'p-invalid',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-01-01', // Age 4 - too young
+          standardGivenName: 'Invalid',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [validParticipant, invalidParticipant];
+      tournamentEngine.setState(tournamentRecord);
+
+      // Add ratings for both
+      tournamentEngine.setParticipantScaleItem({
+        participantId: validParticipant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 10,
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      tournamentEngine.setParticipantScaleItem({
+        participantId: invalidParticipant.participantId,
+        scaleItem: {
+          scaleType: 'RATING',
+          scaleName: 'WTN',
+          scaleValue: 10,
+          eventType: SINGLES,
+          scaleDate: '2024-07-01',
+        },
+      });
+
+      const event = {
+        eventName: 'Junior Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Juniors',
+          ageMin: 12,
+          ageMax: 18,
+          ratingType: 'WTN',
+          ratingMin: 9,
+          ratingMax: 12,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [validParticipant.participantId, invalidParticipant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections.length).toEqual(1);
+      expect(result.context.categoryRejections[0].participantId).toEqual(invalidParticipant.participantId);
+    });
+  });
+
+  describe('Enforcement Parameter', () => {
+    it('does not validate when enforceCategory is false', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-invalid',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-01-01', // Age 4 - too young
+          standardGivenName: 'Invalid',
+          standardFamilyName: 'Age',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Junior Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Juniors',
+          ageMin: 12,
+          ageMax: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      // With enforceCategory: false (or omitted), should succeed
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: false,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+
+    it('validates when enforceCategory is true', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-invalid',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-01-01', // Age 4 - too young
+          standardGivenName: 'Invalid',
+          standardFamilyName: 'Age',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Junior Singles',
+        eventType: SINGLES,
+        category: {
+          categoryName: 'Juniors',
+          ageMin: 12,
+          ageMax: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      // With enforceCategory: true, should fail
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections).toBeDefined();
+    });
+
+    it('does not validate when event has no category', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-any',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-01-01',
+          standardGivenName: 'Any',
+          standardFamilyName: 'Age',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Open Singles',
+        eventType: SINGLES,
+        // No category
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      // Even with enforceCategory: true, should succeed if no category exists
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.success).toEqual(true);
+      expect(result.addedEntriesCount).toEqual(1);
+    });
+  });
+
+  describe('Rejection Details', () => {
+    it('includes participant name in rejection', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-named',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-01-01',
+          standardGivenName: 'FirstName',
+          standardFamilyName: 'LastName',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Junior Singles',
+        eventType: SINGLES,
+        category: {
+          ageMin: 12,
+          ageMax: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      expect(result.context.categoryRejections[0].participantName).toEqual('FirstName LastName');
+    });
+
+    it('includes detailed rejection information', () => {
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        startDate: '2024-08-01',
+        endDate: '2024-08-15',
+      });
+
+      const participant = {
+        participantId: 'p-details',
+        participantType: INDIVIDUAL,
+        person: {
+          birthDate: '2020-06-15',
+          standardGivenName: 'Test',
+          standardFamilyName: 'Player',
+          sex: 'MALE',
+        },
+      };
+
+      tournamentRecord.participants = [participant];
+      tournamentEngine.setState(tournamentRecord);
+
+      const event = {
+        eventName: 'Junior Singles',
+        eventType: SINGLES,
+        category: {
+          ageMin: 12,
+          ageMax: 18,
+        },
+      };
+
+      let result = tournamentEngine.addEvent({ event });
+      const { eventId } = result.event;
+
+      result = tournamentEngine.addEventEntries({
+        participantIds: [participant.participantId],
+        enforceCategory: true,
+        eventId,
+      });
+
+      expect(result.error).toEqual(INVALID_PARTICIPANT_IDS);
+      const rejection = result.context.categoryRejections[0];
+      const reason = rejection.rejectionReasons[0];
+
+      expect(reason.details.birthDate).toEqual('2020-06-15');
+      expect(reason.details.ageAtStart).toBeDefined();
+      expect(reason.details.ageAtEnd).toBeDefined();
+      expect(reason.details.requiredMin).toEqual(12);
+      expect(reason.details.requiredMax).toEqual(18);
+    });
+  });
+});

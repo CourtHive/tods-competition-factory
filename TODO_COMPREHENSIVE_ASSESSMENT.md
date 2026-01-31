@@ -14,6 +14,12 @@ This document catalogs all TODO comments found in the codebase, organizing them 
 
 ---
 
+## New Items to consider
+
+- addEventEntries does not check for category restrictions on age or rating; combined categories should only be considered for paired entries
+
+---
+
 ## Critical Questions for Investigation
 
 ### Date Validation Consistency

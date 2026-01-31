@@ -9,6 +9,7 @@ import { policyGovernor } from 'tods-competition-factory';
 The **policyGovernor** manages policy definitions that control tournament behavior, including seeding, scoring, avoidance rules, and position actions. Policies can be attached at tournament, event, or draw levels with hierarchical inheritance.
 
 **Policy Types Include:**
+
 - `POLICY_TYPE_SEEDING` - Seeding placement rules
 - `POLICY_TYPE_SCORING` - Scoring and completion requirements
 - `POLICY_TYPE_AVOIDANCE` - Participant separation rules
@@ -27,6 +28,7 @@ Attaches policy definitions to tournaments, events, or draws. Policies control v
 **Purpose:** Apply competition rules and behavioral policies to tournament structures. Enables customization of seeding algorithms, scoring requirements, participant separation rules, and available administrative actions.
 
 **When to Use:**
+
 - Setting tournament-wide default policies
 - Applying event-specific scoring rules
 - Configuring draw-level seeding policies
@@ -35,6 +37,7 @@ Attaches policy definitions to tournaments, events, or draws. Policies control v
 - Applying federation-specific rules (ITF, USTA, etc.)
 
 **Parameters:**
+
 ```ts
 {
   policyDefinitions: PolicyDefinitions;   // Required - policies to attach
@@ -58,6 +61,7 @@ type PolicyDefinitions = {
 ```
 
 **Returns:**
+
 ```ts
 {
   success: boolean;
@@ -67,6 +71,7 @@ type PolicyDefinitions = {
 ```
 
 **Examples:**
+
 ```js
 import { tournamentEngine } from 'tods-competition-factory';
 import { POLICY_TYPE_SEEDING, POLICY_TYPE_SCORING } from 'tods-competition-factory';
@@ -77,12 +82,12 @@ tournamentEngine.setState(tournamentRecord);
 const seedingPolicy = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'ITF Seeding',
-    seedingProfile: 'ITF'
-  }
+    seedingProfile: 'ITF',
+  },
 };
 
 let result = tournamentEngine.attachPolicies({
-  policyDefinitions: seedingPolicy
+  policyDefinitions: seedingPolicy,
 });
 console.log(result.applied); // ['seeding']
 
@@ -90,14 +95,14 @@ console.log(result.applied); // ['seeding']
 const scoringPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'USTA Scoring',
-    requireParticipantsForScoring: true,    // Require participants present
-    requireAllPositionsAssigned: false
-  }
+    requireParticipantsForScoring: true, // Require participants present
+    requireAllPositionsAssigned: false,
+  },
 };
 
 result = tournamentEngine.attachPolicies({
   policyDefinitions: scoringPolicy,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // Attach draw-specific policy (overrides event/tournament policies)
@@ -106,38 +111,38 @@ const avoidancePolicy = {
     policyName: 'Country Avoidance',
     policyAttributes: [
       {
-        key: 'person.nationalityCode',      // Path to attribute to check
-        value: true                         // Avoid matching values
-      }
-    ]
-  }
+        key: 'person.nationalityCode', // Path to attribute to check
+        value: true, // Avoid matching values
+      },
+    ],
+  },
 };
 
 result = tournamentEngine.attachPolicies({
   policyDefinitions: avoidancePolicy,
-  drawId: 'draw-1'
+  drawId: 'draw-1',
 });
 
 // Replace existing policy
 result = tournamentEngine.attachPolicies({
   policyDefinitions: seedingPolicy,
-  allowReplacement: true  // Allows updating existing policy
+  allowReplacement: true, // Allows updating existing policy
 });
 
 // Attach multiple policies at once
 const multiplePolicies = {
   [POLICY_TYPE_SEEDING]: {
     policyName: 'Custom Seeding',
-    seedingProfile: 'WATERFALL'
+    seedingProfile: 'WATERFALL',
   },
   [POLICY_TYPE_SCORING]: {
     policyName: 'Custom Scoring',
-    requireParticipantsForScoring: false
-  }
+    requireParticipantsForScoring: false,
+  },
 };
 
 result = tournamentEngine.attachPolicies({
-  policyDefinitions: multiplePolicies
+  policyDefinitions: multiplePolicies,
 });
 console.log(result.applied); // ['seeding', 'scoring']
 
@@ -147,24 +152,25 @@ import { competitionEngine } from 'tods-competition-factory';
 competitionEngine.setState(tournamentRecords);
 result = competitionEngine.attachPolicies({
   tournamentRecords,
-  policyDefinitions: seedingPolicy
+  policyDefinitions: seedingPolicy,
 });
 
 // Error handling
 result = tournamentEngine.attachPolicies({
-  policyDefinitions: seedingPolicy  // Already attached
+  policyDefinitions: seedingPolicy, // Already attached
 });
 console.log(result.error); // EXISTING_POLICY_TYPE
 
 result = tournamentEngine.attachPolicies({
   policyDefinitions: {
-    [POLICY_TYPE_SEEDING]: { policyName: 'Invalid' } // Missing required attributes
-  }
+    [POLICY_TYPE_SEEDING]: { policyName: 'Invalid' }, // Missing required attributes
+  },
 });
 console.log(result.error); // INVALID_VALUES
 ```
 
 **Notes:**
+
 - Policies are stored in APPLIED_POLICIES extension
 - Lower-level policies override higher-level (draw > event > tournament)
 - `allowReplacement: true` required to update existing policy of same type
@@ -184,6 +190,7 @@ Finds and returns a specific policy type from the hierarchical policy structure 
 **Purpose:** Retrieve active policy configuration for a specific policy type, respecting the hierarchical override system. Essential for understanding which rules are currently in effect.
 
 **When to Use:**
+
 - Checking active policy configuration before operations
 - Validating policy settings for specific contexts
 - Debugging policy inheritance and overrides
@@ -191,6 +198,7 @@ Finds and returns a specific policy type from the hierarchical policy structure 
 - Verifying policy application in tests
 
 **Parameters:**
+
 ```ts
 {
   policyType: string;                     // Required - type of policy to find
@@ -205,6 +213,7 @@ Finds and returns a specific policy type from the hierarchical policy structure 
 ```
 
 **Returns:**
+
 ```ts
 {
   policy?: PolicyDefinition;              // Found policy object
@@ -216,6 +225,7 @@ Finds and returns a specific policy type from the hierarchical policy structure 
 The method searches in order: structure → draw → event → tournament, returning the first match found (most specific policy wins).
 
 **Examples:**
+
 ```js
 import { tournamentEngine } from 'tods-competition-factory';
 import { POLICY_TYPE_SEEDING } from 'tods-competition-factory';
@@ -224,7 +234,7 @@ tournamentEngine.setState(tournamentRecord);
 
 // Find tournament-level policy
 const { policy } = tournamentEngine.findPolicy({
-  policyType: POLICY_TYPE_SEEDING
+  policyType: POLICY_TYPE_SEEDING,
 });
 
 console.log(policy);
@@ -236,26 +246,26 @@ console.log(policy);
 // Find event-specific policy (may override tournament policy)
 const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // Find draw-specific policy (highest priority)
 const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_AVOIDANCE,
   eventId: 'event-1',
-  drawId: 'draw-1'
+  drawId: 'draw-1',
 });
 
 // Policy not found
 const { policy, error } = tournamentEngine.findPolicy({
-  policyType: 'NONEXISTENT_POLICY'
+  policyType: 'NONEXISTENT_POLICY',
 });
 console.log(error); // POLICY_NOT_FOUND
 
 // Check for policy existence before using
 const { policy: scoringPolicy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SCORING,
-  drawId: 'draw-1'
+  drawId: 'draw-1',
 });
 
 if (scoringPolicy) {
@@ -269,33 +279,34 @@ if (scoringPolicy) {
 // Tournament has seeding policy A
 tournamentEngine.attachPolicies({
   policyDefinitions: {
-    [POLICY_TYPE_SEEDING]: { policyName: 'Tournament Default', seedingProfile: 'WATERFALL' }
-  }
+    [POLICY_TYPE_SEEDING]: { policyName: 'Tournament Default', seedingProfile: 'WATERFALL' },
+  },
 });
 
 // Event has seeding policy B
 tournamentEngine.attachPolicies({
   policyDefinitions: {
-    [POLICY_TYPE_SEEDING]: { policyName: 'Event Override', seedingProfile: 'ITF' }
+    [POLICY_TYPE_SEEDING]: { policyName: 'Event Override', seedingProfile: 'ITF' },
   },
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // Find policy at event level returns event policy (not tournament)
 const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SEEDING,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 console.log(policy.policyName); // "Event Override"
 
 // Find policy at tournament level returns tournament policy
 const { policy: tournamentPolicy } = tournamentEngine.findPolicy({
-  policyType: POLICY_TYPE_SEEDING
+  policyType: POLICY_TYPE_SEEDING,
 });
 console.log(tournamentPolicy.policyName); // "Tournament Default"
 ```
 
 **Notes:**
+
 - Returns the most specific policy (draw overrides event, event overrides tournament)
 - Searches upward in hierarchy: structure → draw → event → tournament
 - Returns POLICY_NOT_FOUND error if policy type not found at any level
@@ -313,6 +324,7 @@ Removes a specific policy type from tournaments, events, or draws. If removing t
 **Purpose:** Remove policy definitions to restore default behavior or remove outdated policies. Allows selective policy removal while preserving other policies.
 
 **When to Use:**
+
 - Removing event-specific policies to fall back to tournament defaults
 - Cleaning up test policies after tests
 - Reverting to system defaults
@@ -321,6 +333,7 @@ Removes a specific policy type from tournaments, events, or draws. If removing t
 - Bulk policy removal across multiple tournaments
 
 **Parameters:**
+
 ```ts
 {
   policyType: string;                     // Required - type of policy to remove
@@ -335,6 +348,7 @@ Removes a specific policy type from tournaments, events, or draws. If removing t
 ```
 
 **Returns:**
+
 ```ts
 {
   success: boolean;
@@ -343,6 +357,7 @@ Removes a specific policy type from tournaments, events, or draws. If removing t
 ```
 
 **Examples:**
+
 ```js
 import { tournamentEngine } from 'tods-competition-factory';
 import { POLICY_TYPE_SEEDING, POLICY_TYPE_SCORING } from 'tods-competition-factory';
@@ -351,25 +366,25 @@ tournamentEngine.setState(tournamentRecord);
 
 // Remove policy from tournament
 let result = tournamentEngine.removePolicy({
-  policyType: POLICY_TYPE_SEEDING
+  policyType: POLICY_TYPE_SEEDING,
 });
 console.log(result.success); // true
 
 // Remove policy from event
 result = tournamentEngine.removePolicy({
   policyType: POLICY_TYPE_SCORING,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // Remove policy from draw
 result = tournamentEngine.removePolicy({
   policyType: POLICY_TYPE_AVOIDANCE,
-  drawId: 'draw-1'
+  drawId: 'draw-1',
 });
 
 // Error when policy doesn't exist
 result = tournamentEngine.removePolicy({
-  policyType: 'NONEXISTENT_POLICY'
+  policyType: 'NONEXISTENT_POLICY',
 });
 console.log(result.error); // POLICY_NOT_FOUND
 
@@ -379,35 +394,35 @@ import { competitionEngine } from 'tods-competition-factory';
 competitionEngine.setState(tournamentRecords);
 result = competitionEngine.removePolicy({
   tournamentRecords,
-  policyType: POLICY_TYPE_SEEDING
+  policyType: POLICY_TYPE_SEEDING,
 });
 
 // Hierarchical removal - remove event override, fall back to tournament policy
 // 1. Attach tournament policy
 tournamentEngine.attachPolicies({
   policyDefinitions: {
-    [POLICY_TYPE_SEEDING]: { policyName: 'Tournament Default', seedingProfile: 'WATERFALL' }
-  }
+    [POLICY_TYPE_SEEDING]: { policyName: 'Tournament Default', seedingProfile: 'WATERFALL' },
+  },
 });
 
 // 2. Attach event override
 tournamentEngine.attachPolicies({
   policyDefinitions: {
-    [POLICY_TYPE_SEEDING]: { policyName: 'Event Override', seedingProfile: 'ITF' }
+    [POLICY_TYPE_SEEDING]: { policyName: 'Event Override', seedingProfile: 'ITF' },
   },
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // 3. Remove event override - tournament policy now applies to event
 tournamentEngine.removePolicy({
   policyType: POLICY_TYPE_SEEDING,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 
 // Now findPolicy returns tournament-level policy
 const { policy } = tournamentEngine.findPolicy({
   policyType: POLICY_TYPE_SEEDING,
-  eventId: 'event-1'
+  eventId: 'event-1',
 });
 console.log(policy.policyName); // "Tournament Default"
 
@@ -419,17 +434,12 @@ afterEach(() => {
 });
 
 // Remove all policies from event (one at a time)
-const policyTypes = [
-  POLICY_TYPE_SEEDING,
-  POLICY_TYPE_SCORING,
-  POLICY_TYPE_AVOIDANCE,
-  POLICY_TYPE_POSITION_ACTIONS
-];
+const policyTypes = [POLICY_TYPE_SEEDING, POLICY_TYPE_SCORING, POLICY_TYPE_AVOIDANCE, POLICY_TYPE_POSITION_ACTIONS];
 
-policyTypes.forEach(policyType => {
+policyTypes.forEach((policyType) => {
   const result = tournamentEngine.removePolicy({
     policyType,
-    eventId: 'event-1'
+    eventId: 'event-1',
   });
   if (result.success) {
     console.log(`Removed ${policyType}`);
@@ -438,6 +448,7 @@ policyTypes.forEach(policyType => {
 ```
 
 **Notes:**
+
 - Removes policy only from specified level (does not cascade)
 - If last policy removed, entire APPLIED_POLICIES extension is deleted
 - Returns POLICY_NOT_FOUND if policy type doesn't exist at specified level

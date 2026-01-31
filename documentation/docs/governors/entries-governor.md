@@ -30,6 +30,8 @@ engine.addDrawEntries({
 
 Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.flight[].drawEntries` at the same time.
 
+Supports optional validation of participant eligibility against event category constraints (age ranges, rating requirements).
+
 :::note
 
 Will **_not_** throw an error if unable to add entries into specified `flightProfile.flight[].drawEntries`,
@@ -44,12 +46,52 @@ engine.addEventEntries({
   entryStatus: ALTERNATE, // optional; defaults to DIRECT_ACCEPTANCE
   entryStage: MAIN, // optional; defaults to MAIN
   autoEntryPositions, // optional - keeps entries ordered by entryStage/entryStatus and auto-increments
+  enforceCategory, // optional - validate against event category (age/rating); defaults to false
+  enforceGender, // optional - validate gender; defaults to true
   participantIds,
-  enforceGender, // optional - defaults to true
   eventId,
   drawId, // optional - will add participantIds to specified flightProfile.flight[].drawEntries and drawDefinition.entries (if possible)
 });
 ```
+
+### Category Validation
+
+When `enforceCategory: true`, validates participants against event category constraints:
+
+**Age Validation**:
+
+- Participant must be valid throughout entire event period (start to end date)
+- Requires `person.birthDate` if age restrictions exist
+- Combined age categories (e.g., `C50-70`) are automatically skipped for individuals
+
+**Rating Validation**:
+
+- Participant must have rating matching `category.ratingType`
+- Rating value must fall within `ratingMin`/`ratingMax` range
+- Uses most recent rating from participant's scale items
+
+**Rejection Response**:
+
+```js
+const result = engine.addEventEntries({
+  participantIds: ['player1', 'player2', 'player3'],
+  enforceCategory: true,
+  eventId,
+});
+
+if (result.error) {
+  // result.context.categoryRejections contains detailed rejection information
+  result.context.categoryRejections.forEach((rejection) => {
+    console.log(`${rejection.participantName}:`);
+    rejection.rejectionReasons.forEach((reason) => {
+      console.log(`  - ${reason.reason}`);
+      console.log(`    Details:`, reason.details);
+    });
+  });
+}
+```
+
+**See:** [Entries - Category Validation](/docs/concepts/events/entries#category-validation) for comprehensive documentation and examples.
 
 ---
 

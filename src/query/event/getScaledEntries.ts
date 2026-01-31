@@ -16,6 +16,7 @@ import { ScaleAttributes } from '@Types/factoryTypes';
  * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
  * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
  */
+
 type GetScaledEntriesArgs = {
   scaleAttributes: ScaleAttributes;
   tournamentRecord: Tournament;
@@ -60,18 +61,22 @@ export function getScaledEntries({
     .filter((scaledEntry) => {
       const scaleValue = scaledEntry.scaleValue;
       // if a custom sort method is not provided, filter out entries with non-float values
-      if (!scaleSortMethod && (isNaN(scaleValue) || !parseFloat(scaleValue))) return false;
+      if (!scaleSortMethod && (Number.isNaN(scaleValue) || !Number.parseFloat(scaleValue))) return false;
       return scaleValue;
     })
-    .sort(scaleSortMethod || defaultScaleValueSort);
+    .sort(scaleSortMethod || (sortDescending ? defaultScaleValueSortDescending : defaultScaleValueSortAscending));
 
   return { scaledEntries };
 
-  function defaultScaleValueSort(a, b) {
-    return sortDescending ? scaleItemValue(b) - scaleItemValue(a) : scaleItemValue(a) - scaleItemValue(b);
+  function defaultScaleValueSortAscending(a, b) {
+    return scaleItemValue(a) - scaleItemValue(b);
+  }
+
+  function defaultScaleValueSortDescending(a, b) {
+    return scaleItemValue(b) - scaleItemValue(a);
   }
 
   function scaleItemValue(scaleItem) {
-    return parseFloat(scaleItem.scaleValue || (sortDescending ? -1 : 1e5));
+    return Number.parseFloat(scaleItem.scaleValue || (sortDescending ? -1 : 1e5));
   }
 }

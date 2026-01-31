@@ -18,6 +18,317 @@ tournamentEngine.addEventEntries({
 });
 ```
 
+## Category Validation
+
+When adding entries to events with category constraints (age ranges, rating requirements), you can optionally enforce validation to ensure participants meet eligibility criteria.
+
+### Enabling Validation
+
+```js
+const result = tournamentEngine.addEventEntries({
+  eventId,
+  participantIds: ['player1-id', 'player2-id', 'player3-id'],
+  enforceCategory: true, // Enable validation (default: false)
+  entryStatus: 'DIRECT_ACCEPTANCE',
+});
+
+if (result.error) {
+  // Some participants were rejected
+  console.log('Rejected:', result.context.categoryRejections);
+}
+```
+
+### Validation Rules
+
+**Age Validation**:
+
+- Participant must have `person.birthDate` if age restrictions exist
+- Age is calculated at **both** event start date and event end date
+- Participant must be valid throughout the **entire event period**
+- Supports `ageMin`, `ageMax`, or both
+- **Combined age categories** (e.g., `C50-70`) are **skipped** for individual validation (they apply to pairs/teams)
+
+**Rating Validation**:
+
+- Participant must have a rating matching `category.ratingType`
+- Rating value must fall within `ratingMin`/`ratingMax` range
+- Uses the most recent rating from participant's scale items
+- Event type (SINGLES/DOUBLES/TEAM) is matched for rating context
+
+### Age Validation Examples
+
+```js
+// U18 Event: Participant must be 17 or under throughout entire event
+const u18Event = {
+  eventName: 'U18 Singles',
+  eventType: 'SINGLES',
+  startDate: '2024-08-01',
+  endDate: '2024-08-15',
+  category: {
+    categoryName: 'Under 18',
+    ageMax: 17, // Must be 17 or under throughout event
+  },
+};
+
+tournamentEngine.addEvent({ event: u18Event });
+
+// This participant turns 18 on August 10 (during event) - REJECTED
+const result = tournamentEngine.addEventEntries({
+  participantIds: ['participant-who-turns-18'],
+  enforceCategory: true,
+  eventId: u18Event.eventId,
+});
+
+// Result will contain rejection details:
+// {
+//   error: INVALID_PARTICIPANT_IDS,
+//   context: {
+//     categoryRejections: [{
+//       participantId: 'participant-who-turns-18',
+//       participantName: 'John Doe',
+//       rejectionReasons: [{
+//         type: 'age',
+//         reason: 'Age 18 at event end (2024-08-15) outside range [max: 17]',
+//         details: {
+//           birthDate: '2006-08-10',
+//           ageAtStart: 17,
+//           ageAtEnd: 18,
+//           requiredMax: 17
+//         }
+//       }]
+//     }]
+//   }
+// }
+```
+
+### Rating Validation Examples
+
+```js
+// Rating-restricted event
+const intermediateEvent = {
+  eventName: 'Intermediate Singles',
+  eventType: 'SINGLES',
+  category: {
+    categoryName: 'Intermediate',
+    ratingType: 'WTN',
+    ratingMin: 9.0,
+    ratingMax: 12.0,
+  },
+};
+
+tournamentEngine.addEvent({ event: intermediateEvent });
+
+// Participant needs WTN rating between 9.0 and 12.0
+const result = tournamentEngine.addEventEntries({
+  participantIds: ['player-with-low-rating'], // Has WTN 8.0
+  enforceCategory: true,
+  eventId: intermediateEvent.eventId,
+});
+
+// Result will contain rejection:
+// {
+//   error: INVALID_PARTICIPANT_IDS,
+//   context: {
+//     categoryRejections: [{
+//       participantId: 'player-with-low-rating',
+//       participantName: 'Jane Smith',
+//       rejectionReasons: [{
+//         type: 'rating',
+//         reason: 'WTN rating 8.0 below minimum 9.0',
+//         details: {
+//           ratingType: 'WTN',
+//           ratingValue: 8.0,
+//           requiredMin: 9.0,
+//           requiredMax: 12.0
+//         }
+//       }]
+//     }]
+//   }
+// }
+```
+
+### Combined Age and Rating Validation
+
+```js
+// Event with both age and rating requirements
+const juniorAdvancedEvent = {
+  eventName: 'Junior Advanced',
+  eventType: 'SINGLES',
+  category: {
+    categoryName: 'Junior Advanced',
+    ageMin: 12,
+    ageMax: 18,
+    ratingType: 'WTN',
+    ratingMin: 9.0,
+    ratingMax: 12.0,
+  },
+};
+
+tournamentEngine.addEvent({ event: juniorAdvancedEvent });
+
+// Participant can fail both age and rating checks
+const result = tournamentEngine.addEventEntries({
+  participantIds: ['young-beginner'], // Age 8, WTN 7.0
+  enforceCategory: true,
+  eventId: juniorAdvancedEvent.eventId,
+});
+
+// Result will contain both rejection reasons:
+// {
+//   context: {
+//     categoryRejections: [{
+//       participantId: 'young-beginner',
+//       participantName: 'Kid Player',
+//       rejectionReasons: [
+//         {
+//           type: 'age',
+//           reason: 'Age 8 at event start (2024-08-01) outside range [min: 12, max: 18]',
+//           details: { ... }
+//         },
+//         {
+//           type: 'rating',
+//           reason: 'WTN rating 7.0 below minimum 9.0',
+//           details: { ... }
+//         }
+//       ]
+//     }]
+//   }
+// }
+```
+
+### Rejection Structure
+
+When `enforceCategory: true` and participants don't meet criteria, the error response includes detailed rejection information:
+
+```typescript
+{
+  error: INVALID_PARTICIPANT_IDS,
+  context: {
+    categoryRejections: [
+      {
+        participantId: string,        // ID of rejected participant
+        participantName: string,       // Display name for error messages
+        rejectionReasons: [
+          {
+            type: 'age' | 'rating',   // Type of validation that failed
+            reason: string,            // Human-readable explanation
+            details: {
+              // For age rejections:
+              birthDate?: string,
+              ageAtStart?: number,
+              ageAtEnd?: number,
+              requiredMin?: number,
+              requiredMax?: number,
+
+              // For rating rejections:
+              ratingType?: string,
+              ratingValue?: number,
+              requiredMin?: number,
+              requiredMax?: number
+            }
+          }
+        ]
+      }
+    ],
+    mismatchedGender?: [...],  // Gender validation rejections
+  }
+}
+```
+
+### Important Notes
+
+**Default Behavior**:
+
+- Category validation is **disabled by default** (`enforceCategory: false`)
+- This maintains backward compatibility with existing code
+- Validation only occurs when explicitly enabled
+
+**Combined Age Categories**:
+
+- Categories like `C50-70` (combined ages) are for **pairs/teams**, not individuals
+- Age validation is **automatically skipped** for combined categories
+- Combined validation happens when pairing/grouping participants, not at entry time
+- Example: Two 35-year-olds (combined age 70) can enter a C50-70 doubles event
+
+**Date Range Validation**:
+
+- Event dates fall back to tournament dates if not specified
+- Both `startDate` and `endDate` must be valid for age validation
+- Age is calculated considering month/day, not just year
+
+**Rating Validation**:
+
+- Uses most recent rating via `getParticipantScaleItem()`
+- Handles complex `scaleValue` objects with accessors
+- Rating must exist if `ratingMin` or `ratingMax` is specified
+
+### Successful Entries with Warnings
+
+Even when all participants are accepted, category rejections may be included if some were filtered:
+
+```js
+const result = tournamentEngine.addEventEntries({
+  participantIds: ['valid-player', 'invalid-player', 'another-valid'],
+  enforceCategory: true,
+  eventId,
+});
+
+// Result shows partial success:
+// {
+//   success: true,
+//   addedEntriesCount: 2,  // Only valid players added
+//   context: {
+//     categoryRejections: [
+//       { participantId: 'invalid-player', ... }
+//     ]
+//   }
+// }
+```
+
+### Use Cases
+
+**Tournament Management**:
+
+```js
+// Automatically validate all entries when event registration closes
+const { entries } = tournamentEngine.getEvent({ eventId });
+const participantIds = entries.map((e) => e.participantId);
+
+const result = tournamentEngine.addEventEntries({
+  participantIds,
+  enforceCategory: true,
+  eventId: verifiedEventId,
+});
+
+// Display rejected participants to tournament director
+if (result.context?.categoryRejections) {
+  result.context.categoryRejections.forEach((rejection) => {
+    console.log(`${rejection.participantName}:`);
+    rejection.rejectionReasons.forEach((reason) => {
+      console.log(`  - ${reason.reason}`);
+    });
+  });
+}
+```
+
+**Client Applications**:
+
+```js
+// Provide user feedback when adding entries
+const result = tournamentEngine.addEventEntries({
+  participantIds: selectedPlayers,
+  enforceCategory: true,
+  eventId,
+});
+
+if (result.error && result.context.categoryRejections) {
+  // Show detailed error messages to users
+  displayRejectionDialog(result.context.categoryRejections);
+} else {
+  showSuccessMessage(`Added ${result.addedEntriesCount} participants`);
+}
+```
+
 ## Entry Status Values
 
 - **DIRECT_ACCEPTANCE** - Automatically accepted into the event
@@ -138,7 +449,9 @@ tournamentEngine.addDrawDefinition({ eventId, drawDefinition });
 ## Related Topics
 
 - [Events Overview](./events-overview) - Event structure and management
-- [Categories](./categories) - Event eligibility criteria
+- [Categories](./categories) - Event eligibility criteria and age calculation
 - [Flights](./flights) - Automatic participant segmentation
+- [Scale Items](/docs/concepts/scaleItems) - Managing participant ratings and rankings
 - [Event Governor](/docs/governors/event-governor) - Event management API
+- [Entries Governor](/docs/governors/entries-governor) - Entry management API
 - [Participants](/docs/concepts/participants) - Participant management
