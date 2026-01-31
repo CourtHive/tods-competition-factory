@@ -12,12 +12,12 @@ When using `tournamentEngine` and `competitionEngine` exports for backwards comp
 
 - tournamentEngine.getState() => tournamentEngine.getTournament()
 - tournamentEngine.generateTeamsFromParticipantAttribute() is now tournamentEngine.createTeamsFromParticipantAttributes()
-- tournamentEngine.findEventExtension() => tournamentEngine.findExtension({ name: '', element _or_ eventId?, discover: true })
-- tournamentEngine.findTournamentExtension() => tournamentEngine.findExtension({ name: '', element _or_ discover: true })
+- tournamentEngine.findEventExtension() => tournamentEngine.findExtension(\{ name: '', element _or_ eventId?, discover: true \})
+- tournamentEngine.findTournamentExtension() => tournamentEngine.findExtension(\{ name: '', element _or_ discover: true \})
 - tournamentEngine.bulkScheduleMatchUps() is now tournamentEngine.bulkScheduleTournamentMatchUps()
 - tournamentEngine.getAvailablePlayoffRounds() => tournamentEngine.getAvailablePlayoffProfiles()
-- tournamentEngine.attachEventPolicies() => tournamentEngine.attachPolicies({ eventId, ... })
-- tournamentEngine.removeEventPolicy() => tournamentEngine.removePolicy({ eventId, ... })
+- tournamentEngine.attachEventPolicies() => tournamentEngine.attachPolicies(\{ eventId, ... \})
+- tournamentEngine.removeEventPolicy() => tournamentEngine.removePolicy(\{ eventId, ... \})
 - competitionEngine.getParticipants() is now tournamentEngine.getCompetitionParticipants()
 - competitionEngine.competitionMatchUps() is now tournamentEngine.getCompetitionMatchUps()
 
