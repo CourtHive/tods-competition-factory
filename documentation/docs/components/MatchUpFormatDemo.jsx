@@ -2,10 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { createJsonViewer } from '../helpers/jsonViewer';
 
 /**
- * Flight Profile Editor Demo
- * Demonstrates the getFlightProfileModal from courthive-components
+ * MatchUp Format Editor Demo
+ * Demonstrates the getMatchUpFormatModal from courthive-components
  */
-export default function FlightProfileDemo() {
+export default function MatchUpFormatDemo() {
   const containerRef = useRef(null);
   const resultsRef = useRef(null);
   const [result, setResult] = useState(null);
@@ -14,7 +14,7 @@ export default function FlightProfileDemo() {
   useEffect(() => {
     // Dynamically import courthive-components
     import('courthive-components')
-      .then(({ getFlightProfileModal }) => {
+      .then(({ getMatchUpFormatModal }) => {
         if (containerRef.current) {
           // Clear previous content
           containerRef.current.innerHTML = '';
@@ -24,38 +24,31 @@ export default function FlightProfileDemo() {
           description.style.marginBottom = '1em';
           description.style.color = '#666';
           description.innerHTML =
-            'Configure flight profiles to automatically segment participants into multiple draws based on ratings or rankings. ' +
-            'Choose the number of flights, distribution method, naming convention, and rating scale.';
+            'Configure matchUp format codes interactively. ' +
+            'Choose the number of sets, scoring format, tiebreak rules, and final set variations. ' +
+            'The editor will generate the TODS-compliant matchUpFormat code.';
 
           // Create button
           const button = document.createElement('button');
           button.className = 'button button--primary button--lg';
-          button.textContent = '✈️ Configure Flight Profile';
+          button.textContent = '🎾 Configure Match Format';
           button.style.marginBottom = '1em';
 
           button.onclick = () => {
-            getFlightProfileModal({
-              editorConfig: {
-                eventType: 'SINGLES',
-                labels: {
-                  title: 'Flight Profile Configuration',
-                },
-              },
-              callback: (modalOutput) => {
-                // Enrich modal output with eventType (like in Storybook helper)
-                const flightProfile = {
-                  ...modalOutput,
-                  scaleAttributes: {
-                    ...modalOutput.scaleAttributes,
-                    eventType: 'SINGLES' // Add eventType from context
-                  }
+            getMatchUpFormatModal({
+              matchUpFormat: result?.matchUpFormat, // Re-launch with last value
+              callback: (matchUpFormat) => {
+                // Store the result so we can re-launch with it
+                const formatResult = {
+                  matchUpFormat,
+                  timestamp: new Date().toISOString()
                 };
 
-                setResult(flightProfile);
+                setResult(formatResult);
                 setError(null);
 
                 // Display results with JSON viewer
-                if (resultsRef.current && flightProfile) {
+                if (resultsRef.current && matchUpFormat) {
                   resultsRef.current.innerHTML = '';
 
                   // Create header
@@ -65,17 +58,16 @@ export default function FlightProfileDemo() {
                   header.style.backgroundColor = '#f0f0f0';
                   header.style.borderRadius = '4px';
                   header.innerHTML = `
-                    <strong style="font-size: 1.2em;">Flight Profile Configuration</strong><br/>
-                    <span style="color: #666;">
-                      Flights: ${flightProfile.flightsCount || 'N/A'} | 
-                      Split Method: ${flightProfile.splitMethod || 'N/A'}
-                    </span>
+                    <strong style="font-size: 1.2em;">Match Format Code</strong><br/>
+                    <code style="font-size: 1.1em; background: #fff; padding: 0.5em; display: inline-block; margin-top: 0.5em; border-radius: 3px;">
+                      ${matchUpFormat}
+                    </code>
                   `;
 
                   resultsRef.current.appendChild(header);
 
-                  // Display JSON viewer
-                  createJsonViewer(resultsRef.current, flightProfile, { expanded: 2 });
+                  // Display JSON viewer with full result
+                  createJsonViewer(resultsRef.current, formatResult, { expanded: 2 });
                 }
               },
             });
@@ -87,9 +79,9 @@ export default function FlightProfileDemo() {
       })
       .catch((err) => {
         console.error('Failed to load courthive-components:', err);
-        setError('Failed to load flight profile editor');
+        setError('Failed to load matchUp format editor');
       });
-  }, []);
+  }, [result]); // Re-run when result changes to update button handler with latest value
 
   return (
     <div style={{ marginBottom: '2em' }}>
