@@ -1070,19 +1070,298 @@ const { roundMatchUps, roundProfile } = engine.getRoundMatchUps({
 
 ## getScaledEntries
 
-See [Scale Items](../concepts/scaleItems).
+Retrieves event entries sorted by their scale values (ratings, rankings, etc.). This method is useful for generating seeding when standard sorting by a scale value is sufficient.
+
+**Purpose:**
+
+- Sort participants by rating/ranking values
+- Prepare entries for seeding generation
+- Filter and order entries for draw placement
+
+**Use Cases:**
+
+- **Simple Seeding** - When seed order directly follows rating/ranking values
+- **Pre-Processing** - Before applying custom sorting logic
+- **Validation** - Checking participant ratings before seeding
+
+See [Scale Items](../concepts/scaleItems) and [Generating Seeding Scale Items](../concepts/scaleItems#generating-seeding-scale-items).
 
 ```js
 const { scaledEntries } = engine.getScaledEntries({
-  eventId, // optional - not required if provided array of entries
-  entries, // optional - overrides use of event.entries
-  stage, // optional - filter entries by stage
+  // Entry Source (choose one)
+  eventId, // optional - uses event.entries filtered by stage
+  entries, // optional - provide custom array of entries (overrides eventId)
 
-  scaleAttributes,
-  scaleSortMethod, // optional - function(a, b) {} sort method, useful when scaleValue is an object or further proessing is required
-  sortDescending, // optional - default sorting is ASCENDING; only applies to default sorting method.
+  // Filters
+  stage, // optional - 'MAIN', 'QUALIFYING', 'CONSOLATION' - filter entries by stage
+
+  // Scale Configuration
+  scaleAttributes, // required - { scaleType, scaleName, eventType, accessor? }
+
+  // Sorting Options
+  scaleSortMethod, // optional - function(a, b) {} - custom sort comparator
+  sortDescending, // optional - boolean - default is ASCENDING
 });
 ```
+
+### Parameters
+
+**eventId** - _string_ (optional)
+
+- Event from which to retrieve entries
+- Mutually exclusive with `entries` parameter
+- When provided, uses `event.entries` as source
+
+**entries** - _array_ (optional)
+
+- Custom array of entry objects
+- Overrides `eventId` if both provided
+- Must include `participantId` for each entry
+
+**stage** - _string_ (optional)
+
+- Filter entries by stage: `'MAIN'`, `'QUALIFYING'`, `'CONSOLATION'`
+- Only applies when using `eventId`
+- Returns only entries matching the specified stage
+
+**scaleAttributes** - _object_ (required)
+
+- Defines which scale to use for sorting
+- **scaleType**: `'RATING'`, `'RANKING'`, or `'SEEDING'`
+- **scaleName**: Identifier (e.g., `'WTN'`, `'UTR'`, `'ATP'`)
+- **eventType**: `'SINGLES'`, `'DOUBLES'`, or `'TEAM'`
+- **accessor** (optional): Path to nested value if `scaleValue` is an object
+
+**scaleSortMethod** - _function_ (optional)
+
+- Custom comparator function: `(a, b) => number`
+- Receives two scale values for comparison
+- Return negative/zero/positive like standard sort
+- Useful when `scaleValue` is an object or custom logic needed
+
+**sortDescending** - _boolean_ (optional)
+
+- `true`: Sort from highest to lowest (largest value first)
+- `false`: Sort from lowest to highest (smallest value first)
+- Default is `false` (ascending order)
+- Only applies to default sorting (not `scaleSortMethod`)
+
+### Return Value
+
+```js
+{
+  scaledEntries; // array of entries sorted by scale values
+}
+```
+
+**scaledEntries** - Array of entry objects, each containing:
+
+- Original entry attributes
+- Participant scale information
+- Sorted by scale value according to parameters
+
+### Examples
+
+#### Basic Usage - Sort by Rating
+
+```js
+// Get entries sorted by WTN rating (ascending)
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+});
+
+// scaledEntries[0] has lowest WTN rating
+// scaledEntries[last] has highest WTN rating
+```
+
+#### Sort by Ranking (Descending)
+
+```js
+// Get entries sorted by ATP ranking (highest rank first)
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  scaleAttributes: {
+    scaleType: 'RANKING',
+    scaleName: 'ATP',
+    eventType: 'SINGLES',
+  },
+  sortDescending: true, // highest ranking first
+});
+
+// scaledEntries[0] has best (lowest number) ATP ranking
+```
+
+#### Filter by Stage
+
+```js
+// Get only qualifying entries sorted by rating
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-event',
+  stage: 'QUALIFYING',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'UTR',
+    eventType: 'SINGLES',
+  },
+});
+```
+
+#### Custom Entries Array
+
+```js
+// Sort custom set of participants
+const myEntries = [
+  { participantId: 'p1', entryStage: 'MAIN', entryStatus: 'DIRECT_ACCEPTANCE' },
+  { participantId: 'p2', entryStage: 'MAIN', entryStatus: 'DIRECT_ACCEPTANCE' },
+  { participantId: 'p3', entryStage: 'MAIN', entryStatus: 'WILDCARD' },
+];
+
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  entries: myEntries, // Use custom array instead of event entries
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+});
+```
+
+#### Complex Scale Values with Accessor
+
+```js
+// When scaleValue is an object, use accessor to specify comparison value
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'NTRP',
+    eventType: 'SINGLES',
+    accessor: 'ntrpRating', // Extract this property from scaleValue object
+  },
+});
+
+// Participants have scale items like:
+// scaleValue: { ntrpRating: 4.5, ratingYear: '2024', ustaRatingType: 'C' }
+// Accessor 'ntrpRating' tells method to sort by the 4.5 value
+```
+
+#### Custom Sort Method
+
+```js
+// Custom sorting logic for complex cases
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+  scaleSortMethod: (a, b) => {
+    // Custom logic: prioritize by confidence, then by rating
+    const confidenceDiff = (b.confidence || 0) - (a.confidence || 0);
+    if (confidenceDiff !== 0) return confidenceDiff;
+    return a.rating - b.rating; // Ascending rating
+  },
+});
+```
+
+### Common Workflows
+
+#### Generating Seeding from Scaled Entries
+
+```js
+// Step 1: Get scaled entries
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  stage: 'MAIN',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+  sortDescending: true, // Highest rating first
+});
+
+// Step 2: Get seeds count
+const { seedsCount } = tournamentEngine.getEntriesAndSeedsCount({
+  policyDefinitions: POLICY_SEEDING,
+  eventId: 'singles-main',
+  stage: 'MAIN',
+});
+
+// Step 3: Take top entries
+const topEntries = scaledEntries.slice(0, seedsCount);
+
+// Step 4: Generate seeding scale items
+const { scaleItemsWithParticipantIds } = tournamentEngine.generateSeedingScaleItems({
+  scaleAttributes: {
+    scaleType: 'SEEDING',
+    scaleName: 'singles-main',
+    eventType: 'SINGLES',
+  },
+  scaledEntries: topEntries,
+  seedsCount,
+  scaleName: 'singles-main',
+});
+
+// Step 5: Save to participants
+scaleItemsWithParticipantIds.forEach(({ participantId, scaleItems }) => {
+  tournamentEngine.setParticipantScaleItems({ participantId, scaleItems });
+});
+```
+
+#### Validating Rating Coverage
+
+```js
+// Check how many entries have ratings
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId: 'singles-main',
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+});
+
+const totalEntries = scaledEntries.length;
+const ratedEntries = scaledEntries.filter((entry) => entry.scaleValue).length;
+const ratingCoverage = (ratedEntries / totalEntries) * 100;
+
+console.log(`${ratingCoverage.toFixed(1)}% of entries have WTN ratings`);
+```
+
+### Notes
+
+**Missing Scale Values:**
+
+- Entries without matching scale items are included but placed at the end
+- Their order among unrated entries is undefined
+- Consider filtering these out before generating seeding
+
+**Performance:**
+
+- Method retrieves scale items for all entries
+- More efficient than manually querying each participant
+- Results are suitable for immediate use in seeding generation
+
+**Comparison with autoSeeding():**
+
+- `getScaledEntries()` only sorts entries; doesn't assign seeds
+- Allows inspection/modification before generating seeds
+- More control over seeding process
+- `autoSeeding()` combines sorting and assignment in one call
+
+### See Also
+
+- **[Scale Items](../concepts/scaleItems)** - Complete scale items documentation
+- **[Generating Seeding Scale Items](../concepts/scaleItems#generating-seeding-scale-items)** - Seeding generation patterns
+- **[Auto Seeding](/docs/governors/draws-governor#autoseeding)** - Automatic seeding
+- **[generateSeedingScaleItems](/docs/governors/generation-governor#generateseedingscaleitems)** - Generate seed assignments
 
 ---
 
@@ -1541,14 +1820,16 @@ const { participantResults, order, bracketComplete, report, readableReport } = t
 When `generateReport: true`, returns detailed information about **exactly how tiebreaks were resolved**:
 
 **Why use it?**
+
 - **Transparency** - Show participants how their placement was determined
-- **Debugging** - Understand why specific tiebreaking directives were used  
+- **Debugging** - Understand why specific tiebreaking directives were used
 - **Validation** - Verify that tiebreaking followed the expected policy
 - **Documentation** - Record the complete tiebreaking process
 
 **What's included?**
 
 For each tiebreaking step:
+
 1. Which directive was applied (e.g., `matchUpsPct`, `headToHead.setsPct`)
 2. How participants grouped by that directive's values
 3. Whether the directive used idsFilter (head-to-head for tied participants only)
@@ -1557,7 +1838,8 @@ For each tiebreaking step:
 6. Final order with resolution status
 
 **Example readableReport output:**
-```
+
+```text
 Step 1: 4 participants were grouped by matchUpsPct
 0.75 matchUpsPct: Player A, Player B
 0.50 matchUpsPct: Player C
@@ -1586,18 +1868,18 @@ const { participantResults, order, report, readableReport } = tallyParticipantRe
         { attribute: 'matchUpsPct' },
         { attribute: 'headToHead.matchUpsPct', idsFilter: true, maxParticipants: 2 },
         { attribute: 'headToHead.setsPct', idsFilter: true, maxParticipants: 2 },
-        { attribute: 'setsPct' }
-      ]
-    }
+        { attribute: 'setsPct' },
+      ],
+    },
   },
-  generateReport: true
+  generateReport: true,
 });
 
 // Display human-readable report
 console.log(readableReport);
 
 // Analyze programmatically
-report.forEach(step => {
+report.forEach((step) => {
   console.log(`${step.attribute}: ${step.participantIds.length} still tied`);
   if (step.idsFilter) console.log('  → Head-to-head calculation');
   if (step.excludedDirectives) console.log('  → Some directives skipped (maxParticipants)');
@@ -1610,7 +1892,7 @@ Setting `engine.devContext({ tally: true })` will automatically log `readableRep
 In browser consoles of client applications use: `dev.context({ tally: true })` where available.
 :::
 
-### See Also
+### Further Reading
 
 - **[Round Robin Tally Policy](../policies/roundRobinTallyPolicy.md)** - Complete policy documentation
 - **[tallyDirectives](../policies/roundRobinTallyPolicy.md#tallydirectives)** - Configure tiebreaking order

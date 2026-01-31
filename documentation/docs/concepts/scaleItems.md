@@ -358,12 +358,134 @@ console.log(scaleItem.scaleValue); // 8.3 (latest)
 
 ## Generating Seeding Scale Items
 
-### Auto Seeding
+Seeding determines participant placement within draw structures. The tods-competition-factory provides three approaches for generating seeding scale items:
 
-Automatically generate seeding from existing ratings/rankings:
+1. **Client-Implemented Seeding** - Full control over seed order determination
+2. **Factory getScaledEntries()** - Helper method for sorting entries by scale values
+3. **Factory autoSeeding()** - Automatic seeding generation and assignment
+
+### Client-Implemented Seeding
+
+Organizations often have proprietary methods for determining seed order, especially for:
+
+- **Doubles/Team events** - Combining individual ratings
+- **Multiple rating systems** - Prioritizing which scale to use
+- **Confidence bands** - Grouping participants by rating confidence
+- **Custom rules** - Organization-specific seeding policies
+
+**Pattern:**
+
+1. Retrieve entries and determine seeds count
+2. Implement custom logic to sort/order participants
+3. Generate seeding scale items from sorted list
+4. Save scale items to participants
+
+**Example (from TMX):**
 
 ```js
-// Generate seeding based on WTN ratings
+// Step 1: Get entries and seeds count
+const { seedsCount, stageEntries } = tournamentEngine.getEntriesAndSeedsCount({
+  policyDefinitions: POLICY_SEEDING,
+  eventId,
+  stage,
+});
+
+// Step 2: Implement custom sorting logic
+// Group participants by rating confidence bands (high, medium, low)
+const bandedParticipants = { high: [], medium: [], low: [] };
+for (const participant of entries) {
+  const rating = participant.ratings?.wtn;
+  const confidence = rating?.confidence ?? 100;
+  const band = getConfidenceBand(confidence); // 'high', 'medium', or 'low'
+  bandedParticipants[band].push(participant);
+}
+
+// Sort within each confidence band, then concatenate
+const scaledEntries = [
+  ...bandedParticipants.high.sort((a, b) => a.ratings.wtn.rating - b.ratings.wtn.rating),
+  ...bandedParticipants.medium.sort((a, b) => a.ratings.wtn.rating - b.ratings.wtn.rating),
+  ...bandedParticipants.low.sort((a, b) => a.ratings.wtn.rating - b.ratings.wtn.rating),
+].slice(0, seedsCount);
+
+// Step 3: Generate seeding scale items
+const scaleAttributes = {
+  scaleType: 'SEEDING',
+  scaleName: eventId,
+  eventType: 'SINGLES',
+};
+
+const { scaleItemsWithParticipantIds } = tournamentEngine.generateSeedingScaleItems({
+  scaleAttributes,
+  scaledEntries, // Pre-sorted by client
+  stageEntries,
+  seedsCount,
+  scaleName: eventId,
+});
+
+// Step 4: Save to participants
+scaleItemsWithParticipantIds.forEach(({ participantId, scaleItems }) => {
+  tournamentEngine.setParticipantScaleItems({ participantId, scaleItems });
+});
+```
+
+**Key Points:**
+
+- **Seed order determination is client responsibility** - The factory doesn't know how to interpret proprietary rating systems
+- **generateSeedingScaleItems() assigns seed numbers** - Based on the order of participants in `scaledEntries`
+- **First participant in array = Seed 1** - The array order determines seeding
+
+### Using Factory getScaledEntries()
+
+For simpler cases where standard sorting by a scale value is sufficient, use `getScaledEntries()`:
+
+```js
+// Step 1: Get scaled entries sorted by scale value
+const { scaledEntries } = tournamentEngine.getScaledEntries({
+  eventId,
+  stage,
+  scaleAttributes: {
+    scaleType: 'RATING',
+    scaleName: 'WTN',
+    eventType: 'SINGLES',
+  },
+  sortDescending: true, // highest rating first
+});
+
+// Step 2: Get seeds count
+const { seedsCount } = tournamentEngine.getEntriesAndSeedsCount({
+  policyDefinitions: POLICY_SEEDING,
+  eventId,
+  stage,
+});
+
+// Step 3: Take top N entries and generate seeding
+const topEntries = scaledEntries.slice(0, seedsCount);
+
+const { scaleItemsWithParticipantIds } = tournamentEngine.generateSeedingScaleItems({
+  scaleAttributes: {
+    scaleType: 'SEEDING',
+    scaleName: eventId,
+    eventType: 'SINGLES',
+  },
+  scaledEntries: topEntries,
+  seedsCount,
+  scaleName: eventId,
+});
+
+// Step 4: Save to participants
+scaleItemsWithParticipantIds.forEach(({ participantId, scaleItems }) => {
+  tournamentEngine.setParticipantScaleItems({ participantId, scaleItems });
+});
+```
+
+**See:** [queryGovernor.getScaledEntries](/docs/governors/query-governor#getscaledentries) for complete documentation.
+
+### Using Factory autoSeeding()
+
+For fully automated seeding generation and assignment:
+
+```js
+// Automatically generate and assign seeding based on WTN ratings
 const result = tournamentEngine.autoSeeding({
   eventId: 'singles-main',
   policyDefinitions: {
@@ -381,34 +503,13 @@ const result = tournamentEngine.autoSeeding({
 // Seeds automatically generated and assigned to participants
 ```
 
-### Manual Seeding Generation
+**Limitations:**
 
-Generate seeding scale items without assigning:
+- Uses default sorting (ascending/descending based on scaleType)
+- No support for custom sorting logic (confidence bands, multiple scales, etc.)
+- Best for simple single-scale seeding scenarios
 
-```js
-const { participantScaleItems } = tournamentEngine.generateSeedingScaleItems({
-  eventId: 'singles-main',
-  scaleAttributes: {
-    scaleType: 'RATING',
-    scaleName: 'WTN',
-    eventType: 'SINGLES',
-  },
-  scaleName: 'Tournament Seeding',
-  scaleDate: '2024-06-15',
-});
-
-// Review and modify seeding if needed
-participantScaleItems.forEach((item) => {
-  console.log(`${item.participantId}: Seed ${item.scaleItems[0].scaleValue}`);
-});
-
-// Save to participants
-participantScaleItems.forEach(({ participantId, scaleItems }) => {
-  tournamentEngine.setParticipantScaleItems({ participantId, scaleItems });
-});
-```
-
-**See:** [Auto Seeding](/docs/governors/draws-governor#autoseeding) and [Generate Seeding Scale Items](/docs/governors/generation-governor#generateseedingscaleitems) for complete documentation.
+**See:** [Auto Seeding](/docs/governors/draws-governor#autoseeding) for complete documentation.
 
 ## Scale Attributes
 
