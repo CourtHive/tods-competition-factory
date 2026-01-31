@@ -56,6 +56,36 @@ type AddEventEntriesArgs = {
   event: Event;
 };
 
+function isValidSinglesGender(participant: any, event: Event, genderEnforced: boolean, mismatchedGender: any[]) {
+  if (
+    event.gender &&
+    genderEnforced &&
+    !(isMixed(event.gender) || isAny(event.gender)) &&
+    coercedGender(event.gender) !== coercedGender(participant.person?.sex)
+  ) {
+    mismatchedGender.push({
+      participantId: participant.participantId,
+      sex: participant.person?.sex,
+    });
+    return false;
+  }
+  return true;
+}
+
+function getValidParticipantIds({
+  participantIds,
+  typedParticipantIds,
+  checkTypedParticipants,
+}: {
+  participantIds: string[];
+  typedParticipantIds: string[];
+  checkTypedParticipants: boolean;
+}): string[] {
+  return participantIds.filter(
+    (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
+  );
+}
+
 export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   const {
     suppressDuplicateEntries = true,
@@ -120,75 +150,116 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   const mismatchedGender: any[] = [];
   let info;
 
-  const typedParticipantIds =
-    tournamentRecord?.participants
-      ?.filter((participant) => {
-        if (!participantIds.includes(participant.participantId)) return false;
+  function isValidSinglesParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return (
+      isMatchUpEventType(SINGLES)(event.eventType) &&
+      participant.participantType === INDIVIDUAL &&
+      !isUngrouped(entryStatus)
+    );
+  }
 
-        const validSingles =
-          isMatchUpEventType(SINGLES)(event.eventType) &&
-          participant.participantType === INDIVIDUAL &&
-          !isUngrouped(entryStatus);
+  function isValidDoublesParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return event.eventType === DOUBLES && participant.participantType === PAIR && !isUngrouped(entryStatus);
+  }
 
-        const validDoubles = event.eventType === DOUBLES && participant.participantType === PAIR;
+  function isValidUngroupedDoublesIndividual(
+    participant: any,
+    event: Event,
+    entryStatus: EntryStatusUnion,
+    genderEnforced: boolean,
+    mismatchedGender: any[],
+  ) {
+    if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
+      if (
+        event.gender &&
+        genderEnforced &&
+        !(isMixed(event.gender) || isAny(event.gender)) &&
+        coercedGender(event.gender) !== coercedGender(participant.person?.sex)
+      ) {
+        mismatchedGender.push({
+          participantId: participant.participantId,
+          sex: participant.person?.sex,
+        });
+        return false;
+      }
+      return true;
+    }
+    return false;
+  }
 
-        if (
-          validSingles &&
-          (!event.gender ||
-            !genderEnforced ||
-            isMixed(event.gender) ||
-            isAny(event.gender) ||
-            coercedGender(event.gender) === coercedGender(participant.person?.sex))
-        ) {
-          return true;
-        }
+  function isValidTeamParticipant(participant: any, event: Event, entryStatus: EntryStatusUnion) {
+    return (
+      (event.eventType as string) === TEAM &&
+      (participant.participantType === TEAM || (isUngrouped(entryStatus) && participant.participantType === INDIVIDUAL))
+    );
+  }
 
-        if (validDoubles && !isUngrouped(entryStatus)) {
-          return true;
-        }
+  function getTypedParticipantIds({
+    tournamentRecord,
+    participantIds,
+    event,
+    entryStatus,
+    genderEnforced,
+    mismatchedGender,
+  }: {
+    tournamentRecord?: Tournament;
+    participantIds: string[];
+    event: Event;
+    entryStatus: EntryStatusUnion;
+    genderEnforced: boolean;
+    mismatchedGender: any[];
+  }): string[] {
+    return (
+      tournamentRecord?.participants
+        ?.filter((participant) => {
+          if (!participantIds.includes(participant.participantId)) return false;
 
-        if (event.eventType === DOUBLES && participant.participantType === INDIVIDUAL && isUngrouped(entryStatus)) {
-          // Check gender for gendered doubles events with ungrouped entries
           if (
-            event.gender &&
-            genderEnforced &&
-            !(isMixed(event.gender) || isAny(event.gender)) &&
-            coercedGender(event.gender) !== coercedGender(participant.person?.sex)
+            isValidSinglesParticipant(participant, event, entryStatus) &&
+            (!event.gender ||
+              !genderEnforced ||
+              isMixed(event.gender) ||
+              isAny(event.gender) ||
+              coercedGender(event.gender) === coercedGender(participant.person?.sex))
           ) {
-            mismatchedGender.push({
-              participantId: participant.participantId,
-              sex: participant.person?.sex,
-            });
+            return true;
+          }
+
+          if (isValidDoublesParticipant(participant, event, entryStatus)) {
+            return true;
+          }
+
+          if (isValidUngroupedDoublesIndividual(participant, event, entryStatus, genderEnforced, mismatchedGender)) {
+            return true;
+          }
+
+          if (
+            isValidSinglesParticipant(participant, event, entryStatus) &&
+            !isValidSinglesGender(participant, event, genderEnforced, mismatchedGender)
+          ) {
             return false;
           }
-          return true;
-        }
 
-        if (
-          validSingles &&
-          event.gender &&
-          genderEnforced &&
-          !(isMixed(event.gender) || isAny(event.gender)) &&
-          coercedGender(event.gender) !== coercedGender(participant.person?.sex)
-        ) {
-          mismatchedGender.push({
-            participantId: participant.participantId,
-            sex: participant.person?.sex,
-          });
-          return false;
-        }
+          return isValidTeamParticipant(participant, event, entryStatus);
+        })
+        .map((participant) => participant.participantId) ?? []
+    );
+  }
 
-        return (
-          (event.eventType as string) === TEAM &&
-          (participant.participantType === TEAM ||
-            (isUngrouped(entryStatus) && participant.participantType === INDIVIDUAL))
-        );
-      })
-      .map((participant) => participant.participantId) ?? [];
+  const typedParticipantIds = getTypedParticipantIds({
+    tournamentRecord,
+    participantIds,
+    event,
+    entryStatus,
+    genderEnforced,
+    mismatchedGender,
+  });
 
-  const validParticipantIds = participantIds.filter(
-    (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
-  );
+  const validParticipantIds = getValidParticipantIds({
+    participantIds,
+    typedParticipantIds,
+    checkTypedParticipants,
+  });
 
   event.entries ??= [];
   const existingIds = new Set(event.entries.map((e: any) => e.participantId || e.participant?.participantId));
@@ -242,35 +313,47 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
   }
 
   // now remove any ungrouped participantIds which exist as part of added grouped participants
-  if (event.eventType && [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
-    const enteredParticipantIds = new Set((event.entries || []).map((entry) => entry.participantId));
-    const ungroupedIndividualParticipantIds = (event.entries || [])
-      .filter((entry) => isUngrouped(entry.entryStatus))
-      .map((entry) => entry.participantId);
-    const tournamentParticipants = tournamentRecord?.participants ?? [];
-    const groupedIndividualParticipantIds = new Set(
-      tournamentParticipants
-        .filter(
-          (participant) =>
-            enteredParticipantIds.has(participant.participantId) &&
-            participant.participantType &&
-            [PAIR, TEAM].includes(participant.participantType),
-        )
-        .map((participant) => participant.individualParticipantIds)
-        .flat(Infinity),
-    );
-    const ungroupedParticipantIdsToRemove = ungroupedIndividualParticipantIds.filter((participantId) =>
-      groupedIndividualParticipantIds.has(participantId),
-    );
-    if (ungroupedParticipantIdsToRemove.length) {
-      removedEntries.push(...ungroupedParticipantIdsToRemove);
-      removeEventEntries({
-        participantIds: ungroupedParticipantIdsToRemove,
-        autoEntryPositions: false, // because the method will be called below if necessary
-        event,
-      });
+  function removeUngroupedParticipantIds({
+    tournamentRecord,
+    removedEntries,
+    event,
+  }: {
+    tournamentRecord?: Tournament;
+    removedEntries: any[];
+    event: Event;
+  }) {
+    if (event.eventType && [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
+      const enteredParticipantIds = new Set((event.entries || []).map((entry) => entry.participantId));
+      const ungroupedIndividualParticipantIds = (event.entries || [])
+        .filter((entry) => isUngrouped(entry.entryStatus))
+        .map((entry) => entry.participantId);
+      const tournamentParticipants = tournamentRecord?.participants ?? [];
+      const groupedIndividualParticipantIds = new Set(
+        tournamentParticipants
+          .filter(
+            (participant) =>
+              enteredParticipantIds.has(participant.participantId) &&
+              participant.participantType &&
+              [PAIR, TEAM].includes(participant.participantType),
+          )
+          .map((participant) => participant.individualParticipantIds)
+          .flat(Infinity),
+      );
+      const ungroupedParticipantIdsToRemove = ungroupedIndividualParticipantIds.filter((participantId) =>
+        groupedIndividualParticipantIds.has(participantId),
+      );
+      if (ungroupedParticipantIdsToRemove.length) {
+        removedEntries.push(...ungroupedParticipantIdsToRemove);
+        removeEventEntries({
+          participantIds: ungroupedParticipantIdsToRemove,
+          autoEntryPositions: false, // because the method will be called below if necessary
+          event,
+        });
+      }
     }
   }
+
+  removeUngroupedParticipantIds({ event, tournamentRecord, removedEntries });
 
   const invalidParticipantIds = validParticipantIds.length !== participantIds.length;
 

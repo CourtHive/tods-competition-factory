@@ -3,11 +3,12 @@ import tournamentEngine from '@Engines/syncEngine';
 import { unique } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
-import { UNGROUPED } from '@Constants/entryStatusConstants';
+// constants and types
 import { FEMALE, FEMALE_ABBR, MALE, MALE_ABBR, MIXED } from '@Constants/genderConstants';
-import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
+import { INVALID_PARTICIPANT_IDS } from '@Constants/errorConditionConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
+import { UNGROUPED } from '@Constants/entryStatusConstants';
+import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 
 it('throws an error on misgendered entries', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
@@ -155,9 +156,9 @@ it('validates gender for ungrouped doubles entries', () => {
   // Test 6: enforceGender: false should allow any gender in gendered events
   result = tournamentEngine.addEventEntries({
     participantIds: femaleParticipantIds.slice(0, 2),
+    eventId: mensDoublesEventId,
     entryStatus: UNGROUPED,
     enforceGender: false,
-    eventId: mensDoublesEventId,
   });
   expect(result.success).toEqual(true);
 });
