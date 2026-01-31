@@ -9,6 +9,8 @@ import { definedAttributes } from '@Tools/definedAttributes';
 import { removeEventEntries } from './removeEventEntries';
 import { isUngrouped } from '@Query/entries/isUngrouped';
 import { coercedGender } from '@Helpers/coercedGender';
+import { isMixed } from '@Validators/isMixed';
+import { isAny } from '@Validators/isAny';
 
 // constants and types
 import { DrawDefinition, EntryStatusUnion, Event, Extension, StageTypeUnion, Tournament } from '@Types/tournamentTypes';
@@ -30,8 +32,6 @@ import {
   MISSING_EVENT,
   MISSING_PARTICIPANT_IDS,
 } from '@Constants/errorConditionConstants';
-import { isAny } from '@Validators/isAny';
-import { isMixed } from '@Validators/isMixed';
 
 /**
  * Add entries into an event; optionally add to specified drawDefinition/flightProfile, if possible.
@@ -190,11 +190,11 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
     (participantId) => !checkTypedParticipants || typedParticipantIds.includes(participantId),
   );
 
-  if (!event.entries) event.entries = [];
-  const existingIds = event.entries.map((e: any) => e.participantId || e.participant?.participantId);
+  event.entries ??= [];
+  const existingIds = new Set(event.entries.map((e: any) => e.participantId || e.participant?.participantId));
 
   validParticipantIds.forEach((participantId) => {
-    if (!existingIds.includes(participantId)) {
+    if (!existingIds.has(participantId)) {
       const entry = definedAttributes({
         participantId,
         entryStatus,
@@ -243,22 +243,24 @@ export function addEventEntries(params: AddEventEntriesArgs): ResultType {
 
   // now remove any ungrouped participantIds which exist as part of added grouped participants
   if (event.eventType && [DOUBLES_EVENT, TEAM_EVENT].includes(event.eventType)) {
-    const enteredParticipantIds = (event.entries || []).map((entry) => entry.participantId);
+    const enteredParticipantIds = new Set((event.entries || []).map((entry) => entry.participantId));
     const ungroupedIndividualParticipantIds = (event.entries || [])
       .filter((entry) => isUngrouped(entry.entryStatus))
       .map((entry) => entry.participantId);
     const tournamentParticipants = tournamentRecord?.participants ?? [];
-    const groupedIndividualParticipantIds = tournamentParticipants
-      .filter(
-        (participant) =>
-          enteredParticipantIds.includes(participant.participantId) &&
-          participant.participantType &&
-          [PAIR, TEAM].includes(participant.participantType),
-      )
-      .map((participant) => participant.individualParticipantIds)
-      .flat(Infinity);
+    const groupedIndividualParticipantIds = new Set(
+      tournamentParticipants
+        .filter(
+          (participant) =>
+            enteredParticipantIds.has(participant.participantId) &&
+            participant.participantType &&
+            [PAIR, TEAM].includes(participant.participantType),
+        )
+        .map((participant) => participant.individualParticipantIds)
+        .flat(Infinity),
+    );
     const ungroupedParticipantIdsToRemove = ungroupedIndividualParticipantIds.filter((participantId) =>
-      groupedIndividualParticipantIds.includes(participantId),
+      groupedIndividualParticipantIds.has(participantId),
     );
     if (ungroupedParticipantIdsToRemove.length) {
       removedEntries.push(...ungroupedParticipantIdsToRemove);
