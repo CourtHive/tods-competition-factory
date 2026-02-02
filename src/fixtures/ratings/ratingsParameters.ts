@@ -41,7 +41,7 @@ export const ratingsParameters = {
     range: [1, 16],
   },
   [WTN]: {
-    attributes: { confidence: { generator: true, range: [60, 100] } },
+    attributes: { confidence: { generator: true, range: [60, 100] } }, // generator is used by the mocksEngine to assign values within range
     accessors: ['wtnRating', 'confidence'],
     defaultInitialization: 23,
     accessor: 'wtnRating',
@@ -55,7 +55,7 @@ export const ratingsParameters = {
     defaultInitialization: 3.5,
     accessors: ['duprRating', 'reliabilityScore'],
     accessor: 'duprRating',
-    attributes: { reliabilityScore: { generator: true, range: [0, 100] } },
+    attributes: { reliabilityScore: { generator: true, range: [0, 100] } }, // generator is used by the mocksEngine to assign values within range
     decimalsCount: 3,
     ascending: true,
     range: [2, 8],

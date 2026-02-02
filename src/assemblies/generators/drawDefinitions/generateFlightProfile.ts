@@ -87,10 +87,10 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
       stage,
     }).scaledEntries;
 
-  const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
+  const scaledEntryParticipantIds = new Set(scaledEntries.map(getParticipantId));
   const unscaledEntries = shuffleArray(
     eventEntries
-      .filter(({ participantId }) => !scaledEntryParticipantIds.includes(participantId))
+      .filter(({ participantId }) => !scaledEntryParticipantIds.has(participantId))
       .filter(
         (entry: Entry) =>
           (!stage || !entry.entryStage || entry.entryStage === stage) &&

@@ -6,17 +6,6 @@ import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { Entry, Event, Tournament } from '@Types/tournamentTypes';
 import { ScaleAttributes } from '@Types/factoryTypes';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {object} event - OPTIONAL - will be passed in automatically if tournamentEngine is passed drawId or eventId
- * @param {object} entries - OPTIONAL - provide entries rather than using event.entries
- * @param {string} stage - OPTIONAL - filters entries matching stage, if present
- * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
- * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
- * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
- */
-
 type GetScaledEntriesArgs = {
   scaleAttributes: ScaleAttributes;
   tournamentRecord: Tournament;
