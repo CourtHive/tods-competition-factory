@@ -34,7 +34,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.9.10
-        version: 0.9.11
+        version: 0.9.12
       material-ui:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2402,8 +2402,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.11:
-    resolution: {integrity: sha512-P2S9AN42X9c5Odn6n0mWkwe4wc3gAGryveg1limG378eb8kK0oWz9FrQRZpp5Twf8WFcQ/WU9TMbdnG3Op4PUw==}
+  courthive-components@0.9.12:
+    resolution: {integrity: sha512-hONH+ufKKUK8Tf4MUggySddbiO2MTXj4ESh05Ki9uWY03/SJCn8sVLdeeWfPTBMdIX7H/2UgBYeCYKDcS2Nutg==}
     engines: {node: '>=16.16.0 < 25'}
 
   cross-spawn@7.0.6:
@@ -5136,12 +5136,12 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  tods-competition-factory@2.3.3:
-    resolution: {integrity: sha512-a/eNPKKiygmoThcuxZLCov5aV+uNL2ml4dd86z1Rgu0Hq7xBDr47ixrMPr82B/QR9CjstYyFauTarshVXaE3wA==}
-    engines: {node: '>=20'}
-
   tods-competition-factory@2.3.4:
     resolution: {integrity: sha512-y2Jbkovl/LpErQxw/AY/KNIL98mo9rfk1HV3nhOoqQaAQHOOrMV17CrJuROc7rJ0clicxxAvck9hx++SqBnnzw==}
+    engines: {node: '>=20'}
+
+  tods-competition-factory@2.3.5:
+    resolution: {integrity: sha512-ZeBBEJJfkP06MDCNd56896DPFP2l7egdt6BuSSyIHzzTh0SyFUsG7012WJNWbxTig9vPi+DvN2mfDlTB8tugdw==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -8876,7 +8876,7 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
 
-  courthive-components@0.9.11:
+  courthive-components@0.9.12:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -8888,7 +8888,7 @@ snapshots:
       dayjs: 1.11.19
       focus-trap: 8.0.0
       tippy.js: 6.3.7
-      tods-competition-factory: 2.3.4
+      tods-competition-factory: 2.3.5
       vanillajs-datepicker: 1.3.4
 
   cross-spawn@7.0.6:
@@ -12190,9 +12190,9 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  tods-competition-factory@2.3.3: {}
-
   tods-competition-factory@2.3.4: {}
+
+  tods-competition-factory@2.3.5: {}
 
   toidentifier@1.0.1: {}
 
