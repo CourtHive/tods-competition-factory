@@ -10,24 +10,20 @@ export function refreshEventDrawOrder({ tournamentRecord, event }) {
   if (!event) return { error: MISSING_EVENT };
 
   const { flightProfile } = getFlightProfile({ event });
+  const orderedFlightDrawIds = flightProfile?.flights
+    ?.sort((a, b) => a.flightNumber - b.flightNumber)
+    .map((f) => f.drawId)
+    .filter(Boolean);
+  const orderedDrawIds = event.drawDefinitions
+    ?.sort((a, b) => a.drawOrder - b.drawOrder)
+    .map((d) => d.drawId)
+    .filter(Boolean)
+    .filter((drawId) => !orderedFlightDrawIds?.includes(drawId));
 
-  // if there is a flightProfile, derive order from that, otherwise use drawDefinitions array
-  const orderedDrawIdsMap =
-    (flightProfile?.flights &&
-      Object.assign(
-        {},
-        ...flightProfile.flights
-          .sort((a, b) => a.flightNumber - b.flightNumber)
-          .map((flight, i) => ({ [flight.drawId]: i + 1 })),
-      )) ||
-    (event.drawDefinitions?.length &&
-      Object.assign(
-        {},
-        ...event.drawDefinitions
-          .sort((a, b) => a.drawOrder - b.drawOrder)
-          .map((drawDefinition, i) => ({ [drawDefinition.drawId]: i + 1 })),
-      )) ||
-    undefined;
+  const orderedDrawIdsMap = Object.assign(
+    {},
+    ...[...(orderedFlightDrawIds || []), ...(orderedDrawIds || [])].map((drawId, i) => ({ [drawId]: i + 1 })),
+  );
 
   return orderedDrawIdsMap ? updateDrawIdsOrder({ event, orderedDrawIdsMap }) : { ...SUCCESS };
 }

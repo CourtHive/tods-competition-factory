@@ -5,10 +5,6 @@ import { intersection, unique } from '@Tools/arrays';
 import { INVALID_VALUES, MISSING_EVENT, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
-/**
- *
- * @param {object} orderedDrawIdsMap - required - mapping of ALL present drawIds => { [drawId]: drawOrder }
- */
 export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
   if (typeof event !== 'object') return { error: MISSING_EVENT };
   if (!orderedDrawIdsMap) return { error: MISSING_VALUE, info: 'Missing drawIdsOrderMap' };
@@ -20,13 +16,13 @@ export function updateDrawIdsOrder({ event, orderedDrawIdsMap }) {
 
   const drawOrders: number[] = Object.values(orderedDrawIdsMap);
 
-  const validDrawOrders = drawOrders.every((drawOrder) => !isNaN(drawOrder));
+  const validDrawOrders = drawOrders.every((drawOrder) => !Number.isNaN(Number(drawOrder)));
   if (!validDrawOrders) return { error: INVALID_VALUES, info: 'drawOrder must be numeric' };
 
   if (unique(drawOrders).length !== drawOrders.length)
     return {
-      error: INVALID_VALUES,
       info: 'drawOrder values must be unique',
+      error: INVALID_VALUES,
     };
 
   if (event.drawDefinitions?.length) {
