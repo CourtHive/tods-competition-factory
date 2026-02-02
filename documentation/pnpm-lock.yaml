@@ -34,7 +34,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.9.10
-        version: 0.9.12
+        version: 0.9.13
       material-ui:
         specifier: 0.20.2
         version: 0.20.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
@@ -2402,8 +2402,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.12:
-    resolution: {integrity: sha512-hONH+ufKKUK8Tf4MUggySddbiO2MTXj4ESh05Ki9uWY03/SJCn8sVLdeeWfPTBMdIX7H/2UgBYeCYKDcS2Nutg==}
+  courthive-components@0.9.13:
+    resolution: {integrity: sha512-mWuIjmFdRAemOJf9id5DqdoNPykUuc++tZZOF+38uXTl2s2KuaSVM/cm0K4p/cWKZpXbUmGwye288XejUr2VJw==}
     engines: {node: '>=16.16.0 < 25'}
 
   cross-spawn@7.0.6:
@@ -5135,10 +5135,6 @@ packages:
   to-regex-range@5.0.1:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
-
-  tods-competition-factory@2.3.4:
-    resolution: {integrity: sha512-y2Jbkovl/LpErQxw/AY/KNIL98mo9rfk1HV3nhOoqQaAQHOOrMV17CrJuROc7rJ0clicxxAvck9hx++SqBnnzw==}
-    engines: {node: '>=20'}
 
   tods-competition-factory@2.3.5:
     resolution: {integrity: sha512-ZeBBEJJfkP06MDCNd56896DPFP2l7egdt6BuSSyIHzzTh0SyFUsG7012WJNWbxTig9vPi+DvN2mfDlTB8tugdw==}
@@ -8876,7 +8872,7 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
 
-  courthive-components@0.9.12:
+  courthive-components@0.9.13:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -12189,8 +12185,6 @@ snapshots:
   to-regex-range@5.0.1:
     dependencies:
       is-number: 7.0.0
-
-  tods-competition-factory@2.3.4: {}
 
   tods-competition-factory@2.3.5: {}
 
