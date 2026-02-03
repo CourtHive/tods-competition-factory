@@ -358,7 +358,7 @@ console.log(scaleItem.scaleValue); // 8.3 (latest)
 
 ## Generating Seeding Scale Items
 
-Seeding determines participant placement within draw structures. The tods-competition-factory provides three approaches for generating seeding scale items:
+Seeding determines participant placement within draw structures. The Competition Factory provides three approaches for generating seeding scale items:
 
 1. **Client-Implemented Seeding** - Full control over seed order determination
 2. **Factory getScaledEntries()** - Helper method for sorting entries by scale values

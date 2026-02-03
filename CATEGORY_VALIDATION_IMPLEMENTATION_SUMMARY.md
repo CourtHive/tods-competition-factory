@@ -2,7 +2,7 @@
 
 ## ✅ Implementation Complete
 
-Category validation has been successfully implemented for `addEventEntries.ts` in the tods-competition-factory repository.
+Category validation has been successfully implemented for `addEventEntries.ts` in the Competion Factory repository.
 
 ## What Was Implemented
 
@@ -26,17 +26,20 @@ Created `/src/mutate/entries/categoryValidation.ts` containing:
 ### 2. Enhanced `addEventEntries.ts`
 
 #### New Parameter
+
 ```typescript
 enforceCategory?: boolean; // defaults to false
 ```
 
 #### New Behavior
+
 - When `enforceCategory: true` and `event.category` exists:
   - Validates participant age at both event start and end dates
   - Validates participant rating against category constraints
   - Tracks detailed rejections with reasons
 
 #### Return Value Enhancement
+
 ```typescript
 {
   success: true,
@@ -68,6 +71,7 @@ enforceCategory?: boolean; // defaults to false
 ### 3. New Error Constant
 
 Added to `/src/constants/errorConditionConstants.ts`:
+
 ```typescript
 export const MISSING_DATE_RANGE = {
   message: 'Missing date range',
@@ -81,6 +85,7 @@ export const MISSING_DATE_RANGE = {
 Created `/src/tests/mutations/events/entries/categoryValidation.test.ts` with 18 test cases:
 
 **Age Validation Tests (7)**:
+
 - ✅ Accepts participants within age range throughout event
 - ✅ Rejects participants who age out during event
 - ✅ Rejects participants too young at event start
@@ -90,6 +95,7 @@ Created `/src/tests/mutations/events/entries/categoryValidation.test.ts` with 18
 - ✅ Correctly filters mixed valid/invalid participants
 
 **Rating Validation Tests (6)**:
+
 - ✅ Accepts participants with valid rating
 - ✅ Rejects participants with rating too low
 - ✅ Rejects participants with rating too high
@@ -98,15 +104,18 @@ Created `/src/tests/mutations/events/entries/categoryValidation.test.ts` with 18
 - ✅ Validates rating ranges
 
 **Combined Tests (2)**:
+
 - ✅ Rejects participants failing both age and rating
 - ✅ Adds valid participants and rejects invalid ones
 
 **Enforcement Tests (3)**:
+
 - ✅ Does not validate when enforceCategory is false
 - ✅ Validates when enforceCategory is true
 - ✅ Does not validate when event has no category
 
 **Rejection Details Tests (2)**:
+
 - ✅ Includes participant name in rejection
 - ✅ Includes detailed rejection information
 
@@ -122,6 +131,7 @@ Tests  47 passed (47)  # All existing + new tests pass
 ## Key Features
 
 ### ✅ Age Validation
+
 - Validates at **both** event start and end dates
 - Participant must be valid **throughout entire event period**
 - Handles participants aging out during event
@@ -129,6 +139,7 @@ Tests  47 passed (47)  # All existing + new tests pass
 - Proper age calculation considering month/day
 
 ### ✅ Rating Validation
+
 - Checks participant rating against `category.ratingType`
 - Validates rating falls within `ratingMin`/`ratingMax` range
 - Handles complex scaleValue objects with accessors
@@ -136,6 +147,7 @@ Tests  47 passed (47)  # All existing + new tests pass
 - Uses most recent rating (via `getParticipantScaleItem`)
 
 ### ✅ Detailed Rejection Tracking
+
 - Each rejection includes:
   - participantId
   - participantName (for better error reporting)
@@ -143,12 +155,14 @@ Tests  47 passed (47)  # All existing + new tests pass
   - Detailed information (ages, ratings, requirements)
 
 ### ✅ Optional Enforcement
+
 - `enforceCategory: false` by default (backward compatible)
 - Only validates when explicitly enabled
 - Skips validation if no category exists
 - Follows same pattern as `enforceGender`
 
 ### ✅ Non-Breaking Change
+
 - Default behavior unchanged
 - All existing tests pass
 - Backward compatible with current code
@@ -195,7 +209,7 @@ const event = {
   endDate: '2024-08-15',
   category: {
     categoryName: 'Under 18',
-    ageMax: 17,  // Must be 17 or under throughout event
+    ageMax: 17, // Must be 17 or under throughout event
   },
 };
 ```
@@ -235,12 +249,14 @@ const event = {
 ## Implementation Details
 
 ### Date Range Calculation
+
 - Uses `event.startDate` and `event.endDate`
 - Falls back to `tournamentRecord.startDate` and `tournamentRecord.endDate`
 - Both dates must be valid ISO 8601 format
 - Participant must be valid at **both** start and end
 
 ### Age Calculation Algorithm
+
 ```typescript
 // Calculate age considering month/day
 let age = targetYear - birthYear;
@@ -253,12 +269,14 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 ```
 
 ### Rating Retrieval
+
 - Uses `getParticipantScaleItem()` to get most recent rating
 - Handles complex `scaleValue` objects with `getAccessorValue()`
 - Matches `category.ratingType` with participant's scale items
 - Uses `event.eventType` (SINGLES/DOUBLES/TEAM) for context
 
 ### Performance Optimizations
+
 - Early exit if `!enforceCategory` or `!event.category`
 - Date range calculated once, not per participant
 - Lazy participant name extraction (only on rejection)
@@ -267,16 +285,19 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 ## Migration Path
 
 ### Phase 1: Adoption (Current)
+
 - Implementation complete and tested
 - Default `enforceCategory: false` maintains current behavior
 - Ready for use in client applications (TMX)
 
 ### Phase 2: Client Integration
+
 - Update TMX to use `enforceCategory: true` where needed
 - Add UI to display category rejections
 - Monitor and adjust based on real-world usage
 
 ### Phase 3: Future Enhancement (Optional)
+
 - Consider policy-based category enforcement configuration
 - Add event-level default for `enforceCategory`
 - Possible major version change to default `true`
@@ -298,6 +319,7 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 ## Next Steps
 
 ### For Factory Repository
+
 1. ✅ Implementation complete
 2. ✅ Tests passing
 3. Stage and commit changes
@@ -305,6 +327,7 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 5. Consider adding to CHANGELOG
 
 ### For TMX Repository
+
 1. Update to use `enforceCategory: true` for age-restricted events
 2. Add UI to display category rejection reasons
 3. Provide user-friendly error messages
@@ -313,6 +336,7 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 ## Validation Rules Summary
 
 ### Age Rules
+
 - ✅ Participant must have `person.birthDate` if age restrictions exist
 - ✅ Age calculated at both `event.startDate` and `event.endDate`
 - ✅ Must be valid throughout **entire** event period
@@ -320,6 +344,7 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 - ✅ Birthday timing considered (month/day, not just year)
 
 ### Rating Rules
+
 - ✅ Participant must have rating matching `category.ratingType`
 - ✅ Rating value must fall within `ratingMin`/`ratingMax` range
 - ✅ Uses most recent rating from participant's time items
@@ -327,6 +352,7 @@ if (monthDiff < 0 || (monthDiff === 0 && targetDay < birthDay)) {
 - ✅ Event type (SINGLES/DOUBLES/TEAM) matched for rating context
 
 ### Rejection Tracking
+
 - ✅ Each rejection includes participant ID and name
 - ✅ Multiple rejection reasons possible (age + rating)
 - ✅ Detailed information for debugging and user display

@@ -2,7 +2,7 @@
 
 ## Documentation Updates Complete
 
-Comprehensive documentation has been added to the tods-competition-factory documentation site covering the new category validation feature for `addEventEntries`.
+Comprehensive documentation has been added to the Competition Factory documentation site covering the new category validation feature for `addEventEntries`.
 
 ## Files Updated
 
