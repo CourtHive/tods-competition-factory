@@ -83,8 +83,8 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
     } else if (eventId) {
       matchUps = matchUps.filter((matchUp) => matchUp.eventId === eventId);
     }
-  } else if (matchUps === undefined) {
-    matchUps =
+  } else {
+    matchUps ??=
       (drawId && !drawDefinition && []) ||
       (!drawId && eventId && !event && []) ||
       (drawId &&
@@ -159,7 +159,7 @@ export function getPredictiveAccuracy(params: getPredictiveAccuracyArgs) {
     : [];
 
   const zoneBands: any = getGroupingBands({ zoneData });
-  const totalZoneMatchUps = zoneBands && [].concat(Object.values(zoneBands)).flat().length;
+  const totalZoneMatchUps = zoneBands && Object.values(zoneBands).flat().length;
 
   const zoneDistribution =
     totalZoneMatchUps &&
@@ -239,7 +239,7 @@ function getSideValues({
           if (exclude) exclusionValues.push(exclusionValue);
           scaleValues.push(scaleValue);
 
-          if (pValue && !isNaN(value)) {
+          if (pValue && !Number.isNaN(Number(value))) {
             value += pValue;
           } else {
             value = undefined;
@@ -289,89 +289,15 @@ function getGroupingAccuracy({ excludeMargin, exclusionRule, valueAccessor, asce
   const accuracy: any = { affirmative: [], negative: [], excluded: [] };
 
   for (const matchUp of matchUps) {
-    const { matchUpType, sides, score, winningSide } = matchUp;
-    if (!winningSide) continue;
-
-    if (exclusionRule && (!exclusionRule.valueAccessor || !exclusionRule.range)) {
-      return {
-        info: 'exclusionRule requires valueAccessor and range',
-        error: MISSING_VALUE,
-      };
-    }
-
-    const winningIndex = winningSide - 1;
-
-    const sideValues = getSideValues({
+    processMatchUp({
+      matchUp,
+      accuracy,
+      excludeMargin,
       exclusionRule,
       valueAccessor,
-      matchUpType,
+      ascending,
       scaleName,
-      sides,
     });
-
-    if (exclusionRule) {
-      const exclusionValues = sideValues.map(({ exclusionValues }) => exclusionValues).flat();
-
-      if (exclusionValues.length) {
-        accuracy.excluded.push({
-          scoreString: score?.scoreStringSide1,
-          exclusionValues,
-          winningSide,
-          sideValues,
-        });
-        continue;
-      }
-    }
-
-    if (sideValues.filter((value) => ![undefined, '', null].includes(value.value)).length < 2) {
-      accuracy.excluded.push({
-        scoreString: score?.scoreStringSide1,
-        missingValues: true,
-        winningSide,
-        sideValues,
-      });
-      continue;
-    }
-
-    const valuesGap = sideValues[winningIndex].value - sideValues[1 - winningIndex].value;
-
-    const floatMargin = parseFloat(excludeMargin || 0);
-    const excludeGap = floatMargin && Math.abs(valuesGap) < floatMargin;
-
-    if (excludeGap) {
-      accuracy.excluded.push({
-        scoreString: score?.scoreStringSide1,
-        excludeMargin,
-        winningSide,
-        excludeGap,
-        sideValues,
-        valuesGap,
-      });
-      continue;
-    }
-
-    // when ascending is true winning value will be greater than losing value
-    const signedGap = ascending ? valuesGap : valuesGap * -1;
-
-    const winningScoreString = winningSide === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
-
-    if (signedGap > 0) {
-      accuracy.affirmative.push({
-        winningScoreString,
-        winningSide,
-        sideValues,
-        valuesGap,
-        score,
-      });
-    } else {
-      accuracy.negative.push({
-        winningScoreString,
-        winningSide,
-        sideValues,
-        valuesGap,
-        score,
-      });
-    }
   }
 
   const denominator = accuracy.affirmative.length + accuracy.negative.length;
@@ -380,4 +306,99 @@ function getGroupingAccuracy({ excludeMargin, exclusionRule, valueAccessor, asce
   accuracy.percent = percent ? Math.round(100 * percent) / 100 : 0;
 
   return accuracy;
+}
+
+function processMatchUp({ matchUp, accuracy, excludeMargin, exclusionRule, valueAccessor, ascending, scaleName }) {
+  const { matchUpType, sides, score, winningSide } = matchUp;
+  if (!winningSide) return;
+
+  if (exclusionRule && (!exclusionRule.valueAccessor || !exclusionRule.range)) {
+    accuracy.error = {
+      info: 'exclusionRule requires valueAccessor and range',
+      error: MISSING_VALUE,
+    };
+    return;
+  }
+
+  const winningIndex = winningSide - 1;
+
+  const sideValues = getSideValues({
+    exclusionRule,
+    valueAccessor,
+    matchUpType,
+    scaleName,
+    sides,
+  });
+
+  if (handleExclusionRule({ exclusionRule, sideValues, accuracy, score, winningSide })) return;
+
+  if (hasMissingValues(sideValues)) {
+    accuracy.excluded.push({
+      scoreString: score?.scoreStringSide1,
+      missingValues: true,
+      winningSide,
+      sideValues,
+    });
+    return;
+  }
+
+  const valuesGap = sideValues[winningIndex].value - sideValues[1 - winningIndex].value;
+
+  if (shouldExcludeGap({ excludeMargin, valuesGap })) {
+    accuracy.excluded.push({
+      scoreString: score?.scoreStringSide1,
+      excludeMargin,
+      winningSide,
+      excludeGap: true,
+      sideValues,
+      valuesGap,
+    });
+    return;
+  }
+
+  const signedGap = ascending ? valuesGap : valuesGap * -1;
+  const winningScoreString = winningSide === 1 ? score?.scoreStringSide1 : score?.scoreStringSide2;
+
+  if (signedGap > 0) {
+    accuracy.affirmative.push({
+      winningScoreString,
+      winningSide,
+      sideValues,
+      valuesGap,
+      score,
+    });
+  } else {
+    accuracy.negative.push({
+      winningScoreString,
+      winningSide,
+      sideValues,
+      valuesGap,
+      score,
+    });
+  }
+}
+
+function handleExclusionRule({ exclusionRule, sideValues, accuracy, score, winningSide }) {
+  if (exclusionRule) {
+    const exclusionValues = sideValues.flatMap(({ exclusionValues }) => exclusionValues);
+    if (exclusionValues.length) {
+      accuracy.excluded.push({
+        scoreString: score?.scoreStringSide1,
+        exclusionValues,
+        winningSide,
+        sideValues,
+      });
+      return true;
+    }
+  }
+  return false;
+}
+
+function hasMissingValues(sideValues) {
+  return sideValues.filter((value) => ![undefined, '', null].includes(value.value)).length < 2;
+}
+
+function shouldExcludeGap({ excludeMargin, valuesGap }) {
+  const floatMargin = Number.parseFloat(excludeMargin || 0);
+  return floatMargin && Math.abs(valuesGap) < floatMargin;
 }

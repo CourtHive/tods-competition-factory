@@ -26,7 +26,7 @@ type GenerateFlightProfileArgs = {
   drawNames?: string[];
   scaledEntries?: any;
   flightsCount: number;
-  splitMethod: string;
+  splitMethod: string; // anything that is not SPLIT_SHUTTLE or SPLIT_WATERFALL results in SPLIT_LEVEL
   uuids?: string[];
   event: Event;
 };

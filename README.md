@@ -11,7 +11,7 @@
 
 ## Competittion Business Rules
 
-The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations. Factory functions embody the "business rules" required by Tournament Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
+The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations. Factory functions embody the "business rules" required by Competition Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
 
 The rules governing the creation of draws, seeding, and participant movement can be present on a standalone client, on a server, or both.
 An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX/), or a client can communicate with a server which utilizes a database, or simply the file system.

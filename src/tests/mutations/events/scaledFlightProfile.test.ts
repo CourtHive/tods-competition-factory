@@ -76,8 +76,8 @@ it('can sort entries by scaleAttributes when generatingflighProfiles', () => {
     splitMethod: SPLIT_LEVEL_BASED,
     attachFlightProfile: true,
     deleteExisting: true,
-    flightsCount: 3,
     scaleAttributes,
+    flightsCount: 3,
     eventId,
   }));
   expect(flightProfile.flights.length).toEqual(3);
