@@ -2,7 +2,6 @@ import { tournamentEngine, mocksEngine, askEngine, tools } from 'tods-competitio
 import ConstantsViewer from '../../../docs/components/ConstantsViewr';
 import Tournament from '../../../docs/components/TournamentRecord';
 import Participants from '../../../docs/components/Participants';
-import Configurator from '../../../docs/components/Configurator';
 import RenderJSON from '../../../docs/components/RenderJSON';
 import RenderCSV from '../../../docs/components/RenderCSV';
 import Draw from '../../../docs/components/DrawDefinition';
@@ -21,7 +20,6 @@ const ReactLiveScope = {
   mocksEngine,
   tournamentEngine,
   ConstantsViewer,
-  Configurator,
   Participants,
   Tournament,
   RenderJSON,
