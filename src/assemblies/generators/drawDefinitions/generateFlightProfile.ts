@@ -98,8 +98,6 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
     splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
 
-  console.log(splitEntries.map((e) => e.map((f) => f.scaleValue)));
-
   function getDrawEntries(entriesChunk) {
     return (entriesChunk || [])
       .map(({ participantId, scaleValue }) => {

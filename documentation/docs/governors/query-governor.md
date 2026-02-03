@@ -1049,7 +1049,7 @@ const { accuracy, zoneDistribution } = engine.getPredictiveAccuracy({
   zonePct: 20, // optional - precedence over zoneMargin, defaults to 100% of rating range
 
   valueAccessor: 'wtnRating', // optional if `scaleName` is defined in factory `ratingsParameters`
-  ascending: false, // optional - scale goes from low to high with high being the "best"
+  ascending: true, // optional - scale goes from low to high with low being the "best"
   scaleName: WTN,
 });
 ```

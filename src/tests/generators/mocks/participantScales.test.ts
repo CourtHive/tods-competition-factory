@@ -224,7 +224,7 @@ it('can assess predictive accuracy of scaleValues', () => {
   result = tournamentEngine.getPredictiveAccuracy({
     exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
-    ascending: true, // scale goes from low to high
+    ascending: true, // scale goes from low (best) to high
     valueAccessor: 'wtnRating',
     matchUps: { boo: 1 },
     scaleName: WTN,
@@ -235,7 +235,7 @@ it('can assess predictive accuracy of scaleValues', () => {
   const { accuracy, zoneDistribution } = tournamentEngine.getPredictiveAccuracy({
     exclusionRule: { valueAccessor: 'confidence', range: [0, 70] },
     matchUpFilters: { matchUpStatuses: [COMPLETED] },
-    ascending: true, // scale goes from low to high
+    ascending: true, // scale goes from low (best) to high
     valueAccessor: 'wtnRating',
     scaleName: WTN,
     zoneMargin: 3,
@@ -255,11 +255,11 @@ it('can assess predictive accuracy of scaleValues', () => {
 
   accuracy.affirmative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(sideValues[1 - winningIndex].value);
+    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(sideValues[1 - winningIndex].value);
   });
   accuracy.negative.forEach(({ winningSide, sideValues }) => {
     const winningIndex = winningSide - 1;
-    expect(sideValues[winningIndex].value).toBeGreaterThanOrEqual(sideValues[1 - winningIndex].value);
+    expect(sideValues[winningIndex].value).toBeLessThanOrEqual(sideValues[1 - winningIndex].value);
   });
 });
 
