@@ -6,17 +6,6 @@ import { STRUCTURE_SELECTED_STATUSES } from '@Constants/entryStatusConstants';
 import { Entry, Event, Tournament } from '@Types/tournamentTypes';
 import { ScaleAttributes } from '@Types/factoryTypes';
 
-/**
- *
- * @param {object} tournamentRecord - passed in automatically by tournamentEngine
- * @param {object} event - OPTIONAL - will be passed in automatically if tournamentEngine is passed drawId or eventId
- * @param {object} entries - OPTIONAL - provide entries rather than using event.entries
- * @param {string} stage - OPTIONAL - filters entries matching stage, if present
- * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
- * @param {function} scaleSortMethod - OPTIONAL - function(a, b) {} - custom sorting function
- * @param {boolean} sortDescending - OPTIONL - default sorting method is ASCENDING; only applies to default sorting method
- */
-
 type GetScaledEntriesArgs = {
   scaleAttributes: ScaleAttributes;
   tournamentRecord: Tournament;
@@ -47,6 +36,10 @@ export function getScaledEntries({
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus),
   );
 
+  // create a copy of the scaleAttributes to enable use of contextual attributes
+  // this allows clients to use 'hydrated' scaleAttributes without typescript errors
+  const processingAttributes: any = { ...scaleAttributes };
+
   const scaledEntries = stageEntries
     .map((entry) => {
       const { participantId } = entry;
@@ -64,7 +57,12 @@ export function getScaledEntries({
       if (!scaleSortMethod && (Number.isNaN(scaleValue) || !Number.parseFloat(scaleValue))) return false;
       return scaleValue;
     })
-    .sort(scaleSortMethod || (sortDescending ? defaultScaleValueSortDescending : defaultScaleValueSortAscending));
+    .sort(
+      scaleSortMethod ||
+        (sortDescending || processingAttributes?.ascending === false
+          ? defaultScaleValueSortDescending
+          : defaultScaleValueSortAscending),
+    );
 
   return { scaledEntries };
 

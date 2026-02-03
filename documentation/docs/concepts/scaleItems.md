@@ -447,6 +447,7 @@ const { scaledEntries } = tournamentEngine.getScaledEntries({
     scaleType: 'RATING',
     scaleName: 'WTN',
     eventType: 'SINGLES',
+    accessor: 'wtnRating',
   },
   sortDescending: true, // highest rating first
 });

@@ -1,5 +1,5 @@
-import { validMatchUps } from '@Validators/validMatchUp';
 import { getBand, getScoreComponents, pctSpread } from '../matchUp/scoreComponents';
+import { validMatchUps } from '@Validators/validMatchUp';
 import { findPolicy } from '@Acquire/findPolicy';
 
 import POLICY_COMPETITIVE_BANDS_DEFAULT from '@Fixtures/policies/POLICY_COMPETITIVE_BANDS_DEFAULT';
@@ -42,7 +42,7 @@ export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   const total: number = Object.keys(pctspd).reduce((a, k) => (pctspd[k] || 0) + a, 0);
 
   const competitiveBands: any = Object.keys(pctspd).map((k: any) => {
-    const value = parseFloat((pctspd[k] / total).toFixed(4));
+    const value = Number.parseFloat((pctspd[k] / total).toFixed(4));
     return {
       [k]: value * 100,
     };
@@ -51,7 +51,7 @@ export function getMatchUpsStats({ profileBands, tournamentRecord, matchUps }) {
   const retiredCount = relevantMatchUps.filter(({ matchUpStatus }) => matchUpStatus === RETIRED).length;
 
   competitiveBands.push({
-    [RETIRED]: parseFloat((retiredCount / total).toFixed(4)) * 100,
+    [RETIRED]: Number.parseFloat((retiredCount / total).toFixed(4)) * 100,
   });
 
   return {

@@ -64,8 +64,8 @@ export type SeedingProfile = {
 
 export type ScaleAttributes = {
   eventType?: EventTypeUnion;
+  scaleName?: string;
   scaleType: string;
-  scaleName: string;
   accessor?: string; // optional - string determining how to access attribute if scaleValue is an object
 };
 

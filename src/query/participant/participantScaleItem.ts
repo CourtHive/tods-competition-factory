@@ -22,7 +22,7 @@ export function participantScaleItem({
   if (!participant) return { error: MISSING_PARTICIPANT };
   if (!isObject(scaleAttributes)) return { error: INVALID_VALUES };
 
-  if (!participant.timeItems) participant.timeItems = [];
+  participant.timeItems ??= [];
   if (Array.isArray(participant.timeItems)) {
     const { accessor, scaleType, eventType, scaleName } = scaleAttributes;
     const filterType = [SCALE, scaleType, eventType, scaleName].join('.');
@@ -45,6 +45,7 @@ export function participantScaleItem({
       const scaleValue = accessorValue?.value || timeItem.itemValue;
 
       const scaleItem = {
+        rawValue: accessorValue && timeItem.itemValue,
         eventType: eventType as EventTypeUnion,
         scaleDate: timeItem.itemDate,
         scaleValue,

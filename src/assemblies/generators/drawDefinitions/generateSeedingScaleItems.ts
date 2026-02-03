@@ -1,7 +1,7 @@
+import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
 import { ScaleAttributes } from '@Types/factoryTypes';
 import { SEEDING } from '@Constants/scaleConstants';
 import { Entry } from '@Types/tournamentTypes';
-import { ErrorType, MISSING_VALUE } from '@Constants/errorConditionConstants';
 
 type ScaleItemsWithParticipantId = {
   participantId: string;
@@ -9,10 +9,10 @@ type ScaleItemsWithParticipantId = {
 };
 type GenerateSeedingScaleItemsArgs = {
   scaleAttributes?: ScaleAttributes;
+  scaledEntries: any[] | null;
   stageEntries: Entry[];
-  scaledEntries: any[];
   seedsCount: number;
-  scaleName: string;
+  scaleName?: string;
 };
 export function generateSeedingScaleItems({
   scaleAttributes,

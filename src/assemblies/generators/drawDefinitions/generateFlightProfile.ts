@@ -14,22 +14,6 @@ import { DIRECT_ENTRY_STATUSES } from '@Constants/entryStatusConstants';
 import { FlightProfile, ScaleAttributes } from '@Types/factoryTypes';
 import { SUCCESS } from '@Constants/resultConstants';
 
-/**
- * @param {object} event - automatically retrieved by tournamentEngine given eventId
- * @param {string} eventId - unique identifier for event
- * @param {string} splitMethod - one of the supported methods for splitting entries
- * @param {object} scaleAttributes - { scaleName, scaleType, eventType }
- * @param {object[]} scaledEntries - pre-sorted entries
- * @param {function} scaleSortMethod - ignored if scaledEntries present
- * @param {boolean} sortDescending - ignored if scaledEntries present
- * @param {number} flightsCount - number of flights to create from existing entries
- * @param {object[]} flightValues - optional - [{ flightNumber: 1, matchUpValue: 1, flightNumber: 2, matchUpValue: 2 }]
- * @param {string[]} drawNames - array of names to be used when generating flights
- * @param {string} drawNameRoot - root word for generating flight names
- * @param {boolean} deleteExisting - if flightProfile exists then delete
- * @param {string} stage - OPTIONAL - only consider event entries matching stage
- */
-
 type GenerateFlightProfileArgs = {
   scaleAttributes: ScaleAttributes;
   attachFlightProfile?: boolean;
@@ -87,10 +71,10 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
       stage,
     }).scaledEntries;
 
-  const scaledEntryParticipantIds = scaledEntries.map(getParticipantId);
+  const scaledEntryParticipantIds = new Set(scaledEntries.map(getParticipantId));
   const unscaledEntries = shuffleArray(
     eventEntries
-      .filter(({ participantId }) => !scaledEntryParticipantIds.includes(participantId))
+      .filter(({ participantId }) => !scaledEntryParticipantIds.has(participantId))
       .filter(
         (entry: Entry) =>
           (!stage || !entry.entryStage || entry.entryStage === stage) &&
