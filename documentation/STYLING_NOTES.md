@@ -10,7 +10,7 @@ The following CSS libraries have been imported via CDN in `src/css/custom.css`:
 
 1. **Bulma** (v0.9.4) - Core CSS framework
 2. **Bulma Checkradio** (v1.1.1) - Checkbox and radio button styling
-3. **Bulma Switch** (v2.0.4) - Switch/toggle styling  
+3. **Bulma Switch** (v2.0.4) - Switch/toggle styling
 4. **VanillaJS Datepicker** (v1.3.4) - Date picker styling (Bulma theme)
 5. **Awesomplete** (v1.1.7) - Autocomplete/type-ahead styling
 
@@ -71,10 +71,12 @@ npm start
 ```
 
 Then navigate to:
-- Age Category Codes: http://localhost:3000/tods-competition-factory/docs/codes/age-category
-- Events and Categories: http://localhost:3000/tods-competition-factory/docs/concepts/events-categories
+
+- Age Category Codes: http://localhost:3000/competition-factory/docs/codes/age-category
+- Events and Categories: http://localhost:3000/competition-factory/docs/concepts/events-categories
 
 Click the editor buttons to verify:
+
 - Modal dialogs appear correctly
 - Form elements are styled properly
 - Buttons have correct colors and spacing

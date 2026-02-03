@@ -2,7 +2,7 @@
   <a href="http://courthive.com/" target="blank"><img src="./src/fixtures/images/red-ch-logo.png" width="220" alt="CourtHive Logo" /></a>
 </p>
 <p align="center">Competition Business Rules and Policy Management.</p>
-<p align="center"><a href='https://courthive.github.io/tods-competition-factory/'>Onilne Documentation and Examples.</a></p>
+<p align="center"><a href='https://courthive.github.io/competition-factory/'>Onilne Documentation and Examples.</a></p>
 <p align="center">
 <a href="https://www.npmjs.com/~tods-competition-factory" target="_blank"><img src="https://img.shields.io/npm/v/tods-competition-factory" alt="NPM Version" /></a>
 <a href="https://www.npmjs.com/~tods-competition-factory" target="_blank"><img src="https://img.shields.io/npm/l/tods-competition-factory" alt="Package License" /></a>

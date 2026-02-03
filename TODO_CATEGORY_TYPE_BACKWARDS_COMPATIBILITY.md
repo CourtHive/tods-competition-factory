@@ -8,7 +8,7 @@ The factory schema defines `CategoryUnion` as:
 type CategoryUnion = 'AGE' | 'BOTH' | 'LEVEL';
 ```
 
-However, a major project using tods-competition-factory has extensively used `'RATING'` instead of `'LEVEL'` throughout their historical tournament data, particularly in:
+However, a major project using Competition Factory has extensively used `'RATING'` instead of `'LEVEL'` throughout their historical tournament data, particularly in:
 
 - Dot-delimited values (e.g., `SCALE.RATING.SINGLES.U18`)
 - Category type fields
@@ -26,7 +26,7 @@ However, a major project using tods-competition-factory has extensively used `'R
 
 ### Systems Affected
 
-1. **tods-competition-factory** (Primary)
+1. **competition-factory** (Primary)
    - Category type validation
    - Scale type handling
    - Event category logic
@@ -598,6 +598,7 @@ function isRatingCategory(category: any): boolean {
    ```
 
 2. **Migration Tests**
+
    ```typescript
    describe('categoryTypeMigration', () => {
      it('migrates tournament categories', () => {

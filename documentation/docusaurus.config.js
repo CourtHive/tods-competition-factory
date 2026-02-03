@@ -3,12 +3,12 @@ module.exports = {
   title: 'Competition Factory',
   tagline: 'Tournament Management Tools',
   url: 'https://courthive.github.com',
-  baseUrl: '/tods-competition-factory/',
+  baseUrl: '/competition-factory/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'CourtHive',
-  projectName: 'tods-competition-factory',
+  projectName: 'competition-factory',
   markdown: {
     mermaid: true,
   },
@@ -27,7 +27,7 @@ module.exports = {
           position: 'left',
         },
         {
-          href: 'https://github.com/CourtHive/tods-competition-factory',
+          href: 'https://github.com/CourtHive/competition-factory',
           label: 'GitHub',
           position: 'right',
         },

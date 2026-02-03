@@ -26,7 +26,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-json-tree": "0.20.0",
-    "tods-competition-factory": "2.3.5"
+    "tods-competition-factory": "2.3.6"
   },
   "browserslist": {
     "production": [
@@ -39,8 +39,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "resolutions": {
-    "axios": "0.30.2"
   }
 }

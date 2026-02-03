@@ -13,8 +13,8 @@ const features = [
     imageLink: 'https://itftennis.atlassian.net/wiki/spaces/TODS/overview',
     description: (
       <>
-        The Competition Factory consumes, produces, and generates ITF standard TODS documents (a JSON format) and
-        ensures that all mutations are valid.
+        The Competition Factory consumes, produces, and generates a JSON format co-developed with the International
+        Tennis Federation (TODS) and extends it to support a wide range of competitions (CODES).
       </>
     ),
   },
@@ -34,8 +34,8 @@ const features = [
     imageUrl: 'img/vitest-logo.svg',
     description: (
       <>
-        Written in 100% TypeScript following a Test Driven Development process utilizing Vitest. More than 500 test
-        files and ~2000 total tests cover more than 96% of the code base.
+        Written in 100% TypeScript following a Test Driven Development process utilizing Vitest. Almost 600 test files
+        and ~2700 total tests cover more than 96% of the code base.
       </>
     ),
   },

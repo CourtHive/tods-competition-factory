@@ -4,9 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-overrides:
-  axios: 0.30.2
-
 importers:
 
   .:
@@ -48,8 +45,8 @@ importers:
         specifier: 0.20.0
         version: 0.20.0(@types/react@18.3.27)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.3.5
-        version: 2.3.5
+        specifier: 2.3.6
+        version: 2.3.6
 
 packages:
 
@@ -5138,6 +5135,10 @@ packages:
 
   tods-competition-factory@2.3.5:
     resolution: {integrity: sha512-ZeBBEJJfkP06MDCNd56896DPFP2l7egdt6BuSSyIHzzTh0SyFUsG7012WJNWbxTig9vPi+DvN2mfDlTB8tugdw==}
+    engines: {node: '>=20'}
+
+  tods-competition-factory@2.3.6:
+    resolution: {integrity: sha512-c0DWkqVvyDzfh/rZmLf7HAc1sSpEW1ZnKBxsuY78h5pqdvKYoAdntWwFMqDG3CUT+ADp6z0AJA92+uKYnhdagw==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -12187,6 +12188,8 @@ snapshots:
       is-number: 7.0.0
 
   tods-competition-factory@2.3.5: {}
+
+  tods-competition-factory@2.3.6: {}
 
   toidentifier@1.0.1: {}
 
