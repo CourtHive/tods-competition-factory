@@ -36,6 +36,10 @@ export function getScaledEntries({
       STRUCTURE_SELECTED_STATUSES.includes(entry.entryStatus),
   );
 
+  // create a copy of the scaleAttributes to enable use of contextual attributes
+  // this allows clients to use 'hydrated' scaleAttributes without typescript errors
+  const processingAttributes: any = { ...scaleAttributes };
+
   const scaledEntries = stageEntries
     .map((entry) => {
       const { participantId } = entry;
@@ -53,7 +57,12 @@ export function getScaledEntries({
       if (!scaleSortMethod && (Number.isNaN(scaleValue) || !Number.parseFloat(scaleValue))) return false;
       return scaleValue;
     })
-    .sort(scaleSortMethod || (sortDescending ? defaultScaleValueSortDescending : defaultScaleValueSortAscending));
+    .sort(
+      scaleSortMethod ||
+        (sortDescending || processingAttributes?.ascending === false
+          ? defaultScaleValueSortDescending
+          : defaultScaleValueSortAscending),
+    );
 
   return { scaledEntries };
 

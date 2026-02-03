@@ -9,10 +9,10 @@ type ScaleItemsWithParticipantId = {
 };
 type GenerateSeedingScaleItemsArgs = {
   scaleAttributes?: ScaleAttributes;
+  scaledEntries: any[] | null;
   stageEntries: Entry[];
-  scaledEntries: any[];
   seedsCount: number;
-  scaleName: string;
+  scaleName?: string;
 };
 export function generateSeedingScaleItems({
   scaleAttributes,
