@@ -5,7 +5,7 @@ settings:
   excludeLinksFromLockfile: false
 
 overrides:
-  axios: 0.30.2
+  axios: 1.13.4
 
 importers:
 
