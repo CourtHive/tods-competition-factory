@@ -26,7 +26,7 @@ type GenerateFlightProfileArgs = {
   drawNames?: string[];
   scaledEntries?: any;
   flightsCount: number;
-  splitMethod: string;
+  splitMethod: string; // anything that is not SPLIT_SHUTTLE or SPLIT_WATERFALL results in SPLIT_LEVEL
   uuids?: string[];
   event: Event;
 };
@@ -97,6 +97,8 @@ export function generateFlightProfile(params: GenerateFlightProfileArgs): {
     // e.g. 1,2,3,4,4,3,2,1,1,2,3,4,4,3,2,1
     splitEntries = chunkByNth(flightEntries, flightsCount, true);
   }
+
+  console.log(splitEntries.map((e) => e.map((f) => f.scaleValue)));
 
   function getDrawEntries(entriesChunk) {
     return (entriesChunk || [])

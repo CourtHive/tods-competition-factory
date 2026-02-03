@@ -242,7 +242,7 @@ it('can assess predictive accuracy of scaleValues', () => {
   });
 
   const distributionValues: number[] = Object.values(zoneDistribution);
-  const zonePercentTotal = distributionValues.reduce((a, b) => a + b);
+  const zonePercentTotal = distributionValues.reduce((a, b) => a + b, 0);
   expect(Math.round(zonePercentTotal)).toEqual(100);
 
   accuracy.excluded.forEach(({ exclusionValues, sideValues }) => {

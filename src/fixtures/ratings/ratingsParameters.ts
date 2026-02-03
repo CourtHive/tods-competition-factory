@@ -21,7 +21,7 @@ export const ratingsParameters = {
     defaultInitialization: 1500,
     decimalsCount: 0,
     range: [0, 3000],
-    ascending: true,
+    ascending: false, // Higher ELO is better
   },
   [NTRP]: {
     accessors: ['ntrpRating', 'dntrpRatingHundredths'],
@@ -29,7 +29,7 @@ export const ratingsParameters = {
     accessor: 'dntrpRatingHundredths',
     defaultInitialization: 3,
     decimalsCount: 1,
-    ascending: true,
+    ascending: false, // Higher NTRP is better
     range: [1, 7],
   },
   [UTR]: {
@@ -37,7 +37,7 @@ export const ratingsParameters = {
     accessors: ['utrRating'],
     accessor: 'utrRating',
     decimalsCount: 2,
-    ascending: true,
+    ascending: false, // Higher UTR is better
     range: [1, 16],
   },
   [WTN]: {
@@ -45,7 +45,7 @@ export const ratingsParameters = {
     accessors: ['wtnRating', 'confidence'],
     defaultInitialization: 23,
     accessor: 'wtnRating',
-    ascending: false,
+    ascending: true, // Lower WTN is better
     decimalsCount: 2,
     range: [40, 1],
   },
@@ -57,7 +57,7 @@ export const ratingsParameters = {
     accessor: 'duprRating',
     attributes: { reliabilityScore: { generator: true, range: [0, 100] } }, // generator is used by the mocksEngine to assign values within range
     decimalsCount: 3,
-    ascending: true,
+    ascending: false, // Higher DUPR is better
     range: [2, 8],
   },
   [UTR_P]: {
@@ -70,7 +70,7 @@ export const ratingsParameters = {
       provisional: { type: 'string' }, // P1-P5 for provisional ratings
     },
     decimalsCount: 1,
-    ascending: true,
+    ascending: false, // Higher UTR-P is better
     range: [1, 10],
   },
   [UTPR]: {
@@ -78,7 +78,7 @@ export const ratingsParameters = {
     defaultInitialization: 3.5,
     accessor: 'utprRating',
     decimalsCount: 1,
-    ascending: true,
+    ascending: false, // Higher UTR-P is better
     range: [2, 5],
     deprecated: true, // Transitioned to UTR-P in 2024
   },
@@ -89,7 +89,7 @@ export const ratingsParameters = {
     defaultInitialization: 500,
     accessor: 'psaPoints',
     decimalsCount: 0,
-    ascending: true,
+    ascending: false, // Higher PSA points is better
     range: [0, 3000],
     attributes: {
       tournaments: { generator: true, range: [1, 20] },
@@ -100,14 +100,14 @@ export const ratingsParameters = {
     defaultInitialization: 2000,
     accessor: 'squashLevel',
     decimalsCount: 0,
-    ascending: true,
+    ascending: false, // Higher squash level is better
     range: [0, 7000], // Beginners ~500-1000, club players ~2000-4000, pros ~6000+
   },
   [US_SQUASH]: {
     defaultInitialization: 3.5,
     accessor: 'usSquashRating',
     decimalsCount: 1,
-    ascending: true,
+    ascending: false, // Higher US Squash rating is better
     range: [2, 6], // 2.0 (E) to 6.0 (AA)
   },
 
@@ -117,7 +117,7 @@ export const ratingsParameters = {
     defaultInitialization: 1000,
     accessor: 'usattRating',
     decimalsCount: 0,
-    ascending: true,
+    ascending: false, // Higher USATT rating is better
     range: [200, 3000], // Minimum 200 as of 2025, pros ~2400-3000
   },
   [ITTF]: {
@@ -125,7 +125,7 @@ export const ratingsParameters = {
     defaultInitialization: 500,
     accessor: 'ittfPoints',
     decimalsCount: 0,
-    ascending: true,
+    ascending: false, // Higher ITTF points is better
     range: [0, 20000], // Point accumulation system, top players ~15000-20000
   },
 
@@ -135,7 +135,7 @@ export const ratingsParameters = {
     defaultInitialization: 10000,
     accessor: 'usarRanking',
     decimalsCount: 0,
-    ascending: false, // Lower ranking number = better (like WTN)
+    ascending: true, // Lower ranking number = better (like WTN)
     range: [1, 25000],
   },
 
@@ -145,7 +145,7 @@ export const ratingsParameters = {
     defaultInitialization: 5000,
     accessor: 'bwfPoints',
     decimalsCount: 0,
-    ascending: true,
+    ascending: true, // Lower BWF ranking is better
     range: [0, 150000], // Point accumulation from tournaments over 52 weeks
     attributes: {
       tournaments: { generator: true, range: [1, 10] }, // Max 10 tournaments count
