@@ -67,7 +67,7 @@ Added comprehensive **Category Validation** section covering:
 
 #### Use Cases
 
-1. **Tournament Management**:
+1. **Competition Management**:
    - Automatic validation at registration close
    - Display rejected participants to tournament director
 

@@ -1,7 +1,7 @@
 /** @type {import('@docusaurus/types').DocusaurusConfig} */
 module.exports = {
   title: 'Competition Factory',
-  tagline: 'Tournament Management Tools',
+  tagline: 'Competition Management Tools',
   url: 'https://courthive.github.com',
   baseUrl: '/competition-factory/',
   onBrokenLinks: 'throw',

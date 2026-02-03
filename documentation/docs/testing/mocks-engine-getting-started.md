@@ -328,7 +328,7 @@ import { mocksEngine } from 'tods-competition-factory';
 import tournamentEngine from 'tods-competition-factory';
 import { expect, it, describe } from 'vitest';
 
-describe('Tournament Management', () => {
+describe('Competition Management', () => {
   it('can schedule a match', () => {
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       drawProfiles: [{ drawSize: 16 }],

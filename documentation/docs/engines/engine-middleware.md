@@ -52,7 +52,7 @@ const { matchUp, event, drawDefinition, structure } = tournamentEngine.getMatchU
 
 ---
 
-## Multi-Tournament Management
+## Multi-Competition Management
 
 When multiple tournaments are loaded, middleware requires tournament identification:
 
