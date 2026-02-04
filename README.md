@@ -11,17 +11,16 @@
 
 ## Competittion Business Rules
 
-The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Tournaments by managing all state transformations. Factory functions embody the "business rules" required by Competition Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
+The **Competition Factory** is a collection of functions for transforming/mutating tournament records and is intended to ensure the integrity of Competitions by managing all state transformations. Factory functions embody the "business rules" required by Competition Management Solutions, and enable an entirely new way of constructing software to manage tournaments.
 
 The rules governing the creation of draws, seeding, and participant movement can be present on a standalone client, on a server, or both.
 An entire tournament management solution [can run in a browser](https://courthive.github.io/TMX/), or a client can communicate with a server which utilizes a database, or simply the file system.
 
 Server deployments support highly scaleable asynchronous processing models in **Node.js**.
 
-## Data Standards
+## Data => Standards
 
-The Competition Factory utilizes the **[Tennis Open Data Standards](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, **(TODS)**,
-which provide a document-based representation of all of the elements of a tournament or a league including participants, events, draws, matchUps, contacts, and references to online resources. Although the data standard is emerging in the sport of Tennis, **_the data structures apply to tournaments in many sports_**.
+The Competition Factory generates and processes / mutates JSON objects, and was built during the development of the **[Tennis Open Data Standards](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, **(TODS)**, a document-based representation of all of the elements of a tournament or a league including participants, events, draws, matchUps, contacts, and references to online resources. Although the data standard began to emerge in the sport of Tennis, **_the data structures apply to competitions in many sports_**, and the factory continues to evolve to support competition more broadly.
 
 ## Time Capsule
 
@@ -33,7 +32,7 @@ The **Competition Factory** includes synchronous and asynchronous "state engines
 
 ## Mocks Engine
 
-The `mocksEngine` generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes. It is used extensively in the ~1900 tests that are run against the factory methods before every package release.
+The `mocksEngine` generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes. It is used extensively in the 2600+ tests that are run against the factory methods before every package release.
 
 ## Installation
 
