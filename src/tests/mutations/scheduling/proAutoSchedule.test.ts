@@ -7,6 +7,7 @@ import { it, expect } from 'vitest';
 import { FOLLOWED_BY, NEXT_AVAILABLE } from '@Constants/timeItemConstants';
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
 import { SCHEDULE_WARNING } from '@Constants/scheduleConstants';
+import { COMPASS } from '@Constants/drawDefinitionConstants';
 
 const startDate = '2023-06-16';
 const venueId = 'cc-venue-id';
@@ -243,4 +244,41 @@ it('will not save overlapping timeModifiers', () => {
   expect(firstRowMatchUps.every(({ schedule }) => schedule.scheduledTime && !schedule.timeModifiers?.length)).toEqual(
     true,
   );
+});
+
+it.each([
+  { courtsCount: 1, scheduled: 15, minCourtGridRows: 15 },
+  { courtsCount: 1, scheduled: 30, minCourtGridRows: 30 },
+  { courtsCount: 2, scheduled: 60, minCourtGridRows: 30 },
+])('will schedule many rows', ({ courtsCount, scheduled, minCourtGridRows }) => {
+  mocksEngine.generateTournamentRecord({
+    venueProfiles: [
+      {
+        venueName: 'Club Courts',
+        venueAbbreviation: 'CC',
+        courtsCount,
+        idPrefix,
+        venueId,
+      },
+    ],
+    drawProfiles: [{ drawId, drawSize: 64, drawType: COMPASS, idPrefix: 'matchUp' }],
+    tournamentId,
+    setState: true,
+  });
+
+  let matchUps = tournamentEngine.allCompetitionMatchUps({
+    nextMatchUps: true,
+    inContext: true,
+  }).matchUps;
+
+  const scheduleMatchUps = {
+    params: { scheduledDate: startDate, matchUps, minCourtGridRows },
+    method: 'proAutoSchedule',
+  };
+
+  // First schedule all matchUps
+  let result = tournamentEngine.executionQueue([scheduleMatchUps]);
+  expect(result.success).toEqual(true);
+
+  expect(result.results[0].scheduled.length).toEqual(scheduled);
 });

@@ -17,10 +17,12 @@ type ProAutoScheduleArgs = {
   tournamentRecords: { [key: string]: Tournament };
   scheduleCompletedMatchUps?: boolean;
   matchUps: HydratedMatchUp[];
+  minCourtGridRows?: number;
   scheduledDate: string;
 };
 export function proAutoSchedule({
   scheduleCompletedMatchUps,
+  minCourtGridRows = 10,
   tournamentRecords,
   scheduledDate,
   matchUps,
@@ -37,7 +39,7 @@ export function proAutoSchedule({
   let result = competitionScheduleMatchUps({
     courtCompletedMatchUps: true,
     withCourtGridRows: true,
-    minCourtGridRows: 10,
+    minCourtGridRows,
     tournamentRecords,
     matchUpFilters,
   });
