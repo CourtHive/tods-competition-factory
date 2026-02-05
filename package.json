@@ -123,7 +123,7 @@
     "@nestjs/class-validator": "0.13.4",
     "@nestjs/cli": "11.0.16",
     "@nestjs/common": "11.1.13",
-    "@nestjs/config": "4.0.2",
+    "@nestjs/config": "4.0.3",
     "@nestjs/core": "11.1.13",
     "@nestjs/jwt": "11.0.2",
     "@nestjs/platform-express": "11.1.13",
