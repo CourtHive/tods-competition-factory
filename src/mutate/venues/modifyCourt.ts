@@ -80,11 +80,9 @@ export function courtModification({
   if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
   // not valid to replace the dateAvailability array
-  const validReplacements = validAttributes.filter((attribute) => !['dateAvailability'].includes(attribute));
+  const validReplacements = new Set(validAttributes.filter((attribute) => !['dateAvailability'].includes(attribute)));
 
-  const validReplacementAttributes = Object.keys(modifications).filter((attribute) =>
-    validReplacements.includes(attribute),
-  );
+  const validReplacementAttributes = Object.keys(modifications).filter((attribute) => validReplacements.has(attribute));
 
   if (court)
     validReplacementAttributes.forEach((attribute) => Object.assign(court, { [attribute]: modifications[attribute] }));

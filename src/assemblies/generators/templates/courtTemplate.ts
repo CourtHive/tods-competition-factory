@@ -8,6 +8,8 @@ export const courtTemplate = () => ({
   surfaceCategory: undefined,
   surfaceType: undefined,
   surfacedDate: undefined,
+  indoorOutdoor: undefined,
+  floodlit: undefined,
   dateAvailability: [],
   onlineResources: [],
   pace: undefined,
