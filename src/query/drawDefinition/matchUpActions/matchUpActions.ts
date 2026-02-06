@@ -221,19 +221,16 @@ export function matchUpActions(params?: MatchUpActionsArgs): ResultType & {
   });
 
   const structureScoringPolicies = appliedPolicies?.scoring?.structures;
-  const stageSpecificPolicies =
-    structure?.stage && structureScoringPolicies?.stage && structureScoringPolicies?.stage[structure.stage];
+  const stageSpecificPolicies = structure?.stage && structureScoringPolicies?.stage?.[structure.stage];
   const sequenceSpecificPolicies =
-    structure?.stageSequence &&
-    stageSpecificPolicies?.stageSequence &&
-    stageSpecificPolicies.stageSequence[structure.stageSequence];
+    structure?.stageSequence && stageSpecificPolicies?.stageSequence?.[structure.stageSequence];
   const requireAllPositionsAssigned =
     appliedPolicies?.scoring?.requireAllPositionsAssigned ||
     stageSpecificPolicies?.requireAllPositionsAssigned ||
     sequenceSpecificPolicies?.requireAllPositionsAssigned;
   const scoringActive = !requireAllPositionsAssigned || allPositionsAssigned;
 
-  const hasParticipants = matchUp.sides && matchUp.sides.filter((side) => side?.participantId).length === 2;
+  const hasParticipants = matchUp.sides?.filter((side) => side?.participantId).length === 2;
 
   const isDoubleExit = matchUp.matchUpStatus && [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(matchUp.matchUpStatus);
 
