@@ -7,6 +7,7 @@ The **Scoring Policy** (`POLICY_TYPE_SCORING`) controls scoring requirements, fo
 **Policy Type:** `scoring`
 
 **When to Use:**
+
 - Enforcing participant presence requirements for scoring
 - Controlling when draws/structures can be deleted
 - Restricting available matchUp formats
@@ -23,23 +24,23 @@ The **Scoring Policy** (`POLICY_TYPE_SCORING`) controls scoring requirements, fo
 {
   scoring: {
     policyName?: string;                               // Optional policy identifier
-    
+
     // Default format for all matchUps
     defaultMatchUpFormat?: string;                     // e.g., 'SET3-S:6/TB7'
-    
+
     // Deletion permissions when scores exist
     allowDeletionWithScoresPresent?: {
       drawDefinitions: boolean;                        // Allow draw deletion (default: false)
       structures: boolean;                             // Allow structure deletion (default: false)
     };
-    
+
     // Scoring requirements
     requireParticipantsForScoring?: boolean;           // Both participants must be present (default: false)
     requireAllPositionsAssigned?: boolean | undefined; // All positions assigned before scoring (default: undefined = true)
-    
+
     // Change propagation
     allowChangePropagation?: boolean;                  // Propagate winningSide changes downstream (default: false)
-    
+
     // Stage-specific requirements
     stage?: {
       [stageName: string]: {
@@ -50,7 +51,7 @@ The **Scoring Policy** (`POLICY_TYPE_SCORING`) controls scoring requirements, fo
         };
       };
     };
-    
+
     // Available matchUp formats
     matchUpFormats?: Array<{
       matchUpFormat: string;                           // Format code
@@ -58,7 +59,7 @@ The **Scoring Policy** (`POLICY_TYPE_SCORING`) controls scoring requirements, fo
       categoryNames?: string[];                        // Applicable categories
       categoryTypes?: string[];                        // Applicable category types
     }>;
-    
+
     // Status code refinements
     matchUpStatusCodes?: {
       [status: string]: Array<{
@@ -68,7 +69,7 @@ The **Scoring Policy** (`POLICY_TYPE_SCORING`) controls scoring requirements, fo
         description?: string;                          // Detailed explanation
       }>;
     };
-    
+
     // Process codes for specific scenarios
     processCodes?: {
       incompleteAssignmentsOnDefault?: string[];       // Codes applied on default (e.g., ['RANKING.IGNORE'])
@@ -131,25 +132,25 @@ import { POLICY_TYPE_SCORING } from 'tods-competition-factory';
 const defaultFormatPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Standard Scoring',
-    defaultMatchUpFormat: 'SET3-S:6/TB7'  // All matchUps use this by default
-  }
+    defaultMatchUpFormat: 'SET3-S:6/TB7', // All matchUps use this by default
+  },
 };
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: defaultFormatPolicy
+  policyDefinitions: defaultFormatPolicy,
 });
 
 // Override for specific event (e.g., short format for juniors)
 const shortFormatPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Junior Scoring',
-    defaultMatchUpFormat: 'SET3-S:4/TB7'  // Short sets
-  }
+    defaultMatchUpFormat: 'SET3-S:4/TB7', // Short sets
+  },
 };
 
 tournamentEngine.attachPolicies({
   policyDefinitions: shortFormatPolicy,
-  eventId: 'junior-event-id'
+  eventId: 'junior-event-id',
 });
 ```
 
@@ -160,18 +161,18 @@ tournamentEngine.attachPolicies({
 const participantRequirementPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Participant Required',
-    requireParticipantsForScoring: true   // Cannot score without both participants
-  }
+    requireParticipantsForScoring: true, // Cannot score without both participants
+  },
 };
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: participantRequirementPolicy
+  policyDefinitions: participantRequirementPolicy,
 });
 
 // Attempting to score without participants will fail
 const result = tournamentEngine.setMatchUpStatus({
   matchUpId: 'match-1',
-  outcome: { winningSide: 1 }
+  outcome: { winningSide: 1 },
 });
 
 if (result.error === 'MISSING_PARTICIPANTS') {
@@ -186,13 +187,13 @@ if (result.error === 'MISSING_PARTICIPANTS') {
 const flexibleScoringPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Flexible Consolation Scoring',
-    requireAllPositionsAssigned: false    // Can score as positions fill
-  }
+    requireAllPositionsAssigned: false, // Can score as positions fill
+  },
 };
 
 tournamentEngine.attachPolicies({
   policyDefinitions: flexibleScoringPolicy,
-  eventId: 'event-id'
+  eventId: 'event-id',
 });
 
 // Main draw still requires all positions (via stage-specific rule)
@@ -210,20 +211,20 @@ const deletionProtectionPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Deletion Protection',
     allowDeletionWithScoresPresent: {
-      drawDefinitions: false,   // Cannot delete draws with any scores
-      structures: false         // Cannot delete structures with any scores
-    }
-  }
+      drawDefinitions: false, // Cannot delete draws with any scores
+      structures: false, // Cannot delete structures with any scores
+    },
+  },
 };
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: deletionProtectionPolicy
+  policyDefinitions: deletionProtectionPolicy,
 });
 
 // Attempt to delete draw with scores
 const result = tournamentEngine.deleteDrawDefinitions({
   eventId: 'event-1',
-  drawIds: ['draw-1']
+  drawIds: ['draw-1'],
 });
 
 if (result.error === 'SCORES_PRESENT') {
@@ -234,7 +235,7 @@ if (result.error === 'SCORES_PRESENT') {
 const forceResult = tournamentEngine.deleteDrawDefinitions({
   eventId: 'event-1',
   drawIds: ['draw-1'],
-  force: true  // Bypasses policy check
+  force: true, // Bypasses policy check
 });
 ```
 
@@ -246,10 +247,10 @@ const flexibleDeletionPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Flexible Deletion',
     allowDeletionWithScoresPresent: {
-      drawDefinitions: true,    // Can delete draws with scores
-      structures: true          // Can delete structures with scores
-    }
-  }
+      drawDefinitions: true, // Can delete draws with scores
+      structures: true, // Can delete structures with scores
+    },
+  },
 };
 
 // Use cautiously - can lead to data loss!
@@ -272,48 +273,48 @@ const ustaPolicy = {
     matchUpFormats: [
       {
         matchUpFormat: 'SET3-S:6/TB7',
-        description: 'Best of 3 tiebreak sets'
+        description: 'Best of 3 tiebreak sets',
       },
       {
         matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-        description: 'Two tiebreak sets, 10-point match tiebreak at one set all'
+        description: 'Two tiebreak sets, 10-point match tiebreak at one set all',
       },
       {
         matchUpFormat: 'SET1-S:6/TB7',
-        description: 'One standard tiebreak set'
+        description: 'One standard tiebreak set',
       },
       {
         matchUpFormat: 'SET3-S:4/TB7',
-        description: 'Best of 3 sets to 4'
+        description: 'Best of 3 sets to 4',
       },
       {
         matchUpFormat: 'SET1-S:4/TB5@3',
-        description: 'One short set to 4, 5-point tiebreak at 3'
+        description: 'One short set to 4, 5-point tiebreak at 3',
       },
       {
         matchUpFormat: 'SET1-S:8/TB7',
-        description: '8 game pro-set'
+        description: '8 game pro-set',
       },
       {
         matchUpFormat: 'SET1-S:TB10',
-        description: 'One 10-point tiebreak game'
+        description: 'One 10-point tiebreak game',
       },
       {
         matchUpFormat: 'SET1-S:T20',
-        description: 'Timed 20 minute game'
-      }
+        description: 'Timed 20 minute game',
+      },
       // ... 19 total approved formats
-    ]
-  }
+    ],
+  },
 };
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: ustaPolicy
+  policyDefinitions: ustaPolicy,
 });
 
 // UI can retrieve allowed formats
 const { policy } = tournamentEngine.findPolicy({
-  policyType: POLICY_TYPE_SCORING
+  policyType: POLICY_TYPE_SCORING,
 });
 
 console.log(policy.matchUpFormats);
@@ -330,22 +331,22 @@ const categoryFormatsPolicy = {
         matchUpFormat: 'SET3-S:6/TB7',
         description: 'Standard format',
         categoryTypes: ['ADULT'],
-        categoryNames: []
+        categoryNames: [],
       },
       {
         matchUpFormat: 'SET3-S:4/TB7',
         description: 'Short sets',
         categoryTypes: ['JUNIOR'],
-        categoryNames: ['U10', 'U12', 'U14']
+        categoryNames: ['U10', 'U12', 'U14'],
       },
       {
         matchUpFormat: 'SET1-S:TB10',
         description: 'Super tiebreak',
         categoryTypes: ['JUNIOR'],
-        categoryNames: ['U8', 'U10']
-      }
-    ]
-  }
+        categoryNames: ['U8', 'U10'],
+      },
+    ],
+  },
 };
 
 // Format selector shows only applicable formats per category
@@ -361,18 +362,18 @@ const categoryFormatsPolicy = {
 const stageSpecificPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Stage-Specific Scoring',
-    requireAllPositionsAssigned: false,  // Default: flexible
+    requireAllPositionsAssigned: false, // Default: flexible
     stage: {
       MAIN: {
         stageSequence: {
           1: {
-            requireAllPositionsAssigned: true  // Main draw: all positions required
-          }
-        }
-      }
+            requireAllPositionsAssigned: true, // Main draw: all positions required
+          },
+        },
+      },
       // CONSOLATION, PLAY_OFF stages use default (false)
-    }
-  }
+    },
+  },
 };
 
 // Main draw: Cannot score until draw is complete
@@ -397,127 +398,127 @@ const ustaStatusCodes = {
         {
           matchUpStatusCode: 'W1',
           matchUpStatusCodeDisplay: 'Wo [inj]',
-          label: 'Injury'
+          label: 'Injury',
         },
         {
           matchUpStatusCode: 'W2',
           matchUpStatusCodeDisplay: 'Wo [ill]',
-          label: 'Illness'
+          label: 'Illness',
         },
         {
           matchUpStatusCode: 'W3',
           matchUpStatusCodeDisplay: 'Wo [pc]',
-          label: 'Personal circumstance'
+          label: 'Personal circumstance',
         },
         {
           matchUpStatusCode: 'W4',
           matchUpStatusCodeDisplay: 'Wo [Tae]',
-          label: 'Tournament Administrative Error'
+          label: 'Tournament Administrative Error',
         },
         {
           matchUpStatusCode: 'WOWO',
           matchUpStatusCodeDisplay: 'Wo/Wo',
-          label: 'Double walkover'
-        }
+          label: 'Double walkover',
+        },
       ],
       RETIRED: [
         {
           matchUpStatusCode: 'RJ',
           matchUpStatusCodeDisplay: 'Ret [inj]',
-          label: 'Injury'
+          label: 'Injury',
         },
         {
           matchUpStatusCode: 'RI',
           matchUpStatusCodeDisplay: 'Ret [ill]',
-          label: 'Illness'
+          label: 'Illness',
         },
         {
           matchUpStatusCode: 'RC',
           matchUpStatusCodeDisplay: 'Ret [pc]',
-          label: 'Personal circumstance'
+          label: 'Personal circumstance',
         },
         {
           matchUpStatusCode: 'RU',
           matchUpStatusCodeDisplay: 'Ret [elg]',
           label: 'Ret. (eligible)',
-          description: 'Player remains eligible for consolations, playoffs, doubles'
-        }
+          description: 'Player remains eligible for consolations, playoffs, doubles',
+        },
       ],
       DEFAULTED: [
         {
           matchUpStatusCode: 'DQ',
           matchUpStatusCodeDisplay: 'Def [dq]',
           label: 'Disqualification (ineligibility)',
-          description: 'Disqualification for cause or ineligibility'
+          description: 'Disqualification for cause or ineligibility',
         },
         {
           matchUpStatusCode: 'DM',
           matchUpStatusCodeDisplay: 'Def [cond]',
           label: 'Misconduct',
-          description: 'Misconduct before or between matches'
+          description: 'Misconduct before or between matches',
         },
         {
           matchUpStatusCode: 'D4',
           matchUpStatusCodeDisplay: 'Def [refsl]',
-          label: 'Refusal to start match'
+          label: 'Refusal to start match',
         },
         {
           matchUpStatusCode: 'D6',
           matchUpStatusCodeDisplay: 'Def [ns]',
-          label: 'Not showing up'
+          label: 'Not showing up',
         },
         {
           matchUpStatusCode: 'D7',
           matchUpStatusCodeDisplay: 'Score + Def [late]',
-          label: 'Lateness for match'
+          label: 'Lateness for match',
         },
         {
           matchUpStatusCode: 'DD',
           matchUpStatusCodeDisplay: 'Def/Def',
-          label: 'Double default'
+          label: 'Double default',
         },
         {
           matchUpStatusCode: 'DP',
           matchUpStatusCodeDisplay: 'Def [pps]',
-          label: 'Default (Point Penalty System)'
-        }
+          label: 'Default (Point Penalty System)',
+        },
       ],
       ABANDONED: [
         {
           matchUpStatusCode: 'OA',
           matchUpStatusCodeDisplay: 'Abandoned',
-          label: 'Abandoned match'
-        }
+          label: 'Abandoned match',
+        },
       ],
       CANCELLED: [
         {
           matchUpStatusCode: 'OC',
           matchUpStatusCodeDisplay: 'Unplayed or Cancelled',
-          label: 'Cancelled match'
-        }
+          label: 'Cancelled match',
+        },
       ],
       INCOMPLETE: [
         {
           matchUpStatusCode: 'OI',
           matchUpStatusCodeDisplay: 'Incomplete',
-          label: 'Incomplete match'
-        }
-      ]
-    }
-  }
+          label: 'Incomplete match',
+        },
+      ],
+    },
+  },
 };
 
 // UI displays status code selector
 tournamentEngine.attachPolicies({
-  policyDefinitions: POLICY_SCORING_USTA
+  policyDefinitions: POLICY_SCORING_USTA,
 });
 
 const { policy } = tournamentEngine.findPolicy({
-  policyType: POLICY_TYPE_SCORING
+  policyType: POLICY_TYPE_SCORING,
 });
 
 // Build dropdown for walkover reasons
-policy.matchUpStatusCodes.WALKOVER.forEach(code => {
+policy.matchUpStatusCodes.WALKOVER.forEach((code) => {
   console.log(`${code.matchUpStatusCode}: ${code.label}`);
 });
 // W1: Injury
@@ -536,8 +537,8 @@ policy.matchUpStatusCodes.WALKOVER.forEach(code => {
 const propagationPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Auto Propagation',
-    allowChangePropagation: true  // Changes propagate downstream
-  }
+    allowChangePropagation: true, // Changes propagate downstream
+  },
 };
 
 // Scenario:
@@ -562,7 +563,7 @@ import { POLICY_SCORING_USTA } from 'tods-competition-factory';
 
 // Use complete USTA policy
 tournamentEngine.attachPolicies({
-  policyDefinitions: POLICY_SCORING_USTA
+  policyDefinitions: POLICY_SCORING_USTA,
 });
 
 // Includes:
@@ -584,29 +585,29 @@ const itfJuniorPolicy = {
     stage: {
       MAIN: {
         stageSequence: {
-          1: { requireAllPositionsAssigned: true }
-        }
-      }
+          1: { requireAllPositionsAssigned: true },
+        },
+      },
     },
     matchUpFormats: [
       {
         matchUpFormat: 'SET3-S:6/TB7',
-        description: 'Best of 3 sets'
+        description: 'Best of 3 sets',
       },
       {
         matchUpFormat: 'SET3-S:6/TB7-F:TB10',
-        description: 'Match tiebreak final set'
+        description: 'Match tiebreak final set',
       },
       {
         matchUpFormat: 'SET1-S:6/TB7',
-        description: 'One set (qualifying)'
-      }
+        description: 'One set (qualifying)',
+      },
     ],
     allowDeletionWithScoresPresent: {
       drawDefinitions: false,
-      structures: false
-    }
-  }
+      structures: false,
+    },
+  },
 };
 ```
 
@@ -616,20 +617,20 @@ const itfJuniorPolicy = {
 const clubPolicy = {
   [POLICY_TYPE_SCORING]: {
     policyName: 'Club Scoring',
-    defaultMatchUpFormat: 'SET1-S:8/TB7',  // Pro set default
+    defaultMatchUpFormat: 'SET1-S:8/TB7', // Pro set default
     requireParticipantsForScoring: false,
-    requireAllPositionsAssigned: false,     // Very flexible
+    requireAllPositionsAssigned: false, // Very flexible
     allowDeletionWithScoresPresent: {
-      drawDefinitions: true,                // Allow corrections
-      structures: true
+      drawDefinitions: true, // Allow corrections
+      structures: true,
     },
     matchUpFormats: [
       { matchUpFormat: 'SET1-S:8/TB7', description: '8-game pro set' },
       { matchUpFormat: 'SET1-S:6/TB7', description: 'One set' },
       { matchUpFormat: 'SET1-S:TB10', description: 'Super tiebreak' },
-      { matchUpFormat: 'SET3-S:6/TB7', description: 'Best of 3' }
-    ]
-  }
+      { matchUpFormat: 'SET3-S:6/TB7', description: 'Best of 3' },
+    ],
+  },
 };
 ```
 
@@ -643,9 +644,9 @@ const clubPolicy = {
 const processCodePolicy = {
   [POLICY_TYPE_SCORING]: {
     processCodes: {
-      incompleteAssignmentsOnDefault: ['RANKING.IGNORE']
-    }
-  }
+      incompleteAssignmentsOnDefault: ['RANKING.IGNORE'],
+    },
+  },
 };
 
 // When a player defaults before completing all assignments:
@@ -685,11 +686,13 @@ const processCodePolicy = {
 ## Federation Policies
 
 **Available Presets:**
+
 - `POLICY_SCORING_DEFAULT` - Basic policy
 - `POLICY_SCORING_USTA` - Complete USTA policy with 19 formats and comprehensive status codes
 
 **Custom Federations:**
 Create federation-specific policies following USTA pattern:
+
 - Define approved formats
 - Define status codes
 - Set stage requirements

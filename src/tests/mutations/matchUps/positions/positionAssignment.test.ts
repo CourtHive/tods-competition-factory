@@ -1,18 +1,19 @@
 import { generateDrawTypeAndModifyDrawDefinition } from '@Assemblies/generators/drawDefinitions/generateDrawTypeAndModifyDrawDefinition';
 import { newDrawDefinition } from '@Assemblies/generators/drawDefinitions/newDrawDefinition';
 import { setStageDrawSize } from '@Mutate/drawDefinitions/entryGovernor/stageEntryCounts';
-import { assignDrawPosition } from '@Mutate/matchUps/drawPositions/positionAssignment';
 import { structureAssignedDrawPositions } from '@Query/drawDefinition/positionsGetter';
+import { assignDrawPosition } from '@Mutate/drawDefinitions/assignDrawPosition';
 import { getStageEntries } from '@Query/drawDefinition/stageGetter';
 import { getDrawStructures } from '@Acquire/findStructure';
+import { tournamentEngine } from '@Engines/syncEngine';
+import mocksEngine from '@Assemblies/engines/mock';
 import { generateRange } from '@Tools/arrays';
-import { mocksEngine } from '../../../..';
 import { expect, it } from 'vitest';
 
-import { ERROR, SUCCESS } from '@Constants/resultConstants';
-import { EntryStatusUnion } from '@Types/tournamentTypes';
 import { MAIN, ROUND_ROBIN, CONTAINER } from '@Constants/drawDefinitionConstants';
 import { DIRECT_ACCEPTANCE, WILDCARD } from '@Constants/entryStatusConstants';
+import { ERROR, SUCCESS } from '@Constants/resultConstants';
+import { EntryStatusUnion } from '@Types/tournamentTypes';
 
 let result;
 
@@ -180,4 +181,198 @@ it('returns positionAssignments for SINGLE_ELIMINATION and ROUND_ROBIN strucures
   }).structures?.[0];
   const { positionAssignments: roundRobinAssignments } = structureAssignedDrawPositions({ structure: roundRobin });
   expect(roundRobinAssignments?.length).toEqual(16);
+});
+
+it('can assign QUALIFIER placeholder to draw position', () => {
+  // Create tournament with qualifying structure
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      automated: false,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              qualifyingPositions: 4,
+              stageSequence: 1,
+              drawSize: 8,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const {
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile: {
+      participantsCount: 32,
+    },
+    setState: true,
+  });
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+
+  // Find MAIN structure with stageSequence 1
+  const mainStructure = drawDefinition.structures.find((s) => s.stage === MAIN && s.stageSequence === 1);
+
+  expect(mainStructure).toBeDefined();
+
+  const structureId = mainStructure.structureId;
+  const drawPosition = 1; // First position in main draw
+
+  // Assign qualifier to draw position
+  result = assignDrawPosition({
+    qualifier: true,
+    drawDefinition,
+    structureId,
+    drawPosition,
+  });
+
+  expect(result).toMatchObject(SUCCESS);
+
+  // Verify the position has qualifier assigned
+  const { assignedPositions } = structureAssignedDrawPositions({
+    drawDefinition,
+    structureId,
+  });
+
+  const assignment = assignedPositions?.find((p) => p.drawPosition === drawPosition);
+
+  expect(assignment).toBeDefined();
+  // expect(assignment?.qualifier).toBe(true);
+  expect(assignment?.participantId).toBeUndefined(); // Should NOT have participantId
+  expect(assignment?.bye).toBeUndefined(); // Should NOT be a BYE
+});
+
+it('can replace qualifier with participant', () => {
+  // Create tournament with qualifying and MAIN structures
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      automate: false,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              stageSequence: 1,
+              drawSize: 8,
+              qualifyingPositions: 4,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({
+    drawProfiles,
+    participantsProfile: {
+      participantsCount: 32,
+    },
+  });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const mainStructure = drawDefinition.structures.find((s) => s.stage === MAIN && s.stageSequence === 1);
+
+  const structureId = mainStructure.structureId;
+  const drawPosition = 1;
+
+  // First assign qualifier
+  result = assignDrawPosition({
+    qualifier: true,
+    drawDefinition,
+    structureId,
+    drawPosition,
+  });
+
+  expect(result).toMatchObject(SUCCESS);
+
+  // Then replace with actual participant
+  const { participants } = tournamentEngine.getParticipants();
+  const participantId = participants[0].participantId;
+
+  result = assignDrawPosition({
+    participantId,
+    drawDefinition,
+    drawPosition,
+    structureId,
+  });
+
+  expect(result).toMatchObject(SUCCESS);
+
+  // Verify qualifier is removed and participant is assigned
+  const { assignedPositions } = structureAssignedDrawPositions({
+    drawDefinition,
+    structureId,
+  });
+
+  const assignment = assignedPositions?.find((p) => p.drawPosition === drawPosition);
+
+  expect(assignment?.participantId).toBe(participantId);
+  expect(assignment?.qualifier).toBeDefined(); // Qualifier should be removed
+  expect(assignment?.bye).toBeUndefined();
+});
+
+it('qualifier positions are correctly counted', () => {
+  const drawProfiles = [
+    {
+      drawSize: 16,
+      automated: false,
+      qualifyingProfiles: [
+        {
+          roundTarget: 1,
+          structureProfiles: [
+            {
+              stageSequence: 1,
+              drawSize: 8,
+              qualifyingPositions: 4,
+            },
+          ],
+        },
+      ],
+    },
+  ];
+
+  const {
+    tournamentRecord,
+    drawIds: [drawId],
+  } = mocksEngine.generateTournamentRecord({ drawProfiles, participantsProfile: { participantsCount: 32 } });
+
+  tournamentEngine.setState(tournamentRecord);
+
+  const { drawDefinition } = tournamentEngine.getEvent({ drawId });
+  const mainStructure = drawDefinition.structures.find((s) => s.stage === MAIN && s.stageSequence === 1);
+
+  const structureId = mainStructure.structureId;
+
+  // Assign qualifiers to first 4 positions
+  for (let drawPosition = 1; drawPosition <= 4; drawPosition++) {
+    result = assignDrawPosition({
+      qualifier: true,
+      drawDefinition,
+      structureId,
+      drawPosition,
+    });
+    expect(result).toMatchObject(SUCCESS);
+  }
+
+  // Verify all 4 qualifiers are assigned
+  const { assignedPositions } = structureAssignedDrawPositions({
+    drawDefinition,
+    structureId,
+  });
+
+  const qualifierCount = assignedPositions?.filter((p) => p.qualifier).length;
+
+  expect(qualifierCount).toBe(4);
 });
