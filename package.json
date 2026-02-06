@@ -136,7 +136,7 @@
     "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.3.0",
-    "@swc/cli": "0.7.10",
+    "@swc/cli": "0.8.0",
     "@swc/core": "1.15.11",
     "@types/express": "5.0.6",
     "@types/jest": "30.0.0",
