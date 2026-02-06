@@ -18,6 +18,7 @@ import { getAllDrawMatchUps } from '@Query/matchUps/drawMatchUps';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { getParticipantId } from '@Functions/global/extractors';
+import { drawPositionFilled } from './drawPositionFilled';
 import { isAdHoc } from '@Query/drawDefinition/isAdHoc';
 import { findStructure } from '@Acquire/findStructure';
 import { clearDrawPosition } from './positionClear';
@@ -215,19 +216,7 @@ export function assignDrawPosition({
     }
   }
 
-  if (structure.structureType !== CONTAINER) {
-    addDrawPositionToMatchUps({
-      provisionalPositioning,
-      inContextDrawMatchUps,
-      sourceMatchUpStatus,
-      tournamentRecord,
-      drawDefinition,
-      drawPosition,
-      matchUpsMap,
-      structure,
-      event,
-    });
-  } else {
+  if (structure.structureType === CONTAINER) {
     modifyRoundRobinMatchUpsStatus({
       positionAssignments,
       tournamentRecord,
@@ -262,6 +251,18 @@ export function assignDrawPosition({
         drawDefinition,
       });
     }
+  } else {
+    addDrawPositionToMatchUps({
+      provisionalPositioning,
+      inContextDrawMatchUps,
+      sourceMatchUpStatus,
+      tournamentRecord,
+      drawDefinition,
+      drawPosition,
+      matchUpsMap,
+      structure,
+      event,
+    });
   }
 
   const drawEntry = drawDefinition.entries?.find((entry) => entry.participantId === participantId);
@@ -286,14 +287,6 @@ export function assignDrawPosition({
   });
 
   return { positionAssignments, ...SUCCESS };
-
-  function drawPositionFilled(positionAssignment) {
-    const containsBye = positionAssignment.bye;
-    const containsQualifier = positionAssignment.qualifier;
-    const containsParticipant = positionAssignment.participantId;
-    const filled = containsBye || containsQualifier || containsParticipant;
-    return { containsBye, containsQualifier, containsParticipant, filled };
-  }
 }
 
 // used for matchUps which are NOT in a ROUND_ROBIN { structureType: CONTAINER }

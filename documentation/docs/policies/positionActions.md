@@ -7,6 +7,7 @@ The **Position Actions Policy** (`POLICY_TYPE_POSITION_ACTIONS`) controls which 
 **Policy Type:** `positionActions`
 
 **When to Use:**
+
 - Controlling which positions can be modified in qualifying vs main draws
 - Restricting participant movement after matches have started
 - Enabling/disabling seeding operations
@@ -22,7 +23,7 @@ The **Position Actions Policy** (`POLICY_TYPE_POSITION_ACTIONS`) controls which 
 {
   positionActions: {
     policyName?: string;                    // Optional policy identifier
-    
+
     // Selective enablement for structures
     enabledStructures?: false | Array<{
       stages?: string[];                    // ['QUALIFYING', 'MAIN', 'CONSOLATION']
@@ -32,14 +33,14 @@ The **Position Actions Policy** (`POLICY_TYPE_POSITION_ACTIONS`) controls which 
       disabledActions?: string[];           // Specific actions to disable
       feedProfiles?: any[];                 // Feed-in structure filters
     }>;
-    
+
     // Complete disablement for structures
     disabledStructures?: Array<{
       stages?: string[];                    // Stages to disable
       stageSequences?: number[];            // Sequences to disable
       structureTypes?: string[];            // Structure types to disable
     }>;
-    
+
     // Additional capabilities
     otherFlightEntries?: boolean;           // Allow alternates from other flights
     disableRoundRestrictions?: boolean;     // Allow qualifiers in any round
@@ -56,35 +57,35 @@ The following actions can be controlled by this policy:
 
 ### Participant Assignment Actions
 
-| Action | Constant | Method | Description |
-|--------|----------|--------|-------------|
-| **ASSIGN** | `ASSIGN_PARTICIPANT` | `assignDrawPosition` | Assign a participant to an empty position |
-| **REMOVE** | `REMOVE_ASSIGNMENT` | `removeDrawPositionAssignment` | Remove a participant from a position |
-| **WITHDRAW** | `WITHDRAW_PARTICIPANT` | `withdrawParticipantAtDrawPosition` | Withdraw a participant (preserves history) |
-| **SWAP** | `SWAP_PARTICIPANTS` | `swapDrawPositionAssignments` | Swap two participants' positions |
-| **BYE** | `ASSIGN_BYE` | `assignDrawPositionBye` | Assign a BYE to a position |
-| **ALTERNATE** | `ALTERNATE_PARTICIPANT` | `alternateDrawPositionAssignment` | Assign an alternate to a position |
-| **LUCKY** | `LUCKY_PARTICIPANT` | `luckyLoserDrawPositionAssignment` | Assign a lucky loser to a position |
-| **QUALIFIER** | `QUALIFYING_PARTICIPANT` | `qualifierDrawPositionAssignment` | Assign a qualifier to a position |
+| Action        | Constant                 | Method                              | Description                                |
+| ------------- | ------------------------ | ----------------------------------- | ------------------------------------------ |
+| **ASSIGN**    | `ASSIGN_PARTICIPANT`     | `assignDrawPosition`                | Assign a participant to an empty position  |
+| **REMOVE**    | `REMOVE_ASSIGNMENT`      | `removeDrawPositionAssignment`      | Remove a participant from a position       |
+| **WITHDRAW**  | `WITHDRAW_PARTICIPANT`   | `withdrawParticipantAtDrawPosition` | Withdraw a participant (preserves history) |
+| **SWAP**      | `SWAP_PARTICIPANTS`      | `swapDrawPositionAssignments`       | Swap two participants' positions           |
+| **BYE**       | `ASSIGN_BYE`             | `assignDrawPositionBye`             | Assign a BYE to a position                 |
+| **ALTERNATE** | `ALTERNATE_PARTICIPANT`  | `alternateDrawPositionAssignment`   | Assign an alternate to a position          |
+| **LUCKY**     | `LUCKY_PARTICIPANT`      | `luckyLoserDrawPositionAssignment`  | Assign a lucky loser to a position         |
+| **QUALIFIER** | `QUALIFYING_PARTICIPANT` | `qualifierDrawPositionAssignment`   | Assign a qualifier to a position           |
 
 ### Seeding Actions
 
-| Action | Constant | Method | Description |
-|--------|----------|--------|-------------|
-| **SEED_VALUE** | `SEED_VALUE` | `modifySeedAssignment` | Add or modify seed value/number |
+| Action          | Constant      | Method                    | Description                       |
+| --------------- | ------------- | ------------------------- | --------------------------------- |
+| **SEED_VALUE**  | `SEED_VALUE`  | `modifySeedAssignment`    | Add or modify seed value/number   |
 | **REMOVE_SEED** | `REMOVE_SEED` | `removeSeededParticipant` | Remove seeding from a participant |
 
 ### Participant Metadata Actions
 
-| Action | Constant | Method | Description |
-|--------|----------|--------|-------------|
+| Action       | Constant       | Method                       | Description                     |
+| ------------ | -------------- | ---------------------------- | ------------------------------- |
 | **NICKNAME** | `ADD_NICKNAME` | `modifyParticipantOtherName` | Add/modify participant nickname |
-| **PENALTY** | `ADD_PENALTY` | `addPenalty` | Add penalty to a participant |
+| **PENALTY**  | `ADD_PENALTY`  | `addPenalty`                 | Add penalty to a participant    |
 
 ### Doubles/Pairs Actions
 
-| Action | Constant | Method | Description |
-|--------|----------|--------|-------------|
+| Action          | Constant                 | Method                 | Description                      |
+| --------------- | ------------------------ | ---------------------- | -------------------------------- |
 | **MODIFY_PAIR** | `MODIFY_PAIR_ASSIGNMENT` | `modifyPairAssignment` | Modify individual in a pair/team |
 
 ---
@@ -100,7 +101,7 @@ import { POLICY_POSITION_ACTIONS_DEFAULT } from 'tods-competition-factory';
 {
   positionActions: {
     policyName: 'positionActionsDefault',
-    
+
     enabledStructures: [
       {
         stages: ['QUALIFYING', 'MAIN'],      // First stage of QUALIFYING and MAIN
@@ -120,7 +121,7 @@ import { POLICY_POSITION_ACTIONS_DEFAULT } from 'tods-competition-factory';
         disabledActions: []
       }
     ],
-    
+
     disabledStructures: [],
     otherFlightEntries: false,
     activePositionOverrides: []
@@ -139,7 +140,7 @@ import { POLICY_POSITION_ACTIONS_DEFAULT } from 'tods-competition-factory';
 
 // Standard behavior - actions enabled for main structures, limited for consolations
 tournamentEngine.attachPolicies({
-  policyDefinitions: POLICY_POSITION_ACTIONS_DEFAULT
+  policyDefinitions: POLICY_POSITION_ACTIONS_DEFAULT,
 });
 ```
 
@@ -212,19 +213,19 @@ import { POLICY_TYPE_POSITION_ACTIONS } from 'tods-competition-factory';
 const lockedDrawPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Locked Draw',
-    enabledStructures: false
-  }
+    enabledStructures: false,
+  },
 };
 
 tournamentEngine.attachPolicies({
-  policyDefinitions: lockedDrawPolicy
+  policyDefinitions: lockedDrawPolicy,
 });
 
 // All positionActions queries will return empty validActions
 const { validActions } = tournamentEngine.positionActions({
   drawPosition: 1,
   structureId,
-  drawId
+  drawId,
 });
 // validActions = []
 ```
@@ -236,12 +237,14 @@ const { validActions } = tournamentEngine.positionActions({
 const seedingOnlyPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Seeding Only',
-    enabledStructures: [{
-      stages: ['MAIN'],
-      stageSequences: [1],
-      enabledActions: ['SEED_VALUE', 'REMOVE_SEED']
-    }]
-  }
+    enabledStructures: [
+      {
+        stages: ['MAIN'],
+        stageSequences: [1],
+        enabledActions: ['SEED_VALUE', 'REMOVE_SEED'],
+      },
+    ],
+  },
 };
 ```
 
@@ -252,12 +255,14 @@ const seedingOnlyPolicy = {
 const consolationPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Consolation Only',
-    enabledStructures: [{
-      stages: ['CONSOLATION'],
-      stageSequences: [],           // All sequences
-      enabledActions: []            // All actions
-    }]
-  }
+    enabledStructures: [
+      {
+        stages: ['CONSOLATION'],
+        stageSequences: [], // All sequences
+        enabledActions: [], // All actions
+      },
+    ],
+  },
 };
 ```
 
@@ -277,27 +282,22 @@ const stageSpecificPolicy = {
         // QUALIFYING: Full control
         stages: ['QUALIFYING'],
         stageSequences: [1],
-        enabledActions: []  // All actions enabled
+        enabledActions: [], // All actions enabled
       },
       {
         // MAIN: Limited to non-movement actions
         stages: ['MAIN'],
         stageSequences: [1],
-        enabledActions: [
-          'SEED_VALUE',
-          'REMOVE_SEED',
-          'ADD_NICKNAME',
-          'ADD_PENALTY'
-        ]
+        enabledActions: ['SEED_VALUE', 'REMOVE_SEED', 'ADD_NICKNAME', 'ADD_PENALTY'],
       },
       {
         // CONSOLATION: Only metadata
         stages: ['CONSOLATION'],
         stageSequences: [],
-        enabledActions: ['ADD_NICKNAME', 'ADD_PENALTY']
-      }
-    ]
-  }
+        enabledActions: ['ADD_NICKNAME', 'ADD_PENALTY'],
+      },
+    ],
+  },
 };
 ```
 
@@ -308,16 +308,18 @@ const stageSpecificPolicy = {
 const noSwapPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'No Swapping',
-    enabledStructures: [{
-      stages: ['MAIN'],
-      stageSequences: [1],
-      enabledActions: [],           // All actions initially
-      disabledActions: [
-        'SWAP_PARTICIPANTS',        // Specifically disable swapping
-        'MODIFY_PAIR_ASSIGNMENT'    // And pair modifications
-      ]
-    }]
-  }
+    enabledStructures: [
+      {
+        stages: ['MAIN'],
+        stageSequences: [1],
+        enabledActions: [], // All actions initially
+        disabledActions: [
+          'SWAP_PARTICIPANTS', // Specifically disable swapping
+          'MODIFY_PAIR_ASSIGNMENT', // And pair modifications
+        ],
+      },
+    ],
+  },
 };
 ```
 
@@ -351,20 +353,20 @@ const multiQualifyingPolicy = {
     enabledStructures: [
       {
         stages: ['QUALIFYING'],
-        stageSequences: [1],        // First qualifying round
-        enabledActions: []          // All actions
+        stageSequences: [1], // First qualifying round
+        enabledActions: [], // All actions
       },
       {
         stages: ['QUALIFYING'],
-        stageSequences: [2, 3],     // Later qualifying rounds
+        stageSequences: [2, 3], // Later qualifying rounds
         enabledActions: [
           'ADD_NICKNAME',
           'ADD_PENALTY',
-          'QUALIFYING_PARTICIPANT'  // Can still place qualifiers
-        ]
-      }
-    ]
-  }
+          'QUALIFYING_PARTICIPANT', // Can still place qualifiers
+        ],
+      },
+    ],
+  },
 };
 ```
 
@@ -387,20 +389,20 @@ const proTournamentPolicy = {
         enabledActions: [
           'ADD_NICKNAME',
           'ADD_PENALTY',
-          'ALTERNATE_PARTICIPANT',  // Can add alternates for withdrawals
-          'WITHDRAW_PARTICIPANT'    // Can process withdrawals
-        ]
+          'ALTERNATE_PARTICIPANT', // Can add alternates for withdrawals
+          'WITHDRAW_PARTICIPANT', // Can process withdrawals
+        ],
       },
       {
         // Qualifying: Full control before main draw
         stages: ['QUALIFYING'],
         stageSequences: [1],
-        enabledActions: []  // All actions before main draw starts
-      }
+        enabledActions: [], // All actions before main draw starts
+      },
     ],
     otherFlightEntries: false,
-    disableRoundRestrictions: false
-  }
+    disableRoundRestrictions: false,
+  },
 };
 ```
 
@@ -411,15 +413,15 @@ const proTournamentPolicy = {
 const clubPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Club Flexibility',
-    enabledStructures: [],          // All structures enabled
-    otherFlightEntries: true,       // Can pull from any flight
+    enabledStructures: [], // All structures enabled
+    otherFlightEntries: true, // Can pull from any flight
     disableRoundRestrictions: true, // Flexible qualifier placement
     activePositionOverrides: [
-      'SWAP_PARTICIPANTS',          // Can fix mistakes after play starts
+      'SWAP_PARTICIPANTS', // Can fix mistakes after play starts
       'ASSIGN_PARTICIPANT',
-      'REMOVE_ASSIGNMENT'
-    ]
-  }
+      'REMOVE_ASSIGNMENT',
+    ],
+  },
 };
 ```
 
@@ -430,21 +432,23 @@ const clubPolicy = {
 const constructionPolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Draw Construction',
-    enabledStructures: [{
-      stages: [],
-      stageSequences: [],
-      enabledActions: [
-        'ASSIGN_PARTICIPANT',
-        'REMOVE_ASSIGNMENT',
-        'SWAP_PARTICIPANTS',
-        'ASSIGN_BYE',
-        'SEED_VALUE',
-        'REMOVE_SEED'
-      ]
-    }],
+    enabledStructures: [
+      {
+        stages: [],
+        stageSequences: [],
+        enabledActions: [
+          'ASSIGN_PARTICIPANT',
+          'REMOVE_ASSIGNMENT',
+          'SWAP_PARTICIPANTS',
+          'ASSIGN_BYE',
+          'SEED_VALUE',
+          'REMOVE_SEED',
+        ],
+      },
+    ],
     otherFlightEntries: false,
-    disableRoundRestrictions: false
-  }
+    disableRoundRestrictions: false,
+  },
 };
 ```
 
@@ -455,15 +459,17 @@ const constructionPolicy = {
 const livePolicy = {
   [POLICY_TYPE_POSITION_ACTIONS]: {
     policyName: 'Live Tournament',
-    enabledStructures: [{
-      stages: [],
-      stageSequences: [],
-      enabledActions: [
-        'ADD_NICKNAME',    // Commentary team can add nicknames
-        'ADD_PENALTY'      // Referees can add penalties
-      ]
-    }]
-  }
+    enabledStructures: [
+      {
+        stages: [],
+        stageSequences: [],
+        enabledActions: [
+          'ADD_NICKNAME', // Commentary team can add nicknames
+          'ADD_PENALTY', // Referees can add penalties
+        ],
+      },
+    ],
+  },
 };
 ```
 
@@ -478,12 +484,14 @@ Position actions are automatically restricted based on position state:
 **Definition:** Positions where the participant has completed at least one match.
 
 **Default Restrictions:**
+
 - Cannot remove participant
 - Cannot swap participant
 - Cannot withdraw participant
 - Cannot assign BYE
 
 **Allowed Actions (by default):**
+
 - `ADD_NICKNAME`
 - `ADD_PENALTY`
 
@@ -491,7 +499,7 @@ Position actions are automatically restricted based on position state:
 
 ```js
 // Enable seeding even for active positions
-activePositionOverrides: ['SEED_VALUE', 'REMOVE_SEED']
+activePositionOverrides: ['SEED_VALUE', 'REMOVE_SEED'];
 ```
 
 ### Inactive Draw Positions
@@ -505,6 +513,7 @@ activePositionOverrides: ['SEED_VALUE', 'REMOVE_SEED']
 **Definition:** Positions assigned to BYE.
 
 **Restrictions:**
+
 - Cannot withdraw (BYE can't withdraw)
 - Can remove BYE assignment
 - Can replace with participant
@@ -516,26 +525,26 @@ activePositionOverrides: ['SEED_VALUE', 'REMOVE_SEED']
 ```js
 // Get available actions for a specific draw position
 const {
-  validActions,              // Array of available actions
-  isActiveDrawPosition,      // Boolean - has participant played?
-  hasPositionAssigned,       // Boolean - is position filled?
-  isDrawPosition,            // Boolean - is valid draw position?
-  isByePosition             // Boolean - is position a BYE?
+  validActions, // Array of available actions
+  isActiveDrawPosition, // Boolean - has participant played?
+  hasPositionAssigned, // Boolean - is position filled?
+  isDrawPosition, // Boolean - is valid draw position?
+  isByePosition, // Boolean - is position a BYE?
 } = tournamentEngine.positionActions({
-  policyDefinitions,        // Optional - override default policy
-  drawPosition: 3,          // Required - position to query
-  structureId,              // Required - structure identifier
-  drawId                    // Required - draw identifier
+  policyDefinitions, // Optional - override default policy
+  drawPosition: 3, // Required - position to query
+  structureId, // Required - structure identifier
+  drawId, // Required - draw identifier
 });
 
 // Each validAction contains:
 const {
-  type,                     // Action type constant (e.g., 'SWAP')
-  method,                   // Engine method name to execute action
-  payload,                  // Parameters for method
-  participant,              // Current participant (if any)
-  availableParticipants,    // Participants available for this action
-  willDisableLinks          // Boolean - will this affect linked structures?
+  type, // Action type constant (e.g., 'SWAP')
+  method, // Engine method name to execute action
+  payload, // Parameters for method
+  participant, // Current participant (if any)
+  availableParticipants, // Participants available for this action
+  willDisableLinks, // Boolean - will this affect linked structures?
 } = validAction;
 ```
 
@@ -548,21 +557,19 @@ const {
 const { validActions } = tournamentEngine.positionActions({
   drawPosition: 5,
   structureId,
-  drawId
+  drawId,
 });
 
 // 2. Find desired action
-const swapAction = validActions.find(
-  action => action.type === 'SWAP'
-);
+const swapAction = validActions.find((action) => action.type === 'SWAP');
 
 // 3. Execute using method and payload
 if (swapAction) {
   const { method, payload } = swapAction;
-  
+
   // Add required parameters
   payload.swapDrawPositions = [5, 9];
-  
+
   // Execute
   const result = tournamentEngine[method](payload);
   expect(result.success).toEqual(true);
@@ -591,7 +598,7 @@ Position actions policy evaluation follows this precedence:
 
 ```js
 // No matches played - all policy actions available
-positionActions({ drawPosition: 1, structureId, drawId })
+positionActions({ drawPosition: 1, structureId, drawId });
 // → Returns all enabled actions (seeding, swap, assign, etc.)
 ```
 
@@ -599,11 +606,11 @@ positionActions({ drawPosition: 1, structureId, drawId })
 
 ```js
 // First round finished - active positions restricted
-positionActions({ drawPosition: 1, structureId, drawId })
+positionActions({ drawPosition: 1, structureId, drawId });
 // → Returns: ['ADD_NICKNAME', 'ADD_PENALTY']
 // (position 1 participant has played - is active)
 
-positionActions({ drawPosition: 17, structureId, drawId })
+positionActions({ drawPosition: 17, structureId, drawId });
 // → Returns all enabled actions
 // (position 17 hasn't played yet - is inactive)
 ```
@@ -612,11 +619,11 @@ positionActions({ drawPosition: 17, structureId, drawId })
 
 ```js
 // Consolation structures typically have limited actions (default policy)
-positionActions({ 
-  drawPosition: 1, 
+positionActions({
+  drawPosition: 1,
   structureId: consolationStructureId,
-  drawId 
-})
+  drawId,
+});
 // → Returns: ['ADD_NICKNAME', 'ADD_PENALTY', 'QUALIFYING_PARTICIPANT']
 ```
 
@@ -624,7 +631,7 @@ positionActions({
 
 ```js
 // BYE positions can't be withdrawn, but can be replaced
-positionActions({ drawPosition: 2, structureId, drawId })
+positionActions({ drawPosition: 2, structureId, drawId });
 // isByePosition: true
 // validActions: excludes 'WITHDRAW_PARTICIPANT'
 // includes: 'REMOVE_ASSIGNMENT', 'ASSIGN_PARTICIPANT'
@@ -642,23 +649,23 @@ import { mocksEngine, tournamentEngine } from 'tods-competition-factory';
 
 it('default policy allows all actions in main draw stage 1', () => {
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 16, participantsCount: 16 }]
+    drawProfiles: [{ drawSize: 16, participantsCount: 16 }],
   });
-  
+
   tournamentEngine.setState(tournamentRecord);
   const [drawId] = drawIds;
-  
+
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const structureId = drawDefinition.structures[0].structureId;
-  
+
   const { validActions } = tournamentEngine.positionActions({
     drawPosition: 1,
     structureId,
-    drawId
+    drawId,
   });
-  
-  const actionTypes = validActions.map(a => a.type);
-  
+
+  const actionTypes = validActions.map((a) => a.type);
+
   // Main draw stage 1 should have extensive actions
   expect(actionTypes).toContain('SWAP');
   expect(actionTypes).toContain('SEED_VALUE');
@@ -673,36 +680,39 @@ it('default policy allows all actions in main draw stage 1', () => {
 ```js
 it('restricts actions for active draw positions', () => {
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{
-      drawSize: 16,
-      participantsCount: 16,
-      outcomes: [{
-        roundNumber: 1,
-        roundPosition: 1,
-        winningSide: 1,
-        scoreString: '6-0 6-0'
-      }]
-    }]
+    drawProfiles: [
+      {
+        drawSize: 16,
+        participantsCount: 16,
+        outcomes: [
+          {
+            roundNumber: 1,
+            roundPosition: 1,
+            winningSide: 1,
+            scoreString: '6-0 6-0',
+          },
+        ],
+      },
+    ],
   });
-  
+
   tournamentEngine.setState(tournamentRecord);
   const [drawId] = drawIds;
-  
+
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const structureId = drawDefinition.structures[0].structureId;
-  
+
   // Position 1 participant has completed a match
-  const { validActions, isActiveDrawPosition } = 
-    tournamentEngine.positionActions({
-      drawPosition: 1,
-      structureId,
-      drawId
-    });
-  
+  const { validActions, isActiveDrawPosition } = tournamentEngine.positionActions({
+    drawPosition: 1,
+    structureId,
+    drawId,
+  });
+
   expect(isActiveDrawPosition).toEqual(true);
-  
-  const actionTypes = validActions.map(a => a.type);
-  
+
+  const actionTypes = validActions.map((a) => a.type);
+
   // Active positions only allow metadata actions
   expect(actionTypes).toContain('NICKNAME');
   expect(actionTypes).toContain('PENALTY');
@@ -718,35 +728,37 @@ import { POLICY_TYPE_POSITION_ACTIONS } from 'tods-competition-factory';
 
 it('respects custom policy definitions', () => {
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 16, participantsCount: 16 }]
+    drawProfiles: [{ drawSize: 16, participantsCount: 16 }],
   });
-  
+
   tournamentEngine.setState(tournamentRecord);
   const [drawId] = drawIds;
-  
+
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const structureId = drawDefinition.structures[0].structureId;
-  
+
   // Custom policy: only seeding allowed
   const seedingOnlyPolicy = {
     [POLICY_TYPE_POSITION_ACTIONS]: {
-      enabledStructures: [{
-        stages: [],
-        stageSequences: [],
-        enabledActions: ['SEED_VALUE', 'REMOVE_SEED']
-      }]
-    }
+      enabledStructures: [
+        {
+          stages: [],
+          stageSequences: [],
+          enabledActions: ['SEED_VALUE', 'REMOVE_SEED'],
+        },
+      ],
+    },
   };
-  
+
   const { validActions } = tournamentEngine.positionActions({
     policyDefinitions: seedingOnlyPolicy,
     drawPosition: 1,
     structureId,
-    drawId
+    drawId,
   });
-  
-  const actionTypes = validActions.map(a => a.type);
-  
+
+  const actionTypes = validActions.map((a) => a.type);
+
   expect(actionTypes).toEqual(['SEED_VALUE']);
   expect(actionTypes).not.toContain('SWAP');
   expect(actionTypes).not.toContain('REMOVE');
@@ -760,22 +772,22 @@ import { POLICY_POSITION_ACTIONS_DISABLED } from 'tods-competition-factory';
 
 it('disabled policy returns no actions', () => {
   const { drawIds, tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 16, participantsCount: 16 }]
+    drawProfiles: [{ drawSize: 16, participantsCount: 16 }],
   });
-  
+
   tournamentEngine.setState(tournamentRecord);
   const [drawId] = drawIds;
-  
+
   const { drawDefinition } = tournamentEngine.getEvent({ drawId });
   const structureId = drawDefinition.structures[0].structureId;
-  
+
   const { validActions } = tournamentEngine.positionActions({
     policyDefinitions: POLICY_POSITION_ACTIONS_DISABLED,
     drawPosition: 1,
     structureId,
-    drawId
+    drawId,
   });
-  
+
   expect(validActions).toEqual([]);
 });
 ```

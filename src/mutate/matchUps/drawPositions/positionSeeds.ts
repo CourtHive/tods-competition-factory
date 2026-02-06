@@ -122,6 +122,7 @@ function positionSeedBlock({
   const { appliedPolicies } = getAppliedPolicies({ drawDefinition });
   const { avoidance } = appliedPolicies ?? {};
   if (avoidance && participants && unplacedSeedParticipantIds?.length > 2) {
+    // implement avoidance logic to reorder unplacedSeedParticipantIds
   }
 
   const seedPositions: number[] = [];

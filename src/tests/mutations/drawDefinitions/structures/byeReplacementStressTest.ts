@@ -1,3 +1,4 @@
+import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 import { completeDrawMatchUps } from '@Assemblies/generators/mocks/completeDrawMatchUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getDrawPosition } from '@Functions/global/extractors';
@@ -8,8 +9,8 @@ import tournamentEngine from '@Engines/syncEngine';
 import { findEvent } from '@Acquire/findEvent';
 import { randomInt } from '@Tools/math';
 import { expect } from 'vitest';
-import { replaceWithBye, removeAssignment, assignDrawPosition } from '../testingUtilities';
 
+// constants
 import { PARTICIPANT_ID } from '@Constants/attributeConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 

@@ -1,13 +1,26 @@
+import { assignDrawPositionQualifier as assignPositionQualifier } from '@Mutate/matchUps/drawPositions/assignDrawPositionQualifier';
 import { assignDrawPositionBye as assignPositionBye } from '../matchUps/drawPositions/assignDrawPositionBye';
 import { assignDrawPosition as assignPosition } from '../matchUps/drawPositions/positionAssignment';
 
+import { DrawDefinition, Event, Tournament } from '@Types/tournamentTypes';
 import { SUCCESS } from '@Constants/resultConstants';
+import { ResultType } from '@Types/factoryTypes';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
-  NOT_IMPLEMENTED,
 } from '@Constants/errorConditionConstants';
+
+type AssignDrawPositionArgs = {
+  tournamentRecord?: Tournament;
+  drawDefinition?: DrawDefinition;
+  participantId?: string;
+  drawPosition?: number;
+  structureId?: string;
+  qualifier?: boolean;
+  event?: Event;
+  bye?: boolean;
+};
 
 export function assignDrawPosition({
   tournamentRecord,
@@ -18,7 +31,7 @@ export function assignDrawPosition({
   qualifier,
   event,
   bye,
-}) {
+}: AssignDrawPositionArgs): ResultType {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!drawPosition) return { error: MISSING_DRAW_POSITION };
   if (!structureId) return { error: MISSING_STRUCTURE_ID };
@@ -33,12 +46,19 @@ export function assignDrawPosition({
     });
     if (result.error) return result;
   } else if (qualifier) {
-    return { error: NOT_IMPLEMENTED };
-  } else {
-    const result = assignPosition({
+    const result = assignPositionQualifier({
       tournamentRecord,
       drawDefinition,
-      participantId,
+      drawPosition,
+      structureId,
+      event,
+    });
+    if (result.error) return result;
+  } else {
+    const result = assignPosition({
+      participantId: participantId!,
+      tournamentRecord,
+      drawDefinition,
       drawPosition,
       structureId,
       event,

@@ -11,6 +11,7 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { getMatchUpsMap } from '@Query/matchUps/getMatchUpsMap';
 import { pushGlobalLog } from '@Functions/global/globalLog';
+import { drawPositionFilled } from './drawPositionFilled';
 import { findStructure } from '@Acquire/findStructure';
 import { numericSort } from '@Tools/sorting';
 import { isExit } from '@Validators/isExit';
@@ -42,10 +43,10 @@ import {
   PSEUDOCODE:
   *. Requires allDrawMatchUps inContext
   *. Requires structureMatchUps
- 
+
   => assignDrawPositionBye
   1. Modifies structure positionAssignments to assign BYE to position
-     - if structure is part of ROUND ROBIN then return { ...SUCCESS }
+    - if structure is part of ROUND ROBIN then return { ...SUCCESS }
   2. Finds the furthest advancement of the drawPosition to determine the matchUp where BYE-advancement needs to occur
   3. Set the matchUpStatus to BYE
   4. Check whether there is a position to Advance
@@ -112,7 +113,7 @@ export function assignDrawPositionBye({
   //
   const hasPropagatedStatus = !!(
     loserMatchUp &&
-    matchUpsMap.drawMatchUps.find((m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus))
+    matchUpsMap.drawMatchUps.some((m) => m.loserMatchUpId === loserMatchUp?.matchUpId && isExit(m.matchUpStatus))
   );
   // ################### Check error conditions ######################
   const drawPositionIsActive = activeDrawPositions?.includes(drawPosition);
@@ -123,7 +124,7 @@ export function assignDrawPositionBye({
   const positionAssignment = positionAssignments?.find((assignment) => assignment.drawPosition === drawPosition);
   if (!positionAssignment) return { error: INVALID_DRAW_POSITION };
 
-  const { filled, containsBye, assignedParticipantId } = drawPositionFilled(positionAssignment);
+  const { filled, containsBye, containsParticipant: assignedParticipantId } = drawPositionFilled(positionAssignment);
   if (containsBye) return { ...SUCCESS }; // nothing to be done
 
   if (filled && !containsBye && !hasPropagatedStatus) {
@@ -200,7 +201,7 @@ export function assignDrawPositionBye({
   const roundNumbers =
     roundProfile &&
     Object.keys(roundProfile)
-      .map((roundNumber) => parseInt(roundNumber))
+      .map((roundNumber) => Number.parseInt(roundNumber))
       .reverse();
   const roundNumber = roundNumbers?.find((roundNumber) => {
     return roundProfile?.[roundNumber].drawPositions?.includes(drawPosition);
@@ -266,14 +267,6 @@ function successNotice({
   }
 
   return decorateResult({ result: { ...SUCCESS }, stack });
-}
-
-function drawPositionFilled(positionAssignment) {
-  const containsBye = positionAssignment.bye;
-  const containsQualifier = positionAssignment.qualifier;
-  const assignedParticipantId = positionAssignment.participantId;
-  const filled = containsBye || containsQualifier || assignedParticipantId;
-  return { containsBye, containsQualifier, assignedParticipantId, filled };
 }
 
 type SetMatchUpStatusByeArgs = {

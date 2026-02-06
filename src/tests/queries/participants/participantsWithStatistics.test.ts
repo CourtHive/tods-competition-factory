@@ -7,7 +7,6 @@ import {
   DRAW_POSITION_ASSIGNED,
   MISSING_DRAW_POSITION,
   MISSING_STRUCTURE_ID,
-  NOT_IMPLEMENTED,
 } from '@Constants/errorConditionConstants';
 
 it('will return participant events including all entryStatuses', () => {
@@ -58,7 +57,7 @@ it('will return participant events including all entryStatuses', () => {
   expect(result.success).toEqual(true);
 
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  const structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
+  let structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
   expect(new Date(structure.updatedAt).getTime()).toBeGreaterThan(new Date(updatedAt).getTime());
 
   ({ positionAssignments } = tournamentEngine.getPositionAssignments({
@@ -96,5 +95,8 @@ it('will return participant events including all entryStatuses', () => {
     structureId,
     drawId,
   });
-  expect(result.error).toEqual(NOT_IMPLEMENTED);
+  expect(result.success).toEqual(true);
+  ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
+  structure = drawDefinition.structures.find((structure) => structure.structureId === structureId);
+  expect(structure.positionAssignments.find((pa) => pa.qualifier === true).drawPosition).toEqual(2);
 });

@@ -13,9 +13,9 @@ export function getEventProperties({ tournamentRecord, event }) {
   const scaleName = event.category?.categoryName || event.category?.ageCategoryCode;
   const { eventType } = event;
 
-  const enteredParticipantIds = eventEntries.map((entry) => entry.participantId);
+  const enteredParticipantIds = new Set(eventEntries.map((entry) => entry.participantId));
   const enteredParticipants = tournamentParticipants.filter((participant) =>
-    enteredParticipantIds.includes(participant.participantId),
+    enteredParticipantIds.has(participant.participantId),
   );
 
   let hasSeededParticipants, hasRankedParticipants, hasRatedParticipants;
