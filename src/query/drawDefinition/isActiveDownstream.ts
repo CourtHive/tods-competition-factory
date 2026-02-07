@@ -35,8 +35,7 @@ export function isActiveDownstream(params) {
 
   //to identify a propagated exit (WO/DEFAULT) for matches that are WO/DEFAULT, have a winning side,
   //and have only one participant (the WO/DF player).
-  const loserMatchUpParticipantsCount =
-    loserMatchUp?.sides?.reduce((acc, current) => (current?.participant ? ++acc : acc), 0) ?? 0;
+  const loserMatchUpParticipantsCount = loserMatchUp?.sides?.filter((s: any) => s?.participant).length ?? 0;
   const isLoserMatchUpWalkoverWithOnePlayer =
     //this catches downstream matches marked as WO with only one participant
     loserMatchUp?.winningSide && isLoserMatchUpWO && loserMatchUpParticipantsCount === 1;

@@ -86,7 +86,7 @@ function placeDrawPositions(nestedDrawPositions: any[], drawPositions: number[],
 
 // desiredPosition is provided by strict seed order bye placement
 // when the sides are balanced, side selection is driven by desiredPosition
-/* eslint-disable sonarjs/pseudo-random */
+ 
 function popFromLargerSide(arr, desiredPosition) {
   if (Array.isArray(arr) && arr.length !== 2) return arr.pop();
   if (!Array.isArray(arr[0])) {

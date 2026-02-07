@@ -14,6 +14,54 @@ type GetQualifiersCountArgs = {
   structureId?: string;
   stage?: string;
 };
+function calculateQualifiersFromLinks({
+  relevantLinks,
+  drawDefinition,
+  provisionalPositioning,
+  roundQualifiersCounts,
+}: {
+  relevantLinks: any[];
+  drawDefinition: DrawDefinition;
+  provisionalPositioning?: boolean;
+  roundQualifiersCounts: Record<string, number>;
+}) {
+  let qualifiersCount = 0;
+
+  for (const relevantLink of relevantLinks) {
+    const sourceStructure = findStructure({
+      structureId: relevantLink.source.structureId,
+      drawDefinition,
+    })?.structure;
+
+    if (sourceStructure?.stage === QUALIFYING) {
+      const sourceRoundNumber: number = relevantLink.source.roundNumber as number;
+      const roundTarget = relevantLink.target.roundNumber;
+      let count: number;
+
+      if (sourceStructure.structureType === CONTAINER) {
+        const groupCount = sourceStructure.structures?.length ?? 0;
+        const finishingPositionsCount = relevantLink.source.finishingPositions?.length ?? 0;
+        count = groupCount * finishingPositionsCount;
+      } else {
+        const matchUps = getAllStructureMatchUps({
+          matchUpFilters: { roundNumbers: [sourceRoundNumber] },
+          structure: sourceStructure,
+          afterRecoveryTimes: false,
+          provisionalPositioning,
+          inContext: false,
+        }).matchUps;
+        count = matchUps?.length || 0;
+      }
+
+      if (!roundQualifiersCounts[roundTarget]) roundQualifiersCounts[roundTarget] = 0;
+      roundQualifiersCounts[roundTarget] += count;
+      qualifiersCount += count;
+    }
+  }
+
+  return qualifiersCount;
+}
+
 export function getQualifiersCount(params: GetQualifiersCountArgs) {
   const { provisionalPositioning, drawDefinition, stageSequence, structureId, stage } = params;
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
@@ -33,48 +81,15 @@ export function getQualifiersCount(params: GetQualifiersCountArgs) {
 
   let qualifiersCount = 0;
 
-  // if structureId is provided and there is a relevant link...
   if (relevantLinks?.length) {
-    for (const relevantLink of relevantLinks) {
-      const sourceStructure = findStructure({
-        structureId: relevantLink.source.structureId,
-        drawDefinition,
-      })?.structure;
-
-      if (sourceStructure?.stage === QUALIFYING) {
-        const sourceRoundNumber: number = relevantLink.source.roundNumber as number;
-        const roundTarget = relevantLink.target.roundNumber;
-        let count = 0;
-
-        if (sourceStructure.structureType === CONTAINER) {
-          // for Round Robin qualifying the number of qualifiers needs to be derived from:
-          // the number of groups (substructures) * the length of source.finishingPositions[]
-          const groupCount = sourceStructure.structures?.length ?? 0;
-          const finishingPositionsCount = relevantLink.source.finishingPositions?.length ?? 0;
-
-          count = groupCount * finishingPositionsCount;
-        } else {
-          // return source structure qualifying round matchUps count
-          const matchUps = getAllStructureMatchUps({
-            matchUpFilters: { roundNumbers: [sourceRoundNumber] },
-            structure: sourceStructure,
-            afterRecoveryTimes: false,
-            provisionalPositioning,
-            inContext: false,
-          }).matchUps;
-
-          count = matchUps?.length || 0;
-        }
-
-        if (!roundQualifiersCounts[roundTarget]) roundQualifiersCounts[roundTarget] = 0;
-        roundQualifiersCounts[roundTarget] += count;
-
-        qualifiersCount += count;
-      }
-    }
+    qualifiersCount = calculateQualifiersFromLinks({
+      relevantLinks,
+      drawDefinition,
+      provisionalPositioning,
+      roundQualifiersCounts,
+    });
   }
 
-  // allow profileQualifiersCount to override if and only if there is only one qualifying roundTarget
   const qualifyingRounds = Object.keys(roundQualifiersCounts);
   if (qualifyingRounds.length <= 1) {
     const qualifyingRound = qualifyingRounds[0] || 1;

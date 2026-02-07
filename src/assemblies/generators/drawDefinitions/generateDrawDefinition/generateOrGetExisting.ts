@@ -63,8 +63,8 @@ export function generateOrGetExisting(params: GenerateOrGetExisting): ResultType
   if (setUpResult.error) return decorateResult({ result: setUpResult, stack });
 
   const existingDrawDefinition = setUpResult.existingDrawDefinition;
-  let drawDefinition: any = setUpResult.drawDefinition ?? {};
-  let structureId = setUpResult.structureId;
+  let drawDefinition: any;
+  let structureId: string | undefined;
 
   const entries = params.drawEntries ?? params.eventEntries ?? [];
 

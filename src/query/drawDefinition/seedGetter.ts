@@ -279,7 +279,7 @@ function constructPower2Blocks(params) {
     baseDrawSize,
   } = params;
 
-  let count = 1;
+  let count: number;
   const blocks: any[] = [];
 
   const { seedBlocks } = getSeedBlocks({

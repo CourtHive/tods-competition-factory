@@ -2,7 +2,7 @@ export function getWinningSide(score) {
   const setsWon = [0, 0];
   const setWinners: number[] = [];
   const sets = score.split(' ');
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const getSetScores = /(\d+)-(\d+)/;
   sets.forEach((set) => {
     if (getSetScores.test(set)) {

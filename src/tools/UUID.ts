@@ -22,13 +22,13 @@ export function UUID(pre?) {
     lut[i] = (i < 16 ? '0' : '') + i.toString(16);
   }
 
-  // eslint-disable-next-line sonarjs/pseudo-random
+   
   const d0 = Math.trunc(Math.random() * 0xffffffff);
-  // eslint-disable-next-line sonarjs/pseudo-random
+   
   const d1 = Math.trunc(Math.random() * 0xffffffff);
-  // eslint-disable-next-line sonarjs/pseudo-random
+   
   const d2 = Math.trunc(Math.random() * 0xffffffff);
-  // eslint-disable-next-line sonarjs/pseudo-random
+   
   const d3 = Math.trunc(Math.random() * 0xffffffff);
 
   const uuid =

@@ -28,7 +28,7 @@ export function matchKnownPatterns({ score, applied }) {
     applied.push('smashSlashPattern');
   }
 
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const incompleteFinalSet = /.*\s6[/-]+$/;
   if (incompleteFinalSet.test(score)) {
     score += '0';
@@ -115,7 +115,7 @@ export function matchKnownPatterns({ score, applied }) {
 
   // pattern \d+-\d{2}-\d+ => \d-\d \d-\d
   let failSafe = 0;
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const noSetSeparation = /(\d+)-(\d{2})-(\d+)/;
   while (noSetSeparation.test(score) && failSafe < 3) {
     const [left, middle, right] = score.match(noSetSeparation).slice(1);
@@ -175,11 +175,11 @@ export function matchKnownPatterns({ score, applied }) {
   }
 
   // IMPORTANT: must occur last...
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const slashSetGlobal = /(?<!-)(\d+)\/(\d+)(?!-)/g;
   if (slashSetGlobal.test(score)) {
     const slashSets = score.match(slashSetGlobal);
-    // eslint-disable-next-line sonarjs/slow-regex
+     
     const slashSet = /(?<!-)(\d+)\/(\d+)(?!-)/;
     let newScore = score;
     slashSets.forEach((set) => {
@@ -192,7 +192,7 @@ export function matchKnownPatterns({ score, applied }) {
   }
 
   // space separated match tiebreak
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const spaceSeparatedSuper = /(.*)\s(1\d)\s(\d+)$/;
   if (spaceSeparatedSuper.test(score)) {
     const [start, s1, s2] = score.match(spaceSeparatedSuper).slice(1);

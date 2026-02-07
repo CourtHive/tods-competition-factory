@@ -67,7 +67,7 @@ export function punctuationAdjustments({ score, applied }) {
   });
 
   // remove punctuation-only results
-  // eslint-disable-next-line sonarjs/duplicates-in-character-class
+   
   if (/^[(-/,]+$/.test(score)) {
     score = '';
   }
@@ -145,7 +145,7 @@ export function punctuationAdjustments({ score, applied }) {
   };
   getMissing();
 
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const unclosed = /(\d+-\d+\(\d+)0,/;
   if (unclosed.test(score)) {
     const [setScore] = score.match(unclosed).slice(1);
@@ -239,7 +239,7 @@ export function punctuationAdjustments({ score, applied }) {
     getMissing();
   }
 
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   if (noClose && (score.endsWith(9) || /\d+0$/.test(score))) {
     score = score.slice(0, score.length - 1) + ')';
     getMissing();
@@ -300,7 +300,7 @@ export function punctuationAdjustments({ score, applied }) {
     return open >= 0 && close >= 0 && open < close;
   };
 
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   if (/^\([\d ]+.*[\d ]+\)$/.test(score) && counts['('] === counts[')']) {
     const proposed = score.slice(1, score.length - 1);
     if (openFirst(proposed)) {

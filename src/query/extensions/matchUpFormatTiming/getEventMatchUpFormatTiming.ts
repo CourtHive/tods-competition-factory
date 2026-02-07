@@ -31,10 +31,21 @@ export function getEventMatchUpFormatTiming({
 } {
   if (!event) return { error: MISSING_EVENT };
 
-  let matchUpFormatDefinitions: any[] = [];
+  let matchUpFormatDefinitions: any[];
   let info;
 
-  if (!matchUpFormats?.length) {
+  if (matchUpFormats?.length) {
+    const uniqueMatchUpFormats: any[] = [];
+    matchUpFormatDefinitions = matchUpFormats
+      .map((definition) => {
+        const definitionObject = typeof definition === 'string' ? { matchUpFormat: definition } : definition;
+        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat)) return undefined;
+        if (!isValidMatchUpFormat({ matchUpFormat: definitionObject?.matchUpFormat })) return undefined;
+        uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
+        return definitionObject;
+      })
+      .filter(Boolean);
+  } else {
     const { policy } = findPolicy({
       policyType: POLICY_TYPE_SCORING,
       tournamentRecord,
@@ -61,17 +72,6 @@ export function getEventMatchUpFormatTiming({
       ).map((matchUpFormat) => ({ matchUpFormat }));
       info = 'default scheduling policy in use';
     }
-  } else {
-    const uniqueMatchUpFormats: any[] = [];
-    matchUpFormatDefinitions = matchUpFormats
-      .map((definition) => {
-        const definitionObject = typeof definition === 'string' ? { matchUpFormat: definition } : definition;
-        if (uniqueMatchUpFormats.includes(definitionObject?.matchUpFormat)) return undefined;
-        if (!isValidMatchUpFormat({ matchUpFormat: definitionObject?.matchUpFormat })) return undefined;
-        uniqueMatchUpFormats.push(definitionObject.matchUpFormat);
-        return definitionObject;
-      })
-      .filter(Boolean);
   }
   const { eventType, eventId, category } = event;
   const categoryName = category?.categoryName ?? category?.ageCategoryCode ?? eventId;

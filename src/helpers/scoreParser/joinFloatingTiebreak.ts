@@ -120,7 +120,7 @@ export function joinFloatingTiebreak({ score }) {
     score = joinedParts.trim();
   }
 
-  // eslint-disable-next-line sonarjs/slow-regex
+   
   const setCheck = /(\d+-\d+)\((\d+)-(\d+)\)$/;
   if (setCheck.test(score)) {
     const [setScore, t1, t2] = score.match(setCheck).slice(1);

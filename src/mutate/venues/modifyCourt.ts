@@ -35,7 +35,6 @@ export function modifyCourt(params: ModifyCourtArgs) {
   if (!Object.keys(tournamentRecords).length) return { error: MISSING_TOURNAMENT_RECORDS };
 
   let courtModified;
-  let error;
 
   for (const tournamentRecord of Object.values(tournamentRecords)) {
     const result = courtModification({
@@ -50,7 +49,7 @@ export function modifyCourt(params: ModifyCourtArgs) {
     courtModified = true;
   }
 
-  return courtModified ? { ...SUCCESS } : error;
+  return courtModified ? { ...SUCCESS } : undefined;
 }
 
 export function courtModification({

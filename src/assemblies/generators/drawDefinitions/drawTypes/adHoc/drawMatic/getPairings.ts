@@ -29,7 +29,7 @@ export function getPairings(params) {
     });
 
     const salting = (typeof salted === 'number' && salted) || 0.5;
-    // eslint-disable-next-line sonarjs/pseudo-random
+     
     const salt = (salted && (Math.round(Math.random()) ? salting : salting * -1)) || 0;
     const ratingsDifference = Math.abs(ratings[0] - ratings[1]) + salt;
     const pairingDelta = Math.abs(ratings[0] - ratings[1]);

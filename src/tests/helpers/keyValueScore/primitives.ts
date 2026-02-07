@@ -5,8 +5,7 @@ export const TIEBREAK_CLOSER = { value: 'space' };
 export function scoreMatchUp(params) {
   const { lowSide, value } = params;
   let { matchUp } = params;
-  let info = '',
-    updated = '';
+  let info, updated;
   ({ matchUp, info, updated } = keyValueMatchUpScore({
     lowSide,
     value,

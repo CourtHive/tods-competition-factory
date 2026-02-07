@@ -20,7 +20,7 @@ export function properTiebreak({ score, matchUpStatus }) {
     // handle tiebreak score which has no delimiter
     for (const t of score.match(tb)) {
       const replacement = t.replace(' ', '-');
-      // eslint-disable-next-line sonarjs/slow-regex
+       
       let tiebreakScore = replacement.match(/\((.*)\)/)?.[1];
       if (isNumeric(tiebreakScore) && tiebreakScore?.[0] > 2) {
         if ([2, 4].includes(tiebreakScore.length)) {
