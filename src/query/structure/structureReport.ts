@@ -139,24 +139,16 @@ export function getStructureReports(params: GetStructureReportsArgs) {
               )
               .map((s: any) => {
                 const finalMatchUp = [MAIN, PLAY_OFF].includes(s.stage)
-                  ? matchUps.find(
-                      (matchUp) =>
-                        matchUp.structureId === s.structureId && matchUp.finishingRound === 1 && matchUp.winningSide,
-                    )
+                  ? findFinalMatchUp(matchUps, s.structureId)
                   : undefined;
 
                 if (s.stage === MAIN) mainStructures.push({ eventName, drawName, structureId: s.structureId });
-                const winningSide = finalMatchUp?.sides?.find(
-                  (side: any) => side.sideNumber === finalMatchUp.winningSide,
-                ) as Side & { participant?: Participant };
 
+                const winningSide = getWinningSide(finalMatchUp);
                 const winningParticipant = winningSide?.participant as HydratedParticipant;
 
-                const winningTeamId =
-                  winningParticipant?.participantType === TEAM_PARTICIPANT && winningParticipant.participantId;
-
-                const individualParticipants =
-                  winningParticipant?.participantType === PAIR ? winningParticipant.individualParticipants : [];
+                const winningTeamId = getWinningTeamId(winningParticipant);
+                const individualParticipants = getIndividualParticipants(winningParticipant);
 
                 const winningPersonWTN = getDetailsWTN({
                   participant: individualParticipants?.[0] ?? winningParticipant,
@@ -256,4 +248,25 @@ export function getStructureReports(params: GetStructureReportsArgs) {
 
 function getPositionManipulations({ extensions }) {
   return extensions?.find(({ name }) => name === POSITION_ACTIONS)?.value?.slice(1);
+}
+
+function findFinalMatchUp(matchUps: any[], structureId: string) {
+  return matchUps.find(
+    (matchUp) => matchUp.structureId === structureId && matchUp.finishingRound === 1 && matchUp.winningSide,
+  );
+}
+
+function getWinningSide(finalMatchUp: any): (Side & { participant?: Participant }) | undefined {
+  if (!finalMatchUp?.sides) return undefined;
+  return finalMatchUp.sides.find((side: any) => side.sideNumber === finalMatchUp.winningSide) as Side & {
+    participant?: Participant;
+  };
+}
+
+function getWinningTeamId(winningParticipant: HydratedParticipant | undefined): string | undefined {
+  return winningParticipant?.participantType === TEAM_PARTICIPANT ? winningParticipant.participantId : undefined;
+}
+
+function getIndividualParticipants(winningParticipant: HydratedParticipant | undefined): HydratedParticipant[] {
+  return winningParticipant?.participantType === PAIR ? (winningParticipant.individualParticipants ?? []) : [];
 }
