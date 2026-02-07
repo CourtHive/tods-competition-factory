@@ -1,40 +1,18 @@
-const typescriptEslintParser = require('@typescript-eslint/parser');
-const eslintPluginSonarjs = require('eslint-plugin-sonarjs');
-const { FlatCompat } = require('@eslint/eslintrc');
-const globals = require('globals');
-const js = require('@eslint/js');
+import js from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
+import sonarjs from 'eslint-plugin-sonarjs';
+import globals from 'globals';
 
-const compat = new FlatCompat({
-  recommendedConfig: js.configs.recommended,
-  baseDirectory: __dirname,
-});
-
-module.exports = [
-  // ...compat.extends('./eslint.vite.js'),
-  js.configs.recommended,
-  ...compat.extends(
-    'eslint:recommended',
-    'plugin:compat/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/recommended',
-    'plugin:import/typescript',
-    'plugin:sonarjs/recommended-legacy',
-    'plugin:prettier/recommended',
-  ),
-  { plugins: { sonarjs: eslintPluginSonarjs } },
+export default [
   {
-    settings: {
-      'import/resolver': {
-        node: {
-          extensions: ['.js', '.ts'],
-          paths: ['src'],
-        },
-      },
-    },
+    ignores: ['node_modules/**', 'dist/**', 'coverage/**', '**/scratch/**', 'server/**', '**/*.test.ts'],
   },
+  js.configs.recommended,
   {
+    files: ['**/*.ts', '**/*.js'],
     languageOptions: {
-      parser: typescriptEslintParser,
+      parser: tsparser,
       parserOptions: {
         ecmaVersion: 'latest',
         sourceType: 'module',
@@ -42,13 +20,16 @@ module.exports = [
       globals: {
         ...globals.node,
         ...globals.browser,
-        ...globals.es6,
+        ...globals.es2021,
         ...globals.jest,
       },
     },
-  },
-  {
+    plugins: {
+      '@typescript-eslint': tseslint,
+      sonarjs: sonarjs,
+    },
     rules: {
+      ...tseslint.configs.recommended.rules,
       '@typescript-eslint/explicit-function-return-type': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-require-imports': 'off',
@@ -60,12 +41,6 @@ module.exports = [
       '@typescript-eslint/no-use-before-define': 'off',
       '@typescript-eslint/no-useless-escape': 'off',
       'array-callback-return': 'warn',
-      'import/named': 'off',
-      'import/namespace': 'off',
-      'import/no-duplicates': 'error',
-      'import/no-named-as-default-member': 'off',
-      'import/no-named-as-default': 'off',
-      'import/no-unresolved': 'off',
       'no-console': 'off',
       'no-debugger': 'error',
       'no-duplicate-imports': 0,
@@ -73,6 +48,8 @@ module.exports = [
       'no-unneeded-ternary': 'warn',
       'no-unused-expressions': 'off',
       'no-unused-vars': 'off',
+      'no-unassigned-vars': 'warn',
+      'no-useless-assignment': 'warn',
       'sonarjs/cognitive-complexity': ['off', 100],
       'sonarjs/no-all-duplicated-branches': 'warn',
       'sonarjs/no-collapsible-if': 'warn',
@@ -98,5 +75,4 @@ module.exports = [
       eqeqeq: ['warn', 'smart'],
     },
   },
-  { ignores: ['node_modules/', 'dist/', 'coverage/', '**/scratch/', 'server/', '**/*.test.ts'] },
 ];

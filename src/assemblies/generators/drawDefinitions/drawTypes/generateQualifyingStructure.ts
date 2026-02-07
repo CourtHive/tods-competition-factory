@@ -51,16 +51,8 @@ type GenerateQualifyingStructureArgs = {
 
 // for use when adding a qualifying structure to an existing drawDefinition
 // not for use when generating structures from qualifyingProfiles
-export function generateQualifyingStructure(params: GenerateQualifyingStructureArgs): {
-  qualifyingDrawPositionsCount?: number;
-  qualifiersCount?: number;
-  structure?: Structure;
-  error?: ErrorType;
-  success?: boolean;
-  link?: DrawLink;
-} {
-  const stack = 'generateQualifyingStructure';
-
+// Helper to validate params
+function validateQualifyingStructureParams(params: GenerateQualifyingStructureArgs, stack: string) {
   if (!params.drawDefinition)
     return decorateResult({
       result: { error: MISSING_DRAW_DEFINITION },
@@ -74,6 +66,90 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
   ) {
     return decorateResult({ result: { error: INVALID_VALUES }, stack });
   }
+
+  if (!params.drawSize)
+    return decorateResult({
+      result: { error: MISSING_DRAW_SIZE },
+      context: { drawSize: params.drawSize },
+      stack,
+    });
+
+  if (params.qualifyingPositions && params.qualifyingPositions >= params.drawSize)
+    return decorateResult({
+      result: { error: INVALID_VALUES },
+      context: { drawSize: params.drawSize, qualifyingPositions: params.qualifyingPositions },
+      stack,
+    });
+
+  return null;
+}
+
+// Helper to get structure profile
+function getStructureProfile(drawDefinition: DrawDefinition, targetStructureId: string, stack: string) {
+  const { structureProfiles } = getStructureGroups({ drawDefinition });
+  const structureProfile = structureProfiles[targetStructureId];
+  if (!structureProfile) {
+    return decorateResult({
+      result: { error: STRUCTURE_NOT_FOUND },
+      context: { targetStructureId },
+      stack,
+    });
+  }
+  return structureProfile;
+}
+
+// Helper to generate round robin structure
+function generateRoundRobinStructure(args: any) {
+  const { maxRoundNumber, structures, groupCount } = generateRoundRobin(args);
+  return {
+    qualifiersCount: groupCount,
+    roundLimit: maxRoundNumber,
+    structure: structures[0],
+    finishingPositions: [1],
+  };
+}
+
+// Helper to generate elimination structure
+function generateEliminationStructure(args: any) {
+  let { drawSize, matchUps, roundLimit, roundsCount } = treeMatchUps(args);
+  if (!roundLimit) roundLimit = roundsCount;
+
+  const structure = structureTemplate({
+    structureName: args.structureName,
+    structureId: args.structureId,
+    qualifyingRoundNumber: roundLimit,
+    stage: QUALIFYING,
+    matchUpFormat: args.matchUpFormat,
+    stageSequence: args.stageSequence,
+    matchUpType: args.matchUpType,
+    roundLimit,
+    matchUps,
+  });
+
+  if (args.roundTarget) {
+    addExtension({
+      extension: { name: ROUND_TARGET, value: args.roundTarget },
+      element: structure,
+    });
+  }
+
+  const qualifiersCount = matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)?.length ?? 0;
+  return { drawSize, structure, matchUps, roundLimit, qualifiersCount };
+}
+
+export function generateQualifyingStructure(params: GenerateQualifyingStructureArgs): {
+  qualifyingDrawPositionsCount?: number;
+  qualifiersCount?: number;
+  structure?: Structure;
+  error?: ErrorType;
+  success?: boolean;
+  link?: DrawLink;
+} {
+  const stack = 'generateQualifyingStructure';
+
+  // Validate params
+  const validationError = validateQualifyingStructureParams(params, stack);
+  if (validationError) return validationError;
 
   let drawSize = params.drawSize ?? coerceEven(params.participantsCount);
 
@@ -97,41 +173,18 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
     uuids,
   } = params;
 
-  if (!params.drawSize)
-    return decorateResult({
-      result: { error: MISSING_DRAW_SIZE },
-      context: { drawSize },
-      stack,
-    });
-
-  if (qualifyingPositions && qualifyingPositions >= params.drawSize)
-    return decorateResult({
-      result: { error: INVALID_VALUES },
-      context: { drawSize, qualifyingPositions },
-      stack,
-    });
-
-  let roundLimit: number | undefined, roundsCount: number | undefined, structure: Structure | undefined, matchUps;
-  let qualifiersCount = 0;
-  let finishingPositions;
-  const stageSequence = 1;
-
-  const { structureProfiles } = getStructureGroups({ drawDefinition });
-
-  const structureProfile = structureProfiles[targetStructureId];
-
-  if (!structureProfile) {
-    return decorateResult({
-      result: { error: STRUCTURE_NOT_FOUND },
-      context: { targetStructureId },
-      stack,
-    });
-  }
+  // Get structure profile
+  const structureProfile = getStructureProfile(drawDefinition, targetStructureId, stack);
+  if ((structureProfile as any)?.error) return structureProfile as any;
 
   const matchUpType = drawDefinition.matchUpType;
+  const stageSequence = 1;
 
   const roundTargetName = roundTarget ? `${roundTarget}-` : '';
-  const isPreQualifying = structureProfile.stage === QUALIFYING;
+  const isPreQualifying =
+    typeof structureProfile === 'object' &&
+    'stage' in structureProfile &&
+    (structureProfile as any).stage === QUALIFYING;
   const preQualifyingNaming =
     appliedPolicies?.[POLICY_TYPE_ROUND_NAMING]?.namingConventions?.pre ??
     POLICY_ROUND_NAMING_DEFAULT[POLICY_TYPE_ROUND_NAMING]?.namingConventions?.pre;
@@ -143,8 +196,14 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
       ? `${pre}${constantToString(QUALIFYING)} ${roundTargetName}`
       : `${pre}${constantToString(QUALIFYING)}`);
 
+  let structure: Structure | undefined;
+  let matchUps: any;
+  let roundLimit: number | undefined;
+  let qualifiersCount: number | undefined;
+  let finishingPositions: number[] | undefined;
+
   if (drawType === ROUND_ROBIN) {
-    const { maxRoundNumber /*, groupSize*/, structures, groupCount } = generateRoundRobin({
+    const roundRobinResult = generateRoundRobinStructure({
       structureName: structureName ?? qualifyingStructureName,
       structureId: structureId ?? uuids?.pop(),
       hasExistingDrawDefinition,
@@ -161,12 +220,12 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
       isMock,
       uuids,
     });
-    qualifiersCount = groupCount;
-    roundLimit = maxRoundNumber;
-    structure = structures[0];
-    finishingPositions = [1];
+    qualifiersCount = roundRobinResult.qualifiersCount;
+    roundLimit = roundRobinResult.roundLimit;
+    structure = roundRobinResult.structure;
+    finishingPositions = roundRobinResult.finishingPositions;
   } else {
-    ({ drawSize, matchUps, roundLimit, roundsCount } = treeMatchUps({
+    const eliminationResult = generateEliminationStructure({
       qualifyingRoundNumber,
       qualifyingPositions,
       matchUpType,
@@ -174,29 +233,16 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
       drawSize,
       isMock,
       uuids,
-    }));
-    if (!roundLimit) roundLimit = roundsCount;
-
-    structure = structureTemplate({
       structureName: structureName ?? qualifyingStructureName,
       structureId: structureId ?? uuids?.pop(),
-      qualifyingRoundNumber: roundLimit,
-      stage: QUALIFYING,
       matchUpFormat,
       stageSequence,
-      matchUpType,
-      roundLimit, // redundant
-      matchUps,
+      roundTarget,
     });
-
-    if (roundTarget) {
-      addExtension({
-        extension: { name: ROUND_TARGET, value: roundTarget },
-        element: structure,
-      });
-    }
-
-    qualifiersCount = matchUps?.filter((matchUp) => matchUp.roundNumber === roundLimit)?.length;
+    drawSize = eliminationResult.drawSize;
+    structure = eliminationResult.structure;
+    roundLimit = eliminationResult.roundLimit;
+    qualifiersCount = eliminationResult.qualifiersCount;
   }
 
   // order of operations is important here!! finalQualifier positions is not yet updated when this step occurs
@@ -215,7 +261,7 @@ export function generateQualifyingStructure(params: GenerateQualifyingStructureA
 
   if (tieFormat) {
     matchUps = getAllStructureMatchUps({ structure })?.matchUps || [];
-    matchUps?.forEach((matchUp) => {
+    matchUps?.forEach((matchUp: any) => {
       const { tieMatchUps } = generateTieMatchUps({ tieFormat, matchUp, isMock });
       Object.assign(matchUp, { tieMatchUps, matchUpType });
     });

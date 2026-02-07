@@ -30,6 +30,6 @@ export const getRandomQualifierList = ({ drawDefinition }: GetRandomQualifierLis
     qualifierPositions: { drawPosition: number; qualifier: boolean }[];
   } = structureAssignedDrawPositions({ structure: mainStructure });
 
-  // eslint-disable-next-line sonarjs/pseudo-random
+   
   return generateRange(0, qualifierPositions.length).sort(() => Math.random() - 0.5);
 };

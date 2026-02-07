@@ -28,6 +28,10 @@ export type RoundMatchUpsResult = {
   error?: ErrorType;
 };
 
+function findDrawPositionInChunk(chunk: any[], filteredDrawPositions: any[]) {
+  return filteredDrawPositions?.find((drawPosition) => chunk.includes(drawPosition));
+}
+
 export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUpsArgs): RoundMatchUpsResult {
   if (!validMatchUps(matchUps)) return { roundMatchUps: [], error: INVALID_VALUES };
 
@@ -181,19 +185,14 @@ export function getRoundMatchUps({ matchUps = [], interpolate }: GetRoundMatchUp
         const targetChunkIndex = (roundPosition - 1) * 2;
         const targetChunks = priorRoundDrawPositionChunks.slice(targetChunkIndex, targetChunkIndex + 2);
 
-        return targetChunks.map((chunk) => {
-          return filteredDrawPositions?.find((drawPosition) => chunk.includes(drawPosition));
-        });
+        return targetChunks.map((chunk) => findDrawPositionInChunk(chunk, filteredDrawPositions));
       });
 
       roundProfile[roundNumber].drawPositions = roundDrawPositions?.flat();
       roundProfile[roundNumber].pairedDrawPositions = roundDrawPositions;
     }
 
-    if (
-      roundProfile[roundNumber + 1] &&
-      roundProfile[roundNumber + 1].matchUpsCount === roundProfile[roundNumber].matchUpsCount
-    ) {
+    if (roundProfile[roundNumber + 1]?.matchUpsCount === roundProfile[roundNumber].matchUpsCount) {
       roundProfile[roundNumber + 1].feedRound = true;
       roundProfile[roundNumber + 1].feedRoundIndex = feedRoundIndex;
       roundProfile[roundNumber].preFeedRound = true;

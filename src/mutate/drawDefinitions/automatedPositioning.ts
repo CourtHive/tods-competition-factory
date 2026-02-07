@@ -45,55 +45,20 @@ type AutomatedPositioningArgs = {
   drawSize?: number;
   event?: Event;
 };
-export function automatedPositioning(params: AutomatedPositioningArgs): ResultType & {
-  positionAssignments?: PositionAssignment[];
-  positioningReport?: { [key: string]: any }[];
-  success?: boolean;
-  conflicts?: any[];
-} {
-  let { drawDefinition } = params;
-  const {
-    applyPositioning = true,
-    provisionalPositioning,
-    multipleStructures,
-    placeByes = true,
-    tournamentRecord,
-    placementGroup,
-    seedingProfile,
-    structureId,
-    seedLimit,
-    seedsOnly,
-    drawType,
-    drawSize,
-    event,
-  } = params;
+// Helper functions to reduce complexity
+function handleErrorCondition(result, applyPositioning) {
+  if (!applyPositioning) enableNotifications();
+  return decorateResult({ result, stack: 'automatedPositioning' });
+}
 
-  const positioningReport: any[] = [];
+function handleSuccessCondition(result, applyPositioning) {
+  if (!applyPositioning) enableNotifications();
+  return result;
+}
 
-  //-----------------------------------------------------------
-  // handle notification state for all exit conditions
-  if (!applyPositioning) {
-    // when positioning is not being applied no notifications are generated
-    // because only the positionAssignments are returned
-    disableNotifications();
-    // positioningAssignments are applied to a copy of the drawDefinition,
-    // not the actual drawDefinition...
-    drawDefinition = makeDeepCopy(drawDefinition, false, true);
-  }
-
-  const handleErrorCondition = (result) => {
-    if (!applyPositioning) enableNotifications();
-    return decorateResult({ result, stack: 'automatedPositioning' });
-  };
-
-  const handleSuccessCondition = (result) => {
-    if (!applyPositioning) enableNotifications();
-    return result;
-  };
-  //-----------------------------------------------------------
-
+function getInitialData(params, drawDefinition, structureId, event) {
   const result = findStructure({ drawDefinition, structureId });
-  if (result.error) return handleErrorCondition(result);
+  if (result.error) return { error: result.error };
   const structure = result.structure;
   if (!structure) return { error: STRUCTURE_NOT_FOUND };
 
@@ -107,7 +72,7 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
 
   const { qualifiersCount } = getQualifiersCount({
     stageSequence: structure.stageSequence,
-    provisionalPositioning,
+    provisionalPositioning: params.provisionalPositioning,
     stage: structure.stage,
     drawDefinition,
     structureId,
@@ -116,15 +81,262 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
   const entryStatuses = DIRECT_ENTRY_STATUSES;
   const entries = getStageEntries({
     stageSequence: structure.stageSequence,
-    provisionalPositioning,
+    provisionalPositioning: params.provisionalPositioning,
     stage: structure.stage,
-    placementGroup,
+    placementGroup: params.placementGroup,
     drawDefinition,
     entryStatuses,
     structureId,
   });
 
-  if (!entries?.length && !qualifiersCount) return handleSuccessCondition({ ...SUCCESS });
+  return { structure, appliedPolicies, qualifiersCount, entries };
+}
+
+function handleWaterfall({
+  placeByes,
+  provisionalPositioning,
+  tournamentRecord,
+  appliedPolicies,
+  drawDefinition,
+  seedBlockInfo,
+  matchUpsMap,
+  structure,
+  seedLimit,
+  seedsOnly,
+  event,
+  structureSeedingProfile,
+  seedingProfile,
+  inContextDrawMatchUps,
+  participants,
+  positioningReport,
+}) {
+  let result: any = placeByes
+    ? positionByes({
+        provisionalPositioning,
+        tournamentRecord,
+        appliedPolicies,
+        drawDefinition,
+        seedBlockInfo,
+        matchUpsMap,
+        structure,
+        seedLimit,
+        seedsOnly,
+        event,
+      })
+    : undefined;
+  if (result?.error) return { error: result.error };
+  const unseededByePositions = result?.unseededByePositions;
+
+  positioningReport.push({ action: 'positionByes', unseededByePositions });
+
+  const profileSeeding = structureSeedingProfile ? { positioning: structureSeedingProfile } : seedingProfile;
+
+  result = positionSeedBlocks({
+    seedingProfile: profileSeeding,
+    provisionalPositioning,
+    inContextDrawMatchUps,
+    tournamentRecord,
+    appliedPolicies,
+    validSeedBlocks: seedBlockInfo.validSeedBlocks,
+    drawDefinition,
+    seedBlockInfo,
+    participants,
+    matchUpsMap,
+    structure,
+    event,
+  });
+  if (result.error) return { error: result.error };
+
+  positioningReport.push({
+    seedPositions: result.seedPositions,
+    action: 'positionSeedBlocks',
+  });
+
+  return { unseededByePositions };
+}
+
+function handleNonWaterfall({
+  drawType,
+  LUCKY_DRAW,
+  structureSeedingProfile,
+  seedingProfile,
+  provisionalPositioning,
+  inContextDrawMatchUps,
+  tournamentRecord,
+  appliedPolicies,
+  validSeedBlocks,
+  drawDefinition,
+  seedBlockInfo,
+  participants,
+  matchUpsMap,
+  structure,
+  event,
+  placeByes,
+  seedLimit,
+  seedsOnly,
+  positioningReport,
+}) {
+  let unseededByePositions;
+  if (drawType !== LUCKY_DRAW) {
+    const profileSeeding = structureSeedingProfile ? { positioning: structureSeedingProfile } : seedingProfile;
+    const result: any = positionSeedBlocks({
+      seedingProfile: profileSeeding,
+      provisionalPositioning,
+      inContextDrawMatchUps,
+      tournamentRecord,
+      appliedPolicies,
+      validSeedBlocks,
+      drawDefinition,
+      seedBlockInfo,
+      participants,
+      matchUpsMap,
+      structure,
+      event,
+    });
+
+    if (result.error) return { error: result.error };
+
+    positioningReport.push({
+      action: 'positionSeedBlocks',
+      seedPositions: result.seedPositions,
+    });
+  }
+
+  const result = placeByes
+    ? positionByes({
+        provisionalPositioning,
+        tournamentRecord,
+        appliedPolicies,
+        drawDefinition,
+        seedBlockInfo,
+        matchUpsMap,
+        structure,
+        seedLimit,
+        seedsOnly,
+        event,
+      })
+    : undefined;
+
+  if (result?.error) {
+    return { error: result.error };
+  }
+  unseededByePositions = result?.unseededByePositions;
+  positioningReport.push({
+    action: 'positionByes',
+    byeDrawPositions: result?.byeDrawPositions,
+    unseededByePositions,
+  });
+
+  return { unseededByePositions };
+}
+
+function handleQualifiersAndUnseeded({
+  seedsOnly,
+  inContextDrawMatchUps,
+  tournamentRecord,
+  appliedPolicies,
+  validSeedBlocks,
+  drawDefinition,
+  seedBlockInfo,
+  participants,
+  matchUpsMap,
+  structure,
+  positionQualifiers,
+  positionUnseededParticipants,
+  provisionalPositioning,
+  unseededByePositions,
+  multipleStructures,
+  structureId,
+  drawSize,
+  event,
+  positioningReport,
+  conflicts,
+}) {
+  if (seedsOnly) return {};
+  let result: any = positionQualifiers({
+    inContextDrawMatchUps,
+    tournamentRecord,
+    appliedPolicies,
+    validSeedBlocks,
+    drawDefinition,
+    seedBlockInfo,
+    participants,
+    matchUpsMap,
+    structure,
+  });
+  if (result.error) {
+    return { error: result.error };
+  }
+  if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
+  positioningReport.push({
+    action: 'positionQualifiers',
+    qualifierDrawPositions: result.qualifierDrawPositions,
+  });
+
+  result = positionUnseededParticipants({
+    provisionalPositioning,
+    inContextDrawMatchUps,
+    unseededByePositions,
+    multipleStructures,
+    tournamentRecord,
+    drawDefinition,
+    seedBlockInfo,
+    participants,
+    matchUpsMap,
+    structureId,
+    structure,
+    drawSize,
+    event,
+  });
+
+  if (result.error) {
+    return { error: result.error };
+  }
+  if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
+  positioningReport.push({ action: 'positionUnseededParticipants' });
+
+  return {};
+}
+
+export function automatedPositioning(params: AutomatedPositioningArgs): ResultType & {
+  positionAssignments?: PositionAssignment[];
+  positioningReport?: { [key: string]: any }[];
+  success?: boolean;
+  conflicts?: any[];
+} {
+  let { drawDefinition } = params;
+  const {
+    applyPositioning = true,
+    provisionalPositioning,
+    multipleStructures,
+    placeByes = true,
+    tournamentRecord,
+    seedingProfile,
+    structureId,
+    seedLimit,
+    seedsOnly,
+    drawType,
+    drawSize,
+    event,
+  } = params;
+
+  const positioningReport: any[] = [];
+
+  if (!applyPositioning) {
+    disableNotifications();
+    drawDefinition = makeDeepCopy(drawDefinition, false, true);
+  }
+
+  const {
+    structure,
+    appliedPolicies,
+    qualifiersCount,
+    entries,
+    error: initialError,
+  } = getInitialData(params, drawDefinition, structureId, event);
+  if (initialError) return handleErrorCondition(initialError, applyPositioning);
+
+  if (!entries?.length && !qualifiersCount) return handleSuccessCondition({ ...SUCCESS }, applyPositioning);
 
   const matchUpsMap = params.matchUpsMap ?? getMatchUpsMap({ drawDefinition });
 
@@ -136,8 +348,6 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
       matchUpsMap,
     })?.matchUps;
 
-  let unseededByePositions = [];
-
   const seedBlockInfo = getValidSeedBlocks({
     provisionalPositioning,
     appliedPolicies,
@@ -145,7 +355,7 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
     seedingProfile,
     structure,
   });
-  if (seedBlockInfo.error) return seedBlockInfo;
+  if (seedBlockInfo.error) return handleErrorCondition(seedBlockInfo, applyPositioning);
   const { validSeedBlocks } = seedBlockInfo;
 
   positioningReport.push({ validSeedBlocks });
@@ -160,32 +370,34 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
         })?.participants
       : []);
 
+  let unseededByePositions;
   if (getSeedPattern(structure.seedingProfile || seedingProfile) === WATERFALL) {
-    // since WATERFALL attempts to place ALL participants
-    // BYEs must be placed first to ensure lower seeds get BYEs
-    let result: any = placeByes
-      ? positionByes({
-          provisionalPositioning,
-          tournamentRecord,
-          appliedPolicies,
-          drawDefinition,
-          seedBlockInfo,
-          matchUpsMap,
-          structure,
-          seedLimit,
-          seedsOnly,
-          event,
-        })
-      : undefined;
-    if (result?.error) return handleErrorCondition(result);
-    unseededByePositions = result.unseededByePositions;
-
-    positioningReport.push({ action: 'positionByes', unseededByePositions });
-
-    const profileSeeding = structure.seedingProfile ? { positioning: structure.seedingProfile } : seedingProfile;
-
-    result = positionSeedBlocks({
-      seedingProfile: profileSeeding,
+    const waterfallResult = handleWaterfall({
+      placeByes,
+      provisionalPositioning,
+      tournamentRecord,
+      appliedPolicies,
+      drawDefinition,
+      seedBlockInfo,
+      matchUpsMap,
+      structure,
+      seedLimit,
+      seedsOnly,
+      event,
+      structureSeedingProfile: structure.seedingProfile,
+      seedingProfile,
+      inContextDrawMatchUps,
+      participants,
+      positioningReport,
+    });
+    if (waterfallResult?.error) return handleErrorCondition(waterfallResult.error, applyPositioning);
+    unseededByePositions = waterfallResult.unseededByePositions;
+  } else {
+    const nonWaterfallResult = handleNonWaterfall({
+      drawType,
+      LUCKY_DRAW,
+      structureSeedingProfile: structure.seedingProfile,
+      seedingProfile,
       provisionalPositioning,
       inContextDrawMatchUps,
       tournamentRecord,
@@ -197,115 +409,40 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
       matchUpsMap,
       structure,
       event,
+      placeByes,
+      seedLimit,
+      seedsOnly,
+      positioningReport,
     });
-    if (result.error) return handleErrorCondition(result);
-
-    positioningReport.push({
-      seedPositions: result.seedPositions,
-      action: 'positionSeedBlocks',
-    });
-  } else {
-    // otherwise... seeds need to be placed first so that BYEs
-    // can follow the seedValues of placed seeds
-    if (drawType !== LUCKY_DRAW) {
-      const profileSeeding = structure.seedingProfile ? { positioning: structure.seedingProfile } : seedingProfile;
-      const result: any = positionSeedBlocks({
-        seedingProfile: profileSeeding,
-        provisionalPositioning,
-        inContextDrawMatchUps,
-        tournamentRecord,
-        appliedPolicies,
-        validSeedBlocks,
-        drawDefinition,
-        seedBlockInfo,
-        participants,
-        matchUpsMap,
-        structure,
-        event,
-      });
-
-      if (result.error) return handleErrorCondition(result);
-
-      positioningReport.push({
-        action: 'positionSeedBlocks',
-        seedPositions: result.seedPositions,
-      });
-    }
-
-    const result = placeByes
-      ? positionByes({
-          provisionalPositioning,
-          tournamentRecord,
-          appliedPolicies,
-          drawDefinition,
-          seedBlockInfo,
-          matchUpsMap,
-          structure,
-          seedLimit,
-          seedsOnly,
-          event,
-        })
-      : undefined;
-
-    if (result?.error) {
-      return handleErrorCondition(result);
-    }
-    unseededByePositions = result?.unseededByePositions;
-    positioningReport.push({
-      action: 'positionByes',
-      byeDrawPositions: result?.byeDrawPositions,
-      unseededByePositions,
-    });
+    if (nonWaterfallResult?.error) return handleErrorCondition(nonWaterfallResult.error, applyPositioning);
+    unseededByePositions = nonWaterfallResult.unseededByePositions;
   }
 
   const conflicts: any = {};
 
-  if (!seedsOnly) {
-    // qualifiers are randomly placed BEFORE unseeded because in FEED_IN draws they may have roundTargets
-    // this can be modified ONLY if a check is place for round targeting and qualifiers are placed first
-    // in this specific circumstance
-    let result: any = positionQualifiers({
-      inContextDrawMatchUps,
-      tournamentRecord,
-      appliedPolicies,
-      validSeedBlocks,
-      drawDefinition,
-      seedBlockInfo,
-      participants,
-      matchUpsMap,
-      structure,
-    });
-    if (result.error) {
-      return handleErrorCondition(result);
-    }
-    if (result.conflicts) conflicts.qualifierConflicts = result.conflicts;
-    positioningReport.push({
-      action: 'positionQualifiers',
-      qualifierDrawPositions: result.qualifierDrawPositions,
-    });
-
-    result = positionUnseededParticipants({
-      provisionalPositioning,
-      inContextDrawMatchUps,
-      unseededByePositions,
-      multipleStructures,
-      tournamentRecord,
-      drawDefinition,
-      seedBlockInfo,
-      participants,
-      matchUpsMap,
-      structureId,
-      structure,
-      drawSize,
-      event,
-    });
-
-    if (result.error) {
-      return handleErrorCondition(result);
-    }
-    if (result.conflicts) conflicts.unseededConflicts = result.conflicts;
-    positioningReport.push({ action: 'positionUnseededParticipants' });
-  }
+  const qualifiersResult = handleQualifiersAndUnseeded({
+    seedsOnly,
+    inContextDrawMatchUps,
+    tournamentRecord,
+    appliedPolicies,
+    validSeedBlocks,
+    drawDefinition,
+    seedBlockInfo,
+    participants,
+    matchUpsMap,
+    structure,
+    positionQualifiers,
+    positionUnseededParticipants,
+    provisionalPositioning,
+    unseededByePositions,
+    multipleStructures,
+    structureId,
+    drawSize,
+    event,
+    positioningReport,
+    conflicts,
+  });
+  if (qualifiersResult?.error) return handleErrorCondition(qualifiersResult.error, applyPositioning);
 
   const { positionAssignments } = getPositionAssignments({
     drawDefinition,
@@ -314,10 +451,7 @@ export function automatedPositioning(params: AutomatedPositioningArgs): ResultTy
 
   modifyDrawNotice({ drawDefinition, structureIds: [structureId] });
 
-  //-----------------------------------------------------------
-  // re-enable notifications, if they have been disabled
   if (!applyPositioning) enableNotifications();
-  //-----------------------------------------------------------
 
   return { positionAssignments, conflicts, ...SUCCESS, positioningReport };
 }

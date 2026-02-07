@@ -90,7 +90,7 @@ export function removeTieMatchUpParticipantId(
   if (
     !side.substitutions?.length &&
     (checkScoreHasValue({ score: inContextTieMatchUp?.score }) || inContextTieMatchUp?.winningSide) &&
-    !(scoringPolicy?.requireParticipantsForScoring === false)
+    scoringPolicy?.requireParticipantsForScoring !== false
   )
     return decorateResult({ result: { error: EXISTING_OUTCOME }, stack });
 

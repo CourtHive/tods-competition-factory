@@ -1,5 +1,5 @@
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
-import { simpleAddition } from '@Functions/reducers/simpleAddition';
+import { accumulate } from '@Functions/reducers/accumulate';
 import { feedInChampionship } from '../primitives/feedIn';
 import { mocksEngine } from '@Assemblies/engines/mock';
 import { tournamentEngine } from '@Engines/syncEngine';
@@ -132,7 +132,7 @@ test.each(scenarios)('FEED_IN_CHAMPIONSHIP to RSF has proper sourceDrawPositionR
     );
     if (rsr.length) {
       roundSourceRanges[finishingRound] = rsr;
-      const reduction = rsr.map((range) => range.split('-').map(Number).reduce(simpleAddition));
+      const reduction = rsr.map((range) => accumulate(range.split('-').map(Number)));
       const direction = reduction[0] < reduction[reduction.length - 1] ? 'ascending' : 'descending';
       directions.push(direction);
     }
@@ -192,8 +192,8 @@ test.each(scenarios)(
 
     // the first member of the array is { roundNumber: 1 } which also has an odd finishingRound
     // all other members of the array are event numbered finishingRounds
-    expect(!isOdd(finishingRounds.slice(1).reduce(simpleAddition))).toEqual(true);
-    expect(isOdd(finishingRounds.reduce(simpleAddition))).toEqual(true);
+    expect(!isOdd(accumulate(finishingRounds.slice(1)))).toEqual(true);
+    expect(isOdd(accumulate(finishingRounds))).toEqual(true);
     expect(isOdd(finishingRounds[0])).toEqual(true);
   },
   0,

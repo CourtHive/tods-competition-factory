@@ -98,6 +98,52 @@ function findEventByProfile(events, eventProfile) {
   );
 }
 
+function handleExistingEvent({ event, eventProfile, tournamentRecord, allUniqueParticipantIds, drawIds, params }) {
+  const result = processExistingEvent({
+    event,
+    eventProfile: { ...eventProfile, ...params },
+    tournamentRecord,
+    allUniqueParticipantIds,
+    drawIds,
+  });
+  return result;
+}
+
+function handleNewEvent({
+  eventProfile,
+  tournamentRecord,
+  allUniqueParticipantIds,
+  eventIds,
+  drawIds,
+  params,
+  eventIndex,
+}) {
+  const result: any = generateEventWithFlights({
+    startDate: tournamentRecord.startDate,
+    allUniqueParticipantIds,
+    matchUpStatusProfile: params.matchUpStatusProfile,
+    participantsProfile: params.participantsProfile,
+    completeAllMatchUps: params.completeAllMatchUps,
+    autoEntryPositions: params.autoEntryPositions,
+    randomWinningSide: params.randomWinningSide,
+    ratingsParameters: eventProfile.ratingsParameters,
+    tournamentRecord,
+    eventProfile,
+    eventIndex,
+    uuids: params.uuids,
+  });
+  if (result.error) return result;
+
+  const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
+
+  if (generatedDrawIds) drawIds.push(...generatedDrawIds);
+  eventIds.push(eventId);
+
+  if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
+
+  return { eventIndexIncrement: 1 };
+}
+
 function processEventProfiles({ eventProfiles, tournamentRecord, allUniqueParticipantIds, eventIds, drawIds, params }) {
   let eventIndex = tournamentRecord.events?.length || 0;
 
@@ -105,39 +151,27 @@ function processEventProfiles({ eventProfiles, tournamentRecord, allUniquePartic
     const event = findEventByProfile(tournamentRecord.events, eventProfile);
 
     if (event) {
-      const result = processExistingEvent({
+      const result = handleExistingEvent({
         event,
-        eventProfile: { ...eventProfile, ...params },
+        eventProfile,
         tournamentRecord,
         allUniqueParticipantIds,
         drawIds,
+        params,
       });
-      if (result.error) return result;
+      if (result?.error) return result;
     } else {
-      const result: any = generateEventWithFlights({
-        startDate: tournamentRecord.startDate,
-        allUniqueParticipantIds,
-        matchUpStatusProfile: params.matchUpStatusProfile,
-        participantsProfile: params.participantsProfile,
-        completeAllMatchUps: params.completeAllMatchUps,
-        autoEntryPositions: params.autoEntryPositions,
-        randomWinningSide: params.randomWinningSide,
-        ratingsParameters: eventProfile.ratingsParameters,
-        tournamentRecord,
+      const result = handleNewEvent({
         eventProfile,
+        tournamentRecord,
+        allUniqueParticipantIds,
+        eventIds,
+        drawIds,
+        params,
         eventIndex,
-        uuids: params.uuids,
       });
-      if (result.error) return result;
-
-      const { eventId, drawIds: generatedDrawIds, uniqueParticipantIds } = result;
-
-      if (generatedDrawIds) drawIds.push(...generatedDrawIds);
-      eventIds.push(eventId);
-
-      if (uniqueParticipantIds?.length) allUniqueParticipantIds.push(...uniqueParticipantIds);
-
-      eventIndex += 1;
+      if (result?.error) return result;
+      eventIndex += result?.eventIndexIncrement || 1;
     }
   }
 
@@ -184,7 +218,7 @@ function processDrawProfiles({ drawProfiles, tournamentRecord, allUniqueParticip
 }
 
 function applySchedulingProfile({ schedulingProfile, autoSchedule, periodLength, tournamentRecord }) {
-  let scheduledRounds;
+  let scheduledRounds: any = [];
   let schedulerResult = {};
 
   if (schedulingProfile?.length) {
@@ -279,10 +313,10 @@ export function modifyTournamentRecord(params) {
   const venueIds = venueProfiles?.length ? generateVenues({ tournamentRecord, venueProfiles }) : [];
 
   const schedulingResult = applySchedulingProfile({
+    tournamentRecord,
     schedulingProfile,
     autoSchedule,
     periodLength,
-    tournamentRecord,
   });
   if (schedulingResult.error) return schedulingResult;
 

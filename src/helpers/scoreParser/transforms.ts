@@ -97,6 +97,7 @@ export function handleWalkover({ score, applied }) {
 
 export function handleRetired({ score, profile, applied }) {
   score = score?.toString().toLowerCase();
+   
   const re = /^(.*\d+.*)(ret|con)+[A-Za-z ]*$/; // at least one digit
   if (re.test(score)) {
     const [leading] = score.match(re).slice(1);
@@ -125,6 +126,7 @@ export function handleDefaulted({ score, profile, applied }) {
   score = score?.toString().toLowerCase();
 
   // Match patterns like "6-3 3-6 DEF" or "6-3 3-6 DEFAULTED"
+   
   const re = /^(.*\d+.*)(def|defaulted)+[A-Za-z ]*$/; // at least one digit
   if (re.test(score)) {
     const [leading] = score.match(re).slice(1);
@@ -166,6 +168,7 @@ export function removeDanglingBits({ score, attributes }) {
     score = score.slice(0, score.length - 2);
   }
 
+   
   const alphaEnding = /(.*)[A-Za-z]+$/;
   if (alphaEnding.test(score)) {
     const scorePart = score.match(alphaEnding).slice(1)[0];
@@ -218,8 +221,10 @@ export function handleSpaceSeparator({ score }) {
     if (spacedSets)
       score = sets
         .map((set) => {
+           
           const spaceSeparatedDigits = /\d+ \d+/g;
           for (const ssd of set.match(spaceSeparatedDigits)) {
+             
             const [d1, d2] = ssd.match(/(\d+) (\d+)/).slice(1);
             set = set.replace(ssd, `${d1}-${d2}`);
           }

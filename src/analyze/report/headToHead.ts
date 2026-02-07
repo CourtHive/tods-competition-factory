@@ -1,5 +1,5 @@
 import { countGames, countSets } from '@Query/matchUps/roundRobinTally/scoreCounters';
-import { simpleAddition } from '@Functions/reducers/simpleAddition';
+import { accumulate } from '@Functions/reducers/accumulate';
 import { intersection, lengthOrZero } from '@Tools/arrays';
 
 // constants and types
@@ -13,6 +13,7 @@ type ParticipantHeadToHead = {
   participants: [HydratedParticipant, HydratedParticipant];
   mappedMatchUps: { [key: string]: HydratedMatchUp };
 };
+
 export function participantHeadToHead({ mappedMatchUps, participants }: ParticipantHeadToHead): ResultType & {
   h2h?: any;
 } {
@@ -112,13 +113,13 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
         // iterate over outcomes vs. commonOpponent
         opponentOutcome.won?.forEach((matchDetails) => {
           const gamesResult = countGames(matchDetails);
-          const gamesCount = gamesResult.reduce(simpleAddition);
+          const gamesCount = accumulate(gamesResult);
           const gamesWon = gamesResult[matchDetails.winningSide - 1];
           if (gamesCount) totalGamesVsOpponent += gamesCount;
           if (gamesWon) gamesWonVsOpponent += gamesWon;
 
           const setsResult = countSets(matchDetails);
-          const setsCount = setsResult.reduce(simpleAddition);
+          const setsCount = accumulate(setsResult);
           const setsWon = setsResult[matchDetails.winningSide - 1];
           if (setsCount) totalSetsVsOpponent += setsCount;
           if (setsWon) setsWonVsOpponent += setsWon;
@@ -126,20 +127,19 @@ export function participantHeadToHead({ mappedMatchUps, participants }: Particip
 
         opponentOutcome.lost?.forEach((matchDetails) => {
           const gamesResult = countGames(matchDetails);
-          const gamesCount = gamesResult.reduce(simpleAddition);
+          const gamesCount = accumulate(gamesResult);
           const gamesWon = gamesResult[1 - (matchDetails.winningSide - 1)];
           if (gamesCount) totalGamesVsOpponent += gamesCount;
           if (gamesWon) gamesWonVsOpponent += gamesWon;
 
           const setsResult = countSets(matchDetails);
-          const setsCount = setsResult.reduce(simpleAddition);
+          const setsCount = accumulate(setsResult);
           const setsWon = setsResult[1 - (matchDetails.winningSide - 1)];
           if (setsCount) totalSetsVsOpponent += setsCount;
           if (setsWon) setsWonVsOpponent += setsWon;
         });
 
         const matchUpDenominator = matchUpsWon + matchUpsLost;
-        // const matchUpPct = matchUpDenominator ? matchUpsWon / matchUpDenominator : 0;
         const matchUpPct = safePct(matchUpsWon, matchUpDenominator, false);
         const gamesPct = safePct(gamesWonVsOpponent, totalGamesVsOpponent, false);
         const setsPct = safePct(setsWonVsOpponent, totalSetsVsOpponent, false);

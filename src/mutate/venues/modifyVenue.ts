@@ -63,6 +63,100 @@ export function modifyVenue(params: ModifyVenueArgs) {
   return success ? { ...SUCCESS } : { error };
 }
 
+function handleCourtDeletions({
+  venue,
+  modifications,
+  tournamentRecord,
+  venueMatchUps,
+  allowModificationWhenMatchUpsScheduled,
+}: {
+  venue: Venue;
+  modifications: any;
+  tournamentRecord: Tournament;
+  venueMatchUps: any;
+  allowModificationWhenMatchUpsScheduled: boolean;
+}) {
+  const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
+  const courtIdsToModify = modifications.courts?.map((court) => court.courtId) || [];
+  const courtIdsToDelete = courtIdsToModify.length
+    ? existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId))
+    : modifications?.courts && existingCourtIds;
+
+  const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
+  if (courtIdsToDelete?.length) {
+    const courtsToDelete = venue?.courts?.filter((court) => courtIdsToDelete.includes(court.courtId));
+    const scheduleDeletionsCount = courtsToDelete
+      ?.map((court) => {
+        const result = getScheduledCourtMatchUps({
+          courtId: court.courtId,
+          tournamentRecord,
+          venueMatchUps,
+        });
+        for (const matchUp of result.matchUps ?? []) {
+          matchUpsWithCourtId.push({
+            matchUpId: matchUp.matchUpId,
+            drawId: matchUp.drawId,
+          });
+        }
+        return result.matchUps?.length ?? 0;
+      })
+      .reduce((a, b) => a + b);
+    if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
+      venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
+      bulkScheduleTournamentMatchUps({
+        schedule: { courtId: '', scheduledDate: '' },
+        matchUpDetails: matchUpsWithCourtId,
+        removePriorValues: true,
+        tournamentRecord,
+      });
+      return { success: true };
+    } else {
+      return deletionMessage({
+        matchUpsCount: scheduleDeletionsCount,
+      });
+    }
+  }
+  return { success: true };
+}
+
+function handleCourtModifications({
+  modifications,
+  tournamentRecord,
+  venueMatchUps,
+  venueId,
+  force,
+}: {
+  modifications: any;
+  tournamentRecord: Tournament;
+  venueMatchUps: any;
+  venueId: string;
+  force?: boolean;
+}) {
+  if (modifications.courts) {
+    for (const court of modifications.courts) {
+      const { courtId } = court || {};
+      let result = modifyCourt({
+        modifications: court,
+        disableNotice: true,
+        tournamentRecord,
+        venueMatchUps,
+        courtId,
+        force,
+      });
+      if (result?.error === COURT_NOT_FOUND) {
+        result = addCourt({
+          disableNotice: true,
+          tournamentRecord,
+          venueId,
+          court,
+        });
+      }
+      if (result?.error) return result;
+    }
+  }
+  return { success: true };
+}
+
 export function venueModify({ tournamentRecord, modifications, venueId, force }: ModifyVenueArgs): {
   error?: ErrorType;
   success?: boolean;
@@ -88,7 +182,6 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
   if (result.error) return result;
   const venue = result.venue;
 
-  // not valid to modify a venueId
   const validAttributes = Object.keys(venueTemplate()).filter((attribute) => attribute !== 'venueId');
   const validModificationAttributes = Object.keys(modifications).filter((attribute) =>
     validAttributes.includes(attribute),
@@ -96,80 +189,35 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
 
   if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
-  const validReplacements = validAttributes.filter((attribute) => !['courts', 'onlineResources'].includes(attribute));
-
-  const validReplacementAttributes = Object.keys(modifications).filter((attribute) =>
-    validReplacements.includes(attribute),
+  const validReplacements = new Set(
+    validAttributes.filter((attribute) => !['courts', 'onlineResources'].includes(attribute)),
   );
 
-  venue &&
-    validReplacementAttributes.forEach((attribute) => Object.assign(venue, { [attribute]: modifications[attribute] }));
+  const validReplacementAttributes = Object.keys(modifications).filter((attribute) => validReplacements.has(attribute));
 
-  const existingCourtIds = venue?.courts?.map((court) => court.courtId) ?? [];
-  const courtIdsToModify = modifications.courts?.map((court) => court.courtId) || [];
+  if (!venue) return { error: VENUE_NOT_FOUND };
 
-  // courts will be deleted if courts array included in modifications
-  const courtIdsToDelete = courtIdsToModify.length
-    ? existingCourtIds.filter((courtId) => !courtIdsToModify.includes(courtId))
-    : modifications?.courts && existingCourtIds;
+  validReplacementAttributes.forEach((attribute) => Object.assign(venue, { [attribute]: modifications[attribute] }));
 
-  const matchUpsWithCourtId: { matchUpId: string; drawId: string }[] = [];
-  if (courtIdsToDelete?.length) {
-    const courtsToDelete = venue?.courts?.filter((court) => courtIdsToDelete.includes(court.courtId));
-    const scheduleDeletionsCount = courtsToDelete
-      ?.map((court) => {
-        // check whether deleting court would remove schedule from any matchUps
-        const result = getScheduledCourtMatchUps({
-          courtId: court.courtId,
-          tournamentRecord,
-          venueMatchUps,
-        });
-        for (const matchUp of result.matchUps ?? []) {
-          matchUpsWithCourtId.push({
-            matchUpId: matchUp.matchUpId,
-            drawId: matchUp.drawId,
-          });
-        }
-        return result.matchUps?.length ?? 0;
-      })
-      .reduce((a, b) => a + b);
-    if (venue && (!scheduleDeletionsCount || allowModificationWhenMatchUpsScheduled)) {
-      venue.courts = venue.courts?.filter((court) => courtIdsToModify.includes(court.courtId));
-      bulkScheduleTournamentMatchUps({
-        schedule: { courtId: '', scheduledDate: '' },
-        matchUpDetails: matchUpsWithCourtId,
-        removePriorValues: true,
-        tournamentRecord,
-      });
-    } else {
-      return deletionMessage({
-        matchUpsCount: scheduleDeletionsCount,
-      });
-    }
-  }
+  // Handle court deletions
+  const deletionResult = handleCourtDeletions({
+    venue,
+    modifications,
+    tournamentRecord,
+    venueMatchUps,
+    allowModificationWhenMatchUpsScheduled,
+  });
+  if ('error' in deletionResult && deletionResult.error) return deletionResult;
 
-  if (modifications.courts) {
-    for (const court of modifications.courts) {
-      const { courtId } = court || {};
-      let result = modifyCourt({
-        modifications: court,
-        disableNotice: true,
-        tournamentRecord,
-        venueMatchUps,
-        courtId,
-        force,
-      });
-      if (result.error === COURT_NOT_FOUND) {
-        result = addCourt({
-          disableNotice: true,
-          tournamentRecord,
-          venueId,
-          court,
-        });
-      }
-      if (result.error) return result;
-    }
-  }
+  // Handle court modifications/additions
+  const modificationResult = handleCourtModifications({
+    modifications,
+    tournamentRecord,
+    venueMatchUps,
+    venueId,
+    force,
+  });
+  if (modificationResult?.error) return modificationResult;
 
   checkAndUpdateSchedulingProfile({ tournamentRecord });
 

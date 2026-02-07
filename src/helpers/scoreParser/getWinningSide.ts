@@ -2,13 +2,14 @@ export function getWinningSide(score) {
   const setsWon = [0, 0];
   const setWinners: number[] = [];
   const sets = score.split(' ');
+   
   const getSetScores = /(\d+)-(\d+)/;
   sets.forEach((set) => {
     if (getSetScores.test(set)) {
       const setScores = set
         .match(getSetScores)
         .slice(1)
-        .map((s) => parseInt(s));
+        .map((s) => Number.parseInt(s));
       const winningSide = (setScores[0] > setScores[1] && 1) || (setScores[1] > setScores[0] && 2);
       if (winningSide) {
         setsWon[winningSide - 1] += 1;

@@ -23,7 +23,9 @@ export function addPersons({ participantRole = COMPETITOR, tournamentRecord, per
   if (!Array.isArray(persons)) return { error: INVALID_VALUES };
   if (!Object.keys(participantRoles).includes(participantRole)) return { error: INVALID_PARTICIPANT_ROLE };
 
-  const existingPersonIds = (tournamentRecord.participants || []).map(({ person }) => person?.personId).filter(Boolean);
+  const existingPersonIds = new Set(
+    (tournamentRecord.participants || []).map(({ person }) => person?.personId).filter(Boolean),
+  );
 
   const newPersonIds: string[] = [];
 
@@ -32,7 +34,7 @@ export function addPersons({ participantRole = COMPETITOR, tournamentRecord, per
       (person) =>
         person &&
         // don't add a person if their personId is present in tournament.participants
-        (!person.personId || !existingPersonIds.includes(person.personId)),
+        (!person.personId || !existingPersonIds.has(person.personId)),
     )
     .map((person) => {
       if (!person.personId) person.personId = UUID();
@@ -62,7 +64,7 @@ export function addPersons({ participantRole = COMPETITOR, tournamentRecord, per
   );
 
   let addedPairParticipantsCount = 0;
-  let addedIndividualParticipantsCount = 0;
+  let addedIndividualParticipantsCount;
 
   let result = addParticipants({
     participants: individualParticipants,

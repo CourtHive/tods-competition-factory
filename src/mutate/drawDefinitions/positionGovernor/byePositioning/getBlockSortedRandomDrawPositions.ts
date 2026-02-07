@@ -86,7 +86,7 @@ function placeDrawPositions(nestedDrawPositions: any[], drawPositions: number[],
 
 // desiredPosition is provided by strict seed order bye placement
 // when the sides are balanced, side selection is driven by desiredPosition
-/* eslint-disable sonarjs/pseudo-random */
+ 
 function popFromLargerSide(arr, desiredPosition) {
   if (Array.isArray(arr) && arr.length !== 2) return arr.pop();
   if (!Array.isArray(arr[0])) {
@@ -98,7 +98,7 @@ function popFromLargerSide(arr, desiredPosition) {
 
 function handleNonNestedArray(arr, desiredPosition) {
   if (arr.includes(desiredPosition)) return arr.indexOf(desiredPosition) ? arr.pop() : arr.shift();
-  // eslint-disable-next-line sonarjs/pseudo-random
+
   return Math.round(Math.random()) ? arr.pop() : arr.shift();
 }
 
@@ -108,7 +108,7 @@ function handleNestedArray(arr, desiredPosition) {
   if (side1 === side2) {
     const desiredSide = arr[0].flat(Infinity).includes(desiredPosition) ? arr[0] : arr[1];
     if (desiredPosition) return popFromLargerSide(desiredSide, desiredPosition);
-    // eslint-disable-next-line sonarjs/pseudo-random
+
     return popFromLargerSide(arr[Math.round(Math.random())], desiredPosition);
   }
   return side1 < side2 ? popFromLargerSide(arr[1], desiredPosition) : popFromLargerSide(arr[0], desiredPosition);

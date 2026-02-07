@@ -159,7 +159,6 @@ export function conditionallyRemoveDrawPosition(params) {
     (matchUp) => matchUp.matchUpId === targetMatchUp.matchUpId,
   );
 
-  let pairedPreviousDrawPositions = [];
   let pairedPreviousDoubleExit;
   let pairedPreviousMatchUp;
   let drawPositionToRemove;
@@ -170,7 +169,7 @@ export function conditionallyRemoveDrawPosition(params) {
     drawPositionToRemove = nextWinnerDrawPositions?.find((drawPosition) =>
       targetMatchUp.drawPositions.includes(drawPosition),
     );
-  } else if (!sourceMatchUp) {
+  } else if (sourceMatchUp == null) {
     drawPositionToRemove = intersection(
       targetMatchUp?.drawPositions || [],
       nextWinnerMatchUp?.drawPositions || [],
@@ -184,7 +183,7 @@ export function conditionallyRemoveDrawPosition(params) {
 
     pairedPreviousDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(pairedPreviousMatchUp?.matchUpStatus);
 
-    pairedPreviousDrawPositions = pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
+    let pairedPreviousDrawPositions = pairedPreviousMatchUp?.drawPositions?.filter(Boolean) || [];
 
     const pairedPreviousMatchUpComplete =
       [...completedMatchUpStatuses, BYE].includes(pairedPreviousMatchUp?.matchUpStatus) ||

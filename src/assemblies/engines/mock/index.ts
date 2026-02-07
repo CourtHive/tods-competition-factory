@@ -44,37 +44,41 @@ export const mocksEngine = (() => {
   function importGovernors(governors) {
     governors.forEach((governor) => {
       Object.keys(governor).forEach((method) => {
-        engine[method] = (params) => {
-          if (getDevContext()) {
-            const invocationResult = engineInvoke(governor[method], params);
-            if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
-              setState(invocationResult.tournamentRecord);
-            }
-            return invocationResult;
-          } else {
-            try {
-              const invocationResult = engineInvoke(governor[method], params);
-              if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
-                setState(invocationResult.tournamentRecord);
-              }
-              return invocationResult;
-            } catch (err) {
-              let error;
-              if (typeof err === 'string') {
-                error = err.toUpperCase();
-              } else if (err instanceof Error) {
-                error = err.message;
-              }
-              console.log('ERROR', {
-                params: JSON.stringify(params),
-                method,
-                error,
-              });
-            }
-          }
-        };
+        engine[method] = createEngineMethod(governor, method);
       });
     });
+  }
+
+  function createEngineMethod(governor, method) {
+    return (params) => {
+      if (getDevContext()) {
+        const invocationResult = engineInvoke(governor[method], params);
+        if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
+          setState(invocationResult.tournamentRecord);
+        }
+        return invocationResult;
+      } else {
+        try {
+          const invocationResult = engineInvoke(governor[method], params);
+          if (!invocationResult?.error && params?.setState && invocationResult?.tournamentRecord) {
+            setState(invocationResult.tournamentRecord);
+          }
+          return invocationResult;
+        } catch (err) {
+          let error;
+          if (typeof err === 'string') {
+            error = err.toUpperCase();
+          } else if (err instanceof Error) {
+            error = err.message;
+          }
+          console.log('ERROR', {
+            params: JSON.stringify(params),
+            method,
+            error,
+          });
+        }
+      }
+    };
   }
 })();
 

@@ -67,6 +67,7 @@ export function punctuationAdjustments({ score, applied }) {
   });
 
   // remove punctuation-only results
+   
   if (/^[(-/,]+$/.test(score)) {
     score = '';
   }
@@ -144,6 +145,7 @@ export function punctuationAdjustments({ score, applied }) {
   };
   getMissing();
 
+   
   const unclosed = /(\d+-\d+\(\d+)0,/;
   if (unclosed.test(score)) {
     const [setScore] = score.match(unclosed).slice(1);
@@ -237,6 +239,7 @@ export function punctuationAdjustments({ score, applied }) {
     getMissing();
   }
 
+   
   if (noClose && (score.endsWith(9) || /\d+0$/.test(score))) {
     score = score.slice(0, score.length - 1) + ')';
     getMissing();
@@ -297,6 +300,7 @@ export function punctuationAdjustments({ score, applied }) {
     return open >= 0 && close >= 0 && open < close;
   };
 
+   
   if (/^\([\d ]+.*[\d ]+\)$/.test(score) && counts['('] === counts[')']) {
     const proposed = score.slice(1, score.length - 1);
     if (openFirst(proposed)) {

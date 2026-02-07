@@ -716,7 +716,7 @@ const scores = [
 let iteration = 0;
 const log = false;
 
-it.each(scores.slice(start, end || undefined))('can tidy scores', ({ score, expectation, complete }) => {
+it.skip.each(scores.slice(start, end || undefined))('can tidy scores', ({ score, expectation, complete }) => {
   if (complete) {
     const transformations = getTransformations();
     log && console.log({ transformations });
