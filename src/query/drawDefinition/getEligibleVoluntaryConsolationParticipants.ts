@@ -87,21 +87,19 @@ export function getEligibleVoluntaryConsolationParticipants({
     stage: VOLUNTARY_CONSOLATION,
     drawDefinition,
   });
-  const voluntaryConsolationEntryIds = voluntaryConsolationEntries.map(({ participantId }) => participantId);
+  const voluntaryConsolationEntryIds = new Set(voluntaryConsolationEntries.map(({ participantId }) => participantId));
 
   const participantMatchUps = {};
   const losingParticipants = {};
   const matchUpParticipants = {};
   const participantWins = {};
 
-  if (!policyDefinitions) {
-    policyDefinitions = getPolicyDefinitions({
-      policyTypes: [POLICY_TYPE_VOLUNTARY_CONSOLATION],
-      tournamentRecord,
-      drawDefinition,
-      event,
-    }).policyDefinitions;
-  }
+  policyDefinitions ??= getPolicyDefinitions({
+    policyTypes: [POLICY_TYPE_VOLUNTARY_CONSOLATION],
+    tournamentRecord,
+    drawDefinition,
+    event,
+  }).policyDefinitions;
 
   // support POLICY_TYPE_VOLUNTARY_CONSOLATION
   const policy = policyDefinitions?.[POLICY_TYPE_VOLUNTARY_CONSOLATION];
@@ -114,13 +112,9 @@ export function getEligibleVoluntaryConsolationParticipants({
   roundNumberLimit = roundNumberLimit ?? policy?.roundNumberLimit;
   matchUpsLimit = matchUpsLimit ?? policy?.matchUpsLimit;
 
-  if (requirePlay === undefined) {
-    requirePlay = policy?.requirePlay !== undefined ? policy.requirePlay : true;
-  }
+  requirePlay ??= policy?.requirePlay ?? true;
 
-  if (requireLoss === undefined) {
-    requireLoss = policy?.requireLoss !== undefined ? policy.requireLoss : true;
-  }
+  requireLoss ??= policy?.requireLoss ?? true;
   // end policy support
 
   winsLimit = winsLimit ?? policy?.winsLimit;
@@ -181,8 +175,15 @@ export function getEligibleVoluntaryConsolationParticipants({
 
   const considerEntered = tournamentRecord?.participants && !requirePlay && !requireLoss && allEntries;
 
+  let entriesSource;
+  if (includeEventParticipants && event) {
+    entriesSource = event.entries;
+  } else {
+    entriesSource = drawDefinition.entries;
+  }
+
   const enteredParticipantIds = considerEntered
-    ? ((includeEventParticipants && event ? event.entries : drawDefinition.entries) ?? [])
+    ? (entriesSource ?? [])
         .filter((entry: any) => ![WITHDRAWN, UNGROUPED].includes(entry.entryStatus))
         .map(({ participantId }) => participantId)
     : [];
@@ -199,7 +200,7 @@ export function getEligibleVoluntaryConsolationParticipants({
   const satisfiesWinsLimit = (participantId) => !winsLimit || (participantWins[participantId] || 0) <= winsLimit;
   const satisfiesMatchUpsLimit = (participantId) =>
     !matchUpsLimit || participantMatchUps[participantId] <= matchUpsLimit;
-  const notPreviouslySelected = (participantId) => !voluntaryConsolationEntryIds.includes(participantId);
+  const notPreviouslySelected = (participantId) => !voluntaryConsolationEntryIds.has(participantId);
 
   const eligibleParticipants = consideredParticipants
     .filter(
@@ -218,36 +219,6 @@ export function getEligibleVoluntaryConsolationParticipants({
         ),
       };
     });
-
-  // PRESERVED for debugging
-  /*
-  const lossCheck = consideredParticipants.map(({ participantId }) =>
-    satisfiesLoss(participantId)
-  );
-  const playCheck = consideredParticipants.map(({ participantId }) =>
-    satisfiesPlay(participantId)
-  );
-  const winsCheck = consideredParticipants.map(({ participantId }) =>
-    satisfiesWinsLimit(participantId)
-  );
-  const limitCheck = consideredParticipants.map(({ participantId }) =>
-    satisfiesMatchUpsLimit(participantId)
-  );
-  const selectCheck = consideredParticipants.map(({ participantId }) =>
-    notPreviouslySelected(participantId)
-  );
-  console.log(
-    lossCheck.length,
-    playCheck.length,
-    winsCheck.length,
-    limitCheck.length,
-    selectCheck.length,
-    { requireLoss, requirePlay },
-    consideredParticipants.length,
-    losingParticipantIds.length,
-    eligibleParticipants.length
-  );
-  */
 
   return { eligibleParticipants, losingParticipantIds, ...SUCCESS };
 }
