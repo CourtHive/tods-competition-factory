@@ -7,7 +7,7 @@ export function matchKnownPatterns({ score, applied }) {
       const numbers = score
         .match(re)
         .slice(1)
-        .map((n) => Number.parseInt(n));
+        .map((n) => parseInt(n));
       const diff = Math.abs(numbers[0] - numbers[1]);
       if (diff <= 10 && diff >= 2) {
         score = score.split(punctuation).join('-');
@@ -208,7 +208,7 @@ export function matchKnownPatterns({ score, applied }) {
   const spaceSeparatedSetTB = /(^|\s)(\d+-\d+)\s(\d+)(\s|$)/g;
   for (const ssb of score.match(spaceSeparatedSetTB) || []) {
     const [before, setScore, tb, after] = ssb.match(/(^|\s)(\d+-\d+)\s(\d+)(\s|$)/).slice(1);
-    const [s1, s2] = setScore.split('-').map((s) => Number.parseInt(s));
+    const [s1, s2] = setScore.split('-').map((s) => parseInt(s));
     const diff = Math.abs(s1 - s2);
     if (diff === 1) {
       score = score.replace(ssb, `${before}${setScore}(${tb})${after}`);
@@ -220,7 +220,7 @@ export function matchKnownPatterns({ score, applied }) {
   for (const floater of score.match(getFloaters) || []) {
     const getFloater = /(\d-\d) \((\d{1,2})\)(\s|$|,)/;
     const [setScore, tb, tail] = floater.match(getFloater).slice(1);
-    const [s1, s2] = setScore.split('-').map((s) => Number.parseInt(s));
+    const [s1, s2] = setScore.split('-').map((s) => parseInt(s));
     const diff = Math.abs(s1 - s2);
 
     if (diff === 1) {

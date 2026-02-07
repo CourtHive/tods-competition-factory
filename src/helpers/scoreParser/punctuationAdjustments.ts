@@ -67,8 +67,10 @@ export function punctuationAdjustments({ score, applied }) {
   });
 
   // remove punctuation-only results
-  // eslint-disable-next-line no-useless-escape
-  if (/^[\(\-\),\/]+$/.test(score)) {
+  // eslint-disable-next-line sonarjs/duplicates-in-character-class
+  if (/^[(-/,]+$/.test(score)) {
+    // eslint-disable-next-line no-useless-escape
+    // if (/^[\(\-\),\/]+$/.test(score)) {
     score = '';
   }
 
