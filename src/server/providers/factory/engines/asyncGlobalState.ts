@@ -1,4 +1,4 @@
-import { executionAsyncId, createHook } from 'async_hooks';
+import { executionAsyncId, createHook } from 'node:async_hooks';
 import {
   CallListenerArgs,
   GetNoticesArgs,

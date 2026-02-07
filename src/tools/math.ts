@@ -54,6 +54,7 @@ export function nextPowerOf2(n?) {
 export function randomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
+  // eslint-disable-next-line sonarjs/pseudo-random
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
@@ -66,6 +67,7 @@ export function isConvertableInteger(n) {
 export function weightedRandom(max = 1, weight = 3, round = true) {
   let num = 0;
   for (let i = 0; i < weight; i++) {
+    // eslint-disable-next-line sonarjs/pseudo-random
     num += Math.random() * (max / weight);
   }
   return round && max > 1 ? Math.round(num) : num;
@@ -79,7 +81,9 @@ function stepRound(value, step) {
 }
 
 export function skewedDistribution(min: number, max: number, skew: number, step?, significantDecimals = 2) {
+  // eslint-disable-next-line sonarjs/pseudo-random
   const u = 1 - Math.random();
+  // eslint-disable-next-line sonarjs/pseudo-random
   const v = 1 - Math.random();
   let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 

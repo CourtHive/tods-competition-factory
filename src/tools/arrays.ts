@@ -13,10 +13,13 @@ export function noNulls(arr) {
 
 export function shuffleArray(arr) {
   if (!Array.isArray(arr)) return [];
-  return arr
-    .map((a) => [Math.random(), a])
-    .sort((a, b) => a[0] - b[0])
-    .map((a) => a[1]);
+  return (
+    arr
+      // eslint-disable-next-line sonarjs/pseudo-random
+      .map((a) => [Math.random(), a])
+      .sort((a, b) => a[0] - b[0])
+      .map((a) => a[1])
+  );
 }
 
 export function numericSortValue(v) {
@@ -62,10 +65,12 @@ export function uniqueValues(arr) {
 }
 export function randomPop(array) {
   return Array.isArray(array) && array.length
-    ? array.splice(Math.floor(Math.random() * array.length), 1)[0]
+    ? // eslint-disable-next-line sonarjs/pseudo-random
+      array.splice(Math.floor(Math.random() * array.length), 1)[0]
     : undefined;
 }
 export function randomMember(arr) {
+  // eslint-disable-next-line sonarjs/pseudo-random
   const index = Math.floor(Math.random() * arr.length);
   return arr[index];
 }

@@ -14,8 +14,10 @@ import {
 import asyncGlobalState from '../asyncEngine/asyncGlobalState';
 
 const ssp = setStateProvider(asyncGlobalState);
+/*
 // const competitionEngineAsync = competitionEngineAsync();
 // const tournamentEngineAsync = tournamentEngineAsync();
+*/
 
 // NOTE: won't run on vitest > 0.27.3
 it.skip('can setStateProvier', async () => {

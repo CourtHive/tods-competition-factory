@@ -127,6 +127,7 @@ export function generateRoundRobin(params: GenerateRoundRobinArgs) {
 
 function deriveGroups({ appliedPolicies, structureOptions, drawSize }) {
   if (appliedPolicies) {
+    // check for applied policies
   }
 
   let groupSize = structureOptions?.groupSize;
