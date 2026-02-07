@@ -196,7 +196,7 @@ function parseTimedSet(formatstring: string): SetFormat | undefined {
 
   // Parse T{minutes}[P|G|A][/TB{n}]
   // Examples: T10, T10A, T10P/TB1, T10G/TB1
-  const parts = /^(\d+)([PGA])?(?:\/TB(\d+))?(@?[A-Za-z]*)?/.exec(timestring);
+  const parts = /^(\d+)([PGA])?(?:\/TB(\d+))?(@[A-Za-z]+)?$/.exec(timestring);
   const minutes = getNumber(parts?.[1]);
   if (!minutes) return;
 

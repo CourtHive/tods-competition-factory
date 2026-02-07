@@ -15,8 +15,6 @@ export function setBuilder({ score }) {
   };
   resetSet();
 
-  // let tiebreak = '';
-
   const getDiff = () => {
     return set[0] !== undefined && set[1] !== undefined && Math.abs(parseInt(set[0]) - parseInt(set[1]));
   };
@@ -49,7 +47,6 @@ export function setBuilder({ score }) {
       if (twoSetScores && getDiff() === 1) {
         // is a set tiebreak
       }
-      // const diff = getDiff();
     }
   }
 
