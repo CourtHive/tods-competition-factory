@@ -20,6 +20,64 @@ type GetVenuesAndCourtsArgs = {
   venueIds?: string[];
   dates?: string[];
 };
+function shouldIncludeVenue(venue: Venue, venueIds: string[], ignoreDisabled: boolean): boolean {
+  if (venueIds.length && !venueIds.includes(venue.venueId)) return false;
+  if (ignoreDisabled) {
+    const { extension } = findExtension({
+      name: DISABLED,
+      element: venue,
+    });
+    if (extension?.value) return false;
+  }
+  return true;
+}
+
+function processVenue({
+  venue,
+  convertExtensions,
+  ignoreDisabled,
+  dates,
+  uniqueVenueIds,
+  venues,
+  uniqueCourtIds,
+  courts,
+}: {
+  venue: Venue;
+  convertExtensions: boolean | undefined;
+  ignoreDisabled: boolean | undefined;
+  dates: string[] | undefined;
+  uniqueVenueIds: string[];
+  venues: HydratedVenue[];
+  uniqueCourtIds: string[];
+  courts: HydratedCourt[];
+}) {
+  if (!uniqueVenueIds.includes(venue.venueId)) {
+    venues.push(makeDeepCopy(venue, convertExtensions, true));
+    uniqueVenueIds.push(venue.venueId);
+  }
+  for (const court of venue.courts ?? []) {
+    if (!uniqueCourtIds.includes(court.courtId)) {
+      if (ignoreDisabled) {
+        const { extension } = findExtension({
+          name: DISABLED,
+          element: court,
+        });
+        const isDisabled = getDisabledStatus({ extension, dates });
+        if (isDisabled) continue;
+      }
+      const { inContextCourt } = getInContextCourt({
+        convertExtensions,
+        ignoreDisabled,
+        venue,
+        court,
+      });
+
+      courts.push(inContextCourt);
+      uniqueCourtIds.push(court.courtId);
+    }
+  }
+}
+
 export function getVenuesAndCourts(params: GetVenuesAndCourtsArgs): ResultType & {
   venues?: HydratedVenue[];
   courts?: HydratedCourt[];
@@ -49,40 +107,17 @@ export function getVenuesAndCourts(params: GetVenuesAndCourtsArgs): ResultType &
   tournamentIds.forEach((tournamentId) => {
     const tournamentRecord = tournamentRecords[tournamentId];
     for (const venue of tournamentRecord.venues ?? []) {
-      if (venueIds.length && !venueIds.includes(venue.venueId)) continue;
-      if (ignoreDisabled) {
-        const { extension } = findExtension({
-          name: DISABLED,
-          element: venue,
-        });
-        if (extension?.value) continue;
-      }
-      if (!uniqueVenueIds.includes(venue.venueId)) {
-        venues.push(makeDeepCopy(venue, convertExtensions, true));
-        uniqueVenueIds.push(venue.venueId);
-      }
-      for (const court of venue.courts ?? []) {
-        if (!uniqueCourtIds.includes(court.courtId)) {
-          // if dates are provided, only ignore the court if it is disabled for all given dates
-          if (ignoreDisabled) {
-            const { extension } = findExtension({
-              name: DISABLED,
-              element: court,
-            });
-            const isDisabled = getDisabledStatus({ extension, dates });
-            if (isDisabled) continue;
-          }
-          const { inContextCourt } = getInContextCourt({
-            convertExtensions,
-            ignoreDisabled,
-            venue,
-            court,
-          });
-
-          courts.push(inContextCourt);
-          uniqueCourtIds.push(court.courtId);
-        }
-      }
+      if (!shouldIncludeVenue(venue, venueIds, !!ignoreDisabled)) continue;
+      processVenue({
+        venue,
+        convertExtensions,
+        ignoreDisabled,
+        dates,
+        uniqueVenueIds,
+        venues,
+        uniqueCourtIds,
+        courts,
+      });
     }
   });
 
