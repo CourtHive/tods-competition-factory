@@ -275,8 +275,6 @@ export function modifyCollectionDefinition({
     modifications.push({ collectionId, matchUpCount });
   }
   if (matchUpType && sourceCollectionDefinition.matchUpType !== matchUpType) {
-    // targetCollectionDefinition.matchUpType = matchUpType;
-    // modifications.push({ collectionId, matchUpType });
     return decorateResult({
       result: { error: NOT_IMPLEMENTED },
       context: { matchUpType },

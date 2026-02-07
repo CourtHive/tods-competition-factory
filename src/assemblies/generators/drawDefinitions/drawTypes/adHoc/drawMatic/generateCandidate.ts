@@ -133,7 +133,7 @@ function roundCandidate({
   actorsCount,
 }: RoundCandiateArgs) {
   // roundPlayers starts with the stipulated pairing
-  const roundPlayers: any[] = [].concat(...stipulated);
+  const roundPlayers: any[] = stipulated.flat();
 
   // aggregates the pairings generated for a roundCandidate
   const participantIdPairings: any[] = [];
@@ -182,7 +182,7 @@ function roundCandidate({
     const [p1, p2] = c.participantIds;
     const hash = pairingHash(p1, p2);
     const delta = deltaObjects[hash];
-    return delta > p ? delta : p;
+    return Math.max(delta, p);
   }, 0);
 
   // determine the greatest diff in the candidate's pairings
@@ -190,7 +190,7 @@ function roundCandidate({
     const [p1, p2] = c.participantIds;
     const hash = pairingHash(p1, p2);
     const diff = valueObjects[hash];
-    return diff > p ? diff : p;
+    return Math.max(diff, p);
   }, 0);
 
   return { value: candidateValue, participantIdPairings, maxDelta, maxDiff };
