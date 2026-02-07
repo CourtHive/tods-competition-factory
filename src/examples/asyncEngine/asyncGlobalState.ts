@@ -1,4 +1,4 @@
-import { executionAsyncId, createHook } from 'async_hooks';
+import { executionAsyncId, createHook } from 'node:async_hooks';
 
 const MISSING_TOURNAMENT_RECORD = 'Missing Tournament Record';
 const INVALID_VALUES = 'Invalid values';

@@ -8,7 +8,7 @@ export function properTiebreak({ score, matchUpStatus }) {
       if (part.endsWith(']')) {
         const setScores = part.split('[');
         if (isDiffOne(setScores[0])) {
-          return setScores[0] + `(${setScores[1].slice(0, setScores[1].length - 1)})`;
+          return setScores[0] + `(${setScores[1].slice(0, -1)})`;
         }
       }
       return part;
@@ -16,12 +16,11 @@ export function properTiebreak({ score, matchUpStatus }) {
     .join(' ');
 
   const tb = new RegExp(/(\([\d ]+\))/g);
-  // const tb = new RegExp(/(\([\d+ ]+\))/g);
   if (tb.test(score)) {
     // handle tiebreak score which has no delimiter
     for (const t of score.match(tb)) {
       const replacement = t.replace(' ', '-');
-      // score = score.replace(t, replacement);
+      // eslint-disable-next-line sonarjs/slow-regex
       let tiebreakScore = replacement.match(/\((.*)\)/)?.[1];
       if (isNumeric(tiebreakScore) && tiebreakScore?.[0] > 2) {
         if ([2, 4].includes(tiebreakScore.length)) {
@@ -90,7 +89,7 @@ export function properTiebreak({ score, matchUpStatus }) {
     .map((part) => {
       if (re.test(part)) {
         const [lowTiebreakScore] = part.match(re).slice(1);
-        const hightiebreakScore = lowTiebreakScore < 9 ? 10 : parseInt(lowTiebreakScore) + 2;
+        const hightiebreakScore = lowTiebreakScore < 9 ? 10 : Number.parseInt(lowTiebreakScore) + 2;
         return `[${hightiebreakScore}-${lowTiebreakScore}]`;
       }
       return part;

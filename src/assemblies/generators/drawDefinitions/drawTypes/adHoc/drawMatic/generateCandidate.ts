@@ -82,6 +82,7 @@ export function generateCandidate({
 
           if (
             value < lowCandidateValue ||
+            // eslint-disable-next-line sonarjs/pseudo-random
             (value === lowCandidateValue && Math.round(Math.random())) // randomize if equivalent values
           ) {
             lowCandidateValue = value;
@@ -152,14 +153,13 @@ function roundCandidate({
 
   // valueSortedPairings is an array sorted from lowest value to highest value
   // introduce random shuffling of chunks of valueSortedPairings
-  const consideredPairings = chunkArray(valueSortedPairings, actorsCount)
-    .map((pairings) =>
-      shuffleArray(pairings).map((pairing) => ({
-        ...pairing,
-        value: pairing.value + Math.random() * Math.round(Math.random()),
-      })),
-    )
-    .flat();
+  const consideredPairings = chunkArray(valueSortedPairings, actorsCount).flatMap((pairings) =>
+    shuffleArray(pairings).map((pairing) => ({
+      ...pairing,
+      // eslint-disable-next-line sonarjs/pseudo-random
+      value: pairing.value + Math.random() * Math.round(Math.random()),
+    })),
+  );
 
   // go through the valueSortedPairings (of all possible unique pairings)
   consideredPairings.forEach((rankedPairing) => {

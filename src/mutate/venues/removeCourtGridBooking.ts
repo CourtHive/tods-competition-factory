@@ -4,15 +4,11 @@ import { addNotice } from '@Global/state/globalState';
 import { findCourt } from '@Query/venues/findCourt';
 
 // constants and types
-import { Tournament } from '@Types/tournamentTypes';
+import { INVALID_VALUES, COURT_NOT_FOUND, BOOKING_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { MODIFY_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { Tournament } from '@Types/tournamentTypes';
 import { ResultType } from '@Types/factoryTypes';
-import {
-  INVALID_VALUES,
-  COURT_NOT_FOUND,
-  BOOKING_NOT_FOUND,
-} from '@Constants/errorConditionConstants';
 
 type RemoveCourtGridBookingArgs = {
   tournamentRecord: Tournament;
@@ -24,17 +20,11 @@ type RemoveCourtGridBookingArgs = {
 
 /**
  * Removes a grid-based booking from a court.
- * 
+ *
  * @param courtOrder - The grid row number where the booking starts (1-based)
  */
 export function removeCourtGridBooking(params: RemoveCourtGridBookingArgs): ResultType & { booking?: any } {
-  const {
-    tournamentRecord,
-    disableNotice,
-    scheduledDate,
-    courtOrder,
-    courtId,
-  } = params;
+  const { tournamentRecord, disableNotice, scheduledDate, courtOrder, courtId } = params;
 
   // Validate required parameters
   if (!tournamentRecord) {
@@ -65,7 +55,7 @@ export function removeCourtGridBooking(params: RemoveCourtGridBookingArgs): Resu
 
   // Get dateAvailability for the specified date
   const courtDate = getCourtDateAvailability({ court, date: scheduledDate });
-  
+
   if (!courtDate?.bookings) {
     return decorateResult({
       result: { error: BOOKING_NOT_FOUND },
@@ -74,9 +64,7 @@ export function removeCourtGridBooking(params: RemoveCourtGridBookingArgs): Resu
   }
 
   // Find and remove the booking with the specified courtOrder
-  const bookingIndex = courtDate.bookings.findIndex(
-    (b: any) => b.courtOrder === courtOrder,
-  );
+  const bookingIndex = courtDate.bookings.findIndex((b: any) => b.courtOrder === courtOrder);
 
   if (bookingIndex === -1) {
     return decorateResult({

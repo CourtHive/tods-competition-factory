@@ -46,18 +46,6 @@ export function getCompetitionParticipants(params): ResultType & {
     Object.assign(derivedEventInfo, eventInfo);
     Object.assign(derivedDrawInfo, drawInfo);
 
-    /*
-    // fits the use case where participantIds are equivalent to personIds
-    for (const tournamentParticipant of tournamentParticipants ?? []) {
-      const { participantId } = tournamentParticipant;
-      if (!participantMap[participantId]) {
-        participantMap[participantId] = tournamentParticipant;
-      } else {
-        // merge participant record context across tournaments
-        participantMap[participantId] = deepMerge(tournamentParticipant, participantMap[participantId], true);
-      }
-    }
-    */
     participants.push(...(tournamentParticipants ?? []));
     matchUps.push(...(tournamentMatchUps ?? []));
 

@@ -126,8 +126,7 @@ export function getValidQualifiersAction({
             return results ? { participantId, groupOrder: results?.groupOrder } : {};
           })
           .filter(
-            ({ groupOrder, participantId }) =>
-              groupOrder === 1 && !assignedParticipantIds.includes(participantId),
+            ({ groupOrder, participantId }) => groupOrder === 1 && !assignedParticipantIds.includes(participantId),
           )
           .map(({ participantId }) => participantId) ?? [];
 

@@ -29,7 +29,7 @@ export function joinFloatingTiebreak({ score }) {
   let lastIndex = 0;
   let joinedScore = '';
   for (const floatingTiebreak of floatingTiebreaks) {
-    const thisIndex = arrayIndices(floatingTiebreak, parts).filter((index) => !lastIndex || index > lastIndex)[0];
+    const thisIndex = arrayIndices(floatingTiebreak, parts).find((index) => !lastIndex || index > lastIndex);
     const leading = parts.slice(lastIndex, thisIndex - 1);
     const prior = parts[thisIndex - 1];
     const stripped = strip(prior);
@@ -92,7 +92,7 @@ export function joinFloatingTiebreak({ score }) {
     const re = new RegExp(/^(\d+)-(\d+)$/); // only consider sets which have no existing tiebreak score
     if (re.test(part)) {
       const [n1, n2] = part.match(re).slice(1);
-      const diff = Math.abs([n1, n2].reduce((a, b) => +a - +b));
+      const diff = Math.abs([n1, n2].reduce((a, b) => +a - +b, 0));
       const max = Math.max(n1, n2);
       if (diff === 1) {
         lastSet = 'tiebreakSet';
@@ -120,6 +120,7 @@ export function joinFloatingTiebreak({ score }) {
     score = joinedParts.trim();
   }
 
+  // eslint-disable-next-line sonarjs/slow-regex
   const setCheck = /(\d+-\d+)\((\d+)-(\d+)\)$/;
   if (setCheck.test(score)) {
     const [setScore, t1, t2] = score.match(setCheck).slice(1);

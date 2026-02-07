@@ -123,7 +123,7 @@ export function handleRetired({ score, profile, applied }) {
 
 export function handleDefaulted({ score, profile, applied }) {
   score = score?.toString().toLowerCase();
-  
+
   // Match patterns like "6-3 3-6 DEF" or "6-3 3-6 DEFAULTED"
   const re = /^(.*\d+.*)(def|defaulted)+[A-Za-z ]*$/; // at least one digit
   if (re.test(score)) {
@@ -133,8 +133,8 @@ export function handleDefaulted({ score, profile, applied }) {
   }
 
   const providerDefaulted = profile?.matchUpStatuses?.defaulted;
-  const additionalDefaulted = Array.isArray(providerDefaulted) 
-    ? providerDefaulted 
+  const additionalDefaulted = Array.isArray(providerDefaulted)
+    ? providerDefaulted
     : [providerDefaulted].filter(Boolean);
 
   // accommodate other variations
