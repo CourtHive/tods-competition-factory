@@ -60,7 +60,7 @@ export function getGroupOrder(params) {
   const {
     requireCompletion = true, // no order is provided unless all opponents have completed their matchUps
     participantResults, // { participantId: { matchUpsWon, matchUpsLost, matchUpsCancelled, ... } }
-    subOrderMap, // { participantId: subOrder }
+    subOrderMap,
     tallyPolicy, // array of attributes to use for tie-breaking
   } = params;
 
@@ -96,7 +96,7 @@ export function getGroupOrder(params) {
 
   // tally groups are participants grouped by the attribute
   const sortedTallyGroups = Object.keys(orderedTallyGroups)
-    .map((key) => parseFloat(key))
+    .map((key) => Number.parseFloat(key))
     .sort((a, b) => b - a)
     .map((key) => orderedTallyGroups[key]);
 
@@ -110,9 +110,9 @@ export function getGroupOrder(params) {
   // subGroup is used to determine the order of groups of participants when there are no resolutions
   // e.g. [[resolved, unresolved, unresolved, unresolved], [resolved, unresolved, unresolved, unresolved]]
   // in the above example the order would be [1, 2, 2, 2, 5, 6, 6, 6]
-  const groupOrder = sortedOrder
-    .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
-    .flat();
+  const groupOrder = sortedOrder.flatMap((order, oi) =>
+    order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })),
+  );
 
   let lastSubGroup;
   let subGroupCount = 0;
@@ -132,7 +132,7 @@ export function getGroupOrder(params) {
     // update prior position resolution
     priorPositionResolution = finishingPosition.resolved;
 
-    const subGroup = parseInt(finishingPosition.subGroup?.join('') || 0);
+    const subGroup = Number.parseInt(finishingPosition.subGroup?.join('') || 0);
 
     if (finishingPosition.resolved) {
       // if a position is resolved, position is index + 1
@@ -232,7 +232,7 @@ function processAttribute({
   if (Object.keys(groups).length > 1 && participantIds.length) {
     // separation by attribute was successful
     const sortedTallyGroups = Object.keys(groups)
-      .map((key) => parseFloat(key))
+      .map((key) => Number.parseFloat(key))
       .sort((a, b) => (reversed ? a - b : b - a))
       .map((key) => groups[key]);
 
@@ -249,9 +249,9 @@ function processAttribute({
       return result.order;
     });
 
-    order = sortedOrder
-      .map((order, oi) => order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })))
-      .flat();
+    order = sortedOrder.flatMap((order, oi) =>
+      order.map((o) => (o.resolved ? o : { ...o, subGroup: [oi].concat(...(o.subGroup ?? [])) })),
+    );
   }
 
   return { order, report };

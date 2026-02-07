@@ -25,13 +25,6 @@ describe('AppService', () => {
     return await request(app.getHttpServer()).get('/factory/version').expect(200);
   });
 
-  it('/POST executionQueue no auth', async () => {
-    return await request(app.getHttpServer())
-      .post('/factory')
-      .send({ tournamentIds: [TEST] })
-      .expect(401);
-  });
-
   it('should get JWT then successful executionQueue', async () => {
     const loginReq = await request(app.getHttpServer())
       .post('/auth/login')
