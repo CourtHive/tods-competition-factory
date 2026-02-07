@@ -32,6 +32,8 @@ export function getStructureReports(params: GetStructureReportsArgs) {
   const eventStructureReports = {};
   const flightReports: any[] = [];
 
+  const filteStructreManipulations = (structureId) => (action) => action.structureId === structureId;
+
   const extensionValues = Object.assign(
     {},
     ...(extensionProfiles ?? []).map(({ name, label, accessor }) => {
@@ -189,7 +191,7 @@ export function getStructureReports(params: GetStructureReportsArgs) {
                 const tieFormatDesc = s.tieFormat && !equivalentTieFormatDesc && structureTieFormatDesc;
 
                 const manipulations =
-                  positionManipulations?.filter((action) => action.structureId === s.structureId)?.length ?? 0;
+                  positionManipulations?.filter(filteStructreManipulations(s.structureId))?.length ?? 0;
 
                 return {
                   ...extensionValues,
