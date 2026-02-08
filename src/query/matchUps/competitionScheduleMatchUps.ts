@@ -148,7 +148,7 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
     }
   }
 
-  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, groupInfo, mappedParticipants } =
+  const { completedMatchUps, upcomingMatchUps, pendingMatchUps, abandonedMatchUps, groupInfo, mappedParticipants } =
     getCompetitionMatchUps({
       ...params,
       matchUpFilters: params.matchUpFilters,
@@ -230,7 +230,9 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
   return { ...result, ...SUCCESS };
 
   function getCourtMatchUps({ courtId }) {
-    const matchUpsToConsider = courtCompletedMatchUps ? dateMatchUps.concat(completedMatchUps ?? []) : dateMatchUps;
+    const matchUpsToConsider = courtCompletedMatchUps 
+      ? dateMatchUps.concat(completedMatchUps ?? [], abandonedMatchUps ?? [])
+      : dateMatchUps;
     const courtMatchUps = matchUpsToConsider.filter(
       (matchUp) =>
         matchUp.schedule?.courtId === courtId ||

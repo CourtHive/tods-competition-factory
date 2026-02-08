@@ -16,7 +16,7 @@ export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: Sc
   };
 
   if (schedulingProfile?.length) {
-    const roundsGroupings = schedulingProfile.map(({ venues }) => venues.map(({ rounds }) => rounds)).flat();
+    const roundsGroupings = schedulingProfile.flatMap(({ venues }) => venues.map(({ rounds }) => rounds));
 
     roundsGroupings.forEach((grouping) => {
       const sortedRounds = grouping.sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
