@@ -28,7 +28,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.9.10
-        version: 0.9.22
+        version: 0.9.23
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2308,8 +2308,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.22:
-    resolution: {integrity: sha512-CI8h2Wet5n7sAfv5w+AO1tlnTOsjN3beEfsMdmVBevV8uA3+x05eAIXk4fSEBdl7WJfiaeg0aAX232Kxp1OYVw==}
+  courthive-components@0.9.23:
+    resolution: {integrity: sha512-KAPHzMrADhgbzsukgr6RzUwVlq9yvNdnEivFe2WW+zRqF0MhgSJbnvXebmuwF8ck1Y/8OrLcJjJ1rZm/diDpSg==}
     engines: {node: '>=20.19.0 < 25'}
 
   cross-spawn@7.0.6:
@@ -4917,6 +4917,10 @@ packages:
 
   tods-competition-factory@2.3.10:
     resolution: {integrity: sha512-5TaCD3p332U6EObPJGrsJ+EitCXPdYemVH85vNrOfMLnWiBiMEJMlkGFjfRBOKc2rOT4lY+k7yFa2QkLUMJ+LQ==}
+    engines: {node: '>=20'}
+
+  tods-competition-factory@2.3.11:
+    resolution: {integrity: sha512-Tab91JyvSb2aBf1rgvqEZcXXgusAYJ9GfHIxt91L+a7jMp2h+sPDErsZ02qPXxxcG3xNBwGcZA8ovB5YZ4eBnw==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -8548,7 +8552,7 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
 
-  courthive-components@0.9.22:
+  courthive-components@0.9.23:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
@@ -8560,7 +8564,7 @@ snapshots:
       dayjs: 1.11.19
       focus-trap: 8.0.0
       tippy.js: 6.3.7
-      tods-competition-factory: 2.3.10
+      tods-competition-factory: 2.3.11
       vanillajs-datepicker: 1.3.4
 
   cross-spawn@7.0.6:
@@ -11687,6 +11691,8 @@ snapshots:
       is-number: 7.0.0
 
   tods-competition-factory@2.3.10: {}
+
+  tods-competition-factory@2.3.11: {}
 
   toidentifier@1.0.1: {}
 
