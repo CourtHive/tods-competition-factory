@@ -43,7 +43,7 @@ export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: Sc
   }
 
   // this works because all dates are strings and 'noScheduledDate' sorts to last after numeric strings
-  const sortedDateKeys = Object.keys(dateGroups).sort();
+  const sortedDateKeys = Object.keys(dateGroups).sort((a, b) => a.localeCompare(b));
 
   // 2. For each date group, sort all matchUps by time
   for (const scheduledDate of sortedDateKeys) {
@@ -67,7 +67,7 @@ export function scheduledSortedMatchUps({ schedulingProfile, matchUps = [] }: Sc
     }
 
     // this works because all times are strings '00:00' and 'noScheduledTime' sorts to last after numeric strings
-    const sortedTimeKeys = Object.keys(timeGroups).sort();
+    const sortedTimeKeys = Object.keys(timeGroups).sort((a, b) => a.localeCompare(b));
 
     // 3. for each time group, sort all matchUps by hash values derived from rounds group order
     for (const scheduledTime of sortedTimeKeys) {
