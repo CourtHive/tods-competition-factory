@@ -23,10 +23,9 @@ import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
-  ABANDONED,
-  BYE,
   CANCELLED,
   COMPLETED,
+  completedMatchUpStatuses,
   DEFAULTED,
   DOUBLE_DEFAULT,
   DOUBLE_WALKOVER,
@@ -62,13 +61,14 @@ export function getDrawData(params): {
 
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
-  const drawInfo: any = (({ matchUpFormat, updatedAt, drawType, drawName, drawId }) => ({
+  const { matchUpFormat, updatedAt, drawType, drawName, drawId } = drawDefinition;
+  const drawInfo: any = {
     matchUpFormat,
     updatedAt,
     drawName,
     drawType,
     drawId,
-  }))(drawDefinition);
+  };
 
   drawInfo.display = findExtension({ element: drawDefinition, name: DISPLAY }).extension?.value;
 
@@ -126,7 +126,7 @@ export function getDrawData(params): {
 
         const { matchUps, roundMatchUps, roundProfile } = getAllStructureMatchUps({
           // only propagate seedAssignments where none are present
-          seedAssignments: !structure?.seedAssignments?.length ? seedAssignments : undefined,
+          seedAssignments: structure?.seedAssignments?.length ? undefined : seedAssignments,
           context: { drawId: drawInfo.drawId, ...context },
           hydrateParticipants: params.hydrateParticipants,
           participantsProfile: params.participantsProfile,
@@ -189,13 +189,13 @@ export function getDrawData(params): {
         }
 
         const structureInfo: any = structure
-          ? (({ stageSequence, structureName, structureType, matchUpFormat, stage }) => ({
-              stageSequence,
-              structureName,
-              structureType,
-              matchUpFormat,
-              stage,
-            }))(structure)
+          ? {
+              stageSequence: structure.stageSequence,
+              structureName: structure.structureName,
+              structureType: structure.structureType,
+              matchUpFormat: structure.matchUpFormat,
+              stage: structure.stage,
+            }
           : {};
 
         const displaySettings = findExtension({ element: structure, name: DISPLAY }).extension?.value;
@@ -205,7 +205,7 @@ export function getDrawData(params): {
         structureInfo.positionAssignments = positionAssignments;
 
         structureInfo.structureActive = matchUps.reduce((active, matchUp) => {
-          const activeMatchUpStatus = [
+          const structureActiveStatuses = [
             DOUBLE_WALKOVER,
             DOUBLE_DEFAULT,
             IN_PROGRESS,
@@ -215,11 +215,11 @@ export function getDrawData(params): {
             RETIRED,
             WALKOVER,
           ].includes(matchUp.matchUpStatus);
-          return active || activeMatchUpStatus || !!matchUp.winningSide || !!matchUp.score?.scoreStringSide1;
+          return active || structureActiveStatuses || !!matchUp.winningSide || !!matchUp.score?.scoreStringSide1;
         }, false);
 
         const structureCompleted = matchUps.reduce((completed, matchUp) => {
-          return completed && [BYE, COMPLETED, RETIRED, WALKOVER, DEFAULTED, ABANDONED].includes(matchUp.matchUpStatus);
+          return completed && completedMatchUpStatuses.includes(matchUp.matchUpStatus);
         }, !!matchUps.length);
         structureInfo.structureCompleted = structureCompleted;
         completedStructures[structureId] = structureCompleted;
