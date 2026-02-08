@@ -542,7 +542,7 @@ Keep `proConflictDetection: true` (default) when:
 - **Interactive scheduling**: Tournament directors manually dragging/dropping matches
 - **Single-user applications**: No concurrent scheduling conflicts possible
 - **Critical operations**: Scheduling that must not fail silently
-- **Small tournaments**: Performance impact negligible (<500 matchUps)
+- **Small tournaments**: Performance impact negligible (fewer than 500 matchUps)
 - **No client validation**: Server is the source of truth
 
 ### Using proConflicts() for Analysis
