@@ -28,7 +28,7 @@ importers:
         version: 2.1.1
       courthive-components:
         specifier: ^0.9.10
-        version: 0.9.21
+        version: 0.9.22
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -2308,8 +2308,8 @@ packages:
       typescript:
         optional: true
 
-  courthive-components@0.9.21:
-    resolution: {integrity: sha512-lei4NPf+Abx0PqTaPQlWSv3WYWiAyMql+XkU/cB3cFaZxPpsJO4WEMgmSi5TG+SFVdgLz0OCfsD0zNcNoag75g==}
+  courthive-components@0.9.22:
+    resolution: {integrity: sha512-CI8h2Wet5n7sAfv5w+AO1tlnTOsjN3beEfsMdmVBevV8uA3+x05eAIXk4fSEBdl7WJfiaeg0aAX232Kxp1OYVw==}
     engines: {node: '>=20.19.0 < 25'}
 
   cross-spawn@7.0.6:
@@ -8548,7 +8548,7 @@ snapshots:
       parse-json: 5.2.0
       path-type: 4.0.0
 
-  courthive-components@0.9.21:
+  courthive-components@0.9.22:
     dependencies:
       '@stitches/core': 1.2.8
       awesomplete: 1.1.7
