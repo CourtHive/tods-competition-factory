@@ -39,8 +39,8 @@ importers:
         specifier: 0.20.0
         version: 0.20.0(@types/react@18.3.28)(react@18.3.1)
       tods-competition-factory:
-        specifier: 2.3.11
-        version: 2.3.11
+        specifier: 2.3.12
+        version: 2.3.12
 
 packages:
 
@@ -4915,12 +4915,12 @@ packages:
     resolution: {integrity: sha512-65P7iz6X5yEr1cwcgvQxbbIw7Uk3gOy5dIdtZ4rDveLqhrdJP+Li/Hx6tyK0NEb+2GCyneCMJiGqrADCSNk8sQ==}
     engines: {node: '>=8.0'}
 
-  tods-competition-factory@2.3.10:
-    resolution: {integrity: sha512-5TaCD3p332U6EObPJGrsJ+EitCXPdYemVH85vNrOfMLnWiBiMEJMlkGFjfRBOKc2rOT4lY+k7yFa2QkLUMJ+LQ==}
-    engines: {node: '>=20'}
-
   tods-competition-factory@2.3.11:
     resolution: {integrity: sha512-Tab91JyvSb2aBf1rgvqEZcXXgusAYJ9GfHIxt91L+a7jMp2h+sPDErsZ02qPXxxcG3xNBwGcZA8ovB5YZ4eBnw==}
+    engines: {node: '>=20'}
+
+  tods-competition-factory@2.3.12:
+    resolution: {integrity: sha512-eyjuvK+PKEuqo9hoO7qXSiYqwG8IPH8NCrzqvQTSH6PI23uMfGv8YosbdSJqyBJ8vrBanqd76TEcE1+D/BXUkw==}
     engines: {node: '>=20'}
 
   toidentifier@1.0.1:
@@ -11690,9 +11690,9 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  tods-competition-factory@2.3.10: {}
-
   tods-competition-factory@2.3.11: {}
+
+  tods-competition-factory@2.3.12: {}
 
   toidentifier@1.0.1: {}
 
