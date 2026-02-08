@@ -75,7 +75,404 @@ type PositionActionsArgs = {
 /**
  * Calculates the valid actions for a draw position based on the provided parameters.
  */
+// Helper functions to reduce complexity
+function getUnassignedParticipantIds(stageEntries, stageAssignedParticipantIds) {
+  return stageEntries
+    .filter((entry) => !stageAssignedParticipantIds.includes(entry.participantId))
+    .map((entry) => entry.participantId);
+}
+
+function addAssignmentActions({
+  validActions,
+  policyActions,
+  isActiveDrawPosition,
+  positionAssignments,
+  disablePlacementActions,
+  positionAssignment,
+  isByePosition,
+  getValidAssignmentActions,
+  positionSourceStructureIds,
+  unassignedParticipantIds,
+  possiblyDisablingAction,
+  isWinRatioFedStructure,
+  tournamentParticipants,
+  returnParticipants,
+  appliedPolicies,
+  drawDefinition,
+  drawPosition,
+  structureId,
+  event,
+}) {
+  if (
+    isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
+    !isActiveDrawPosition &&
+    positionAssignments &&
+    !disablePlacementActions &&
+    (!positionAssignment || isByePosition)
+  ) {
+    const { validAssignmentActions } = getValidAssignmentActions({
+      positionSourceStructureIds,
+      unassignedParticipantIds,
+      possiblyDisablingAction,
+      isWinRatioFedStructure,
+      tournamentParticipants,
+      positionAssignments,
+      returnParticipants,
+      appliedPolicies,
+      drawDefinition,
+      isByePosition,
+      drawPosition,
+      structureId,
+      event,
+    });
+    validAssignmentActions?.forEach((action) => validActions.push(action));
+  }
+}
+
+function addQualifyingActions({
+  validActions,
+  policyActions,
+  isActiveDrawPosition,
+  getValidQualifiersAction,
+  drawPositionInitialRounds,
+  tournamentParticipants,
+  positionAssignments,
+  returnParticipants,
+  appliedPolicies,
+  drawDefinition,
+  drawPosition,
+  structureId,
+  drawId,
+}) {
+  if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT }) && !isActiveDrawPosition) {
+    const { validAssignmentActions } = getValidQualifiersAction({
+      drawPositionInitialRounds,
+      tournamentParticipants,
+      positionAssignments,
+      returnParticipants,
+      appliedPolicies,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      drawId,
+    });
+    validAssignmentActions?.forEach((action) => validActions.push(action));
+  }
+}
+
+function addRemoveAssignmentActions({
+  validActions,
+  policyActions,
+  isActiveDrawPosition,
+  drawId,
+  structureId,
+  drawPosition,
+  possiblyDisablingAction,
+  isByePosition,
+}) {
+  if (isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) && !isActiveDrawPosition) {
+    validActions.push({
+      type: REMOVE_ASSIGNMENT,
+      method: REMOVE_ASSIGNMENT_METHOD,
+      payload: { drawId, structureId, drawPosition },
+      willDisableLinks: possiblyDisablingAction,
+    });
+
+    if (!isByePosition) {
+      validActions.push({
+        type: WITHDRAW_PARTICIPANT,
+        method: WITHDRAW_PARTICIPANT_METHOD,
+        payload: { drawId, structureId, drawPosition },
+        willDisableLinks: possiblyDisablingAction,
+      });
+    }
+
+    if (isAvailableAction({ policyActions, action: ASSIGN_BYE }) && !isByePosition) {
+      validActions.push({
+        type: ASSIGN_BYE,
+        method: REMOVE_ASSIGNMENT_METHOD,
+        payload: { drawId, structureId, drawPosition, replaceWithBye: true },
+        willDisableLinks: possiblyDisablingAction,
+      });
+    }
+  }
+}
+
+function addSeedActions({
+  validActions,
+  policyActions,
+  activePositionsCheck,
+  activePositionOverrides,
+  activeDrawPositions,
+  drawDefinition,
+  structureId,
+  drawPosition,
+  structure,
+  isByePosition,
+  participantId,
+  participant,
+  drawId,
+}) {
+  const validToAssignSeed =
+    structure.stage === QUALIFYING || (structure.stage === MAIN && structure.stageSequence === 1);
+
+  if (
+    !isByePosition &&
+    activePositionsCheck({
+      activePositionOverrides,
+      activeDrawPositions,
+      action: SEED_VALUE,
+    }) &&
+    isAvailableAction({ policyActions, action: SEED_VALUE }) &&
+    isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+    validToAssignSeed
+  ) {
+    const { seedAssignments } = getStructureSeedAssignments({
+      returnAllProxies: true,
+      drawDefinition,
+      structure,
+    });
+    const { seedNumber, seedValue } =
+      seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
+
+    validActions.push({
+      type: SEED_VALUE,
+      method: SEED_VALUE_METHOD,
+      participant,
+      seedNumber,
+      payload: {
+        drawId,
+        structureId,
+        participantId,
+        seedValue,
+      },
+    });
+  }
+
+  if (
+    !isByePosition &&
+    activePositionsCheck({
+      activePositionOverrides,
+      activeDrawPositions,
+      action: REMOVE_SEED,
+    }) &&
+    isAvailableAction({ policyActions, action: REMOVE_SEED }) &&
+    isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
+    validToAssignSeed
+  ) {
+    const { seedAssignments } = getStructureSeedAssignments({
+      returnAllProxies: true,
+      drawDefinition,
+      structure,
+    });
+    const { seedNumber } = seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
+
+    validActions.push({
+      method: REMOVE_SEED_METHOD,
+      type: REMOVE_SEED,
+      participant,
+      seedNumber,
+      payload: {
+        participantId,
+        structureId,
+        drawId,
+      },
+    });
+  }
+}
+
+function addPenaltyAndNicknameActions({
+  validActions,
+  policyActions,
+  isByePosition,
+  participantId,
+  participant,
+  drawId,
+}) {
+  if (!isByePosition && participantId) {
+    if (isAvailableAction({ policyActions, action: ADD_PENALTY })) {
+      const addPenaltyAction = {
+        type: ADD_PENALTY,
+        method: ADD_PENALTY_METHOD,
+        participant,
+        payload: {
+          penaltyCode: undefined,
+          penaltyType: undefined,
+          participantIds: [],
+          notes: undefined,
+          drawId,
+        },
+      };
+      validActions.push(addPenaltyAction);
+    }
+    if (isAvailableAction({ policyActions, action: ADD_NICKNAME })) {
+      const addNicknameAction = {
+        type: ADD_NICKNAME,
+        method: ADD_NICKNAME_METHOD,
+        participant,
+        payload: {
+          participantId,
+          otherName: undefined,
+        },
+      };
+      validActions.push(addNicknameAction);
+    }
+  }
+}
+
+function addSwapAction({
+  validActions,
+  policyActions,
+  getValidSwapAction,
+  possiblyDisablingAction,
+  tournamentParticipants,
+  inactiveDrawPositions,
+  activeDrawPositions,
+  positionAssignments,
+  returnParticipants,
+  byeDrawPositions,
+  drawDefinition,
+  isByePosition,
+  drawPosition,
+  structureId,
+  structure,
+  drawId,
+}) {
+  if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
+    const { validSwapAction } = getValidSwapAction({
+      possiblyDisablingAction,
+      tournamentParticipants,
+      inactiveDrawPositions,
+      activeDrawPositions,
+      positionAssignments,
+      returnParticipants,
+      byeDrawPositions,
+      drawDefinition,
+      isByePosition,
+      drawPosition,
+      structureId,
+      structure,
+      drawId,
+    });
+    if (validSwapAction) validActions.push(validSwapAction);
+  }
+}
+
+function addAlternateAction({
+  validActions,
+  policyActions,
+  getValidAlternatesAction,
+  possiblyDisablingAction,
+  tournamentParticipants,
+  positionAssignments,
+  activeDrawPositions,
+  returnParticipants,
+  appliedPolicies,
+  drawDefinition,
+  drawPosition,
+  structureId,
+  structure,
+  drawId,
+  event,
+  disablePlacementActions,
+}) {
+  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) && !disablePlacementActions) {
+    const { validAlternatesAction } = getValidAlternatesAction({
+      possiblyDisablingAction,
+      tournamentParticipants,
+      positionAssignments,
+      activeDrawPositions,
+      returnParticipants,
+      appliedPolicies,
+      drawDefinition,
+      drawPosition,
+      validActions,
+      structureId,
+      structure,
+      drawId,
+      event,
+    });
+    if (validAlternatesAction) validActions.push(validAlternatesAction);
+  }
+}
+
+function addLuckyLoserAction({
+  validActions,
+  policyActions,
+  getValidLuckyLosersAction,
+  sourceStructuresComplete,
+  possiblyDisablingAction,
+  isWinRatioFedStructure,
+  tournamentParticipants,
+  activeDrawPositions,
+  positionAssignments,
+  drawDefinition,
+  drawPosition,
+  structureId,
+  structure,
+  drawId,
+  disablePlacementActions,
+  isActiveDrawPosition,
+}) {
+  if (
+    isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
+    !disablePlacementActions &&
+    !isActiveDrawPosition &&
+    positionAssignments
+  ) {
+    const { validLuckyLosersAction } = getValidLuckyLosersAction({
+      sourceStructuresComplete,
+      possiblyDisablingAction,
+      isWinRatioFedStructure,
+      tournamentParticipants,
+      activeDrawPositions,
+      positionAssignments,
+      drawDefinition,
+      drawPosition,
+      structureId,
+      structure,
+      drawId,
+    });
+    if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
+  }
+}
+
+function addModifyPairAssignmentAction({
+  validActions,
+  policyActions,
+  getValidModifyAssignedPairAction,
+  participant,
+  tournamentParticipants,
+  returnParticipants,
+  drawPosition,
+  drawId,
+  event,
+}) {
+  if (participant?.participantType === PAIR && isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })) {
+    const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
+      tournamentParticipants,
+      returnParticipants,
+      drawPosition,
+      participant,
+      drawId,
+      event,
+    });
+    if (validModifyAssignedPairAction) validActions.push(validModifyAssignedPairAction);
+  }
+}
+
 export function positionActions(params: PositionActionsArgs): ResultType & {
+  isActiveDrawPosition?: boolean;
+  hasPositionAssigned?: boolean;
+  isDrawPosition?: boolean;
+  isByePosition?: boolean;
+  validActions?: any[];
+} {
+  return positionActionsInternal(params);
+}
+
+// Extracted main logic to reduce cognitive complexity
+function positionActionsInternal(params: PositionActionsArgs): ResultType & {
   isActiveDrawPosition?: boolean;
   hasPositionAssigned?: boolean;
   isDrawPosition?: boolean;
@@ -127,13 +524,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
   if (result.isAdHoc) return matchUpActions(params);
   if (result.error) return result;
 
-  const {
-    drawPositionInitialRounds,
-    // qualifyingDrawPositions,
-    inactiveDrawPositions,
-    activeDrawPositions,
-    byeDrawPositions,
-  } = result;
+  const { drawPositionInitialRounds, inactiveDrawPositions, activeDrawPositions, byeDrawPositions } = result;
 
   const appliedPolicies =
     getAppliedPolicies({
@@ -158,7 +549,6 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   const activePositionOverrides = positionActionsPolicy?.activePositionOverrides || [];
 
-  // targetRoundNumber will be > 1 for fed positions
   const { sourceStructureIds: positionSourceStructureIds } =
     getSourceStructureIdsAndRelevantLinks({
       finishingPosition: WIN_RATIO,
@@ -201,7 +591,6 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
 
   const stages = [stage];
 
-  // allow unassigneParticipantIds from MAIN in positionActions for consolation
   if (stage === CONSOLATION) stages.push(MAIN);
   if (stage === MAIN) stages.push(CONSOLATION);
 
@@ -220,9 +609,7 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       stages,
     }).assignedParticipantIds ?? [];
 
-  const unassignedParticipantIds = stageEntries
-    .filter((entry) => !stageAssignedParticipantIds.includes(entry.participantId))
-    .map((entry) => entry.participantId);
+  const unassignedParticipantIds = getUnassignedParticipantIds(stageEntries, stageAssignedParticipantIds);
 
   const isByePosition = byeDrawPositions.includes(drawPosition);
   const isActiveDrawPosition = activeDrawPositions.includes(drawPosition);
@@ -237,251 +624,154 @@ export function positionActions(params: PositionActionsArgs): ResultType & {
       isByePosition,
     };
 
-  if (
-    isAvailableAction({ policyActions, action: ASSIGN_PARTICIPANT }) &&
-    !isActiveDrawPosition &&
-    positionAssignments &&
-    !disablePlacementActions &&
-    (!positionAssignment || isByePosition)
-  ) {
-    const { validAssignmentActions } = getValidAssignmentActions({
-      positionSourceStructureIds,
-      unassignedParticipantIds,
-      possiblyDisablingAction,
-      isWinRatioFedStructure,
-      tournamentParticipants,
-      positionAssignments,
-      returnParticipants,
-      appliedPolicies,
-      drawDefinition,
-      isByePosition,
-      drawPosition,
-      structureId,
-      event,
-    });
-    validAssignmentActions?.forEach((action) => validActions.push(action));
-  }
+  addAssignmentActions({
+    validActions,
+    policyActions,
+    isActiveDrawPosition,
+    positionAssignments,
+    disablePlacementActions,
+    positionAssignment,
+    isByePosition,
+    getValidAssignmentActions,
+    positionSourceStructureIds,
+    unassignedParticipantIds,
+    possiblyDisablingAction,
+    isWinRatioFedStructure,
+    tournamentParticipants,
+    returnParticipants,
+    appliedPolicies,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    event,
+  });
 
-  if (isAvailableAction({ policyActions, action: QUALIFYING_PARTICIPANT }) && !isActiveDrawPosition) {
-    const { validAssignmentActions } = getValidQualifiersAction({
-      drawPositionInitialRounds,
-      tournamentParticipants,
-      positionAssignments,
-      returnParticipants,
-      appliedPolicies,
-      drawDefinition,
-      drawPosition,
-      structureId,
-      drawId,
-    });
-    validAssignmentActions?.forEach((action) => validActions.push(action));
-  }
+  addQualifyingActions({
+    validActions,
+    policyActions,
+    isActiveDrawPosition,
+    getValidQualifiersAction,
+    drawPositionInitialRounds,
+    tournamentParticipants,
+    positionAssignments,
+    returnParticipants,
+    appliedPolicies,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    drawId,
+  });
 
   const { participantId } = positionAssignment || {};
   const participant =
     participantId && tournamentParticipants.find((participant) => participant.participantId === participantId);
 
   if (positionAssignment) {
-    if (isAvailableAction({ policyActions, action: REMOVE_ASSIGNMENT }) && !isActiveDrawPosition) {
-      validActions.push({
-        type: REMOVE_ASSIGNMENT,
-        method: REMOVE_ASSIGNMENT_METHOD,
-        payload: { drawId, structureId, drawPosition },
-        willDisableLinks: possiblyDisablingAction,
-      });
-
-      if (!isByePosition) {
-        validActions.push({
-          type: WITHDRAW_PARTICIPANT,
-          method: WITHDRAW_PARTICIPANT_METHOD,
-          payload: { drawId, structureId, drawPosition },
-          willDisableLinks: possiblyDisablingAction,
-        });
-      }
-
-      // in this case the ASSIGN_BYE_METHOD is called after removing assigned participant
-      // option should not be available if exising assignment is a bye
-      if (isAvailableAction({ policyActions, action: ASSIGN_BYE }) && !isByePosition) {
-        validActions.push({
-          type: ASSIGN_BYE,
-          method: REMOVE_ASSIGNMENT_METHOD,
-          payload: { drawId, structureId, drawPosition, replaceWithBye: true },
-          willDisableLinks: possiblyDisablingAction,
-        });
-      }
-    }
-
-    const validToAssignSeed =
-      structure.stage === QUALIFYING || (structure.stage === MAIN && structure.stageSequence === 1);
-
-    if (
-      !isByePosition &&
-      // if any drawPositions are active, action is disabled unless override in policy
-      activePositionsCheck({
-        activePositionOverrides,
-        activeDrawPositions,
-        action: SEED_VALUE,
-      }) &&
-      isAvailableAction({ policyActions, action: SEED_VALUE }) &&
-      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
-      validToAssignSeed
-    ) {
-      const { seedAssignments } = getStructureSeedAssignments({
-        returnAllProxies: true,
-        drawDefinition,
-        structure,
-      });
-      const { seedNumber, seedValue } =
-        seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
-
-      validActions.push({
-        type: SEED_VALUE,
-        method: SEED_VALUE_METHOD,
-        participant,
-        seedNumber,
-        payload: {
-          drawId,
-          structureId,
-          participantId,
-          seedValue,
-        },
-      });
-    }
-
-    if (
-      !isByePosition &&
-      // if any drawPositions are active, action is disabled unless override in policy
-      activePositionsCheck({
-        activePositionOverrides,
-        activeDrawPositions,
-        action: REMOVE_SEED,
-      }) &&
-      isAvailableAction({ policyActions, action: REMOVE_SEED }) &&
-      isValidSeedPosition({ drawDefinition, structureId, drawPosition }) &&
-      validToAssignSeed
-    ) {
-      const { seedAssignments } = getStructureSeedAssignments({
-        returnAllProxies: true,
-        drawDefinition,
-        structure,
-      });
-      const { seedNumber } = seedAssignments?.find((assignment) => assignment.participantId === participantId) ?? {};
-
-      validActions.push({
-        method: REMOVE_SEED_METHOD,
-        type: REMOVE_SEED,
-        participant,
-        seedNumber,
-        payload: {
-          participantId,
-          structureId,
-          drawId,
-        },
-      });
-    }
-
-    if (!isByePosition && participantId) {
-      if (isAvailableAction({ policyActions, action: ADD_PENALTY })) {
-        const addPenaltyAction = {
-          type: ADD_PENALTY,
-          method: ADD_PENALTY_METHOD,
-          participant,
-          payload: {
-            penaltyCode: undefined,
-            penaltyType: undefined,
-            participantIds: [],
-            notes: undefined,
-            drawId,
-          },
-        };
-        validActions.push(addPenaltyAction);
-      }
-      if (isAvailableAction({ policyActions, action: ADD_NICKNAME })) {
-        const addNicknameAction = {
-          type: ADD_NICKNAME,
-          method: ADD_NICKNAME_METHOD,
-          participant,
-          payload: {
-            participantId,
-            otherName: undefined,
-          },
-        };
-        validActions.push(addNicknameAction);
-      }
-    }
-
-    if (isAvailableAction({ policyActions, action: SWAP_PARTICIPANTS })) {
-      const { validSwapAction } = getValidSwapAction({
-        possiblyDisablingAction,
-        tournamentParticipants,
-        inactiveDrawPositions,
-        activeDrawPositions,
-        positionAssignments,
-        returnParticipants,
-        byeDrawPositions,
-        drawDefinition,
-        isByePosition,
-        drawPosition,
-        structureId,
-        structure,
-        drawId,
-      });
-      if (validSwapAction) validActions.push(validSwapAction);
-    }
-  }
-
-  if (isAvailableAction({ policyActions, action: ALTERNATE_PARTICIPANT }) && !disablePlacementActions) {
-    const { validAlternatesAction } = getValidAlternatesAction({
-      possiblyDisablingAction,
-      tournamentParticipants,
-      positionAssignments,
-      activeDrawPositions,
-      returnParticipants,
-      appliedPolicies,
-      drawDefinition,
-      drawPosition,
+    addRemoveAssignmentActions({
       validActions,
-      structureId,
-      structure,
+      policyActions,
+      isActiveDrawPosition,
       drawId,
-      event,
-    });
-    if (validAlternatesAction) validActions.push(validAlternatesAction);
-  }
-
-  if (
-    isAvailableAction({ policyActions, action: LUCKY_PARTICIPANT }) &&
-    !disablePlacementActions &&
-    !isActiveDrawPosition &&
-    positionAssignments
-  ) {
-    const { validLuckyLosersAction } = getValidLuckyLosersAction({
-      sourceStructuresComplete,
+      structureId,
+      drawPosition,
       possiblyDisablingAction,
-      isWinRatioFedStructure,
-      tournamentParticipants,
-      activeDrawPositions,
-      positionAssignments,
-      drawDefinition,
-      drawPosition,
-      structureId,
-      structure,
-      drawId,
+      isByePosition,
     });
-    if (validLuckyLosersAction) validActions.push(validLuckyLosersAction);
-  }
 
-  if (participant?.participantType === PAIR && isAvailableAction({ policyActions, action: MODIFY_PAIR_ASSIGNMENT })) {
-    const { validModifyAssignedPairAction } = getValidModifyAssignedPairAction({
-      tournamentParticipants,
-      returnParticipants,
+    addSeedActions({
+      validActions,
+      policyActions,
+      activePositionsCheck,
+      activePositionOverrides,
+      activeDrawPositions,
+      drawDefinition,
+      structureId,
       drawPosition,
+      structure,
+      isByePosition,
+      participantId,
       participant,
       drawId,
-      event,
     });
-    if (validModifyAssignedPairAction) validActions.push(validModifyAssignedPairAction);
+
+    addPenaltyAndNicknameActions({
+      validActions,
+      policyActions,
+      isByePosition,
+      participantId,
+      participant,
+      drawId,
+    });
+
+    addSwapAction({
+      validActions,
+      policyActions,
+      getValidSwapAction,
+      possiblyDisablingAction,
+      tournamentParticipants,
+      inactiveDrawPositions,
+      activeDrawPositions,
+      positionAssignments,
+      returnParticipants,
+      byeDrawPositions,
+      drawDefinition,
+      isByePosition,
+      drawPosition,
+      structureId,
+      structure,
+      drawId,
+    });
   }
+
+  addAlternateAction({
+    validActions,
+    policyActions,
+    getValidAlternatesAction,
+    possiblyDisablingAction,
+    tournamentParticipants,
+    positionAssignments,
+    activeDrawPositions,
+    returnParticipants,
+    appliedPolicies,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    structure,
+    drawId,
+    event,
+    disablePlacementActions,
+  });
+
+  addLuckyLoserAction({
+    validActions,
+    policyActions,
+    getValidLuckyLosersAction,
+    sourceStructuresComplete,
+    possiblyDisablingAction,
+    isWinRatioFedStructure,
+    tournamentParticipants,
+    activeDrawPositions,
+    positionAssignments,
+    drawDefinition,
+    drawPosition,
+    structureId,
+    structure,
+    drawId,
+    disablePlacementActions,
+    isActiveDrawPosition,
+  });
+
+  addModifyPairAssignmentAction({
+    validActions,
+    policyActions,
+    getValidModifyAssignedPairAction,
+    participant,
+    tournamentParticipants,
+    returnParticipants,
+    drawPosition,
+    drawId,
+    event,
+  });
 
   return {
     isActiveDrawPosition,
