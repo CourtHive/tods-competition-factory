@@ -17,6 +17,7 @@ import {
   SCHEDULE_STATE,
   CONFLICT_MATCHUP_ORDER,
   CONFLICT_PARTICIPANTS,
+  CONFLICT_COURT_DOUBLE_BOOKING,
 } from '@Constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
@@ -167,6 +168,34 @@ export function proConflicts({
     return participantConflicts;
   };
 
+  const processCourtDoubleBooking = (row: HydratedMatchUp[]): { [key: string]: string[] } => {
+    const doubleBookingConflicts: { [key: string]: string[] } = {};
+    // Group matchUps by courtId and scheduledDate
+    const courtSlots: { [key: string]: string[] } = {};
+
+    row.forEach((matchUp) => {
+      const { matchUpId, schedule } = matchUp;
+      if (!matchUpId || !schedule?.courtId || !schedule?.scheduledDate) return;
+
+      const slotKey = `${schedule.courtId}|${schedule.scheduledDate}`;
+      if (!courtSlots[slotKey]) {
+        courtSlots[slotKey] = [];
+      }
+      courtSlots[slotKey].push(matchUpId);
+    });
+
+    // Find slots with multiple matchUps (double bookings)
+    Object.values(courtSlots).forEach((matchUpIds) => {
+      if (matchUpIds.length > 1) {
+        matchUpIds.forEach((matchUpId) => {
+          doubleBookingConflicts[matchUpId] = matchUpIds.filter((id) => id !== matchUpId);
+        });
+      }
+    });
+
+    return doubleBookingConflicts;
+  };
+
   const annotate = (matchUpId, issue, issueType, issueIds) => {
     if (!mappedMatchUps[matchUpId].schedule[SCHEDULE_STATE]) {
       // store issue for display below by order of severity
@@ -193,6 +222,9 @@ export function proConflicts({
     const subsequentRows = rowProfiles.slice(rowIndex + 1);
 
     const participantConflicts = processParticipantConflicts(row);
+    const doubleBookingConflicts = processCourtDoubleBooking(
+      filteredRows[rowIndex].filter((m) => row.matchUpIds.includes(m.matchUpId)),
+    );
 
     if (previousRow) {
       processParticipantWarnings(previousRow, row, participantConflicts);
@@ -214,6 +246,11 @@ export function proConflicts({
       }
 
       // CONFLICTS Section
+      // Court double booking conflicts (same court, same order, same date)
+      if (doubleBookingConflicts[matchUpId]) {
+        annotate(matchUpId, SCHEDULE_CONFLICT, CONFLICT_COURT_DOUBLE_BOOKING, doubleBookingConflicts[matchUpId]);
+      }
+
       if (participantConflicts[matchUpId]?.[SCHEDULE_CONFLICT]) {
         annotate(
           matchUpId,

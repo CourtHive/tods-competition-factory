@@ -4,6 +4,7 @@ import { expect, it, describe } from 'vitest';
 
 // Constants
 import { SCHEDULE_CONFLICT, SCHEDULE_WARNING, CONFLICT_PARTICIPANTS } from '@Constants/scheduleConstants';
+import { SCHEDULE_CONFLICT_DOUBLE_BOOKING } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '@Constants/eventConstants';
 import { INDIVIDUAL } from '@Constants/participantConstants';
 
@@ -12,14 +13,14 @@ const endDate = '2024-01-21';
 
 describe('proConflicts - Comprehensive Conflict Detection', () => {
   it('detects conflicts when doubles participants appear in singles matches on same row', () => {
-    // Create tournament with doubles draw of 16 and venue with 5 courts
+    // Create tournament with doubles draw of 16 and venue with 10 courts
     const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       venueProfiles: [
         {
           venueName: 'Main Venue',
           venueAbbreviation: 'MV',
           idPrefix: 'court',
-          courtsCount: 6,
+          courtsCount: 10,
         },
       ],
       drawProfiles: [
@@ -139,19 +140,35 @@ describe('proConflicts - Comprehensive Conflict Detection', () => {
 
     expect(doublesCourtOrder).not.toEqual(singlesCourtOrder);
 
-    // Move singles match to same row as doubles match
+    // Move singles match to same row as doubles match on a different court
     const doublesCourtId = doublesMatchWithConflict.schedule.courtId;
-    const newCourtId = matchUps.find(
-      (m) => m.schedule?.courtOrder === doublesCourtOrder && m.schedule?.courtId !== doublesCourtId,
-    )?.schedule?.courtId;
 
+    // Find an available court on the target row (must be different from doublesCourtId)
+    const occupiedCourtIds = new Set(
+      matchUps
+        .filter(
+          (m) =>
+            m.schedule?.courtOrder === doublesCourtOrder &&
+            m.schedule?.scheduledDate === startDate &&
+            m.matchUpId !== singlesMatchWithConflict.matchUpId,
+        )
+        .map((m) => m.schedule?.courtId),
+    );
+
+    const { courts } = tournamentEngine.getCourts();
+    const availableCourtId = courts.find((c) => !occupiedCourtIds.has(c.courtId))?.courtId;
+
+    expect(availableCourtId).toBeDefined();
+    expect(availableCourtId).not.toEqual(doublesCourtId);
+
+    // Move singles match to available court on same row as doubles match
     result = tournamentEngine.addMatchUpScheduleItems({
       matchUpId: singlesMatchWithConflict.matchUpId,
       drawId: singlesDrawId,
       schedule: {
         courtOrder: doublesCourtOrder,
         scheduledDate: startDate,
-        courtId: newCourtId,
+        courtId: availableCourtId,
       },
       removePriorValues: true,
     });
@@ -313,4 +330,125 @@ describe('proConflicts - Comprehensive Conflict Detection', () => {
     expect(conflictsResult.courtIssues).toBeDefined();
     expect(conflictsResult.rowIssues).toBeDefined();
   });
+
+  it.each([
+    { proConflictDetection: true, expectation: true },
+    { proConflictDetection: false, expectation: false },
+  ])(
+    'prevents double booking of same court slot (courtId, courtOrder, scheduledDate)',
+    ({ proConflictDetection, expectation }) => {
+      // Create tournament with singles draw
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+        venueProfiles: [
+          {
+            venueName: 'Test Venue',
+            venueAbbreviation: 'TV',
+            idPrefix: 'court',
+            courtsCount: 5,
+          },
+        ],
+        drawProfiles: [
+          {
+            eventType: SINGLES,
+            idPrefix: 'singles',
+            drawSize: 16,
+          },
+        ],
+        startDate,
+        endDate,
+      });
+
+      let result = tournamentEngine.setState(tournamentRecord);
+      expect(result.success).toEqual(true);
+
+      // Get all matchUps
+      const { matchUps } = tournamentEngine.allCompetitionMatchUps({
+        nextMatchUps: true,
+        inContext: true,
+      });
+
+      expect(matchUps.length).toBeGreaterThan(2);
+
+      // Get first two matchUps from the draw
+      const firstMatchUp = matchUps[0];
+      const secondMatchUp = matchUps[1];
+      const drawId = firstMatchUp.drawId;
+
+      expect(firstMatchUp.matchUpId).not.toEqual(secondMatchUp.matchUpId);
+
+      // Get a court from the venue
+      const { courts } = tournamentEngine.getCourts();
+      expect(courts.length).toBeGreaterThan(0);
+
+      const targetCourtId = courts[0].courtId;
+      const targetCourtOrder = 1;
+      const targetScheduledDate = startDate;
+
+      // Schedule first matchUp to specific court slot
+      result = tournamentEngine.addMatchUpScheduleItems({
+        matchUpId: firstMatchUp.matchUpId,
+        drawId,
+        schedule: {
+          courtId: targetCourtId,
+          courtOrder: targetCourtOrder,
+          scheduledDate: targetScheduledDate,
+        },
+        removePriorValues: true,
+      });
+      expect(result.success).toEqual(true);
+
+      // Attempt to schedule second matchUp to the same court slot - should fail
+      result = tournamentEngine.addMatchUpScheduleItems({
+        matchUpId: secondMatchUp.matchUpId,
+        proConflictDetection,
+        drawId,
+        schedule: {
+          courtId: targetCourtId,
+          courtOrder: targetCourtOrder,
+          scheduledDate: targetScheduledDate,
+        },
+        removePriorValues: true,
+      });
+
+      // Should return error for double booking
+      if (expectation) {
+        expect(result.error).toEqual(SCHEDULE_CONFLICT_DOUBLE_BOOKING);
+        expect(result.success).toBeUndefined();
+      }
+
+      // Verify that only the first matchUp was scheduled to that slot
+      const { matchUps: scheduledMatchUps } = tournamentEngine.allCompetitionMatchUps({
+        matchUpFilters: { scheduledDate: targetScheduledDate },
+        nextMatchUps: true,
+        inContext: true,
+      });
+
+      const matchUpsInTargetSlot = scheduledMatchUps.filter(
+        (m) =>
+          m.schedule?.courtId === targetCourtId &&
+          m.schedule?.courtOrder === targetCourtOrder &&
+          m.schedule?.scheduledDate === targetScheduledDate,
+      );
+
+      if (expectation) {
+        // Should only have one matchUp in this slot
+        expect(matchUpsInTargetSlot.length).toEqual(1);
+        expect(matchUpsInTargetSlot[0].matchUpId).toEqual(firstMatchUp.matchUpId);
+
+        // Verify that scheduling to a different court slot works
+        const differentCourtId = courts[1].courtId;
+        result = tournamentEngine.addMatchUpScheduleItems({
+          matchUpId: secondMatchUp.matchUpId,
+          drawId,
+          schedule: {
+            courtId: differentCourtId,
+            courtOrder: targetCourtOrder,
+            scheduledDate: targetScheduledDate,
+          },
+          removePriorValues: true,
+        });
+        expect(result.success).toEqual(true);
+      }
+    },
+  );
 });

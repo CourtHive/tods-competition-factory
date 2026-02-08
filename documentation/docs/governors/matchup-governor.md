@@ -82,26 +82,338 @@ engine.addMatchUpScheduledTime({
 
 ## addMatchUpScheduleItems
 
-Convenience function to add several schedule items at once.
+Comprehensive scheduling method that adds multiple schedule attributes to a matchUp in a single operation.
+
+### Features
+
+- **Atomic Scheduling**: Assigns multiple schedule items (court, time, date, venue) in one transaction
+- **Conflict Detection**: Optional validation to prevent double-booking court slots (pro-scheduling)
+- **Chronology Validation**: Optional checks for scheduling dependencies and match order
+- **Court Order Assignment**: Supports Pro Scheduling grid-based court order (row) assignments
+- **Team MatchUp Support**: Handles court allocation for TEAM matchUps with multiple courts
+- **Follow-By Scheduling**: Supports ITF-style follow-by and "Not Before" scheduling patterns
+- **Time Modifiers**: Allows adding schedule modifiers like "Not Before" times
+- **Home Participant**: Can designate home participant for display purposes
+
+### Parameters
 
 ```js
 engine.addMatchUpScheduleItems({
-  checkChronology, // optional boolean - returns warnings for scheduling errors; throws errors when combined with errorOnAnachronism
-  removePriorValues, // optional boolean
-  matchUpId,
-  drawId,
+  // Required
+  matchUpId, // matchUp identifier
+  drawId, // draw containing the matchUp
+
+  // Schedule Object - all fields optional
   schedule: {
-    scheduledTime,
-    scheduledDate,
-    startTime,
-    courtIds, // applies only to TEAM matchUps
-    courtId, // requires scheduledDate
-    venueId,
-    endTime,
+    scheduledDate, // ISO date string (e.g., '2024-03-20')
+    scheduledTime, // Time string (e.g., '14:00' or ISO timestamp)
+    courtId, // Court identifier (requires scheduledDate and courtOrder for conflict detection)
+    courtOrder, // Grid row number for Pro Scheduling (integer as string, e.g., '1', '2')
+    venueId, // Venue identifier
+    courtIds, // Array of court IDs (applies only to TEAM matchUps)
+    startTime, // Actual start time (ISO timestamp)
+    stopTime, // Pause time for interrupted matches (ISO timestamp)
+    resumeTime, // Resume time after interruption (ISO timestamp)
+    endTime, // Actual completion time (ISO timestamp)
+    timeModifiers, // Array of modifiers (e.g., [{ type: 'NOT_BEFORE', value: '14:00' }])
+    homeParticipantId, // Designate home participant
   },
-  disableNotice, // when disabled subscribers will not be notified
+
+  // Optional Control Parameters
+  proConflictDetection, // boolean - default true - validates no existing matchUp occupies { courtId, courtOrder, scheduledDate }
+  checkChronology, // boolean - validates scheduling doesn't create dependency conflicts
+  errorOnAnachronism, // boolean - throw error (vs warning) for chronology violations
+  removePriorValues, // boolean - removes existing schedule values before applying new ones
+  disableNotice, // boolean - when true, subscribers will not be notified of changes
 });
 ```
+
+### Return Values
+
+**Success:**
+
+```js
+{
+  success: true;
+}
+```
+
+**Error (Double Booking):**
+
+```js
+{
+  error: {
+    message: 'Schedule conflict: court slot already occupied',
+    code: 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING',
+  },
+  info: 'Court slot already occupied by matchUp <matchUpId>',
+}
+```
+
+**Warning (Chronology Issue):**
+
+```js
+{
+  success: true,
+  warnings: [
+    {
+      code: 'ANACHRONISM',
+      message: 'Chronological error; time violation.',
+    },
+  ];
+}
+```
+
+### Pro Scheduling Grid Assignment
+
+When scheduling matchUps in a grid-based format (Pro Scheduling), always provide `courtId`, `courtOrder`, and `scheduledDate` together:
+
+```js
+// Assign to Court 1, Row 3, on March 20th
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'court-1',
+    courtOrder: '3', // Row 3 on the grid
+    scheduledDate: '2024-03-20',
+    scheduledTime: '14:00', // Optional display time
+  },
+});
+```
+
+### Double Booking Prevention
+
+By default, `proConflictDetection: true` validates that no other matchUp is scheduled to the same `{ courtId, courtOrder, scheduledDate }` combination. This prevents accidentally double-booking a court slot in grid-based scheduling.
+
+**Disable for Performance**: When scheduling large tournaments (1000+ matchUps) or when client-side UI already validates conflicts, disable detection to improve performance:
+
+```js
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'court-1',
+    courtOrder: '3',
+    scheduledDate: '2024-03-20',
+  },
+  proConflictDetection: false, // Skip validation for performance
+});
+```
+
+**When to Disable:**
+
+- High-volume bulk scheduling operations
+- Client application already validates conflicts before submission
+- Multi-user environments with optimistic UI updates
+- Scheduling is rolled back on error anyway
+
+**When to Keep Enabled:**
+
+- Interactive scheduling by tournament directors
+- Automated scheduling scripts without UI validation
+- Single-user applications
+- Critical scheduling operations that must not fail
+
+### Chronology Validation
+
+When `checkChronology: true`, the system validates that scheduling doesn't violate match dependencies:
+
+```js
+// Round 1 match
+engine.addMatchUpScheduleItems({
+  matchUpId: 'round1-match',
+  drawId: 'draw-456',
+  schedule: {
+    scheduledDate: '2024-03-21',
+    scheduledTime: '10:00',
+  },
+  checkChronology: true, // Validate dependencies
+});
+
+// Round 2 match (winner of round1-match)
+engine.addMatchUpScheduleItems({
+  matchUpId: 'round2-match',
+  drawId: 'draw-456',
+  schedule: {
+    scheduledDate: '2024-03-20', // ERROR: Earlier than prerequisite
+  },
+  checkChronology: true,
+  errorOnAnachronism: true, // Throw error vs warning
+});
+```
+
+### Follow-By Scheduling (ITF Style)
+
+For stadium courts with "Follow" or "Not Before" scheduling:
+
+```js
+// First match: fixed time
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-1',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'centre-court',
+    courtOrder: '1',
+    scheduledDate: '2024-03-23',
+    scheduledTime: '13:00',
+  },
+});
+
+// Second match: to follow first match
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-2',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'centre-court',
+    courtOrder: '2',
+    scheduledDate: '2024-03-23',
+    // No scheduledTime - will follow match-1
+    timeModifiers: [
+      {
+        type: 'FOLLOWED_BY',
+        value: { matchUpId: 'match-1' },
+      },
+    ],
+  },
+});
+
+// Third match: Not Before with follow
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-3',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'centre-court',
+    courtOrder: '3',
+    scheduledDate: '2024-03-23',
+    scheduledTime: '18:00', // Not Before 6 PM
+    timeModifiers: [
+      {
+        type: 'FOLLOWED_BY',
+        value: { matchUpId: 'match-2', notBeforeTime: '18:00' },
+      },
+    ],
+  },
+});
+```
+
+### Time Recording During Match
+
+Record actual match times as play progresses:
+
+```js
+// Match starts
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    startTime: '2024-03-20T14:05:23Z', // Actual start time
+  },
+});
+
+// Match interrupted (rain delay)
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    stopTime: '2024-03-20T14:45:12Z',
+  },
+});
+
+// Match resumes
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    resumeTime: '2024-03-20T15:30:00Z',
+  },
+});
+
+// Match completes
+engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    endTime: '2024-03-20T16:15:45Z',
+  },
+});
+```
+
+### TEAM MatchUp Court Allocation
+
+For TEAM matchUps (e.g., Davis Cup ties), allocate multiple courts:
+
+```js
+engine.addMatchUpScheduleItems({
+  matchUpId: 'team-tie-123',
+  drawId: 'draw-456',
+  schedule: {
+    scheduledDate: '2024-03-20',
+    courtIds: ['court-1', 'court-2', 'court-3'], // Multiple courts for simultaneous tie matches
+    venueId: 'venue-789',
+  },
+});
+```
+
+### Bulk Scheduling Pattern
+
+When scheduling multiple matchUps, disable notifications and enable at the end:
+
+```js
+matchAssignments.forEach(({ matchUpId, courtId, courtOrder, scheduledDate }) => {
+  engine.addMatchUpScheduleItems({
+    matchUpId,
+    drawId: 'draw-456',
+    schedule: { courtId, courtOrder, scheduledDate },
+    proConflictDetection: false, // Validated at UI layer
+    disableNotice: true, // Batch notifications
+  });
+});
+
+// Manually trigger notification after bulk operation
+engine.notify({ topic: 'scheduleUpdate', payload: { drawId: 'draw-456' } });
+```
+
+### Error Handling
+
+```js
+const result = engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'court-1',
+    courtOrder: '2',
+    scheduledDate: '2024-03-20',
+  },
+});
+
+if (result.error) {
+  if (result.error.code === 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING') {
+    console.error('Court slot already occupied:', result.info);
+    // Suggest alternative court or time
+  } else if (result.error.code === 'ANACHRONISM') {
+    console.warn('Scheduling creates dependency conflict');
+    // Allow with confirmation
+  } else {
+    console.error('Scheduling failed:', result.error);
+  }
+} else if (result.warnings) {
+  console.warn('Scheduling completed with warnings:', result.warnings);
+}
+```
+
+### Related Methods
+
+- **[assignMatchUpCourt](#assignmatchupcourt)** - Assign court only
+- **[addMatchUpScheduledDate](#addmatchupscheduleddate)** - Assign date only
+- **[addMatchUpScheduledTime](#addmatchupscheduledtime)** - Assign time only
+- **[addMatchUpCourtOrder](#addmatchupcourtorder)** - Assign grid row only
+
+### Related Documentation
+
+- **[Pro Scheduling Concepts](/docs/concepts/pro-scheduling)** - Grid-based scheduling workflows
+- **[Schedule Governor](/docs/governors/schedule-governor)** - Automated scheduling methods
+- **[Scheduling Policy](/docs/policies/scheduling)** - Recovery times and constraints
 
 ---
 
