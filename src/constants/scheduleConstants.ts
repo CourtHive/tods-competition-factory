@@ -4,6 +4,7 @@ export const TOTAL = 'total';
 
 export const CONFLICT_PARTICIPANTS = 'participantConflict';
 export const CONFLICT_MATCHUP_ORDER = 'matchUpConflict';
+export const CONFLICT_COURT_DOUBLE_BOOKING = 'courtDoubleBooking';
 export const SCHEDULE_ISSUE_IDS = 'ISSUE_IDS';
 export const SCHEDULE_CONFLICT = 'CONFLICT';
 export const SCHEDULE_WARNING = 'WARNING';
@@ -23,6 +24,7 @@ export const scheduleConstants = {
 
   CONFLICT_MATCHUP_ORDER,
   CONFLICT_PARTICIPANTS,
+  CONFLICT_COURT_DOUBLE_BOOKING,
   SCHEDULE_ISSUE_IDS,
   SCHEDULE_CONFLICT,
   SCHEDULE_WARNING,

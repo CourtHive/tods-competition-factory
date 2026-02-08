@@ -6,6 +6,7 @@ import { allocateTeamMatchUpCourts } from '@Mutate/matchUps/schedule/allocateTea
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { assignMatchUpCourt } from '@Mutate/matchUps/schedule/assignMatchUpCourt';
 import { assignMatchUpVenue } from '@Mutate/matchUps/schedule/assignMatchUpVenue';
+import { allTournamentMatchUps } from '@Query/matchUps/getAllTournamentMatchUps';
 import { addMatchUpTimeItem } from '@Mutate/timeItems/matchUps/matchUpTimeItems';
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { modifyMatchUpNotice } from '@Mutate/notifications/drawNotifications';
@@ -29,6 +30,7 @@ import { OFFICIAL } from '@Constants/participantRoles';
 import { SUCCESS } from '@Constants/resultConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
 import {
+  SCHEDULE_CONFLICT_DOUBLE_BOOKING,
   MISSING_MATCHUP_ID,
   INVALID_RESUME_TIME,
   INVALID_START_TIME,
@@ -54,6 +56,7 @@ function timeDate(value, scheduledDate) {
 type AddMatchUpScheduleItemsArgs = {
   inContextMatchUps?: HydratedMatchUp[];
   drawMatchUps?: HydratedMatchUp[];
+  proConflictDetection?: boolean;
   drawDefinition: DrawDefinition;
   errorOnAnachronism?: boolean;
   removePriorValues?: boolean;
@@ -87,6 +90,7 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
 
   let { matchUpDependencies, inContextMatchUps } = params;
   const {
+    proConflictDetection = false,
     errorOnAnachronism = false,
     checkChronology = true,
     removePriorValues,
@@ -239,6 +243,41 @@ export function addMatchUpScheduleItems(params: AddMatchUpScheduleItemsArgs): {
     });
     if (result?.error) return decorateResult({ result, stack, context: { courtIds } });
   }
+
+  // Check for schedule conflict before assigning court
+  if (
+    proConflictDetection &&
+    courtId !== undefined &&
+    scheduledDate !== undefined &&
+    courtOrder !== undefined &&
+    isConvertableInteger(courtOrder)
+  ) {
+    const targetCourtOrder = ensureInt(courtOrder);
+    const allMatchUps = allTournamentMatchUps({ tournamentRecord })?.matchUps ?? [];
+
+    // Check if any other matchUp already occupies this court slot
+    const conflictingMatchUp = allMatchUps.find((m) => {
+      if (m.matchUpId === matchUpId) return false; // Skip current matchUp
+      const matchUpCourtOrder = m.schedule?.courtOrder ? ensureInt(m.schedule.courtOrder) : undefined;
+      return (
+        m.schedule?.courtId === courtId &&
+        matchUpCourtOrder === targetCourtOrder &&
+        m.schedule?.scheduledDate === scheduledDate
+      );
+    });
+
+    if (conflictingMatchUp) {
+      return decorateResult({
+        result: {
+          error: SCHEDULE_CONFLICT_DOUBLE_BOOKING,
+          info: `Court slot already occupied by matchUp ${conflictingMatchUp.matchUpId}`,
+        },
+        stack,
+        context: { courtId, courtOrder, scheduledDate },
+      });
+    }
+  }
+
   if (courtId !== undefined && scheduledDate !== undefined) {
     const result = assignMatchUpCourt({
       courtDayDate: scheduledDate,

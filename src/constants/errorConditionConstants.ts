@@ -74,6 +74,10 @@ export const SCHEDULE_NOT_CLEARED = {
   message: 'Schedule not cleared',
   code: 'ERR_UNCHANGED_SCHEDULE_NOT_CLEARED',
 };
+export const SCHEDULE_CONFLICT_DOUBLE_BOOKING = {
+  message: 'Schedule conflict: court slot already occupied',
+  code: 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING',
+};
 export const DRAW_POSITION_NOT_CLEARED = {
   message: 'drawPosition not cleared',
   code: 'ERR_FAILURE_POSITION_NOT_CLEARED',
@@ -983,6 +987,7 @@ export const errorConditionConstants = {
   POLICY_NOT_ATTACHED,
   POLICY_NOT_FOUND,
   SCHEDULE_NOT_CLEARED,
+  SCHEDULE_CONFLICT_DOUBLE_BOOKING,
   SCHEDULED_MATCHUPS,
   SCORES_PRESENT,
   SEEDSCOUNT_GREATER_THAN_DRAW_SIZE,

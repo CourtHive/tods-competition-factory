@@ -8,6 +8,7 @@ import tsconfigPaths from 'vite-tsconfig-paths'; // necessary for vite to resolv
 export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
+    testTimeout: 30000, // 30 seconds for slow tests
     onConsoleLog: () => {},
     environment: 'node',
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],

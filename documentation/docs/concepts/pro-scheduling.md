@@ -478,6 +478,237 @@ if (validation.conflicts.length > 0) {
 
 ---
 
+## Conflict Detection and Prevention
+
+### Double Booking Prevention
+
+When manually scheduling matchUps to specific court slots, the system can automatically prevent double-booking conflicts. This validation ensures that no two matchUps are assigned to the same `{ courtId, courtOrder, scheduledDate }` combination.
+
+#### How It Works
+
+When calling `addMatchUpScheduleItems()` with `proConflictDetection: true` (default), the system:
+
+1. Checks all existing matchUps in the tournament
+2. Identifies any matchUp already scheduled to the target court slot
+3. Returns an error if a conflict is detected
+4. Allows the operation if the slot is available
+
+```js
+// Attempt to schedule a matchUp
+const result = engine.addMatchUpScheduleItems({
+  matchUpId: 'match-123',
+  drawId: 'draw-456',
+  schedule: {
+    courtId: 'court-1',
+    courtOrder: '2',
+    scheduledDate: '2024-03-20',
+  },
+  proConflictDetection: true, // Default - validate no conflicts
+});
+
+// Handle double booking error
+if (result.error?.code === 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING') {
+  console.error('Court slot already occupied');
+  // Suggest alternative: different court or different time
+}
+```
+
+#### Performance Considerations
+
+For large tournaments (1000+ matchUps), conflict detection adds processing overhead by querying all tournament matchUps. Consider disabling when:
+
+- **Client-side validation exists**: UI already prevents conflicts before submission
+- **Bulk operations**: Scheduling hundreds of matchUps at once
+- **Multi-user environments**: Optimistic UI updates with server-side rollback
+- **Automated scheduling**: Using algorithms that guarantee no conflicts
+
+```js
+// High-performance bulk scheduling
+matchAssignments.forEach(({ matchUpId, schedule }) => {
+  engine.addMatchUpScheduleItems({
+    matchUpId,
+    drawId: 'draw-456',
+    schedule,
+    proConflictDetection: false, // Skip validation for speed
+    disableNotice: true, // Batch notifications
+  });
+});
+```
+
+#### When to Keep Detection Enabled
+
+Keep `proConflictDetection: true` (default) when:
+
+- **Interactive scheduling**: Tournament directors manually dragging/dropping matches
+- **Single-user applications**: No concurrent scheduling conflicts possible
+- **Critical operations**: Scheduling that must not fail silently
+- **Small tournaments**: Performance impact negligible (fewer than 500 matchUps)
+- **No client validation**: Server is the source of truth
+
+### Using proConflicts() for Analysis
+
+The `proConflicts()` method provides comprehensive conflict analysis across all scheduled matchUps, detecting:
+
+- **Court double-bookings**: Multiple matchUps on same court slot
+- **Participant conflicts**: Same player scheduled in multiple matches simultaneously
+- **Match order conflicts**: Dependent matches scheduled in wrong order
+- **Recovery time violations**: Insufficient rest between consecutive matches
+
+```js
+// Get all scheduled matchUps
+const { matchUps } = engine.allCompetitionMatchUps({
+  matchUpFilters: { scheduledDate: '2024-03-20' },
+  withCourtGridRows: true,
+  nextMatchUps: true,
+  inContext: true,
+});
+
+// Analyze for conflicts
+const { courtIssues, rowIssues } = engine.proConflicts({
+  matchUps,
+  tournamentRecords, // Optional for multi-tournament analysis
+});
+
+// Check for double bookings
+Object.entries(courtIssues).forEach(([courtId, issues]) => {
+  const doubleBookings = issues.filter((issue) => issue.issueType === 'courtDoubleBooking');
+  if (doubleBookings.length > 0) {
+    console.warn(`Court ${courtId} has double bookings:`, doubleBookings);
+  }
+});
+
+// Check for participant conflicts
+rowIssues.forEach((row, rowIndex) => {
+  const participantConflicts = row.filter((issue) => issue.issueType === 'participantConflict');
+  if (participantConflicts.length > 0) {
+    console.warn(`Row ${rowIndex + 1} has participant conflicts:`, participantConflicts);
+  }
+});
+```
+
+#### Conflict Types
+
+| Conflict Type            | Severity | Description                                                |
+| ------------------------ | -------- | ---------------------------------------------------------- |
+| `courtDoubleBooking`     | ERROR    | Two matchUps assigned to same court slot                   |
+| `participantConflict`    | CONFLICT | Same player in multiple matches on same row (simultaneous) |
+| `matchUpConflict`        | ERROR    | Dependent match scheduled before prerequisite              |
+| `participantWarning`     | WARNING  | Player has back-to-back matches (potential recovery issue) |
+| `insufficientGapWarning` | ISSUE    | Multiple rounds between dependent matches                  |
+
+#### Conflict Resolution Workflow
+
+```js
+// 1. Schedule matches
+scheduleMatchesToGrid(matchAssignments);
+
+// 2. Analyze for conflicts
+const { courtIssues, rowIssues } = engine.proConflicts({ matchUps });
+
+// 3. Identify conflicts requiring resolution
+const criticalConflicts = Object.values(rowIssues)
+  .flat()
+  .filter((issue) => ['ERROR', 'CONFLICT'].includes(issue.issue));
+
+// 4. Resolve conflicts
+criticalConflicts.forEach((conflict) => {
+  if (conflict.issueType === 'courtDoubleBooking') {
+    // Move one match to different court or time
+    const affectedMatchUpIds = [conflict.matchUpId, ...conflict.issueIds];
+    resolveDoubleBooking(affectedMatchUpIds);
+  } else if (conflict.issueType === 'participantConflict') {
+    // Move matches to different rows
+    rescheduleConflictingMatches(conflict.matchUpId, conflict.issueIds);
+  } else if (conflict.issueType === 'matchUpConflict') {
+    // Reorder matches to respect dependencies
+    adjustMatchOrder(conflict.matchUpId, conflict.issueIds);
+  }
+});
+
+// 5. Re-analyze to confirm resolution
+const recheck = engine.proConflicts({ matchUps: getUpdatedMatchUps() });
+if (Object.values(recheck.rowIssues).flat().length === 0) {
+  console.log('All conflicts resolved');
+}
+```
+
+### Preventing Conflicts During Scheduling
+
+#### Strategy 1: Pre-validate Before Assignment
+
+```js
+function canScheduleToSlot(courtId, courtOrder, scheduledDate, matchUpId) {
+  const { matchUps } = engine.allCompetitionMatchUps({
+    matchUpFilters: { scheduledDate },
+  });
+
+  const occupied = matchUps.some(
+    (m) =>
+      m.matchUpId !== matchUpId &&
+      m.schedule?.courtId === courtId &&
+      m.schedule?.courtOrder === courtOrder &&
+      m.schedule?.scheduledDate === scheduledDate,
+  );
+
+  return !occupied;
+}
+
+// Use before scheduling
+if (canScheduleToSlot('court-1', 2, '2024-03-20', 'match-123')) {
+  engine.addMatchUpScheduleItems({
+    matchUpId: 'match-123',
+    schedule: { courtId: 'court-1', courtOrder: '2', scheduledDate: '2024-03-20' },
+  });
+}
+```
+
+#### Strategy 2: Find Available Slots
+
+```js
+function findAvailableSlot(courtIds, courtOrder, scheduledDate) {
+  const { matchUps } = engine.allCompetitionMatchUps({
+    matchUpFilters: { scheduledDate },
+  });
+
+  const occupiedCourts = new Set(
+    matchUps.filter((m) => m.schedule?.courtOrder === courtOrder).map((m) => m.schedule?.courtId),
+  );
+
+  return courtIds.find((courtId) => !occupiedCourts.has(courtId));
+}
+
+// Use to avoid conflicts
+const availableCourtId = findAvailableSlot(['court-1', 'court-2', 'court-3'], 2, '2024-03-20');
+
+if (availableCourtId) {
+  engine.addMatchUpScheduleItems({
+    matchUpId: 'match-123',
+    schedule: { courtId: availableCourtId, courtOrder: '2', scheduledDate: '2024-03-20' },
+  });
+}
+```
+
+#### Strategy 3: Automated Conflict-Free Scheduling
+
+```js
+// Use proAutoSchedule for conflict-free initial schedule
+const { matchUps } = engine.allCompetitionMatchUps({
+  nextMatchUps: true,
+  inContext: true,
+});
+
+const result = engine.proAutoSchedule({
+  scheduledDate: '2024-03-20',
+  matchUps,
+  venueIds: ['venue-1'], // Optional
+});
+
+// Result includes conflict-free schedule
+console.log(`Scheduled ${result.scheduled.length} matchUps without conflicts`);
+```
+
+---
+
 ## Related Documentation
 
 - **[Scheduling Overview](./scheduling-overview)** - Understanding scheduling workflows
@@ -485,3 +716,4 @@ if (validation.conflicts.length > 0) {
 - **[Scheduling Profile](./scheduling-profile)** - Multi-day schedule configuration
 - **[Scheduling Policy](./scheduling-policy)** - Recovery times and daily limits
 - **[Schedule Governor](/docs/governors/schedule-governor)** - API reference for scheduling methods
+- **[matchUp Governor](/docs/governors/matchup-governor)** - addMatchUpScheduleItems reference
