@@ -62,7 +62,7 @@ export function getEventData(params: GetEventDataArgs): {
   if (paramsCheck.error) return paramsCheck;
 
   const tournamentRecord = makeDeepCopy(params.tournamentRecord, false, true);
-  const foundEvent = !params.event ? findEvent({ tournamentRecord, eventId: params.eventId }).event : undefined;
+  const foundEvent = params.event == null ? findEvent({ tournamentRecord, eventId: params.eventId }).event : undefined;
   const event = params.event
     ? makeDeepCopy(params.event, false, true)
     : (foundEvent && makeDeepCopy(foundEvent, false, true)) || undefined;
@@ -99,7 +99,12 @@ export function getEventData(params: GetEventDataArgs): {
     return structureDetails[structureId]?.published;
   };
 
-  const drawFilter = ({ drawId }) => (!usePublishState ? true : getDrawIsPublished({ publishStatus, drawId }));
+  const drawFilter = ({ drawId }) => {
+    if (usePublishState) {
+      return getDrawIsPublished({ publishStatus, drawId });
+    }
+    return true;
+  };
 
   const roundLimitMapper = ({ drawId, structure }) => {
     if (!usePublishState) return structure;
@@ -126,10 +131,12 @@ export function getEventData(params: GetEventDataArgs): {
       ? drawDefinitions
           .filter(drawFilter)
           .map((drawDefinition) =>
-            (({ drawInfo, structures }) => ({
-              ...drawInfo,
-              structures,
-            }))(
+            (({ drawInfo, structures }) => {
+              return {
+                ...drawInfo,
+                structures,
+              };
+            })(
               getDrawData({
                 allParticipantResults: params.allParticipantResults,
                 hydrateParticipants: params.hydrateParticipants,
@@ -168,16 +175,15 @@ export function getEventData(params: GetEventDataArgs): {
       : undefined;
 
   const venues = Array.isArray(tournamentRecord.venues) ? tournamentRecord.venues : [];
-  const venuesData = venues.map((venue) =>
-    (({ venueData }) => ({
+  const venuesData = venues.map((venue) => {
+    const { venueData } = getVenueData({
+      venueId: venue.venueId,
+      tournamentRecord,
+    });
+    return {
       ...venueData,
-    }))(
-      getVenueData({
-        venueId: venue.venueId,
-        tournamentRecord,
-      }),
-    ),
-  );
+    };
+  });
 
   const eventInfo: any = (({
     eventId,
@@ -192,20 +198,22 @@ export function getEventData(params: GetEventDataArgs): {
     endDate,
     ballType,
     discipline,
-  }) => ({
-    eventId,
-    eventName,
-    eventType,
-    eventLevel,
-    surfaceCategory,
-    matchUpFormat,
-    category,
-    gender,
-    startDate,
-    endDate,
-    ballType,
-    discipline,
-  }))(event);
+  }) => {
+    return {
+      eventId,
+      eventName,
+      eventType,
+      eventLevel,
+      surfaceCategory,
+      matchUpFormat,
+      category,
+      gender,
+      startDate,
+      endDate,
+      ballType,
+      discipline,
+    };
+  })(event);
 
   eventInfo.display = findExtension({
     element: event,
