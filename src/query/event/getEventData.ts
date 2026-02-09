@@ -33,6 +33,7 @@ type GetEventDataArgs = {
   usePublishState?: boolean;
   refreshResults?: boolean;
   pressureRating?: boolean;
+  participantFilters?: any;
   contextProfile?: any;
   eventId?: string;
   status?: string;
@@ -77,6 +78,7 @@ export function getEventData(params: GetEventDataArgs): {
   const eventPublished = !!eventPublishState?.status?.published;
 
   const { participants: tournamentParticipants } = getParticipants({
+    participantFilters: params.participantFilters,
     withGroupings: true,
     withEvents: false,
     withDraws: false,

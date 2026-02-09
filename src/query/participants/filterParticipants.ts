@@ -168,10 +168,9 @@ function getDrawEntries({ drawEntryStatuses, tournamentEvents }) {
     tournamentEvents.reduce((entries, event) => {
       const { flightProfile } = getFlightProfile({ event } as any);
       const flightEntries =
-        flightProfile?.flights
-          ?.flatMap(({ drawEntries }) =>
-            Array.isArray(drawEntries) ? drawEntries.filter(statusFilter).map(getParticipantId) : [],
-          ) || [];
+        flightProfile?.flights?.flatMap(({ drawEntries }) =>
+          Array.isArray(drawEntries) ? drawEntries.filter(statusFilter).map(getParticipantId) : [],
+        ) || [];
 
       const drawEnteredParticipantIds =
         event.drawDefinitions?.map(({ entries }) =>

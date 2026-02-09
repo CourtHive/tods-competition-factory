@@ -2,6 +2,7 @@ import { getParticipantEntries } from '@Query/participants/getParticipantEntries
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { filterParticipants } from '@Query/participants/filterParticipants';
 import { getParticipantMap } from '@Query/participants/getParticipantMap';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { attributeFilter } from '@Tools/attributeFilter';
 import { isObject } from '@Tools/objects';
@@ -91,7 +92,9 @@ export function getParticipants(params: GetParticipantsArgs): {
     withIOC,
   } = params;
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stack = 'getParticipants';
+
+  if (!tournamentRecord) return decorateResult({ stack, result: { error: MISSING_TOURNAMENT_RECORD } });
 
   if (withMatchUps || withRankingProfile) {
     getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
