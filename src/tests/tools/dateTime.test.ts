@@ -74,6 +74,6 @@ test('miscellaneous', () => {
   result = splitTime('aa:bb xx');
   expect(result).toEqual({});
 
-  result = ['08:45', '08:35'].sort(timeSort);
-  expect(result).toEqual(['08:35', '08:45']);
+  const sortedTimes = ['08:45', '08:35'].sort(timeSort);
+  expect(sortedTimes).toEqual(['08:35', '08:45']);
 });
