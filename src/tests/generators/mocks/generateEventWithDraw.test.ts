@@ -17,8 +17,11 @@ it('can generate an event with draw independent of a tournamentRecord', () => {
 });
 
 it('can use drawProfiles to generate gendered SINGLES event', () => {
-  const drawProfiles = [{ drawSize: 32, gender: MALE, eventType: SINGLES }];
+  const participantsCount = 64;
+  const drawSize = 32;
+  const drawProfiles = [{ drawSize, gender: MALE, eventType: SINGLES }];
   const result = mocksEngine.generateTournamentRecord({
+    participantsProfile: { participantsCount },
     drawProfiles,
   });
   expect(result.error).toBeUndefined();
@@ -27,19 +30,19 @@ it('can use drawProfiles to generate gendered SINGLES event', () => {
 
   let { participants } = tournamentEngine.getParticipants();
 
-  expect(participants.length).toEqual(32);
+  expect(participants.length).toEqual(participantsCount + drawSize);
 
   ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { eventIds },
   }));
 
-  expect(participants.length).toEqual(32);
+  expect(participants.length).toEqual(drawSize);
 
   ({ participants } = tournamentEngine.getParticipants({
     participantFilters: { positionedParticipants: true },
   }));
 
-  expect(participants.length).toEqual(32);
+  expect(participants.length).toEqual(drawSize);
 
   const genders = participants.reduce(
     (genders, participant) =>

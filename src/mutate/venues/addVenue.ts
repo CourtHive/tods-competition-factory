@@ -1,10 +1,11 @@
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { definedAttributes } from '@Tools/definedAttributes';
-import { makeDeepCopy } from '@Tools/makeDeepCopy';
-import { addNotice } from '@Global/state/globalState';
 import { addExtension } from '../extensions/addExtension';
+import { addNotice } from '@Global/state/globalState';
+import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { UUID } from '@Tools/UUID';
 
+// constants and types
 import { CONTEXT } from '@Constants/extensionConstants';
 import { ADD_VENUE } from '@Constants/topicConstants';
 import { SUCCESS } from '@Constants/resultConstants';
@@ -66,7 +67,9 @@ function venueAdd({ tournamentRecord, disableNotice, context, venue }: AddVenueA
     return exists || existingVenue.venueId === venue.venueId;
   }, undefined);
 
-  if (!venueExists) {
+  if (venueExists) {
+    return { error: VENUE_EXISTS };
+  } else {
     if (context) {
       const extension = {
         value: context,
@@ -85,7 +88,5 @@ function venueAdd({ tournamentRecord, disableNotice, context, venue }: AddVenueA
     }
 
     return { ...SUCCESS, venue: makeDeepCopy(venue) };
-  } else {
-    return { error: VENUE_EXISTS };
   }
 }

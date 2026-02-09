@@ -2,6 +2,7 @@ import { getParticipantEntries } from '@Query/participants/getParticipantEntries
 import { getMatchUpDependencies } from '@Query/matchUps/getMatchUpDependencies';
 import { filterParticipants } from '@Query/participants/filterParticipants';
 import { getParticipantMap } from '@Query/participants/getParticipantMap';
+import { decorateResult } from '@Functions/global/decorateResult';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { attributeFilter } from '@Tools/attributeFilter';
 import { isObject } from '@Tools/objects';
@@ -91,7 +92,9 @@ export function getParticipants(params: GetParticipantsArgs): {
     withIOC,
   } = params;
 
-  if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
+  const stack = 'getParticipants';
+
+  if (!tournamentRecord) return decorateResult({ stack, result: { error: MISSING_TOURNAMENT_RECORD } });
 
   if (withMatchUps || withRankingProfile) {
     getMatchUpDependencies({ tournamentRecord }); // ensure goesTos are present
@@ -199,7 +202,7 @@ export function getParticipants(params: GetParticipantsArgs): {
     const template = isObject(withIndividualParticipants) ? withIndividualParticipants : undefined;
     for (const participant of filteredParticipants) {
       for (const individualParticipantId of participant.individualParticipantIds ?? []) {
-        if (!participant.individualParticipants) participant.individualParticipants = [];
+        participant.individualParticipants ??= [];
         const source = ppMap.get(individualParticipantId);
         const individualParticipant = template ? attributeFilter({ template, source }) : source;
         participant.individualParticipants.push(individualParticipant);
