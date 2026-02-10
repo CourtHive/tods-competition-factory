@@ -26,20 +26,12 @@ import { tournamentEngine } from 'tods-competition-factory';
 tournamentEngine.setState(tournamentRecord);
 
 // Without middleware (manual resolution)
-const { drawDefinition } = tournamentEngine.getDrawDefinition({ drawId });
+const { drawDefinition } = tournamentEngine.getEvent({ drawId });
 const { event } = tournamentEngine.findEvent({ drawId: drawDefinition.drawId });
 tournamentEngine.deleteDrawDefinitions({ event, drawIds: [drawId] });
 
 // With middleware (automatic resolution)
 tournamentEngine.getEvent({ drawId }); // ✅ Event automatically resolved
-```
-
-### Resolving Draws from Structure IDs
-
-```js
-// Middleware resolves drawDefinition from structureId
-const result = tournamentEngine.getStructure({ structureId });
-// Equivalent to manually finding draw, then finding structure
 ```
 
 ### Resolving Everything from Match ID

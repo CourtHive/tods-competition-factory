@@ -699,29 +699,6 @@ tournamentEngine.addMatchUpExtension({
 });
 ```
 
-### Retrieving Extensions
-
-```js
-// From tournament record
-const tournament = tournamentEngine.getTournament();
-const customExt = tournament.extensions?.find((e) => e.name === 'customData');
-
-// From event
-const { event } = tournamentEngine.getEvent({ eventId: 'singles-main' });
-const eventExt = event.extensions?.find((e) => e.name === 'eventCustomData');
-
-// From draw
-const { drawDefinition } = tournamentEngine.getDrawDefinition({ drawId: 'draw-123' });
-const drawExt = drawDefinition.extensions?.find((e) => e.name === 'drawCustomData');
-
-// From matchUp (with context)
-const { matchUp } = tournamentEngine.findMatchUp({
-  matchUpId: 'match-456',
-  inContext: true,
-});
-const matchUpExt = matchUp.extensions?.find((e) => e.name === 'matchUpCustomData');
-```
-
 ### Updating Extensions
 
 Extensions are updated by removing the old one and adding the new one (or using update methods):
