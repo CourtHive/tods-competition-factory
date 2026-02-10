@@ -28,7 +28,7 @@ engine.addDrawEntries({
 
 ## addEventEntries
 
-Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.flight[].drawEntries` at the same time.
+Adds `participantIds` to `event.entries`; optionally pass drawId to add participantIds to `flightProfile.flight[].drawEntries` at the same time. See examples in [Tournament Entry Filters](../concepts/accessors.mdx#tournament-entry-filters), [Adding Entries](../concepts/events/entries.mdx#adding-entries), [Complete Example](../concepts/events/flights.mdx#complete-example).
 
 Supports optional validation of participant eligibility against event category constraints (age ranges, rating requirements).
 
@@ -310,7 +310,7 @@ const result = engine.modifyEntriesStatus({
 
 ## modifyEventEntries
 
-Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present.
+Modify the entries for an event. For DOUBLES events automatically create PAIR participants if not already present. See examples: [Update Entry Status](../concepts/events/entries.mdx#update-entry-status).
 
 ```js
 engine.modifyEventEntries({

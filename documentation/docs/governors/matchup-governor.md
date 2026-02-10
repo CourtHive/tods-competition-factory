@@ -8,7 +8,7 @@ import { matchUpGovernor } from 'tods-competition-factory';
 
 ## allCompetitionMatchUps
 
-Returns all matchUps from all tournaments in a competition.
+Returns all matchUps from all tournaments in a competition. See examples in [Using proConflicts() for Analysis](../concepts/pro-scheduling.md#using-proconflicts-for-analysis).
 
 ```js
 const { matchUps } = engine.allCompetitionMatchUps({
@@ -95,7 +95,7 @@ engine.assignMatchUpSideParticipant({
 
 ## assignTieMatchUpParticipantId
 
-Used when interactively assigning participants to `matchUps`. When individual `participantIds` are assigned to `{ matchUpType: 'DOUBLES' }` it handles creating `{ participantType: PAIR }` participants dynamically.
+Used when interactively assigning participants to `matchUps`. When individual `participantIds` are assigned to `{ matchUpType: 'DOUBLES' }` it handles creating `{ participantType: PAIR }` participants dynamically. See examples: [Creating Pairs Automatically](../concepts/participants.md#creating-pairs-automatically).
 
 ```js
 engine.assignTieMatchUpParticipantId({
@@ -132,7 +132,7 @@ engine.bulkMatchUpStatusUpdate({ outcomes });
 
 ## checkInParticipant
 
-Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.
+Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management), [Participant Check-In](../concepts/matchup-overview.md#participant-check-in).
 
 ```js
 engine.checkInParticipant({
@@ -151,7 +151,7 @@ engine.checkOutParticipant({
   participantId,
   matchUpId,
   drawId,
-});
+});. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management).
 ```
 
 ---
@@ -786,7 +786,7 @@ engine.setMatchUpState({
 
 ## setMatchUpStatus
 
-Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
+Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures. See examples: [Setting Scores](../concepts/matchup-overview.md#setting-scores), [MatchUp Operations](../engines/engine-middleware.md#matchup-operations), [Real-World Example: Live Scoring Updates](../engines/mutation-engines.md#real-world-example-live-scoring-updates).
 
 ```js
 const outcome = {
@@ -876,7 +876,7 @@ engine.toggleParticipantCheckInState({
   tournamentId,
   matchUpId,
   drawId,
-});
+});. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management).
 ```
 
 ---

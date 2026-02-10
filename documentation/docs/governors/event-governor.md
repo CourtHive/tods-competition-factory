@@ -8,7 +8,7 @@ import { eventGovernor } from 'tods-competition-factory';
 
 ## addDrawDefinition
 
-Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition).
+Adds a drawDefinition to an event in a tournamentRecord. Called after [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition). See examples: [Complete Example](../concepts/events/entries.mdx#complete-example), [Creating Draws from Flight Profiles](../concepts/events/flights.mdx#creating-draws-from-flight-profiles), [Complete Example](../concepts/events/flights.mdx#complete-example).
 
 ```js
 const { drawDefinition, error } = engine.generateDrawDefinition(drawDefinitionValues);
@@ -29,7 +29,7 @@ if (!error) {
 
 ## addEvent
 
-Add an event object to a tournamentRecord.
+Add an event object to a tournamentRecord. See examples in [Creating Events](../concepts/events/events-overview.mdx#creating-events), [Age Validation Examples](../concepts/events/entries.mdx#age-validation-examples), [Complete Example](../concepts/events/flights.mdx#complete-example), [Using Categories in Events](../concepts/events/categories.mdx#using-categories-in-events), [newTournamentRecord](../engines/engine-methods.md#newtournamentrecord), and 1 more.
 
 ```js
 engine.addEvent({ event });
@@ -178,7 +178,7 @@ console.log(result.valid); // true - fits within constraints
 
 ## deleteDrawDefinitions
 
-Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tournamentRecord whenever this method is called. If `autoPublish: true` (default behavior) then if a deleted draw was published then the `event` to which it belongs will be re-published.
+Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tournamentRecord whenever this method is called. If `autoPublish: true` (default behavior) then if a deleted draw was published then the `event` to which it belongs will be re-published. See examples: [Resolving Events from Draw IDs](../engines/engine-middleware.md#resolving-events-from-draw-ids).
 
 ```js
 engine.deleteDrawDefinitions({
@@ -203,7 +203,7 @@ engine.deleteEvents({ eventIds });
 
 ## deleteFlightAndFlightDraw
 
-Removes flight from `event` flightProfile as well as associated `drawDefinition` (if generated).
+Removes flight from `event` flightProfile as well as associated `drawDefinition` (if generated). See examples: [Delete Individual Flight](../concepts/events/flights.mdx#delete-individual-flight).
 
 ```js
 engine.deleteFlightAndFlightDraw({
@@ -219,7 +219,7 @@ engine.deleteFlightAndFlightDraw({
 
 ## deleteFlightProfileAndFlightDraws
 
-Removes flightProfiles and all associated drawDefinitions from a specified event.
+Removes flightProfiles and all associated drawDefinitions from a specified event. See examples: [Delete Entire Flight Profile](../concepts/events/flights.mdx#delete-entire-flight-profile).
 
 ```js
 engine.deleteFlightProfileAndFlightDraws({

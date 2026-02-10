@@ -19,7 +19,7 @@ The **competitionGovernor** provides functions for managing multi-tournament com
 
 ## linkTournaments
 
-Links all tournaments currently loaded in competitionEngine state by adding a LINKED_TOURNAMENTS extension to each tournament record. Linked tournaments can share venues, schedule cross-tournament matchUps, and be managed as a unified competition.
+Links all tournaments currently loaded in competitionEngine state by adding a LINKED_TOURNAMENTS extension to each tournament record. Linked tournaments can share venues, schedule cross-tournament matchUps, and be managed as a unified competition. See examples: [Linked Tournaments & Shared Venues](../concepts/venues-courts.md#linked-tournaments-shared-venues).
 
 **Purpose:** Establish relationships between multiple tournaments to enable competition-wide operations like shared venue management, cross-tournament scheduling, and unified participant tracking.
 

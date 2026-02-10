@@ -104,6 +104,9 @@ Event publishing controls visibility of draw structures, matchUps, and results.
 Publish all draws within an event:
 
 ```js
+
+**API Reference:** [getPublishState](/docs/governors/publishing-governor#getpublishstate)
+
 const { eventData } = engine.publishEvent({ eventId });
 
 // eventData contains formatted payload for public display
@@ -116,6 +119,9 @@ const { eventData } = engine.publishEvent({ eventId });
 Publish only selected draws (useful for flights):
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 // Shorthand for publishing specific drawIds
 engine.publishEvent({
   eventId,
@@ -134,6 +140,9 @@ engine.publishEvent({
 Publish only specific stages within a draw:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 import { stageConstants } from 'tods-competition-factory';
 const { QUALIFYING, MAIN } = stageConstants;
 
@@ -164,6 +173,9 @@ engine.publishEvent({
 Control visibility round-by-round for progressive disclosure:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 // Publish only first round of a structure
 engine.publishEvent({
   eventId,
@@ -200,6 +212,9 @@ engine.publishEvent({
 Schedule future publication with embargo timestamps:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 const embargoTime = new Date('2024-06-15T10:00:00Z').toISOString();
 
 engine.publishEvent({
@@ -220,6 +235,9 @@ engine.publishEvent({
 Remove events from public visibility:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 engine.unPublishEvent({
   eventId,
   removePriorValues: true, // Remove timeItems (default)
@@ -240,6 +258,9 @@ Seeding publication is separate from draw publication, allowing flexible control
 ### Publishing Seeding
 
 ```js
+
+**API Reference:** [unPublishEvent](/docs/governors/publishing-governor#unpublishevent)
+
 engine.publishEventSeeding({
   eventId,
   seedingScaleNames: ['U18'], // Optional - specify which scales
@@ -259,6 +280,9 @@ engine.publishEventSeeding({
 ### Unpublishing Seeding
 
 ```js
+
+**API Reference:** [publishEventSeeding](/docs/governors/publishing-governor#publisheventseeding)
+
 engine.unPublishEventSeeding({
   eventId,
   stages: ['MAIN', 'QUALIFYING'], // Optional - specific stages only
@@ -279,6 +303,9 @@ Order of Play publishing controls visibility of scheduled matchUps - which match
 ### Publishing Scheduled MatchUps
 
 ```js
+
+**API Reference:** [unPublishEventSeeding](/docs/governors/publishing-governor#unpublisheventseeding)
+
 // Publish all scheduled dates and events
 engine.publishOrderOfPlay();
 
@@ -303,6 +330,9 @@ engine.publishOrderOfPlay({
 ### Unpublishing Order of Play
 
 ```js
+
+**API Reference:** [publishOrderOfPlay](/docs/governors/publishing-governor#publishorderofplay)
+
 engine.unPublishOrderOfPlay({
   removePriorValues: true, // Remove timeItems (default)
 });
@@ -311,6 +341,9 @@ engine.unPublishOrderOfPlay({
 ### Querying Published Schedules
 
 ```js
+
+**API Reference:** [unPublishOrderOfPlay](/docs/governors/publishing-governor#unpublishorderofplay)
+
 const { dateMatchUps } = engine.competitionScheduleMatchUps({
   usePublishState: true, // Only return published matchUps
 });
@@ -331,6 +364,9 @@ Participant publishing controls visibility of the participant list.
 - **Staged Entries**: Announce wildcards separately from direct acceptances
 
 ```js
+
+**API Reference:** [competitionScheduleMatchUps](/docs/governors/query-governor#competitionschedulematchups)
+
 engine.publishParticipants();
 
 // Clear previous publications and republish
@@ -342,6 +378,9 @@ engine.publishParticipants({
 ### Unpublishing Participants
 
 ```js
+
+**API Reference:** [publishParticipants](/docs/governors/publishing-governor#publishparticipants)
+
 engine.unPublishParticipants({
   removePriorValues: true,
 });
@@ -354,6 +393,9 @@ Publishing integrates with **privacy policies** to control which participant att
 ### Participant Privacy Policy
 
 ```js
+
+**API Reference:** [unPublishParticipants](/docs/governors/publishing-governor#unpublishparticipants)
+
 import { policyConstants } from 'tods-competition-factory';
 
 const privacyPolicy = {
@@ -383,6 +425,9 @@ const { eventData } = engine.publishEvent({
 Control visibility of specific matchUp and schedule attributes:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 const displaySettings = {
   matchUps: {
     scheduleDate: true,
@@ -411,6 +456,9 @@ Publishing methods prepare optimized data payloads for public display.
 ### Event Data Payload
 
 ```js
+
+**API Reference:** [setEventDisplay](/docs/governors/publishing-governor#seteventdisplay)
+
 const { eventData } = engine.publishEvent({
   eventId,
   eventDataParams: {
@@ -438,6 +486,9 @@ The `eventDataParams` passed to `publishEvent()` are used to generate the `event
 **Client applications must pass their own query parameters:**
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 // Server-side publishing (generates payload for subscriptions)
 engine.publishEvent({
   eventId,
@@ -458,6 +509,12 @@ The publish state timeItem controls **filtering** (which draws, structures, roun
 ### Prepared Payload Structure
 
 ```typescript
+
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
+**API Reference:** [getEventData](/docs/governors/query-governor#geteventdata)
+
 {
   eventData: {
     eventInfo: {
@@ -609,6 +666,9 @@ engine.publishEvent({
 Publish qualifying first, main draw later:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 import { stageConstants } from 'tods-competition-factory';
 
 // Publish qualifying only
@@ -637,6 +697,9 @@ engine.publishEvent({
 Publish each day's schedule separately:
 
 ```js
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 // Each morning, publish that day's schedule
 const today = new Date().toISOString().split('T')[0];
 
@@ -651,6 +714,9 @@ engine.publishOrderOfPlay({
 Separate seeding announcement from draw publication:
 
 ```js
+
+**API Reference:** [publishOrderOfPlay](/docs/governors/publishing-governor#publishorderofplay)
+
 // Step 1: Announce seeded players
 engine.publishEventSeeding({ eventId });
 // Subscription notification sent
@@ -669,6 +735,12 @@ Methods that respect publish state when `usePublishState: true`:
 ### Event Data
 
 ```js
+
+
+**API Reference:** [publishEventSeeding](/docs/governors/publishing-governor#publisheventseeding)
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
 const { eventData } = engine.getEventData({
   eventId,
   usePublishState: true, // Filter to published draws/structures only
@@ -678,6 +750,9 @@ const { eventData } = engine.getEventData({
 ### Competition Schedule
 
 ```js
+
+**API Reference:** [getEventData](/docs/governors/query-governor#geteventdata)
+
 const { dateMatchUps } = engine.competitionScheduleMatchUps({
   usePublishState: true, // Only published dates and events
 });
@@ -686,6 +761,9 @@ const { dateMatchUps } = engine.competitionScheduleMatchUps({
 ### Participants
 
 ```js
+
+**API Reference:** [competitionScheduleMatchUps](/docs/governors/query-governor#competitionschedulematchups)
+
 const { participants } = engine.getParticipants({
   usePublishState: true, // Respect privacy policies
   policyDefinitions: privacyPolicy,
@@ -699,6 +777,9 @@ const { participants } = engine.getParticipants({
 Maintain clear separation between internal and public-facing queries:
 
 ```js
+
+**API Reference:** [getParticipants](/docs/governors/query-governor#getparticipants)
+
 // Internal operations - full data access
 const { matchUps } = engine.allTournamentMatchUps();
 
@@ -713,6 +794,9 @@ const { matchUps: publicMatchUps } = engine.allTournamentMatchUps({
 Verify filtering works before going live:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 // Publish event
 engine.publishEvent({ eventId });
 
@@ -731,6 +815,12 @@ assert(eventData.drawsData.length === expectedCount);
 Use `removePriorValues: true` for clean state transitions:
 
 ```js
+
+
+**API Reference:** [publishEvent](/docs/governors/publishing-governor#publishevent)
+
+**API Reference:** [getEventData](/docs/governors/query-governor#geteventdata)
+
 // Replace previous publication completely
 engine.publishOrderOfPlay({
   scheduledDates: newDates,
@@ -743,6 +833,9 @@ engine.publishOrderOfPlay({
 Handle subscription failures gracefully:
 
 ```js
+
+**API Reference:** [publishOrderOfPlay](/docs/governors/publishing-governor#publishorderofplay)
+
 [topicConstants.PUBLISH_EVENT]: async (payload) => {
   try {
     await updatePublicSite(payload.eventData);

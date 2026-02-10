@@ -240,7 +240,7 @@ engine.automatedPlayoffPositioning({
 
 ## automatedPositioning
 
-Positions participants in a draw structure.
+Positions participants in a draw structure. See examples: [Draw Operations](../engines/engine-middleware.md#draw-operations), [Basic Rollback](../engines/mutation-engines.md#basic-rollback).
 
 See [Policies](../concepts/policies).
 
@@ -254,7 +254,7 @@ engine.automatedPositioning({ drawId, structureId });
 
 :::note
 Only generates seeding. To apply `engine.setParticipantScaleItems({ scaleItemsWithParticipantIds }`.
-:::
+:::. See examples: [Using Factory autoSeeding()](../concepts/scaleItems.md#using-factory-autoseeding), [Seeding from Rankings](../concepts/scaleItems.md#seeding-from-rankings), [Event Type Alignment](../concepts/scaleItems.md#event-type-alignment).
 
 ```js
 const { scaleItemsWithParticipantIds } = engine.autoSeeding({

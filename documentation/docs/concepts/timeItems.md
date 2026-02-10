@@ -280,6 +280,9 @@ Time items on events track data retrieval and configuration:
 **External Data Retrieval Timestamps**:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 {
   itemType: 'RETRIEVAL.RANKING.SINGLES.U18',
   itemValue: '2024-06-10T09:00:00Z',  // When data was fetched
@@ -365,6 +368,9 @@ if (timeItem) {
 **Get All Time Items**:
 
 ```js
+
+**API Reference:** [getTimeItem](/docs/governors/query-governor#gettimeitem)
+
 const { participant } = tournamentEngine.getParticipant({
   participantId: 'player-123',
 });
@@ -441,6 +447,12 @@ if (hoursSinceUpdate > 24) {
 Calculate match duration including interruptions:
 
 ```js
+
+
+**API Reference:** [setParticipantScaleItem](/docs/governors/participant-governor#setparticipantscaleitem)
+
+**API Reference:** [getTimeItem](/docs/governors/query-governor#gettimeitem)
+
 function getMatchDuration(matchUp) {
   const timeItems = matchUp.timeItems || [];
 

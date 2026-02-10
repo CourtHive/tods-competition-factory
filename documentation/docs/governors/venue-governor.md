@@ -29,7 +29,7 @@ engine.addCourt({ venueId, court });
 
 ## addCourts
 
-Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**. See [Scheduling](/docs/concepts/venues-courts).
+Convenience function to bulk add courts to a Venue. Only adds **dataAvailability** and **courtName**. See [Scheduling](/docs/concepts/venues-courts). See examples in [Creating Courts](../concepts/venues-courts.md#creating-courts).
 
 ```js
 const dateAvailability = [
@@ -58,7 +58,7 @@ engine.addCourts({
 
 ## addVenue
 
-Adds **venueId** if not provided.
+Adds **venueId** if not provided. See examples in [Creating Venues](../concepts/venues-courts.md#creating-venues).
 
 ```js
 engine.addVenue({
@@ -92,7 +92,7 @@ engine.deleteVenue({ venueId, force });
 
 ## deleteVenues
 
-If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled. See examples: [Modifying Venues](../concepts/venues-courts.md#modifying-venues).
 
 ```js
 engine.deleteVenues({ venueIds, force });
@@ -233,7 +233,7 @@ const { venues, courts } = competitionEngine.getCompetitionVenues({
 
 ## getCourts
 
-Returns courts for a specific venue, with optional filtering and hydration.
+Returns courts for a specific venue, with optional filtering and hydration. See examples: [Retrieving Venue Information](../concepts/venues-courts.md#retrieving-venue-information).
 
 ```js
 const { courts } = engine.getCourts({
@@ -355,7 +355,7 @@ engine.modifyCourt({
     notes,
     pace,
   },
-});
+});. See examples: [Modifying Courts](../concepts/venues-courts.md#modifying-courts), [Modifying Courts](../concepts/venues-courts.md#modifying-courts).
 ```
 
 ---
@@ -376,7 +376,7 @@ const result = engine.modifyCourtAvailability({
 
 ## modifyVenue
 
-Courts present on venue will replaced with courts specified in parameters. If courts are not present in parameters, courts will be unchanged.
+Courts present on venue will replaced with courts specified in parameters. If courts are not present in parameters, courts will be unchanged. See examples: [Modifying Venues](../concepts/venues-courts.md#modifying-venues).
 
 See [Scheduling](/docs/concepts/venues-courts) for more detail on court `dateAvailability`.
 

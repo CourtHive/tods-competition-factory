@@ -637,6 +637,9 @@ schedulingProfile.forEach(({ scheduleDate, venues }) => {
 Profiles work alongside scheduling policies:
 
 ```js
+
+**API Reference:** [findExtension](/docs/governors/query-governor#findextension)
+
 // Set policy for recovery times and daily limits
 tournamentEngine.attachPolicies({
   policyDefinitions: POLICY_SCHEDULING_DEFAULT
@@ -657,6 +660,9 @@ tournamentEngine.scheduleProfileRounds({ periodLength: 30 });
 For professional tournaments with grid scheduling:
 
 ```js
+
+**API Reference:** [attachPolicies](/docs/governors/policy-governor#attachpolicies)
+
 const result = tournamentEngine.scheduleProfileRounds({
   pro: true,  // Use grid scheduling instead of Garman
   periodLength: 30

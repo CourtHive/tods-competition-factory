@@ -14,7 +14,7 @@ See **[Publishing Concepts](../concepts/publishing)** for comprehensive coverage
 
 ## getPublishState
 
-Returns publishing details for tournament, event(s), and/or draws, enabling queries about current publish state before making changes.
+Returns publishing details for tournament, event(s), and/or draws, enabling queries about current publish state before making changes. See examples: [Queryable Publish State](../concepts/publishing.md#queryable-publish-state), [Queryable Publish State](../concepts/publishing.md#queryable-publish-state).
 
 ### Return All Publish State
 
@@ -395,7 +395,7 @@ console.log(venueData.venueAddress);
 
 ## publishEvent
 
-Publishes event draws and structures with fine-grained control over visibility. Generates optimized `eventData` payload and triggers `PUBLISH_EVENT` subscription notifications.
+Publishes event draws and structures with fine-grained control over visibility. Generates optimized `eventData` payload and triggers `PUBLISH_EVENT` subscription notifications. See examples in [Publishing All Draws](../concepts/publishing.md#publishing-all-draws).
 
 **Key Features**:
 
@@ -574,7 +574,7 @@ const { eventData: clientData } = engine.getEventData({
 
 ## publishEventSeeding
 
-Publishes event seeding information separately from draw structures, enabling flexible control over when seeding becomes publicly visible.
+Publishes event seeding information separately from draw structures, enabling flexible control over when seeding becomes publicly visible. See examples: [Publishing Seeding](../concepts/publishing.md#publishing-seeding), [Publishing Seeding](../concepts/publishing.md#publishing-seeding), [Coordinated Event and Seeding Release](../concepts/publishing.md#coordinated-event-and-seeding-release).
 
 **Why Separate Seeding Publication**:
 
@@ -641,7 +641,7 @@ engine.publishEventSeeding({
 
 ## publishOrderOfPlay
 
-Publishes scheduled matchUps (Order of Play), controlling visibility of which matches are scheduled for which courts and times.
+Publishes scheduled matchUps (Order of Play), controlling visibility of which matches are scheduled for which courts and times. See examples in [Publishing Scheduled MatchUps](../concepts/publishing.md#publishing-scheduled-matchups).
 
 **Why Order of Play Publishing**:
 
@@ -718,7 +718,7 @@ const { dateMatchUps } = engine.competitionScheduleMatchUps({
 
 ## publishParticipants
 
-Publishes the tournament participant list, controlling when participant information becomes publicly visible.
+Publishes the tournament participant list, controlling when participant information becomes publicly visible. See examples: [Why Participant Publishing?](../concepts/publishing.md#why-participant-publishing), [Why Participant Publishing?](../concepts/publishing.md#why-participant-publishing).
 
 **Why Participant Publishing**:
 
@@ -753,7 +753,7 @@ engine.publishParticipants({
 
 ## setEventDisplay
 
-Sets display configuration for event data, controlling which attributes are visible for specific draws and dates.
+Sets display configuration for event data, controlling which attributes are visible for specific draws and dates. See examples: [Display Settings](../concepts/publishing.md#display-settings).
 
 ```js
 engine.setEventDisplay({
@@ -769,7 +769,7 @@ engine.setEventDisplay({
 
 ## unPublishEvent
 
-Removes event from public visibility. Triggers `UNPUBLISH_EVENT` subscription notification.
+Removes event from public visibility. Triggers `UNPUBLISH_EVENT` subscription notification. See examples: [Unpublishing Events](../concepts/publishing.md#unpublishing-events).
 
 ```js
 engine.unPublishEvent({
@@ -802,7 +802,7 @@ engine.unPublishEvent({
 
 ## unPublishEventSeeding
 
-Removes seeding information from public visibility.
+Removes seeding information from public visibility. See examples: [Unpublishing Seeding](../concepts/publishing.md#unpublishing-seeding).
 
 ```js
 engine.unPublishEventSeeding({
@@ -839,7 +839,7 @@ engine.unPublishEventSeeding({
 
 ## unPublishOrderOfPlay
 
-Removes Order of Play from public visibility.
+Removes Order of Play from public visibility. See examples: [Unpublishing Order of Play](../concepts/publishing.md#unpublishing-order-of-play).
 
 ```js
 engine.unPublishOrderOfPlay({
@@ -870,7 +870,7 @@ engine.unPublishOrderOfPlay({
 
 ## unPublishParticipants
 
-Removes participant list from public visibility.
+Removes participant list from public visibility. See examples: [Unpublishing Participants](../concepts/publishing.md#unpublishing-participants).
 
 ```js
 engine.unPublishParticipants({

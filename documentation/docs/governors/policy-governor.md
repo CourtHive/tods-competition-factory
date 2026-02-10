@@ -23,7 +23,7 @@ See [Policies Documentation](/docs/concepts/policies) for detailed policy specif
 
 ## attachPolicies
 
-Attaches policy definitions to tournaments, events, or draws. Policies control various aspects of tournament behavior and are inherited hierarchically (draw policies override event policies, which override tournament policies).
+Attaches policy definitions to tournaments, events, or draws. Policies control various aspects of tournament behavior and are inherited hierarchically (draw policies override event policies, which override tournament policies). See examples in [Attach Default Policy](../concepts/scheduling-policy.mdx#attach-default-policy), [Combined with Scheduling Policy](../concepts/scheduling-profile.mdx#combined-with-scheduling-policy), [Privacy by Default](../concepts/publishing.md#privacy-by-default), [Policy Configuration](../concepts/actions.mdx#policy-configuration), [Policy Configuration](../concepts/actions.mdx#policy-configuration), and 1 more.
 
 **Purpose:** Apply competition rules and behavioral policies to tournament structures. Enables customization of seeding algorithms, scoring requirements, participant separation rules, and available administrative actions.
 

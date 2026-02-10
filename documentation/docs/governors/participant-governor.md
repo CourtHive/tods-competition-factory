@@ -21,7 +21,7 @@ engine.addDynamicRatings({
 
 ## addParticipant
 
-Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid.
+Adds an INDIVIDUAL, PAIR or TEAM participant to tournament participants. Includes integrity checks for `{ participantType: PAIR }` to ensure `participant.individualParticipantIds` are valid. See examples: [Participant Roles](../concepts/participants.md#participant-roles), [Adding Individual Participants](../concepts/participants.md#adding-individual-participants), [Adding Teams](../concepts/participants.md#adding-teams).
 
 :::note
 To add PAIR participants it is only necessary to provide an array of 2 valid individualParticipantIds, participantType and participantRole.
@@ -47,7 +47,7 @@ engine.addParticipant({ participant });
 
 ## addParticipants
 
-Bulk add participants to a tournamentRecord.
+Bulk add participants to a tournamentRecord. See examples: [Tournament Entry with Ratings](../concepts/scaleItems.md#tournament-entry-with-ratings), [setTournamentId](../engines/engine-methods.md#settournamentid), [setTournamentId](../engines/engine-methods.md#settournamentid).
 
 ```js
 engine.addParticipants({ participants });
@@ -672,7 +672,7 @@ scaleItem = {
   scaleType: RANKING,
   eventType: SINGLES,
   scaleDate: '2020-06-06',
-};
+};. See examples in [External Ranking Integration](../concepts/timeItems.md#external-ranking-integration), [RANKING](../concepts/scaleItems.md#ranking), [Complex Scale Item Retrieval](../concepts/accessors.mdx#complex-scale-item-retrieval).
 
 result = engine.setParticipantScaleItem({
   removePriorValues, // optional boolean - when true will delete prior timeItems
@@ -709,7 +709,7 @@ engine.setParticipantScaleItems({
     scaleBasis, // e.g. { scaleType: 'RANKING', scaleDate }
     eventId,
   },
-});
+});. See examples in [Multiple Scale Items](../concepts/scaleItems.md#multiple-scale-items).
 ```
 
 ---

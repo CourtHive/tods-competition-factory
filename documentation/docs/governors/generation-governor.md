@@ -106,7 +106,7 @@ const { structures, links, matchUpModifications } = engine.generateAndPopulatePl
 
 ## generateDrawDefinition
 
-This is a convenience method which handles most use cases for draw generation.
+This is a convenience method which handles most use cases for draw generation. See examples in [Basic Usage](../concepts/draws-overview.mdx#basic-usage), [Avoidance Policies](../concepts/accessors.mdx#avoidance-policies), [Nationality-Based Draws](../concepts/accessors.mdx#nationality-based-draws), [Pre-Defined Draw Types](../concepts/draw-types.md#pre-defined-draw-types), [Manual Entry Selection](../concepts/events/entries.mdx#manual-entry-selection), and 4 more.
 
 The `automated` parameter is "truthy" and supports placing only seeded participants and any byes which are adjacent to seeded positions.
 Support for this scenario is provided to enable some unique positioning strategies where unseeded participants have some agency in the selection process.
@@ -303,7 +303,7 @@ const { drawDefinition, matchUpsMap } = engine.generateDrawTypeAndModifyDrawDefi
 
 ## generateFlightProfile
 
-Splits event entries into `flightsCount` (# of draws). `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
+Splits event entries into `flightsCount` (# of draws). `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`. See examples: [Generating Flight Profiles](../concepts/events/flights.mdx#generating-flight-profiles), [Update Existing Profile](../concepts/events/flights.mdx#update-existing-profile), [Complete Example](../concepts/events/flights.mdx#complete-example).
 
 NOTE: The method returns `{ flightProfile, splitEntries }` for testing; `splitEntries` provides a breakdown on how `event.entries` were split across each `flight` within the `event`.
 
@@ -392,7 +392,7 @@ let { structure, link } = engine.generateQualifyingStructure({
 
 ## generateSeedingScaleItems
 
-Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make use of a custom function for generating `scaledEntries`.
+Used in conjunction with `getEntriesAndSeedsCount` when it is necessary to make use of a custom function for generating `scaledEntries`. See examples: [Client-Implemented Seeding](../concepts/scaleItems.md#client-implemented-seeding), [Using Factory getScaledEntries()](../concepts/scaleItems.md#using-factory-getscaledentries).
 
 ```js
 const { scaleItemsWithParticipantIds } = engine.generateSeedingScaleItems({

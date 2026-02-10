@@ -8,7 +8,7 @@ import { tournamentGovernor } from 'tods-competition-factory';
 
 ## addExtension
 
-Adds an extension to a specified element in the tournament record.
+Adds an extension to a specified element in the tournament record. See examples: [Follow By Implementation](../concepts/pro-scheduling.md#follow-by-implementation), [4. Manual Override](../concepts/scheduling-conflicts.mdx#4-manual-override).
 
 ```js
 engine.addExtension({
