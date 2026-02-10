@@ -83,19 +83,17 @@ it('can discover default awardProfiles', () => {
 
 it('supports finishingPositionRanges definitions with or without level', () => {
   const drawProfiles = [{ drawType: COMPASS, drawSize: 32 }];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
+    setState: true,
     drawProfiles,
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
   const participants = tournamentEngine
-    .getParticipants({
-      withRankingProfile: true,
-    })
+    .getParticipants({ withRankingProfile: true })
     .participants.sort(finishingPositionSort);
 
-  result = scaleEngine.getTournamentPoints({ policyDefinitions });
+  let result = scaleEngine.getTournamentPoints({ policyDefinitions });
   expect(result.success).toEqual(true);
   let personPoints = result.personPoints;
 
@@ -171,12 +169,12 @@ const scenarios = [
 
 it.each(scenarios)('supports drawSize thresholds', (scenario) => {
   const drawProfiles = [{ drawType: COMPASS, drawSize: scenario.drawSize }];
-  const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
+    setState: true,
     drawProfiles,
   });
 
-  let result = tournamentEngine.setState(tournamentRecord);
   const participants = tournamentEngine
     .getParticipants({
       withRankingProfile: true,
@@ -186,7 +184,7 @@ it.each(scenarios)('supports drawSize thresholds', (scenario) => {
   // use awardProfiles with thresholds
   policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = [awardProfileThresholds];
 
-  result = scaleEngine.getTournamentPoints({ policyDefinitions });
+  let result = scaleEngine.getTournamentPoints({ policyDefinitions });
   expect(result.success).toEqual(true);
   const personPoints = result.personPoints;
 
@@ -223,12 +221,12 @@ it.each(requireWinScenarios)(
   'supports requiredWins for a complete awardProfile or for discrete finishingPositions',
   (scenario) => {
     const drawProfiles = [{ drawType: COMPASS, drawSize: scenario.drawSize }];
-    const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+    mocksEngine.generateTournamentRecord({
       completeAllMatchUps: true,
+      setState: true,
       drawProfiles,
     });
 
-    let result = tournamentEngine.setState(tournamentRecord);
     const participants = tournamentEngine
       .getParticipants({
         withRankingProfile: true,
@@ -252,7 +250,7 @@ it.each(requireWinScenarios)(
     // use awardProfiles with requiredWins
     policyDefinitions[POLICY_TYPE_RANKING_POINTS].awardProfiles = awardProfileRequiredWins;
 
-    result = scaleEngine.getTournamentPoints({ policyDefinitions });
+    let result = scaleEngine.getTournamentPoints({ policyDefinitions });
     expect(result.success).toEqual(true);
     const personPoints = result.personPoints;
 

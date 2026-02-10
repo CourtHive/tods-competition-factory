@@ -1,19 +1,29 @@
 import { getParticipantIdMatchUps } from './participantIdMatchUps';
 
+import { getDevContext } from '@Global/state/globalState';
+
 // constants and types
+import { DrawDefinition, Event, Tournament, PositionAssignment } from '@Types/tournamentTypes';
+import { getPositionAssignments } from '@Query/structure/getPositionAssignments';
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
+
+// Extend MatchUp to include optional containerStructureId
+import { CONTAINER, MAIN } from '@Constants/drawDefinitionConstants';
 import { BYE, COMPLETED } from '@Constants/matchUpStatusConstants';
-import { DrawDefinition, Tournament } from '@Types/tournamentTypes';
+import { getEventData } from '@Query/event/getEventData';
+import { HydratedMatchUp } from '@Types/hydrated';
 
 type GetParticipantIdFinishingPositionsArgs = {
   tournamentRecord: Tournament;
   drawDefinition: DrawDefinition;
   byeAdvancements?: boolean;
+  event?: Event;
 };
 export function getParticipantIdFinishingPositions({
   byeAdvancements = false,
   tournamentRecord,
   drawDefinition,
+  event,
 }: GetParticipantIdFinishingPositionsArgs) {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
 
@@ -21,6 +31,31 @@ export function getParticipantIdFinishingPositions({
     tournamentParticipants: tournamentRecord?.participants,
     drawDefinition,
   });
+
+  const hasContainerMatchUps = Object.values(participantIdMatchUps).some((value) =>
+    (value as HydratedMatchUp[]).some((matchUp) => matchUp.containerStructureId),
+  );
+  const eventInfo: any = hasContainerMatchUps && getEventData({ tournamentRecord, event });
+  // drawDataStructures contains detail on participantResults which include groupOrder and
+  // provisionalOrder which can be used to determine finishing positions for container matchUps
+  const drawDataStructures = eventInfo?.eventData?.drawsData?.find(
+    (draw) => draw.drawId === drawDefinition.drawId,
+  )?.structures;
+
+  // containedStructures is necessary to determine bracket sizes which is necessary to determine finishing positions for container matchUps
+  const mainStructure = drawDefinition?.structures?.find(
+    (structure) => structure.stage === MAIN && structure.stageSequence === 1,
+  );
+  const containedStructures: any = mainStructure?.structureType === CONTAINER && mainStructure.structures;
+  const bracketsCount = containedStructures?.length;
+
+  // positionAssignments contains the participantResults which include groupOrder and provisionalOrder
+  // which can be used to determine finishing positions for container matchUps
+  const positionAssignments: PositionAssignment[] | undefined = hasContainerMatchUps
+    ? getPositionAssignments({ tournamentRecord, drawDefinition, structureId: mainStructure?.structureId })
+        ?.positionAssignments
+    : undefined;
+  const drawPositionsCount: any = positionAssignments?.length || 0;
 
   const participantIdFinishingPositions =
     participantIds?.map((participantId) => {
@@ -31,6 +66,29 @@ export function getParticipantIdFinishingPositions({
       const finishingPositionRanges = relevantMatchUps.map((matchUp) => {
         const isByeMatchUp = matchUp.sides.find((side) => side.bye);
         const participantSide = matchUp.sides.find((side) => side.participantId === participantId).sideNumber;
+        const isContainerMatchUp = matchUp.containerStructureId;
+        if (isContainerMatchUp) {
+          const containedStructure = containedStructures?.find(
+            (structure) => structure.structureId === matchUp.structureId,
+          );
+          const bracketSize = containedStructure?.positionAssignments?.length;
+          const participantResult = drawDataStructures
+            .find((structure) => structure.structureId === matchUp.containerStructureId)
+            ?.participantResults?.find((result) => result.participantId === participantId)?.participantResult;
+          const { ties, groupOrder, provisionalOrder } = participantResult || {};
+          if (getDevContext())
+            console.log({
+              drawPositionsCount,
+              provisionalOrder,
+              bracketsCount,
+              bracketSize,
+              groupOrder,
+              ties,
+            });
+          if (drawPositionsCount === bracketSize && groupOrder) {
+            return [groupOrder, groupOrder];
+          }
+        }
 
         const advancingSide = matchUp.winningSide || (byeAdvancements && isByeMatchUp && participantSide);
 
@@ -47,9 +105,9 @@ export function getParticipantIdFinishingPositions({
 
       return {
         [participantId]: {
-          relevantMatchUps,
           finishingPositionRanges,
           finishingPositionRange,
+          relevantMatchUps,
         },
       };
     }) || [];

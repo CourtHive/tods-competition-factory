@@ -130,20 +130,6 @@ tournamentEngine.automatedPositioning({
 // 4. Trigger draw modification notices
 ```
 
-### Structure Operations
-
-```js
-// Operation with structureId - middleware resolves full hierarchy
-tournamentEngine.getPositionAssignments({
-  structureId: 'structure-1',
-});
-
-// Middleware handles:
-// 1. Find drawDefinition containing structure
-// 2. Find event containing draw
-// 3. Extract position assignments from structure
-```
-
 ### MatchUp Operations
 
 ```js

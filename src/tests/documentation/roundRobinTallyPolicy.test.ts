@@ -4,10 +4,10 @@ import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
 
 // Constants
+import { DEFAULTED, RETIRED, WALKOVER, ABANDONED, INCOMPLETE } from '@Constants/matchUpStatusConstants';
 import { POLICY_TYPE_ROUND_ROBIN_TALLY } from '@Constants/policyConstants';
 import { ROUND_ROBIN } from '@Constants/drawDefinitionConstants';
 import { SINGLES, TEAM } from '@Constants/eventConstants';
-import { DEFAULTED, RETIRED, WALKOVER, ABANDONED, INCOMPLETE } from '@Constants/matchUpStatusConstants';
 
 // Policy Fixtures
 import { POLICY_ROUND_ROBIN_TALLY_DEFAULT } from '@Fixtures/policies/POLICY_ROUND_ROBIN_TALLY_DEFAULT';
