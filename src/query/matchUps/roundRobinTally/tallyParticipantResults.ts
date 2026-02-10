@@ -57,7 +57,7 @@ export function tallyParticipantResults({
   const relevantMatchUps = matchUps.filter((matchUp) => matchUp && matchUp.matchUpStatus !== BYE);
 
   const participantsCount =
-    relevantMatchUps.length && unique(relevantMatchUps.map(({ drawPositions }) => drawPositions).flat()).length;
+    relevantMatchUps.length && unique(relevantMatchUps.flatMap(({ drawPositions }) => drawPositions)).length;
 
   const bracketComplete =
     relevantMatchUps.filter((matchUp) => checkMatchUpIsComplete({ matchUp })).length === relevantMatchUps.length;

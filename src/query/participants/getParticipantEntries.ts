@@ -198,33 +198,35 @@ export function getParticipantEntries(params) {
           mainSeedAssignments,
           drawSize = 0;
 
-        // build up assignedParticipantIds array
+        // build up assignedParticipantIds Set
         // to ensure that only assignedParticipants are included
-        const assignedParticipantIds = structures
-          .filter(({ stage, stageSequence }) => (stage === MAIN && stageSequence === 1) || stage === QUALIFYING)
-          .flatMap((structure) => {
-            const { positionAssignments } = getPositionAssignments({ structure });
-            const { seedAssignments, stageSequence, stage } = structure;
+        const assignedParticipantIds = new Set(
+          structures
+            .filter(({ stage, stageSequence }) => (stage === MAIN && stageSequence === 1) || stage === QUALIFYING)
+            .flatMap((structure) => {
+              const { positionAssignments } = getPositionAssignments({ structure });
+              const { seedAssignments, stageSequence, stage } = structure;
 
-            if (stage === MAIN) {
-              drawSize = positionAssignments?.length ?? 0;
-              mainPositionAssignments = positionAssignments;
-              mainSeedAssignments = seedAssignments;
-            } else if (stageSequence === 1) {
-              qualifyingPositionAssignments = positionAssignments;
-              qualifyingSeedAssignments = seedAssignments;
-            }
-            return positionAssignments;
-          })
-          .map(({ participantId }) => participantId)
-          .filter(Boolean);
+              if (stage === MAIN) {
+                drawSize = positionAssignments?.length ?? 0;
+                mainPositionAssignments = positionAssignments;
+                mainSeedAssignments = seedAssignments;
+              } else if (stageSequence === 1) {
+                qualifyingPositionAssignments = positionAssignments;
+                qualifyingSeedAssignments = seedAssignments;
+              }
+              return positionAssignments;
+            })
+            .map(({ participantId }) => participantId)
+            .filter(Boolean),
+        );
 
         const mainSeedingMap = getSeedingMap(mainSeedAssignments);
         const qualifyingSeedingMap = getSeedingMap(qualifyingSeedAssignments);
 
-        const relevantEntries = !drawDefinition
-          ? entries
-          : entries.filter(({ participantId }) => assignedParticipantIds.includes(participantId));
+        const relevantEntries = drawDefinition
+          ? entries.filter(({ participantId }) => assignedParticipantIds.has(participantId))
+          : entries;
 
         const seedingPublished =
           !usePublishState ||
@@ -384,6 +386,7 @@ export function getParticipantEntries(params) {
           eventId,
           drawId,
           collectionId,
+          containerStructureId,
           stageSequence,
           finishingRound,
           matchUpStatus,
@@ -399,6 +402,7 @@ export function getParticipantEntries(params) {
 
         const baseAttrs = {
           finishingPositionRange,
+          containerStructureId,
           finishingRound,
           stageSequence,
           roundPosition,
@@ -413,6 +417,8 @@ export function getParticipantEntries(params) {
         };
 
         processSides({
+          tournamentRecord,
+          drawDefinitions,
           ...baseAttrs,
           ...withOpts,
           matchUpStatus,
@@ -547,6 +553,9 @@ export function getParticipantEntries(params) {
               .filter(Boolean);
 
             if (participantAggregator.draws[drawId]) {
+              // this is where finishingPositionRanges for round robin groups would be added in the future
+              // here we have access to hydrated matchUps and can tallyParticipantResults to get groupOrders
+              // from which we can derive finishingPositionRanges for round robin groups
               participantAggregator.draws[drawId].finishingPositionRange = finishingPositionRange;
               participantAggregator.draws[drawId].structureParticipation = orderedParticipation;
             }
@@ -602,7 +611,7 @@ export function getParticipantEntries(params) {
             // 1. scheduledMinutesDifference - the minutes difference between two scheduledTimes
             // 2. A scheduledTime occurring before a prior matchUps notBeforeTime (timeAfterRecovery)
             const timeOverlap =
-              scheduledMinutesDifference && !isNaN(scheduledMinutesDifference)
+              scheduledMinutesDifference && !Number.isNaN(scheduledMinutesDifference)
                 ? minutesDifference <= scheduledMinutesDifference
                 : itemIsPrior && timeStringMinutes(consideredItem.scheduledTime) < timeStringMinutes(notBeforeTime);
 

@@ -1,12 +1,13 @@
 import { getPositionAssignments as positionAssignments } from '../drawDefinition/positionsGetter';
 
+// constants and types
+import { DrawDefinition, Structure, Tournament } from '@Types/tournamentTypes';
 import { MAIN } from '@Constants/drawDefinitionConstants';
 import {
   MISSING_DRAW_DEFINITION,
   MISSING_STRUCTURE_ID,
   MISSING_TOURNAMENT_RECORD,
 } from '@Constants/errorConditionConstants';
-import { DrawDefinition, Structure, Tournament } from '@Types/tournamentTypes';
 
 type GetPositionAssignmentsArgs = {
   tournamentRecord: Tournament;

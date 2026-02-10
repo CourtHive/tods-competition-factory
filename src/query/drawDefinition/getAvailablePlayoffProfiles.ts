@@ -86,9 +86,9 @@ function availablePlayoffProfiles({ playoffPositions, drawDefinition, structure,
       structureIds: targetStructureIds,
       drawDefinition,
     });
-    const positionsInTargetStructures = [...positionsPlayedOff, ...positionsNotPlayedOff];
+    const positionsInTargetStructures = new Set([...positionsPlayedOff, ...positionsNotPlayedOff]);
     const availablePlayoffPositions = generateRange(positionRange[0], positionRange[1] + 1).filter(
-      (position) => !positionsInTargetStructures.includes(position),
+      (position) => !positionsInTargetStructures.has(position),
     );
 
     const positionChunks = chunkArray(
