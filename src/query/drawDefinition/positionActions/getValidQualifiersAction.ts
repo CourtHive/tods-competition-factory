@@ -33,7 +33,9 @@ export function getValidQualifiersAction({
   const validAssignmentActions: any[] = [];
   const sourceStructureIds: string[] = [];
 
-  const assignedParticipantIds = positionAssignments.map((assignment) => assignment.participantId).filter(Boolean);
+  const assignedParticipantIds = new Set(
+    positionAssignments.map((assignment) => assignment.participantId).filter(Boolean),
+  );
 
   const policy = appliedPolicies?.[POLICY_TYPE_POSITION_ACTIONS];
 
@@ -92,7 +94,7 @@ export function getValidQualifiersAction({
 
         if (winningSide || relevantSide) {
           const { participantId, participant } = winningSide || relevantSide || {};
-          if (participantId && !assignedParticipantIds.includes(participantId)) {
+          if (participantId && !assignedParticipantIds.has(participantId)) {
             if (participant && returnParticipants) qualifyingParticipants.push(participant);
             qualifyingParticipantIds.push(participantId);
           }
@@ -125,9 +127,7 @@ export function getValidQualifiersAction({
 
             return results ? { participantId, groupOrder: results?.groupOrder } : {};
           })
-          .filter(
-            ({ groupOrder, participantId }) => groupOrder === 1 && !assignedParticipantIds.includes(participantId),
-          )
+          .filter(({ groupOrder, participantId }) => groupOrder === 1 && !assignedParticipantIds.has(participantId))
           .map(({ participantId }) => participantId) ?? [];
 
       if (relevantParticipantIds) qualifyingParticipantIds.push(...relevantParticipantIds);
