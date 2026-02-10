@@ -90,13 +90,13 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
   expect(playoffStructures.length).toEqual(playoffGroups.length);
   expect(playoffStructures[0].positionAssignments.length).toEqual(8);
 
-  const playoffStructureIds = playoffStructures.map((structure) => structure.structureId);
+  const playoffStructureIds = new Set(playoffStructures.map((structure) => structure.structureId));
 
   const positioningLinks = drawDefinition.links.filter((link) => link.linkType === POSITION);
 
   positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
-    const targetIsPlayoffStructure = playoffStructureIds.includes(link.target.structureId);
+    const targetIsPlayoffStructure = playoffStructureIds.has(link.target.structureId);
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
@@ -127,8 +127,8 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
 
       ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
       const thisStructureIsCompleted = isCompletedStructure({
-        drawDefinition,
         structureId: structure.structureId,
+        drawDefinition,
       });
       expect(thisStructureIsCompleted).toEqual(matchUpIndex + 1 === matchUpsPerStructure);
 
@@ -191,9 +191,9 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     });
     const positioningLink = positioningLinks.find((link) => link.target.structureId === structure.structureId);
     const structureFinishingPositions = positioningLink.source.finishingPositions;
-    const finishingPositionGroup = structureFinishingPositions
-      .map((finishingPosition) => finishingPositionGroups[finishingPosition])
-      .flat();
+    const finishingPositionGroup = structureFinishingPositions.flatMap(
+      (finishingPosition) => finishingPositionGroups[finishingPosition],
+    );
     const structureParticipantIds = updatedStructure?.positionAssignments
       ?.map((assignment) => assignment.participantId)
       .filter(Boolean);
@@ -204,7 +204,7 @@ it('can advance players in Round Robin with Playoffs => 2 x 4 x 4', () => {
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
       .map((positions) => positions.map((position) => position.participantId))
-      .filter((pair) => pair.filter((p) => p).length === 2);
+      .filter((pair) => pair.filter(Boolean).length === 2);
 
     pairedParticipantIds.forEach((pair) => {
       structureParticipantGroupings.forEach((grouping) => {
@@ -293,13 +293,13 @@ it('can advance players in Round Robin with Playoffs', () => {
   expect(playoffStructures.length).toEqual(playoffGroups.length);
   expect(playoffStructures[0].positionAssignments.length).toEqual(16);
 
-  const playoffStructureIds = playoffStructures.map((structure) => structure.structureId);
+  const playoffStructureIds = new Set(playoffStructures.map((structure) => structure.structureId));
 
   const positioningLinks = drawDefinition.links.filter((link) => link.linkType === POSITION);
 
   positioningLinks.forEach((link) => {
     expect(link.source.structureId).toEqual(mainStructure.structureId);
-    const targetIsPlayoffStructure = playoffStructureIds.includes(link.target.structureId);
+    const targetIsPlayoffStructure = playoffStructureIds.has(link.target.structureId);
     expect(targetIsPlayoffStructure).toEqual(true);
   });
 
@@ -394,9 +394,9 @@ it('can advance players in Round Robin with Playoffs', () => {
     });
     const positioningLink = positioningLinks.find((link) => link.target.structureId === structure.structureId);
     const structureFinishingPositions = positioningLink.source.finishingPositions;
-    const finishingPositionGroup = structureFinishingPositions
-      .map((finishingPosition) => finishingPositionGroups[finishingPosition])
-      .flat();
+    const finishingPositionGroup = structureFinishingPositions.flatMap(
+      (finishingPosition) => finishingPositionGroups[finishingPosition],
+    );
     const structureParticipantIds = updatedStructure?.positionAssignments
       ?.map((assignment) => assignment.participantId)
       .filter(Boolean);
@@ -407,7 +407,7 @@ it('can advance players in Round Robin with Playoffs', () => {
     const pairedPositions = chunkArray(positionAssignments, 2);
     const pairedParticipantIds = pairedPositions
       .map((positions) => positions.map((position) => position.participantId))
-      .filter((pair) => pair.filter((p) => p).length === 2);
+      .filter((pair) => pair.filter(Boolean).length === 2);
 
     pairedParticipantIds.forEach((pair) => {
       structureParticipantGroupings.forEach((grouping) => {
