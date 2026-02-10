@@ -1,7 +1,11 @@
 import { DEFAULTED, WALKOVER } from '@Constants/matchUpStatusConstants';
 
+// constants and types
+import type { MatchUpFinishingPositionRange, MatchUpStatusUnion, StageTypeUnion } from '@Types/tournamentTypes';
+import type { ParticipantMap } from '@Types/factoryTypes';
+
 export function addStructureParticipation({
-  finishingPositionRange: matchUpFinishingPositionRanges = {},
+  finishingPositionRange: matchUpFinishingPositionRanges = { winner: [], loser: [] },
   participantMap,
   finishingRound,
   participantWon,
@@ -13,6 +17,19 @@ export function addStructureParticipation({
   matchUpId,
   drawId,
   stage,
+}: {
+  finishingPositionRange?: MatchUpFinishingPositionRange;
+  matchUpStatus?: MatchUpStatusUnion;
+  participantMap: ParticipantMap;
+  participantWon: boolean;
+  stageSequence?: number;
+  finishingRound?: number;
+  stage?: StageTypeUnion;
+  participantId: string;
+  roundNumber?: number;
+  structureId: string;
+  matchUpId: string;
+  drawId: string;
 }) {
   const participantAggregator = participantMap[participantId];
   const diff = (range) => Math.abs(range[0] - range[1]);

@@ -8,7 +8,7 @@ import { getPositionAssignments } from '@Query/structure/getPositionAssignments'
 import { MISSING_DRAW_DEFINITION } from '@Constants/errorConditionConstants';
 
 // Extend MatchUp to include optional containerStructureId
-import { CONTAINER, MAIN } from '@Constants/drawDefinitionConstants';
+import { CONTAINER, MAIN, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 import { BYE, COMPLETED } from '@Constants/matchUpStatusConstants';
 import { getEventData } from '@Query/event/getEventData';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -47,7 +47,6 @@ export function getParticipantIdFinishingPositions({
     (structure) => structure.stage === MAIN && structure.stageSequence === 1,
   );
   const containedStructures: any = mainStructure?.structureType === CONTAINER && mainStructure.structures;
-  const bracketsCount = containedStructures?.length;
 
   // positionAssignments contains the participantResults which include groupOrder and provisionalOrder
   // which can be used to determine finishing positions for container matchUps
@@ -68,26 +67,15 @@ export function getParticipantIdFinishingPositions({
         const participantSide = matchUp.sides.find((side) => side.participantId === participantId).sideNumber;
         const isContainerMatchUp = matchUp.containerStructureId;
         if (isContainerMatchUp) {
-          const containedStructure = containedStructures?.find(
-            (structure) => structure.structureId === matchUp.structureId,
-          );
-          const bracketSize = containedStructure?.positionAssignments?.length;
-          const participantResult = drawDataStructures
-            .find((structure) => structure.structureId === matchUp.containerStructureId)
-            ?.participantResults?.find((result) => result.participantId === participantId)?.participantResult;
-          const { ties, groupOrder, provisionalOrder } = participantResult || {};
-          if (getDevContext())
-            console.log({
-              drawPositionsCount,
-              provisionalOrder,
-              bracketsCount,
-              bracketSize,
-              groupOrder,
-              ties,
-            });
-          if (drawPositionsCount === bracketSize && groupOrder) {
-            return [groupOrder, groupOrder];
-          }
+          const containedFinishingPosition = containerFinishingPosition({
+            containedStructures,
+            drawPositionsCount,
+            drawDataStructures,
+            drawDefinition,
+            participantId,
+            matchUp,
+          });
+          if (containedFinishingPosition) return containedFinishingPosition;
         }
 
         const advancingSide = matchUp.winningSide || (byeAdvancements && isByeMatchUp && participantSide);
@@ -113,4 +101,57 @@ export function getParticipantIdFinishingPositions({
     }) || [];
 
   return Object.assign({}, ...participantIdFinishingPositions);
+}
+
+function containerFinishingPosition({
+  containedStructures,
+  drawPositionsCount,
+  drawDataStructures,
+  drawDefinition,
+  participantId,
+  matchUp,
+}) {
+  const containedStructure = containedStructures?.find((structure) => structure.structureId === matchUp.structureId);
+  const bracketSize = containedStructure?.positionAssignments?.length;
+  const participantResult = drawDataStructures
+    .find((structure) => structure.structureId === matchUp.containerStructureId)
+    ?.participantResults?.find((result) => result.participantId === participantId)?.participantResult;
+  const { ties, groupOrder, provisionalOrder } = participantResult || {};
+  const bracketsCount = containedStructures?.length;
+
+  const playoffStructure = drawDefinition.structure?.find((structure) => structure.stage === PLAY_OFF);
+
+  if (getDevContext())
+    console.log({
+      drawPositionsCount,
+      provisionalOrder,
+      bracketsCount,
+      bracketSize,
+      groupOrder,
+      ties,
+    });
+
+  if (drawPositionsCount === bracketSize && groupOrder) {
+    // if there is only one bracket, then the groupOrder is the finishing position
+    return [groupOrder, groupOrder];
+  } else if (bracketsCount > 1 && groupOrder && !playoffStructure) {
+    // if there are multiple brackets and the participant has a groupOrder,
+    // and there is no playoff structure, then we can determine finishing position by multiplying the bracket size by the number of brackets
+    return [1, bracketsCount];
+  } else if (bracketsCount > 1 && groupOrder && playoffStructure) {
+    // if there are multiple brackets and the participant has a groupOrder,
+    // we need to understand how many players from each bracket advance to the playoff structure in order to determine finishing position
+    const advancingPositions = drawDefinition.links?.find(
+      (link) => link.source.structureId === matchUp.containerStructureId,
+    )?.source?.finishingPositions;
+    const totalAdvancingPositions = advancingPositions.length * bracketsCount;
+    if (groupOrder in advancingPositions) {
+      return [1, totalAdvancingPositions];
+    } else {
+      const finishingOffset = (bracketSize - groupOrder) * bracketsCount;
+      return [totalAdvancingPositions + 1, drawPositionsCount - finishingOffset];
+    }
+  }
+
+  return undefined;
 }
