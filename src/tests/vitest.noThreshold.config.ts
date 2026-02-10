@@ -9,7 +9,9 @@ export default defineConfig({
   plugins: [tsconfigPaths()],
   test: {
     testTimeout: 30000, // 30 seconds for slow tests
-    onConsoleLog: () => {},
+    onConsoleLog: (log) => {
+      console.log(log);
+    },
     environment: 'node',
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
