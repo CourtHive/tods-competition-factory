@@ -314,7 +314,7 @@ if (!valid) {
 
 2. **MIXED Events:**
    - Cannot contain MIXED singles collections (only MIXED doubles)
-   - Cannot contain { gender: ANY } collections
+   - Cannot contain collections with `gender: ANY`
    - Can contain MALE, FEMALE, and MIXED doubles collections
 
 3. **ANY Gender Events:**
@@ -350,7 +350,7 @@ engine.tieFormatGenderValidityCheck({
   referenceGender: 'MIXED',
   matchUpType: 'SINGLES',
   gender: 'MIXED',
-}); // { valid: false, error: INVALID_GENDER, info: 'MIXED events can not contain mixed singles or { gender: ANY } collections' }
+}); // { valid: false, error: INVALID_GENDER, info: 'MIXED events can not contain mixed singles or collections with gender: ANY' }
 
 // Invalid: ANY gender in MIXED event
 engine.tieFormatGenderValidityCheck({

@@ -175,7 +175,7 @@ export class JsonViewer {
     // Toggle button
     const toggle = document.createElement('span');
     toggle.className = 'json-viewer-toggle';
-    const expanded = level < this.options.expanded;
+    const expanded = level < (this.options.expanded ?? 1);
     toggle.textContent = expanded ? '▼' : '▶';
     headerLine.appendChild(toggle);
 

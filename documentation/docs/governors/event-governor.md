@@ -120,18 +120,18 @@ if (!valid) {
 **Validation Rules:**
 
 1. **Age Range Validation:**
-   - Child ageMin must be >= parent ageMin
-   - Child ageMax must be <= parent ageMax
+   - Child ageMin must be greater than or equal to parent ageMin
+   - Child ageMax must be less than or equal to parent ageMax
    - Child age range must fit within parent age range
 
 2. **Age Date Validation:**
-   - Child ageMinDate must be <= parent ageMaxDate
-   - Child ageMaxDate must be >= parent ageMinDate
+   - Child ageMinDate must be less than or equal to parent ageMaxDate
+   - Child ageMaxDate must be greater than or equal to parent ageMinDate
 
 3. **Rating Range Validation:**
    - Only checked if both categories have same ratingType
-   - Child ratingMin must be >= parent ratingMin
-   - Child ratingMax must be <= parent ratingMax
+   - Child ratingMin must be greater than or equal to parent ratingMin
+   - Child ratingMax must be less than or equal to parent ratingMax
    - Child rating range must fit within parent rating range
 
 4. **Ball Type Validation:**
