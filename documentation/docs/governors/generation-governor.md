@@ -192,6 +192,115 @@ const {
 
 ---
 
+## generateDrawStructuresAndLinks
+
+Low-level method that generates structures and links for various draw types. Typically called internally by `generateDrawDefinition`.
+
+```js
+const { structures, links } = engine.generateDrawStructuresAndLinks({
+  drawDefinition, // required - target drawDefinition to modify
+  drawType, // required - SINGLE_ELIMINATION, ROUND_ROBIN, etc.
+  drawSize, // required - number of draw positions
+  structureName, // optional - custom name for main structure
+  matchUpType, // optional - SINGLES, DOUBLES, TEAM
+  tieFormat, // optional - for TEAM matchUps
+  qualifyingProfiles, // optional - array of qualifying structure configs
+  staggeredEntry, // optional - allows non-power-of-2 drawSizes
+  playoffAttributes, // optional - playoff structure naming
+  appliedPolicies, // optional - seeding/avoidance policies
+  enforceMinimumDrawSize, // optional boolean - defaults to true
+  drawTypeCoercion, // optional boolean - coerce to SINGLE_ELIMINATION for drawSize: 2
+  overwriteExisting, // optional boolean - replace existing structures
+  uuids, // optional - array of UUIDs for structures/matchUps
+});
+```
+
+**Returns:**
+
+```ts
+{
+  structures: Structure[];  // Generated structure objects
+  links: DrawLink[];        // Generated link objects (for multi-stage draws)
+  error?: ErrorType;
+}
+```
+
+**Purpose:** Core method for generating draw structures. Handles all draw type logic including:
+
+- Single elimination brackets
+- Round robin groups
+- Consolation structures
+- Qualifying structures
+- Playoff structures
+- Feed-in and staggered entry
+
+**Notes:**
+
+- Used internally by `generateDrawDefinition`
+- Does not attach structures to drawDefinition (returns them for manual attachment)
+- Handles complex multi-structure draw types (Curtis, FMLC, Compass, etc.)
+- Validates draw size and structure compatibility
+
+---
+
+## generateDrawTypeAndModifyDrawDefinition
+
+Generates draw structures and directly modifies the drawDefinition. Higher-level than `generateDrawStructuresAndLinks`.
+
+```js
+const { drawDefinition, matchUpsMap } = engine.generateDrawTypeAndModifyDrawDefinition({
+  drawDefinition, // required - drawDefinition to modify
+  drawType, // required - draw type to generate
+  drawSize, // required - number of draw positions
+  matchUpType, // optional - SINGLES, DOUBLES, TEAM
+  matchUpFormat, // optional - default matchUpFormat
+  tieFormat, // optional - for TEAM matchUps
+  structureOptions, // optional - { groupSize, playoffGroups } for ROUND_ROBIN
+  qualifiersCount, // optional - number of qualifier positions
+  qualifyingOnly, // optional boolean - only process QUALIFYING stage entries
+  stageSequence, // optional - target specific stage (1=QUALIFYING, 2=MAIN)
+  drawTypeCoercion, // optional boolean - coerce to SINGLE_ELIMINATION for small draws
+  modifyOriginal, // optional boolean - defaults to true
+  policyDefinitions, // optional - seeding/avoidance policies
+  isMock, // optional boolean - for testing
+});
+```
+
+**Returns:**
+
+```ts
+{
+  drawDefinition: DrawDefinition;      // Modified drawDefinition
+  inContextDrawMatchUps?: MatchUp[];  // All matchUps with context
+  matchUpsMap?: MatchUpsMap;          // Map of matchUpIds to matchUp objects
+  error?: ErrorType;
+}
+```
+
+**Difference from generateDrawStructuresAndLinks:**
+
+- `generateDrawTypeAndModifyDrawDefinition` modifies the drawDefinition directly
+- `generateDrawStructuresAndLinks` returns structures/links for manual attachment
+- This method also generates tieMatchUps for TEAM events
+- Handles stage-specific modifications (QUALIFYING vs MAIN)
+- Returns complete matchUpsMap and inContext matchUps
+
+**When to Use:**
+
+- Modifying existing draws (changing draw type)
+- Regenerating structures after entry changes
+- Testing draw modifications
+- Building custom draw generation workflows
+
+**Notes:**
+
+- Validates tieFormat for TEAM matchUps
+- Generates links between structures automatically
+- Notifies subscribers of draw modifications
+- Use `modifyOriginal: false` to get modified copy without changing input
+
+---
+
 ## generateFlightProfile
 
 Splits event entries into `flightsCount` (# of draws). `flightProfile` is an extension on an event which contains attributes to be used by `generateDrawDefinition`.
@@ -295,18 +404,159 @@ const { scaleItemsWithParticipantIds } = engine.generateSeedingScaleItems({
 });
 ```
 
+**Returns:**
+
+```ts
+{
+  scaleItemsWithParticipantIds: Array<{
+    participantId: string;
+    scaleItem: ScaleItem;
+  }>;
+}
+```
+
+**Use Cases:**
+
+- Custom seeding logic that requires manual scale generation
+- Converting external rating systems to TODS scale format
+- Testing seeding scenarios with specific scale values
+
 ---
 
-## generateVolunataryConsolation
+## generateStatCrew
+
+Generates XML output in StatCrew format for college tennis scoring systems.
+
+```js
+const { xml } = engine.generateStatCrew({
+  tournamentRecord, // required - tournament to export
+});
+
+// Save to file for StatCrew import
+fs.writeFileSync('statcrew-export.xml', xml);
+```
+
+**Returns:**
+
+```ts
+{
+  xml: string; // StatCrew-formatted XML
+  success: boolean;
+}
+```
+
+**Purpose:** Export tournament data in StatCrew XML format, which is used by college tennis programs in the United States for official scoring and statistics.
+
+**Features:**
+
+- Exports tournament metadata (name, date, ID)
+- Includes all team participants
+- Exports singles and doubles matchUps
+- Handles TEAM/dual match format
+- Distinguishes between tournament and dual match formats
+- Maps participant IDs to teams and individuals
+
+**When to Use:**
+
+- College tennis tournaments requiring StatCrew integration
+- Exporting data to NCAA systems
+- Providing official match results in standardized format
+
+**Notes:**
+
+- Specifically designed for college tennis workflows
+- Handles both tournament and dual match formats
+- Includes participant and matchUp mappings
+- XML format matches StatCrew import specifications
+
+---
+
+## generateVoluntaryConsolation
+
+Generates and optionally attaches a voluntary consolation structure to a draw. Voluntary consolations allow first-round losers to opt into a secondary draw.
 
 ```js
 const { structures, links } = engine.generateVoluntaryConsolation({
-  automated: true,
-  drawId,
+  drawDefinition, // required - target drawDefinition
+  tournamentRecord, // required - tournament context
+  structureName, // optional - custom name (default: 'Voluntary Consolation')
+  automated, // optional boolean - auto-position participants
+  applyPositioning, // optional boolean - apply positioning policies
+  attachConsolation, // optional boolean - attach to drawDefinition
+  placeByes, // optional boolean - place byes automatically
+  matchUpType, // optional - SINGLES, DOUBLES, TEAM
+  tieFormat, // optional - for TEAM matchUps
+  seedingProfile, // optional - seeding strategy for consolation
+  playoffAttributes, // optional - playoff structure naming
+  staggeredEntry, // optional boolean - allow non-power-of-2 sizes
+  isMock, // optional boolean - for testing
+});
+```
+
+**Returns:**
+
+```ts
+{
+  structures?: Structure[];  // Generated consolation structures
+  links?: DrawLink[];        // Links to main structure
+  error?: ErrorType;
+}
+```
+
+**Purpose:** Creates a consolation draw for first-round losers who opt in voluntarily. Unlike automatic consolations, this requires manual participant selection.
+
+**When to Use:**
+
+- Tournaments with optional consolation draws
+- Giving first-round losers a chance to continue playing
+- Recreational or participation-focused tournaments
+- Testing consolation scenarios
+
+**Notes:**
+
+- Participants must voluntarily opt into the consolation
+- Only first-round losers are eligible
+- Generated structure is linked to main structure
+- Use `attachConsolation: true` to automatically attach to drawDefinition
+- Separate from `addVoluntaryConsolationStructure` which manages existing consolations
+
+---
+
+## roundRobinGroups
+
+Utility function for generating round robin matchUp pairings within a group.
+
+```js
+const { groupMatchUps, uniqueMatchUpGroupings } = roundRobinGroups({
+  drawPositions, // array of draw positions in group (e.g., [1, 2, 3, 4])
 });
 
-// if { attachConsolation: false } then it will be necessary to subsequently attach the structures and links
-engine.attachConsolationStructures({ drawId, structures, links });
+// Example for 4-person group:
+// groupMatchUps: [[1,2], [1,3], [1,4], [2,3], [2,4], [3,4]]
 ```
+
+**Returns:**
+
+```ts
+{
+  groupMatchUps: number[][];        // All matchUp pairings
+  uniqueMatchUpGroupings: number[][]; // Deduplicated pairings
+}
+```
+
+**Purpose:** Generate all possible matchUp pairings for round robin groups, ensuring each participant plays every other participant once.
+
+**Internal Use:**
+
+- Called by round robin structure generators
+- Used in group stage creation
+- Ensures complete round robin schedules
+
+**Notes:**
+
+- Returns all pairings (each matchUp appears twice, once for each participant)
+- `uniqueMatchUpGroupings` provides deduplicated list
+- Used internally by `generateDrawDefinition` for ROUND_ROBIN draws
+- Can be used for custom round robin scheduling logic
 
 ---

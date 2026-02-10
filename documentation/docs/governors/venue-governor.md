@@ -139,21 +139,199 @@ engine.enableVenues({ venueIds, enableAll });
 
 ---
 
-## findCourt
-
-```js
-const { court, venue } = engine.findCourt({ courtId });
-```
-
----
-
 ## findVenue
 
 Returns a complete venue object. Primarily used internally.
 
 ```js
-engine.findVenue({ venueId });
+const { venue } = engine.findVenue({ venueId });
 ```
+
+**Returns:**
+
+```ts
+{
+  venue?: Venue;
+  error?: ErrorType;
+}
+```
+
+---
+
+## generateCourts
+
+Generates multiple courts with sequential naming for a venue. Convenience method for quickly creating courts during testing or initial setup.
+
+```js
+const { courts } = engine.generateCourts({
+  venueId, // required - venue to add courts to
+  courtsCount: 10, // number of courts to generate
+  courtNames, // optional - array of custom court names
+  courtIds, // optional - array of specific courtIds to use
+  startTime: '08:00', // optional - court availability start
+  endTime: '20:00', // optional - court availability end
+  dateAvailability, // optional - full dateAvailability configurations
+});
+```
+
+**Returns:**
+
+```ts
+{
+  courts: Court[];  // Array of generated court objects
+  success: boolean;
+}
+```
+
+**Notes:**
+
+- If `courtNames` not provided, generates names like "Court 1", "Court 2", etc.
+- If `courtIds` not provided, generates UUIDs automatically
+- Can specify default availability hours via `startTime` and `endTime`
+- For complex availability, use full `dateAvailability` objects
+- All courts added to specified venue
+
+---
+
+## getCompetitionVenues
+
+Returns all venues from all tournaments in competition engine state, with optional filtering.
+
+```js
+const { venues, courts } = competitionEngine.getCompetitionVenues({
+  venueIds, // optional - filter to specific venue IDs
+  dates, // optional - filter courts by availability dates
+  ignoreDisabled, // optional - exclude disabled venues/courts
+  convertExtensions, // optional - convert extension objects to arrays
+});
+```
+
+**Returns:**
+
+```ts
+{
+  venues: HydratedVenue[];  // Array of venues from all tournaments
+  courts: HydratedCourt[];  // Array of courts from all venues
+}
+```
+
+**Use Cases:**
+
+- Getting all venues across multi-tournament competition
+- Cross-tournament venue scheduling
+- Competition-wide court availability analysis
+- Building unified venue selection UI
+
+**Notes:**
+
+- Aggregates venues from all tournament records in competition state
+- Removes duplicate venues (same venueId across tournaments)
+- Returns hydrated venues with computed properties
+- Use `getVenuesAndCourts()` for single-tournament queries
+
+---
+
+## getCourts
+
+Returns courts for a specific venue, with optional filtering and hydration.
+
+```js
+const { courts } = engine.getCourts({
+  venueId, // optional - specific venue (omit for all venues)
+  dates, // optional - filter by date availability
+  ignoreDisabled, // optional - exclude disabled courts
+  convertExtensions, // optional - convert extensions format
+});
+```
+
+**Returns:**
+
+```ts
+{
+  courts: HydratedCourt[];
+}
+```
+
+**Hydrated Court Properties:**
+
+- `dateAvailability` - Availability schedules
+- `courtName` - Display name
+- `courtId` - Unique identifier
+- Computed availability for specified dates
+- Disability status
+
+**Use Cases:**
+
+- Building court selection dropdowns
+- Checking court availability
+- Getting schedulable courts for specific dates
+- Court management interfaces
+
+---
+
+## getVenuesAndCourts
+
+Returns venues and courts from a tournament record or competition, with optional filtering and hydration.
+
+```js
+const { venues, courts } = engine.getVenuesAndCourts({
+  venueIds, // optional - filter to specific venues
+  dates, // optional - filter by date
+  ignoreDisabled, // optional - exclude disabled items
+  convertExtensions, // optional - convert extension format
+});
+```
+
+**Returns:**
+
+```ts
+{
+  venues: HydratedVenue[];  // Array of venue objects with computed properties
+  courts: HydratedCourt[];  // Array of court objects from all venues
+}
+```
+
+**Hydrated Venue Properties:**
+
+- All standard venue properties
+- `courts` array with court objects
+- Disability status from extensions
+- Computed availability information
+
+**Examples:**
+
+```js
+// Get all venues and courts
+const { venues, courts } = engine.getVenuesAndCourts();
+
+// Get specific venues only
+const { venues } = engine.getVenuesAndCourts({
+  venueIds: ['venue-1', 'venue-2'],
+});
+
+// Get courts available on specific dates
+const { courts } = engine.getVenuesAndCourts({
+  dates: ['2024-03-20', '2024-03-21'],
+  ignoreDisabled: true,
+});
+
+// For competition engine (multi-tournament)
+const { venues, courts } = competitionEngine.getVenuesAndCourts();
+```
+
+**Use Cases:**
+
+- Building venue/court selection interfaces
+- Scheduling UI data loading
+- Availability analysis
+- Venue management dashboards
+
+**Notes:**
+
+- Returns empty arrays if no venues exist
+- Hydrated objects include computed properties not in raw data
+- Use `ignoreDisabled: true` to exclude administratively disabled venues/courts
+- Date filtering applies to court availability schedules
 
 ---
 

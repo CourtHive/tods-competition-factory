@@ -12,24 +12,6 @@ import { publishingGovernor } from 'tods-competition-factory';
 See **[Publishing Concepts](../concepts/publishing)** for comprehensive coverage of publishing workflows, rationale, and best practices.
 :::
 
-## Overview
-
-Publishing operates at multiple levels of granularity:
-
-- **Tournament Level**: Participants, Order of Play
-- **Event Level**: All draws, specific draws (flights), seeding
-- **Draw Level**: Entire draws, specific stages (MAIN, QUALIFYING, CONSOLATION)
-- **Structure Level**: Specific structures, round-by-round visibility
-
-All publishing methods:
-
-- Update publish state via [Time Items](../concepts/timeItems)
-- Trigger [subscription notifications](/docs/engines/subscriptions)
-- Support `removePriorValues` to clear previous publish state
-- Enable fine-grained control over information release
-
----
-
 ## getPublishState
 
 Returns publishing details for tournament, event(s), and/or draws, enabling queries about current publish state before making changes.
@@ -77,6 +59,337 @@ const drawPublishDetail = publishState.status.drawDetail;
 - Display publish status in admin UI
 - Determine if re-publishing is needed
 - Query embargo status
+
+---
+
+## bulkUpdatePublishedEventIds
+
+Updates which events are marked as published across multiple events simultaneously. Used for bulk publish state management.
+
+```js
+const result = engine.bulkUpdatePublishedEventIds({
+  tournamentRecord, // required
+  publishedEventIds, // array of eventIds to mark as published
+});
+```
+
+**Returns:**
+
+```ts
+{
+  success: boolean;
+  updatedCount?: number;
+}
+```
+
+**Purpose:** Efficiently update publish status for multiple events at once, typically during tournament-wide publish operations.
+
+---
+
+## getAllEventData
+
+Returns comprehensive data for all events in a tournament, formatted for public display.
+
+```js
+const { eventsData, tournamentInfo, venuesData } = engine.getAllEventData({
+  tournamentRecord, // required
+  policyDefinitions, // optional - privacy policies to apply
+});
+
+// eventsData structure
+eventsData.forEach((event) => {
+  console.log(event.eventInfo); // Event details
+  console.log(event.scheduleTiming); // Timing information
+  event.drawsData.forEach((draw) => {
+    console.log(draw.drawInfo);
+    console.log(draw.matchUps); // Categorized matchUps
+  });
+});
+```
+
+**Returns:**
+
+```ts
+{
+  eventsData: Array<{
+    eventInfo: EventInfo;
+    scheduleTiming: any;
+    drawsData: Array<{
+      drawInfo: DrawInfo;
+      matchUps: {
+        abandonedMatchUps: MatchUp[];
+        completedMatchUps: MatchUp[];
+        upcomingMatchUps: MatchUp[];
+        pendingMatchUps: MatchUp[];
+      };
+    }>;
+  }>;
+  tournamentInfo: TournamentInfo;
+  venuesData: Venue[];
+}
+```
+
+**Purpose:** Get complete tournament data formatted for public websites, scoreboards, or apps.
+
+---
+
+## getCourtInfo
+
+Returns detailed information about a specific court, including availability and bookings.
+
+```js
+const { courtInfo } = engine.getCourtInfo({
+  courtId, // required
+  tournamentRecord, // required
+});
+
+console.log(courtInfo.courtName);
+console.log(courtInfo.dateAvailability);
+```
+
+**Returns:**
+
+```ts
+{
+  courtInfo: {
+    courtId: string;
+    courtName: string;
+    venueId: string;
+    dateAvailability?: DateAvailability[];
+    // ... other court properties
+  };
+}
+```
+
+**Purpose:** Get complete court details for scheduling interfaces or public venue information.
+
+---
+
+## getDrawData
+
+Returns comprehensive draw data including structures, matchUps, and participant assignments, formatted for display.
+
+```js
+const { drawInfo, structures } = engine.getDrawData({
+  drawDefinition, // required
+  tournamentRecord, // required
+  event, // required
+  usePublishState, // optional boolean - respect publish state
+  includePositionAssignments, // optional boolean - include draw positions
+  policyDefinitions, // optional - privacy policies
+  inContext, // optional boolean - add context to matchUps
+});
+```
+
+**Returns:**
+
+```ts
+{
+  drawInfo: {
+    drawId: string;
+    drawName: string;
+    drawType: string;
+    // ... other draw properties
+  }
+  structures: Array<{
+    structureId: string;
+    structureName: string;
+    matchUps: MatchUp[];
+    roundMatchUps: { [roundNumber: string]: MatchUp[] };
+    positionAssignments?: PositionAssignment[];
+    // ... other structure data
+  }>;
+  success: boolean;
+}
+```
+
+**Purpose:** Primary method for getting formatted draw data for display in brackets, schedules, or results pages.
+
+**When to Use:**
+
+- Building bracket displays
+- Generating draw sheets
+- Exporting draw data
+- Public-facing draw views
+
+**Notes:**
+
+- Respects publish state when `usePublishState: true`
+- Applies privacy policies to participant data
+- Returns only published structures/rounds when appropriate
+- Used internally by `getEventData`
+
+---
+
+## getEventData
+
+Returns comprehensive event data including all draws, participants, and matchUps, formatted for public display.
+
+```js
+const { eventData, participants } = engine.getEventData({
+  eventId, // required (or event object)
+  tournamentRecord, // required
+  usePublishState, // optional boolean - respect publish state
+  hydrateParticipants, // optional boolean - add full participant details
+  includePositionAssignments, // optional boolean - include draw positions
+  participantsProfile, // optional - control participant data included
+  policyDefinitions, // optional - privacy policies
+  contextProfile, // optional - control matchUp context
+  allParticipantResults, // optional boolean - include all results
+});
+```
+
+**Returns:**
+
+```ts
+{
+  eventData: {
+    eventInfo: EventInfo;
+    drawsData: Array<{
+      drawInfo: DrawInfo;
+      structures: Structure[];
+    }>;
+    tournamentInfo?: TournamentInfo;
+    venuesData?: Venue[];
+  };
+  participants?: HydratedParticipant[];
+  success: boolean;
+}
+```
+
+**Purpose:** Primary method for generating complete event data payloads for websites, apps, and scoreboards.
+
+**Use Cases:**
+
+- Publishing event data to public APIs
+- Generating event pages
+- Creating scoreboard displays
+- Exporting event data
+
+**Publish State Integration:**
+
+- When `usePublishState: true`, only returns published draws/structures
+- Respects round limits and stage restrictions
+- Honors embargo times
+- Applies privacy policies
+
+**Notes:**
+
+- Most commonly used method for public data generation
+- Automatically called by `publishEvent` to generate payload
+- Respects all display and privacy extensions
+- Returns hydrated participants with complete details when requested
+
+---
+
+## getEventPublishStatus
+
+Returns detailed publish status for a specific event.
+
+```js
+const { eventPublishStatus } = engine.getEventPublishStatus({
+  eventId, // required
+  tournamentRecord, // required
+  event, // optional - event object if already loaded
+});
+
+console.log(eventPublishStatus.published); // boolean
+console.log(eventPublishStatus.publishedDrawIds); // array of draw IDs
+console.log(eventPublishStatus.drawDetails); // granular details
+```
+
+**Returns:**
+
+```ts
+{
+  eventPublishStatus: {
+    published: boolean;
+    publishedDrawIds?: string[];
+    drawDetails?: {
+      [drawId: string]: {
+        stages?: string[];
+        structures?: {
+          [structureId: string]: {
+            roundLimit?: number;
+            published?: boolean;
+          };
+        };
+      };
+    };
+  };
+}
+```
+
+**Purpose:** Query precise publish state for an event to determine what's visible.
+
+---
+
+## getTournamentPublishStatus
+
+Returns publish status for tournament-level items (participants, order of play).
+
+```js
+const { publishStatus } = engine.getTournamentPublishStatus({
+  tournamentRecord, // required
+});
+
+console.log(publishStatus.participants.published); // boolean
+console.log(publishStatus.participants.publishedAt); // ISO timestamp
+console.log(publishStatus.orderOfPlay.published); // boolean
+```
+
+**Returns:**
+
+```ts
+{
+  publishStatus: {
+    participants: {
+      published: boolean;
+      publishedAt?: string;
+    };
+    orderOfPlay: {
+      published: boolean;
+      publishedAt?: string;
+    };
+  };
+}
+```
+
+**Purpose:** Check if tournament-wide items like participants and order of play are published.
+
+---
+
+## getVenueData
+
+Returns formatted venue data for public display.
+
+```js
+const { venueData } = engine.getVenueData({
+  venueId, // required
+  tournamentRecord, // required
+});
+
+console.log(venueData.venueName);
+console.log(venueData.courts); // Array of court objects
+console.log(venueData.venueAddress);
+```
+
+**Returns:**
+
+```ts
+{
+  venueData: {
+    venueId: string;
+    venueName: string;
+    venueAbbreviation?: string;
+    courts: Court[];
+    venueAddress?: Address;
+    // ... other venue properties
+  };
+}
+```
+
+**Purpose:** Get complete venue information for public display, maps, or venue guides.
 
 ---
 
@@ -435,6 +748,22 @@ engine.publishParticipants({
   removePriorValues: true,
 });
 ```
+
+---
+
+## setEventDisplay
+
+Sets display configuration for event data, controlling which attributes are visible for specific draws and dates.
+
+```js
+engine.setEventDisplay({
+  eventId, // required
+  displaySettings, // required - display configuration object
+  removePriorValues, // optional boolean - clear previous settings
+});
+```
+
+**Purpose:** Fine-grained control over data visibility in published events, for privacy compliance and progressive disclosure.
 
 ---
 

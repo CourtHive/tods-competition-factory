@@ -177,7 +177,7 @@ const drawTypes = engine.getAllowedMatchUpFormats();
 ## getAvailableMatchUpsCount
 
 ```js
-const { availableMatchUpsCount } = engine.getAvailbleMatchUpsCount({
+const { availableMatchUpsCount } = engine.getAvailableMatchUpsCount({
   structureId, // required if there is more than one structure in the drawDefinition
   roundNumber, // optional; will default to last roundNumber
   drawId,
@@ -777,10 +777,10 @@ const {
 ## getParticipantResults
 
 ```js
-const { participantResults } = engine.getParticipantResuls({
+const { participantResults } = engine.getParticipantResults({
   participantIds, // optional array to filter results; used in ROUND_ROBIN for groups
   tallyPolicy, // policyDefinition for tallying results
-  matcUps, // must be inContext matchUps
+  matchUps, // must be inContext matchUps
 });
 ```
 
@@ -1595,7 +1595,7 @@ const { structures, stageStructures } = engine.getTournamentStructures({
 Returns valid Round Robin group sizes for specified `drawSize`.
 
 ```js
-const { validGroupSizes } = engine.getValidGroupSies({
+const { validGroupSizes } = engine.getValidGroupSizes({
   groupSizeLimit, // optional - defaults to 10
   drawSize,
 });
@@ -1687,7 +1687,7 @@ const structureIsComplete = engine.isCompletedStructure({
 Provides determination of whether qualifying structure(s) may be added to the structure specified by `structureId`.
 
 ```js
-const { valid } = engine.isValidForQualifiying({
+const { valid } = engine.isValidForQualifying({
   structureId,
   drawId,
 });
@@ -1920,5 +1920,66 @@ const {
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
 ```
+
+---
+
+## findExtension
+
+Finds and returns a specific extension by name from a tournament element (tournament, event, draw, participant, matchUp, etc.).
+
+```js
+const { extension, info } = engine.findExtension({
+  name: 'privateNote', // extension name to find
+  element: tournamentRecord, // object containing extensions array
+  discover: true, // optional - search in params for extension
+});
+
+if (extension) {
+  console.log(extension.value);
+}
+```
+
+**Parameters:**
+
+```ts
+{
+  name: string;                    // required - extension name
+  element?: any;                   // object with extensions array
+  discover?: boolean | string[];   // search params for extension
+  ...params                        // additional objects to search (if discover is true)
+}
+```
+
+**Returns:**
+
+```ts
+{
+  extension?: Extension;
+  info?: string;  // NOT_FOUND if extension doesn't exist
+  error?: ErrorType;  // MISSING_VALUE if name or element missing
+}
+```
+
+**Notes:**
+
+- Returns first matching extension by name
+- If `discover` is `true`, searches all params for objects with extensions
+- If `discover` is `string[]`, only searches specified param keys
+- Useful for finding custom extensions without knowing exact location
+
+---
+
+## credits
+
+Returns an acknowledgments string recognizing contributors to the CourtHive/TODS project.
+
+```js
+const acknowledgments = engine.credits();
+console.log(acknowledgments);
+```
+
+**Returns:** `string` - Multi-line acknowledgments text
+
+**Note:** This method provides attribution and thanks to the many people who contributed to the development of the tournament management system and TODS standards.
 
 ---

@@ -85,6 +85,97 @@ engine.attachFlightProfile({ flightProfile, eventId });
 
 ---
 
+## categoryCanContain
+
+Validates whether a child category can be contained within a parent category based on age ranges, rating ranges, and ball type constraints.
+
+```js
+const { valid, details } = engine.categoryCanContain({
+  category, // parent category to check against
+  childCategory, // child category to validate
+  withDetails, // optional boolean - return detailed validation info
+});
+
+if (!valid) {
+  console.log('Category constraints violated:', details);
+}
+```
+
+**Returns:**
+
+```ts
+{
+  valid: boolean;
+  details?: {
+    invalidAgeMin?: boolean;
+    invalidAgeMax?: boolean;
+    invalidAgeMinDate?: boolean;
+    invalidAgeMaxDate?: boolean;
+    invalidRatingRange?: boolean;
+    invalidBallType?: boolean;
+  };
+}
+```
+
+**Validation Rules:**
+
+1. **Age Range Validation:**
+   - Child ageMin must be >= parent ageMin
+   - Child ageMax must be <= parent ageMax
+   - Child age range must fit within parent age range
+
+2. **Age Date Validation:**
+   - Child ageMinDate must be <= parent ageMaxDate
+   - Child ageMaxDate must be >= parent ageMinDate
+
+3. **Rating Range Validation:**
+   - Only checked if both categories have same ratingType
+   - Child ratingMin must be >= parent ratingMin
+   - Child ratingMax must be <= parent ratingMax
+   - Child rating range must fit within parent rating range
+
+4. **Ball Type Validation:**
+   - If both specify ballType, they must match
+
+**Use Cases:**
+
+- Validating flight/division categories within event
+- Checking if sub-event category is compatible with main event
+- Enforcing hierarchical category constraints
+- Building category selection UIs with validation
+
+**Example:**
+
+```js
+// Parent event: U18 with rating 3.0-4.5
+const parentCategory = {
+  categoryName: 'U18',
+  ageMax: 18,
+  ratingType: 'NTRP',
+  ratingMin: 3.0,
+  ratingMax: 4.5,
+};
+
+// Flight category: U16 with rating 3.5-4.0
+const flightCategory = {
+  categoryName: 'U16 Flight A',
+  ageMax: 16,
+  ratingType: 'NTRP',
+  ratingMin: 3.5,
+  ratingMax: 4.0,
+};
+
+const result = engine.categoryCanContain({
+  category: parentCategory,
+  childCategory: flightCategory,
+  withDetails: true,
+});
+
+console.log(result.valid); // true - fits within constraints
+```
+
+---
+
 ## deleteDrawDefinitions
 
 Remove `drawDefinitions` from an `event`. An audit timeItem is added to the tournamentRecord whenever this method is called. If `autoPublish: true` (default behavior) then if a deleted draw was published then the `event` to which it belongs will be re-published.
@@ -164,6 +255,108 @@ const {
     ageMax, // maximum age acceptable for eligibility
     ageMin, // minimum age acceptable for eligibility
   },
+});
+```
+
+---
+
+## generateEventsFromTieFormat
+
+Generates multiple events from a tieFormat definition, typically for team competitions.
+
+```js
+const { events } = engine.generateEventsFromTieFormat({
+  tieFormat, // required - tieFormat with collectionDefinitions
+  category, // optional
+  gender, // optional
+});
+```
+
+**Purpose:** Automatically create event structure for team competitions from tieFormat.
+
+---
+
+## getEvent
+
+Returns a single event object with optional context and drawDefinition.
+
+```js
+const { event, drawDefinition } = engine.getEvent({
+  eventId, // required
+  drawId, // optional - also return specific drawDefinition
+  context, // optional - additional properties to add
+});
+```
+
+---
+
+## getEventProperties
+
+Returns specific properties from an event object.
+
+```js
+const properties = engine.getEventProperties({
+  eventId, // required
+  properties, // optional array of property names
+});
+```
+
+---
+
+## getEventStructures
+
+Returns all structures across all draws in an event.
+
+```js
+const { structures } = engine.getEventStructures({ eventId });
+```
+
+---
+
+## getEventTimeItem
+
+Returns time items attached to an event.
+
+```js
+const { timeItem } = engine.getEventTimeItem({
+  eventId, // required
+  itemType, // required - time item type
+});
+```
+
+---
+
+## getEvents
+
+Returns all events from the tournament.
+
+```js
+const { events } = engine.getEvents({ context });
+```
+
+---
+
+## getFlightProfile
+
+Returns the flight profile extension from an event.
+
+```js
+const { flightProfile } = engine.getFlightProfile({ eventId });
+```
+
+**Purpose:** Access flight configuration for events split into multiple draws.
+
+---
+
+## getScaledEntries
+
+Returns event entries with their scale values (rankings, ratings).
+
+```js
+const { scaledEntries } = engine.getScaledEntries({
+  eventId, // required
+  scaleAttributes, // optional
+  stage, // optional
 });
 ```
 
@@ -269,14 +462,6 @@ engine.removeEventEntries({
 
 ---
 
-## removeEventExtension
-
-```js
-engine.removeEventExtension({ eventId, name });
-```
-
----
-
 ## removeEventMatchUpFormatTiming
 
 ```js
@@ -328,6 +513,36 @@ engine.setEventDates({
   eventId, // required
 });
 ```
+
+---
+
+## setEventEndDate
+
+Sets only the end date for an event. Part of the setEventDates family of methods.
+
+```js
+engine.setEventEndDate({
+  eventId, // required
+  endDate, // required - 'YYYY-MM-DD'
+});
+```
+
+**Purpose:** Update event end date independently of start date.
+
+---
+
+## setEventStartDate
+
+Sets only the start date for an event. Part of the setEventDates family of methods.
+
+```js
+engine.setEventStartDate({
+  eventId, // required
+  startDate, // required - 'YYYY-MM-DD'
+});
+```
+
+**Purpose:** Update event start date independently of end date.
 
 ---
 

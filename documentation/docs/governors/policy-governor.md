@@ -461,3 +461,75 @@ policyTypes.forEach((policyType) => {
 - Safe to call on non-existent policies in cleanup code (check return value)
 
 ---
+
+## getPolicyDefinitions
+
+Returns all policy definitions from the APPLIED_POLICIES extension, providing both the tournament-level policies and those applied at event or draw level.
+
+```js
+const { policyDefinitions } = engine.getPolicyDefinitions({
+  drawId, // optional - include draw-level policies
+  eventId, // optional - include event-level policies
+});
+
+console.log(policyDefinitions);
+// {
+//   [SEEDING_POLICY]: { ... },
+//   [SCORING_POLICY]: { ... },
+//   [DRAWS_POLICY]: { ... }
+// }
+```
+
+**Returns:**
+
+```ts
+{
+  policyDefinitions?: {
+    [policyType: string]: PolicyDefinition;
+  };
+}
+```
+
+**Notes:**
+
+- Returns hierarchical merge: tournament < event < draw
+- Draw-level policies override event-level, which override tournament-level
+- Only returns policies that exist in APPLIED_POLICIES extension
+- Use `getAppliedPolicies` for runtime-applied policies including defaults
+
+---
+
+## getAppliedPolicies
+
+Returns all policies that are actively applied, including both attached policies (from APPLIED_POLICIES extension) and default policies.
+
+```js
+const { appliedPolicies } = engine.getAppliedPolicies({
+  drawId, // optional - include draw-specific policies
+  eventId, // optional - include event-specific policies
+});
+
+// Check specific policy
+if (appliedPolicies?.[SEEDING_POLICY]) {
+  console.log('Seeding policy is active');
+}
+```
+
+**Returns:**
+
+```ts
+{
+  appliedPolicies?: {
+    [policyType: string]: PolicyDefinition;
+  };
+}
+```
+
+**Difference from getPolicyDefinitions:**
+
+- `getAppliedPolicies` includes DEFAULT policies (e.g., default scoring rules)
+- `getPolicyDefinitions` returns ONLY explicitly attached policies
+- Use `getAppliedPolicies` to understand actual runtime behavior
+- Use `getPolicyDefinitions` to see what was explicitly configured
+
+---
