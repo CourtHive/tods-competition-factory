@@ -23,6 +23,7 @@ import { TEAM_MATCHUP } from '@Constants/matchUpTypes';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import {
+  BYE,
   CANCELLED,
   COMPLETED,
   completedMatchUpStatuses,
@@ -218,9 +219,9 @@ export function getDrawData(params): {
           return active || structureActiveStatuses || !!matchUp.winningSide || !!matchUp.score?.scoreStringSide1;
         }, false);
 
-        const structureCompleted = matchUps.reduce((completed, matchUp) => {
-          return completed && completedMatchUpStatuses.includes(matchUp.matchUpStatus);
-        }, !!matchUps.length);
+        const structureCompleted = matchUps.every((matchUp) =>
+          [...completedMatchUpStatuses, BYE].includes(matchUp.matchUpStatus),
+        );
         structureInfo.structureCompleted = structureCompleted;
         completedStructures[structureId] = structureCompleted;
 
