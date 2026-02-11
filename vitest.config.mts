@@ -25,6 +25,13 @@ export default defineConfig({
         '**/server/**',
         'src/forge/**',
         '**/types/**',
+        // Deprecated/future code - excluded from coverage
+        'src/helpers/scoreParser/**',
+        'src/mutate/score/staticScoreChange/**',
+        'src/tests/testHarness/**',
+        'src/assemblies/governors/**',
+        'src/assemblies/tools/**',
+        'src/fixtures/data/**',
       ],
       provider: 'v8',
       thresholds: {

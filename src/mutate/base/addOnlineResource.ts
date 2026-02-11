@@ -2,10 +2,10 @@ import { decorateResult } from '@Functions/global/decorateResult';
 import { addNotice } from '@Global/state/globalState';
 
 // constants and types
-import { IDENTIFIER, RESOURCE_SUB_TYPE, RESOURCE_TYPE } from '@Constants/resourceConstants';
 import { DrawDefinition, Event, OnlineResource, Tournament } from '@Types/tournamentTypes';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { MODIFY_TOURNAMENT_DETAIL } from '@Constants/topicConstants';
+import { IDENTIFIER, NAME } from '@Constants/resourceConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 import { ResultType } from '@Types/factoryTypes';
 import {
@@ -39,6 +39,8 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
       return decorateResult({ result: { error: NOT_FOUND } });
     }
     mergeResource({ element: tournamentRecord.parentOrganisation, onlineResource });
+  } else if (participantId && personId && participantId !== personId) {
+    return decorateResult({ result: { error: INVALID_PARTICIPANT } });
   } else if (participantId || personId) {
     const participant = (tournamentRecord.participants ?? []).find(
       (p) => (personId && p.person?.personId === personId) || p.participantId === participantId,
@@ -87,10 +89,7 @@ export function addOnlineResource(params: AddOnlineResourceArgs): ResultType {
 
 function mergeResource({ element, onlineResource }: { element: any; onlineResource: OnlineResource }) {
   const onlineResources = (element.onlineResources ?? []).filter(
-    (resource) =>
-      resource?.[RESOURCE_SUB_TYPE] !== onlineResource[RESOURCE_SUB_TYPE] &&
-      resource?.[RESOURCE_TYPE] !== onlineResource[RESOURCE_TYPE] &&
-      resource?.[IDENTIFIER] !== onlineResource[IDENTIFIER],
+    (resource) => resource?.[NAME] !== onlineResource[NAME] && resource?.[IDENTIFIER] !== onlineResource[IDENTIFIER],
   );
   onlineResources.push(onlineResource);
 
