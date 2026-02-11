@@ -1,9 +1,11 @@
-import { describe, expect, it } from 'vitest';
 import { getSeedValue } from '@Query/participant/getSeedValue';
-import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
-import { SEEDING } from '@Constants/scaleConstants';
+import mocksEngine from '@Assemblies/engines/mock';
+import { describe, expect, it } from 'vitest';
+
+// constants
 import { SINGLES_EVENT } from '@Constants/eventConstants';
+import { SEEDING } from '@Constants/scaleConstants';
 
 describe('getSeedValue', () => {
   // Unit tests
