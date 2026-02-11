@@ -135,7 +135,7 @@ it.each(scenarios)('can qualify specified number of participants', (scenario) =>
   expect(secondRoundMatchUps.length).toEqual(scenario.secondRoundMatchUpsCount);
 
   if (scenario.secondRoundMatchUpsCount) {
-    let secondRoundDrawPositions = secondRoundMatchUps.map(({ drawPositions }) => drawPositions).flat();
+    let secondRoundDrawPositions = secondRoundMatchUps.flatMap(({ drawPositions }) => drawPositions);
 
     if (scenario.secondRoundDrawPositions) {
       expect(secondRoundDrawPositions).toEqual(scenario.secondRoundDrawPositions);
@@ -155,10 +155,7 @@ it.each(scenarios)('can qualify specified number of participants', (scenario) =>
     secondRoundMatchUps = matchUps.filter(({ roundNumber }) => roundNumber === 2);
 
     if (scenario.secondRoundDrawPositions) {
-      secondRoundDrawPositions = secondRoundMatchUps
-        .map(({ drawPositions }) => drawPositions)
-        .flat()
-        .filter(Boolean);
+      secondRoundDrawPositions = secondRoundMatchUps.flatMap(({ drawPositions }) => drawPositions).filter(Boolean);
       expect(secondRoundDrawPositions).toEqual([]);
     }
   }

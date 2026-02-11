@@ -340,13 +340,12 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   expect(positionAssignments.map(({ participantId }) => !!participantId)).toEqual([false, false, true]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
-  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  ({ positionAssignments } = getConsolationDetails({ drawId }));
   expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([false, true, false]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
-  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  ({ positionAssignments } = getConsolationDetails({ drawId }));
   expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([true, true, false]);
-  // printGlobalLog(true);
 });
 
 it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2nd round Bye paired with incomplete matchUp', () => {
@@ -374,17 +373,14 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
     },
   } = tournamentEngine.getEvent({ drawId });
 
-  let { orderedPairs, positionAssignments } = getConsolationDetails({
-    drawId,
-  });
+  let { orderedPairs } = getConsolationDetails({ drawId });
   expect(orderedPairs).toEqual([[2, 3], [1]]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 1 });
-  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  let { positionAssignments } = getConsolationDetails({ drawId });
   expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([false, true, false]);
 
   replaceWithBye({ drawId, structureId: mainStructureId, drawPosition: 2 });
-  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
 
   const { upcomingMatchUps } = tournamentEngine.drawMatchUps({ drawId });
   const matchUpId = upcomingMatchUps[0].matchUpId;
@@ -401,10 +397,8 @@ it('can propagate BYE to 2nd round feed arm when 1st round Double-BYE creates 2n
   });
   expect(result.success).toEqual(true);
 
-  ({ orderedPairs, positionAssignments } = getConsolationDetails({ drawId }));
+  ({ positionAssignments } = getConsolationDetails({ drawId }));
   expect(positionAssignments.map(({ bye }) => !!bye)).toEqual([true, true, false]);
-
-  // printGlobalLog(true);
 });
 
 function getConsolationDetails({ drawId }) {

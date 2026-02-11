@@ -75,8 +75,7 @@ it('can direct winners and losers', () => {
     drawDefinition,
   });
 
-  result =
-    matchUpId &&
+  matchUpId &&
     setMatchUpState({
       matchUpStatus: TO_BE_PLAYED,
       winningSide: undefined,
@@ -174,8 +173,7 @@ it('can direct winners and losers', () => {
     drawDefinition,
   });
 
-  result =
-    matchUpId &&
+  matchUpId &&
     setMatchUpState({
       drawDefinition,
       matchUpId,

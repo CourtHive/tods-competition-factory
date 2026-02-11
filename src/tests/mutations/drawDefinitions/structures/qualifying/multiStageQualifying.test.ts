@@ -84,7 +84,7 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q1positioned?.length).toEqual(32);
 
   let { roundMatchUps } = getRoundMatchUps({ matchUps: q1.matchUps ?? [] });
-  let roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
+  let roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => Number.parseInt(r)) : [];
   let qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(3);
 
@@ -103,7 +103,7 @@ it('supports multi-sequence qualifying structures', () => {
   expect(q2positioned?.length).toEqual(12);
 
   ({ roundMatchUps } = getRoundMatchUps({ matchUps: q2.matchUps ?? [] }));
-  roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => parseInt(r)) : [];
+  roundNumbers = roundMatchUps ? Object.keys(roundMatchUps).map((r) => Number.parseInt(r)) : [];
   qualifyingRoundNumber = Math.max(...roundNumbers);
   expect(qualifyingRoundNumber).toEqual(2);
 
