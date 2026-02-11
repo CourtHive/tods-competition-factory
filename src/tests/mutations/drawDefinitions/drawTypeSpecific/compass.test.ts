@@ -128,6 +128,9 @@ function checkCompassByes({ drawDefinition, stage, expectedCompassByes }) {
   });
 }
 
+function pendingWithOneParticipant(matchUp) {
+  return matchUp.roundNumber === 2 && matchUp.drawPositions.filter(Boolean).length === 1;
+}
 function checkByeAdvancedDrawPositions({ expectedByeDrawPositions, drawDefinition, advanced, stage }) {
   const { structures } = getDrawStructures({ drawDefinition, stage });
 
@@ -174,10 +177,6 @@ function checkByeAdvancedDrawPositions({ expectedByeDrawPositions, drawDefinitio
       }
     }
   });
-
-  function pendingWithOneParticipant(matchUp) {
-    return matchUp.roundNumber === 2 && matchUp.drawPositions.filter(Boolean).length === 1;
-  }
 }
 
 function generateCompass({

@@ -768,6 +768,9 @@ Choose the appropriate mechanism for your data:
 Only one extension with a given name per element:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 // ✓ CORRECT - One extension per name
 {
   extensions: [{ name: 'customData', value: { field1: 'value1', field2: 'value2' } }];

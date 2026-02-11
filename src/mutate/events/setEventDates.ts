@@ -22,7 +22,8 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
   if (!event) return { error: MISSING_EVENT };
   if (!dateValidation.test(startDate)) return { error: INVALID_DATE };
   const result = getTournamentDates(tournamentRecord);
-  if (result.error) return result;
+  const stack = 'setEventStartDate';
+  if (result.error) return decorateResult({ result, stack });
   const { tournamentStartDate, tournamentEndDate } = result;
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
@@ -33,7 +34,11 @@ export function setEventStartDate({ tournamentRecord, event, startDate }) {
     newEventStartDate < tournamentStartDate ||
     newEventStartDate > tournamentEndDate
   )
-    return { error: INVALID_DATE };
+    return decorateResult({
+      result: { error: INVALID_DATE },
+      stack,
+      info: 'startDate must be within tournament start and end dates',
+    });
 
   // use extractDate() to ensure that only the YYYY-MM-DD part of date is used for comparison
   const eventEndDate = event.endDate && new Date(extractDate(event.endDate)).getTime();
@@ -87,6 +92,7 @@ type SetEventDatesArgs = {
 };
 
 export function setEventDates(params: SetEventDatesArgs) {
+  const stack = 'setEventDates';
   const paramsCheck = checkRequiredParameters(params, [
     { tournamentRecord: true, event: true },
     {
@@ -113,7 +119,8 @@ export function setEventDates(params: SetEventDatesArgs) {
   if (startDate && endDate) {
     const newStartDate = new Date(extractDate(startDate)).getTime();
     const newEndDate = new Date(extractDate(endDate)).getTime();
-    if (newStartDate > newEndDate) return { error: INVALID_VALUES };
+    if (newStartDate > newEndDate)
+      return decorateResult({ result: { error: INVALID_VALUES }, stack, info: 'startDate cannot be after endDate' });
   }
 
   if (activeDates) {
@@ -121,17 +128,17 @@ export function setEventDates(params: SetEventDatesArgs) {
     const end = endDate || tournamentRecord.endDate;
     const validStart = !start || activeDates.every((d) => new Date(d) >= new Date(start));
     const validEnd = !end || activeDates.every((d) => new Date(d) <= new Date(end));
-    if (!validStart || !validEnd) return { error: INVALID_DATE };
+    if (!validStart || !validEnd) return decorateResult({ result: { error: INVALID_DATE }, stack });
   }
 
   if (startDate) {
     const result = setEventStartDate({ tournamentRecord, event, startDate });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   if (endDate) {
     const result = setEventEndDate({ tournamentRecord, event, endDate });
-    if (result.error) return result;
+    if (result.error) return decorateResult({ result, stack });
   }
 
   if (activeDates) event.activeDates = activeDates;

@@ -8,7 +8,7 @@ import { queryGovernor } from 'tods-competition-factory';
 
 ## allDrawMatchUps
 
-Returns all matchUps from all structures within a draw.
+Returns all matchUps from all structures within a draw. See examples in [Draw-Specific](../concepts/matchup-overview.md#draw-specific), [Next MatchUps (Winner/Loser Progression)](../concepts/matchup-overview.md#next-matchups-winnerloser-progression), [Next MatchUps (Progression)](../concepts/matchup-context.mdx#next-matchups-progression), [Build Draw Bracket](../concepts/matchup-context.mdx#build-draw-bracket).
 
 ```js
 const { matchUps } = engine.allDrawMatchUps({
@@ -26,7 +26,7 @@ const { matchUps } = engine.allDrawMatchUps({
 
 ## allEventMatchUps
 
-Returns all matchUps for an event.
+Returns all matchUps for an event. See examples: [Event-Specific](../concepts/matchup-overview.md#event-specific).
 
 ```js
 const { matchUps } = allEventMatchUps({
@@ -57,7 +57,7 @@ const allPositionsFilled = engine.allPlayoffPositionsFilled({
 
 ## allTournamentMatchUps
 
-Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**.
+Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**. See examples in [Extension Hydration](../concepts/extensions.md#extension-hydration), [Clear Separation](../concepts/publishing.md#clear-separation), [Clear Separation](../concepts/publishing.md#clear-separation), [MatchUp Time Items](../concepts/timeItems.md#matchup-time-items), [Example Usage](../concepts/matchup-overview.md#example-usage), and 2 more.
 
 ```js
 const { matchUps, groupInfo } = engine.allTournamentMatchUps({
@@ -78,7 +78,7 @@ const { matchUps, groupInfo } = engine.allTournamentMatchUps({
 const matchUpFilters = {
   isMatchUpTie: false,
   scheduledDate, // scheduled date of matchUps to return
-};
+};. See examples: [Querying Published Schedules](../concepts/publishing.md#querying-published-schedules), [Competition Schedule](../concepts/publishing.md#competition-schedule).
 
 const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues, participants } =
   engine.competitionScheduleMatchUps({
@@ -177,7 +177,7 @@ const drawTypes = engine.getAllowedMatchUpFormats();
 ## getAvailableMatchUpsCount
 
 ```js
-const { availableMatchUpsCount } = engine.getAvailbleMatchUpsCount({
+const { availableMatchUpsCount } = engine.getAvailableMatchUpsCount({
   structureId, // required if there is more than one structure in the drawDefinition
   roundNumber, // optional; will default to last roundNumber
   drawId,
@@ -390,7 +390,7 @@ const { error, entries, seedsCount, stageEntries } = engine.getEntriesAndSeedsCo
   drawSize, // optional - overrides number calculaed from entries in either event or draw
   drawId, // optional - scopes entries to a specific flight/drawDefinition
   stage, // optional - scopes entries to a specific stage
-});
+});. See examples: [Client-Implemented Seeding](../concepts/scaleItems.md#client-implemented-seeding), [Using Factory getScaledEntries()](../concepts/scaleItems.md#using-factory-getscaledentries).
 ```
 
 ---
@@ -422,7 +422,7 @@ const personEntryCSV = tools.JSON2CSV(participantEntryReports);
 
 ## getEvent
 
-Get an event by either its `eventId` or by a `drawId` which it contains. Also returns `drawDefinition` if a `drawId` is specified.
+Get an event by either its `eventId` or by a `drawId` which it contains. Also returns `drawDefinition` if a `drawId` is specified. See examples in [Use Cases](../concepts/events/entries.mdx#use-cases), [Resolving Events from Draw IDs](../engines/engine-middleware.md#resolving-events-from-draw-ids).
 
 ```js
 const {
@@ -438,7 +438,7 @@ const {
 
 ## getEvents
 
-Return **deepCopies** of all events in a tournament record.
+Return **deepCopies** of all events in a tournament record. See examples: [Programmatic Generation](../concepts/scheduling-profile.mdx#programmatic-generation), [Setting Active Tournament](../engines/engine-middleware.md#setting-active-tournament), [Single Tournament (No ID Required)](../engines/engine-middleware.md#single-tournament-no-id-required).
 
 ```js
 const { events } = engine.getEvents({
@@ -455,7 +455,7 @@ const { events } = engine.getEvents({
 
 ## getEventData
 
-Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`.
+Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`. See examples: [Event Data Payload](../concepts/publishing.md#event-data-payload), [Event Data](../concepts/publishing.md#event-data), [Test Publish State](../concepts/publishing.md#test-publish-state).
 
 See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
@@ -482,7 +482,7 @@ const { timeItem } = engine.getTimeItem({
   participantId, // optional
   eventId, // optional
   drawId, // optional
-});
+});. See examples: [Retrieving Time Items](../concepts/timeItems.md#retrieving-time-items), [External Ranking Integration](../concepts/timeItems.md#external-ranking-integration).
 ```
 
 Or call without engine:
@@ -546,7 +546,7 @@ const { structures, stageStructures } = engine.getEventStructures({
 
 ## getFlightProfile
 
-A `flightProfile` is an extension on an `event` detailing the parameters that will be used to generate `drawDefinitions` within the `event`. There is an array of `flights` which specify attributes of a draw such as `drawEntries, drawName, drawId, flightNumber` as well as `stage`, which is significant for flights which are only intended to reflect VOLUNTARY_CONSOLATION structures. A Voluntary Consolation flight is "linked" to the flight from which competitors originate and will be automatically deleted if the source flight is deleted.
+A `flightProfile` is an extension on an `event` detailing the parameters that will be used to generate `drawDefinitions` within the `event`. There is an array of `flights` which specify attributes of a draw such as `drawEntries, drawName, drawId, flightNumber` as well as `stage`, which is significant for flights which are only intended to reflect VOLUNTARY_CONSOLATION structures. A Voluntary Consolation flight is "linked" to the flight from which competitors originate and will be automatically deleted if the source flight is deleted. See examples: [Creating Draws from Flight Profiles](../concepts/events/flights.mdx#creating-draws-from-flight-profiles).
 
 If a `flight` has already been used to generate a draw, the `drawDefinition` will be returned with the profile.
 
@@ -760,7 +760,7 @@ const { relevantMatchUps, finishingPositionRanges, finishingPositionRange } = id
 
 ## getParticipantMembership
 
-Returns all grouping participants which include `participantId` in `{ individualParticipantIds }`.
+Returns all grouping participants which include `participantId` in `{ individualParticipantIds }`. See examples: [Participant Membership](../concepts/participants.md#participant-membership).
 
 ```js
 const {
@@ -777,10 +777,10 @@ const {
 ## getParticipantResults
 
 ```js
-const { participantResults } = engine.getParticipantResuls({
+const { participantResults } = engine.getParticipantResults({
   participantIds, // optional array to filter results; used in ROUND_ROBIN for groups
   tallyPolicy, // policyDefinition for tallying results
-  matcUps, // must be inContext matchUps
+  matchUps, // must be inContext matchUps
 });
 ```
 
@@ -788,7 +788,7 @@ const { participantResults } = engine.getParticipantResuls({
 
 ## getParticipants
 
-Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward.
+Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward. See examples in [Basic Retrieval](../concepts/participants.md#basic-retrieval), [Participants](../concepts/publishing.md#participants), [withMatchUps](../concepts/participant-context.md#withmatchups), [Participant Filtering](../concepts/accessors.mdx#participant-filtering), [Basic Conflict Detection](../concepts/scheduling-conflicts.mdx#basic-conflict-detection), and 1 more.
 
 ```js
 const participantFilters = {
@@ -921,7 +921,7 @@ Returns the following detail for each round:
 
 ## getParticipantScaleItem
 
-Return a ranking or rating or seeding value for a participant, referenced by participantId.
+Return a ranking or rating or seeding value for a participant, referenced by participantId. See examples in [Get Specific Scale Item](../concepts/scaleItems.md#get-specific-scale-item), [Scale Item Values](../concepts/accessors.mdx#scale-item-values), [Complex Scale Item Retrieval](../concepts/accessors.mdx#complex-scale-item-retrieval).
 
 See [Scale Items](../concepts/scaleItems).
 
@@ -1070,7 +1070,7 @@ const { roundMatchUps, roundProfile } = engine.getRoundMatchUps({
 
 ## getScaledEntries
 
-Retrieves event entries sorted by their scale values (ratings, rankings, etc.). This method is useful for generating seeding when standard sorting by a scale value is sufficient.
+Retrieves event entries sorted by their scale values (ratings, rankings, etc.). This method is useful for generating seeding when standard sorting by a scale value is sufficient. See examples: [Using Factory getScaledEntries()](../concepts/scaleItems.md#using-factory-getscaledentries).
 
 **Purpose:**
 
@@ -1595,7 +1595,7 @@ const { structures, stageStructures } = engine.getTournamentStructures({
 Returns valid Round Robin group sizes for specified `drawSize`.
 
 ```js
-const { validGroupSizes } = engine.getValidGroupSies({
+const { validGroupSizes } = engine.getValidGroupSizes({
   groupSizeLimit, // optional - defaults to 10
   drawSize,
 });
@@ -1687,7 +1687,7 @@ const structureIsComplete = engine.isCompletedStructure({
 Provides determination of whether qualifying structure(s) may be added to the structure specified by `structureId`.
 
 ```js
-const { valid } = engine.isValidForQualifiying({
+const { valid } = engine.isValidForQualifying({
   structureId,
   drawId,
 });
@@ -1707,7 +1707,7 @@ const valid = engine.isValidMatchUpFormat({ matchUpFormat });
 
 ## matchUpActions
 
-Return an array of all validActions for a specific matchUp.
+Return an array of all validActions for a specific matchUp. See examples: [Usage](../concepts/actions.mdx#usage), [MatchUp Actions](../concepts/matchup-overview.md#matchup-actions).
 
 ```js
 const {
@@ -1756,7 +1756,7 @@ const {
 
 ## positionActions
 
-Returns valid actions for a given `drawPosition`. If params includes `matchUpId` will pass through to [matchUpActions](#matchupactions) when called for **AD_HOC** structures.
+Returns valid actions for a given `drawPosition`. If params includes `matchUpId` will pass through to [matchUpActions](#matchupactions) when called for **AD_HOC** structures. See examples: [Usage](../concepts/actions.mdx#usage).
 
 ```js
 const positionActions = engine.positionActions({
@@ -1920,5 +1920,66 @@ const {
   matchUpFilters, // optional; [ scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
 });
 ```
+
+---
+
+## findExtension
+
+Finds and returns a specific extension by name from a tournament element (tournament, event, draw, participant, matchUp, etc.). See examples: [Retrieving Scheduling Profile](../concepts/scheduling-profile.mdx#retrieving-scheduling-profile).
+
+```js
+const { extension, info } = engine.findExtension({
+  name: 'privateNote', // extension name to find
+  element: tournamentRecord, // object containing extensions array
+  discover: true, // optional - search in params for extension
+});
+
+if (extension) {
+  console.log(extension.value);
+}
+```
+
+**Parameters:**
+
+```ts
+{
+  name: string;                    // required - extension name
+  element?: any;                   // object with extensions array
+  discover?: boolean | string[];   // search params for extension
+  ...params                        // additional objects to search (if discover is true)
+}
+```
+
+**Returns:**
+
+```ts
+{
+  extension?: Extension;
+  info?: string;  // NOT_FOUND if extension doesn't exist
+  error?: ErrorType;  // MISSING_VALUE if name or element missing
+}
+```
+
+**Notes:**
+
+- Returns first matching extension by name
+- If `discover` is `true`, searches all params for objects with extensions
+- If `discover` is `string[]`, only searches specified param keys
+- Useful for finding custom extensions without knowing exact location
+
+---
+
+## credits
+
+Returns an acknowledgments string recognizing contributors to the CourtHive/TODS project.
+
+```js
+const acknowledgments = engine.credits();
+console.log(acknowledgments);
+```
+
+**Returns:** `string` - Multi-line acknowledgments text
+
+**Note:** This method provides attribution and thanks to the many people who contributed to the development of the tournament management system and TODS standards.
 
 ---

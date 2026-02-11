@@ -35,6 +35,9 @@ tournamentEngine.addEvent({ event: { eventName: 'Singles', eventType: 'SINGLES' 
 Use `asyncEngine` for multi-client server applications:
 
 ```js
+
+**API Reference:** [addEvent](/docs/governors/event-governor#addevent)
+
 import { asyncEngine, globalState } from 'tods-competition-factory';
 import { asyncGlobalState } from './asyncGlobalState';
 
@@ -106,6 +109,9 @@ tournamentEngine.generateDrawDefinition({ /* ... */ });
 ### Real-World Example: Live Scoring Updates
 
 ```js
+
+**API Reference:** [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition)
+
 import { tournamentEngine, addNotification } from 'tods-competition-factory';
 import { broadcastToWebSocketClients } from './websocket';
 
@@ -150,6 +156,9 @@ Protect tournament integrity by automatically reverting changes when operations 
 ### Basic Rollback
 
 ```js
+
+**API Reference:** [setMatchUpStatus](/docs/governors/matchup-governor#setmatchupstatus)
+
 import { tournamentEngine } from 'tods-competition-factory';
 
 tournamentEngine.setState(tournamentRecord);
@@ -168,6 +177,9 @@ try {
 ### Transaction Pattern
 
 ```js
+
+**API Reference:** [automatedPositioning](/docs/governors/draws-governor#automatedpositioning)
+
 // Complex operation with multiple mutations
 tournamentEngine.setState(tournamentRecord);
 const originalState = tournamentEngine.getState();
@@ -210,6 +222,12 @@ try {
 Synchronous engines maintain state in memory without special configuration:
 
 ```js
+
+
+**API Reference:** [addEvent](/docs/governors/event-governor#addevent)
+
+**API Reference:** [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition)
+
 import { tournamentEngine } from 'tods-competition-factory';
 
 // No setup required for sync engines
@@ -222,6 +240,9 @@ tournamentEngine.addEvent({ event });
 For multi-client scenarios, implement a custom state provider:
 
 ```js
+
+**API Reference:** [addEvent](/docs/governors/event-governor#addevent)
+
 // asyncGlobalState.js
 import { AsyncLocalStorage } from 'async_hooks';
 

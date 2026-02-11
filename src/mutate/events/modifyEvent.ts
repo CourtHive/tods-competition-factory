@@ -164,8 +164,8 @@ function dateUpdates(params) {
   const { tournamentRecord, eventUpdates, event, stack } = params;
   if (eventUpdates.startDate || eventUpdates.endDate) {
     const result = setEventDates({
-      startDate: eventUpdates.startDate,
-      endDate: eventUpdates.endDate,
+      startDate: eventUpdates.startDate || event.startDate || tournamentRecord.startDate,
+      endDate: eventUpdates.endDate || event.endDate || tournamentRecord.endDate,
       tournamentRecord,
       event,
     });

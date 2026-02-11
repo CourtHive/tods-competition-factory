@@ -138,7 +138,7 @@ it('disabled auto calc with manually advanced team will not advance calculated w
     scoreString: '7-5 7-5',
   });
 
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     matchUpId: incompleteSingles.matchUpId,
     outcome,
     drawId,

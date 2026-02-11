@@ -6,462 +6,65 @@ title: matchUp Governor
 import { matchUpGovernor } from 'tods-competition-factory';
 ```
 
-## addMatchUpEndTime
+## allCompetitionMatchUps
+
+Returns all matchUps from all tournaments in a competition. See examples in [Using proConflicts() for Analysis](../concepts/pro-scheduling.md#using-proconflicts-for-analysis).
 
 ```js
-const endTime = '2020-01-01T09:05:00Z';
-engine.addMatchUpEndTime({
-  validateTimeSeries, // optional - true by default - when false does not verify endTime is later than startTime
-  disableNotice, // when disabled subscribers will not be notified
-  matchUpId,
-  endTime,
-  drawId,
+const { matchUps } = engine.allCompetitionMatchUps({
+  tournamentRecords, // required - array of tournament records
 });
 ```
 
 ---
 
-## addMatchUpOfficial
+## allDrawMatchUps
+
+Returns all matchUps from a specific draw.
 
 ```js
-engine.addMatchUpOfficial({
-  disableNotice, // when disabled subscribers will not be notified
-  participantId,
-  officialType,
-  matchUpId,
-  drawId,
+const { matchUps } = engine.allDrawMatchUps({
+  drawId, // required
 });
 ```
 
 ---
 
-## addMatchUpResumeTime
+## allEventMatchUps
+
+Returns all matchUps from a specific event.
 
 ```js
-const resumeTime = '2020-01-01T09:00:00Z';
-engine.addMatchUpResumeTime({
-  removePriorValues, // optional boolean
-  disableNotice, // when disabled subscribers will not be notified
-  resumeTime,
-  matchUpId,
-  drawId,
+const { matchUps } = engine.allEventMatchUps({
+  eventId, // required
 });
 ```
 
 ---
 
-## addMatchUpScheduledDate
+## allTournamentMatchUps
+
+Returns all matchUps from a tournament.
 
 ```js
-const scheduledDate = '2020-01-01';
-engine.addMatchUpScheduledDate({
-  removePriorValues, // optional boolean
-  disableNotice, // when disabled subscribers will not be notified
-  scheduledDate,
-  matchUpId,
-  drawId,
+const { matchUps } = engine.allTournamentMatchUps();
+```
+
+---
+
+## analyzeMatchUp
+
+Analyzes a matchUp to extract detailed information.
+
+```js
+const { analysis } = engine.analyzeMatchUp({
+  matchUp, // required
 });
 ```
 
 ---
 
-## addMatchUpScheduledTime
-
-```js
-const scheduledTime = '08:00';
-engine.addMatchUpScheduledTime({
-  removePriorValues, // optional boolean
-  disableNotice, // when disabled subscribers will not be notified
-  scheduledTime,
-  matchUpId,
-  drawId,
-});
-```
-
----
-
-## addMatchUpScheduleItems
-
-Comprehensive scheduling method that adds multiple schedule attributes to a matchUp in a single operation.
-
-### Features
-
-- **Atomic Scheduling**: Assigns multiple schedule items (court, time, date, venue) in one transaction
-- **Conflict Detection**: Optional validation to prevent double-booking court slots (pro-scheduling)
-- **Chronology Validation**: Optional checks for scheduling dependencies and match order
-- **Court Order Assignment**: Supports Pro Scheduling grid-based court order (row) assignments
-- **Team MatchUp Support**: Handles court allocation for TEAM matchUps with multiple courts
-- **Follow-By Scheduling**: Supports ITF-style follow-by and "Not Before" scheduling patterns
-- **Time Modifiers**: Allows adding schedule modifiers like "Not Before" times
-- **Home Participant**: Can designate home participant for display purposes
-
-### Parameters
-
-```js
-engine.addMatchUpScheduleItems({
-  // Required
-  matchUpId, // matchUp identifier
-  drawId, // draw containing the matchUp
-
-  // Schedule Object - all fields optional
-  schedule: {
-    scheduledDate, // ISO date string (e.g., '2024-03-20')
-    scheduledTime, // Time string (e.g., '14:00' or ISO timestamp)
-    courtId, // Court identifier (requires scheduledDate and courtOrder for conflict detection)
-    courtOrder, // Grid row number for Pro Scheduling (integer as string, e.g., '1', '2')
-    venueId, // Venue identifier
-    courtIds, // Array of court IDs (applies only to TEAM matchUps)
-    startTime, // Actual start time (ISO timestamp)
-    stopTime, // Pause time for interrupted matches (ISO timestamp)
-    resumeTime, // Resume time after interruption (ISO timestamp)
-    endTime, // Actual completion time (ISO timestamp)
-    timeModifiers, // Array of modifiers (e.g., [{ type: 'NOT_BEFORE', value: '14:00' }])
-    homeParticipantId, // Designate home participant
-  },
-
-  // Optional Control Parameters
-  proConflictDetection, // boolean - default true - validates no existing matchUp occupies { courtId, courtOrder, scheduledDate }
-  checkChronology, // boolean - validates scheduling doesn't create dependency conflicts
-  errorOnAnachronism, // boolean - throw error (vs warning) for chronology violations
-  removePriorValues, // boolean - removes existing schedule values before applying new ones
-  disableNotice, // boolean - when true, subscribers will not be notified of changes
-});
-```
-
-### Return Values
-
-**Success:**
-
-```js
-{
-  success: true;
-}
-```
-
-**Error (Double Booking):**
-
-```js
-{
-  error: {
-    message: 'Schedule conflict: court slot already occupied',
-    code: 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING',
-  },
-  info: 'Court slot already occupied by matchUp <matchUpId>',
-}
-```
-
-**Warning (Chronology Issue):**
-
-```js
-{
-  success: true,
-  warnings: [
-    {
-      code: 'ANACHRONISM',
-      message: 'Chronological error; time violation.',
-    },
-  ];
-}
-```
-
-### Pro Scheduling Grid Assignment
-
-When scheduling matchUps in a grid-based format (Pro Scheduling), always provide `courtId`, `courtOrder`, and `scheduledDate` together:
-
-```js
-// Assign to Court 1, Row 3, on March 20th
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'court-1',
-    courtOrder: '3', // Row 3 on the grid
-    scheduledDate: '2024-03-20',
-    scheduledTime: '14:00', // Optional display time
-  },
-});
-```
-
-### Double Booking Prevention
-
-By default, `proConflictDetection: true` validates that no other matchUp is scheduled to the same `{ courtId, courtOrder, scheduledDate }` combination. This prevents accidentally double-booking a court slot in grid-based scheduling.
-
-**Disable for Performance**: When scheduling large tournaments (1000+ matchUps) or when client-side UI already validates conflicts, disable detection to improve performance:
-
-```js
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'court-1',
-    courtOrder: '3',
-    scheduledDate: '2024-03-20',
-  },
-  proConflictDetection: false, // Skip validation for performance
-});
-```
-
-**When to Disable:**
-
-- High-volume bulk scheduling operations
-- Client application already validates conflicts before submission
-- Multi-user environments with optimistic UI updates
-- Scheduling is rolled back on error anyway
-
-**When to Keep Enabled:**
-
-- Interactive scheduling by tournament directors
-- Automated scheduling scripts without UI validation
-- Single-user applications
-- Critical scheduling operations that must not fail
-
-### Chronology Validation
-
-When `checkChronology: true`, the system validates that scheduling doesn't violate match dependencies:
-
-```js
-// Round 1 match
-engine.addMatchUpScheduleItems({
-  matchUpId: 'round1-match',
-  drawId: 'draw-456',
-  schedule: {
-    scheduledDate: '2024-03-21',
-    scheduledTime: '10:00',
-  },
-  checkChronology: true, // Validate dependencies
-});
-
-// Round 2 match (winner of round1-match)
-engine.addMatchUpScheduleItems({
-  matchUpId: 'round2-match',
-  drawId: 'draw-456',
-  schedule: {
-    scheduledDate: '2024-03-20', // ERROR: Earlier than prerequisite
-  },
-  checkChronology: true,
-  errorOnAnachronism: true, // Throw error vs warning
-});
-```
-
-### Follow-By Scheduling (ITF Style)
-
-For stadium courts with "Follow" or "Not Before" scheduling:
-
-```js
-// First match: fixed time
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-1',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'centre-court',
-    courtOrder: '1',
-    scheduledDate: '2024-03-23',
-    scheduledTime: '13:00',
-  },
-});
-
-// Second match: to follow first match
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-2',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'centre-court',
-    courtOrder: '2',
-    scheduledDate: '2024-03-23',
-    // No scheduledTime - will follow match-1
-    timeModifiers: [
-      {
-        type: 'FOLLOWED_BY',
-        value: { matchUpId: 'match-1' },
-      },
-    ],
-  },
-});
-
-// Third match: Not Before with follow
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-3',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'centre-court',
-    courtOrder: '3',
-    scheduledDate: '2024-03-23',
-    scheduledTime: '18:00', // Not Before 6 PM
-    timeModifiers: [
-      {
-        type: 'FOLLOWED_BY',
-        value: { matchUpId: 'match-2', notBeforeTime: '18:00' },
-      },
-    ],
-  },
-});
-```
-
-### Time Recording During Match
-
-Record actual match times as play progresses:
-
-```js
-// Match starts
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    startTime: '2024-03-20T14:05:23Z', // Actual start time
-  },
-});
-
-// Match interrupted (rain delay)
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    stopTime: '2024-03-20T14:45:12Z',
-  },
-});
-
-// Match resumes
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    resumeTime: '2024-03-20T15:30:00Z',
-  },
-});
-
-// Match completes
-engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    endTime: '2024-03-20T16:15:45Z',
-  },
-});
-```
-
-### TEAM MatchUp Court Allocation
-
-For TEAM matchUps (e.g., Davis Cup ties), allocate multiple courts:
-
-```js
-engine.addMatchUpScheduleItems({
-  matchUpId: 'team-tie-123',
-  drawId: 'draw-456',
-  schedule: {
-    scheduledDate: '2024-03-20',
-    courtIds: ['court-1', 'court-2', 'court-3'], // Multiple courts for simultaneous tie matches
-    venueId: 'venue-789',
-  },
-});
-```
-
-### Bulk Scheduling Pattern
-
-When scheduling multiple matchUps, disable notifications and enable at the end:
-
-```js
-matchAssignments.forEach(({ matchUpId, courtId, courtOrder, scheduledDate }) => {
-  engine.addMatchUpScheduleItems({
-    matchUpId,
-    drawId: 'draw-456',
-    schedule: { courtId, courtOrder, scheduledDate },
-    proConflictDetection: false, // Validated at UI layer
-    disableNotice: true, // Batch notifications
-  });
-});
-
-// Manually trigger notification after bulk operation
-engine.notify({ topic: 'scheduleUpdate', payload: { drawId: 'draw-456' } });
-```
-
-### Error Handling
-
-```js
-const result = engine.addMatchUpScheduleItems({
-  matchUpId: 'match-123',
-  drawId: 'draw-456',
-  schedule: {
-    courtId: 'court-1',
-    courtOrder: '2',
-    scheduledDate: '2024-03-20',
-  },
-});
-
-if (result.error) {
-  if (result.error.code === 'ERR_SCHEDULE_CONFLICT_DOUBLE_BOOKING') {
-    console.error('Court slot already occupied:', result.info);
-    // Suggest alternative court or time
-  } else if (result.error.code === 'ANACHRONISM') {
-    console.warn('Scheduling creates dependency conflict');
-    // Allow with confirmation
-  } else {
-    console.error('Scheduling failed:', result.error);
-  }
-} else if (result.warnings) {
-  console.warn('Scheduling completed with warnings:', result.warnings);
-}
-```
-
-### Related Methods
-
-- **[assignMatchUpCourt](#assignmatchupcourt)** - Assign court only
-- **[addMatchUpScheduledDate](#addmatchupscheduleddate)** - Assign date only
-- **[addMatchUpScheduledTime](#addmatchupscheduledtime)** - Assign time only
-- **[addMatchUpCourtOrder](#addmatchupcourtorder)** - Assign grid row only
-
-### Related Documentation
-
-- **[Pro Scheduling Concepts](/docs/concepts/pro-scheduling)** - Grid-based scheduling workflows
-- **[Schedule Governor](/docs/governors/schedule-governor)** - Automated scheduling methods
-- **[Scheduling Policy](/docs/policies/scheduling)** - Recovery times and constraints
-
----
-
-## addMatchUpStartTime
-
-```js
-const startTime = '2020-01-01T08:05:00Z';
-engine.addMatchUpStartTime({
-  drawId,
-  matchUpId,
-  startTime,
-  disableNotice, // when disabled subscribers will not be notified
-});
-```
-
----
-
-## addMatchUpStopTime
-
-```js
-const stopTime = '2020-01-01T08:15:00Z';
-engine.addMatchUpStopTime({
-  drawId,
-  matchUpId,
-  stopTime,
-  disableNotice, // when disabled subscribers will not be notified
-});
-```
-
----
-
-## addMatchUpCourtOrder
-
-When using Pro-scheduling, assign order on court
-
-```js
-engine.addMatchUpCourtOrder({
-  removePriorValues, // optional boolean
-  drawId, // drawId where matchUp is found
-  courtOrder,
-  matchUpId,
-  courtId,
-});
-```
-
----
-
-## applyLinueUps
+## applyLineUps
 
 Applies `lineUps` to the `sides` of a _TEAM_ matchUp. Order is not important as team side is determined automatically. Does not check to ensure that participants in `lineUps` are part of teams; this is assumed. It is possible to have **_some_** participants assigned to a team side who are not part of a team.
 
@@ -490,36 +93,9 @@ engine.assignMatchUpSideParticipant({
 
 ---
 
-## assignMatchUpCourt
-
-```js
-engine.assignMatchUpCourt({
-  removePriorValues, // optional boolean
-  drawId, // drawId where matchUp is found
-  courtDayDate, // ISO date string
-  matchUpId,
-  courtId,
-});
-```
-
----
-
-## assignMatchUpVenue
-
-```js
-engine.assignMatchUVenue({
-  removePriorValues, // optional boolean
-  drawId, // drawId where matchUp is found
-  matchUpId,
-  venueId,
-});
-```
-
----
-
 ## assignTieMatchUpParticipantId
 
-Used when interactively assigning participants to `matchUps`. When individual `participantIds` are assigned to `{ matchUpType: 'DOUBLES' }` it handles creating `{ participantType: PAIR }` participants dynamically.
+Used when interactively assigning participants to `matchUps`. When individual `participantIds` are assigned to `{ matchUpType: 'DOUBLES' }` it handles creating `{ participantType: PAIR }` participants dynamically. See examples: [Creating Pairs Automatically](../concepts/participants.md#creating-pairs-automatically).
 
 ```js
 engine.assignTieMatchUpParticipantId({
@@ -556,7 +132,7 @@ engine.bulkMatchUpStatusUpdate({ outcomes });
 
 ## checkInParticipant
 
-Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court.
+Set the check-in state for a participant. Used to determine when both participants in a matchUp are available to be assigned to a court. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management), [Participant Check-In](../concepts/matchup-overview.md#participant-check-in).
 
 ```js
 engine.checkInParticipant({
@@ -575,6 +151,43 @@ engine.checkOutParticipant({
   participantId,
   matchUpId,
   drawId,
+});. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management).
+```
+
+---
+
+## calculateWinCriteria
+
+Calculates the win criteria for a matchUp based on format.
+
+```js
+const { criteria } = engine.calculateWinCriteria({
+  matchUpFormat, // required
+});
+```
+
+---
+
+## checkMatchUpIsComplete
+
+Checks if a matchUp has a winning side.
+
+```js
+const { isComplete } = engine.checkMatchUpIsComplete({
+  matchUp, // required
+});
+```
+
+---
+
+## competitionScheduleMatchUps
+
+Returns scheduled matchUps across all tournaments in a competition.
+
+```js
+const { matchUps } = engine.competitionScheduleMatchUps({
+  tournamentRecords, // required
+  scheduleDate, // optional - filter by date
 });
 ```
 
@@ -590,12 +203,53 @@ engine.disableTieAutoCalc({ drawId, matchUpId });
 
 ---
 
-## enableTiaAutoCalc
+## enableTieAutoCalc
 
 Re-enable default behavior of auto calculating TEAM matchUp scores, and trigger auto calculation.
 
 ```js
 engine.enableTieAutoCalc({ drawId, matchUpId });
+```
+
+---
+
+## drawMatchUps
+
+Returns matchUps from a specific draw with filtering options.
+
+```js
+const { matchUps } = engine.drawMatchUps({
+  drawId, // required
+  matchUpFilters, // optional - filter criteria
+  inContext, // optional - add context attributes
+});
+```
+
+---
+
+## eventMatchUps
+
+Returns matchUps from a specific event with filtering options.
+
+```js
+const { matchUps } = engine.eventMatchUps({
+  eventId, // required
+  matchUpFilters, // optional
+  inContext, // optional
+});
+```
+
+---
+
+## filterMatchUps
+
+Filters matchUps based on provided criteria.
+
+```js
+const { matchUps } = engine.filterMatchUps({
+  matchUps, // required - matchUps to filter
+  matchUpFilters, // required - filter criteria
+});
 ```
 
 ---
@@ -615,6 +269,270 @@ const {
 
 ---
 
+## getAllDrawMatchUps
+
+Returns all matchUps from all structures in a draw.
+
+```js
+const { matchUps } = engine.getAllDrawMatchUps({
+  drawId, // required
+  inContext, // optional
+});
+```
+
+---
+
+## getAllStructureMatchUps
+
+Returns all matchUps from all structures.
+
+```js
+const { matchUps } = engine.getAllStructureMatchUps({
+  structures, // required - array of structures
+  inContext, // optional
+});
+```
+
+---
+
+## getCheckedInParticipantIds
+
+Returns participant IDs that have checked in for a matchUp.
+
+```js
+const { participantIds } = engine.getCheckedInParticipantIds({
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
+## getCompetitionMatchUps
+
+Returns matchUps from all tournaments in a competition.
+
+```js
+const { matchUps } = engine.getCompetitionMatchUps({
+  tournamentRecords, // required
+  matchUpFilters, // optional
+});
+```
+
+---
+
+## getEventMatchUpFormatTiming
+
+Returns format timing configuration for an event.
+
+```js
+const { timing } = engine.getEventMatchUpFormatTiming({
+  eventId, // required
+});
+```
+
+---
+
+## getMatchUpCompetitiveProfile
+
+Returns competitive profile analysis for a matchUp.
+
+```js
+const { profile } = engine.getMatchUpCompetitiveProfile({
+  matchUp, // required
+});
+```
+
+---
+
+## getMatchUpContextIds
+
+Returns context IDs (tournamentId, eventId, drawId) for a matchUp.
+
+```js
+const { contextIds } = engine.getMatchUpContextIds({
+  matchUpId, // required
+});
+```
+
+---
+
+## getMatchUpDailyLimits
+
+Returns daily participation limits for matchUps.
+
+```js
+const { limits } = engine.getMatchUpDailyLimits();
+```
+
+---
+
+## getMatchUpDailyLimitsUpdate
+
+Calculates updated daily limits after a matchUp.
+
+```js
+const { updatedLimits } = engine.getMatchUpDailyLimitsUpdate({
+  participantId, // required
+  matchUpFormat, // required
+});
+```
+
+---
+
+## getMatchUpDependencies
+
+Returns matchUps that must complete before a target matchUp.
+
+```js
+const { dependencies } = engine.getMatchUpDependencies({
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
+## getMatchUpFormat
+
+Returns the matchUp format for a matchUp.
+
+```js
+const { matchUpFormat } = engine.getMatchUpFormat({
+  matchUpId, // required
+  drawId, // optional
+  eventId, // optional
+});
+```
+
+---
+
+## getMatchUpFormatTiming
+
+Returns timing parameters for a matchUp format.
+
+```js
+const { timing } = engine.getMatchUpFormatTiming({
+  matchUpFormat, // required
+});
+```
+
+---
+
+## getMatchUpFormatTimingUpdate
+
+Returns updated timing after format modifications.
+
+```js
+const { timing } = engine.getMatchUpFormatTimingUpdate({
+  matchUpFormat, // required
+  modifications, // required
+});
+```
+
+---
+
+## getMatchUpScheduleDetails
+
+Returns detailed schedule information for a matchUp.
+
+```js
+const { details } = engine.getMatchUpScheduleDetails({
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
+## getMatchUpType
+
+Returns the matchUp type (SINGLES, DOUBLES, TEAM).
+
+```js
+const { matchUpType } = engine.getMatchUpType({
+  matchUp, // required
+});
+```
+
+---
+
+## getMatchUpsStats
+
+Returns statistics for a collection of matchUps.
+
+```js
+const { stats } = engine.getMatchUpsStats({
+  matchUps, // required
+});
+```
+
+---
+
+## getModifiedMatchUpFormatTiming
+
+Returns timing with custom modifications applied.
+
+```js
+const { timing } = engine.getModifiedMatchUpFormatTiming({
+  matchUpFormat, // required
+  eventId, // optional
+});
+```
+
+---
+
+## getParticipantResults
+
+Returns results for participants across matchUps.
+
+```js
+const { results } = engine.getParticipantResults({
+  matchUps, // required
+});
+```
+
+---
+
+## getPredictiveAccuracy
+
+Returns accuracy metrics for predictive algorithms.
+
+```js
+const { accuracy } = engine.getPredictiveAccuracy({
+  matchUps, // required
+});
+```
+
+---
+
+## getRoundMatchUps
+
+Returns matchUps for a specific round.
+
+```js
+const { matchUps } = engine.getRoundMatchUps({
+  drawId, // required
+  structureId, // required
+  roundNumber, // required
+});
+```
+
+---
+
+## getRounds
+
+Returns round information for a structure.
+
+```js
+const { rounds } = engine.getRounds({
+  drawId, // required
+  structureId, // required
+});
+```
+
+---
+
 ## getHomeParticipantId
 
 ```js
@@ -623,58 +541,55 @@ const { homeParticipantId } = engine.getHomeParticipantId({ matchUp });
 
 ---
 
-## modifyMatchUpFormatTiming
+## isValidMatchUpFormat
 
-Modifies the average match duration and recovery time requirements for a specific matchUp format. This function adds an extension to the tournament record that overrides default scheduling policy timing.
-
-**How it Works:**
-
-- Adds a tournament-level extension that is read by scheduling functions
-- Persists across scheduling operations until explicitly modified or removed
-- Can be scoped to specific age categories (e.g., 'U12', 'U14')
-- Can specify different timings for SINGLES vs. DOUBLES
-- Multiple calls will merge/override previous values for the same format
-
-**Parameters:**
-
-- `matchUpFormat` - TODS matchUpFormat code (e.g., 'SET3-S:6/TB7')
-- `averageTimes` - Array of timing configurations by category
-  - `categoryNames` - Array of category names (empty array = default for all categories)
-  - `minutes` - Object with `default` and/or event type keys (e.g., SINGLES, DOUBLES)
-- `recoveryTimes` - Array of recovery configurations by category (same structure as averageTimes)
-- `event` - Optional - Scope modification to specific event
-- `drawId` - Optional - Scope modification to specific draw
-- `eventId` - Optional - Scope modification to specific event
-
-**Returns:** Standard result object with success/error status
+Validates a matchUp format string or object.
 
 ```js
-// Modify timing for a specific format with category-based differentiation
-engine.modifyMatchUpFormatTiming({
-  matchUpFormat: 'SET3-S:6/TB7',
-  averageTimes: [
-    {
-      categoryNames: ['U12', 'U14'],
-      minutes: { DOUBLES: 110, default: 130 },
-    },
-    {
-      categoryNames: ['U16', 'U18'],
-      minutes: { DOUBLES: 100, default: 120 },
-    },
-  ],
-  recoveryTimes: [{ categoryNames: [], minutes: { default: 15, DOUBLES: 15 } }],
-});
-
-// Retrieve existing modifications before updating
-const { matchUpFormat, averageTimes, recoveryTimes } = engine.getModifiedMatchUpFormatTiming({
-  matchUpFormat: 'SET3-S:6/TB7',
+const { valid } = engine.isValidMatchUpFormat({
+  matchUpFormat, // required
 });
 ```
 
-**Related Functions:**
+---
 
-- `getModifiedMatchUpFormatTiming()` - Query existing format timing modifications
-- See [Scheduling Policy](/docs/concepts/scheduling-policy) for policy configuration
+## matchUpActions
+
+Returns available actions for a matchUp.
+
+```js
+const { validActions } = engine.matchUpActions({
+  matchUpId, // required
+  drawId, // required
+  policyDefinitions, // optional
+});
+```
+
+---
+
+## participantScheduledMatchUps
+
+Returns scheduled matchUps for a specific participant.
+
+```js
+const { matchUps } = engine.participantScheduledMatchUps({
+  participantId, // required
+  scheduleDate, // optional - filter by date
+});
+```
+
+---
+
+## publicFindMatchUp
+
+Finds a matchUp with privacy policies applied.
+
+```js
+const { matchUp } = engine.publicFindMatchUp({
+  matchUpId, // required
+  policyDefinitions, // optional
+});
+```
 
 ---
 
@@ -712,6 +627,32 @@ engine.removeTieMatchUpParticipantId({
   participantId, // id of INDIVIDUAL or PAIR be removed
   tieMatchUpId, // tieMatchUp, matchUpType either DOUBLES or SINGLES
   drawId, // draw within which tieMatchUp is found
+});
+```
+
+---
+
+## removeDelegatedOutcome
+
+Removes a delegated outcome from a matchUp.
+
+```js
+engine.removeDelegatedOutcome({
+  matchUpId, // required
+  drawId, // required
+});
+```
+
+---
+
+## resetMatchUpLineUps
+
+Clears lineups from a TEAM matchUp.
+
+```js
+engine.resetMatchUpLineUps({
+  matchUpId, // required
+  drawId, // required
 });
 ```
 
@@ -779,49 +720,17 @@ engine.resetTieFormat({
 
 ---
 
-## setMatchUpDailyLimits
+## setDelegatedOutcome
 
-Sets daily match limits for participants. This function adds an extension to the tournament record that is enforced by all scheduling functions to prevent over-scheduling players.
-
-**How it Works:**
-
-- Adds a tournament-level extension that is checked by scheduling functions
-- Persists across scheduling operations until explicitly modified
-- Enforced during both manual and automated scheduling
-- Can be scoped to specific tournament in multi-tournament scenarios
-- Multiple calls will override previous values entirely
-
-**Parameters:**
-
-- `dailyLimits` - Object specifying limits:
-  - `SINGLES` - Maximum singles matches per day per participant
-  - `DOUBLES` - Maximum doubles matches per day per participant
-  - `total` - Maximum total matches per day per participant (across all event types)
-- `tournamentId` - Optional - Scope to specific tournament (for multi-tournament records)
-
-**Returns:** Standard result object with success/error status
+Sets a delegated outcome for a matchUp (e.g., referee decision).
 
 ```js
-// Set tournament-wide daily limits
-engine.setMatchUpDailyLimits({
-  dailyLimits: { SINGLES: 2, DOUBLES: 1, total: 3 },
+engine.setDelegatedOutcome({
+  matchUpId, // required
+  drawId, // required
+  outcome, // required - outcome object
 });
-
-// Scope to specific tournament
-engine.setMatchUpDailyLimits({
-  dailyLimits: { SINGLES: 1, DOUBLES: 1, total: 2 },
-  tournamentId: 'tournament-123',
-});
-
-// Retrieve current daily limits
-const { matchUpDailyLimits } = engine.getMatchUpDailyLimits();
-const { SINGLES, DOUBLES, total } = matchUpDailyLimits;
 ```
-
-**Related Functions:**
-
-- `getMatchUpDailyLimits()` - Query current daily limit configuration
-- See [Scheduling Policy](/docs/concepts/scheduling-policy) for policy-based limits
 
 ---
 
@@ -859,17 +768,17 @@ engine.setMatchUpFormat({
 
 ---
 
-## setMatchUpHomeParticipantId
+## setMatchUpState
 
-Value `homeParticipantId` will appear in hydrated `matchUps.schedule`.
+Sets the state of a matchUp (status, score, winningSide).
 
 ```js
-engine.setMatchUpHomeParticipantId({
-  disableNotice, // when disabled subscribers will not be notified
-  homeParticipantId, // empty string ('') will remove
-  removePriorValues, // optional boolean
-  matchUpId,
-  drawId,
+engine.setMatchUpState({
+  matchUpId, // required
+  drawId, // required
+  matchUpStatus, // optional
+  score, // optional
+  winningSide, // optional
 });
 ```
 
@@ -877,7 +786,7 @@ engine.setMatchUpHomeParticipantId({
 
 ## setMatchUpStatus
 
-Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures.
+Sets either matchUpStatus or score and winningSide; values to be set are passed in outcome object. Handles any winner/loser participant movements within or across structures. See examples: [Setting Scores](../concepts/matchup-overview.md#setting-scores), [MatchUp Operations](../engines/engine-middleware.md#matchup-operations), [Real-World Example: Live Scoring Updates](../engines/mutation-engines.md#real-world-example-live-scoring-updates).
 
 ```js
 const outcome = {
@@ -932,6 +841,33 @@ engine.setOrderOfFinish({
 
 ---
 
+## substituteParticipant
+
+Substitutes one participant for another in a matchUp.
+
+```js
+engine.substituteParticipant({
+  matchUpId, // required
+  drawId, // required
+  participantIdToRemove, // required
+  participantIdToAdd, // required
+});
+```
+
+---
+
+## tallyParticipantResults
+
+Calculates participant results/standings from matchUps.
+
+```js
+const { results } = engine.tallyParticipantResults({
+  matchUps, // required
+});
+```
+
+---
+
 ## toggleParticipantCheckInState
 
 ```js
@@ -940,7 +876,7 @@ engine.toggleParticipantCheckInState({
   tournamentId,
   matchUpId,
   drawId,
-});
+});. See examples: [Sign-In Management](../concepts/participants.md#sign-in-management).
 ```
 
 ---
@@ -954,6 +890,43 @@ engine.updateTieMatchUpScore({
   tournamentId, // optional if default tournament set
   matchUpId,
   drawId,
+});
+```
+
+---
+
+## tournamentMatchUps
+
+Returns all matchUps from the current tournament.
+
+```js
+const { matchUps } = engine.tournamentMatchUps({
+  matchUpFilters, // optional
+  inContext, // optional
+});
+```
+
+---
+
+## validMatchUp
+
+Validates a single matchUp object.
+
+```js
+const { valid, errors } = engine.validMatchUp({
+  matchUp, // required
+});
+```
+
+---
+
+## validMatchUps
+
+Validates an array of matchUp objects.
+
+```js
+const { valid, errors } = engine.validMatchUps({
+  matchUps, // required
 });
 ```
 

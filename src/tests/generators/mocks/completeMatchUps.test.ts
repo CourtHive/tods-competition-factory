@@ -114,7 +114,10 @@ function checkMatchUpsProfile({ completed, bye, profile }) {
     .map(({ stage, stageSequence, roundNumber, roundPosition }) => [stage, stageSequence, roundNumber, roundPosition]);
   expect(sortedMatchUpsProfile).toEqual(profile);
   const matchUpStatuses = instanceCount(matchUps.map((m) => m.matchUpStatus));
-  if (matchUpStatuses.COMPLETED !== completed) {
+  if (matchUpStatuses.COMPLETED === completed) {
+    expect(matchUpStatuses.COMPLETED).toEqual(completed);
+    expect(matchUpStatuses.BYE).toEqual(bye);
+  } else {
     console.log({ completed, matchUpStatuses });
     const sortedMatchUpsProfile = matchUps
       .sort(matchUpSort)
@@ -126,8 +129,5 @@ function checkMatchUpsProfile({ completed, bye, profile }) {
         matchUpStatus,
       ]);
     console.log(sortedMatchUpsProfile);
-  } else {
-    expect(matchUpStatuses.COMPLETED).toEqual(completed);
-    expect(matchUpStatuses.BYE).toEqual(bye);
   }
 }

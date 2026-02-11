@@ -322,3 +322,99 @@ it('can apply the same filter template to multiple attributes', () => {
   expect(rating.scaleValue.dntrpRatingHundredths).toBeUndefined();
   expect(rating.scaleValue.eventType).toEqual('ADULT');
 });
+
+// ============================================================================
+// EDGE CASE TESTS FOR FULL COVERAGE
+// ============================================================================
+
+it('handles empty string vs null vs undefined differences', () => {
+  const source = {
+    emptyStr: '',
+    nullVal: null,
+    undefinedVal: undefined,
+    zero: 0,
+    falsy: false,
+  };
+  
+  const template = {
+    emptyStr: true,
+    nullVal: true,
+    undefinedVal: true,
+    zero: true,
+    falsy: true,
+  };
+  
+  const result = attributeFilter({ source, template });
+  expect(result.emptyStr).toBe('');
+  expect(result.nullVal).toBeNull();
+  expect(result.undefinedVal).toBeUndefined();
+  expect(result.zero).toBe(0);
+  expect(result.falsy).toBe(false);
+});
+
+it('handles deeply nested object paths', () => {
+  const source = {
+    a: {
+      b: {
+        c: {
+          d: {
+            value: 'deep',
+          },
+        },
+      },
+    },
+  };
+  
+  const template = {
+    a: {
+      b: {
+        c: {
+          d: {
+            value: true,
+          },
+        },
+      },
+    },
+  };
+  
+  const result = attributeFilter({ source, template });
+  expect(result.a.b.c.d.value).toBe('deep');
+});
+
+it('handles empty arrays', () => {
+  const source = {
+    emptyArray: [],
+    filledArray: [1, 2, 3],
+  };
+  
+  const template = {
+    emptyArray: true,
+    filledArray: true,
+  };
+  
+  const result = attributeFilter({ source, template });
+  expect(result.emptyArray).toEqual([]);
+  expect(result.filledArray).toEqual([1, 2, 3]);
+});
+
+it('handles complex nested arrays', () => {
+  const source = {
+    items: [
+      { id: 1, name: 'Item 1', secret: 'hidden' },
+      { id: 2, name: 'Item 2', secret: 'classified' },
+    ],
+  };
+  
+  const template = {
+    items: {
+      id: true,
+      name: true,
+      secret: false,
+    },
+  };
+  
+  const result = attributeFilter({ source, template });
+  expect(result.items).toHaveLength(2);
+  expect(result.items[0].secret).toBeUndefined();
+  expect(result.items[1].name).toBe('Item 2');
+});

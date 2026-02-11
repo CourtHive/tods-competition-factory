@@ -1,11 +1,87 @@
 ---
-title: TMX Example
+title: Introduction
 ---
 
-An full Open Source tournament management solution utilizing the Competition Factory engines can be found here:
+# Tournament Management eXperience
 
-[TMX Repo at GitHub](https://github.com/CourtHive/TMX)
+TMX is a comprehensive, open-source tournament management application built with the Competition Factory. It serves as both a production-ready tournament management system and a complete reference implementation for building factory-based applications.
 
-The online demo runs from GitHub pages and can pull registered players from Google Sheets.
+## Quick Links
 
-[Online TMX demo](https://courthive.github.io/TMX)
+- **[Live Demo →](https://courthive.github.io/TMX)** - Try TMX online (runs from GitHub Pages)
+- **[GitHub Repository →](https://github.com/CourtHive/TMX)** - Full source code
+- **[Component Storybook →](https://courthive.github.io/courthive-components/)** - UI components used in TMX
+
+## Documentation
+
+Comprehensive TMX documentation covering all aspects of the application:
+
+### 📚 [TMX Overview](./tmx/overview.md)
+
+Learn about TMX architecture, features, and the local-first design pattern with optional server sync.
+
+### 👥 [Participants Management](./tmx/participants.md)
+
+Registration, import/export, check-in, and participant assignment workflows.
+
+### 🏆 [Events & Categories](./tmx/events-categories.md)
+
+Creating events with age categories, ratings, flights, and entry management.
+
+### 📋 [Draw Generation](./tmx/draws.md)
+
+Multiple draw types, seeding profiles, position assignment, and qualifying structures.
+
+### 🎾 [MatchUps & Scoring](./tmx/matchups.md)
+
+Live scoring, match formats, status management, and match progression.
+
+### 🏟️ [Venues & Scheduling](./tmx/venues-scheduling.md)
+
+Court configuration, match scheduling, order of play, and schedule optimization.
+
+### 💻 [Browser Console (dev object)](./tmx/browser-console.md)
+
+Direct factory interaction, method logging, debugging, and testing in the browser console.
+
+### 🖥️ [Competition Factory Server](./tmx/factory-server.md)
+
+Server architecture, execution queue pattern, multi-user sync, and offline capability.
+
+---
+
+## What You'll Learn
+
+The TMX documentation demonstrates:
+
+✅ **Practical Factory Usage** - Real-world implementation patterns  
+✅ **Complete Workflows** - From participant registration to publishing results  
+✅ **Architecture Patterns** - Local-first design with optional server sync  
+✅ **Performance Optimization** - Efficient queries and minimal server communication  
+✅ **Component Integration** - Using courthive-components with the factory  
+✅ **Development Tools** - Browser console access and method logging
+
+## Quick Start
+
+### For End Users
+
+Visit the [live demo](https://courthive.github.io/TMX) and explore tournament management features.
+
+### For Developers
+
+Clone and run locally:
+
+```bash
+git clone https://github.com/CourtHive/TMX
+cd TMX
+npm install
+npm run dev
+```
+
+### For Documentation Readers
+
+Start with the [TMX Overview](./tmx/overview.md) to understand the architecture, then explore specific features based on your interests.
+
+---
+
+TMX showcases the power and flexibility of the Competition Factory by implementing a complete tournament lifecycle with an intuitive interface and robust functionality.

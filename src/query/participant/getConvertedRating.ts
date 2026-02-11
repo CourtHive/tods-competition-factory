@@ -4,7 +4,7 @@ import ratingsParameters from '@Fixtures/ratings/ratingsParameters';
 
 // constants
 import { OBJECT, OF_TYPE } from '@Constants/attributeConstants';
-import { NOT_FOUND } from '@Constants/errorConditionConstants';
+import { INVALID_VALUES, NOT_FOUND } from '@Constants/errorConditionConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { ELO } from '@Constants/ratingConstants';
 
@@ -36,18 +36,21 @@ export function getConvertedRating(params: GetConvertedRatingArgs) {
 
   const sourceRatingObject =
     params.ratings[matchUpType]?.find((rating) => rating.scaleName === targetRatingType) ??
-    params.ratings[matchUpType][0];
+    params.ratings[matchUpType]?.[0];
   if (sourceRatings[0] === targetRatingType) return sourceRatingObject;
 
-  const sourceRatingType = sourceRatingObject.scaleName;
+  const sourceRatingType = sourceRatingObject?.scaleName;
 
-  const accessor = ratingsParameters[sourceRatingObject.scaleName].accessor;
-  const sourceRating = accessor ? sourceRatingObject.scaleValue[accessor] : sourceRatingObject.scaleValue;
+  const accessor = ratingsParameters[sourceRatingObject?.scaleName]?.accessor;
+  const sourceRating = (accessor && sourceRatingObject.scaleValue[accessor]) || sourceRatingObject?.scaleValue;
   const eloValue = getRatingConvertedToELO({ sourceRatingType, sourceRating });
+  console.log({ sourceRatingType, sourceRatingObject, accessor, sourceRating, eloValue });
   const convertedRating = getRatingConvertedFromELO({
     targetRatingType: targetRatingType,
     sourceRating: eloValue,
   });
+
+  if (!convertedRating) return { error: INVALID_VALUES };
 
   return { convertedRating, sourceRating };
 }

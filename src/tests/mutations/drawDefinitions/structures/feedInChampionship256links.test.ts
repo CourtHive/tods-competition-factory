@@ -195,21 +195,4 @@ it('can properly generate feed in championship links', () => {
       expect(sourceLosingParticipantId).toEqual(targetFedParticipantId);
     },
   );
-
-  /*
-  // visual check can be turned into further tests...
-  const checkRounds = [8, 10];
-  const visualCheck = [];
-  Object.keys(consolationRoundMatchUps).forEach((roundNumber) => {
-    if (!checkRounds.includes(parseInt(roundNumber))) return;
-    consolationRoundMatchUps[roundNumber].forEach((matchUp) => {
-      const side1Range = matchUp.sides[0].sourceDrawPositionRange;
-      if (roundNumber > 1 && side1Range)
-        visualCheck.push([
-          { roundNumber, roundPosition: matchUp.roundPosition, side1Range },
-        ]);
-    });
-  });
-  console.log(visualCheck);
-  */
 });
