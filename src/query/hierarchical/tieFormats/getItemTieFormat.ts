@@ -11,8 +11,8 @@ export function getItemTieFormat({ item, drawDefinition, structure, event }) {
     if (event.tieFormat) return event.tieFormat;
     return event.tieFormats?.find((tf) => item.tieFormatId === tf.tieFormatId);
   }
-  if (structure.tieFormat) return structure.tieFormat;
-  if (structure.tieFormatId) {
+  if (structure?.tieFormat) return structure.tieFormat;
+  if (structure?.tieFormatId) {
     const structureTieFormat = drawDefinition.tieFormats?.find((tf) => structure.tieFormatId === tf.tieFormatId);
     if (structureTieFormat) return structureTieFormat;
   }
