@@ -257,7 +257,7 @@ describe('resetScorecard', () => {
       // Try to reset - should fail if downstream matchUp is active
       const secondRoundMatchUp = drawDefinition.structures[0].matchUps.find((m) => m.roundNumber === 2);
 
-      if (secondRoundMatchUp && secondRoundMatchUp.sides?.some((s) => s.participantId)) {
+      if (secondRoundMatchUp?.sides?.some((s) => s.participantId)) {
         const result = resetScorecard({
           tournamentRecord,
           drawDefinition,

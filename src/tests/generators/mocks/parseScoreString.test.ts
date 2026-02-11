@@ -117,7 +117,7 @@ it('can parse tiebreaks with finalSetFormat different from main format', () => {
   let scoreString = '7-6(3) 6-7(4) [11-9]';
   let matchUpFormat = 'SET3-S:6/TB7-F:TB10';
   let sets = parseScoreString({ scoreString, matchUpFormat });
-  
+
   // Set 1: TB7
   expect(sets[0].side1Score).toEqual(7);
   expect(sets[0].side2Score).toEqual(6);
@@ -139,7 +139,7 @@ it('can parse tiebreaks with finalSetFormat different from main format', () => {
 
 it('uses default TB7 when no matchUpFormat provided', () => {
   // Without matchUpFormat, should default to TB7
-  let scoreString = '7-6(3)';
+  const scoreString = '7-6(3)';
   let sets = parseScoreString({ scoreString });
   expect(sets[0].side1Score).toEqual(7);
   expect(sets[0].side2Score).toEqual(6);
@@ -147,7 +147,6 @@ it('uses default TB7 when no matchUpFormat provided', () => {
   expect(sets[0].side2TiebreakScore).toEqual(3);
 
   // With explicit tiebreakTo parameter (legacy)
-  scoreString = '7-6(3)';
   sets = parseScoreString({ scoreString, tiebreakTo: 10 });
   expect(sets[0].side1Score).toEqual(7);
   expect(sets[0].side2Score).toEqual(6);
@@ -162,18 +161,18 @@ describe('TB1 NoAD support', () => {
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
     expect(result.length).toEqual(3);
-    
+
     // First two sets are timed (no brackets)
     expect(result[0].side1Score).toEqual(30);
     expect(result[0].side2Score).toEqual(25);
     expect(result[0].NoAD).toBeUndefined();
     expect(result[0].tiebreakSet).toBeUndefined();
-    
+
     expect(result[1].side1Score).toEqual(25);
     expect(result[1].side2Score).toEqual(30);
     expect(result[1].NoAD).toBeUndefined();
     expect(result[1].tiebreakSet).toBeUndefined();
-    
+
     // Final set is TB1 (tiebreak-only)
     expect(result[2].side1Score).toEqual(1);
     expect(result[2].side2Score).toEqual(0);
@@ -187,7 +186,7 @@ describe('TB1 NoAD support', () => {
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
     expect(result.length).toEqual(3);
-    
+
     // Final set should have NoAD=true
     expect(result[2].side1Score).toEqual(1);
     expect(result[2].side2Score).toEqual(0);
@@ -201,7 +200,7 @@ describe('TB1 NoAD support', () => {
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
     expect(result.length).toEqual(3);
-    
+
     // TB7 should have tiebreakSet=true but NoAD should be undefined
     expect(result[0].side1Score).toEqual(7);
     expect(result[0].side2Score).toEqual(5);
@@ -215,7 +214,7 @@ describe('TB1 NoAD support', () => {
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
     expect(result.length).toEqual(3);
-    
+
     // TB10 should have tiebreakSet=true but NoAD should be undefined
     expect(result[0].side1Score).toEqual(10);
     expect(result[0].side2Score).toEqual(8);
@@ -229,9 +228,9 @@ describe('TB1 NoAD support', () => {
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
     expect(result.length).toEqual(3);
-    
+
     // All sets should have NoAD=true since all are TB1
-    result.forEach((set, index) => {
+    result.forEach((set) => {
       expect(set.tiebreakSet).toBe(true);
       expect(set.NoAD).toBe(true);
     });
@@ -277,7 +276,7 @@ describe('parseScoreString - Edge Cases', () => {
     const scoreString = '6-4 3-6 6-7(5) 7-6(3) 6-3';
     const result = parseScoreString({ scoreString });
     expect(result.length).toEqual(5);
-    
+
     expect(result[0].winningSide).toEqual(1);
     expect(result[1].winningSide).toEqual(2);
     expect(result[2].winningSide).toEqual(2);
@@ -306,9 +305,9 @@ describe('parseScoreString - Edge Cases', () => {
   it('should handle malformed format gracefully', () => {
     // Test with invalid matchUpFormat - should not crash
     const scoreString = '6-4 6-3';
-    const result = parseScoreString({ 
-      scoreString, 
-      matchUpFormat: 'INVALID_FORMAT' 
+    const result = parseScoreString({
+      scoreString,
+      matchUpFormat: 'INVALID_FORMAT',
     });
     expect(result.length).toEqual(2);
     expect(result[0].side1Score).toEqual(6);
@@ -319,13 +318,13 @@ describe('parseScoreString - Edge Cases', () => {
     const scoreString = '7-6(5) 6-7(3) [10-8]';
     const result = parseScoreString({ scoreString });
     expect(result.length).toEqual(3);
-    
+
     expect(result[0].side1TiebreakScore).toEqual(7);
     expect(result[0].side2TiebreakScore).toEqual(5);
-    
+
     expect(result[1].side1TiebreakScore).toEqual(3);
     expect(result[1].side2TiebreakScore).toEqual(7);
-    
+
     expect(result[2].side1TiebreakScore).toEqual(10);
     expect(result[2].side2TiebreakScore).toEqual(8);
   });
@@ -334,7 +333,7 @@ describe('parseScoreString - Edge Cases', () => {
     const format = 'SET5-S:6/TB7';
     const scoreString = '6-4 3-6 6-7(3) 7-6(5) 6-3';
     const result = parseScoreString({ scoreString, matchUpFormat: format });
-    
+
     expect(result.length).toEqual(5);
     expect(result[2].side1TiebreakScore).toEqual(3);
     expect(result[2].side2TiebreakScore).toEqual(7);
@@ -375,24 +374,24 @@ describe('parseScoreString - Edge Cases', () => {
   it('should handle undefined matchUpFormat and use default tiebreakTo', () => {
     const scoreString = '7-6(5)';
     const result = parseScoreString({ scoreString });
-    
+
     expect(result[0].side1TiebreakScore).toEqual(7);
     expect(result[0].side2TiebreakScore).toEqual(5);
   });
 
   it('should handle SET formats with different bestOf values', () => {
     // SET1 format (best-of-1)
-    let result = parseScoreString({ 
-      scoreString: '[10-8]', 
-      matchUpFormat: 'SET1-S:TB10' 
+    let result = parseScoreString({
+      scoreString: '[10-8]',
+      matchUpFormat: 'SET1-S:TB10',
     });
     expect(result.length).toEqual(1);
     expect(result[0].tiebreakSet).toBe(true);
 
     // SET5 format (best-of-5)
-    result = parseScoreString({ 
-      scoreString: '6-4 3-6 6-3 2-6 6-4', 
-      matchUpFormat: 'SET5-S:6/TB7' 
+    result = parseScoreString({
+      scoreString: '6-4 3-6 6-3 2-6 6-4',
+      matchUpFormat: 'SET5-S:6/TB7',
     });
     expect(result.length).toEqual(5);
   });

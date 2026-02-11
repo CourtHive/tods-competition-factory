@@ -22,8 +22,8 @@ it.each(scenarios)('can reliably convert to and from elo', (scenario) => {
 });
 
 scenarios = [
-  { ratingType: WTN, highValue: 16.0, lowValue: 10.0, inverted: true },
-  { ratingType: UTR, highValue: 16.0, lowValue: 10.0 },
+  { ratingType: WTN, highValue: 16, lowValue: 10, inverted: true },
+  { ratingType: UTR, highValue: 16, lowValue: 10 },
 ];
 
 it.each(scenarios)('propertly handles inverted scales when converting to ELO', (scenario) => {

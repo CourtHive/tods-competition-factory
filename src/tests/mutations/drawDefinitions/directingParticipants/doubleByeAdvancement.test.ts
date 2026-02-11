@@ -283,7 +283,7 @@ function checkExpectations({ drawId, expectations }) {
   const expectedMatchUpsCount =
     completedMatchUps.length + upcomingMatchUps.length + byeMatchUps.length + pendingMatchUps.length;
   const expectationValues: number[] = Object.values(expectations);
-  const expectationsTotal = expectationValues.reduce((a, b) => a + b);
+  const expectationsTotal = expectationValues.reduce((a, b) => a + b, 0);
   if (expectationsTotal !== expectedMatchUpsCount) {
     console.log({ expectedMatchUpsCount, expectationsTotal });
   }

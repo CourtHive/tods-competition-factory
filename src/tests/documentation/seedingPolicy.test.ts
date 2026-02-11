@@ -5,17 +5,16 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 // Constants
+import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import {
   ADJACENT,
   CLUSTER,
-  MAIN,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SEPARATE,
   SINGLE_ELIMINATION,
   WATERFALL,
 } from '@Constants/drawDefinitionConstants';
-import { POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 
 // Fixtures
 import { POLICY_SEEDING_BYES } from '@Fixtures/policies/POLICY_SEEDING_BYES';
@@ -121,7 +120,7 @@ it('POLICY_SEEDING_BYES has containerByesIgnoreSeeding', () => {
 });
 
 it('POLICY_SEEDING_NATIONAL has simplified structure', () => {
-  const policy = POLICY_SEEDING_NATIONAL[POLICY_TYPE_SEEDING];
+  const policy: any = POLICY_SEEDING_NATIONAL[POLICY_TYPE_SEEDING];
 
   expect(policy.policyName).toBe('NATIONAL SEEDING');
   expect(policy.seedingProfile.positioning).toBe(CLUSTER);
@@ -259,7 +258,6 @@ it('duplicateSeedNumbers allows multiple participants with same seed value', () 
   // This should be allowed with duplicateSeedNumbers: true
   // Both seeds 3 should be placed in seed block 3-4
   const seedValues = seededParticipants.map((p) => p.events[0].seedValue).filter(Boolean);
-  const duplicates = seedValues.filter((val, idx, arr) => arr.indexOf(val) !== idx);
 
   // With duplicateSeedNumbers: true, duplicates are allowed
   expect(seedValues.length).toBeGreaterThanOrEqual(3);
@@ -442,10 +440,10 @@ it('getValidSeedBlocks respects seeding profile', () => {
   // Should return valid seed blocks
   expect(validSeedBlocks).toBeDefined();
   expect(Array.isArray(validSeedBlocks)).toBe(true);
-  expect(validSeedBlocks.length).toBeGreaterThan(0);
+  expect(validSeedBlocks?.length).toBeGreaterThan(0);
 
   // First block should always have position 1
-  expect(validSeedBlocks[0].drawPositions).toContain(1);
+  expect(validSeedBlocks?.[0].drawPositions).toContain(1);
 });
 
 it('can generate 256-draw with 64 seeds using USTA policy', () => {
@@ -545,9 +543,7 @@ it('seeding policy works with actual draw generation', () => {
       validSeedPositions: { ignore: true },
       duplicateSeedNumbers: false,
       drawSizeProgression: true,
-      seedsCountThresholds: [
-        { drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 },
-      ],
+      seedsCountThresholds: [{ drawSize: 32, minimumParticipantCount: 24, seedsCount: 8 }],
     },
   };
 
