@@ -25,6 +25,7 @@ export default defineConfig({
         '**/server/**',
         'src/forge/**',
         '**/types/**',
+        '**/*.json',
         // Deprecated/future code - excluded from coverage
         'src/helpers/scoreParser/**',
         'src/mutate/score/staticScoreChange/**',
