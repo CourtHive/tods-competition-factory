@@ -90,4 +90,35 @@ describe('mapRandomNumberArrayToIndexArray()', () => {
     const result = mapNumbersToIndexes(baseList, randomList);
     expect(result).toEqual(expectedResult);
   });
+
+  // Edge case tests for full coverage
+  test('handles empty indexArray', () => {
+    const result = mapNumbersToIndexes([], [1, 2, 3]);
+    expect(result).toEqual([]);
+  });
+
+  test('handles single element arrays', () => {
+    const result = mapNumbersToIndexes([0], [5]);
+    expect(result).toEqual([0]);
+  });
+
+  test('handles duplicate numbers in randNumberArray', () => {
+    const result = mapNumbersToIndexes([0, 1, 2], [5, 5, 5]);
+    expect(result).toEqual([0, 1, 2]);
+  });
+
+  test('handles negative numbers', () => {
+    const result = mapNumbersToIndexes([0, 1, 2], [-1, -2, -3]);
+    expect(result.length).toBe(3);
+  });
+
+  test('handles randomList shorter than indexArray', () => {
+    const result = mapNumbersToIndexes([0, 1, 2, 3, 4], [10, 20]);
+    expect(result.length).toBe(5);
+  });
+
+  test('handles randomList longer than indexArray', () => {
+    const result = mapNumbersToIndexes([0, 1], [10, 20, 30, 40, 50]);
+    expect(result.length).toBe(2);
+  });
 });

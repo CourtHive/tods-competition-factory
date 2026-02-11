@@ -201,7 +201,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
 
   // add score
   let score, winningSide;
-  ({ error, matchUpId } = completeMatchUp({
+  ({ matchUpId } = completeMatchUp({
     scoreString: '6-3 6-3',
     roundPosition: 2,
     roundNumber: 1,
@@ -261,7 +261,7 @@ it('advances paired drawPositions when BYE is assigned first', () => {
     drawDefinition,
     structureId,
   }));
-  ({ matchUpStatus, winningSide, score } = matchUp);
+  ({ matchUpStatus, winningSide } = matchUp);
   expect(matchUpStatus).toEqual(DEFAULTED);
   expect(winningSide).toEqual(2);
 
@@ -400,7 +400,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   let matchUp, matchUpId, matchUpStatus, sides, score;
 
   // complete the 2nd position matchUp, between drawPositions: [3, 4]; 3 advances;
-  ({ matchUp, success, matchUpId } = completeMatchUp({
+  ({ success, matchUpId } = completeMatchUp({
     structureId: mainStructureId,
     scoreString: '6-1 6-2',
     roundPosition: 2,
@@ -449,7 +449,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundNumber: 1,
     drawDefinition,
   }));
-  ({ matchUpStatus, sides } = matchUp);
+  ({ sides } = matchUp);
   expect(sides[1].participantId).toEqual(losingParticipantId);
 
   // check that second matchUp in consolation draw is TO_BE_PLAYED
@@ -463,7 +463,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(matchUpStatus).toEqual(TO_BE_PLAYED);
 
   // advance main draw participant in drawPosition: 1 to third round
-  ({ matchUp, success, matchUpId } = completeMatchUp({
+  ({ success } = completeMatchUp({
     structureId: mainStructureId,
     scoreString: '6-2 6-1',
     roundPosition: 1,
@@ -490,14 +490,14 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     winningSide: 1,
     drawDefinition,
   });
-  ({ error, success, matchUpId } = result);
+  ({ error, success } = result);
   expect(success).toEqual(undefined);
   // error because matchUp drawPositions are not assigned to participantIds
   expect(error).not.toBeUndefined();
 
   // complete matchUp between drawPositions: [5, 6] in mainStructure
   // ...to direct other participants to consolation draw
-  ({ matchUp, success, error, matchUpId } = completeMatchUp({
+  ({ success } = completeMatchUp({
     structureId: mainStructureId,
     scoreString: '6-1 6-3',
     roundPosition: 3,
@@ -515,7 +515,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   }));
   expect(matchUp.drawPositions).toEqual([5, 6]);
 
-  ({ matchUp, success, matchUpId } = completeMatchUp({
+  ({ success } = completeMatchUp({
     structureId: mainStructureId,
     scoreString: '6-1 6-4',
     roundPosition: 4,
@@ -534,7 +534,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
   expect(matchUp.drawPositions).toEqual([7, 8]);
 
   // complete 2nd position matchUp in first round of consolation draw
-  ({ matchUp, success, matchUpId } = completeMatchUp({
+  ({ success } = completeMatchUp({
     structureId: consolationStructureId,
     scoreString: '6-1 1-6 6-2',
     roundPosition: 2,
@@ -559,7 +559,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundNumber: 3,
     drawDefinition,
   }));
-  ({ matchUpStatus, sides } = matchUp);
+  ({ sides } = matchUp);
   // { drawPosition: 10 } is bye- advanced to the third round
   expect(sides[0].drawPosition).toEqual(10);
 
@@ -640,7 +640,7 @@ it('can change a FMLC first round matchUp winner and update consolation', () => 
     roundNumber: 1,
     drawDefinition,
   }));
-  ({ matchUpStatus, score } = matchUp);
+  ({ matchUpStatus } = matchUp);
   expect(matchUpStatus).toEqual(RETIRED);
   expect(matchUp.winningSide).toEqual(1);
 });

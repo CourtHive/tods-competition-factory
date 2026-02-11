@@ -1,5 +1,5 @@
 import mocksEngine from '@Assemblies/engines/mock';
-import { expect, it, test } from 'vitest';
+import { expect, test } from 'vitest';
 
 // constants
 import { MISSING_TOURNAMENT_RECORD } from '@Constants/errorConditionConstants';

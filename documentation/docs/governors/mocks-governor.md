@@ -4,32 +4,6 @@ title: Mocks Governor
 
 The **Mocks Governor** provides methods for anonymizing and modifying tournament records. For generating tournaments, participants, and outcomes, see the comprehensive [mocksEngine documentation](../testing/mocks-engine-overview.md).
 
-## Overview
-
-The mocksGovernor contains two specialized methods:
-
-1. **anonymizeTournamentRecord** - Replace personal information with mock data
-2. **modifyTournamentRecord** - Add draws to existing tournaments
-
-**For all other testing needs**, use the [mocksEngine](../testing/mocks-engine-overview.md):
-- [Tournament Generation](../testing/mocks-engine-tournament-generation.md) - `generateTournamentRecord()`
-- [Outcome Generation](../testing/mocks-engine-outcomes.md) - `generateOutcome()`, `generateOutcomeFromScoreString()`
-- [Participant Generation](../testing/mocks-engine-participants.md) - `generateParticipants()`
-- [Advanced Patterns](../testing/mocks-engine-patterns.md) - Common testing patterns
-
----
-
-## Import
-
-```js
-import { mocksGovernor } from 'tods-competition-factory';
-
-// Governor methods
-const { anonymizeTournamentRecord, modifyTournamentRecord } = mocksGovernor;
-```
-
----
-
 ## anonymizeTournamentRecord
 
 Replace personal information in a tournament record with generated mock data while preserving tournament structure.
@@ -45,7 +19,7 @@ Replace personal information in a tournament record with generated mock data whi
 
 ```js
 const anonymizedRecord = mocksGovernor.anonymizeTournamentRecord({
-  tournamentRecord,  // Original tournament with real participant data
+  tournamentRecord, // Original tournament with real participant data
 });
 ```
 
@@ -53,37 +27,39 @@ const anonymizedRecord = mocksGovernor.anonymizeTournamentRecord({
 
 ```js
 const anonymizedRecord = mocksGovernor.anonymizeTournamentRecord({
-  tournamentRecord,  // Required - tournament to anonymize
+  tournamentRecord, // Required - tournament to anonymize
 
   // Optional - Override tournament identification
-  tournamentId,      // New UUID for tournament (default: generates new)
-  tournamentName,    // New name (default: generates name)
+  tournamentId, // New UUID for tournament (default: generates new)
+  tournamentName, // New name (default: generates name)
 
   // Optional - Controlled mock person generation
-  personIds: [],     // Array of UUIDs to use for replacement persons
-                     // If not provided, new UUIDs are generated
+  personIds: [], // Array of UUIDs to use for replacement persons
+  // If not provided, new UUIDs are generated
 
   // Optional - Extension handling
   keepExtensions: [], // Array of extension names to preserve
-                      // Use true to keep ALL extensions
-                      // Use [] or false to remove all except internal extensions
+  // Use true to keep ALL extensions
+  // Use [] or false to remove all except internal extensions
 
   // Optional - Name anonymization control
   anonymizeParticipantNames: true, // Whether to replace participant names
-                                   // true = replace with mock names (default)
-                                   // false = preserve original names
+  // true = replace with mock names (default)
+  // false = preserve original names
 });
 ```
 
 ### What Gets Anonymized
 
 **Person information:**
+
 - `person.personId` - New UUID generated (or from personIds array)
 - `person.standardFamilyName` - Mock last name
 - `person.standardGivenName` - Mock first name
 - `person.nationalityCode` - Randomized
 
 **What's preserved:**
+
 - Tournament structure (events, draws, matchUps)
 - Match results (scores, outcomes, winners)
 - Seedings and rankings (numerical values)
@@ -178,6 +154,120 @@ const anonymized = mocksGovernor.anonymizeTournamentRecord({
 
 ---
 
+## generateEventWithDraw
+
+Generates a complete event with participants and a populated draw. See [mocksEngine documentation](../testing/mocks-engine-getting-started.md#generateEventWithDraw) for comprehensive details.
+
+```js
+const { event, participants, drawDefinition } = mocksGovernor.generateEventWithDraw({
+  drawSize: 32,
+  eventType: 'SINGLES', // or 'DOUBLES'
+  drawType: 'SINGLE_ELIMINATION',
+});
+```
+
+**Quick Reference:**
+
+- Creates event with specified parameters
+- Generates required participants
+- Creates and populates draw structure
+- Positions participants in draw
+- See full docs for all options (seeding, matchUpFormat, etc.)
+
+---
+
+## generateOutcome
+
+Generates a complete outcome object for a matchUp. See [mocksEngine documentation](../testing/mocks-engine-outcomes.md) for comprehensive details.
+
+```js
+const outcome = mocksGovernor.generateOutcome({
+  matchUpStatus: 'COMPLETED',
+  winningSide: 1,
+  matchUpFormat: 'SET3-S:6/TB7',
+});
+```
+
+**Quick Reference:**
+
+- Creates valid outcome object with score
+- Supports all matchUp statuses (COMPLETED, DEFAULTED, RETIRED, etc.)
+- Generates realistic scores based on matchUpFormat
+- Can specify winner or generate randomly
+- See full docs for score generation options
+
+---
+
+## generateOutcomeFromScoreString
+
+Generates an outcome object from a score string. See [mocksEngine documentation](../testing/mocks-engine-outcomes.md#generateOutcomeFromScoreString) for comprehensive details.
+
+```js
+const outcome = mocksGovernor.generateOutcomeFromScoreString({
+  scoreString: '6-4 6-3',
+  matchUpStatus: 'COMPLETED',
+  winningSide: 1,
+});
+```
+
+**Quick Reference:**
+
+- Parses score strings into structured outcome objects
+- Supports various score formats
+- Validates score structure
+- See full docs for supported score formats
+
+---
+
+## generateParticipants
+
+Generates mock participants with realistic data. See [mocksEngine documentation](../testing/mocks-engine-participants.md) for comprehensive details.
+
+```js
+const participants = mocksGovernor.generateParticipants({
+  participantsCount: 32,
+  participantType: 'INDIVIDUAL', // or 'PAIR', 'TEAM'
+  nationalityCodesCount: 5, // optional
+});
+```
+
+**Quick Reference:**
+
+- Creates participants with mock person data
+- Supports INDIVIDUAL, PAIR, and TEAM types
+- Generates ratings and rankings
+- Assigns nationality codes
+- See full docs for all participant generation options
+
+---
+
+## generateTournamentRecord
+
+Generates a complete mock tournament with events, draws, and participants. See [mocksEngine documentation](../testing/mocks-engine-tournament-generation.md) for comprehensive details.
+
+```js
+const { tournamentRecord } = mocksGovernor.generateTournamentRecord({
+  drawProfiles: [
+    { drawSize: 32, eventType: 'SINGLES' },
+    { drawSize: 16, eventType: 'DOUBLES' },
+  ],
+});
+```
+
+**Quick Reference:**
+
+- Creates complete tournament structure
+- Generates events and draws based on profiles
+- Creates participants automatically
+- Populates draws with participants
+- Assigns seeds and ratings
+- Can generate completed matchUps with outcomes
+- See full docs for extensive configuration options
+
+**Note:** This is the primary method for creating test tournaments. For comprehensive examples and all configuration options, see the [mocksEngine Getting Started](../testing/mocks-engine-getting-started.md) guide.
+
+---
+
 ## modifyTournamentRecord
 
 Add events and draws to an existing tournament record. This is useful for:
@@ -190,6 +280,7 @@ Add events and draws to an existing tournament record. This is useful for:
 ### Purpose
 
 Unlike `generateTournamentRecord()` which creates a complete tournament from scratch, `modifyTournamentRecord()` adds to an existing tournament while:
+
 - Reusing existing participants (no duplication)
 - Maintaining tournament context (dates, venues, etc.)
 - Preserving existing events and draws
@@ -205,10 +296,8 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
 
 // Add a doubles draw
 mocksGovernor.modifyTournamentRecord({
-  tournamentRecord,  // Modified in place
-  drawProfiles: [
-    { drawSize: 16, eventType: 'DOUBLES' },
-  ],
+  tournamentRecord, // Modified in place
+  drawProfiles: [{ drawSize: 16, eventType: 'DOUBLES' }],
 });
 
 // Tournament now has both singles and doubles events
@@ -218,7 +307,7 @@ mocksGovernor.modifyTournamentRecord({
 
 ```js
 mocksGovernor.modifyTournamentRecord({
-  tournamentRecord,  // Required - tournament to modify (modified in place)
+  tournamentRecord, // Required - tournament to modify (modified in place)
 
   // Add participants (if needed)
   participantsProfile: {
@@ -232,33 +321,34 @@ mocksGovernor.modifyTournamentRecord({
       drawSize: 16,
       drawType: 'SINGLE_ELIMINATION',
       eventType: 'DOUBLES',
-      completionGoal: 8,  // Complete first 8 matchUps
+      completionGoal: 8, // Complete first 8 matchUps
     },
   ],
 
   // Add draws to existing events
   eventProfiles: [
     {
-      eventId: 'existing-event-id',  // Target specific event
+      eventId: 'existing-event-id', // Target specific event
       // OR
-      eventName: 'U18 Singles',       // Target by name
+      eventName: 'U18 Singles', // Target by name
       // OR
-      eventIndex: 0,                  // Target by index
+      eventIndex: 0, // Target by index
 
-      drawProfiles: [
-        { drawSize: 8, drawType: 'FEED_IN_CHAMPIONSHIP' },
-      ],
+      drawProfiles: [{ drawSize: 8, drawType: 'FEED_IN_CHAMPIONSHIP' }],
     },
   ],
 
   // Add venues
-  venueProfiles: [
-    { courtsCount: 4, venueName: 'Court Complex B' },
-  ],
+  venueProfiles: [{ courtsCount: 4, venueName: 'Court Complex B' }],
 
   // Add scheduling
   schedulingProfile: [
-    { scheduleDate: '2024-06-02', venues: [/* ... */] },
+    {
+      scheduleDate: '2024-06-02',
+      venues: [
+        /* ... */
+      ],
+    },
   ],
 
   // Match completion options
@@ -266,7 +356,7 @@ mocksGovernor.modifyTournamentRecord({
   randomWinningSide: false,
 
   // IDs for generation
-  uuids: [],  // Pre-defined UUIDs for new entities
+  uuids: [], // Pre-defined UUIDs for new entities
 });
 ```
 
@@ -281,7 +371,7 @@ eventProfiles: [
     eventId: 'abc-123-def-456',
     drawProfiles: [{ drawSize: 8 }],
   },
-]
+];
 
 // 2. By eventName
 eventProfiles: [
@@ -289,15 +379,15 @@ eventProfiles: [
     eventName: 'U18 Singles',
     drawProfiles: [{ drawSize: 8 }],
   },
-]
+];
 
 // 3. By eventIndex (zero-based)
 eventProfiles: [
   {
-    eventIndex: 0,  // First event
+    eventIndex: 0, // First event
     drawProfiles: [{ drawSize: 8 }],
   },
-]
+];
 ```
 
 ### Example: Add Qualifying Draw
@@ -320,7 +410,7 @@ mocksGovernor.modifyTournamentRecord({
   tournamentRecord,
   eventProfiles: [
     {
-      eventId: eventIds[0],  // Target existing event
+      eventId: eventIds[0], // Target existing event
       drawProfiles: [
         {
           drawSize: 16,
@@ -350,9 +440,7 @@ mocksGovernor.modifyTournamentRecord({
     participantsCount: 16,
     participantType: 'PAIR',
   },
-  drawProfiles: [
-    { drawSize: 16, eventType: 'DOUBLES' },
-  ],
+  drawProfiles: [{ drawSize: 16, eventType: 'DOUBLES' }],
 });
 
 // Tournament now has both singles and doubles
@@ -372,18 +460,14 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
 // Day 1: Add singles
 mocksGovernor.modifyTournamentRecord({
   tournamentRecord,
-  drawProfiles: [
-    { drawSize: 16, eventType: 'SINGLES', eventName: 'Saturday Singles' },
-  ],
+  drawProfiles: [{ drawSize: 16, eventType: 'SINGLES', eventName: 'Saturday Singles' }],
 });
 
 // Day 2: Add doubles
 mocksGovernor.modifyTournamentRecord({
   tournamentRecord,
   participantsProfile: { participantType: 'PAIR', participantsCount: 8 },
-  drawProfiles: [
-    { drawSize: 8, eventType: 'DOUBLES', eventName: 'Sunday Doubles' },
-  ],
+  drawProfiles: [{ drawSize: 8, eventType: 'DOUBLES', eventName: 'Sunday Doubles' }],
 });
 
 // Weekend tournament complete with progressive additions

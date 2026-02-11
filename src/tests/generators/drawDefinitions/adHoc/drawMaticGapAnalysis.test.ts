@@ -18,7 +18,7 @@ it.each(scenarios.slice(0, 1))('can generate level based rounds with WTN', (scen
   const getPairRatings = (scaleName) => (matchUp) => {
     const scaleValues = matchUp.sides.map((side) => side.participant.ratings.SINGLES[0].scaleValue);
     const values = scaleValues.map((scaleValue) => scaleValue?.[ratingsParameters[scaleName].accessor]);
-    const diff = parseFloat(Math.abs(values[0] - values[1]).toFixed(2));
+    const diff = Number.parseFloat(Math.abs(values[0] - values[1]).toFixed(2));
     const lowSide = values[0] < values[1] ? 0 : 1;
     for (const side of matchUp.sides) {
       const participantId = side.participant.participantId;

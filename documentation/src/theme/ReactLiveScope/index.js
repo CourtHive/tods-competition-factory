@@ -1,11 +1,7 @@
 import { tournamentEngine, mocksEngine, askEngine, tools } from 'tods-competition-factory';
 import ConstantsViewer from '../../../docs/components/ConstantsViewr';
-import Tournament from '../../../docs/components/TournamentRecord';
-import Participants from '../../../docs/components/Participants';
-import RenderJSON from '../../../docs/components/RenderJSON';
+import JsonViewer from '../../../docs/components/JsonViewer';
 import RenderCSV from '../../../docs/components/RenderCSV';
-import Draw from '../../../docs/components/DrawDefinition';
-import MatchUps from '../../../docs/components/MatchUps';
 import React from 'react';
 
 const cfv = tournamentEngine.version();
@@ -20,12 +16,8 @@ const ReactLiveScope = {
   mocksEngine,
   tournamentEngine,
   ConstantsViewer,
-  Participants,
-  Tournament,
-  RenderJSON,
+  JsonViewer,
   RenderCSV,
-  MatchUps,
-  Draw,
 };
 
 export default ReactLiveScope;

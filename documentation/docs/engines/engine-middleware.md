@@ -37,6 +37,15 @@ tournamentEngine.getEvent({ drawId }); // ✅ Event automatically resolved
 ### Resolving Everything from Match ID
 
 ```js
+
+
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
+**API Reference:** [deleteDrawDefinitions](/docs/governors/event-governor#deletedrawdefinitions)
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
 // Single ID resolves entire hierarchy
 const { matchUp, event, drawDefinition, structure } = tournamentEngine.getMatchUp({ matchUpId });
 // All related objects automatically included
@@ -67,6 +76,9 @@ const { participants } = competitionEngine.getParticipants({
 Avoid repeating `tournamentId` by setting an active tournament:
 
 ```js
+
+**API Reference:** [getParticipants](/docs/governors/query-governor#getparticipants)
+
 import { tournamentEngine, globalState } from 'tods-competition-factory';
 
 // Method 1: Via globalState
@@ -85,6 +97,12 @@ const { events } = tournamentEngine.getEvents(); // Uses 'tournament-1'
 When only one tournament is in state, middleware automatically uses it:
 
 ```js
+
+
+**API Reference:** [getParticipants](/docs/governors/query-governor#getparticipants)
+
+**API Reference:** [getEvents](/docs/governors/query-governor#getevents)
+
 import { tournamentEngine } from 'tods-competition-factory';
 
 // Load single tournament
@@ -102,6 +120,12 @@ const { events } = tournamentEngine.getEvents();
 ### Event Operations
 
 ```js
+
+
+**API Reference:** [getParticipants](/docs/governors/query-governor#getparticipants)
+
+**API Reference:** [getEvents](/docs/governors/query-governor#getevents)
+
 // Operation with eventId - middleware resolves event object
 tournamentEngine.addEventExtension({
   eventId: 'event-1',
@@ -133,6 +157,9 @@ tournamentEngine.automatedPositioning({
 ### MatchUp Operations
 
 ```js
+
+**API Reference:** [automatedPositioning](/docs/governors/draws-governor#automatedpositioning)
+
 // Operation with matchUpId - middleware resolves everything
 tournamentEngine.setMatchUpStatus({
   matchUpId: 'match-1',
@@ -157,6 +184,9 @@ tournamentEngine.setMatchUpStatus({
 When multiple identifiers are provided, middleware uses the most specific:
 
 ```js
+
+**API Reference:** [setMatchUpStatus](/docs/governors/matchup-governor#setmatchupstatus)
+
 // Both drawId and eventId provided - drawId takes precedence
 tournamentEngine.getEvent({
   drawId: 'draw-1', // More specific
@@ -170,6 +200,9 @@ tournamentEngine.getEvent({
 Middleware traverses up the tournament hierarchy:
 
 ```text
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
 matchUpId → structure → drawDefinition → event → tournamentRecord
            ↓           ↓                 ↓       ↓
       structureId    drawId           eventId  tournamentId
@@ -205,6 +238,9 @@ tournamentEngine.getEvent({
 **Direct object passing:**
 
 ```js
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
 // Manually provide resolved objects
 const { event } = tournamentEngine.findEvent({ drawId });
 const { drawDefinition } = tournamentEngine.getDrawDefinition({ drawId });
@@ -232,6 +268,9 @@ tournamentEngine.getEvent({ drawId: 'nonexistent-draw' });
 ### Missing Tournament
 
 ```js
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
 competitionEngine.setState([tournament1, tournament2]);
 
 // No tournamentId specified with multiple tournaments
@@ -242,6 +281,9 @@ competitionEngine.getParticipants();
 ### Conflicting IDs
 
 ```js
+
+**API Reference:** [getParticipants](/docs/governors/query-governor#getparticipants)
+
 // Providing conflicting identifiers
 tournamentEngine.getEvent({
   drawId: 'draw-from-event-1',
@@ -260,6 +302,9 @@ tournamentEngine.getEvent({
 Middleware adds minimal overhead (~1ms per call):
 
 ```js
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
 // Without middleware (direct object access)
 const time1 = performance.now();
 someOperation({ event, drawDefinition });

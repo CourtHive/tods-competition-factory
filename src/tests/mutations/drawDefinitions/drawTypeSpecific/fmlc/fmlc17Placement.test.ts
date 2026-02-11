@@ -39,8 +39,7 @@ it('can support ITF Consolation BYE placement', () => {
         matchUp.roundNumber === 2 &&
         secondRoundPositionsReadyToScore.includes(matchUp.roundPosition),
     )
-    .map((matchUp) => matchUp.drawPositions)
-    .flat();
+    .flatMap((matchUp) => matchUp.drawPositions);
   const participantIds = mainStructure.positionAssignments
     ?.filter((assignment) => secondRoundDrawPositions?.includes(assignment.drawPosition))
     .map((assignment) => assignment.participantId);
@@ -119,8 +118,7 @@ it('can support USTA Consolation BYE placement', () => {
         matchUp.roundNumber === 2 &&
         secondRoundPositionsReadyToScore.includes(matchUp.roundPosition),
     )
-    .map((matchUp) => matchUp.drawPositions)
-    .flat();
+    .flatMap((matchUp) => matchUp.drawPositions);
   const participantIds = mainStructure.positionAssignments
     ?.filter((assignment) => secondRoundDrawPositions?.includes(assignment.drawPosition))
     .map((assignment) => assignment.participantId);

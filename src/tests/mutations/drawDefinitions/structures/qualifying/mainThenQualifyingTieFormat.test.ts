@@ -178,12 +178,12 @@ it('can generateDrawDefinition a main structure, then generate a qualifying stru
     qualifyingTieFormat.collectionDefinitions[0].collectionId,
   );
 
-  const qualifyingMatchUps = tournamentEngine
+  const qualifyingMatchUp = tournamentEngine
     .allTournamentMatchUps({ contextFilters: { structureIds: [qualifyingStructure.structureId] } })
-    .matchUps.filter((m) => !!m.tieMatchUps);
-  expect(qualifyingMatchUps[0].structureId).toEqual(qualifyingStructure.structureId);
-  expect(qualifyingMatchUps[0].tieFormat.tieFormatName).toEqual(qualifyingTieFormatName);
+    .matchUps.find((m) => !!m.tieMatchUps);
+  expect(qualifyingMatchUp.structureId).toEqual(qualifyingStructure.structureId);
+  expect(qualifyingMatchUp.tieFormat.tieFormatName).toEqual(qualifyingTieFormatName);
   expect(qualifyingStructure.tieFormat.collectionDefinitions[0].collectionId).toEqual(
-    qualifyingMatchUps[0].tieMatchUps[0].collectionId,
+    qualifyingMatchUp.tieMatchUps[0].collectionId,
   );
 });

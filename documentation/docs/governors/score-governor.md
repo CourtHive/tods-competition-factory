@@ -12,6 +12,66 @@ Lightweight independent/reusable components such as scoring dialogs can make use
 
 ---
 
+## addGame
+
+Adds a completed game to the score history. Part of the live scoring history tracking system.
+
+```js
+const result = scoreGovernor.addGame({
+  score, // current score object
+  sideNumber, // 1 or 2 - which side won the game
+});
+```
+
+**Purpose:** Track game-by-game scoring progression for analytics and undo/redo functionality.
+
+---
+
+## addPoint
+
+Adds a single point to the score history. Part of the live scoring history tracking system.
+
+```js
+const result = scoreGovernor.addPoint({
+  score, // current score object
+  sideNumber, // 1 or 2 - which side won the point
+});
+```
+
+**Purpose:** Track point-by-point scoring progression for detailed analytics.
+
+---
+
+## addSet
+
+Adds a completed set to the score history. Part of the live scoring history tracking system.
+
+```js
+const result = scoreGovernor.addSet({
+  score, // current score object
+  setObject, // completed set data
+});
+```
+
+**Purpose:** Track set-by-set scoring progression.
+
+---
+
+## addShot
+
+Adds a shot detail to the score history. Part of the live scoring shot-tracking system.
+
+```js
+const result = scoreGovernor.addShot({
+  score, // current score object
+  shotDetails, // shot metadata (type, location, outcome, etc.)
+});
+```
+
+**Purpose:** Capture detailed shot-by-shot data for advanced analytics.
+
+---
+
 ## analyzeSet
 
 ```js
@@ -41,6 +101,56 @@ const {
 
 ---
 
+## analyzeScore
+
+Analyzes a complete score object to extract detailed scoring information across all sets.
+
+```js
+const analysis = scoreGovernor.analyzeScore({
+  matchUpFormat, // required - match format
+  score, // required - score object with sets
+});
+
+console.log(analysis.sets); // Array of analyzed set objects
+console.log(analysis.winningSide); // 1, 2, or undefined
+console.log(analysis.isComplete); // boolean
+```
+
+**Purpose:** Comprehensive score analysis for validation and display.
+
+---
+
+## calculateHistoryScore
+
+Calculates the current score from scoring history, enabling reconstruction of score state.
+
+```js
+const { score } = scoreGovernor.calculateHistoryScore({
+  matchUpFormat, // required - match format
+  history, // required - array of scoring events
+});
+```
+
+**Purpose:** Reconstruct score from event history for undo/redo and validation.
+
+---
+
+## checkScoreHasValue
+
+Checks if a score object contains any actual scoring data.
+
+```js
+const hasValue = scoreGovernor.checkScoreHasValue({
+  score, // required - score object to check
+});
+```
+
+**Returns:** `true` if score contains sets with values, `false` otherwise.
+
+**Purpose:** Determine if a matchUp has been scored.
+
+---
+
 ## checkSetIsComplete
 
 ```js
@@ -55,6 +165,20 @@ const hasWinningSide = scoreGovernor.checkSetIsComplete({
   },
 });
 ```
+
+---
+
+## clearHistory
+
+Clears the scoring history from a score object.
+
+```js
+const result = scoreGovernor.clearHistory({
+  score, // required - score object to clear history from
+});
+```
+
+**Purpose:** Reset history tracking while preserving current score.
 
 ---
 
@@ -243,11 +367,141 @@ console.log(sets)
 
 ---
 
+## parse
+
+Parses a matchUpFormat code string into a structured format object. Alias for `parseMatchUpFormat`.
+
+```js
+const format = scoreGovernor.parse({
+  matchUpFormatCode, // required - format code string (e.g., 'SET3-S:6/TB7')
+});
+```
+
+**Purpose:** Convert format code strings to structured format objects.
+
+---
+
+## redo
+
+Redoes the last undone scoring action in history.
+
+```js
+const result = scoreGovernor.redo({
+  score, // required - score object with history
+});
+```
+
+**Purpose:** Redo functionality for live scoring interfaces.
+
+---
+
+## reverseScore
+
+Reverses the perspective of a score (swaps side1 and side2).
+
+```js
+const reversedScore = scoreGovernor.reverseScore({
+  score, // required - score object to reverse
+});
+```
+
+**Purpose:** Display score from opponent's perspective.
+
+---
+
+## setServingSide
+
+Sets which side is currently serving in the score history.
+
+```js
+const result = scoreGovernor.setServingSide({
+  score, // required - score object
+  sideNumber, // required - 1 or 2
+});
+```
+
+**Purpose:** Track serving order in live scoring.
+
+---
+
+## stringify
+
+Converts a structured matchUpFormat object to a format code string. Alias for `stringifyMatchUpFormat`.
+
+```js
+const code = scoreGovernor.stringify({
+  matchUpFormat, // required - format object
+});
+```
+
+**Purpose:** Convert format objects to compact code strings.
+
+---
+
+## tidyScore
+
+Cleans and normalizes a score object, removing invalid or incomplete data.
+
+```js
+const tidied = scoreGovernor.tidyScore({
+  score, // required - score object to tidy
+});
+```
+
+**Purpose:** Normalize score data for storage and comparison.
+
+---
+
+## umo
+
+"Undo Multiple Operations" - undoes multiple scoring actions at once.
+
+```js
+const result = scoreGovernor.umo({
+  score, // required - score object
+  count, // required - number of operations to undo
+});
+```
+
+**Purpose:** Bulk undo for correcting scoring errors.
+
+---
+
+## undo
+
+Undoes the last scoring action in history.
+
+```js
+const result = scoreGovernor.undo({
+  score, // required - score object with history
+});
+```
+
+**Purpose:** Undo functionality for live scoring interfaces.
+
+---
+
+## validateScore
+
+Validates a complete score object against a matchUpFormat.
+
+```js
+const { valid, errors } = scoreGovernor.validateScore({
+  matchUpFormat, // required - format to validate against
+  score, // required - score object to validate
+});
+```
+
+**Purpose:** Comprehensive score validation for data integrity.
+
+---
+
 ## validateSetScore
 
 Validates a single set score against matchUpFormat rules. Returns `{ isValid: boolean, error?: string }`.
 
 Supports all matchUpFormat variations including:
+
 - Standard formats (SET3-S:6/TB7)
 - Tiebreak-only sets (SET1-S:TB10, SET3-S:TB7)
 - Pro sets (SET1-S:8/TB7)
@@ -271,6 +525,7 @@ const { isValid, error } = scoreGovernor.validateSetScore({
 ```
 
 **Tiebreak-only set example:**
+
 ```js
 const set = { side1Score: 11, side2Score: 13 };
 const { isValid } = scoreGovernor.validateSetScore({
@@ -287,6 +542,7 @@ const { isValid } = scoreGovernor.validateSetScore({
 Validates all sets in a matchUp score against matchUpFormat rules. Returns `{ isValid: boolean, error?: string }`.
 
 Automatically handles:
+
 - Multiple set validation
 - Final set format variations
 - Irregular endings (RETIRED, WALKOVER, DEFAULTED)
@@ -306,6 +562,7 @@ const { isValid, error } = scoreGovernor.validateMatchUpScore({
 ```
 
 **Best-of-3 TB10 example:**
+
 ```js
 const sets = [
   { side1Score: 11, side2Score: 13 },

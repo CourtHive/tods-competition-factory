@@ -28,7 +28,7 @@ it('correctly assigns BYE positions in consolation structure', () => {
   const { eventId } = createdEvent;
 
   const participantIds = participants.map((p) => p.participantId);
-  result = tournamentEngine.addEventEntries({ eventId, participantIds });
+  tournamentEngine.addEventEntries({ eventId, participantIds });
 
   const { drawDefinition } = tournamentEngine.generateDrawDefinition({
     matchUpFormat: FORMAT_STANDARD,

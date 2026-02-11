@@ -118,6 +118,10 @@ export function removeTournamentRecord(tournamentId) {
 }
 
 export function setSubscriptions(params: any) {
+  if (params.subscriptions === null || Object.keys(params.subscriptions).length === 0) {
+    syncGlobalState.subscriptions = {};
+    return { ...SUCCESS };
+  }
   if (typeof params.subscriptions !== 'object') return { error: INVALID_VALUES };
 
   Object.keys(params.subscriptions).forEach((subscription) => {

@@ -12,34 +12,23 @@ import { scheduleGovernor } from 'tods-competition-factory';
 See **[Scheduling Overview](../concepts/scheduling-overview)**, **[Automated Scheduling](../concepts/automated-scheduling)**, **[Pro Scheduling](../concepts/pro-scheduling)**, and **[Scheduling Policy](../policies/scheduling)** for comprehensive scheduling concepts.
 :::
 
-## Overview
+## Manual Scheduling Methods
 
-Scheduling operates through [Time Items](../concepts/timeItems) attached to matchUps, providing:
+### addCourtGridBooking
 
-- **Audit trail**: Complete scheduling history including modifications
-- **No orphaned schedules**: Automatic cleanup when draws deleted
-- **Flexible queries**: Schedules derived on-demand from matchUp timeItems
-- **Granular control**: Each matchUp independently tracks its scheduling state
+Adds a booking to the court grid for pro scheduling.
 
-### Scheduling Approaches
-
-1. **Manual Methods**: Direct assignment of dates, times, venues, courts
-2. **Automated Methods**: Algorithm-driven scheduling using Garman formula or grid scheduling
-3. **Hybrid Methods**: Combination of manual pre-assignments with automated scheduling
-4. **Bulk Operations**: Efficient scheduling of multiple matchUps simultaneously
-
-### Prerequisites
-
-Automated scheduling requires:
-
-- **Venues and Courts**: Define tournament venues with court specifications
-- **Date Availability**: Specify when courts are available (dates, times, bookings)
-- **Scheduling Policy**: Average match times, recovery periods, daily limits
-- **MatchUp Formats**: Assign scoring formats to events/matchUps
+```js
+engine.addCourtGridBooking({
+  courtId, // required
+  startTime, // required - time string (HH:mm)
+  endTime, // required - time string (HH:mm)
+  bookingType, // required - type of booking
+  date, // required - date string (YYYY-MM-DD)
+});
+```
 
 ---
-
-## Manual Scheduling Methods
 
 ### addMatchUpScheduledDate
 
@@ -86,6 +75,22 @@ engine.addMatchUpScheduledTime({
   matchUpId: 'match-123',
   drawId: 'draw-456',
   scheduledTime: '14:30',
+});
+```
+
+---
+
+### addSchedulingProfileRound
+
+Adds a round to an existing scheduling profile.
+
+```js
+engine.addSchedulingProfileRound({
+  scheduleDate, // required - date string
+  venueId, // required
+  drawId, // required
+  structureId, // required
+  roundNumber, // required
 });
 ```
 
@@ -335,6 +340,18 @@ SINGLES and DOUBLES matchUps are scheduled automatically. TEAM matchUps require 
 
 ## Bulk Operations
 
+### bulkScheduleMatchUps
+
+Schedules multiple matchUps at once with provided scheduling details.
+
+```js
+engine.bulkScheduleMatchUps({
+  schedule, // required - array of schedule objects
+});
+```
+
+---
+
 ### bulkScheduleTournamentMatchUps
 
 Efficiently schedules multiple matchUps with identical or varying schedule details.
@@ -509,6 +526,18 @@ publishedEventIds.forEach((eventId) => {
 
 ---
 
+### bulkUpdateCourtAssignments
+
+Updates court assignments for multiple matchUps at once.
+
+```js
+engine.bulkUpdateCourtAssignments({
+  courtAssignments, // required - array of {matchUpId, courtId}
+});
+```
+
+---
+
 ## Clearing and Removing Schedules
 
 ### clearMatchUpSchedule
@@ -606,6 +635,150 @@ engine.clearScheduledMatchUps({
 
 ---
 
+### calculateScheduleTimes
+
+Calculates scheduling times based on match duration and court availability.
+
+```js
+const { times } = engine.calculateScheduleTimes({
+  scheduleDate, // required
+  matchUpIds, // required
+  venueIds, // optional
+});
+```
+
+---
+
+### courtGridRows
+
+Returns court grid data for pro scheduling visualization.
+
+```js
+const { rows } = engine.courtGridRows({
+  scheduleDate, // required
+});
+```
+
+---
+
+### findMatchUpFormatTiming
+
+Finds format timing for a specific matchUp format.
+
+```js
+const { timing } = engine.findMatchUpFormatTiming({
+  matchUpFormat, // required
+});
+```
+
+---
+
+### findVenue
+
+Finds a venue by ID with full details.
+
+```js
+const { venue } = engine.findVenue({
+  venueId, // required
+});
+```
+
+---
+
+### generateBookings
+
+Generates booking objects for scheduled matchUps.
+
+```js
+const { bookings } = engine.generateBookings({
+  scheduleDate, // required
+});
+```
+
+---
+
+### generateVirtualCourts
+
+Creates virtual courts for scheduling simulation.
+
+```js
+const { courts } = engine.generateVirtualCourts({
+  venueId, // required
+  courtsCount, // required
+});
+```
+
+---
+
+### getMatchUpsToSchedule
+
+Returns matchUps that are ready to be scheduled.
+
+```js
+const { matchUps } = engine.getMatchUpsToSchedule({
+  eventId, // optional
+  drawId, // optional
+});
+```
+
+---
+
+### getPersonRequests
+
+Returns scheduling requests for persons (officials, participants).
+
+```js
+const { requests } = engine.getPersonRequests({
+  personId, // optional - filter by person
+});
+```
+
+---
+
+### getProfileRounds
+
+Returns rounds from a scheduling profile.
+
+```js
+const { rounds } = engine.getProfileRounds({
+  scheduleDate, // optional - filter by date
+});
+```
+
+---
+
+### getScheduledRoundsDetails
+
+Returns detailed information about scheduled rounds.
+
+```js
+const { details } = engine.getScheduledRoundsDetails();
+```
+
+---
+
+### getSchedulingProfile
+
+Returns the current scheduling profile.
+
+```js
+const { schedulingProfile } = engine.getSchedulingProfile();
+```
+
+---
+
+### getSchedulingProfileIssues
+
+Validates scheduling profile and returns any issues.
+
+```js
+const { issues } = engine.getSchedulingProfileIssues({
+  schedulingProfile, // optional - validate specific profile
+});
+```
+
+---
+
 ## Schedule Modifications
 
 ### matchUpScheduleChange
@@ -643,6 +816,82 @@ engine.matchUpScheduleChange({
 ```
 
 **Use Case**: Drag-and-drop schedule interfaces where matchUps are swapped between time slots or courts.
+
+---
+
+### modifyMatchUpFormatTiming
+
+Updates format timing parameters for scheduling.
+
+```js
+engine.modifyMatchUpFormatTiming({
+  matchUpFormat, // required
+  averageMinutes, // optional - average duration
+  recoveryMinutes, // optional - recovery time
+});
+```
+
+---
+
+### proAutoSchedule
+
+Professional auto-scheduling with grid-based court assignment.
+
+```js
+engine.proAutoSchedule({
+  scheduleDate, // required
+  venueIds, // optional
+});
+```
+
+---
+
+### proConflicts
+
+Detects scheduling conflicts in pro grid scheduling.
+
+```js
+const { conflicts } = engine.proConflicts({
+  scheduleDate, // required
+});
+```
+
+---
+
+### publicFindCourt
+
+Finds a court with privacy policies applied for public APIs.
+
+```js
+const { court } = engine.publicFindCourt({
+  courtId, // required
+  policyDefinitions, // optional
+});
+```
+
+---
+
+### removeCourtGridBooking
+
+Removes a booking from the court grid.
+
+```js
+engine.removeCourtGridBooking({
+  bookingId, // required
+});
+```
+
+---
+
+### removeEventMatchUpFormatTiming
+
+Removes custom format timing for an event.
+
+```js
+engine.removeEventMatchUpFormatTiming({
+  eventId, // required
+});
+```
 
 ---
 
@@ -788,6 +1037,68 @@ engine.setSchedulingProfile({ schedulingProfile });
 ```
 
 **See**: [Scheduling Profile Concepts](../concepts/scheduling-profile) for detailed profile structure and creation.
+
+---
+
+### setMatchUpDailyLimits
+
+Sets daily limits for participant matchUp participation.
+
+```js
+engine.setMatchUpDailyLimits({
+  dailyLimits, // required - limits object
+});
+```
+
+**Example**:
+
+```js
+engine.setMatchUpDailyLimits({
+  dailyLimits: {
+    SINGLES: 2,
+    DOUBLES: 1,
+    total: 2,
+  },
+});
+```
+
+---
+
+### setMatchUpHomeParticipantId
+
+Designates a home participant for a matchUp (for home/away displays).
+
+```js
+engine.setMatchUpHomeParticipantId({
+  matchUpId, // required
+  drawId, // required
+  participantId, // required
+});
+```
+
+---
+
+### toggleParticipantCheckInState
+
+Toggles participant check-in status for scheduling.
+
+```js
+engine.toggleParticipantCheckInState({
+  participantId, // required
+});
+```
+
+---
+
+### validateSchedulingProfile
+
+Validates a scheduling profile for errors or conflicts.
+
+```js
+const { valid, errors } = engine.validateSchedulingProfile({
+  schedulingProfile, // required
+});
+```
 
 ---
 

@@ -1,7 +1,7 @@
 import { generateStatCrew } from '@Generators/tournamentRecords/generateStatCrew';
 import { jsonToXml } from '@Generators/tournamentRecords/jsonToXml';
 import { expect, test } from 'vitest';
-import fs from 'fs';
+import fs from 'fs-extra';
 
 test('json to xml', () => {
   const json = { first: '1st', second: { fourth: '4th' }, third: { fifth: '5th' } };

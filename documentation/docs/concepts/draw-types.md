@@ -132,6 +132,9 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 The same main draw structure can receive qualifiers at different rounds, with each round's qualifiers coming from different qualifying structures:
 
 ```
+
+**API Reference:** [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition)
+
 Main Draw Structure (32 positions):
   Round 1 (16 positions):
     ├─ Positions 1-4: Qualifiers from Qualifying A
@@ -337,6 +340,9 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 Some tournaments use progressive qualifying where different levels feed into different rounds:
 
 ```js
+
+**API Reference:** [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition)
+
 const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   drawSize: 128,
   qualifyingProfiles: [

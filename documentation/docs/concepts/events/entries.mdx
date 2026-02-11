@@ -25,6 +25,9 @@ When adding entries to events with category constraints (age ranges, rating requ
 ### Enabling Validation
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 const result = tournamentEngine.addEventEntries({
   eventId,
   participantIds: ['player1-id', 'player2-id', 'player3-id'],
@@ -58,6 +61,9 @@ if (result.error) {
 ### Age Validation Examples
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 // U18 Event: Participant must be 17 or under throughout entire event
 const u18Event = {
   eventName: 'U18 Singles',
@@ -104,6 +110,9 @@ const result = tournamentEngine.addEventEntries({
 ### Rating Validation Examples
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 // Rating-restricted event
 const intermediateEvent = {
   eventName: 'Intermediate Singles',
@@ -150,6 +159,9 @@ const result = tournamentEngine.addEventEntries({
 ### Combined Age and Rating Validation
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 // Event with both age and rating requirements
 const juniorAdvancedEvent = {
   eventName: 'Junior Advanced',
@@ -201,6 +213,9 @@ const result = tournamentEngine.addEventEntries({
 When `enforceCategory: true` and participants don't meet criteria, the error response includes detailed rejection information:
 
 ```typescript
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 {
   error: INVALID_PARTICIPANT_IDS,
   context: {
@@ -290,6 +305,9 @@ const result = tournamentEngine.addEventEntries({
 **Competition Management**:
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 // Automatically validate all entries when event registration closes
 const { entries } = tournamentEngine.getEvent({ eventId });
 const participantIds = entries.map((e) => e.participantId);
@@ -314,6 +332,12 @@ if (result.context?.categoryRejections) {
 **Client Applications**:
 
 ```js
+
+
+**API Reference:** [getEvent](/docs/governors/query-governor#getevent)
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 // Provide user feedback when adding entries
 const result = tournamentEngine.addEventEntries({
   participantIds: selectedPlayers,
@@ -348,6 +372,9 @@ When generating a draw, you can specify which entries to include. If you don't p
 ### Manual Entry Selection
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   eventId,
   drawSize: 32,
@@ -367,6 +394,9 @@ If you need to separate participants by skill level, use [flight profiles](./fli
 ### Update Entry Status
 
 ```js
+
+**API Reference:** [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition)
+
 tournamentEngine.modifyEventEntries({
   eventId,
   participantIds: ['player-id'],
@@ -377,6 +407,9 @@ tournamentEngine.modifyEventEntries({
 ### Delete Entries
 
 ```js
+
+**API Reference:** [modifyEventEntries](/docs/governors/entries-governor#modifyevententries)
+
 tournamentEngine.deleteEventEntries({
   eventId,
   participantIds: ['player-id'],
@@ -404,6 +437,9 @@ tournamentEngine.addEventEntries({
 ## Complete Example
 
 ```js
+
+**API Reference:** [addEventEntries](/docs/governors/entries-governor#addevententries)
+
 import { tournamentEngine } from 'tods-competition-factory';
 
 // 1. Create event

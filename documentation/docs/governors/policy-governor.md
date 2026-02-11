@@ -23,7 +23,7 @@ See [Policies Documentation](/docs/concepts/policies) for detailed policy specif
 
 ## attachPolicies
 
-Attaches policy definitions to tournaments, events, or draws. Policies control various aspects of tournament behavior and are inherited hierarchically (draw policies override event policies, which override tournament policies).
+Attaches policy definitions to tournaments, events, or draws. Policies control various aspects of tournament behavior and are inherited hierarchically (draw policies override event policies, which override tournament policies). See examples in [Attach Default Policy](../concepts/scheduling-policy.mdx#attach-default-policy), [Combined with Scheduling Policy](../concepts/scheduling-profile.mdx#combined-with-scheduling-policy), [Privacy by Default](../concepts/publishing.md#privacy-by-default), [Policy Configuration](../concepts/actions.mdx#policy-configuration), [Policy Configuration](../concepts/actions.mdx#policy-configuration), and 1 more.
 
 **Purpose:** Apply competition rules and behavioral policies to tournament structures. Enables customization of seeding algorithms, scoring requirements, participant separation rules, and available administrative actions.
 
@@ -459,5 +459,77 @@ policyTypes.forEach((policyType) => {
 - No undo functionality - policies must be re-attached if removed in error
 - Tournament ID parameter used for context but doesn't limit scope
 - Safe to call on non-existent policies in cleanup code (check return value)
+
+---
+
+## getPolicyDefinitions
+
+Returns all policy definitions from the APPLIED_POLICIES extension, providing both the tournament-level policies and those applied at event or draw level.
+
+```js
+const { policyDefinitions } = engine.getPolicyDefinitions({
+  drawId, // optional - include draw-level policies
+  eventId, // optional - include event-level policies
+});
+
+console.log(policyDefinitions);
+// {
+//   [SEEDING_POLICY]: { ... },
+//   [SCORING_POLICY]: { ... },
+//   [DRAWS_POLICY]: { ... }
+// }
+```
+
+**Returns:**
+
+```ts
+{
+  policyDefinitions?: {
+    [policyType: string]: PolicyDefinition;
+  };
+}
+```
+
+**Notes:**
+
+- Returns hierarchical merge: tournament < event < draw
+- Draw-level policies override event-level, which override tournament-level
+- Only returns policies that exist in APPLIED_POLICIES extension
+- Use `getAppliedPolicies` for runtime-applied policies including defaults
+
+---
+
+## getAppliedPolicies
+
+Returns all policies that are actively applied, including both attached policies (from APPLIED_POLICIES extension) and default policies.
+
+```js
+const { appliedPolicies } = engine.getAppliedPolicies({
+  drawId, // optional - include draw-specific policies
+  eventId, // optional - include event-specific policies
+});
+
+// Check specific policy
+if (appliedPolicies?.[SEEDING_POLICY]) {
+  console.log('Seeding policy is active');
+}
+```
+
+**Returns:**
+
+```ts
+{
+  appliedPolicies?: {
+    [policyType: string]: PolicyDefinition;
+  };
+}
+```
+
+**Difference from getPolicyDefinitions:**
+
+- `getAppliedPolicies` includes DEFAULT policies (e.g., default scoring rules)
+- `getPolicyDefinitions` returns ONLY explicitly attached policies
+- Use `getAppliedPolicies` to understand actual runtime behavior
+- Use `getPolicyDefinitions` to see what was explicitly configured
 
 ---

@@ -115,7 +115,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
   );
   expect(mainDrawLosingParticipantAssignment.participantId).toEqual(targetConsolationAssignment.participantId);
 
-  const consolationFirstRoundDrawPositions = roundMatchUps?.[1].map((matchUp) => matchUp.drawPositions).flat();
+  const consolationFirstRoundDrawPositions = roundMatchUps?.[1].flatMap((matchUp) => matchUp.drawPositions);
 
   let consolationFirstRoundAssignments = consolationStructure.positionAssignments
     .filter((assignment) => consolationFirstRoundDrawPositions?.includes(assignment.drawPosition))
@@ -138,7 +138,7 @@ it('can properly place participants in backdraw when rounds advance unevenly', (
 
   // now check that consolation first round position assignments have been made
   ({ drawDefinition } = tournamentEngine.getEvent({ drawId }));
-  [mainStructure, consolationStructure] = drawDefinition.structures;
+  consolationStructure = drawDefinition.structures[1];
 
   consolationFirstRoundAssignments = consolationStructure.positionAssignments
     .filter((assignment) => consolationFirstRoundDrawPositions?.includes(assignment.drawPosition))

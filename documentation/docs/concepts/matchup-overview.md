@@ -146,6 +146,9 @@ console.log(`${matchUps.length} finished matches`);
 Get all matchUps across entire tournament:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   inContext: true,  // Add tournament/event/draw context (default)
   nextMatchUps: true  // Include winnerTo/loserTo information
@@ -163,6 +166,9 @@ matchUps.forEach(matchUp => {
 Get matchUps for a specific event:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 const { matchUps } = tournamentEngine.allEventMatchUps({
   eventId: 'singles-main',
   inContext: true
@@ -174,6 +180,9 @@ const { matchUps } = tournamentEngine.allEventMatchUps({
 Get matchUps from a specific draw:
 
 ```js
+
+**API Reference:** [allEventMatchUps](/docs/governors/query-governor#alleventmatchups)
+
 const { matchUps } = tournamentEngine.allDrawMatchUps({
   drawId: 'draw-123',
   inContext: true
@@ -185,6 +194,9 @@ const { matchUps } = tournamentEngine.allDrawMatchUps({
 Filter matchUps by various criteria:
 
 ```js
+
+**API Reference:** [allDrawMatchUps](/docs/governors/query-governor#alldrawmatchups)
+
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters: {
     matchUpStatuses: ['COMPLETED'],
@@ -207,6 +219,9 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps({
 Each matchUp has two sides representing the competing participants:
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 {
   matchUpId: 'match-123',
   sides: [
@@ -296,6 +311,9 @@ tournamentEngine.setMatchUpStatus({
 MatchUps include comprehensive scheduling details:
 
 ```js
+
+**API Reference:** [setMatchUpStatus](/docs/governors/matchup-governor#setmatchupstatus)
+
 {
   matchUpId: 'match-123',
   schedule: {
@@ -366,6 +384,9 @@ if (matchUp.sides.every(side => side.checkInState === 'CHECKED_IN')) {
 When `nextMatchUps: true`, each matchUp includes progression information:
 
 ```js
+
+**API Reference:** [checkInParticipant](/docs/governors/matchup-governor#checkinparticipant)
+
 const { matchUps } = tournamentEngine.allDrawMatchUps({
   drawId: 'draw-123',
   nextMatchUps: true
@@ -388,6 +409,9 @@ matchUps.forEach(matchUp => {
 TEAM matchUps contain collection matchUps (individual matches):
 
 ```js
+
+**API Reference:** [allDrawMatchUps](/docs/governors/query-governor#alldrawmatchups)
+
 const teamMatchUp = {
   matchUpId: 'team-match-123',
   matchUpType: 'TEAM',
@@ -445,6 +469,9 @@ validActions.forEach(action => {
 ### Display Order of Play
 
 ```js
+
+**API Reference:** [matchUpActions](/docs/governors/query-governor#matchupactions)
+
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   contextFilters: {
     scheduledDate: '2024-06-15',
@@ -475,6 +502,9 @@ Object.entries(byCourt).forEach(([courtId, matches]) => {
 ### Results Feed
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters: {
     matchUpStatuses: ['COMPLETED']
@@ -498,6 +528,9 @@ matchUps
 ### Live Matches
 
 ```js
+
+**API Reference:** [allTournamentMatchUps](/docs/governors/query-governor#alltournamentmatchups)
+
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters: {
     matchUpStatuses: ['IN_PROGRESS']

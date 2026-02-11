@@ -277,6 +277,9 @@ stadiumSchedule.forEach((schedule) => {
 Fixed 2-hour slots for predictability:
 
 ```js
+
+**API Reference:** [addExtension](/docs/governors/tournament-governor#addextension)
+
 {
   slots: ['10:00', '12:00', '14:00', '16:00', '18:00', '20:00'],
   slotDuration: 120  // 2 hours per slot
@@ -599,6 +602,9 @@ rowIssues.forEach((row, rowIndex) => {
 #### Conflict Resolution Workflow
 
 ```js
+
+**API Reference:** [allCompetitionMatchUps](/docs/governors/matchup-governor#allcompetitionmatchups)
+
 // 1. Schedule matches
 scheduleMatchesToGrid(matchAssignments);
 
@@ -665,6 +671,9 @@ if (canScheduleToSlot('court-1', 2, '2024-03-20', 'match-123')) {
 #### Strategy 2: Find Available Slots
 
 ```js
+
+**API Reference:** [allCompetitionMatchUps](/docs/governors/matchup-governor#allcompetitionmatchups)
+
 function findAvailableSlot(courtIds, courtOrder, scheduledDate) {
   const { matchUps } = engine.allCompetitionMatchUps({
     matchUpFilters: { scheduledDate },
@@ -691,6 +700,9 @@ if (availableCourtId) {
 #### Strategy 3: Automated Conflict-Free Scheduling
 
 ```js
+
+**API Reference:** [allCompetitionMatchUps](/docs/governors/matchup-governor#allcompetitionmatchups)
+
 // Use proAutoSchedule for conflict-free initial schedule
 const { matchUps } = engine.allCompetitionMatchUps({
   nextMatchUps: true,

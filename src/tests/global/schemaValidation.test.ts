@@ -1,8 +1,8 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import addFormats from 'ajv-formats';
 import { expect, it } from 'vitest';
+import fs from 'fs-extra';
 import Ajv from 'ajv';
-import fs from 'fs';
 
 import {
   COMPASS,
@@ -19,7 +19,7 @@ import {
 const ajv = new Ajv({ allowUnionTypes: true, verbose: true, allErrors: true });
 ajv.addFormat('date-time', (dateTime: any) => {
   if (typeof dateTime === 'object') dateTime = dateTime.toISOString();
-  return !isNaN(Date.parse(dateTime));
+  return !Number.isNaN(Date.parse(dateTime));
 });
 addFormats(ajv);
 
@@ -31,7 +31,7 @@ const schema = JSON.parse(
 const validate = ajv.compile(schema);
 
 const sourcePath = './src/tests/testHarness';
-const filenames = fs.readdirSync(sourcePath).filter(
+const filenames: any[] = fs.readdirSync(sourcePath).filter(
   (filename) => filename.indexOf('.tods.json') > 0 && filename.indexOf('.8') === undefined, // we don't want to validate TODS v0.8
 );
 

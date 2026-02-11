@@ -17,7 +17,7 @@ it.each([COMPASS, CURTIS_CONSOLATION])('can accurately sort matchUps by stage an
 
   const { matchUps } = queryEngine.allTournamentMatchUps();
   const shuffledMatchUps = shuffleArray(matchUps);
-  const sortedMatchUps = shuffledMatchUps.sort(matchUpSort);
+  const sortedMatchUps = shuffledMatchUps.toSorted(matchUpSort);
   const sortedState = sortedMatchUps.map(({ stage, stageSequence, roundNumber, roundPosition }) => [
     stageOrder[stage],
     stageSequence,
@@ -27,7 +27,7 @@ it.each([COMPASS, CURTIS_CONSOLATION])('can accurately sort matchUps by stage an
 
   let lastHash = 0;
   const properSort = sortedState.every((stateValue) => {
-    const stateHash = stateValue.reverse().reduce((hash, value, index) => {
+    const stateHash = stateValue.toReversed().reduce((hash, value, index) => {
       return hash + value * Math.pow(100, index);
     }, 0);
     if (stateHash < lastHash) return false;

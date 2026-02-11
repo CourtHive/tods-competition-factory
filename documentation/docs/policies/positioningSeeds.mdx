@@ -2,7 +2,7 @@
 title: Positioning Seeds
 ---
 
-import RenderJSON from '../components/RenderJSON';
+import JsonViewer from '../components/JsonViewer';
 import SeedAssignments from './seedAssignments.json';
 import PolicySeeding from './policySeeding.json';
 
@@ -10,7 +10,7 @@ A **seeding policy** specifies how many seeds to allow per draw size and how see
 it may also instruct [generateDrawDefinition](/docs/governors/generation-governor#generatedrawdefinition) to disallow the placement of seed numbers in positions which are not defined as seeded positions,
 as well as indicate that duplicate seed numbers may be used.
 
-<RenderJSON data={PolicySeeding} root={'seeding'} colorScheme={'summerfruit'} invertTheme={true} expandToLevel={1} />
+<JsonViewer data={PolicySeeding} root={'seeding'} colorScheme={'summerfruit'} invertTheme={true} expandToLevel={1} />
 
 ## seedingProfile
 
@@ -66,7 +66,7 @@ as seed **"4"**, even though one of those five would get a position from the 3-4
 positions from the 5-8 seed block.
 :::
 
-<RenderJSON
+<JsonViewer
   data={SeedAssignments}
   root={'seedAssignments'}
   colorScheme={'summerfruit'}

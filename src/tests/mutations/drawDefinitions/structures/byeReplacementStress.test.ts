@@ -3,7 +3,7 @@ import { generateRange } from '@Tools/arrays';
 import { replacementTest } from './byeReplacementStressTest';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import fs from 'fs';
+import fs from 'fs-extra';
 
 // constants
 import { POSITION_ACTIONS } from '@Constants/extensionConstants';
@@ -61,10 +61,11 @@ test.skip.each([
     drawType,
     drawSize,
   });
-  if (!result.success) {
-    printGlobalLog(true);
-  } else {
+
+  if (result.success) {
     purgeGlobalLog();
+  } else {
+    printGlobalLog(true);
   }
 });
 

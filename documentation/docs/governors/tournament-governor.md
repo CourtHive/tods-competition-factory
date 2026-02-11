@@ -6,64 +6,41 @@ title: Tournament Governor
 import { tournamentGovernor } from 'tods-competition-factory';
 ```
 
-## addDrawDefinitionExtension
+## addExtension
+
+Adds an extension to a specified element in the tournament record. See examples: [Follow By Implementation](../concepts/pro-scheduling.md#follow-by-implementation), [4. Manual Override](../concepts/scheduling-conflicts.mdx#4-manual-override).
 
 ```js
-engine.addDrawDefinitionExtension({
-  extension: {
-    name: 'extension name',
-    value: {},
-  },
-  drawId,
+engine.addExtension({
+  extension, // required - extension object
+  tournamentId, // optional - target tournament
+  participantId, // optional - target participant
+  eventId, // optional - target event
+  drawId, // optional - target draw
+  structureId, // optional - target structure
+  matchUpId, // optional - target matchUp
 });
 ```
+
+**Purpose:** Attach custom metadata to tournament elements.
 
 ---
 
-## addEventExtension
+## addNotes
+
+Adds notes to a tournament record or specific element.
 
 ```js
-engine.addEventExtension({
-  extension: {
-    name: 'extension name',
-    value: {},
-  },
-  eventId,
+engine.addNotes({
+  notes, // required - string or notes object
+  tournamentId, // optional - target tournament
+  participantId, // optional - target participant
+  eventId, // optional - target event
+  drawId, // optional - target draw
 });
 ```
 
----
-
-## addTimeItem
-
-When calling via an engine, `participant` will be resolved from `participantId`, `drawDefinition`will be resovled from`drawId`, `event`will be resolved from`eventId`, and `tournamentRecord` will be present. Method will only attach `timeItem` to one element.
-
-```js
-engine.addTimeItem({
-  removePriorValues, // boolean; prior values with equivalent `itemType` will be removed
-  duplicateValues, // boolean; allow duplicate values
-  participantId, // optional; resolves to participant
-  creationTime, // optional timestamp adds `createdAt` value
-  timeItem, // required; { itemType, itemValue, itemSubTypes, itemDate }
-  eventId, // optional; resolves to event
-  drawId, // optional; resolves to drawDefinition
-});
-```
-
-When calling directly without an engine. Attaches to first element encountered in params: `element, drawDefinition, event, tournamentRecord`.
-
-```js
-addTimeItem({
-  removePriorValues, // boolean; prior values with equivalent `itemType` will be removed
-  tournamentRecord, // optional
-  duplicateValues, // boolean; allow duplicate values
-  drawDefinition, // optional
-  creationTime, // optional
-  timeItem, // required; { itemType, itemValue, itemSubTypes, itemDate }
-  element, // optional if event, drawDefinition or tournamentRecord provided
-  event, // optional
-});
-```
+**Purpose:** Add textual notes/comments to tournament entities.
 
 ---
 
@@ -86,16 +63,226 @@ engine.addOnlineResource({
 
 ---
 
-## addTournamentExtension
+## analyzeDraws
+
+Analyzes all draws in a tournament to provide structural insights.
 
 ```js
-engine.addTournamentExtension({
-  extension: {
-    name: 'extension name',
-    value: {},
-  },
+const { analysis } = engine.analyzeDraws();
+```
+
+**Returns:** Analysis of draw structures, including sizes, stages, and completeness.
+
+---
+
+## analyzeTournament
+
+Provides comprehensive analysis of tournament structure and data.
+
+```js
+const { analysis } = engine.analyzeTournament();
+```
+
+**Returns:** Tournament-level metrics including events, participants, draws, and matchUps.
+
+---
+
+## copyTournamentRecord
+
+Creates a deep copy of a tournament record.
+
+```js
+const { tournamentRecord } = engine.copyTournamentRecord({
+  tournamentId, // optional - specific tournament
 });
 ```
+
+**Purpose:** Clone tournament data for modifications or comparisons.
+
+---
+
+## createTournamentRecord
+
+Creates a new tournament record.
+
+```js
+const { tournamentRecord } = engine.createTournamentRecord({
+  tournamentName, // optional
+  startDate, // optional - 'YYYY-MM-DD'
+  endDate, // optional - 'YYYY-MM-DD'
+  tournamentId, // optional - provide specific ID
+});
+```
+
+**Purpose:** Initialize a new tournament.
+
+---
+
+## getAggregateTeamResults
+
+Returns aggregated results for team competitions across multiple tournaments.
+
+```js
+const { results } = engine.getAggregateTeamResults({
+  tournamentRecords, // required - array of tournament records
+});
+```
+
+**Purpose:** Compile team standings across competitions.
+
+---
+
+## getAllowedDrawTypes
+
+Returns allowed draw types for a specific event based on configuration.
+
+```js
+const { drawTypes } = engine.getAllowedDrawTypes({
+  eventId, // required
+});
+```
+
+**Purpose:** Get valid draw types for event creation.
+
+---
+
+## getAllowedMatchUpFormats
+
+Returns allowed matchUp formats based on event type and configuration.
+
+```js
+const { matchUpFormats } = engine.getAllowedMatchUpFormats({
+  eventType, // optional
+});
+```
+
+**Purpose:** Get valid format options for events.
+
+---
+
+## getAppliedPolicies
+
+Returns all policies currently applied to the tournament.
+
+```js
+const { policies } = engine.getAppliedPolicies();
+```
+
+**Purpose:** Query active tournament policies.
+
+---
+
+## getCompetitionDateRange
+
+Returns the date range spanning all tournaments in a competition.
+
+```js
+const { startDate, endDate } = engine.getCompetitionDateRange({
+  tournamentRecords, // required - array of tournament records
+});
+```
+
+**Purpose:** Get overall competition dates.
+
+---
+
+## getCompetitionPenalties
+
+Returns all penalties across multiple tournaments in a competition.
+
+```js
+const { penalties } = engine.getCompetitionPenalties({
+  tournamentRecords, // required - array of tournament records
+});
+```
+
+**Purpose:** Aggregate penalties across competition.
+
+---
+
+## getPolicyDefinitions
+
+Returns attached policy definitions.
+
+```js
+const { policyDefinitions } = engine.getPolicyDefinitions();
+```
+
+**Purpose:** Get tournament policy configurations.
+
+---
+
+## getTournamentInfo
+
+Returns basic tournament information.
+
+```js
+const { tournamentInfo } = engine.getTournamentInfo();
+```
+
+**Returns:** Tournament name, dates, location, and other metadata.
+
+---
+
+## getTournamentPenalties
+
+Returns all penalties issued in the tournament.
+
+```js
+const { penalties } = engine.getTournamentPenalties();
+```
+
+**Purpose:** Query tournament penalties.
+
+---
+
+## getTournamentPersons
+
+Returns all persons (not just participants) associated with tournament.
+
+```js
+const { persons } = engine.getTournamentPersons();
+```
+
+**Purpose:** Get all individuals including officials, staff, etc.
+
+---
+
+## getTournamentPoints
+
+Returns points/prize money configuration for tournament.
+
+```js
+const { points } = engine.getTournamentPoints();
+```
+
+**Purpose:** Get tournament points structure.
+
+---
+
+## getTournamentStructures
+
+Returns all structures across all draws in tournament.
+
+```js
+const { structures } = engine.getTournamentStructures();
+```
+
+**Purpose:** Get all draw structures tournament-wide.
+
+---
+
+## getTournamentTimeItem
+
+Returns time items attached to tournament.
+
+```js
+const { timeItem } = engine.getTournamentTimeItem({
+  itemType, // required - time item type
+});
+```
+
+**Purpose:** Query time-based tournament metadata.
 
 ---
 
@@ -116,20 +303,6 @@ engine.hydrateTournamentRecord({
 
 ---
 
-## newTournamentRecord
-
-Creates a new tournamentRecord in shared state.
-
-```js
-engine.newTournamentRecord({
-  tournamentId, // optional - will be generated if not provided
-});
-
-const { tournamentRecord } = engine.getTournament();
-````
-
----
-
 ## orderCollectionDefinitions
 
 Modify the array order of `tieFormat.collectionDefinitions` for an `event`, a `drawDefinition`, `structure`, or `matchUp`.
@@ -143,6 +316,26 @@ engine.orderCollectionDefinitions({
   drawId, // required if modifying tieFormat for a drawDefinition or a structure
 });
 ```
+
+---
+
+## removeExtension
+
+Removes an extension from a specified element in the tournament record.
+
+```js
+engine.removeExtension({
+  name,               // required - extension name
+  tournamentId,       // optional - target tournament
+  participantId,      // optional - target participant
+  eventId,            // optional - target event
+  drawId,             // optional - target draw
+  structureId,        // optional - target structure
+  matchUpId,          // optional - target matchUp
+});
+```
+
+**Purpose:** Remove custom metadata from tournament elements.
 
 ---
 
@@ -161,14 +354,6 @@ engine.removeOnlineResource({
   eventId, // optional
   drawId, // optional
 });
-```
-
----
-
-## removeTournamentExtension
-
-```js
-engine.removeTournamentExtension({ name });
 ```
 
 ---
@@ -197,21 +382,6 @@ engine.setTournamentCategories({ categories });
 
 ---
 
-## setTournamentDates
-
-Accepts an ISO String Date;
-
-Set tournament `startDate` and `endDate` in one method call. Also cleans up `matchUp` schedules that are invalid due to date changes, and updates court `dateAvailability`.
-
-```js
-engine.setTournamentDates({
-  activeDates, // optional array of dates from startDate to endDate
-  weekdays, // optional array of [MON, TUE, ...] // use { weekDayConstants }
-  startDate, // optional
-  endDate, // optional
-});
-```
-
 ## setTournamentName
 
 ```js
@@ -238,3 +408,4 @@ engine.setTournamentStatus({ status: CANCELLED });
 ```
 
 ---
+````

@@ -1,9 +1,8 @@
-import { getRoundMatchUps } from '@Query/matchUps/getRoundMatchUps';
-import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, it } from 'vitest';
 
 // Constants
+import { POLICY_TYPE_FEED_IN, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 import {
   BOTTOM_UP,
   CONSOLATION,
@@ -20,7 +19,6 @@ import {
   SINGLE_ELIMINATION,
   TOP_DOWN,
 } from '@Constants/drawDefinitionConstants';
-import { POLICY_TYPE_FEED_IN, POLICY_TYPE_SEEDING } from '@Constants/policyConstants';
 
 /**
  * Test suite for Feed-In Policy documentation
@@ -698,7 +696,7 @@ it('all feed-in draw types exist and are distinct', () => {
   expect(FEED_IN_CHAMPIONSHIP_TO_R16).toBe('FEED_IN_CHAMPIONSHIP_TO_R16');
   expect(FIRST_MATCH_LOSER_CONSOLATION).toBe('FIRST_MATCH_LOSER_CONSOLATION');
   expect(MODIFIED_FEED_IN_CHAMPIONSHIP).toBe('MODIFIED_FEED_IN_CHAMPIONSHIP');
-  
+
   // Verify FMLC and FRLC are different constants
   expect(FIRST_MATCH_LOSER_CONSOLATION).not.toBe(FIRST_ROUND_LOSER_CONSOLATION);
   expect(FIRST_ROUND_LOSER_CONSOLATION).toBe('FIRST_ROUND_LOSER_CONSOLATION');
