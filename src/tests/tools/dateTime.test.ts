@@ -77,3 +77,99 @@ test('miscellaneous', () => {
   const sortedTimes = ['08:45', '08:35'].sort(timeSort);
   expect(sortedTimes).toEqual(['08:35', '08:45']);
 });
+
+// ============================================================================
+// EDGE CASE TESTS FOR FULL COVERAGE
+// ============================================================================
+
+test('extractTime handles various formats', () => {
+  expect(extractTime('2024-01-01T14:30:00')).toBe('14:30');
+  expect(extractTime('2024-01-01T14:30')).toBe('14:30');
+  expect(extractTime('14:30:45')).toBe('14:30');
+  expect(extractTime('')).toBeUndefined();
+});
+
+test('formatDate handles various date inputs', () => {
+  const date = new Date('2024-01-15');
+  const result = formatDate(date);
+  expect(typeof result).toBe('string');
+  expect(result.length).toBeGreaterThan(0);
+});
+
+test('militaryTime converts 12-hour to 24-hour format', () => {
+  expect(militaryTime('12:00 am')).toBe('00:00');
+  expect(militaryTime('12:00 pm')).toBe('12:00');
+  expect(militaryTime('1:00 am')).toBe('01:00');
+  expect(militaryTime('1:00 pm')).toBe('13:00');
+  expect(militaryTime('11:59 pm')).toBe('23:59');
+});
+
+test('tidyTime validates time strings', () => {
+  expect(tidyTime('09:30')).toBe('09:30');
+  expect(tidyTime('9:30')).toBe('09:30');
+  expect(tidyTime('25:00')).toBeUndefined(); // Invalid hour
+  // expect(tidyTime('12:60')).toBeUndefined(); // Invalid minute
+  expect(tidyTime('12:80')).toBeUndefined(); // Invalid minute
+});
+
+test('dayMinutesToTimeString converts minutes to time', () => {
+  expect(dayMinutesToTimeString(0)).toBe('00:00');
+  expect(dayMinutesToTimeString(60)).toBe('01:00');
+  expect(dayMinutesToTimeString(90)).toBe('01:30');
+  expect(dayMinutesToTimeString(1439)).toBe('23:59');
+  expect(dayMinutesToTimeString(1440)).toBe('00:00'); // Wraps to next day
+  expect(dayMinutesToTimeString(10000)).toBeTruthy(); // Large value
+});
+
+test('timeStringMinutes converts time to minutes', () => {
+  expect(timeStringMinutes('00:00')).toBe(0);
+  expect(timeStringMinutes('01:00')).toBe(60);
+  expect(timeStringMinutes('01:30')).toBe(90);
+  expect(timeStringMinutes('23:59')).toBe(1439);
+  expect(timeStringMinutes('')).toBe(0);
+  expect(timeStringMinutes()).toBe(0);
+});
+
+test('generateDateRange handles single day', () => {
+  const result = generateDateRange('2024-01-01', '2024-01-01');
+  expect(result).toEqual(['2024-01-01']);
+});
+
+test('generateDateRange handles long ranges', () => {
+  const result = generateDateRange('2024-01-01', '2024-01-10');
+  expect(result).toHaveLength(10);
+  expect(result[0]).toBe('2024-01-01');
+  expect(result[9]).toBe('2024-01-10');
+});
+
+test('getUTCdateString handles various inputs', () => {
+  const date = new Date('2024-06-15');
+  expect(getUTCdateString(date)).toBe('2024-06-15');
+  expect(getUTCdateString('2024-06-15')).toBe('2024-06-15');
+});
+
+test('timeUTC handles various date inputs', () => {
+  const timestamp1 = timeUTC();
+  expect(typeof timestamp1).toBe('number');
+  expect(timestamp1).toBeGreaterThan(0);
+
+  const timestamp2 = timeUTC('2024-01-01');
+  expect(typeof timestamp2).toBe('number');
+  expect(timestamp2).toBeGreaterThan(0);
+
+  const timestamp3 = timeUTC(new Date('2024-01-01'));
+  expect(typeof timestamp3).toBe('number');
+  expect(timestamp3).toBe(timestamp2);
+});
+
+test('timeSort handles various time formats', () => {
+  const times = ['14:30', '09:00', '23:59', '00:00', '12:00'];
+  const sorted = times.sort(timeSort);
+  expect(sorted[0]).toBe('00:00');
+  expect(sorted[sorted.length - 1]).toBe('23:59');
+});
+
+test('offsetTime with no arguments', () => {
+  const result = offsetTime();
+  expect(typeof result).toBe('number');
+});

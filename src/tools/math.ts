@@ -1,9 +1,10 @@
 import { numericSort } from './sorting';
 import { ensureInt } from './ensureInt';
+import { isString } from './objects';
 
 export function isPowerOf2(n?) {
-  if (isNaN(n)) return false;
-  return n && (n & (n - 1)) === 0;
+  if (Number.isNaN(Number(n))) return false;
+  return n > 0 && (n & (n - 1)) === 0;
 }
 
 export function median(arr: number[]): number | undefined {
@@ -14,6 +15,8 @@ export function median(arr: number[]): number | undefined {
 }
 
 export function deriveExponent(n) {
+  if (n === 1) return false; // Special case - infinite loop avoided
+  if (Number.isNaN(Number(n))) return false;
   if (!isPowerOf2(n)) return false;
   let m = n;
   let i = 1;
@@ -25,7 +28,7 @@ export function deriveExponent(n) {
 }
 
 export function coerceEven(n) {
-  return isNaN(n) ? 0 : (n % 2 && n + 1) || n;
+  return Number.isNaN(Number(n)) ? 0 : (n % 2 && n + 1) || n;
 }
 
 export function nearestPowerOf2(val) {
@@ -33,18 +36,18 @@ export function nearestPowerOf2(val) {
 }
 
 export function isNumeric(value) {
-  return !isNaN(parseFloat(value));
+  return !Number.isNaN(Number.parseFloat(value));
 }
 
 export function isOdd(num) {
   const numInt = ensureInt(num);
-  if (isNaN(numInt)) return undefined;
+  if (Number.isNaN(numInt)) return undefined;
   if (numInt === 0) return false;
   return (numInt & -numInt) === 1;
 }
 
 export function nextPowerOf2(n?) {
-  if (isNaN(n)) return false;
+  if (Number.isNaN(Number(n))) return false;
   while (!isPowerOf2(n)) {
     n++;
   }
@@ -54,12 +57,13 @@ export function nextPowerOf2(n?) {
 export function randomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
-   
+
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 // does accept e.e. '1.0'
 export function isConvertableInteger(n) {
+  if (isString(n) && !n.trim().length) return false;
   return Number.isSafeInteger(typeof n === 'string' ? +n : n);
 }
 
@@ -67,7 +71,6 @@ export function isConvertableInteger(n) {
 export function weightedRandom(max = 1, weight = 3, round = true) {
   let num = 0;
   for (let i = 0; i < weight; i++) {
-     
     num += Math.random() * (max / weight);
   }
   return round && max > 1 ? Math.round(num) : num;
@@ -75,19 +78,18 @@ export function weightedRandom(max = 1, weight = 3, round = true) {
 
 // round to nearest step, e.g. 0.25
 function stepRound(value, step) {
-  step || (step = 1.0);
-  const inv = 1.0 / step;
+  step || (step = 1);
+  const inv = 1 / step;
   return Math.round(value * inv) / inv;
 }
 
 export function skewedDistribution(min: number, max: number, skew: number, step?, significantDecimals = 2) {
-   
   const u = 1 - Math.random();
-   
-  const v = 1 - Math.random();
-  let num = Math.sqrt(-2.0 * Math.log(u)) * Math.cos(2.0 * Math.PI * v);
 
-  num = num / 10.0 + 0.5;
+  const v = 1 - Math.random();
+  let num = Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+
+  num = num / 10 + 0.5;
 
   if (num > 1 || num < 0) {
     num = skewedDistribution(min, max, skew);
@@ -99,7 +101,7 @@ export function skewedDistribution(min: number, max: number, skew: number, step?
 
   if (step) num = stepRound(num, step);
 
-  return parseFloat(num.toFixed(significantDecimals));
+  return Number.parseFloat(num.toFixed(significantDecimals));
 }
 
 export function safePct(numerator, denominator, round = true) {
@@ -109,5 +111,5 @@ export function safePct(numerator, denominator, round = true) {
 }
 
 export function fixedDecimals(value: number, to = 2) {
-  return parseFloat(Number(Math.round(value * 1000) / 1000).toFixed(to));
+  return Number.parseFloat(Number(Math.round(value * 1000) / 1000).toFixed(to));
 }

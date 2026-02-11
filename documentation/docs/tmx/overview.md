@@ -5,7 +5,7 @@ sidebar_position: 1
 
 # TMX Tournament Management
 
-TMX (Tournament Management eXperience) is a comprehensive, open-source tournament management application built on the Competition Factory. It demonstrates practical, production-ready usage of the factory's engines and provides a complete reference implementation for building tournament management solutions.
+TMX (Tournament Management eXperience) is a comprehensive, open-source tournament management application built with the Competition Factory. It demonstrates practical, production-ready usage of the factory's engines and provides a complete reference implementation for building tournament management solutions.
 
 ## What is TMX?
 
@@ -20,11 +20,10 @@ TMX is a full-featured tournament management system that runs entirely in the br
 
 ### 🏆 Complete Tournament Management
 
-- **Participant Management** - Registration, check-in, and player data management
-- **Event Creation** - Flexible event configuration with categories and flights
-- **Draw Generation** - Multiple draw types with intelligent seeding
+- **Participant Management** - Check-in, and player statistics and results export
+- **Event Creation** - Flexible event configuration with extensive category support
+- **Draw Generation** - Multiple draw types with policy driven seeding
 - **Scheduling** - Court assignments and match scheduling
-- **Live Scoring** - Real-time match results and standings
 - **Publishing** - Public-facing tournament information
 
 ### 💻 Browser-First Architecture
@@ -32,14 +31,13 @@ TMX is a full-featured tournament management system that runs entirely in the br
 - **Runs Locally** - Full tournament management without internet connection
 - **Local Factory Instance** - All factory engines run in the browser
 - **Instant Performance** - UI queries happen locally, no server round-trips
-- **Offline Capable** - Disconnect and reconnect with automatic sync
+- **Offline Capable** - Disconnect and reconnect with on-demand sync
 
 ### 🔄 Optional Server Sync
 
-- **Execution Queue** - Only mutations sent to server, not full records
+- **Execution Queue** - Only mutation requests sent to server, not full records
 - **Conflict Resolution** - Handles multi-user scenarios
 - **Slave/Master Modes** - Flexible data ownership models
-- **Reconnection Handling** - Automatic sync after coming back online
 
 ### 🧩 Built on CourtHive Components
 
@@ -58,30 +56,30 @@ Many of these components are used in the Factory documentation for interactive d
 
 ### Local-First Design
 
-```
+```text
 ┌─────────────────────────────────────────────────────┐
 │  TMX (Browser)                                      │
-│  ┌──────────────────┐  ┌────────────────────────┐  │
-│  │ UI Components    │  │ Local Tournament       │  │
-│  │ (React)          │←→│ Record                 │  │
-│  └──────────────────┘  └────────────────────────┘  │
+│  ┌──────────────────┐  ┌────────────────────────┐   │
+│  │ UI Components    │  │ Local Tournament       │   │
+│  │ (React)          │←→│ Record                 │   │
+│  └──────────────────┘  └────────────────────────┘   │
 │           ↓                       ↓                 │
-│  ┌──────────────────────────────────────────────┐  │
-│  │ Competition Factory (Local Instance)         │  │
-│  │ - tournamentEngine                           │  │
-│  │ - All governor methods                       │  │
-│  │ - Query methods (instant, local)             │  │
-│  └──────────────────────────────────────────────┘  │
+│  ┌──────────────────────────────────────────────┐   │
+│  │ Competition Factory (Local Instance)         │   │
+│  │ - tournamentEngine                           │   │
+│  │ - All governor methods                       │   │
+│  │ - Query methods (instant, local)             │   │
+│  └──────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────┘
                         ↕
               (Optional Connection)
                         ↕
 ┌─────────────────────────────────────────────────────┐
 │  Competition Factory Server                         │
-│  ┌────────────────────┐  ┌────────────────────────┐│
-│  │ Factory Instance   │  │ Tournament Records     ││
-│  │ (Server-side)      │  │ (Persistent Storage)   ││
-│  └────────────────────┘  └────────────────────────┘│
+│  ┌────────────────────┐  ┌────────────────────────┐ │
+│  │ Factory Instance   │  │ Tournament Records     │ │
+│  │ (Server-side)      │  │ (Persistent Storage)   │ │
+│  └────────────────────┘  └────────────────────────┘ │
 └─────────────────────────────────────────────────────┘
 ```
 
@@ -90,7 +88,7 @@ Many of these components are used in the Factory documentation for interactive d
 TMX doesn't send full tournament records over the network. Instead:
 
 1. **Queries** happen locally using the browser's factory instance
-2. **Mutations** are queued as method calls with parameters
+2. **Mutations** are structured as method calls with parameters and can be bulk processed
 3. **Server executes** the same factory methods with the same parameters
 4. **Results returned** to confirm or handle conflicts
 5. **State synchronized** between client and server
@@ -125,13 +123,12 @@ TMX serves as a comprehensive example of how to:
 ✅ **Structure a Factory-based Application**
 
 - How to maintain tournament state
-- When to use which governor
 - How to handle method results and errors
 
 ✅ **Implement Common Workflows**
 
 - Complete tournament setup sequences
-- Draw generation with proper entry management
+- Draw generation with entry management
 - Scheduling with venue and court assignments
 - Publishing workflow for public consumption
 
@@ -140,14 +137,12 @@ TMX serves as a comprehensive example of how to:
 - Local-first architecture
 - Minimal server communication
 - Instant query responses
-- Optimistic UI updates
 
 ✅ **Handle Edge Cases**
 
 - Validation before mutations
 - Error recovery
 - Offline/online transitions
-- Multi-user conflict resolution
 
 ## Getting Started
 

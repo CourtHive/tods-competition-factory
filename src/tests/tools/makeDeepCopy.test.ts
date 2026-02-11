@@ -188,3 +188,76 @@ test('can throttle makeDeepCopy by setting a threshold', () => {
   expect(result.drawIds.length).toEqual(1);
   expect(tournamentRecord.participants.length).toEqual(drawSize);
 });
+
+// ============================================================================
+// EDGE CASE TESTS FOR FULL COVERAGE
+// ============================================================================
+
+test('makeDeepCopy handles Date objects', () => {
+  const original = {
+    date: new Date('2024-01-01'),
+    name: 'test',
+  };
+
+  const copy = makeDeepCopy(original);
+  expect(copy.date).toBeInstanceOf(Date);
+  expect(copy.date.getTime()).toBe(original.date.getTime());
+});
+
+test('makeDeepCopy handles RegExp objects', () => {
+  const original = {
+    pattern: /test/gi,
+  };
+
+  const copy = makeDeepCopy(original);
+  expect(copy.pattern).toBeInstanceOf(RegExp);
+  expect(copy.pattern.source).toBe('test');
+  expect(copy.pattern.flags).toBe('gi');
+});
+
+test('makeDeepCopy handles very deep nesting', () => {
+  let obj: any = { value: 'leaf' };
+  for (let i = 0; i < 50; i++) {
+    obj = { nested: obj };
+  }
+
+  const copy = makeDeepCopy(obj);
+  let current = copy;
+  for (let i = 0; i < 50; i++) {
+    current = current.nested;
+  }
+  expect(current.value).toBe('leaf');
+});
+
+test('makeDeepCopy handles arrays with mixed types', () => {
+  const original = {
+    arr: [1, 'two', { three: 3 }, [4, 5], null, undefined],
+  };
+
+  const copy = makeDeepCopy(original);
+  expect(copy.arr).toEqual(original.arr);
+});
+
+test('makeDeepCopy handles null and undefined', () => {
+  expect(makeDeepCopy(null)).toEqual(null);
+  expect(makeDeepCopy(undefined)).toEqual(undefined);
+
+  const obj = { a: null, b: undefined };
+  const copy = makeDeepCopy(obj);
+  expect(copy.a).toBeNull();
+  expect(copy.b).toBeUndefined();
+});
+
+test('makeDeepCopy handles primitive values', () => {
+  const obj = {
+    num: 42,
+    str: 'hello',
+    bool: true,
+    zero: 0,
+    emptyStr: '',
+    falsy: false,
+  };
+
+  const copy = makeDeepCopy(obj);
+  expect(copy).toEqual(obj);
+});
