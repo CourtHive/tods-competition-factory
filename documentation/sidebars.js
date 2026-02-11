@@ -3,7 +3,26 @@ module.exports = {
     {
       type: 'category',
       label: 'Competition Factory',
-      items: ['introduction', 'data-standards', 'time-capsule', 'tmx', 'installation', 'acknowledgements'],
+      items: [
+        'introduction',
+        'data-standards',
+        'time-capsule',
+        {
+          'TMX Example': [
+            'tmx',
+            'tmx/overview',
+            'tmx/participants',
+            'tmx/events-categories',
+            'tmx/draws',
+            'tmx/matchups',
+            'tmx/venues-scheduling',
+            'tmx/browser-console',
+            'tmx/factory-server',
+          ],
+        },
+        'installation',
+        'acknowledgements',
+      ],
     },
     {
       type: 'category',
