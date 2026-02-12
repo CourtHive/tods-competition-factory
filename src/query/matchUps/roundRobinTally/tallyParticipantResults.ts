@@ -159,7 +159,7 @@ export function tallyParticipantResults({
   return result;
 }
 
-function addPressureOrder({ participantResults }) {
+export function addPressureOrder({ participantResults }) {
   const sum = (values) => values.reduce((total, value) => total + parseFloat(value), 0);
   const avg = (values) => parseFloat((sum(values) / values.length).toFixed(2));
   const pressureOrder = Object.keys(participantResults)

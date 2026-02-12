@@ -44,7 +44,6 @@ export function getConvertedRating(params: GetConvertedRatingArgs) {
   const accessor = ratingsParameters[sourceRatingObject?.scaleName]?.accessor;
   const sourceRating = (accessor && sourceRatingObject.scaleValue[accessor]) || sourceRatingObject?.scaleValue;
   const eloValue = getRatingConvertedToELO({ sourceRatingType, sourceRating });
-  console.log({ sourceRatingType, sourceRatingObject, accessor, sourceRating, eloValue });
   const convertedRating = getRatingConvertedFromELO({
     targetRatingType: targetRatingType,
     sourceRating: eloValue,
