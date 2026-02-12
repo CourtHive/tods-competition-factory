@@ -9,8 +9,6 @@ export function getRatingConvertedToELO({ sourceRatingType, sourceRating }) {
   const invertedScale = sourceRatingRange?.[0] > sourceRatingRange?.[1];
   const eloRatingRange = ratingsParameters[ELO].range;
 
-  console.log({ sourceRatingType, sourceRating, sourceRatingRange, invertedScale, eloRatingRange });
-
   return convertRange({
     value: invertedScale ? sourceRatingRange[0] - sourceRating : sourceRating,
     sourceRange: sourceRatingRange,
