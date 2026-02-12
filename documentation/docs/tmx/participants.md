@@ -14,6 +14,7 @@ This page will be updated with screenshots showing the TMX participant managemen
 ## Overview
 
 Participant management in TMX includes:
+
 - **Registration** - Adding new participants with required and optional information
 - **Import/Export** - Bulk operations via CSV, Google Sheets, or JSON
 - **Check-in** - Managing arrival and withdrawal status
@@ -35,15 +36,17 @@ tournamentEngine.addParticipant({
     person: {
       standardGivenName: 'John',
       standardFamilyName: 'Doe',
-      nationalityCode: 'USA'
-    }
-  }
+      nationalityCode: 'USA',
+    },
+  },
 });
 
 // Bulk participants
 tournamentEngine.addParticipants({
-  participants: [/* array of participant objects */],
-  allowDuplicateParticipantIdPairs: false
+  participants: [
+    /* array of participant objects */
+  ],
+  allowDuplicateParticipantIdPairs: false,
 });
 ```
 
@@ -52,17 +55,17 @@ tournamentEngine.addParticipants({
 ```js
 // Get all participants
 const { participants } = tournamentEngine.getParticipants({
-  participantFilters: { participantTypes: ['INDIVIDUAL'] }
+  participantFilters: { participantTypes: ['INDIVIDUAL'] },
 });
 
 // Find specific participant
 const { participant } = tournamentEngine.findParticipant({
-  participantId
+  participantId,
 });
 
 // Search by name
 const results = tournamentEngine.searchParticipants({
-  searchText: 'John Doe'
+  searchText: 'John Doe',
 });
 ```
 
@@ -75,9 +78,9 @@ tournamentEngine.modifyParticipant({
   participant: {
     person: {
       standardGivenName: 'John',
-      standardFamilyName: 'Smith'
-    }
-  }
+      standardFamilyName: 'Smith',
+    },
+  },
 });
 
 // Add participant contact info
@@ -85,8 +88,8 @@ tournamentEngine.addParticipantContact({
   participantId,
   contact: {
     emailAddress: 'john@example.com',
-    phoneNumber: '+1-555-0123'
-  }
+    phoneNumber: '+1-555-0123',
+  },
 });
 ```
 
@@ -114,12 +117,14 @@ tournamentEngine.addParticipantContact({
 ### Import Options
 
 #### Google Sheets Integration
+
 ```js
 // TMX can import directly from Google Sheets
 // Uses factory's participant structure
 ```
 
 #### CSV Import
+
 ```js
 // Standard CSV format
 // Headers: firstName, lastName, nationality, rating, etc.
@@ -127,6 +132,7 @@ tournamentEngine.addParticipantContact({
 ```
 
 #### JSON Import
+
 ```js
 // Direct factory-compatible JSON
 tournamentEngine.setState(tournamentRecord);
@@ -138,14 +144,14 @@ tournamentEngine.setState(tournamentRecord);
 // Assign participant to event
 tournamentEngine.addEventEntries({
   eventId,
-  participantIds: [participantId]
+  participantIds: [participantId],
 });
 
 // Assign with entry status
 tournamentEngine.addEventEntries({
   eventId,
   participantIds: [participantId],
-  entryStatus: 'DIRECT_ACCEPTANCE'
+  entryStatus: 'DIRECT_ACCEPTANCE',
 });
 ```
 
@@ -202,8 +208,8 @@ const participant = {
   person: {
     standardGivenName: firstName,
     standardFamilyName: lastName,
-    nationalityCode: country
-  }
+    nationalityCode: country,
+  },
 };
 
 // 2. Add to tournament
@@ -223,11 +229,11 @@ if (result.success) {
 const participants = parseImportData(data);
 
 // 2. Validate participants
-const validated = participants.filter(p => validateParticipant(p));
+const validated = participants.filter((p) => validateParticipant(p));
 
 // 3. Add to tournament
 const result = tournamentEngine.addParticipants({
-  participants: validated
+  participants: validated,
 });
 
 // 4. Report results
@@ -243,70 +249,41 @@ console.log(`Errors: ${result.errors.length}`);
 tournamentEngine.addTimeItem({
   itemType: 'CHECK_IN',
   itemValue: new Date().toISOString(),
-  participants: [{ participantId }]
+  participants: [{ participantId }],
 });
 
 // Query checked-in participants
 const { participants } = tournamentEngine.getParticipants({
   participantFilters: {
-    participantTypes: ['INDIVIDUAL']
+    participantTypes: ['INDIVIDUAL'],
   },
-  withScaleValues: true
+  withScaleValues: true,
 });
 
-const checkedIn = participants.filter(p => 
-  p.timeItems?.some(t => t.itemType === 'CHECK_IN')
-);
+const checkedIn = participants.filter((p) => p.timeItems?.some((t) => t.itemType === 'CHECK_IN'));
 ```
 
 ## Best Practices
 
 ### Data Quality
+
 - Validate input before calling factory methods
 - Use standardized name formats (standardGivenName, standardFamilyName)
 - Include nationality codes for international tournaments
 - Add contact information for communication
 
 ### Performance
+
 - Use bulk operations (addParticipants) for multiple participants
 - Query once and filter in UI rather than multiple queries
 - Cache participant lists and update incrementally
 
 ### User Experience
+
 - Provide duplicate detection feedback
 - Show validation errors clearly
 - Allow editing before final submission
 - Confirm bulk operations before execution
-
-## Troubleshooting
-
-### Duplicate Participants
-```js
-// Check for existing participant
-const { participants } = tournamentEngine.getParticipants();
-const exists = participants.some(p => 
-  p.person.standardFamilyName === lastName &&
-  p.person.standardGivenName === firstName
-);
-
-if (exists) {
-  // Handle duplicate
-}
-```
-
-### Invalid Data
-```js
-// Validate before adding
-function validateParticipant(participant) {
-  if (!participant.person?.standardFamilyName) {
-    return { valid: false, error: 'Last name required' };
-  }
-  if (!participant.person?.standardGivenName) {
-    return { valid: false, error: 'First name required' };
-  }
-  return { valid: true };
-}
-```
 
 ## Related Documentation
 

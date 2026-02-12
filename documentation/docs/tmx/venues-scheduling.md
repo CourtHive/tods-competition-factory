@@ -14,6 +14,7 @@ This page will be updated with screenshots showing the TMX venue and scheduling 
 ## Overview
 
 Venue and scheduling management in TMX includes:
+
 - **Venue Creation** - Define tournament venues with court details
 - **Court Configuration** - Surface types, dimensions, and attributes
 - **Match Scheduling** - Assign matches to courts and times
@@ -37,10 +38,10 @@ tournamentEngine.addVenue({
       {
         courtName: 'Court 1',
         surfaceCategory: 'HARD',
-        courtDimensions: 'STANDARD'
-      }
-    ]
-  }
+        courtDimensions: 'STANDARD',
+      },
+    ],
+  },
 });
 
 // Add court to existing venue
@@ -48,8 +49,8 @@ tournamentEngine.addCourt({
   venueId,
   court: {
     courtName: 'Court 2',
-    surfaceCategory: 'CLAY'
-  }
+    surfaceCategory: 'CLAY',
+  },
 });
 
 // Modify venue
@@ -57,8 +58,8 @@ tournamentEngine.modifyVenue({
   venueId,
   venue: {
     venueName: 'Stadium Court',
-    venueAbbreviation: 'SC'
-  }
+    venueAbbreviation: 'SC',
+  },
 });
 ```
 
@@ -99,7 +100,7 @@ tournamentEngine.autoSchedule({
   periodLength: 90, // minutes per match
   startTime: '09:00',
   endTime: '18:00',
-  scheduleDates: ['2024-06-15', '2024-06-16']
+  scheduleDates: ['2024-06-15', '2024-06-16'],
 });
 ```
 
@@ -114,13 +115,13 @@ const { courts } = tournamentEngine.getCourts({ venueId });
 
 // Get scheduled matchUps
 const { dateMatchUps } = tournamentEngine.getScheduledMatchUps({
-  scheduledDate: '2024-06-15'
+  scheduledDate: '2024-06-15',
 });
 
 // Get court schedule
 const { courtMatchUps } = tournamentEngine.getCourtMatchUps({
   courtId,
-  scheduledDate: '2024-06-15'
+  scheduledDate: '2024-06-15',
 });
 ```
 
@@ -140,26 +141,26 @@ const venue = {
       courtDimensions: 'STANDARD',
       altitude: 100,
       latitude: 40.7128,
-      longitude: -74.0060,
+      longitude: -74.006,
       indoor: false,
       onlineResources: [
         {
           resourceType: 'URL',
           resourceSubType: 'LIVESTREAM',
-          identifier: 'https://stream.example.com/court1'
-        }
-      ]
+          identifier: 'https://stream.example.com/court1',
+        },
+      ],
     },
     {
       courtName: 'Court 2',
       surfaceCategory: 'CLAY',
-      indoor: true
+      indoor: true,
     },
     {
       courtName: 'Court 3',
-      surfaceCategory: 'GRASS'
-    }
-  ]
+      surfaceCategory: 'GRASS',
+    },
+  ],
 };
 
 tournamentEngine.addVenue({ venue });
@@ -193,6 +194,7 @@ TMX supports various court attributes:
 ### Schedule Patterns
 
 #### Simple Time Slots
+
 ```js
 const slots = [
   { time: '09:00', duration: 90 },
@@ -200,18 +202,19 @@ const slots = [
   { time: '12:00', duration: 90 },
   { time: '14:00', duration: 90 },
   { time: '15:30', duration: 90 },
-  { time: '17:00', duration: 90 }
+  { time: '17:00', duration: 90 },
 ];
 ```
 
 #### Court Rotation
+
 ```js
 // Assign matches across courts evenly
 const courts = await tournamentEngine.getCourts({ venueId });
 const matchUps = await tournamentEngine.getAllEventMatchUps({ eventId });
 
 let courtIndex = 0;
-matchUps.forEach(matchUp => {
+matchUps.forEach((matchUp) => {
   const court = courts[courtIndex % courts.length];
   scheduleMatchUp(matchUp, court);
   courtIndex++;
@@ -219,6 +222,7 @@ matchUps.forEach(matchUp => {
 ```
 
 #### Round-Based Scheduling
+
 ```js
 // Schedule round 1 on day 1, round 2 on day 2, etc.
 const { matchUps } = tournamentEngine.getAllEventMatchUps({ eventId });
@@ -241,16 +245,18 @@ Object.entries(byRound).forEach(([round, matches], index) => {
 ```js
 // Add schedule with time
 tournamentEngine.scheduleMatchUps({
-  scheduleAttributes: [{
-    matchUpId,
-    schedule: {
-      scheduledDate: '2024-06-15',
-      scheduledTime: '14:00',
-      scheduledDuration: 90, // minutes
-      courtId,
-      venueId
-    }
-  }]
+  scheduleAttributes: [
+    {
+      matchUpId,
+      schedule: {
+        scheduledDate: '2024-06-15',
+        scheduledTime: '14:00',
+        scheduledDuration: 90, // minutes
+        courtId,
+        venueId,
+      },
+    },
+  ],
 });
 
 // Add actual times
@@ -258,8 +264,8 @@ tournamentEngine.addMatchUpScheduleItems({
   matchUpId,
   schedule: {
     startTime: '2024-06-15T14:05:00Z',
-    endTime: '2024-06-15T15:42:00Z'
-  }
+    endTime: '2024-06-15T15:42:00Z',
+  },
 });
 ```
 
@@ -269,7 +275,7 @@ tournamentEngine.addMatchUpScheduleItems({
 // Check participant availability
 function canSchedule(matchUp, time) {
   const participants = [matchUp.side1, matchUp.side2];
-  
+
   // Check for conflicts
   for (const participant of participants) {
     const schedule = getParticipantSchedule(participant.participantId);
@@ -277,7 +283,7 @@ function canSchedule(matchUp, time) {
       return false;
     }
   }
-  
+
   return true;
 }
 
@@ -287,7 +293,7 @@ const REST_TIME = 60; // minutes
 function hasAdequateRest(participantId, proposedTime) {
   const lastMatch = getLastMatch(participantId);
   if (!lastMatch) return true;
-  
+
   const timeSince = proposedTime - lastMatch.endTime;
   return timeSince >= REST_TIME;
 }
@@ -316,9 +322,9 @@ const { venue } = tournamentEngine.addVenue({
     courts: [
       { courtName: 'Court 1', surfaceCategory: 'HARD' },
       { courtName: 'Court 2', surfaceCategory: 'HARD' },
-      { courtName: 'Court 3', surfaceCategory: 'CLAY' }
-    ]
-  }
+      { courtName: 'Court 3', surfaceCategory: 'CLAY' },
+    ],
+  },
 });
 
 // 2. Get matchUps to schedule
@@ -326,8 +332,8 @@ const { matchUps } = tournamentEngine.getAllEventMatchUps({
   eventId,
   matchUpFilters: {
     matchUpStatuses: ['TO_BE_PLAYED'],
-    readyToScore: true
-  }
+    readyToScore: true,
+  },
 });
 
 // 3. Generate schedule
@@ -339,9 +345,9 @@ const scheduleAttributes = [];
 let currentTime = startTime;
 let courtIndex = 0;
 
-matchUps.forEach(matchUp => {
+matchUps.forEach((matchUp) => {
   const court = venue.courts[courtIndex % venue.courts.length];
-  
+
   scheduleAttributes.push({
     matchUpId: matchUp.matchUpId,
     venueId: venue.venueId,
@@ -349,15 +355,15 @@ matchUps.forEach(matchUp => {
     schedule: {
       scheduledDate: scheduleDate,
       scheduledTime: currentTime,
-      scheduledDuration: matchDuration
-    }
+      scheduledDuration: matchDuration,
+    },
   });
-  
+
   // Move to next time slot when all courts are filled
   if ((courtIndex + 1) % venue.courts.length === 0) {
     currentTime = addMinutes(currentTime, matchDuration);
   }
-  
+
   courtIndex++;
 });
 
@@ -370,7 +376,7 @@ tournamentEngine.bulkScheduleMatchUps({ scheduleAttributes });
 ```js
 // Get all matches for a date
 const { dateMatchUps } = tournamentEngine.getScheduledMatchUps({
-  scheduledDate: '2024-06-15'
+  scheduledDate: '2024-06-15',
 });
 
 // Group by court
@@ -382,10 +388,8 @@ const byCourt = dateMatchUps.reduce((acc, matchUp) => {
 }, {});
 
 // Sort by time within each court
-Object.keys(byCourt).forEach(courtId => {
-  byCourt[courtId].sort((a, b) => 
-    a.schedule.scheduledTime.localeCompare(b.schedule.scheduledTime)
-  );
+Object.keys(byCourt).forEach((courtId) => {
+  byCourt[courtId].sort((a, b) => a.schedule.scheduledTime.localeCompare(b.schedule.scheduledTime));
 });
 
 // Generate order of play document
@@ -393,13 +397,13 @@ const orderOfPlay = {
   date: '2024-06-15',
   courts: Object.entries(byCourt).map(([courtId, matches]) => ({
     court: getCourt(courtId),
-    matches: matches.map(m => ({
+    matches: matches.map((m) => ({
       time: m.schedule.scheduledTime,
       event: getEvent(m.eventId).eventName,
       round: m.roundName,
-      participants: formatParticipants(m.sides)
-    }))
-  }))
+      participants: formatParticipants(m.sides),
+    })),
+  })),
 };
 ```
 
@@ -408,43 +412,49 @@ const orderOfPlay = {
 ```js
 // Move match to different court
 tournamentEngine.scheduleMatchUps({
-  scheduleAttributes: [{
-    matchUpId,
-    courtId: newCourtId,
-    schedule: {
-      scheduledDate: existingDate,
-      scheduledTime: existingTime
-    }
-  }]
+  scheduleAttributes: [
+    {
+      matchUpId,
+      courtId: newCourtId,
+      schedule: {
+        scheduledDate: existingDate,
+        scheduledTime: existingTime,
+      },
+    },
+  ],
 });
 
 // Reschedule to different time
 tournamentEngine.scheduleMatchUps({
-  scheduleAttributes: [{
-    matchUpId,
-    courtId: existingCourtId,
-    schedule: {
-      scheduledDate: existingDate,
-      scheduledTime: newTime
-    }
-  }]
+  scheduleAttributes: [
+    {
+      matchUpId,
+      courtId: existingCourtId,
+      schedule: {
+        scheduledDate: existingDate,
+        scheduledTime: newTime,
+      },
+    },
+  ],
 });
 
 // Remove scheduling
 tournamentEngine.removeMatchUpSchedule({
-  matchUpIds: [matchUpId]
+  matchUpIds: [matchUpId],
 });
 ```
 
 ## Best Practices
 
 ### Venue Setup
+
 - Create venues before scheduling
 - Configure all courts with proper attributes
 - Include surface types for filtering
 - Add court dimensions for capacity planning
 
 ### Scheduling Strategy
+
 - Schedule ready matches first
 - Consider participant rest times
 - Balance court usage
@@ -452,6 +462,7 @@ tournamentEngine.removeMatchUpSchedule({
 - Leave buffer time between matches
 
 ### Schedule Display
+
 - Show by court for officials
 - Show by time for participants
 - Include event and round information
@@ -459,65 +470,11 @@ tournamentEngine.removeMatchUpSchedule({
 - Indicate court surface
 
 ### Modifications
+
 - Notify affected participants of changes
 - Update both scheduled and actual times
 - Track schedule changes for reporting
 - Validate changes before applying
-
-## Troubleshooting
-
-### Court Conflicts
-```js
-// Check for overlapping matches
-function findConflicts(courtId, date) {
-  const { courtMatchUps } = tournamentEngine.getCourtMatchUps({
-    courtId,
-    scheduledDate: date
-  });
-  
-  const conflicts = [];
-  for (let i = 0; i < courtMatchUps.length - 1; i++) {
-    const current = courtMatchUps[i];
-    const next = courtMatchUps[i + 1];
-    
-    const currentEnd = addMinutes(
-      current.schedule.scheduledTime,
-      current.schedule.scheduledDuration || 90
-    );
-    
-    if (currentEnd > next.schedule.scheduledTime) {
-      conflicts.push({ match1: current, match2: next });
-    }
-  }
-  
-  return conflicts;
-}
-```
-
-### Participant Conflicts
-```js
-// Check for back-to-back matches
-function checkParticipantSchedule(participantId, date) {
-  const { matchUps } = tournamentEngine.getParticipantMatchUps({
-    participantId,
-    scheduledDate: date
-  });
-  
-  const sorted = matchUps.sort((a, b) => 
-    a.schedule.scheduledTime.localeCompare(b.schedule.scheduledTime)
-  );
-  
-  const warnings = [];
-  for (let i = 0; i < sorted.length - 1; i++) {
-    const timeBetween = calculateTimeBetween(sorted[i], sorted[i + 1]);
-    if (timeBetween < 30) {
-      warnings.push(`Insufficient rest time: ${timeBetween} minutes`);
-    }
-  }
-  
-  return warnings;
-}
-```
 
 ## Related Documentation
 

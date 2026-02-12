@@ -14,6 +14,7 @@ This page will be updated with screenshots showing the TMX draw generation and m
 ## Overview
 
 Draw management in TMX includes:
+
 - **Draw Generation** - Multiple draw types and formats
 - **Seeding** - Various seeding profiles and manual overrides
 - **Position Assignment** - Manual and automatic participant placement
@@ -35,7 +36,7 @@ tournamentEngine.generateDrawDefinition({
   drawType: 'SINGLE_ELIMINATION',
   seedingProfile: 'WATERFALL',
   automated: true,
-  seedsCount: 8
+  seedsCount: 8,
 });
 
 // Create empty draw for manual placement
@@ -43,7 +44,7 @@ tournamentEngine.addDrawDefinition({
   eventId,
   drawSize: 32,
   drawType: 'SINGLE_ELIMINATION',
-  automated: false
+  automated: false,
 });
 ```
 
@@ -86,7 +87,7 @@ tournamentEngine.assignDrawPosition({
   drawId,
   structureId,
   drawPosition: 1,
-  participantId
+  participantId,
 });
 
 // Assign to multiple positions
@@ -96,8 +97,8 @@ tournamentEngine.assignDrawPositions({
   structureId,
   assignments: [
     { drawPosition: 1, participantId: id1 },
-    { drawPosition: 2, participantId: id2 }
-  ]
+    { drawPosition: 2, participantId: id2 },
+  ],
 });
 
 // Automatic positioning of seeds
@@ -105,7 +106,7 @@ tournamentEngine.automatedPositioning({
   eventId,
   drawId,
   structureId,
-  seedingProfile: 'WATERFALL'
+  seedingProfile: 'WATERFALL',
 });
 ```
 
@@ -114,6 +115,7 @@ tournamentEngine.automatedPositioning({
 TMX supports all factory draw types:
 
 ### Single Elimination
+
 ```js
 {
   drawType: 'SINGLE_ELIMINATION',
@@ -123,6 +125,7 @@ TMX supports all factory draw types:
 ```
 
 ### Compass Draw
+
 ```js
 {
   drawType: 'COMPASS',
@@ -132,6 +135,7 @@ TMX supports all factory draw types:
 ```
 
 ### Round Robin
+
 ```js
 {
   drawType: 'ROUND_ROBIN',
@@ -141,6 +145,7 @@ TMX supports all factory draw types:
 ```
 
 ### Feed-In Championship
+
 ```js
 {
   drawType: 'FEED_IN_CHAMPIONSHIP',
@@ -150,6 +155,7 @@ TMX supports all factory draw types:
 ```
 
 ### Curtis Consolation
+
 ```js
 {
   drawType: 'FIRST_MATCH_LOSER_CONSOLATION',
@@ -158,6 +164,7 @@ TMX supports all factory draw types:
 ```
 
 ### Modified Feed-In
+
 ```js
 {
   drawType: 'MODIFIED_FEED_IN_CHAMPIONSHIP',
@@ -168,6 +175,7 @@ TMX supports all factory draw types:
 ## Seeding Profiles
 
 ### Waterfall (Traditional)
+
 ```js
 {
   seedingProfile: 'WATERFALL',
@@ -177,6 +185,7 @@ TMX supports all factory draw types:
 ```
 
 ### Separate
+
 ```js
 {
   seedingProfile: 'SEPARATE',
@@ -186,6 +195,7 @@ TMX supports all factory draw types:
 ```
 
 ### Cluster
+
 ```js
 {
   seedingProfile: 'CLUSTER',
@@ -208,7 +218,7 @@ const result = tournamentEngine.generateDrawDefinition({
   seedingProfile: 'WATERFALL',
   automated: true,
   seedsCount: 8,
-  matchUpFormat: 'SET3-S:6/TB7'
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 
 // Returns complete draw with:
@@ -227,28 +237,28 @@ Step-by-step draw construction:
 const { drawDefinition } = tournamentEngine.addDrawDefinition({
   eventId,
   drawSize: 32,
-  drawType: 'SINGLE_ELIMINATION'
+  drawType: 'SINGLE_ELIMINATION',
 });
 
 // 2. Assign seeds
 tournamentEngine.setParticipantSeedings({
   eventId,
   participantIds,
-  seedAssignments: [...seeding]
+  seedAssignments: [...seeding],
 });
 
 // 3. Position seeds
 tournamentEngine.automatedPositioning({
   eventId,
   drawId: drawDefinition.drawId,
-  seedingProfile: 'WATERFALL'
+  seedingProfile: 'WATERFALL',
 });
 
 // 4. Position remaining participants
 tournamentEngine.assignDrawPositions({
   eventId,
   drawId: drawDefinition.drawId,
-  assignments: [...unseeded]
+  assignments: [...unseeded],
 });
 ```
 
@@ -258,17 +268,17 @@ tournamentEngine.assignDrawPositions({
 // Get available positions for byes
 const { positionAssignments } = tournamentEngine.getPositionAssignments({
   eventId,
-  drawId
+  drawId,
 });
 
-const byePositions = positionAssignments.filter(p => p.bye);
+const byePositions = positionAssignments.filter((p) => p.bye);
 
 // Place bye
 tournamentEngine.assignDrawPositionBye({
   eventId,
   drawId,
   structureId,
-  drawPosition: position
+  drawPosition: position,
 });
 ```
 
@@ -281,7 +291,7 @@ tournamentEngine.addDrawDefinition({
   drawSize: 16,
   drawType: 'SINGLE_ELIMINATION',
   drawName: 'Qualifying',
-  entryStage: 'QUALIFYING'
+  entryStage: 'QUALIFYING',
 });
 
 // Link qualifier positions to main draw
@@ -289,7 +299,7 @@ tournamentEngine.attachQualifyingStructure({
   eventId,
   mainDrawId,
   qualifyingDrawId,
-  qualifyingPositions: 4 // Number of qualifiers
+  qualifyingPositions: 4, // Number of qualifiers
 });
 ```
 
@@ -299,7 +309,7 @@ tournamentEngine.attachQualifyingStructure({
 // Get available lucky loser positions
 const { availablePositions } = tournamentEngine.getLuckyLoserAvailability({
   eventId,
-  drawId
+  drawId,
 });
 
 // Assign lucky loser
@@ -308,7 +318,7 @@ tournamentEngine.assignLuckyLoser({
   drawId,
   structureId,
   drawPosition,
-  participantId // From qualifying losers
+  participantId, // From qualifying losers
 });
 ```
 
@@ -341,7 +351,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   seedingProfile: 'WATERFALL',
   automated: true,
   seedsCount: Math.min(8, Math.floor(drawSize / 4)),
-  matchUpFormat: 'SET3-S:6/TB7'
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 
 console.log(`Draw created: ${drawDefinition.drawId}`);
@@ -352,10 +362,10 @@ console.log(`Draw created: ${drawDefinition.drawId}`);
 ```js
 // 1. Get unseeded participants
 const { participants } = tournamentEngine.getParticipants({
-  withSeeding: true
+  withSeeding: true,
 });
 
-const unseeded = participants.filter(p => !p.seedValue);
+const unseeded = participants.filter((p) => !p.seedValue);
 
 // 2. Show seeding UI to tournament director
 // User assigns seed numbers
@@ -364,20 +374,20 @@ const unseeded = participants.filter(p => !p.seedValue);
 const seedAssignments = unseeded.map((p, i) => ({
   participantId: p.participantId,
   seedNumber: i + 1,
-  seedValue: `${i + 1}`
+  seedValue: `${i + 1}`,
 }));
 
 tournamentEngine.setParticipantSeedings({
   eventId,
-  participantIds: unseeded.map(p => p.participantId),
-  seedAssignments
+  participantIds: unseeded.map((p) => p.participantId),
+  seedAssignments,
 });
 
 // 4. Generate draw with seeds
 tournamentEngine.generateDrawDefinition({
   eventId,
   drawSize: 32,
-  automated: true
+  automated: true,
 });
 ```
 
@@ -389,7 +399,7 @@ tournamentEngine.swapDrawPositionAssignments({
   eventId,
   drawId,
   structureId,
-  drawPositions: [1, 32] // Swap positions 1 and 32
+  drawPositions: [1, 32], // Swap positions 1 and 32
 });
 
 // Remove participant and replace with bye
@@ -397,14 +407,14 @@ tournamentEngine.removeDrawPositionAssignment({
   eventId,
   drawId,
   structureId,
-  drawPosition: 5
+  drawPosition: 5,
 });
 
 tournamentEngine.assignDrawPositionBye({
   eventId,
   drawId,
   structureId,
-  drawPosition: 5
+  drawPosition: 5,
 });
 
 // Add alternate to draw
@@ -413,7 +423,7 @@ tournamentEngine.alternateDrawPositionAssignment({
   drawId,
   structureId,
   drawPosition: 10,
-  participantId: alternateId
+  participantId: alternateId,
 });
 ```
 
@@ -424,10 +434,10 @@ tournamentEngine.alternateDrawPositionAssignment({
 const { flightProfile } = tournamentEngine.getFlightProfile({ eventId });
 
 // Generate draw for each flight
-flightProfile.flights.forEach(flight => {
+flightProfile.flights.forEach((flight) => {
   // Get entries for this flight
   const flightEntries = getFlightEntries(eventId, flight.flightNumber);
-  
+
   // Generate draw
   tournamentEngine.generateDrawDefinition({
     eventId,
@@ -435,7 +445,7 @@ flightProfile.flights.forEach(flight => {
     drawType: 'SINGLE_ELIMINATION',
     seedingProfile: 'WATERFALL',
     automated: true,
-    drawName: flight.flightName
+    drawName: flight.flightName,
   });
 });
 ```
@@ -449,106 +459,65 @@ const { drawDefinitions } = tournamentEngine.getEventDraws({ eventId });
 // Get specific draw details
 const { drawDefinition } = tournamentEngine.getDrawDefinition({
   eventId,
-  drawId
+  drawId,
 });
 
 // Get draw structure
 const { structures } = tournamentEngine.getDrawStructures({
   eventId,
-  drawId
+  drawId,
 });
 
 // Get position assignments
 const { positionAssignments } = tournamentEngine.getPositionAssignments({
   eventId,
   drawId,
-  structureId
+  structureId,
 });
 
 // Check draw validity
 const { valid, errors } = tournamentEngine.checkDrawValidity({
   eventId,
-  drawId
+  drawId,
 });
 ```
 
 ## Best Practices
 
 ### Draw Planning
+
 - Calculate appropriate draw size (next power of 2)
 - Consider bye placement for smaller fields
 - Plan seeding before generation
 - Decide on seeding profile based on competition level
 
 ### Seeding
+
 - Use rankings/ratings when available
 - Apply federation seeding rules
 - Validate seed counts (typically 25-33% of draw size)
 - Separate seeds appropriately
 
 ### Generation Strategy
+
 - Use automated generation when possible
 - Manual construction for special requirements
 - Test draw validity before finalizing
 - Provide preview before commitment
 
 ### Modification Caution
+
 - Avoid changes after play begins
 - Document all manual changes
 - Validate draw after modifications
 - Check matchUp integrity after swaps
 
 ### Performance
+
 - Generate draws in batches for multiple events
 - Cache draw definitions
 - Use efficient queries for position data
 - Minimize regeneration operations
-
-## Troubleshooting
-
-### Draw Size Mismatch
-```js
-// Validate entries fit in draw size
-const { eventEntries } = tournamentEngine.getEventEntries({ eventId });
-const entryCount = eventEntries.length;
-const drawSize = 32;
-
-if (entryCount > drawSize) {
-  console.error(`Too many entries (${entryCount}) for draw size (${drawSize})`);
-}
-```
-
-### Invalid Seeding
-```js
-// Check seed assignments
-const { participants } = tournamentEngine.getParticipants({
-  withSeeding: true
-});
-
-const seeds = participants.filter(p => p.seedValue);
-const duplicateSeeds = findDuplicates(seeds.map(s => s.seedNumber));
-
-if (duplicateSeeds.length > 0) {
-  console.error('Duplicate seed numbers:', duplicateSeeds);
-}
-```
-
-### Position Conflicts
-```js
-// Verify all positions are valid
-const { positionAssignments } = tournamentEngine.getPositionAssignments({
-  eventId,
-  drawId
-});
-
-const conflicts = positionAssignments.filter(p => 
-  p.participantId && p.bye
-);
-
-if (conflicts.length > 0) {
-  console.error('Position conflicts detected');
-}
-```
 
 ## Related Documentation
 

@@ -14,6 +14,7 @@ This page will be updated with screenshots showing the TMX events management int
 ## Overview
 
 Event management in TMX includes:
+
 - **Event Creation** - Single or multiple events with categories
 - **Category Configuration** - Age groups, gender categories, rating ranges
 - **Entry Management** - Assigning participants to events
@@ -29,23 +30,23 @@ Event management in TMX includes:
 // Create single event
 tournamentEngine.addEvent({
   event: {
-    eventName: 'Men\'s Singles',
+    eventName: "Men's Singles",
     eventType: 'SINGLES',
     gender: 'MALE',
     category: {
       categoryName: 'U18',
-      ageCategoryCode: 'U18'
-    }
-  }
+      ageCategoryCode: 'U18',
+    },
+  },
 });
 
 // Create multiple events
 tournamentEngine.addEvents({
   events: [
-    { eventName: 'Men\'s Singles', eventType: 'SINGLES', gender: 'MALE' },
-    { eventName: 'Women\'s Singles', eventType: 'SINGLES', gender: 'FEMALE' },
-    { eventName: 'Mixed Doubles', eventType: 'DOUBLES', gender: 'MIXED' }
-  ]
+    { eventName: "Men's Singles", eventType: 'SINGLES', gender: 'MALE' },
+    { eventName: "Women's Singles", eventType: 'SINGLES', gender: 'FEMALE' },
+    { eventName: 'Mixed Doubles', eventType: 'DOUBLES', gender: 'MIXED' },
+  ],
 });
 ```
 
@@ -56,15 +57,15 @@ tournamentEngine.addEvents({
 tournamentEngine.modifyEvent({
   eventId,
   event: {
-    eventName: 'Men\'s Open Singles',
+    eventName: "Men's Open Singles",
     startDate: '2024-06-15',
-    endDate: '2024-06-16'
-  }
+    endDate: '2024-06-16',
+  },
 });
 
 // Delete event
 tournamentEngine.deleteEvents({
-  eventIds: [eventId]
+  eventIds: [eventId],
 });
 ```
 
@@ -76,13 +77,13 @@ tournamentEngine.addEventEntries({
   eventId,
   participantIds: [id1, id2, id3],
   entryStatus: 'DIRECT_ACCEPTANCE',
-  entryStage: 'MAIN'
+  entryStage: 'MAIN',
 });
 
 // Remove entries
 tournamentEngine.destroyEventEntries({
   eventId,
-  participantIds: [id1]
+  participantIds: [id1],
 });
 ```
 
@@ -91,6 +92,7 @@ tournamentEngine.destroyEventEntries({
 ### Event Types
 
 TMX supports all factory event types:
+
 - **SINGLES** - Individual competition
 - **DOUBLES** - Team of 2 players
 - **TEAM** - Multi-player teams
@@ -99,6 +101,7 @@ TMX supports all factory event types:
 ### Category System
 
 #### Age Categories
+
 ```js
 {
   category: {
@@ -112,6 +115,7 @@ TMX supports all factory event types:
 ```
 
 #### Rating Categories
+
 ```js
 {
   category: {
@@ -124,12 +128,14 @@ TMX supports all factory event types:
 ```
 
 #### Gender Categories
+
 - MALE
-- FEMALE  
+- FEMALE
 - MIXED
 - ANY
 
 #### Combined Categories
+
 ```js
 {
   category: {
@@ -150,10 +156,8 @@ TMX uses [Flight Profiles](../concepts/events/flights.mdx) for sophisticated eve
 tournamentEngine.setEventFlightProfile({
   eventId,
   flightProfile: {
-    flights: [
-      { flightNumber: 1, drawSize: 16 }
-    ]
-  }
+    flights: [{ flightNumber: 1, drawSize: 16 }],
+  },
 });
 
 // Multiple flights with rating ranges
@@ -161,22 +165,22 @@ tournamentEngine.setEventFlightProfile({
   eventId,
   flightProfile: {
     flights: [
-      { 
-        flightNumber: 1, 
+      {
+        flightNumber: 1,
         drawSize: 16,
         flightName: 'Gold Flight',
         ratingMin: 30,
-        ratingMax: 40
+        ratingMax: 40,
       },
-      { 
-        flightNumber: 2, 
+      {
+        flightNumber: 2,
         drawSize: 16,
         flightName: 'Silver Flight',
         ratingMin: 20,
-        ratingMax: 30
-      }
-    ]
-  }
+        ratingMax: 30,
+      },
+    ],
+  },
 });
 ```
 
@@ -188,7 +192,7 @@ tournamentEngine.addDrawDefinition({
   eventId,
   drawSize: 32,
   drawType: 'SINGLE_ELIMINATION',
-  seedingProfile: 'WATERFALL'
+  seedingProfile: 'WATERFALL',
 });
 ```
 
@@ -210,13 +214,13 @@ TMX uses these [courthive-components](https://courthive.github.io/courthive-comp
 ```js
 // 1. Define event
 const event = {
-  eventName: 'Men\'s Open',
+  eventName: "Men's Open",
   eventType: 'SINGLES',
   gender: 'MALE',
   category: {
     categoryName: 'Open',
-    ageCategoryCode: 'OPEN'
-  }
+    ageCategoryCode: 'OPEN',
+  },
 };
 
 // 2. Add event
@@ -225,18 +229,18 @@ const eventId = createdEvent.eventId;
 
 // 3. Add participants
 const { participants } = tournamentEngine.getParticipants({
-  participantFilters: { 
+  participantFilters: {
     participantTypes: ['INDIVIDUAL'],
-    sex: 'MALE'
-  }
+    sex: 'MALE',
+  },
 });
 
-const participantIds = participants.map(p => p.participantId);
+const participantIds = participants.map((p) => p.participantId);
 
 tournamentEngine.addEventEntries({
   eventId,
   participantIds,
-  entryStatus: 'DIRECT_ACCEPTANCE'
+  entryStatus: 'DIRECT_ACCEPTANCE',
 });
 
 // 4. Configure draw
@@ -244,7 +248,7 @@ tournamentEngine.addDrawDefinition({
   eventId,
   drawSize: 32,
   drawType: 'SINGLE_ELIMINATION',
-  seedingProfile: 'WATERFALL'
+  seedingProfile: 'WATERFALL',
 });
 ```
 
@@ -256,10 +260,10 @@ const ageCategories = [
   { code: 'U12', max: 12 },
   { code: 'U14', max: 14 },
   { code: 'U16', max: 16 },
-  { code: 'U18', max: 18 }
+  { code: 'U18', max: 18 },
 ];
 
-const events = ageCategories.flatMap(cat => [
+const events = ageCategories.flatMap((cat) => [
   {
     eventName: `Boys ${cat.code}`,
     eventType: 'SINGLES',
@@ -267,8 +271,8 @@ const events = ageCategories.flatMap(cat => [
     category: {
       categoryName: cat.code,
       ageCategoryCode: cat.code,
-      ageMax: cat.max
-    }
+      ageMax: cat.max,
+    },
   },
   {
     eventName: `Girls ${cat.code}`,
@@ -277,9 +281,9 @@ const events = ageCategories.flatMap(cat => [
     category: {
       categoryName: cat.code,
       ageCategoryCode: cat.code,
-      ageMax: cat.max
-    }
-  }
+      ageMax: cat.max,
+    },
+  },
 ]);
 
 tournamentEngine.addEvents({ events });
@@ -295,27 +299,27 @@ const { participants } = tournamentEngine.getParticipants();
 const { events } = tournamentEngine.getEvents();
 
 // Auto-assign to matching categories
-events.forEach(event => {
-  const matchingParticipants = participants.filter(p => {
+events.forEach((event) => {
+  const matchingParticipants = participants.filter((p) => {
     // Match gender
     if (event.gender !== 'ANY' && p.person.sex !== event.gender) {
       return false;
     }
-    
+
     // Match age category
     if (event.category?.ageMax) {
       const age = calculateAge(p.person.birthDate);
       if (age > event.category.ageMax) return false;
     }
-    
+
     return true;
   });
-  
+
   if (matchingParticipants.length > 0) {
     tournamentEngine.addEventEntries({
       eventId: event.eventId,
-      participantIds: matchingParticipants.map(p => p.participantId),
-      entryStatus: 'DIRECT_ACCEPTANCE'
+      participantIds: matchingParticipants.map((p) => p.participantId),
+      entryStatus: 'DIRECT_ACCEPTANCE',
     });
   }
 });
@@ -331,7 +335,7 @@ tournamentEngine.addEventEntries({
   eventId,
   participantIds,
   entryStatus: 'DIRECT_ACCEPTANCE',
-  entryStage: 'MAIN'
+  entryStage: 'MAIN',
 });
 
 // Alternate entries
@@ -339,7 +343,7 @@ tournamentEngine.addEventEntries({
   eventId,
   participantIds,
   entryStatus: 'ALTERNATE',
-  entryStage: 'MAIN'
+  entryStage: 'MAIN',
 });
 
 // Qualifying entries
@@ -347,7 +351,7 @@ tournamentEngine.addEventEntries({
   eventId,
   participantIds,
   entryStatus: 'DIRECT_ACCEPTANCE',
-  entryStage: 'QUALIFYING'
+  entryStage: 'QUALIFYING',
 });
 ```
 
@@ -357,7 +361,7 @@ tournamentEngine.addEventEntries({
 // Set event publishing state
 tournamentEngine.setEventPublishState({
   eventId,
-  published: true
+  published: true,
 });
 
 // Configure what to publish
@@ -368,63 +372,41 @@ tournamentEngine.setEventPublishingDetail({
       draws: true,
       entries: true,
       results: true,
-      schedule: false
-    }
-  }
+      schedule: false,
+    },
+  },
 });
 ```
 
 ## Best Practices
 
 ### Event Planning
+
 - Create events before adding entries
 - Use consistent naming conventions
 - Configure categories before assignment
 - Set draw sizes based on expected entries
 
 ### Category Configuration
+
 - Use standard age category codes (U10, U12, U14, etc.)
 - Set appropriate rating ranges for flights
 - Consider ball type for age categories
 - Use gender filtering appropriately
 
 ### Entry Management
+
 - Validate participant eligibility before assignment
 - Use appropriate entry status
 - Handle wait lists with ALTERNATE status
 - Track entry stage (MAIN, QUALIFYING, CONSOLATION)
 
 ### Performance
+
 - Create multiple events at once with addEvents
 - Batch participant assignments
 - Query events once and filter in UI
 - Cache event configurations
-
-## Troubleshooting
-
-### No Matching Participants
-```js
-// Verify category criteria
-const { participants } = tournamentEngine.getParticipants();
-const eligible = participants.filter(p => {
-  // Check age eligibility
-  const age = calculateAge(p.person.birthDate);
-  return age <= event.category.ageMax && age >= event.category.ageMin;
-});
-
-if (eligible.length === 0) {
-  console.log('No eligible participants for this category');
-}
-```
-
-### Invalid Draw Size
-```js
-// Validate draw size is a valid power of 2 or allowed size
-const validDrawSizes = [2, 4, 8, 16, 32, 64, 128, 256];
-if (!validDrawSizes.includes(drawSize)) {
-  console.error('Invalid draw size');
-}
-```
 
 ## Related Documentation
 

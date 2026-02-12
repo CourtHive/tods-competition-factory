@@ -14,6 +14,7 @@ This page will be updated with screenshots showing the TMX matchup management an
 ## Overview
 
 MatchUp management in TMX includes:
+
 - **Match Listing** - View all matches with filtering and sorting
 - **Live Scoring** - Enter and update match scores
 - **Score Validation** - Format-aware score validation
@@ -34,7 +35,7 @@ const { matchUps } = tournamentEngine.getAllEventMatchUps({ eventId });
 // Get matchUps for a draw
 const { matchUps } = tournamentEngine.getMatchUps({
   eventId,
-  drawId
+  drawId,
 });
 
 // Get matchUps for a round
@@ -42,13 +43,13 @@ const { matchUps } = tournamentEngine.getRoundMatchUps({
   eventId,
   drawId,
   structureId,
-  roundNumber: 1
+  roundNumber: 1,
 });
 
 // Get specific matchUp
 const { matchUp } = tournamentEngine.getMatchUp({
   eventId,
-  matchUpId
+  matchUpId,
 });
 ```
 
@@ -64,11 +65,11 @@ tournamentEngine.setMatchUpStatus({
     score: {
       sets: [
         { side1Score: 6, side2Score: 4 },
-        { side1Score: 6, side2Score: 3 }
-      ]
+        { side1Score: 6, side2Score: 3 },
+      ],
     },
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 
 // Score from string
@@ -77,8 +78,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     scoreString: '6-4 6-3',
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 ```
 
@@ -89,7 +90,7 @@ tournamentEngine.setMatchUpStatus({
 tournamentEngine.setMatchUpStatus({
   eventId,
   matchUpId,
-  matchUpStatus: 'IN_PROGRESS'
+  matchUpStatus: 'IN_PROGRESS',
 });
 
 // Complete match with walkover
@@ -98,8 +99,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     matchUpStatus: 'WALKOVER',
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 
 // Mark as retired
@@ -112,10 +113,10 @@ tournamentEngine.setMatchUpStatus({
     score: {
       sets: [
         { side1Score: 6, side2Score: 2 },
-        { side1Score: 3, side2Score: 5 }
-      ]
-    }
-  }
+        { side1Score: 3, side2Score: 5 },
+      ],
+    },
+  },
 });
 ```
 
@@ -125,7 +126,7 @@ tournamentEngine.setMatchUpStatus({
 // Set default format for event
 tournamentEngine.setEventMatchUpFormat({
   eventId,
-  matchUpFormat: 'SET3-S:6/TB7'
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 
 // Set format for specific structure
@@ -133,14 +134,14 @@ tournamentEngine.setStructureMatchUpFormat({
   eventId,
   drawId,
   structureId,
-  matchUpFormat: 'SET3-S:6/TB7'
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 
 // Set format for individual matchUp
 tournamentEngine.setMatchUpFormat({
   eventId,
   matchUpId,
-  matchUpFormat: 'SET1-S:8/TB7'
+  matchUpFormat: 'SET1-S:8/TB7',
 });
 ```
 
@@ -151,28 +152,31 @@ TMX supports flexible match format codes:
 ### Standard Formats
 
 ```js
-'SET3-S:6/TB7'        // Best of 3 sets to 6 games, tiebreak at 7
-'SET3-S:6/TB7@6'      // Best of 3, TB at 6-6
-'SET3-S:6/TB7-F:TB10' // Best of 3, final set super tiebreak to 10
-'SET1-S:8/TB7'        // 1 set to 8 games, TB at 7
-'SET5-S:6/TB7'        // Best of 5 sets
+'SET3-S:6/TB7'; // Best of 3 sets to 6 games, tiebreak at 7
+'SET3-S:6/TB7@6'; // Best of 3, TB at 6-6
+'SET3-S:6/TB7-F:TB10'; // Best of 3, final set super tiebreak to 10
+'SET1-S:8/TB7'; // 1 set to 8 games, TB at 7
+'SET5-S:6/TB7'; // Best of 5 sets
 ```
 
 ### Timed Formats
+
 ```js
-'TIMED20'             // 20 minute timed match
-'TIMED25-NOAD'        // 25 minutes, no-ad scoring
+'TIMED20'; // 20 minute timed match
+'TIMED25-NOAD'; // 25 minutes, no-ad scoring
 ```
 
 ### Pro Set
+
 ```js
-'SET1-S:8/TB7'        // Pro set to 8
-'SET1-S:10/TB7'       // Pro set to 10
+'SET1-S:8/TB7'; // Pro set to 8
+'SET1-S:10/TB7'; // Pro set to 10
 ```
 
 ### No-Ad Scoring
+
 ```js
-'SET3-S:6/TB7-NOAD'   // Best of 3, no-ad
+'SET3-S:6/TB7-NOAD'; // Best of 3, no-ad
 ```
 
 ## Key Features
@@ -182,18 +186,18 @@ TMX supports flexible match format codes:
 ```js
 // Progressive score entry
 const score = {
-  sets: []
+  sets: [],
 };
 
 // First set
 score.sets.push({ side1Score: 6, side2Score: 4 });
 
 // Second set with tiebreak
-score.sets.push({ 
-  side1Score: 7, 
+score.sets.push({
+  side1Score: 7,
   side2Score: 6,
   side1TiebreakScore: 7,
-  side2TiebreakScore: 5
+  side2TiebreakScore: 5,
 });
 
 // Third set (if needed)
@@ -207,8 +211,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     score,
-    winningSide: determinWinner(score)
-  }
+    winningSide: determinWinner(score),
+  },
 });
 ```
 
@@ -221,9 +225,9 @@ const { valid, errors } = tournamentEngine.validateScore({
   score: {
     sets: [
       { side1Score: 6, side2Score: 4 },
-      { side1Score: 7, side2Score: 5 }
-    ]
-  }
+      { side1Score: 7, side2Score: 5 },
+    ],
+  },
 });
 
 if (!valid) {
@@ -245,15 +249,19 @@ tournamentEngine.setMatchUpStatus({
   eventId,
   matchUpId,
   outcome: {
-    score: { sets: [/* ... */] },
-    winningSide: 1
-  }
+    score: {
+      sets: [
+        /* ... */
+      ],
+    },
+    winningSide: 1,
+  },
 });
 
 // Check what matchUps are now ready
-const { matchUps } = tournamentEngine.getAllEventMatchUps({ 
+const { matchUps } = tournamentEngine.getAllEventMatchUps({
   eventId,
-  matchUpFilters: { matchUpStatuses: ['TO_BE_PLAYED'] }
+  matchUpFilters: { matchUpStatuses: ['TO_BE_PLAYED'] },
 });
 ```
 
@@ -266,8 +274,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     matchUpStatus: 'WALKOVER',
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 
 // Default
@@ -276,8 +284,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     matchUpStatus: 'DEFAULTED',
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 
 // Double walkover
@@ -285,8 +293,8 @@ tournamentEngine.setMatchUpStatus({
   eventId,
   matchUpId,
   outcome: {
-    matchUpStatus: 'DOUBLE_WALKOVER'
-  }
+    matchUpStatus: 'DOUBLE_WALKOVER',
+  },
 });
 
 // Retired
@@ -299,10 +307,10 @@ tournamentEngine.setMatchUpStatus({
     score: {
       sets: [
         { side1Score: 6, side2Score: 2 },
-        { side1Score: 3, side2Score: 4 } // Score when retired
-      ]
-    }
-  }
+        { side1Score: 3, side2Score: 4 }, // Score when retired
+      ],
+    },
+  },
 });
 ```
 
@@ -325,7 +333,7 @@ TMX uses these [courthive-components](https://courthive.github.io/courthive-comp
 // 1. Get matchUp
 const { matchUp } = tournamentEngine.getMatchUp({
   eventId,
-  matchUpId
+  matchUpId,
 });
 
 // 2. Validate participants present
@@ -338,18 +346,18 @@ if (!matchUp.sides[0].participantId || !matchUp.sides[1].participantId) {
 const score = {
   sets: [
     { side1Score: 6, side2Score: 4 },
-    { side1Score: 6, side2Score: 3 }
-  ]
+    { side1Score: 6, side2Score: 3 },
+  ],
 };
 
 // 4. Determine winner
-const winningSide = score.sets.filter(s => s.side1Score > s.side2Score).length > 1 ? 1 : 2;
+const winningSide = score.sets.filter((s) => s.side1Score > s.side2Score).length > 1 ? 1 : 2;
 
 // 5. Submit
 const result = tournamentEngine.setMatchUpStatus({
   eventId,
   matchUpId,
-  outcome: { score, winningSide }
+  outcome: { score, winningSide },
 });
 
 // 6. Update UI
@@ -366,15 +374,15 @@ let currentScore = { sets: [] };
 
 function updateSet(setNumber, side1Score, side2Score) {
   currentScore.sets[setNumber - 1] = { side1Score, side2Score };
-  
+
   // Save intermediate state
   tournamentEngine.setMatchUpStatus({
     eventId,
     matchUpId,
     matchUpStatus: 'IN_PROGRESS',
     outcome: {
-      score: currentScore
-    }
+      score: currentScore,
+    },
   });
 }
 
@@ -385,8 +393,8 @@ function completeMatch(winningSide) {
     outcome: {
       score: currentScore,
       winningSide,
-      matchUpStatus: 'COMPLETED'
-    }
+      matchUpStatus: 'COMPLETED',
+    },
   });
 }
 ```
@@ -398,18 +406,19 @@ function completeMatch(winningSide) {
 const scores = [
   { matchUpId: 'match1', scoreString: '6-4 6-3', winningSide: 1 },
   { matchUpId: 'match2', scoreString: '7-6(5) 4-6 10-8', winningSide: 1 },
-  { matchUpId: 'match3', scoreString: 'WO', winningSide: 1, status: 'WALKOVER' }
+  { matchUpId: 'match3', scoreString: 'WO', winningSide: 1, status: 'WALKOVER' },
 ];
 
-scores.forEach(s => {
-  const outcome = s.status === 'WALKOVER' 
-    ? { matchUpStatus: 'WALKOVER', winningSide: s.winningSide }
-    : { scoreString: s.scoreString, winningSide: s.winningSide };
-  
+scores.forEach((s) => {
+  const outcome =
+    s.status === 'WALKOVER'
+      ? { matchUpStatus: 'WALKOVER', winningSide: s.winningSide }
+      : { scoreString: s.scoreString, winningSide: s.winningSide };
+
   tournamentEngine.setMatchUpStatus({
     eventId,
     matchUpId: s.matchUpId,
-    outcome
+    outcome,
   });
 });
 ```
@@ -420,7 +429,7 @@ scores.forEach(s => {
 // Remove incorrect score
 tournamentEngine.resetMatchUpLineUp({
   eventId,
-  matchUpId
+  matchUpId,
 });
 
 // Re-enter correct score
@@ -429,8 +438,8 @@ tournamentEngine.setMatchUpStatus({
   matchUpId,
   outcome: {
     score: correctScore,
-    winningSide: correctWinner
-  }
+    winningSide: correctWinner,
+  },
 });
 ```
 
@@ -441,8 +450,8 @@ tournamentEngine.setMatchUpStatus({
 const { completedMatchUps } = tournamentEngine.getAllEventMatchUps({
   eventId,
   matchUpFilters: {
-    matchUpStatuses: ['COMPLETED']
-  }
+    matchUpStatuses: ['COMPLETED'],
+  },
 });
 
 // Get matches ready to play
@@ -451,22 +460,22 @@ const { readyMatchUps } = tournamentEngine.getAllEventMatchUps({
   matchUpFilters: {
     matchUpStatuses: ['TO_BE_PLAYED'],
     isMatchUpTie: false,
-    readyToScore: true
-  }
+    readyToScore: true,
+  },
 });
 
 // Get matches by round
 const { matchUps } = tournamentEngine.getAllEventMatchUps({
   eventId,
   matchUpFilters: {
-    roundNumbers: [1, 2]
-  }
+    roundNumbers: [1, 2],
+  },
 });
 
 // Get matches for specific participant
 const { matchUps } = tournamentEngine.getParticipantMatchUps({
   participantId,
-  eventId
+  eventId,
 });
 ```
 
@@ -477,24 +486,22 @@ const { matchUps } = tournamentEngine.getParticipantMatchUps({
 const { matchUpFormat, score } = matchUp;
 
 // Calculate total games
-const totalGames = score.sets.reduce((sum, set) => 
-  sum + set.side1Score + set.side2Score, 0
-);
+const totalGames = score.sets.reduce((sum, set) => sum + set.side1Score + set.side2Score, 0);
 
 // Check for tiebreaks
-const tiebreaks = score.sets.filter(set => 
-  set.side1TiebreakScore !== undefined
-).length;
+const tiebreaks = score.sets.filter((set) => set.side1TiebreakScore !== undefined).length;
 
 // Match duration
-const duration = matchUp.schedule?.endTime && matchUp.schedule?.startTime
-  ? new Date(matchUp.schedule.endTime) - new Date(matchUp.schedule.startTime)
-  : null;
+const duration =
+  matchUp.schedule?.endTime && matchUp.schedule?.startTime
+    ? new Date(matchUp.schedule.endTime) - new Date(matchUp.schedule.startTime)
+    : null;
 ```
 
 ## Best Practices
 
 ### Score Entry
+
 - Validate format before entry
 - Check for tiebreak requirements
 - Verify set completion before moving to next set
@@ -502,76 +509,26 @@ const duration = matchUp.schedule?.endTime && matchUp.schedule?.startTime
 - Allow score preview before submission
 
 ### Match Management
+
 - Update status appropriately (SCHEDULED → IN_PROGRESS → COMPLETED)
 - Handle special outcomes properly (WO, RET, DEF)
 - Provide clear feedback on score submission
 - Allow score corrections with audit trail
 
 ### Performance
+
 - Cache matchUp lists and filter in UI
 - Use matchUp filters in queries
 - Batch score updates when possible
 - Minimize full matchUp queries
 
 ### User Experience
+
 - Show match format clearly
 - Indicate tiebreak requirements
 - Display running score during entry
 - Confirm before submitting scores
 - Allow easy correction of mistakes
-
-## Troubleshooting
-
-### Invalid Score
-```js
-// Check score validity
-const { valid, errors } = tournamentEngine.validateScore({
-  matchUpFormat,
-  score
-});
-
-if (!valid) {
-  errors.forEach(error => {
-    console.log(`${error.type}: ${error.message}`);
-  });
-}
-```
-
-### Winner Not Advancing
-```js
-// Verify matchUp has winningSide
-if (!matchUp.winningSide) {
-  console.error('Winner not determined');
-}
-
-// Check for dependent matchUps
-const { nextMatchUp } = tournamentEngine.getNextMatchUp({
-  eventId,
-  matchUpId,
-  inContextDrawMatchUps: true
-});
-
-if (!nextMatchUp) {
-  console.log('No next matchUp (likely final)');
-}
-```
-
-### Score Reset Issues
-```js
-// Properly reset matchUp
-tournamentEngine.resetMatchUpLineUp({
-  eventId,
-  matchUpId,
-  removeAssignments: false // Keep participants assigned
-});
-
-// Then set correct outcome
-tournamentEngine.setMatchUpStatus({
-  eventId,
-  matchUpId,
-  outcome: correctOutcome
-});
-```
 
 ## Related Documentation
 
