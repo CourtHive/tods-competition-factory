@@ -8,8 +8,8 @@ import { ELO } from '@Constants/ratingConstants';
 
 export function calculatePressureRatings({ participantResults, sides, score }) {
   // calculate gamesWon times opponent rating
-  const side1 = sides.find(({ sideNumber }) => sideNumber === 1);
-  const side2 = sides.find(({ sideNumber }) => sideNumber === 2);
+  const side1 = sides?.find(({ sideNumber }) => sideNumber === 1);
+  const side2 = sides?.find(({ sideNumber }) => sideNumber === 2);
   const side1ratings = side1?.participant?.ratings;
   const side2ratings = side2?.participant?.ratings;
   if (side1ratings?.[SINGLES] && side2ratings?.[SINGLES]) {
