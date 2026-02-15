@@ -1,3 +1,4 @@
+import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getEventSeedAssignments } from '@Query/event/getEventSeedAssignments';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getDrawId, getParticipantId } from '@Functions/global/extractors';
@@ -17,7 +18,7 @@ import { isObject } from '@Tools/objects';
 
 // constants and types
 import { UNGROUPED, UNPAIRED } from '@Constants/entryStatusConstants';
-import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
+import { CONTAINER, MAIN, PLAY_OFF, QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { DOUBLES, SINGLES } from '@Constants/matchUpTypes';
 import { WIN_RATIO } from '@Constants/statsConstants';
 import { HydratedMatchUp } from '@Types/hydrated';
@@ -81,6 +82,10 @@ export function getParticipantEntries(params) {
   const eventsPublishStatuses = {};
   const derivedEventInfo: any = {};
   const derivedDrawInfo: any = {};
+
+  // RR group matchUp collection for tally-based finishing positions
+  const rrGroupMatchUps: { [structureId: string]: HydratedMatchUp[] } = {};
+  const rrContainerInfo: { [containerStructureId: string]: { drawDefinition: any; drawId: string } } = {};
 
   const getRanking = ({ eventType, scaleNames, participantId }) =>
     participantMap[participantId]?.participant?.rankings?.[eventType]?.find((ranking) =>
@@ -400,6 +405,16 @@ export function getParticipantEntries(params) {
 
         mappedMatchUps[matchUpId] = matchUp;
 
+        // Collect RR group matchUps for tally-based finishing positions
+        if (withRankingProfile && containerStructureId && structureId && drawId) {
+          if (!rrGroupMatchUps[structureId]) rrGroupMatchUps[structureId] = [];
+          rrGroupMatchUps[structureId].push(matchUp);
+          if (!rrContainerInfo[containerStructureId]) {
+            const drawDef = drawDefinitions.find((dd) => dd.drawId === drawId);
+            if (drawDef) rrContainerInfo[containerStructureId] = { drawDefinition: drawDef, drawId };
+          }
+        }
+
         const baseAttrs = {
           finishingPositionRange,
           containerStructureId,
@@ -491,6 +506,71 @@ export function getParticipantEntries(params) {
     }
   }
 
+  // Compute RR tally-based finishing positions
+  const rrFinishingPositions: { [drawId: string]: { [participantId: string]: number[] } } = {};
+
+  if (withRankingProfile) {
+    for (const [containerStructureId, containerInfo] of Object.entries(rrContainerInfo)) {
+      const { drawDefinition, drawId } = containerInfo;
+      const mainStructure = drawDefinition.structures?.find(
+        (s) => s.structureType === CONTAINER && s.stage === MAIN && s.stageSequence === 1,
+      );
+      if (!mainStructure?.structures) continue;
+
+      const containedStructures = mainStructure.structures;
+      const bracketsCount = containedStructures.length;
+      const drawPositionsCount = containedStructures.reduce(
+        (sum, s) => sum + (s.positionAssignments?.length || 0),
+        0,
+      );
+      const playoffStructure = drawDefinition.structures?.find((s) => s.stage === PLAY_OFF);
+
+      if (!rrFinishingPositions[drawId]) rrFinishingPositions[drawId] = {};
+
+      for (const containedStructure of containedStructures) {
+        const childStructureId = containedStructure.structureId;
+        const groupMatchUps = rrGroupMatchUps[childStructureId];
+        if (!groupMatchUps?.length) continue;
+
+        const bracketSize = containedStructure.positionAssignments?.length;
+
+        const tallyResult = tallyParticipantResults({ matchUps: groupMatchUps });
+        if (!tallyResult?.participantResults) continue;
+
+        for (const [participantId, result] of Object.entries(tallyResult.participantResults) as [string, any][]) {
+          const { groupOrder, provisionalOrder } = result;
+          const order = groupOrder || provisionalOrder;
+          if (!order) continue;
+
+          let range;
+          if (drawPositionsCount === bracketSize && order) {
+            // Single bracket: order is the exact finishing position (groupOrder if complete, provisionalOrder if not)
+            range = [order, order];
+          } else if (bracketsCount > 1 && order && !playoffStructure) {
+            // Multiple brackets, no playoff: position within groupOrder rank across all brackets
+            range = [1, bracketsCount];
+          } else if (bracketsCount > 1 && order && playoffStructure) {
+            // Multiple brackets with playoff: range based on advancing positions from links
+            const advancingPositions = drawDefinition.links?.find(
+              (link) => link.source.structureId === containerStructureId,
+            )?.source?.finishingPositions;
+            if (advancingPositions) {
+              const totalAdvancing = advancingPositions.length * bracketsCount;
+              if (advancingPositions.includes(order)) {
+                range = [1, totalAdvancing];
+              } else {
+                const finishingOffset = (bracketSize - order) * bracketsCount;
+                range = [totalAdvancing + 1, drawPositionsCount - finishingOffset];
+              }
+            }
+          }
+
+          if (range) rrFinishingPositions[drawId][participantId] = range;
+        }
+      }
+    }
+  }
+
   if (withStatistics || withRankingProfile || !!scheduleAnalysis) {
     const aggregators: any[] = Object.values(participantMap);
     for (const participantAggregator of aggregators) {
@@ -553,9 +633,11 @@ export function getParticipantEntries(params) {
               .filter(Boolean);
 
             if (participantAggregator.draws[drawId]) {
-              // this is where finishingPositionRanges for round robin groups would be added in the future
-              // here we have access to hydrated matchUps and can tallyParticipantResults to get groupOrders
-              // from which we can derive finishingPositionRanges for round robin groups
+              // Override with tally-derived finishing position for RR draws
+              const participantId = participantAggregator.participant.participantId;
+              const rrRange = rrFinishingPositions[drawId]?.[participantId];
+              if (rrRange) finishingPositionRange = rrRange;
+
               participantAggregator.draws[drawId].finishingPositionRange = finishingPositionRange;
               participantAggregator.draws[drawId].structureParticipation = orderedParticipation;
             }
