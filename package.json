@@ -148,7 +148,7 @@
     "@vitest/coverage-v8": "4.0.18",
     "@vitest/ui": "4.0.18",
     "agadoo": "^3.0.0",
-    "ajv": "8.17.1",
+    "ajv": "8.18.0",
     "ajv-formats": "3.0.1",
     "body-parser": "2.2.2",
     "c8": "10.1.3",
