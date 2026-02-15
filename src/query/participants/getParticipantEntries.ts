@@ -1,6 +1,7 @@
 import { tallyParticipantResults } from '@Query/matchUps/roundRobinTally/tallyParticipantResults';
 import { getEventSeedAssignments } from '@Query/event/getEventSeedAssignments';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
+import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
 import { getDrawId, getParticipantId } from '@Functions/global/extractors';
 import { processEventEntry } from '@Query/participant/processEventEntry';
 import { allEventMatchUps } from '@Query/matchUps/getAllEventMatchUps';
@@ -533,8 +534,11 @@ export function getParticipantEntries(params) {
         if (!groupMatchUps?.length) continue;
 
         const bracketSize = containedStructure.positionAssignments?.length;
+        const { subOrderMap } = createSubOrderMap({
+          positionAssignments: containedStructure.positionAssignments,
+        });
 
-        const tallyResult = tallyParticipantResults({ matchUps: groupMatchUps });
+        const tallyResult = tallyParticipantResults({ matchUps: groupMatchUps, subOrderMap });
         if (!tallyResult?.participantResults) continue;
 
         for (const [participantId, result] of Object.entries(tallyResult.participantResults) as [string, any][]) {
