@@ -13,7 +13,7 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     coverage: {
-      reporter: ['html'],
+      reporter: ['html', 'json-summary'],
       include: ['src/**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
       exclude: [
         ...configDefaults.exclude,

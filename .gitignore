@@ -5,6 +5,9 @@ documentation/build
 # Server
 storage/
 
+# goLLums
+.claude
+
 # Testing
 benchmarks
 coverage

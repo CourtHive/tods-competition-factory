@@ -1,6 +1,6 @@
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
-import fs from 'fs';
+import fs from 'fs-extra';
 
 /**
  * To reproduce use cases:
@@ -20,7 +20,6 @@ test.skip('can execute abitrary methods', () => {
   const methods = [];
   result = tournamentEngine.executionQueue(methods);
   console.log(result);
-  // expect(result.success).toEqual(true);
 
   // START: postMutation
   // END: postMutation

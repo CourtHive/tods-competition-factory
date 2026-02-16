@@ -20,7 +20,7 @@ import {
 
 test('generateTournamentRecord', () => {
   const { tournamentRecord } = mocksEngine.generateTournamentRecord();
-  expect(Object.keys(tournamentRecord).sort()).toEqual([
+  expect(Object.keys(tournamentRecord).sort((a, b) => a.localeCompare(b))).toEqual([
     'endDate',
     'isMock',
     'participants',

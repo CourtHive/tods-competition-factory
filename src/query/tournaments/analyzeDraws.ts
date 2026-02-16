@@ -58,6 +58,7 @@ export function analyzeDraws({ tournamentRecord }): {
       const orderNumber = stageOrder[stage];
       const { inContextStructureMatchUps } = getStructureDrawPositionProfiles({
         drawDefinition,
+        structureId,
         structure,
         event,
       });

@@ -119,12 +119,12 @@ test.each([tournamentEngineSync, tournamentEngineAsync])(
     // because there are two participants progressed for each first round playoff matchUp
     expect(matchUpModifyNotices.length).toEqual(playoffMatchUps.length * 2);
 
-    const sanityCheckMatchUpIds = withLoserMatchUpId.map(({ matchUpId }) => matchUpId);
+    const sanityCheckMatchUpIds = new Set(withLoserMatchUpId.map(({ matchUpId }) => matchUpId));
 
     result = await tournamentEngine.allTournamentMatchUps();
     matchUps = result.matchUps;
     matchUps.forEach(({ matchUpId, loserMatchUpId }) => {
-      if (sanityCheckMatchUpIds.includes(matchUpId)) {
+      if (sanityCheckMatchUpIds.has(matchUpId)) {
         expect(loserMatchUpId).not.toBeUndefined();
       }
     });
@@ -211,12 +211,12 @@ test.each([tournamentEngineSync, tournamentEngineAsync])(
     // There are two MAIN matchUps which have been modified, feeding into one PLAYOFF matchUp
     expect(playoffMatchUps.length).toEqual((matchUpModifyNotices.length / 2) * 4);
 
-    const sanityCheckMatchUpIds = withLoserMatchUpId.map(({ matchUpId }) => matchUpId);
+    const sanityCheckMatchUpIds = new Set(withLoserMatchUpId.map(({ matchUpId }) => matchUpId));
 
     result = await tournamentEngine.allTournamentMatchUps();
     matchUps = result.matchUps;
     matchUps.forEach(({ matchUpId, loserMatchUpId }) => {
-      if (sanityCheckMatchUpIds.includes(matchUpId)) {
+      if (sanityCheckMatchUpIds.has(matchUpId)) {
         expect(loserMatchUpId).not.toBeUndefined();
       }
     });

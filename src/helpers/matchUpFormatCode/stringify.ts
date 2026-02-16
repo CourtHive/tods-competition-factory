@@ -1,4 +1,4 @@
-import { SET, NOAD } from '@Constants/matchUpFormatConstants';
+import { SET, NOAD, AGGR, CONSECUTIVE } from '@Constants/matchUpFormatConstants';
 import { isObject } from '@Tools/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
@@ -36,6 +36,12 @@ function timedSetFormat(matchUpFormatObject) {
   return value;
 }
 
+function stringifyGameFormat(gameFormat) {
+  if (gameFormat?.type === AGGR) return AGGR;
+  if (gameFormat?.type === CONSECUTIVE && Number.isInteger(gameFormat.count)) return `${gameFormat.count}C`;
+  return undefined;
+}
+
 function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
   const bestOfValue = getNumber(matchUpFormatObject.bestOf) || undefined;
   const exactly = getNumber(matchUpFormatObject.exactly) || undefined;
@@ -44,9 +50,12 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
   if (matchUpFormatObject.setFormat?.timed && matchUpFormatObject.simplified && setLimit === 1) {
     return timedSetFormat(matchUpFormatObject.setFormat);
   }
+
+  const root = matchUpFormatObject.matchRoot || SET;
   // Special case: both bestOf: 1 and exactly: 1 stringify as 'SET1' (no X suffix)
   const exactlySuffix = exactly && exactly !== 1 ? 'X' : '';
-  const setLimitCode = (setLimit && `${SET}${setLimit}${exactlySuffix}`) || '';
+  const aggregateSuffix = matchUpFormatObject.aggregate ? 'A' : '';
+  const setLimitCode = (setLimit && `${root}${setLimit}${exactlySuffix}${aggregateSuffix}`) || '';
   const setCountValue = stringifySet(matchUpFormatObject.setFormat, preserveRedundant);
   const setCode = (setCountValue && `S:${setCountValue}`) || '';
   const finalSetCountValue = stringifySet(matchUpFormatObject.finalSetFormat, preserveRedundant);
@@ -58,10 +67,13 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
       setCountValue !== finalSetCountValue && // don't include final set code if equivalent to other sets
       `F:${finalSetCountValue}`) ||
     '';
+
+  const gameCode = matchUpFormatObject.gameFormat ? `G:${stringifyGameFormat(matchUpFormatObject.gameFormat)}` : '';
+
   const valid = setLimitCode && setCountValue;
 
   if (valid) {
-    return [setLimitCode, setCode, finalSetCode].filter(Boolean).join('-');
+    return [setLimitCode, setCode, gameCode, finalSetCode].filter(Boolean).join('-');
   }
   return undefined;
 }

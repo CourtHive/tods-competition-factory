@@ -214,6 +214,7 @@ test('doubleExitAdvancement of BYE encountering drawPosition', () => {
     matchUpId: 'match-1-3',
     drawId,
   });
+  expect(setStatusResult.success).toEqual(true);
   setStatusResult = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 1 },
     matchUpId: 'match-1-4',
@@ -286,6 +287,7 @@ test('doubleExitAdvancement of BYE encountering WALKOVER', () => {
     matchUpId: 'match-1-3',
     drawId,
   });
+  expect(setStatusResult.success).toEqual(true);
   setStatusResult = tournamentEngine.setMatchUpStatus({
     outcome: { winningSide: 1 },
     matchUpId: 'match-1-4',

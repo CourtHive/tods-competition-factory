@@ -3,7 +3,7 @@ import { isConvertableInteger } from '@Tools/math';
 import { isString } from '@Tools/objects';
 
 // Constants
-import { SET, NOAD, TIMED, setTypes } from '@Constants/matchUpFormatConstants';
+import { SET, NOAD, TIMED, MATCH_ROOTS, sectionTypes, AGGR, CONSECUTIVE } from '@Constants/matchUpFormatConstants';
 
 type TiebreakFormat = {
   tiebreakTo: number;
@@ -27,17 +27,33 @@ type SetFormat = {
 
 type SetFormatResult = SetFormat | undefined | false;
 
+type GameFormat =
+  | {
+      type: 'AGGR';
+    }
+  | {
+      type: 'CONSECUTIVE';
+      count: number;
+    };
+
 export type ParsedFormat = {
+  matchRoot?: string; // only included when NOT 'SET' (backward compat)
+  aggregate?: boolean; // only included when true (match-level A mod)
+  matchMods?: string[]; // raw unknown modifiers for forward compat
   finalSetFormat?: any;
   simplified?: boolean;
   exactly?: number;
   setFormat?: any;
   bestOf?: number;
+  gameFormat?: GameFormat; // for -G: section
 };
 
 export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
   if (isString(matchUpFormatCode)) {
-    const type = (matchUpFormatCode.startsWith('T') && TIMED) || (matchUpFormatCode.startsWith(SET) && SET) || '';
+    const type =
+      (matchUpFormatCode.startsWith('T') && TIMED) ||
+      (MATCH_ROOTS.some((root) => matchUpFormatCode.startsWith(root)) && SET) ||
+      '';
 
     if (type === TIMED) {
       const setFormat = parseTimedSet(matchUpFormatCode);
@@ -48,48 +64,139 @@ export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
       };
       if (setFormat) return parsedFormat;
     }
-    if (type === SET) return setsMatch(matchUpFormatCode);
+    if (type === SET) return parseMatchFormat(matchUpFormatCode);
   }
 
   return undefined;
 }
 
-function setsMatch(formatstring: string): any {
-  const parts = formatstring.split('-');
+// Parse the head token (e.g., "SET7XA", "HAL2A", "QTR4A")
+function parseMatchSpec(head: string):
+  | {
+      matchRoot: string;
+      count: number;
+      exactly: boolean;
+      aggregate: boolean;
+      matchMods: string[];
+    }
+  | undefined {
+  // Find which root prefix matches
+  const matchRoot = MATCH_ROOTS.find((root) => head.startsWith(root));
+  if (!matchRoot) return undefined;
 
-  const setsPart = parts[0].slice(3);
-  const hasExactlySuffix = setsPart.endsWith('X');
-  const setsCountString = hasExactlySuffix ? setsPart.slice(0, -1) : setsPart;
-  const setsCount = getNumber(setsCountString);
+  const rest = head.slice(matchRoot.length);
+  const match = /^(\d+)([A-Z]*)$/.exec(rest);
+  if (!match) return undefined;
+
+  const count = getNumber(match[1]);
+  if (!count) return undefined;
+
+  const modString = match[2];
+  let exactly = false;
+  let aggregate = false;
+  const matchMods: string[] = [];
+
+  for (const ch of modString) {
+    if (ch === 'X') {
+      exactly = true;
+    } else if (ch === 'A') {
+      aggregate = true;
+    } else {
+      matchMods.push(ch);
+    }
+  }
+
+  return { matchRoot, count, exactly, aggregate, matchMods };
+}
+
+// Parse -G: section value
+function parseGameFormat(value: string): GameFormat | undefined {
+  if (value === AGGR) return { type: AGGR };
+  const match = /^([1-9]\d*)C$/.exec(value);
+  if (match) return { type: CONSECUTIVE, count: Number(match[1]) };
+  return undefined;
+}
+
+// Main parser for SET/HAL/QTR/etc. formats
+function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
+  const parts = formatstring.split('-');
+  const spec = parseMatchSpec(parts[0]);
+  if (!spec) return undefined;
+
+  const { matchRoot, count, exactly: isExactly, aggregate, matchMods } = spec;
+
   // Special case: SET1 and SET1X are both treated as bestOf: 1
-  const bestOf = hasExactlySuffix && setsCount !== 1 ? undefined : setsCount;
-  const exactly = hasExactlySuffix && setsCount !== 1 ? setsCount : undefined;
-  const setFormat = parts && parseSetFormat(parts[1]);
-  const finalSetFormat = parts && parseSetFormat(parts[2]);
-  const timed = (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);
-  const validSetsCount = (bestOf && bestOf < 6) || (timed && exactly);
-  const validFinalSet = !parts[2] || finalSetFormat;
+  const bestOf = isExactly && count !== 1 ? undefined : count;
+  const exactly = isExactly && count !== 1 ? count : undefined;
+
+  // Key-based section dispatch (not positional)
+  let setFormat: SetFormatResult;
+  let finalSetFormat: SetFormatResult;
+  let gameFormat: GameFormat | undefined;
+  let sCount = 0;
+  let fCount = 0;
+  let gCount = 0;
+
+  for (let i = 1; i < parts.length; i++) {
+    const colonIdx = parts[i].indexOf(':');
+    if (colonIdx < 0) return undefined; // invalid section without key
+
+    const key = parts[i].slice(0, colonIdx);
+    const value = parts[i].slice(colonIdx + 1);
+
+    if (!(key in sectionTypes)) return undefined; // unknown section key
+
+    if (key === 'S') {
+      sCount++;
+      if (sCount > 1) return undefined; // duplicate
+      setFormat = parseSetFormatString(parts[i], value);
+    } else if (key === 'F') {
+      fCount++;
+      if (fCount > 1) return undefined; // duplicate
+      finalSetFormat = parseSetFormatString(parts[i], value);
+    } else if (key === 'G') {
+      gCount++;
+      if (gCount > 1) return undefined; // duplicate -G: section
+      gameFormat = parseGameFormat(value);
+      if (!gameFormat) return undefined; // invalid game format value
+    }
+  }
+
+  const timed =
+    (setFormat && (setFormat as SetFormat).timed) || (finalSetFormat && (finalSetFormat as SetFormat).timed);
+
+  // Validation: for SET root, apply strict bestOf/exactly rules
+  if (matchRoot === SET) {
+    const validSetsCount = (bestOf && bestOf < 6) || (timed && exactly);
+    if (!validSetsCount) return undefined;
+  } else {
+    // For non-SET roots: just require count > 0 (already checked in parseMatchSpec)
+  }
+
+  const validFinalSet = !finalSetFormat || finalSetFormat;
   const validSetsFormat = setFormat;
+
+  if (!validSetsFormat || !validFinalSet) return undefined;
 
   const result: ParsedFormat = definedAttributes({
     setFormat,
     exactly,
     bestOf,
   });
+
+  // Only include matchRoot when NOT 'SET' (backward compat)
+  if (matchRoot !== SET) result.matchRoot = matchRoot;
+
+  // Only include aggregate when true
+  if (aggregate) result.aggregate = true;
+
+  // Only include matchMods when non-empty
+  if (matchMods.length > 0) result.matchMods = matchMods;
+
   if (finalSetFormat) result.finalSetFormat = finalSetFormat;
-  if (validSetsCount && validSetsFormat && validFinalSet) return result;
-}
+  if (gameFormat) result.gameFormat = gameFormat;
 
-function parseSetFormat(formatstring: string): SetFormatResult {
-  if (formatstring?.[1] !== ':') return undefined;
-
-  const parts = formatstring.split(':');
-  const setType = setTypes[parts[0]];
-  const setFormatString = parts[1];
-
-  if (!setType || !setFormatString) return undefined;
-
-  return parseSetFormatString(formatstring, setFormatString);
+  return result;
 }
 
 function parseSetFormatString(formatstring: string, setFormatString: string): SetFormatResult {

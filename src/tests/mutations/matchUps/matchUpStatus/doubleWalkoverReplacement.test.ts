@@ -1,23 +1,11 @@
-// import { getDevContext, setSubscriptions } from '@Global/state/globalState';
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, test } from 'vitest';
 
 import { COMPLETED, DOUBLE_WALKOVER, WALKOVER } from '@Constants/matchUpStatusConstants';
-// import { MODIFY_MATCHUP } from '@Constants/topicConstants';
 
 const getTarget = ({ matchUps, roundNumber, roundPosition }) =>
   matchUps.find((matchUp) => matchUp.roundNumber === roundNumber && matchUp.roundPosition === roundPosition);
-
-/*
-let result = setSubscriptions({
-  subscriptions: {
-    [MODIFY_MATCHUP]: (matchUps) => {
-      if (getDevContext({ scorePropagation: true })) console.log(matchUps);
-    },
-  },
-});
-*/
 
 // test added to address improper score propagation discovered during testing
 test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will not propagate score', () => {

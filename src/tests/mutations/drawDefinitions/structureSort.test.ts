@@ -91,8 +91,7 @@ test('structureSort can sort by stage and stageSequence', () => {
   });
 
   const allStructures = tournamentRecord.events
-    .map(({ drawDefinitions }) => drawDefinitions.map(({ structures }) => structures).flat())
-    .flat()
+    .flatMap(({ drawDefinitions }) => drawDefinitions.flatMap(({ structures }) => structures))
     .sort((a, b) => tools.structureSort(a, b, { mode: AGGREGATE_EVENT_STRUCTURES }));
 
   const structureMap = Object.keys(instanceCount(allStructures.map(({ structureName }) => structureName)));

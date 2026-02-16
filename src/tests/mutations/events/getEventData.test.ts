@@ -1,7 +1,7 @@
 import mocksEngine from '@Assemblies/engines/mock';
 import tournamentEngine from '@Engines/syncEngine';
 import { expect, it, test } from 'vitest';
-import fs from 'fs';
+import fs from 'fs-extra';
 
 // Constants and Fixtures
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
@@ -78,7 +78,7 @@ it('returns eventData when there is no drawsData', () => {
 });
 
 it('returns team information for participants in SINGLES and DOUBLES matchUps in non-TEAM events', () => {
-  const isoWithIOC = countries.filter(({ ioc }) => ioc).map(({ iso }) => iso);
+  const isoWithIOC = new Set(countries.filter(({ ioc }) => ioc).map(({ iso }) => iso));
   const mockProfile = {
     participantsProfile: {
       teamKey: { personAttribute: 'nationalityCode' },
@@ -112,7 +112,7 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
     // expect that each individual participant on the team also has team information
     matchUp.sides.forEach((side) => {
       expect(side.participant.person.iso2NationalityCode).not.toBeUndefined();
-      if (isoWithIOC.includes(side.participant.person.nationalityCode)) {
+      if (isoWithIOC.has(side.participant.person.nationalityCode)) {
         expect(side.participant.person.iocNationalityCode).not.toBeUndefined();
         iocCount += 1;
       }
@@ -146,14 +146,13 @@ it('returns team information for participants in SINGLES and DOUBLES matchUps in
     .filter(({ readyToScore }) => readyToScore)
     .forEach(({ sides }) => {
       const persons = sides
-        .map(
+        .flatMap(
           ({ participant }) => participant?.person || participant?.individualParticipants.map(({ person }) => person),
         )
-        .flat()
         .filter(Boolean);
       persons.forEach((person) => {
         expect(person.iso2NationalityCode).not.toBeUndefined();
-        if (isoWithIOC.includes(person.nationalityCode)) {
+        if (isoWithIOC.has(person.nationalityCode)) {
           expect(person.iocNationalityCode).not.toBeUndefined();
           iocCount += 1;
         }

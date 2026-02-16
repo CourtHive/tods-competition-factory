@@ -253,7 +253,6 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
@@ -348,7 +347,6 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER / Removing scored outcome in WOWO
   expect(targetMatchUp.matchUpStatusCodes).toEqual(undefined);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(TO_BE_PLAYED);
   expect(targetMatchUp.winningSide).toBeUndefined();
@@ -451,7 +449,6 @@ test('drawSize: 8 - Removing a DOUBLE_WALKOVER will remove produced WALKOVER in 
   // DOUBLE_WALKOVER advanced winner is removed from R2P2
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 2 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toEqual(undefined);
@@ -620,7 +617,6 @@ test('Removing DOUBLE_WALKOVER will remove BYE-Advanced WALKOVER Winner', () => 
   // produced WALKOVER advanced winner is removed from R3P1
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
 });
 
@@ -941,6 +937,5 @@ test('consolation fed player advanced by WO/WO will be removed when WO/WO cleare
     matchUps,
   });
 
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
 });

@@ -50,5 +50,5 @@ function getRoundRobinRoundNumber({ groupSize }) {
 
   const { matchUps } = tournamentEngine.setState(tournamentRecord).allTournamentMatchUps();
   const roundMatchUps = getRoundMatchUps({ matchUps }).roundMatchUps ?? {};
-  return Object.keys(roundMatchUps).map((n) => parseInt(n));
+  return Object.keys(roundMatchUps).map((n) => Number.parseInt(n));
 }

@@ -87,9 +87,9 @@ test('state provider implementation of handleCaughtError', () => {
     });
   }
 
-  function addNotice({ topic }) {
+  const addNotice = ({ topic }) => {
     if (topic === DELETED_DRAW_IDS) throw new Error('Global state provider error');
-  }
+  };
 
   const result: any = setStateProvider({
     ...syncGlobalState,
