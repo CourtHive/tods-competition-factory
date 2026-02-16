@@ -369,6 +369,113 @@ it('rejects invalid winningSide for aggregate scoring', () => {
   expect(result.valid).toEqual(false);
 });
 
+it('INTENNSE SET7XA-S:T10P — determines winningSide correctly for all 7 sets', () => {
+  const matchUpFormat = 'SET7XA-S:T10P';
+
+  // Helper: create 7 sets where first 6 are tied [1,1], 7th varies
+  function makeIntennseScore(seventhSet: { s1: number; s2: number }) {
+    const sets: Set[] = [];
+    // First 6 sets: all tied 1-1
+    for (let i = 0; i < 6; i++) {
+      sets.push({
+        side1Score: 1,
+        side2Score: 1,
+        setNumber: i + 1,
+        winningSide: undefined as any, // Tied sets have no winningSide
+      });
+    }
+    // 7th set with the deciding score
+    const ws7 = seventhSet.s1 > seventhSet.s2 ? 1 : seventhSet.s2 > seventhSet.s1 ? 2 : undefined;
+    sets.push({
+      side1Score: seventhSet.s1,
+      side2Score: seventhSet.s2,
+      setNumber: 7,
+      winningSide: ws7 as any,
+    });
+    return { sets };
+  }
+
+  // Scenario 1: 7th set [1,1] — aggregate is 7-7, tied — no winner
+  {
+    const score = makeIntennseScore({ s1: 1, s2: 1 });
+    // Aggregate: 6×1 + 1 = 7 each side → tied, should not be valid as COMPLETED
+    const result = analyzeScore({
+      matchUpFormat,
+      matchUpStatus: COMPLETED,
+      winningSide: 1,
+      score,
+    });
+    expect(result.valid).toEqual(false); // Tied aggregate can't have a winner
+  }
+
+  // Scenario 2: 7th set [1,2] — aggregate is 7-8, side 2 wins
+  {
+    const score = makeIntennseScore({ s1: 1, s2: 2 });
+    // Aggregate: side1 = 6+1 = 7, side2 = 6+2 = 8 → side 2 wins
+    const result = analyzeScore({
+      matchUpFormat,
+      matchUpStatus: COMPLETED,
+      winningSide: 2,
+      score,
+    });
+    expect(result.valid).toEqual(true);
+
+    // Claiming side 1 wins should be invalid
+    const wrongResult = analyzeScore({
+      matchUpFormat,
+      matchUpStatus: COMPLETED,
+      winningSide: 1,
+      score,
+    });
+    expect(wrongResult.valid).toEqual(false);
+  }
+
+  // Scenario 3: 7th set [2,1] — aggregate is 8-7, side 1 wins
+  {
+    const score = makeIntennseScore({ s1: 2, s2: 1 });
+    // Aggregate: side1 = 6+2 = 8, side2 = 6+1 = 7 → side 1 wins
+    const result = analyzeScore({
+      matchUpFormat,
+      matchUpStatus: COMPLETED,
+      winningSide: 1,
+      score,
+    });
+    expect(result.valid).toEqual(true);
+
+    // Claiming side 2 wins should be invalid
+    const wrongResult = analyzeScore({
+      matchUpFormat,
+      matchUpStatus: COMPLETED,
+      winningSide: 2,
+      score,
+    });
+    expect(wrongResult.valid).toEqual(false);
+  }
+});
+
+it('INTENNSE SET7XA-S:T10P — rejects incomplete match (only 4 of 7 sets)', () => {
+  const matchUpFormat = 'SET7XA-S:T10P';
+
+  // Only 4 sets played — side 1 dominates but match isn't complete
+  const score: { sets: Set[] } = {
+    sets: [
+      { side1Score: 5, side2Score: 1, setNumber: 1, winningSide: 1 },
+      { side1Score: 4, side2Score: 2, setNumber: 2, winningSide: 1 },
+      { side1Score: 3, side2Score: 1, setNumber: 3, winningSide: 1 },
+      { side1Score: 6, side2Score: 0, setNumber: 4, winningSide: 1 },
+    ],
+  };
+
+  // Should be invalid as COMPLETED — exactly 7 sets required
+  const result = analyzeScore({
+    matchUpFormat,
+    matchUpStatus: COMPLETED,
+    winningSide: 1,
+    score,
+  });
+  expect(result.valid).toEqual(false);
+});
+
 it('validates aggregate with missing scores', () => {
   const matchUpFormat = 'SET3X-S:T10A';
 

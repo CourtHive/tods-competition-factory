@@ -158,6 +158,15 @@ export function analyzeScore({
       validateSet(set, i, matchUpScoringFormat, totalSets ?? 0, i === sets.length - 1, irregularEnding),
     );
 
+  // For "exactly" formats, COMPLETED matches must have all N sets
+  const exactly = matchUpScoringFormat?.exactly;
+  const isExactlyComplete =
+    !exactly ||
+    !relevantMatchUpStatus ||
+    relevantMatchUpStatus !== COMPLETED ||
+    irregularEnding ||
+    sets.length >= exactly;
+
   // For aggregate scoring, calculate winner based on total score across all sets
   const isAggregateScoring = isAggregateFormat(matchUpScoringFormat);
 
@@ -168,6 +177,7 @@ export function analyzeScore({
 
   const valid = !!(
     validSets &&
+    isExactlyComplete &&
     ((winningSide && isAggregateScoring && winningSide === calculatedWinningSide) ||
       (winningSide &&
         !isAggregateScoring &&
