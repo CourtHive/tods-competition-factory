@@ -1,3 +1,4 @@
+import { isAggregateFormat } from '@Helpers/matchUpFormatCode/isAggregateFormat';
 import { generateScoreString } from '../matchUps/generateScoreString';
 import { toBePlayed } from '@Fixtures/scoring/outcomes/toBePlayed';
 import { definedAttributes } from '@Tools/definedAttributes';
@@ -44,9 +45,8 @@ function inferWinningSide(winningSide, matchUpFormat, neutralParsedSets) {
   if (winningSide || !matchUpFormat || !neutralParsedSets) return winningSide;
 
   const parsedFormat = parse(matchUpFormat);
-  const isAggregateScoring = parsedFormat?.setFormat?.based === 'A' || parsedFormat?.finalSetFormat?.based === 'A';
 
-  return isAggregateScoring
+  return isAggregateFormat(parsedFormat)
     ? inferWinningSideFromAggregate(neutralParsedSets)
     : inferWinningSideFromSets(neutralParsedSets);
 }
@@ -98,10 +98,9 @@ export function generateOutcomeFromScoreString(params) {
   const inferredWinningSide = inferWinningSide(winningSide, matchUpFormat, neutralParsedSets);
 
   const parsedFormat = parse(matchUpFormat);
-  const isAggregateScoring = parsedFormat?.setFormat?.based === 'A' || parsedFormat?.finalSetFormat?.based === 'A';
 
   const score =
-    preserveSideOrder || isBracketNotation || isAggregateScoring
+    preserveSideOrder || isBracketNotation || isAggregateFormat(parsedFormat)
       ? generateScoreForSideOrder(scoreString, matchUpFormat, setTBlast)
       : generateScoreForWinnerOrder(neutralParsedSets, inferredWinningSide, matchUpFormat, setTBlast);
 

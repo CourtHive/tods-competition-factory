@@ -1,3 +1,4 @@
+import { isAggregateFormat } from '@Helpers/matchUpFormatCode/isAggregateFormat';
 import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { instanceCount } from '@Tools/arrays';
 
@@ -158,8 +159,7 @@ export function analyzeScore({
     );
 
   // For aggregate scoring, calculate winner based on total score across all sets
-  const isAggregateScoring =
-    matchUpScoringFormat?.setFormat?.based === 'A' || matchUpScoringFormat?.finalSetFormat?.based === 'A';
+  const isAggregateScoring = isAggregateFormat(matchUpScoringFormat);
 
   const calculatedWinningSide =
     isAggregateScoring && sets.length > 0
