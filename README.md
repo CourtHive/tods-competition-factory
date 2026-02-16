@@ -32,7 +32,7 @@ The **Competition Factory** includes synchronous and asynchronous "state engines
 
 ## Mocks Engine
 
-The `mocksEngine` generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes. It is used extensively in the 2600+ tests that are run against the factory methods before every package release.
+The `mocksEngine` generates complete tournament objects, or tournamentRecords, as well as mock persons, participants and matchUp outcomes. It is used extensively in the 3600+ tests that are run against the factory methods before every package release.
 
 ## Installation
 

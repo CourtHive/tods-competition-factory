@@ -1155,6 +1155,7 @@ const { participantResults, order, report, readableReport } = tallyParticipantRe
 
 :::tip Understanding Tiebreaking
 When `generateReport: true`, the function returns detailed information showing **exactly how tiebreaks were resolved step-by-step**. This is invaluable for:
+
 - Explaining to participants why they finished in a specific position
 - Verifying that tiebreaking followed the expected policy
 - Debugging complex tiebreaking scenarios
@@ -1219,5 +1220,3 @@ Comprehensive test coverage in `src/tests/documentation/roundRobinTallyPolicy.te
 - ✅ GEMscore generation
 - ✅ TEAM event statistics
 - ✅ Circular tie scenarios
-
-**Total: 27 tests, all passing ✅**

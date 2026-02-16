@@ -98,11 +98,12 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps();
 ### Convenience Features
 
 **Auto-loading with `setState: true`:**
+
 ```js
 // Automatically load into engine
 mocksEngine.generateTournamentRecord({
   drawProfiles: [{ drawSize: 16 }],
-  setState: true,  // No need to call setState manually
+  setState: true, // No need to call setState manually
 });
 
 // Tournament is already loaded
@@ -110,10 +111,11 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps();
 ```
 
 **Fully hydrated matchUps with `inContext: true`:**
+
 ```js
 // Get matchUps with full participant details, event context, and more
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
-  inContext: true,  // Returns fully hydrated matchUps
+  inContext: true, // Returns fully hydrated matchUps
 });
 
 // Now includes participant names, event details, venue info, etc.
