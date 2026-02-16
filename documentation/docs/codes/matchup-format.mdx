@@ -8,11 +8,96 @@ import MatchUpFormatDemo from '../components/MatchUpFormatDemo';
 
 A **matchUpFormat** code describes the scoring method used for a specific **matchUp**, for all matchUps within a **structure**, for all matchUps within a **drawDefinition**, or for all matchUps within an **event**.
 
+While originally designed for tennis, the format code grammar supports **any sport** that uses segmented scoring: pickleball, padel, squash, badminton, table tennis, volleyball, and even timed-segment sports like soccer, basketball, and combat sports.
+
+**See also:** [matchUpFormat Governor](/docs/governors/matchup-format-governor) for the `parse()`, `stringify()`, and `isValidMatchUpFormat()` API reference.
+
 ## Interactive Format Editor
 
 Configure matchUp formats interactively and generate TODS-compliant format codes:
 
 <MatchUpFormatDemo />
+
+## Format Code Grammar
+
+A matchUpFormat code has the structure:
+
+```
+{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}]
+```
+
+| Segment   | Description                              | Examples                                                      |
+| --------- | ---------------------------------------- | ------------------------------------------------------------- |
+| `{ROOT}`  | Match root type (see table below)        | `SET`, `HAL`, `QTR`, `PER`, `RND`, `FRM`, `MAP`, `MAT`, `INN` |
+| `{count}` | Number of segments                       | `3`, `5`, `7`, `12`                                           |
+| `X`       | Exactly this many segments (not best-of) | `SET7X` = exactly 7 sets                                      |
+| `A`       | Aggregate scoring across segments        | `HAL2A` = 2 halves, aggregate                                 |
+| `-S:`     | Segment (set) format specification       | `-S:6/TB7`, `-S:T10P`, `-S:TB11`                              |
+| `-G:`     | Game-level format within segments        | `-G:3C`, `-G:AGGR`                                            |
+| `-F:`     | Final segment format (when different)    | `-F:TB10`, `-F:6/TB7@12`                                      |
+
+### Simplified Form
+
+Single-set timed formats can use a shortened form:
+
+```
+T{minutes}[P|G|A]
+```
+
+Examples: `T20` (20-minute timed), `T10P` (10-minute points-based), `T30A` (30-minute aggregate).
+
+### Match Root Types
+
+| Root  | Sport / Concept                                                                              | Example        |
+| ----- | -------------------------------------------------------------------------------------------- | -------------- |
+| `SET` | Tennis, padel, pickleball, volleyball, table tennis, badminton, squash, racquetball, fencing | `SET3-S:6/TB7` |
+| `HAL` | Soccer, handball, NCAA basketball                                                            | `HAL2A-S:T45`  |
+| `QTR` | Basketball (NBA/FIBA), water polo, lacrosse                                                  | `QTR4A-S:T12`  |
+| `PER` | Ice hockey, wrestling                                                                        | `PER3A-S:T20`  |
+| `RND` | Boxing, MMA                                                                                  | `RND12A-S:T3`  |
+| `FRM` | Table tennis (best-of-7+), badminton                                                         | `FRM7-S:TB11`  |
+| `MAP` | Esports (CS2, Valorant)                                                                      | `MAP3-S:TB13`  |
+| `MAT` | Multi-match formats                                                                          | reserved       |
+| `INN` | Innings-based sports                                                                         | reserved       |
+
+:::tip Backward Compatibility
+When the root is `SET` (the default), it is omitted from the parsed object. Non-`SET` roots are included as `matchRoot` in the parsed result. This ensures all existing tennis/pickleball/padel format code consumers continue to work unchanged.
+:::
+
+### Set Format Specification (`-S:`)
+
+The `-S:` section describes how each segment is scored:
+
+| Pattern                   | Description                       | Example                           |
+| ------------------------- | --------------------------------- | --------------------------------- |
+| `{games}`                 | Games to win set                  | `-S:6` (first to 6, no tiebreak)  |
+| `{games}/TB{points}`      | Games with tiebreak               | `-S:6/TB7` (tiebreak to 7 at 6-6) |
+| `{games}/TB{points}@{at}` | Tiebreak at specific count        | `-S:4/TB5@3` (TB at 3-3)          |
+| `{games}NOAD`             | No-advantage games                | `-S:6NOAD` (no deuce)             |
+| `TB{points}`              | Tiebreak-only set                 | `-S:TB11` (first to 11, win by 2) |
+| `TB{points}NOAD`          | No-deuce tiebreak set             | `-S:TB15NOAD`                     |
+| `TB{points}@{modifier}`   | Tiebreak with modifier            | `-S:TB21@RALLY`                   |
+| `T{minutes}`              | Timed set (games-based)           | `-S:T20`                          |
+| `T{minutes}P`             | Timed set (points-based)          | `-S:T10P`                         |
+| `T{minutes}A`             | Timed set (aggregate-based)       | `-S:T10A`                         |
+| `T{minutes}G`             | Timed set (games-based, explicit) | `-S:T10G` (same as `-S:T10`)      |
+
+### Game Format Specification (`-G:`)
+
+The `-G:` section describes game-level scoring within each set:
+
+| Pattern    | Description                                    | Example                        |
+| ---------- | ---------------------------------------------- | ------------------------------ |
+| `AGGR`     | Aggregate scoring (no individual game winners) | `-G:AGGR`                      |
+| `{count}C` | Consecutive points to win a game               | `-G:3C` (3 consecutive points) |
+
+### Match-Level Modifiers
+
+| Modifier | Description                           | Example                           |
+| -------- | ------------------------------------- | --------------------------------- |
+| `X`      | Exactly N segments (not best-of)      | `SET4X-S:T10P`                    |
+| `A`      | Aggregate scoring across all segments | `SET7XA-S:T10P`, `HAL2A-S:T45`    |
+| `XA`     | Combined: exactly N, aggregate        | `SET7XA-S:T10P` (INTENNSE format) |
 
 ## parse and stringify
 
@@ -28,6 +113,9 @@ const valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat });
 // tiebreakFormat and tiebreakSet are mutually exclusive
 const {
   bestOf,
+  matchRoot, // only present for non-SET roots (e.g., 'HAL', 'QTR')
+  aggregate, // true when match-level A modifier is present
+  gameFormat, // { type: 'AGGR' } or { type: 'CONSECUTIVE', count: 3 }
   setFormat: {
     setTo,
     tiebreakAt,
@@ -48,6 +136,8 @@ const result = matchUpFormatCode.stringify({
   setFormat: { timed: true, minutes: 20 },
 });
 ```
+
+**See also:** [matchUpFormat Governor](/docs/governors/matchup-format-governor) for detailed API documentation including return types, parameters, and edge cases.
 
 ## matchUpFormat discovery
 
@@ -88,39 +178,161 @@ engine.setMatchUpStatus({
 });
 ```
 
-## parse and stringify
+## Cross-Sport Format Reference
 
-The Competition Factory utilizes `matchUpFormatCode` functions primarily for validation, but also in the calculation of Round Robin results when determining group finishing positions.
+### Racquet Sports
 
-```js
-import { matchUpFormatCode } from 'tods-competition-factory';
+#### Tennis
 
-const matchUpFormat = 'SET3-S:6/TB7';
+| Format                | Code                      | Notes                                |
+| --------------------- | ------------------------- | ------------------------------------ |
+| Standard match        | `SET3-S:6/TB7`            | Best of 3 sets, tiebreak to 7 at 6-6 |
+| Grand Slam            | `SET5-S:6/TB7`            | Best of 5 sets                       |
+| ATP Doubles           | `SET3-S:6/TB7-F:TB10`     | Final set is match tiebreak to 10    |
+| Wimbledon 2019        | `SET5-S:6/TB7-F:6/TB7@12` | Final set tiebreak at 12-12          |
+| Australian Open 2019+ | `SET5-S:6/TB7-F:6/TB10`   | Final set tiebreak to 10             |
+| Short sets            | `SET3-S:4/TB7`            | Sets to 4                            |
+| Fast4                 | `SET3-S:4/TB5@3`          | Tiebreak at 3-3                      |
+| Pro set               | `SET1-S:8/TB7`            | Single set to 8                      |
+| College pro set       | `SET1-S:8/TB7@7`          | Tiebreak at 7-7                      |
+| World Team Tennis     | `SET5-S:5NOAD/TB9NOAD@4`  | NoAD games and tiebreaks             |
+| Timed 20 min          | `T20`                     | Simplified timed format              |
+| Points-based timed    | `T10P`                    | 10-minute points-based               |
 
-// validate matchUpFormat codes
-const valid = matchUpFormatCode.isValidMatchUpFormat(matchUpFormat);
+#### INTENNSE (Timed Aggregate Tennis)
 
-// parse matchUpFormat codes into an object representation
-const {
-  bestOf,
-  setFormat: {
-    setTo,
-    tiebreakAt,
-    tiebreakFormat: { tiebreakTo },
-  },
-  finalSetFormat: {
-    setTo,
-    tiebreakAt,
-    tiebreakFormat: { tiebreakTo },
-  },
-} = matchUpFormatCode.parse(matchUpFormat);
+| Format                     | Code                | Notes                                         |
+| -------------------------- | ------------------- | --------------------------------------------- |
+| Standard INTENNSE          | `SET7XA-S:T10P`     | Exactly 7 timed sets, aggregate, points-based |
+| Shortened                  | `SET5XA-S:T10P`     | Exactly 5 timed sets, aggregate               |
+| With aggregate game format | `SET3-S:T10-G:AGGR` | Aggregate game scoring                        |
 
-// stringify object representation
-const result = matchUpFormatCode.stringify({
-  bestOf: 1,
-  setFormat: { timed: true, minutes: 20 },
-});
-```
+#### TYPTI (Timed Yielding Points in Tennis Intervals)
+
+| Format        | Code                | Notes                                             |
+| ------------- | ------------------- | ------------------------------------------------- |
+| Standard      | `SET5-S:5-G:3C`     | 5 sets to 5 points, 3 consecutive points per game |
+| Shortened     | `SET3-S:4-G:2C`     | 3 sets to 4, 2 consecutive                        |
+| With tiebreak | `SET3-S:4/TB5-G:3C` | Adds tiebreak option                              |
+
+#### Pickleball
+
+| Format                        | Code                             | Notes                     |
+| ----------------------------- | -------------------------------- | ------------------------- |
+| USA Pickleball standard       | `SET3-S:TB11`                    | Best of 3 to 11, win by 2 |
+| Rally scoring to 11           | `SET3-S:TB11@RALLY`              | Rally modifier            |
+| Traditional to 15             | `SET3-S:TB15`                    | Older format              |
+| No-deuce to 15                | `SET3-S:TB15NOAD`                | First to 15 wins          |
+| Traditional to 21             | `SET3-S:TB21`                    | Outdoor/recreational      |
+| Rally to 21                   | `SET3-S:TB21@RALLY`              | Rally scoring             |
+| No-deuce rally to 21          | `SET3-S:TB21NOAD@RALLY`          | No-deuce rally            |
+| MLP (Major League Pickleball) | `SET5-S:TB21@RALLY-F:TB15@RALLY` | 4 games to 21, 5th to 15  |
+| Single game tiebreaker        | `SET1-S:TB11@RALLY`              | MLP singles format        |
+
+#### Padel
+
+| Format                      | Code                        | Notes              |
+| --------------------------- | --------------------------- | ------------------ |
+| Standard                    | `SET3-S:6/TB7`              | Same as tennis     |
+| Golden point (no advantage) | `SET3-S:6NOAD/TB7`          | Premier Padel Tour |
+| Short sets                  | `SET3-S:4/TB7`              | Shortened format   |
+| With match tiebreak         | `SET3-S:6/TB7-F:TB10`       | Final set tiebreak |
+| Golden point + short + MTB  | `SET3-S:4NOAD/TB5@3-F:TB10` | Exhibition format  |
+
+#### Squash
+
+| Format              | Code          | Notes                     |
+| ------------------- | ------------- | ------------------------- |
+| Modern PAR-11       | `SET5-S:TB11` | Best of 5 to 11, win by 2 |
+| Women's/junior      | `SET3-S:TB11` | Best of 3 to 11           |
+| Old English scoring | `SET5-S:TB9`  | Best of 5 to 9            |
+| Traditional to 15   | `SET5-S:TB15` | Hand-in/hand-out scoring  |
+
+#### Badminton
+
+| Format           | Code          | Notes                     |
+| ---------------- | ------------- | ------------------------- |
+| Standard BWF     | `SET3-S:TB21` | Best of 3 to 21, win by 2 |
+| Single game      | `SET1-S:TB21` | Exhibition/qualifier      |
+| BWF experimental | `SET5-S:TB11` | Best of 5 to 11           |
+
+#### Table Tennis
+
+| Format              | Code          | Notes                                |
+| ------------------- | ------------- | ------------------------------------ |
+| Standard            | `SET5-S:TB11` | Best of 5 to 11                      |
+| Shortened           | `SET3-S:TB11` | Best of 3 to 11                      |
+| Olympic/World final | `FRM7-S:TB11` | Best of 7 (uses `FRM` root since >5) |
+| Old rules           | `SET5-S:TB21` | Best of 5 to 21                      |
+
+#### Racquetball
+
+| Format      | Code                 | Notes                             |
+| ----------- | -------------------- | --------------------------------- |
+| Standard    | `SET3-S:TB15-F:TB11` | Best of 3 to 15, tiebreaker to 11 |
+| Pro         | `SET5-S:TB15-F:TB11` | Best of 5 to 15, tiebreaker to 11 |
+| Single game | `SET1-S:TB15`        | Single rally game                 |
+
+### Non-Racquet Sports
+
+#### Volleyball
+
+| Format     | Code                 | Notes                        |
+| ---------- | -------------------- | ---------------------------- |
+| Indoor     | `SET5-S:TB25-F:TB15` | Best of 5 to 25, final to 15 |
+| Beach      | `SET3-S:TB21-F:TB15` | Best of 3 to 21, final to 15 |
+| Single set | `SET1-S:TB25`        | Training/exhibition          |
+
+#### Fencing
+
+| Format             | Code          | Notes                     |
+| ------------------ | ------------- | ------------------------- |
+| Pool bout          | `SET1-S:TB5`  | Single game to 5 touches  |
+| Direct elimination | `SET1-S:TB15` | Single game to 15 touches |
+| Team relay         | `SET3-S:TB5`  | Best of 3 bouts to 5      |
+
+#### Soccer / Football
+
+| Format     | Code          | Notes                         |
+| ---------- | ------------- | ----------------------------- |
+| Standard   | `HAL2A-S:T45` | 2 halves of 45 min, aggregate |
+| Youth      | `HAL2A-S:T30` | 2 halves of 30 min            |
+| Extra time | `HAL2A-S:T15` | 2 halves of 15 min            |
+
+#### Basketball
+
+| Format | Code          | Notes                |
+| ------ | ------------- | -------------------- |
+| NBA    | `QTR4A-S:T12` | 4 quarters of 12 min |
+| FIBA   | `QTR4A-S:T10` | 4 quarters of 10 min |
+| NCAA   | `HAL2A-S:T20` | 2 halves of 20 min   |
+| 3x3    | `QTR1A-S:T10` | Single 10-min period |
+
+#### Ice Hockey
+
+| Format   | Code          | Notes               |
+| -------- | ------------- | ------------------- |
+| Standard | `PER3A-S:T20` | 3 periods of 20 min |
+| Overtime | `PER1A-S:T5`  | Single 5-min period |
+
+#### Combat Sports
+
+| Format              | Code          | Notes              |
+| ------------------- | ------------- | ------------------ |
+| Boxing championship | `RND12A-S:T3` | 12 rounds of 3 min |
+| Boxing undercard    | `RND4A-S:T3`  | 4 rounds of 3 min  |
+| MMA standard        | `RND3A-S:T5`  | 3 rounds of 5 min  |
+| MMA championship    | `RND5A-S:T5`  | 5 rounds of 5 min  |
+
+#### Other Sports
+
+| Sport          | Code          | Notes                     |
+| -------------- | ------------- | ------------------------- |
+| Handball       | `HAL2A-S:T30` | 2 halves of 30 min        |
+| Water polo     | `QTR4A-S:T8`  | 4 quarters of 8 min       |
+| Lacrosse       | `QTR4A-S:T15` | 4 quarters of 15 min      |
+| Wrestling      | `PER2A-S:T3`  | 2 periods of 3 min        |
+| CS2 / Valorant | `MAP3-S:TB13` | Best of 3 maps, 13 rounds |
 
 ## Note on NoAD in Tiebreak Formats (Non-Standard Extension)
 
@@ -129,17 +341,21 @@ The use of `NOAD` applied to tiebreak formats (e.g., `TB10NOAD`) is a **non-stan
 :::
 
 ### Standard TODS Behavior
+
 - `NOAD` is officially documented only for game-level scoring (e.g., `SET3-S:6NOAD`)
 - All standard tennis tiebreak formats require win-by-2:
   - 7-point tiebreak: first to 7, win by 2 → valid scores: 7-5, 8-6, 9-7, etc.
   - 10-point match tiebreak: first to 10, win by 2 → valid scores: 10-8, 11-9, 12-10, etc.
 
 ### Non-Standard Extension: `NOAD` in Tiebreaks
+
 When `NOAD` is applied to a tiebreak format (e.g., `SET3-S:6/TB7@5-F:TB10NOAD`):
+
 - **Behavior**: Changes `winBy` from 2 to 1 (first to reach `tiebreakTo` wins immediately)
 - **Example**: `TB10NOAD` allows scores like [10-9], [10-8] (winner needs exactly 10 points)
 - **Use case**: Recreational leagues and club play for time management
 - **Not recognized by**: ITF, ATP, WTA, USTA official formats
 
 ### Implementation Note
+
 This implementation supports `tiebreakSet.NoAD` to enable recreational formats, but developers should be aware this is an extension beyond the TODS specification. When interoperating with other TODS-compliant systems, tiebreak `NOAD` notation may not be recognized or may be interpreted differently.

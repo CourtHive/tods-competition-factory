@@ -31,3 +31,17 @@ it('supports annotations for PickleBall', () => {
   stringified = matchUpFormatCode.stringify(parsed);
   expect(stringified).toEqual(format);
 });
+
+it('canary: SET3-S:TB21NOAD@RALLY round-trip unchanged after multi-root refactor', () => {
+  const format = 'SET3-S:TB21NOAD@RALLY';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    setFormat: {
+      tiebreakSet: { tiebreakTo: 21, modifier: 'RALLY', NoAD: true },
+    },
+    bestOf: 3,
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  expect(matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
