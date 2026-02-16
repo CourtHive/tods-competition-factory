@@ -426,6 +426,102 @@ it('can parse and stringify "exactly" with X suffix for timed sets', () => {
   expect(stringified3).toEqual(format3);
 });
 
+it('supports -G:AGGR game format section', () => {
+  const format = 'SET3-S:T10-G:AGGR';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { timed: true, minutes: 10 },
+    gameFormat: { type: 'AGGR' },
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports -G:3C consecutive game format (TYPTI)', () => {
+  const format = 'SET5-S:5-G:3C';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 5,
+    setFormat: { setTo: 5, noTiebreak: true },
+    gameFormat: { type: 'CONSECUTIVE', count: 3 },
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports INTENNSE format with match-level aggregate (SET7XA-S:T10P)', () => {
+  const format = 'SET7XA-S:T10P';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    exactly: 7,
+    aggregate: true,
+    setFormat: { timed: true, minutes: 10, based: 'P' },
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports -G:2C consecutive variant', () => {
+  const format = 'SET3-S:4-G:2C';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { setTo: 4, noTiebreak: true },
+    gameFormat: { type: 'CONSECUTIVE', count: 2 },
+  });
+  const stringified = matchUpFormatCode.stringify(parsed);
+  expect(stringified).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports non-SET roots (HAL, QTR)', () => {
+  // Soccer halves
+  const halFormat = 'HAL2A-S:T45';
+  const halParsed = matchUpFormatCode.parse(halFormat);
+  expect(halParsed).toEqual({
+    matchRoot: 'HAL',
+    bestOf: 2,
+    aggregate: true,
+    setFormat: { timed: true, minutes: 45 },
+  });
+  expect(matchUpFormatCode.stringify(halParsed)).toEqual(halFormat);
+  expect(isValidMatchUpFormat({ matchUpFormat: halFormat })).toEqual(true);
+
+  // Basketball quarters
+  const qtrFormat = 'QTR4A-S:T10';
+  const qtrParsed = matchUpFormatCode.parse(qtrFormat);
+  expect(qtrParsed).toEqual({
+    matchRoot: 'QTR',
+    bestOf: 4,
+    aggregate: true,
+    setFormat: { timed: true, minutes: 10 },
+  });
+  expect(matchUpFormatCode.stringify(qtrParsed)).toEqual(qtrFormat);
+  expect(isValidMatchUpFormat({ matchUpFormat: qtrFormat })).toEqual(true);
+});
+
+it('rejects invalid duplicate -G: sections', () => {
+  const format = 'SET3-S:5-G:3C-G:4C';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toBeUndefined();
+});
+
+it('dispatches sections by key, not position (order-independent)', () => {
+  // -G: before -F: should still parse correctly
+  const format = 'SET3-S:T10-G:AGGR-F:T20';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { timed: true, minutes: 10 },
+    gameFormat: { type: 'AGGR' },
+    finalSetFormat: { timed: true, minutes: 20 },
+  });
+});
+
 it('treats SET1 and SET1X as equivalent (both use bestOf: 1)', () => {
   // Parse SET1 → bestOf: 1
   const format1 = 'SET1-S:T10';
