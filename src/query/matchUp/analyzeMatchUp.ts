@@ -106,7 +106,7 @@ export function analyzeMatchUp(params?): ResultType & {
   const maxSetsCount = Math.max(...setsWinCounts);
   const maxSetsInstances = instanceCount(setsWinCounts)[maxSetsCount];
   const { bestOf, exactly } = matchUpScoringFormat ?? {};
-  const setsToWin = (bestOf && Math.ceil(bestOf / 2)) || exactly || 1;
+  const setsToWin = Math.ceil((bestOf || exactly || 1) / 2);
   const calculatedWinningSide =
     (maxSetsCount === setsToWin && maxSetsInstances === 1 && setsWinCounts.indexOf(maxSetsCount) + 1) || undefined;
 
