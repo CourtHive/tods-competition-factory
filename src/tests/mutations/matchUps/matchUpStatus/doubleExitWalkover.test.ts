@@ -127,7 +127,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     drawId,
     matchUpId: targetMatchUp.matchUpId,
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
@@ -146,7 +146,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -164,7 +164,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -219,7 +219,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -237,7 +237,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -259,7 +259,7 @@ test('DOUBLE DOUBLE_WALKOVERs will convert a produced WALKOVER into a DOUBLE_WAL
 
   // Enter DOUBLE_WALKOVER in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -328,12 +328,12 @@ it.skip('supports entering/removing DOUBLE_WALKOVER matchUpStatus with doubleExi
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(mainStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(mainStructureOrderedPairs);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(consolationStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(consolationStructureOrderedPairs);
 
   let result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_WALKOVER },
@@ -363,7 +363,7 @@ it.skip('supports entering/removing DOUBLE_WALKOVER matchUpStatus with doubleExi
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [1]]);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [1]]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
@@ -378,31 +378,10 @@ it.skip('supports entering/removing DOUBLE_WALKOVER matchUpStatus with doubleExi
   });
   expect(result.success).toEqual(true);
 
-  ({
-    drawDefinition: {
-      structures: [mainStructure, consolationStructure],
-    },
-  } = tournamentEngine.getEvent({ drawId }));
-  /*
-  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
-    structureId: mainStructure.structureId,
-  }));
-
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    mainStructureOrderedPairs
-  );
-
-  ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
-    structureId: consolationStructure.structureId,
-  }));
-  console.log({ filteredOrderedPairs, consolationStructureOrderedPairs });
-  */
-  console.log(consolationStructure.matchUps.map((m) => m.drawPositions));
-  /*
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(
-    consolationStructureOrderedPairs
-  );
-  */
+  const {
+    drawDefinition: { structures },
+  } = tournamentEngine.getEvent({ drawId });
+  console.log(structures[0].matchUps.map((m) => m.drawPositions));
 });
 
 /*
@@ -444,7 +423,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
   } = tournamentEngine.getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -465,7 +444,7 @@ it('handles DOUBLE_WALKOVER for drawSize: 16', () => {
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
 
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -528,7 +507,7 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   ];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(preWalkover);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4);
@@ -540,7 +519,7 @@ it('advanceds a DOUBLE_WALKOVER when encountering DOUBLE DOUBLE_WALKOVER', () =>
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(preWalkover);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
 
@@ -605,7 +584,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -631,7 +610,7 @@ it('handles DOUBLE DOUBLE_WALKOVER advancement', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -688,7 +667,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -714,7 +693,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],

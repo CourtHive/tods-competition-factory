@@ -18,7 +18,7 @@ export function setPositionAssignments({
   tournamentRecord,
   drawDefinition,
   event,
-}) {
+}: any): any {
   if (!drawDefinition) return { error: MISSING_DRAW_DEFINITION };
   if (!Array.isArray(structurePositionAssignments)) return { error: INVALID_VALUES };
 

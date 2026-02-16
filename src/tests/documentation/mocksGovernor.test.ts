@@ -16,8 +16,8 @@ test('anonymizeTournamentRecord - basic usage', () => {
     drawProfiles: [{ drawSize: 8 }],
   });
 
-  const originalParticipantIds = tournamentRecord.participants.map((p) => p.participantId);
-  const originalPersonIds = tournamentRecord.participants.map((p) => p.person?.personId);
+  const originalParticipantIds = new Set(tournamentRecord.participants.map((p) => p.participantId));
+  const originalPersonIds = new Set(tournamentRecord.participants.map((p) => p.person?.personId));
 
   const result = mocksEngine.anonymizeTournamentRecord({
     tournamentRecord,
@@ -31,8 +31,8 @@ test('anonymizeTournamentRecord - basic usage', () => {
   const newParticipantIds = tournamentRecord.participants.map((p) => p.participantId);
   const newPersonIds = tournamentRecord.participants.map((p) => p.person?.personId);
 
-  expect(newParticipantIds.every((id) => !originalParticipantIds.includes(id))).toEqual(true);
-  expect(newPersonIds.every((id) => !originalPersonIds.includes(id))).toEqual(true);
+  expect(newParticipantIds.every((id) => !originalParticipantIds.has(id))).toEqual(true);
+  expect(newPersonIds.every((id) => !originalPersonIds.has(id))).toEqual(true);
 });
 
 test('anonymizeTournamentRecord - with tournamentName and tournamentId', () => {

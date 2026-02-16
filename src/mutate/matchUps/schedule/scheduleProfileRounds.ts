@@ -75,18 +75,20 @@ export function scheduleProfileRounds(params: ScheduleProfileRoundsArgs) {
   );
 
   // ensure all scheduleDates are valid date strings
-  const validScheduleDates = scheduleDates
-    .map((scheduleDate) => {
-      if (!isValidDateString(scheduleDate)) return undefined;
-      return extractDate(scheduleDate);
-    })
-    .filter(Boolean);
+  const validScheduleDates = new Set(
+    scheduleDates
+      .map((scheduleDate) => {
+        if (!isValidDateString(scheduleDate)) return undefined;
+        return extractDate(scheduleDate);
+      })
+      .filter(Boolean),
+  );
 
   // filter out any invalid scheduleDates in schedulingProfile
   const profileDates = schedulingProfile
     .map((dateSchedulingProfile) => dateSchedulingProfile.scheduleDate)
     .map((scheduleDate) => isValidDateString(scheduleDate) && extractDate(scheduleDate))
-    .filter((scheduleDate) => scheduleDate && (!scheduleDates.length || validScheduleDates.includes(scheduleDate)));
+    .filter((scheduleDate) => scheduleDate && (!scheduleDates.length || validScheduleDates.has(scheduleDate)));
 
   // if no valid profileDates remain throw an error
   if (!profileDates.length) {

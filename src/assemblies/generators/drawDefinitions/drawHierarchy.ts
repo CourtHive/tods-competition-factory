@@ -44,12 +44,9 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
   if (!validMatchUps(matchUps) || !matchUps.length) return {};
 
   const drawPositionSort = (a, b) => ensureInt(a) - ensureInt(b);
-  const allDrawPositions = unique(
-    matchUps
-      .map((matchUp) => matchUp.drawPositions)
-      .flat()
-      .filter(Boolean),
-  ).sort(drawPositionSort);
+  const allDrawPositions = unique(matchUps.flatMap((matchUp) => matchUp.drawPositions).filter(Boolean)).sort(
+    drawPositionSort,
+  );
   const expectedDrawPositions = generateRange(1, Math.max(...allDrawPositions) + 1);
   const missingDrawPositions = expectedDrawPositions
     .filter((drawPosition) => !allDrawPositions.includes(drawPosition))
@@ -148,7 +145,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
       matchUps,
       roundNumber: roundNumber - 1,
     });
-    const previousRoundWinnerIds = previousRoundMatchUps.map(getAdvancingParticipantId).filter(Boolean);
+    const previousRoundWinnerIds = new Set(previousRoundMatchUps.map(getAdvancingParticipantId).filter(Boolean));
 
     const feedRound = roundMatchUps?.length === previousRound?.length;
     const matchRound = roundMatchUps?.length === previousRound?.length / 2;
@@ -187,7 +184,7 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
           }, undefined);
 
         const fedSide = matchUp.sides.filter(Boolean).reduce((fedSide, side) => {
-          return side.participantId && !previousRoundWinnerIds.includes(side.participantId) ? side : fedSide;
+          return side.participantId && !previousRoundWinnerIds.has(side.participantId) ? side : fedSide;
         }, undefined);
 
         const children = [
@@ -218,10 +215,10 @@ export function buildDrawHierarchy({ matchUps, matchUpType }: BuildDrawHierarchy
 
   const hierarchy = previousRound[0];
   return { hierarchy, missingMatchUps, maxRound, finalRound, matchUps };
+}
 
-  function filterRoundMatchUps({ matchUps, roundNumber }) {
-    return matchUps.filter((m) => m.roundNumber === roundNumber).sort((a, b) => a.roundPosition - b.roundPosition);
-  }
+function filterRoundMatchUps({ matchUps, roundNumber }) {
+  return matchUps.filter((m) => m.roundNumber === roundNumber).sort((a, b) => a.roundPosition - b.roundPosition);
 }
 
 function getAdvancingParticipantId(matchUp) {

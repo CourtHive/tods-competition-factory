@@ -520,10 +520,7 @@ export function getParticipantEntries(params) {
 
       const containedStructures = mainStructure.structures;
       const bracketsCount = containedStructures.length;
-      const drawPositionsCount = containedStructures.reduce(
-        (sum, s) => sum + (s.positionAssignments?.length || 0),
-        0,
-      );
+      const drawPositionsCount = containedStructures.reduce((sum, s) => sum + (s.positionAssignments?.length || 0), 0);
       const playoffStructure = drawDefinition.structures?.find((s) => s.stage === PLAY_OFF);
 
       if (!rrFinishingPositions[drawId]) rrFinishingPositions[drawId] = {};
@@ -541,7 +538,7 @@ export function getParticipantEntries(params) {
         const tallyResult = tallyParticipantResults({ matchUps: groupMatchUps, subOrderMap });
         if (!tallyResult?.participantResults) continue;
 
-        for (const [participantId, result] of Object.entries(tallyResult.participantResults) as [string, any][]) {
+        for (const [participantId, result] of Object.entries(tallyResult.participantResults) as any) {
           const { groupOrder, provisionalOrder } = result;
           const order = groupOrder || provisionalOrder;
           if (!order) continue;

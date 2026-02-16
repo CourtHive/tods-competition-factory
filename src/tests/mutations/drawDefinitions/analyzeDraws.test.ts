@@ -98,19 +98,6 @@ test.each(range)('draw analysis can determine when draws are able to be pruned',
   expect(result.success).toEqual(true);
 
   result = tournamentEngine.analyzeDraws();
-  // expect(result.drawsAnalysis.canBePruned.includes(drawId)).toEqual(true);
-  /*
-    // transient failure
-      expect(result.drawsAnalysis.matchPlay.includes(drawId)).toEqual(true);
-      expect(result.drawsAnalysis.positionsNoOutcomes).toEqual([]);
-      expect(result.drawsAnalysis.inactive).toEqual([]);
-
-      expect(result.drawsAnalysis.drawAnalysis[drawId].inactiveDraw).toEqual(false);
-      expect(result.drawsAnalysis.drawAnalysis[drawId].isMatchPlay).toEqual(true);
-      expect(
-        result.drawsAnalysis.drawAnalysis[drawId].matchUpsWithWinningSideCount
-      ).toEqual(2);
-    */
 
   const structureData = result.drawsAnalysis.drawAnalysis[drawId].structuresData[0];
   expect(structureData.unassignedPositionsCount).toEqual(12);

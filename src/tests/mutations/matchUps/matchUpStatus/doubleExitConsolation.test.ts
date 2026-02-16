@@ -331,9 +331,9 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
       }
       const { roundNumber, roundPosition } = targetMatchUp;
       const color =
-        JSON.stringify(targetMatchUp.drawPositions) !== JSON.stringify(check.drawPositions)
-          ? 'brightmagenta'
-          : 'brightgreen';
+        JSON.stringify(targetMatchUp.drawPositions) === JSON.stringify(check.drawPositions)
+          ? 'brightgreen'
+          : 'brightmagenta';
       pushGlobalLog({
         method: 'before',
         keyColors: {
@@ -383,9 +383,9 @@ test.each(scenarios)('Double Exit produces exit in consolation', (params) => {
         matchUps,
       });
       const color =
-        JSON.stringify(targetMatchUp.drawPositions) !== JSON.stringify(check.drawPositions)
-          ? 'brightmagenta'
-          : 'brightgreen';
+        JSON.stringify(targetMatchUp.drawPositions) === JSON.stringify(check.drawPositions)
+          ? 'brightgreen'
+          : 'brightmagenta';
       const { roundNumber, roundPosition } = targetMatchUp;
       pushGlobalLog({
         method: 'after',

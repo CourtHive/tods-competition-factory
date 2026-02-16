@@ -127,7 +127,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAU
 
   // Enter DOUBLE_DEFAULT in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -146,7 +146,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAU
 
   // Enter DOUBLE_DEFAULT in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -164,7 +164,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULT into a DOUBLE_DEFAU
 
   // Enter DOUBLE_DEFAULT in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -219,7 +219,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
 
   // Enter DOUBLE_DEFAULT in R1P4
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 4 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -237,7 +237,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
 
   // Enter DOUBLE_DEFAULT in R1P3
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 3 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -259,7 +259,7 @@ test('DOUBLE DOUBLE_DEFAULTs will convert a produced DEFAULTED into a DOUBLE_DEF
 
   // Enter DOUBLE_DEFAULT in R1P2
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 2 });
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
     matchUpId: targetMatchUp.matchUpId,
     drawId,
@@ -328,12 +328,12 @@ it('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExitPropa
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(mainStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(mainStructureOrderedPairs);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(consolationStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(consolationStructureOrderedPairs);
 
   let result = tournamentEngine.setMatchUpStatus({
     outcome: { matchUpStatus: DOUBLE_DEFAULT },
@@ -363,7 +363,7 @@ it('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExitPropa
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: mainStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [1]]);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([[1, 2], [3, 4], [5, 6], [7, 8], [1], [1]]);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
@@ -387,12 +387,12 @@ it('supports entering/removing DOUBLE_DEFAULT matchUpStatus with doubleExitPropa
     structureId: mainStructure.structureId,
   }));
 
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(mainStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(mainStructureOrderedPairs);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({
     structureId: consolationStructure.structureId,
   }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(consolationStructureOrderedPairs);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(consolationStructureOrderedPairs);
 });
 
 /*
@@ -434,7 +434,7 @@ it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
   } = tournamentEngine.getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -455,7 +455,7 @@ it('handles DOUBLE_DEFAULT for drawSize: 16', () => {
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
 
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -518,7 +518,7 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
   ];
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(preWalkover);
 
   let { matchUps } = tournamentEngine.allTournamentMatchUps();
   const targetMatchUp = matchUps.find(({ roundNumber, roundPosition }) => roundNumber === 1 && roundPosition === 4);
@@ -530,7 +530,7 @@ it('advanceds a DOUBLE_DEFAULT when encountering DOUBLE DOUBLE_DEFAULT', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual(preWalkover);
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual(preWalkover);
 
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
 
@@ -595,7 +595,7 @@ it('handles DOUBLE DOUBLE_DEFAULT advancement', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -621,7 +621,7 @@ it('handles DOUBLE DOUBLE_DEFAULT advancement', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -678,7 +678,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   } = tournamentEngine.setState(tournamentRecord).getEvent({ drawId });
 
   let { filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId });
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],
@@ -704,7 +704,7 @@ it('handles advances when encountring consecutive DOUBLE_WALKOVERs', () => {
   expect(result.success).toEqual(true);
 
   ({ filteredOrderedPairs } = getOrderedDrawPositionPairs({ structureId }));
-  expect(filteredOrderedPairs.filter((p) => p && p.length)).toEqual([
+  expect(filteredOrderedPairs.filter((p) => p?.length)).toEqual([
     [1, 2],
     [3, 4],
     [5, 6],

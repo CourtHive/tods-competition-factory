@@ -59,7 +59,6 @@ test('Replacing a DOUBLE_WALKOVER with an outcome including score will remove ad
   // R2P1 should now be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  //expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
@@ -164,7 +163,6 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
   // R2P1 should now be a produced WALKOVER
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
@@ -199,7 +197,7 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
     score: undefined,
     matchUpStatus: TO_BE_PLAYED,
   }));
-  result = tournamentEngine.setMatchUpStatus({
+  tournamentEngine.setMatchUpStatus({
     matchUpId: targetMatchUp.matchUpId,
     outcome,
     drawId,
@@ -218,7 +216,6 @@ test('Removing a scored outcome will remove a WALKOVER advanced participant from
 
   // now check the final matchUp
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
-  // expect(targetMatchUp.drawPositions.filter(Boolean)).toEqual([]);
   expect(targetMatchUp.drawPositions).toEqual(undefined);
   expect(targetMatchUp.matchUpStatusCodes.filter((code) => !code.sideNumber)).toEqual([]);
 

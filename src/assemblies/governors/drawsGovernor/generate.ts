@@ -9,4 +9,5 @@ export { generateAdHocMatchUps } from '@Generators/drawDefinitions/drawTypes/adH
 export { generateAdHocRounds } from '@Generators/drawDefinitions/drawTypes/adHoc/generateAdHocRounds';
 export { drawMatic } from '@Generators/drawDefinitions/drawTypes/adHoc/drawMatic/drawMatic';
 export { addFinishingRounds } from '@Generators/drawDefinitions/addFinishingRounds';
+export { buildDrawHierarchy } from '@Generators/drawDefinitions/drawHierarchy';
 export { autoSeeding } from '@Generators/drawDefinitions/autoSeeding';

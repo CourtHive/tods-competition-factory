@@ -90,8 +90,8 @@ test('basic person generation', () => {
 const defaultPersonData = generatePersonData({ count: 8 }).personData;
 const personData = defaultPersonData?.slice(0, 8).map((person) => Object.assign(person, { personId: UUID() }));
 
-const firstNames = (personData ?? []).map(({ firstName }) => firstName);
-const lastNames = (personData ?? []).map(({ lastName }) => lastName);
+const firstNames = new Set((personData ?? []).map(({ firstName }) => firstName));
+const lastNames = new Set((personData ?? []).map(({ lastName }) => lastName));
 
 const scenarios = [undefined, { drawSize: 8 }, { drawSize: 8, drawType: ROUND_ROBIN }];
 
@@ -107,8 +107,7 @@ test.each(scenarios)('can generate participants with identical persons for diffe
 
   participants.forEach((participant) => {
     const included =
-      firstNames.includes(participant.person.standardGivenName) &&
-      lastNames.includes(participant.person.standardFamilyName);
+      firstNames.has(participant.person.standardGivenName) && lastNames.has(participant.person.standardFamilyName);
     expect(included).toEqual(true);
   });
 });
