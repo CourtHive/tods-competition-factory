@@ -161,6 +161,12 @@ function calcPointsToGame(
     }
   }
 
+  // Consecutive game format: return count as minimum-to-win
+  if (formatStructure.gameFormat?.type === 'CONSECUTIVE') {
+    const count = formatStructure.gameFormat.count || 3;
+    return [count, count];
+  }
+
   // Regular game within standard set
   return calcStandardGamePointsTo(side1Points, side2Points, activeSetFormat);
 }

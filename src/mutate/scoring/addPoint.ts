@@ -242,17 +242,41 @@ function handleStandardSet(
   currentSet.side1GameScores = side1GameScores;
   currentSet.side2GameScores = side2GameScores;
 
+  // Detect CONSECUTIVE game format
+  const isConsecutive = formatStructure.gameFormat?.type === 'CONSECUTIVE';
+  const consecutiveCount = formatStructure.gameFormat?.count || 3;
+
+  // Track streak for CONSECUTIVE games
+  if (isConsecutive) {
+    const streak = currentSet.currentStreak;
+    if (streak && streak.side === winner) {
+      currentSet.currentStreak = { side: winner, count: streak.count + 1 };
+    } else {
+      currentSet.currentStreak = { side: winner, count: 1 };
+    }
+  }
+
   // Check if in tiebreak
   const isTiebreak = !finalSetNoTiebreak && side1Games === tiebreakAt && side2Games === tiebreakAt;
 
   // Check if game is won
-  const gameWon = checkStandardGameWon(side1Points, side2Points, activeSetFormat, isTiebreak);
+  let gameWon: number | undefined;
+  if (isConsecutive && !isTiebreak) {
+    gameWon = currentSet.currentStreak!.count >= consecutiveCount ? currentSet.currentStreak!.side : undefined;
+  } else {
+    gameWon = checkStandardGameWon(side1Points, side2Points, activeSetFormat, isTiebreak);
+  }
 
   // Calculate game score display
-  const gameScore = gameWon === undefined ? formatGameScore(side1Points, side2Points, isTiebreak) : '0-0';
+  const gameScore =
+    gameWon === undefined ? formatGameScore(side1Points, side2Points, isTiebreak, isConsecutive && !isTiebreak) : '0-0';
   (point as any).score = gameScore;
 
   if (gameWon !== undefined) {
+    // Reset streak on game completion
+    if (isConsecutive) {
+      currentSet.currentStreak = undefined;
+    }
     // Increment game score
     if (gameWon === 0) {
       currentSet.side1Score = side1Games + 1;
@@ -571,9 +595,6 @@ function checkStandardGameWon(
     return checkTiebreakWon(side1Points, side2Points, tiebreakTo, tiebreakNoAD);
   }
 
-  // TODO: Consecutive game format (-G:3C) — track streak, not cumulative
-  // For now, standard game scoring
-
   const pointsTo = 4;
   const diff = Math.abs(side1Points - side2Points);
 
@@ -696,8 +717,8 @@ function deriveServer(matchUp: MatchUp, formatStructure: FormatStructure, setTyp
 /**
  * Format game score as tennis score string (e.g., '0-15', '30-30', '40-A')
  */
-function formatGameScore(p1: number, p2: number, isTiebreak: boolean): string {
-  if (isTiebreak) {
+function formatGameScore(p1: number, p2: number, isTiebreak: boolean, isConsecutive?: boolean): string {
+  if (isTiebreak || isConsecutive) {
     return `${p1}-${p2}`;
   }
 

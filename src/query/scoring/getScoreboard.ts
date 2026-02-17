@@ -5,6 +5,7 @@
  */
 
 import type { MatchUp, GetScoreboardOptions } from '@Types/scoring/types';
+import { parseFormat } from '@Tools/scoring/formatConverter';
 
 /**
  * Get formatted scoreboard
@@ -81,23 +82,30 @@ export function getScoreboard(matchUp: MatchUp, options?: GetScoreboardOptions):
         [p1, p2] = [p2, p1];
       }
 
-      // Check if it's a tiebreak
+      // Check if it's a tiebreak or consecutive format
       const s1 = currentSet.side1Score || 0;
       const s2 = currentSet.side2Score || 0;
 
-      // Parse format to determine tiebreak point (default 6)
-      // For now, assume standard 6-6 tiebreak
-      const isTiebreak = s1 === 6 && s2 === 6;
+      // Parse format to determine tiebreak threshold and game format
+      const formatParsed = matchUp.matchUpFormat ? parseFormat(matchUp.matchUpFormat) : undefined;
+      const setTo = formatParsed?.format?.setFormat?.setTo || 6;
+      const tiebreakAt =
+        (typeof formatParsed?.format?.setFormat?.tiebreakAt === 'number'
+          ? formatParsed.format.setFormat.tiebreakAt
+          : undefined) ?? setTo;
+      const isTiebreak = s1 === tiebreakAt && s2 === tiebreakAt;
+      const isConsecutive = formatParsed?.format?.gameFormat?.type === 'CONSECUTIVE';
 
-      if (isTiebreak) {
-        // Tiebreak: show numeric score
-        const lastSetString = setStrings.at(-1);
-        return `${setStrings.slice(0, -1).join(', ')}${setStrings.length > 1 ? ', ' : ''}${lastSetString} (${p1}-${p2})`;
+      const lastSetString = setStrings.at(-1);
+      const prefix = `${setStrings.slice(0, -1).join(', ')}${setStrings.length > 1 ? ', ' : ''}${lastSetString}`;
+
+      if (isTiebreak || isConsecutive) {
+        // Tiebreak or consecutive: show numeric score
+        return `${prefix} (${p1}-${p2})`;
       } else {
         // Regular game: convert to tennis score
         const tennisScore = formatTennisScore(p1, p2);
-        const lastSetString = setStrings.at(-1);
-        return `${setStrings.slice(0, -1).join(', ')}${setStrings.length > 1 ? ', ' : ''}${lastSetString} (${tennisScore})`;
+        return `${prefix} (${tennisScore})`;
       }
     }
   }
