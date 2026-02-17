@@ -1,45 +1,38 @@
-import { describe, it, expect } from "vitest";
-import { readFileSync } from "fs";
-import { resolve } from "path";
-import {
-  mcpValidator,
-  validateMCPMatch,
-  exportMatchUpJSON,
-} from "@Validators/scoring/mcpValidator";
-import { groupByMatch, parseCSV } from "@Validators/scoring/mcpParser";
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs';
+import { resolve } from 'path';
+import { mcpValidator, validateMCPMatch, exportMatchUpJSON } from '@Validators/scoring/mcpValidator';
+import { groupByMatch, parseCSV } from '@Validators/scoring/mcpParser';
 
-describe("mcpValidator - Match Validation", () => {
-  const testDataPath = resolve(
-    __dirname,
-    "fixtures/mcp-data/testing.csv",
-  );
+describe('mcpValidator - Match Validation', () => {
+  const testDataPath = resolve(__dirname, 'fixtures/mcp-data/testing.csv');
 
-  describe("CSV Parsing and Match Grouping", () => {
-    it("should parse CSV data", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('CSV Parsing and Match Grouping', () => {
+    it('should parse CSV data', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
 
       expect(points.length).toBeGreaterThan(0);
-      expect(points[0]).toHaveProperty("match_id");
-      expect(points[0]).toHaveProperty("1st");
-      expect(points[0]).toHaveProperty("2nd");
+      expect(points[0]).toHaveProperty('match_id');
+      expect(points[0]).toHaveProperty('1st');
+      expect(points[0]).toHaveProperty('2nd');
     });
 
-    it("should group points by match", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should group points by match', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
       expect(matches.length).toBeGreaterThan(0);
-      expect(matches[0]).toHaveProperty("match_id");
-      expect(matches[0]).toHaveProperty("points");
+      expect(matches[0]).toHaveProperty('match_id');
+      expect(matches[0]).toHaveProperty('points');
       expect(matches[0].points.length).toBeGreaterThan(0);
     });
   });
 
-  describe("Single Match Validation", () => {
-    it("should validate a single match", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('Single Match Validation', () => {
+    it('should validate a single match', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -56,8 +49,8 @@ describe("mcpValidator - Match Validation", () => {
       expect(result.matchUp.sides[1].participant?.participantName).toBeTruthy();
     });
 
-    it("should include decorated points in history", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should include decorated points in history', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -68,30 +61,20 @@ describe("mcpValidator - Match Validation", () => {
       expect(result.matchUp.history!.points.length).toBeGreaterThan(0);
 
       // Check that points have decorations
-      const decoratedPoints = result.matchUp.history!.points.filter(
-        (p) => p.result || p.stroke || p.serve,
-      );
+      const decoratedPoints = result.matchUp.history!.points.filter((p) => p.result || p.stroke || p.serve);
       expect(decoratedPoints.length).toBeGreaterThan(0);
 
       // Check for specific decorations
-      const hasAce = result.matchUp.history!.points.some(
-        (p) => p.result === "Ace",
-      );
-      const hasWinner = result.matchUp.history!.points.some(
-        (p) => p.result === "Winner",
-      );
-      const hasServeLocation = result.matchUp.history!.points.some(
-        (p) => p.serveLocation !== undefined,
-      );
+      const hasAce = result.matchUp.history!.points.some((p) => p.result === 'Ace');
+      const hasWinner = result.matchUp.history!.points.some((p) => p.result === 'Winner');
+      const hasServeLocation = result.matchUp.history!.points.some((p) => p.serveLocation !== undefined);
 
       // At least some decorated points should exist
-      expect(
-        hasAce || hasWinner || hasServeLocation,
-      ).toBe(true);
+      expect(hasAce || hasWinner || hasServeLocation).toBe(true);
     });
 
-    it("should track statistics", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should track statistics', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -106,16 +89,12 @@ describe("mcpValidator - Match Validation", () => {
 
       // At least some stats should be present
       const totalStats =
-        result.aces +
-        result.doubleFaults +
-        result.winners +
-        result.unforcedErrors +
-        result.forcedErrors;
+        result.aces + result.doubleFaults + result.winners + result.unforcedErrors + result.forcedErrors;
       expect(totalStats).toBeGreaterThan(0);
     });
 
-    it("should validate score progression", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should validate score progression', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -127,9 +106,9 @@ describe("mcpValidator - Match Validation", () => {
     });
   });
 
-  describe("Full CSV Validation", () => {
-    it("should validate all matches in CSV", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('Full CSV Validation', () => {
+    it('should validate all matches in CSV', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const result = mcpValidator({ csvData });
 
       expect(result.matchesProcessed).toBeGreaterThan(0);
@@ -138,8 +117,8 @@ describe("mcpValidator - Match Validation", () => {
       expect(result.valid).toBe(true);
     });
 
-    it("should report statistics across all matches", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should report statistics across all matches', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const result = mcpValidator({ csvData });
 
       expect(result.totalAces).toBeGreaterThan(0);
@@ -158,8 +137,8 @@ describe("mcpValidator - Match Validation", () => {
       expect(result.totalAces).toBe(sumAces);
     });
 
-    it("should filter by matchId", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should filter by matchId', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -170,11 +149,11 @@ describe("mcpValidator - Match Validation", () => {
       expect(result.matchUps[0].matchUpId).toBe(targetMatchId);
     });
 
-    it("should handle invalid matchId", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should handle invalid matchId', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const result = mcpValidator({
         csvData,
-        matchId: "nonexistent-match-id",
+        matchId: 'nonexistent-match-id',
       });
 
       expect(result.valid).toBe(false);
@@ -183,62 +162,54 @@ describe("mcpValidator - Match Validation", () => {
     });
   });
 
-  describe("Point Decorations", () => {
-    it("should include rally sequences", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('Point Decorations', () => {
+    it('should include rally sequences', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
       const result = validateMCPMatch(matches[0]);
 
-      const pointsWithRally = result.matchUp.history!.points.filter(
-        (p) => p.rally && p.rally.length > 0,
-      );
+      const pointsWithRally = result.matchUp.history!.points.filter((p) => p.rally && p.rally.length > 0);
 
       expect(pointsWithRally.length).toBeGreaterThan(0);
 
       // Check rally structure
       const rallyPoint = pointsWithRally[0];
-      expect(rallyPoint.rally![0]).toHaveProperty("shotNumber");
-      expect(rallyPoint.rally![0]).toHaveProperty("player");
-      expect(rallyPoint.rally![0]).toHaveProperty("stroke");
+      expect(rallyPoint.rally![0]).toHaveProperty('shotNumber');
+      expect(rallyPoint.rally![0]).toHaveProperty('player');
+      expect(rallyPoint.rally![0]).toHaveProperty('stroke');
     });
 
-    it("should include serve locations", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should include serve locations', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
       const result = validateMCPMatch(matches[0]);
 
-      const pointsWithServeLocation = result.matchUp.history!.points.filter(
-        (p) => p.serveLocation !== undefined,
-      );
+      const pointsWithServeLocation = result.matchUp.history!.points.filter((p) => p.serveLocation !== undefined);
 
       expect(pointsWithServeLocation.length).toBeGreaterThan(0);
 
       // Check serve locations are valid
-      const locations = new Set(
-        pointsWithServeLocation.map((p) => p.serveLocation),
-      );
+      const locations = new Set(pointsWithServeLocation.map((p) => p.serveLocation));
       expect(locations.size).toBeGreaterThan(0);
 
       // All should be valid values
       for (const loc of locations) {
-        expect(["Wide", "Body", "T"]).toContain(loc);
+        expect(['Wide', 'Body', 'T']).toContain(loc);
       }
     });
 
-    it("should include stroke types", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should include stroke types', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
       const result = validateMCPMatch(matches[0]);
 
-      const pointsWithStrokes = result.matchUp.history!.points.filter(
-        (p) => p.stroke !== undefined,
-      );
+      const pointsWithStrokes = result.matchUp.history!.points.filter((p) => p.stroke !== undefined);
 
       expect(pointsWithStrokes.length).toBeGreaterThan(0);
 
@@ -247,16 +218,14 @@ describe("mcpValidator - Match Validation", () => {
       expect(strokes.size).toBeGreaterThan(1);
     });
 
-    it("should include result types", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should include result types', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
       const result = validateMCPMatch(matches[0]);
 
-      const pointsWithResults = result.matchUp.history!.points.filter(
-        (p) => p.result !== undefined,
-      );
+      const pointsWithResults = result.matchUp.history!.points.filter((p) => p.result !== undefined);
 
       expect(pointsWithResults.length).toBeGreaterThan(0);
 
@@ -265,19 +234,17 @@ describe("mcpValidator - Match Validation", () => {
       expect(results.size).toBeGreaterThan(1);
 
       // Check for common result types
-      const hasAce = Array.from(results).includes("Ace");
-      const hasWinner = Array.from(results).includes("Winner");
-      const hasError =
-        Array.from(results).includes("Unforced Error") ||
-        Array.from(results).includes("Forced Error");
+      const hasAce = Array.from(results).includes('Ace');
+      const hasWinner = Array.from(results).includes('Winner');
+      const hasError = Array.from(results).includes('Unforced Error') || Array.from(results).includes('Forced Error');
 
       expect(hasAce || hasWinner || hasError).toBe(true);
     });
   });
 
-  describe("JSON Export", () => {
-    it("should export MatchUp to JSON", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('JSON Export', () => {
+    it('should export MatchUp to JSON', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -294,8 +261,8 @@ describe("mcpValidator - Match Validation", () => {
       expect(parsed.history.points).toBeDefined();
     });
 
-    it("should include all decorations in JSON export", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+    it('should include all decorations in JSON export', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
@@ -305,20 +272,18 @@ describe("mcpValidator - Match Validation", () => {
 
       // Check that decorations are preserved in JSON
       const firstPoint = parsed.history.points[0];
-      expect(firstPoint).toHaveProperty("winner");
-      expect(firstPoint).toHaveProperty("server");
+      expect(firstPoint).toHaveProperty('winner');
+      expect(firstPoint).toHaveProperty('server');
 
       // Should have some decorated points
-      const decoratedCount = parsed.history.points.filter(
-        (p: any) => p.result || p.stroke || p.serveLocation,
-      ).length;
+      const decoratedCount = parsed.history.points.filter((p: any) => p.result || p.stroke || p.serveLocation).length;
       expect(decoratedCount).toBeGreaterThan(0);
     });
   });
 
-  describe("Debug Mode", () => {
-    it("should provide debug output when enabled", () => {
-      const csvData = readFileSync(testDataPath, "utf-8");
+  describe('Debug Mode', () => {
+    it('should provide debug output when enabled', () => {
+      const csvData = readFileSync(testDataPath, 'utf-8');
       const points = parseCSV(csvData);
       const matches = groupByMatch(points);
 
