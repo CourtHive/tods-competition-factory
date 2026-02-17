@@ -1,0 +1,151 @@
+/**
+ * CompetitionFormat — defines HOW a sport is played
+ *
+ * Sits alongside tieFormat (WHAT is played) and matchUpFormat (scoring structure).
+ * Covers timers, penalties, substitutions, point multipliers, point descriptors.
+ *
+ * Hierarchical resolution (same pattern as tieFormat/matchUpFormat):
+ *   matchUp > structure > drawDefinition > event
+ */
+
+import type { Extension } from './tournamentTypes';
+
+// ============================================================================
+// Core CompetitionFormat
+// ============================================================================
+
+export interface CompetitionFormat {
+  competitionFormatId?: string;
+  competitionFormatName?: string;
+  matchUpFormat?: string;
+  sport?: SportUnion;
+  timerProfile?: TimerProfile;
+  timeoutRules?: TimeoutRules;
+  substitutionRules?: SubstitutionRules;
+  playerRules?: PlayerRules;
+  penaltyProfile?: PenaltyProfile;
+  pointProfile?: PointProfile;
+  pointMultipliers?: PointMultiplier[];
+  extensions?: Extension[];
+  notes?: string;
+}
+
+// ============================================================================
+// Sport Union
+// ============================================================================
+
+export type SportUnion =
+  | 'TENNIS'
+  | 'PADEL'
+  | 'PICKLEBALL'
+  | 'SQUASH'
+  | 'BADMINTON'
+  | 'TABLE_TENNIS'
+  | 'INTENNSE'
+  | 'TYPTI'
+  | 'VOLLEYBALL'
+  | 'FENCING'
+  | 'OTHER';
+
+// ============================================================================
+// Timer Profile
+// ============================================================================
+
+export interface TimerProfile {
+  shotClockSeconds?: number;
+  segmentTimers?: SegmentTimer[];
+  changeoverSeconds?: number;
+  setBreakSeconds?: number;
+}
+
+export interface SegmentTimer {
+  segmentType: 'set' | 'half' | 'quarter' | 'period' | 'round' | 'frame' | 'map';
+  minutes: number;
+  direction?: 'up' | 'down';
+  stoppageTime?: boolean;
+}
+
+// ============================================================================
+// Timeout Rules
+// ============================================================================
+
+export type TimeoutScope = 'MATCHUP' | 'SET' | 'HALF' | 'SEGMENT';
+
+export interface TimeoutRules {
+  count: number;
+  per: TimeoutScope;
+  durationSeconds?: number;
+}
+
+// ============================================================================
+// Substitution Rules
+// ============================================================================
+
+export type SubstitutionTiming = 'BETWEEN_GAMES' | 'BETWEEN_POINTS' | 'ANY';
+
+export interface SubstitutionRules {
+  allowed: boolean;
+  maxPerMatchUp?: number;       // Omit = unlimited; 0 = none despite allowed: true
+  maxPerSegment?: number;       // Omit = unlimited per segment
+  allowedMatchUpTypes?: ('SINGLES' | 'DOUBLES')[];
+  timing?: SubstitutionTiming;
+  minRosterSize?: number;
+  maxRosterSize?: number;
+}
+
+// ============================================================================
+// Player Rules
+// ============================================================================
+
+export interface PlayerRules {
+  maxMinutesPerSegment?: number;               // e.g., 6 for INTENNSE SINGLES
+  matchUpTypes?: ('SINGLES' | 'DOUBLES')[];    // Which matchUp types this applies to
+}
+
+// ============================================================================
+// Penalty Profile
+// ============================================================================
+
+export interface PenaltyProfile {
+  sport?: SportUnion;
+  penaltyTypes: PenaltyTypeDefinition[];
+  escalation?: PenaltyEscalation[];
+}
+
+export interface PenaltyTypeDefinition {
+  penaltyType: string;
+  label: string;
+  category?: 'code_violation' | 'time_violation' | 'conduct' | 'other';
+}
+
+export interface PenaltyEscalation {
+  step: number;
+  consequence: 'warning' | 'point' | 'game' | 'default';
+}
+
+// ============================================================================
+// Point Profile
+// ============================================================================
+
+export interface PointProfile {
+  sport?: SportUnion;
+  pointResults: PointResultDefinition[];
+  strokeTypes?: string[];
+  serveLocations?: string[];
+}
+
+export interface PointResultDefinition {
+  result: string;
+  label: string;
+  isError?: boolean;
+  isServe?: boolean;
+}
+
+// ============================================================================
+// Point Multiplier
+// ============================================================================
+
+export interface PointMultiplier {
+  condition: { results?: string[]; strokes?: string[]; setTypes?: string[] };
+  value: number;
+}

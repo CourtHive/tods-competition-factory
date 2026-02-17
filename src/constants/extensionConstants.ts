@@ -16,7 +16,6 @@ export const FLIGHT_PROFILE = 'flightProfile';
 export const GROUPING_ATTRIBUTE = 'groupingAttribute';
 export const LINEUPS = 'lineUps';
 export const LINKED_TOURNAMENTS = 'linkedTournamentsIds';
-export const MATCHUP_HISTORY = 'matchUpHistory';
 export const PARTICIPANT_REPRESENTATIVES = 'participantRepresentatives';
 export const PERSON_REQUESTS = 'personRequests';
 export const POSITION_ACTIONS = 'positionActions';
@@ -49,7 +48,6 @@ export const extensionConstants = {
   GROUPING_ATTRIBUTE, // for generating teams; not relevant for anonymized tournaments
   LINEUPS,
   LINKED_TOURNAMENTS,
-  MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
   POSITION_ACTIONS,
@@ -74,7 +72,6 @@ export const internalExtensions = [
   FLIGHT_PROFILE,
   LINEUPS,
   LINKED_TOURNAMENTS,
-  MATCHUP_HISTORY,
   PARTICIPANT_REPRESENTATIVES,
   PERSON_REQUESTS,
   ROUND_TARGET,
