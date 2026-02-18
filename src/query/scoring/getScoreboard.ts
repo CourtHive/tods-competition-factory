@@ -60,14 +60,6 @@ export function getScoreboard(matchUp: MatchUp, options?: GetScoreboardOptions):
     const gameScores = currentSet.side1GameScores || [];
     const gameIndex = gameScores.length - 1;
 
-    console.log('🎯 getScoreboard debug:', {
-      setStrings,
-      gameScores,
-      gameIndex,
-      side1GameScores: currentSet.side1GameScores,
-      side2GameScores: currentSet.side2GameScores,
-    });
-
     if (gameIndex >= 0 && gameScores.length > 0) {
       let p1 = gameScores[gameIndex] || 0;
       let p2 = (currentSet.side2GameScores || [])[gameIndex] || 0;
