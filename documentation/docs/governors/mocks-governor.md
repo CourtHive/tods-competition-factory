@@ -156,7 +156,7 @@ const anonymized = mocksGovernor.anonymizeTournamentRecord({
 
 ## generateEventWithDraw
 
-Generates a complete event with participants and a populated draw. See [mocksEngine documentation](../testing/mocks-engine-getting-started.md#generateEventWithDraw) for comprehensive details.
+Generates a complete event with participants and a populated draw. See [mocksEngine documentation](../testing/mocks-engine-getting-started.md) for comprehensive details.
 
 ```js
 const { event, participants, drawDefinition } = mocksGovernor.generateEventWithDraw({
