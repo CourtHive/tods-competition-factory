@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest';
-import { readFileSync } from 'fs';
-import { resolve } from 'path';
 import { mcpValidator, validateMCPMatch, exportMatchUpJSON } from '@Validators/scoring/mcpValidator';
 import { groupByMatch, parseCSV } from '@Validators/scoring/mcpParser';
+import { describe, it, expect } from 'vitest';
+import { readFileSync } from 'fs-extra';
+import { resolve } from 'path';
 
 describe('mcpValidator - Match Validation', () => {
   const testDataPath = resolve(__dirname, 'fixtures/mcp-data/testing.csv');
