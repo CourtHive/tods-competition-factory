@@ -46,18 +46,19 @@ export function toStatObjects(stats: MatchStatistics): StatObject[] {
   const so: StatObject[] = [];
 
   // ── Aces ──────────────────────────────────────────────────────
-  so.push({
-    name: 'Aces',
-    numerator: [ct(counters, 0, 'aces'), ct(counters, 1, 'aces')],
-    default: 'numerator',
-  });
-
-  // ── Double Faults ─────────────────────────────────────────────
-  so.push({
-    name: 'Double Faults',
-    numerator: [ct(counters, 0, 'doubleFaults'), ct(counters, 1, 'doubleFaults')],
-    default: 'numerator',
-  });
+  so.push(
+    {
+      name: 'Aces',
+      numerator: [ct(counters, 0, 'aces'), ct(counters, 1, 'aces')],
+      default: 'numerator',
+    },
+    {
+      // ── Double Faults ─────────────────────────────────────────────
+      name: 'Double Faults',
+      numerator: [ct(counters, 0, 'doubleFaults'), ct(counters, 1, 'doubleFaults')],
+      default: 'numerator',
+    },
+  );
 
   // ── 1st/2nd Serve breakdown (conditional) ─────────────────────
   const serves1stWon = [ct(counters, 0, 'serves1stWon'), ct(counters, 1, 'serves1stWon')] as [number, number];
