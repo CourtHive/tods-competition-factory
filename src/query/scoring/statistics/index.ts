@@ -25,3 +25,4 @@ export * from './pointParser';
 export * from './counters';
 export * from './calculator';
 export * from './standalone';
+export * from './toStatObjects';

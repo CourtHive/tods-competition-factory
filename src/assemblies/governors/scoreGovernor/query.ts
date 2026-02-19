@@ -21,9 +21,11 @@ export { getEpisodes } from '@Query/scoring/getEpisodes';
 
 // Statistics
 export { calculateMatchStatistics, enrichPointHistory, getQuickStats } from '@Query/scoring/statistics/standalone';
+export { toStatObjects } from '@Query/scoring/statistics/toStatObjects';
 export type {
   CalculatedStat,
   MatchStatistics,
   StatisticsOptions,
   StatCounters,
+  StatObject,
 } from '@Query/scoring/statistics/types';

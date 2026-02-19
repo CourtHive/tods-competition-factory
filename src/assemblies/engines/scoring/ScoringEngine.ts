@@ -38,7 +38,8 @@ import { isComplete } from '@Query/scoring/isComplete';
 import { getEpisodes } from '@Query/scoring/getEpisodes';
 import { parseFormat, resolveSetType, isAggregateFormat } from '@Tools/scoring/formatConverter';
 import { calculateMatchStatistics } from '@Query/scoring/statistics/standalone';
-import type { MatchStatistics, StatisticsOptions } from '@Query/scoring/statistics/types';
+import { toStatObjects } from '@Query/scoring/statistics/toStatObjects';
+import type { MatchStatistics, StatisticsOptions, StatObject } from '@Query/scoring/statistics/types';
 import type { PointMultiplier } from '@Mutate/scoring/resolvePointValue';
 
 // competitionFormat types (mirrored from factory for standalone use)
@@ -296,14 +297,14 @@ export class ScoringEngine {
       // Detect set completion (number of sets with winningSide increased)
       const curCompletedSets = this.state.score.sets.filter((s) => s.winningSide !== undefined).length;
       if (curCompletedSets > prevCompletedSets) {
-        const completedSet = this.state.score.sets.filter((s) => s.winningSide !== undefined).at(-1);
-        const setWinner = (completedSet?.winningSide === 1 ? 0 : 1) as 0 | 1;
+        const completedSet = this.state.score.sets.findLast((s) => s.winningSide !== undefined);
+        const setWinner = completedSet?.winningSide === 1 ? 0 : 1;
         this.eventHandlers.onSetComplete?.({ ...ctx, setWinner });
       }
 
       // Detect match completion
       if (!prevComplete && this.state.matchUpStatus === 'COMPLETED') {
-        const matchWinner = (this.state.winningSide === 1 ? 0 : 1) as 0 | 1;
+        const matchWinner = this.state.winningSide === 1 ? 0 : 1;
         this.eventHandlers.onMatchComplete?.({ ...ctx, matchWinner });
       }
     }
@@ -586,6 +587,19 @@ export class ScoringEngine {
   getStatistics(options?: StatisticsOptions): MatchStatistics {
     const points = this.state.history?.points || [];
     return calculateMatchStatistics(this.state, points as any[], options);
+  }
+
+  /**
+   * Get display-ready statistics as StatObject array
+   *
+   * Convenience method that calls getStatistics() and transforms the result
+   * into StatObject[] format for visualization components (e.g., statView).
+   *
+   * @param options - Statistics options (set filter, etc.)
+   * @returns StatObject[] for display consumption
+   */
+  getStatObjects(options?: StatisticsOptions): StatObject[] {
+    return toStatObjects(this.getStatistics(options));
   }
 
   /**

@@ -52,33 +52,35 @@ export function buildCounters(points: PointWithMetadata[], options?: StatisticsO
       return;
     }
 
-    // Get categories for this point
-    const categories = categorizePoint(point);
+    // Get categories for this point, split by attribution
+    const { winner: winnerCategories, loser: loserCategories } = categorizePoint(point);
     const winner = point.winner;
+    const loser = (1 - winner) as 0 | 1;
 
-    // DEBUG: Log first few points
-    if (index < 3) {
-      // console.log(`buildCounters Point ${index}:`, {
-      //   result: point.result,
-      //   winner: point.winner,
-      //   server: point.server,
-      //   categories
-      // });
-    }
-
-    // Add to each category
-    categories.forEach((category) => {
-      // Team counters
+    // Winner-attributed categories (aces, winners, serve/return wins, pointsWon)
+    winnerCategories.forEach((category) => {
       if (!counters.teams[winner][category]) {
         counters.teams[winner][category] = [];
       }
       counters.teams[winner][category].push(point);
 
-      // Player counters (for doubles support later)
       if (!counters.players[winner][category]) {
         counters.players[winner][category] = [];
       }
       counters.players[winner][category].push(point);
+    });
+
+    // Loser-attributed categories (doubleFaults, unforcedErrors, forcedErrors)
+    loserCategories.forEach((category) => {
+      if (!counters.teams[loser][category]) {
+        counters.teams[loser][category] = [];
+      }
+      counters.teams[loser][category].push(point);
+
+      if (!counters.players[loser][category]) {
+        counters.players[loser][category] = [];
+      }
+      counters.players[loser][category].push(point);
     });
 
     // Track serve stats for the SERVER (regardless of who won)
@@ -114,17 +116,19 @@ export function buildCounters(points: PointWithMetadata[], options?: StatisticsO
     }
 
     // Track game completions for gamesWon stat
-    if (isGameComplete(point, lastPoint)) {
-      // Add to gamesWon
-      if (!counters.teams[winner].gamesWon) {
-        counters.teams[winner].gamesWon = [];
+    // When game number changes, the PREVIOUS point was the game-ending point,
+    // so credit the previous point's winner (not the current point's winner).
+    if (isGameComplete(point, lastPoint) && lastPoint?.winner !== undefined) {
+      const gameWinner = lastPoint.winner;
+      if (!counters.teams[gameWinner].gamesWon) {
+        counters.teams[gameWinner].gamesWon = [];
       }
-      counters.teams[winner].gamesWon.push(point);
+      counters.teams[gameWinner].gamesWon.push(lastPoint);
 
-      if (!counters.players[winner].gamesWon) {
-        counters.players[winner].gamesWon = [];
+      if (!counters.players[gameWinner].gamesWon) {
+        counters.players[gameWinner].gamesWon = [];
       }
-      counters.players[winner].gamesWon.push(point);
+      counters.players[gameWinner].gamesWon.push(lastPoint);
     }
 
     // Track breakpoints
@@ -153,13 +157,14 @@ export function buildCounters(points: PointWithMetadata[], options?: StatisticsO
 }
 
 /**
- * Check if a game was completed with this point
+ * Check if a game boundary occurred between two points.
  *
- * Heuristic: Game number increased from last point to current point
+ * When this returns true, lastPoint was the game-ending point
+ * and currentPoint is the first point of the new game.
  *
- * @param currentPoint - Current point
- * @param lastPoint - Previous point
- * @returns True if game was completed
+ * @param currentPoint - Current point (first of new game)
+ * @param lastPoint - Previous point (last of completed game)
+ * @returns True if a game completed between the two points
  */
 function isGameComplete(currentPoint: PointWithMetadata, lastPoint: PointWithMetadata | undefined): boolean {
   if (!lastPoint) return false;
