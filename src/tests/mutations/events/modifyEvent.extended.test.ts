@@ -4,14 +4,9 @@ import mocksEngine from '@Assemblies/engines/mock';
 import { describe, expect, it } from 'vitest';
 
 // constants
+import { INVALID_EVENT_TYPE, INVALID_GENDER, MISSING_BIRTH_DATE } from '@Constants/errorConditionConstants';
 import { MALE, FEMALE, MIXED, ANY } from '@Constants/genderConstants';
 import { SINGLES, DOUBLES, TEAM } from '@Constants/eventConstants';
-import {
-  INVALID_CATEGORY,
-  INVALID_EVENT_TYPE,
-  INVALID_GENDER,
-  MISSING_BIRTH_DATE,
-} from '@Constants/errorConditionConstants';
 
 const eventId = 'e1';
 
