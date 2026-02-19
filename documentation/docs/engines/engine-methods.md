@@ -9,13 +9,15 @@ Imports custom methods into the engine, making them available through the engine
 **Purpose:** Extend engine functionality with custom methods while leveraging the engine's built-in features like parameter middleware, result processing, subscriptions, logging, and error handling.
 
 **When to Use:**
+
 - Adding custom business logic to the engine
-- Extending engine capabilities for specific use cases  
+- Extending engine capabilities for specific use cases
 - Integrating third-party functionality
 - Creating reusable method collections
 - Building domain-specific engines (see [Custom Engines](/docs/engines/custom-engines))
 
 **Parameters:**
+
 ```ts
 methods: {
   [key: string]: Function | {  // Method name as key
@@ -29,6 +31,7 @@ global?: boolean;               // Make methods globally available across all en
 ```
 
 **Returns:**
+
 ```ts
 {
   success: true;
@@ -37,6 +40,7 @@ global?: boolean;               // Make methods globally available across all en
 ```
 
 **Examples:**
+
 ```js
 // Import simple methods
 engine.importMethods({
@@ -76,6 +80,7 @@ engine.importMethods({
 ```
 
 **Notes:**
+
 - Imported methods have access to engine middleware and subscriptions
 - Methods can return standard `{ success, error, ...data }` result objects
 - Traverse option allows importing nested method collections
@@ -85,6 +90,7 @@ engine.importMethods({
 - Methods can use engine's devContext for conditional logging
 
 **Advanced Usage:**
+
 ```js
 // Create a custom engine with domain-specific methods
 const customEngine = syncEngine();
@@ -116,11 +122,13 @@ Returns a deep copy of a specific tournament record from engine state.
 **Purpose:** Retrieve a tournament record without modifying the internal engine state. The returned copy is safe to modify without affecting the engine's internal state.
 
 **When to Use:**
+
 - When you need to inspect tournament data
 - When you want to export a tournament for storage
 - When you need a snapshot of tournament state at a specific point
 
 **Parameters:**
+
 ```ts
 {
   tournamentId?: string;       // Optional - specific tournament ID (defaults to current active tournament)
@@ -130,6 +138,7 @@ Returns a deep copy of a specific tournament record from engine state.
 ```
 
 **Returns:**
+
 ```ts
 {
   tournamentRecord?: object;   // Tournament record object (undefined if tournamentId not found)
@@ -137,22 +146,24 @@ Returns a deep copy of a specific tournament record from engine state.
 ```
 
 **Example:**
+
 ```js
 // Get the currently active tournament
 const { tournamentRecord } = engine.getTournament();
 
 // Get a specific tournament by ID
-const { tournamentRecord } = engine.getTournament({ 
-  tournamentId: 'tournament-123' 
+const { tournamentRecord } = engine.getTournament({
+  tournamentId: 'tournament-123',
 });
 
 // Get tournament without extensions (useful for storage/transmission)
-const { tournamentRecord } = engine.getTournament({ 
-  removeExtensions: true 
+const { tournamentRecord } = engine.getTournament({
+  removeExtensions: true,
 });
 ```
 
 **Notes:**
+
 - Returns `{}` if no tournamentId is provided and no tournament is active
 - The returned object is a deep copy, so modifications won't affect engine state
 - Use `removeExtensions: true` when serializing for storage to reduce size
@@ -166,12 +177,14 @@ Returns all tournament records currently loaded in engine state along with the a
 **Purpose:** Get a complete snapshot of the engine's current state, including all loaded tournaments and which one is currently active.
 
 **When to Use:**
+
 - When managing multiple tournaments simultaneously
 - When you need to save/restore the complete engine state
 - When debugging to see all loaded tournaments
 - Before clearing state to create a backup
 
 **Parameters:**
+
 ```ts
 {
   convertExtensions?: boolean; // Optional - convert extension objects to JSON strings
@@ -180,6 +193,7 @@ Returns all tournament records currently loaded in engine state along with the a
 ```
 
 **Returns:**
+
 ```ts
 {
   tournamentId?: string;              // Currently active tournament ID (undefined if none set)
@@ -190,6 +204,7 @@ Returns all tournament records currently loaded in engine state along with the a
 ```
 
 **Example:**
+
 ```js
 // Load multiple tournaments
 engine.setState([tournament1, tournament2, tournament3]);
@@ -206,6 +221,7 @@ localStorage.setItem('engineState', JSON.stringify(state));
 ```
 
 **Notes:**
+
 - Returns deep copies of all tournament records
 - Useful for implementing undo/redo functionality
 - See [Global State](/docs/engines/global-state) for more on multi-tournament management
@@ -219,6 +235,7 @@ Clears all tournament records from engine state and resets the active tournament
 **Purpose:** Completely clear the engine state, removing all loaded tournaments. This is a destructive operation that cannot be undone.
 
 **When to Use:**
+
 - Starting fresh with new tournament data
 - Cleaning up after tests
 - Freeing memory after tournament processing is complete
@@ -227,6 +244,7 @@ Clears all tournament records from engine state and resets the active tournament
 **Parameters:** None
 
 **Returns:**
+
 ```ts
 {
   success: true;
@@ -235,6 +253,7 @@ Clears all tournament records from engine state and resets the active tournament
 ```
 
 **Example:**
+
 ```js
 // Load a tournament
 engine.setState(tournamentRecord);
@@ -250,6 +269,7 @@ console.log(tournamentRecords); // {}
 ```
 
 **Notes:**
+
 - This operation cannot be undone
 - All tournament records are removed from memory
 - Consider using `getState()` to backup data before calling `reset()`
@@ -264,6 +284,7 @@ Sets the development context for controlling engine logging and debugging behavi
 **Purpose:** Enable detailed logging of engine operations for debugging and development. Control what gets logged (parameters, results, errors) on a global or per-method basis.
 
 **When to Use:**
+
 - Debugging engine behavior during development
 - Tracking parameter values passed to methods
 - Monitoring results from specific operations
@@ -271,10 +292,11 @@ Sets the development context for controlling engine logging and debugging behavi
 - Understanding method execution flow
 
 **Parameters:**
+
 ```ts
 contextCriteria: boolean | {
   errors?: boolean | string[];   // Log errors for all methods or specific methods
-  params?: boolean | string[];   // Log parameters for all methods or specific methods  
+  params?: boolean | string[];   // Log parameters for all methods or specific methods
   result?: boolean | string[];   // Log results for all methods or specific methods
   exclude?: string[];            // Exclude specific methods from logging
   [key: string]: any;            // Custom context properties
@@ -282,6 +304,7 @@ contextCriteria: boolean | {
 ```
 
 **Returns:**
+
 ```ts
 {
   success: true;
@@ -290,6 +313,7 @@ contextCriteria: boolean | {
 ```
 
 **Examples:**
+
 ```js
 // Enable all logging
 engine.devContext(true);
@@ -301,13 +325,13 @@ engine.devContext({ errors: true });
 engine.devContext({
   params: ['addMatchUpScheduledTime', 'bulkScheduleTournamentMatchUps'],
   result: ['addMatchUpScheduledTime'],
-  errors: true  // Log all errors
+  errors: true, // Log all errors
 });
 
 // Custom context for conditional logging
-engine.devContext({ 
-  WOWO: true,  // Custom flag
-  verbose: true 
+engine.devContext({
+  WOWO: true, // Custom flag
+  verbose: true,
 });
 
 // Disable all logging
@@ -315,6 +339,7 @@ engine.devContext(false);
 ```
 
 **Notes:**
+
 - Logging goes to console by default
 - Can significantly impact performance when enabled
 - Use `exclude` array to prevent logging for high-frequency methods
@@ -330,12 +355,14 @@ Returns the current development context, optionally checking if it matches speci
 **Purpose:** Inspect the current dev context settings or conditionally check if specific context properties are set. Useful for conditional logging or debugging logic.
 
 **When to Use:**
+
 - Checking if dev mode is enabled before expensive logging operations
 - Conditional behavior based on context flags
 - Debugging to see what logging is currently enabled
 - Verifying context matches expected state
 
 **Parameters:**
+
 ```ts
 contextCriteria?: {  // Optional - if provided, checks if all criteria match
   [key: string]: any;
@@ -343,15 +370,17 @@ contextCriteria?: {  // Optional - if provided, checks if all criteria match
 ```
 
 **Returns:**
+
 ```ts
 // If no criteria provided:
-boolean | object  // Current devContext value
+boolean | object; // Current devContext value
 
 // If criteria provided:
-boolean | object  // Returns devContext if all criteria match, otherwise false
+boolean | object; // Returns devContext if all criteria match, otherwise false
 ```
 
 **Examples:**
+
 ```js
 // Set some context
 engine.devContext({ WOWO: true, debug: true });
@@ -375,6 +404,7 @@ if (engine.getDevContext({ verbose: true })) {
 ```
 
 **Notes:**
+
 - Returns `false` if context is not set or doesn't match criteria
 - Returns the full devContext object if criteria match
 - When no criteria provided, returns current devContext value (boolean or object)
@@ -389,12 +419,14 @@ Creates a new, empty tournament record, loads it into engine state, and sets it 
 **Purpose:** Quickly create and load a new tournament with basic attributes. The tournament is automatically loaded and set as active, ready for adding events, participants, and other data.
 
 **When to Use:**
+
 - Starting a new tournament from scratch
 - Creating a tournament programmatically
 - Initializing a tournament before manual data entry
 - Testing with fresh tournament instances
 
 **Parameters:**
+
 ```ts
 {
   tournamentName?: string;      // Tournament name (default: generated name)
@@ -406,14 +438,16 @@ Creates a new, empty tournament record, loads it into engine state, and sets it 
 ```
 
 **Returns:**
+
 ```ts
 {
   success: true;
-  tournamentId: string;         // The new tournament's ID
+  tournamentId: string; // The new tournament's ID
 }
 ```
 
 **Example:**
+
 ```js
 // Create tournament with defaults
 const result = engine.newTournamentRecord();
@@ -425,7 +459,7 @@ const result = engine.newTournamentRecord({
   startDate: '2024-07-01',
   endDate: '2024-07-07',
   tournamentRank: 'INTERNATIONAL',
-  indoorOutdoor: 'OUTDOOR'
+  indoorOutdoor: 'OUTDOOR',
 });
 
 // Tournament is now loaded and active
@@ -436,12 +470,13 @@ console.log(tournamentRecord.tournamentName); // 'Summer Open 2024'
 engine.addEvent({
   event: {
     eventName: 'Singles',
-    eventType: 'SINGLES'
-  }
+    eventType: 'SINGLES',
+  },
 });
 ```
 
 **Notes:**
+
 - The new tournament is automatically loaded into engine state
 - The new tournament becomes the active tournament (no need to call `setTournamentId`)
 - Equivalent to calling `createTournamentRecord()` followed by `setState()`
@@ -470,12 +505,14 @@ Sets the active tournament ID, making that tournament the target for all subsequ
 **Purpose:** Switch between multiple loaded tournaments. When you have multiple tournament records loaded in engine state, this method specifies which one engine methods will operate on.
 
 **When to Use:**
+
 - Managing multiple tournaments simultaneously
 - Switching context between tournaments
 - After loading multiple tournaments with `setState([tournament1, tournament2])`
 - Before performing operations on a specific tournament
 
 **Parameters:**
+
 ```ts
 tournamentId?: string  // Tournament ID to make active (undefined clears active tournament)
 ```
@@ -483,6 +520,7 @@ tournamentId?: string  // Tournament ID to make active (undefined clears active 
 **Returns:** `void`
 
 **Examples:**
+
 ```js
 // Load multiple tournaments
 engine.setState([tournament1, tournament2, tournament3]);
@@ -507,6 +545,7 @@ const activeId = engine.getTournamentId();
 ```
 
 **Notes:**
+
 - Does not validate that the tournamentId exists in loaded state
 - Passing `undefined` clears the active tournament
 - All governor methods operate on the active tournament
@@ -522,6 +561,7 @@ Returns the currently active tournament ID.
 **Purpose:** Determine which tournament is currently active in engine state. Useful for debugging or implementing multi-tournament logic.
 
 **When to Use:**
+
 - Verifying which tournament is active
 - Implementing multi-tournament UI logic
 - Debugging state management issues
@@ -530,6 +570,7 @@ Returns the currently active tournament ID.
 **Parameters:** None
 
 **Returns:**
+
 ```ts
 
 **API Reference:** [addParticipants](/docs/governors/participant-governor#addparticipants)
@@ -538,6 +579,7 @@ string | undefined  // Active tournament ID, or undefined if none set
 ```
 
 **Examples:**
+
 ```js
 // Load a tournament
 engine.setState(tournamentRecord);
@@ -561,6 +603,7 @@ console.log(engine.getTournamentId()); // undefined
 ```
 
 **Notes:**
+
 - Returns `undefined` if no tournament is active
 - The active tournament is set automatically when loading a single tournament with `setState(record)`
 - Use `setTournamentId()` to change the active tournament
@@ -574,12 +617,14 @@ Loads a single tournament record into engine state, replacing any existing tourn
 **Purpose:** Load or update a tournament record in engine state. Unlike `setState()` which can load multiple tournaments, this method handles a single tournament record.
 
 **When to Use:**
+
 - Loading a tournament from storage
 - Updating an existing tournament record
 - Adding a new tournament to already-loaded tournaments
 - Replacing a specific tournament while keeping others loaded
 
 **Parameters:**
+
 ```ts
 tournamentRecord: object  // Tournament record to load
 deepCopyOption?: boolean  // Whether to deep copy (default: true)
@@ -587,6 +632,7 @@ deepCopyAttributes?: object  // Fine-tune copy behavior
 ```
 
 **Returns:**
+
 ```ts
 {
   success?: true;
@@ -595,6 +641,7 @@ deepCopyAttributes?: object  // Fine-tune copy behavior
 ```
 
 **Examples:**
+
 ```js
 // Load a tournament
 const result = engine.setTournamentRecord(tournamentRecord);
@@ -621,6 +668,7 @@ engine.setTournamentRecord(tournamentRecord, false);
 ```
 
 **Notes:**
+
 - Requires `tournamentRecord.tournamentId` to be present
 - Returns error if record is not an object or missing `tournamentId`
 - By default creates a deep copy (safe but slower)
@@ -637,17 +685,20 @@ Removes a specific tournament record from engine state by its ID.
 **Purpose:** Delete a tournament from engine state when it's no longer needed, freeing memory and cleaning up state.
 
 **When to Use:**
+
 - Removing tournaments that are no longer needed
 - Cleaning up after processing
 - Managing memory in long-running applications
 - Removing tournaments selectively while keeping others
 
 **Parameters:**
+
 ```ts
-tournamentId: string  // ID of tournament to remove
+tournamentId: string; // ID of tournament to remove
 ```
 
 **Returns:**
+
 ```ts
 {
   success?: true;
@@ -656,6 +707,7 @@ tournamentId: string  // ID of tournament to remove
 ```
 
 **Examples:**
+
 ```js
 // Load multiple tournaments
 engine.setState([tournament1, tournament2, tournament3]);
@@ -672,12 +724,13 @@ console.log(Object.keys(tournamentRecords).length); // 2 (was 3)
 
 // Remove all tournaments one by one
 const { tournamentRecords } = engine.getState();
-Object.keys(tournamentRecords).forEach(id => {
+Object.keys(tournamentRecords).forEach((id) => {
   engine.removeTournamentRecord(id);
 });
 ```
 
 **Notes:**
+
 - If the removed tournament was active, no tournament will be active afterward
 - Does not affect other loaded tournaments
 - Use `reset()` to remove all tournaments at once
@@ -693,6 +746,7 @@ Removes all tournament records that are not referenced in the `LINKED_TOURNAMENT
 **Purpose:** Clean up tournaments that are not part of a linked tournament group. Useful for managing related tournaments (like qualification and main events) where only linked tournaments should be retained.
 
 **When to Use:**
+
 - Managing linked tournament groups (qualifications, main draws, consolations)
 - Cleaning up after importing tournament data
 - Removing orphaned tournament records
@@ -706,6 +760,7 @@ Removes all tournament records that are not referenced in the `LINKED_TOURNAMENT
 The TODS (Tennis Open Data Standards) supports linking related tournaments through the `LINKED_TOURNAMENTS` extension. This method keeps only tournaments that are referenced in this extension, removing any others.
 
 **Example:**
+
 ```js
 // Load multiple tournaments
 engine.setState([tournament1, tournament2, tournament3, tournament4]);
@@ -723,6 +778,7 @@ console.log(Object.keys(tournamentRecords)); // IDs of tournament2 and tournamen
 ```
 
 **Notes:**
+
 - Looks for the `LINKED_TOURNAMENTS` extension across all loaded tournaments
 - Only keeps tournaments whose IDs appear in `extension.value.tournamentIds`
 - Removes the tournament containing the extension itself
@@ -731,6 +787,7 @@ console.log(Object.keys(tournamentRecords)); // IDs of tournament2 and tournamen
 - Primarily used internally when managing linked tournament workflows
 
 **Related:**
+
 - See [Extensions](/docs/concepts/extensions) for more on tournament extensions
 - See [Global State](/docs/engines/global-state) for state management patterns
 

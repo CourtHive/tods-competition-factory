@@ -1,3 +1,5 @@
+import type { CompetitionFormat } from './competitionFormat';
+
 export interface Tournament {
   activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   createdAt?: Date | string;
@@ -52,6 +54,7 @@ export interface Event {
   activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   allowedDrawTypes?: DrawTypeUnion[];
   category?: Category;
+  competitionFormat?: CompetitionFormat;
   createdAt?: Date | string;
   discipline?: DisciplineUnion;
   drawDefinitions?: DrawDefinition[];
@@ -162,6 +165,7 @@ export type CategoryUnion = 'AGE' | 'BOTH' | 'LEVEL';
 export interface DrawDefinition {
   activeDates?: Date[] | string[]; // dates from startDate to endDate on which the tournament is active
   automated?: boolean;
+  competitionFormat?: CompetitionFormat;
   createdAt?: Date | string;
   drawId: string;
   drawName?: string;
@@ -552,6 +556,8 @@ export interface Team {
 export interface CollectionAssignment {
   collectionId: string;
   collectionPosition: number;
+  previousParticipantId?: string;
+  substitutionOrder?: number;
 }
 
 export enum SurfaceCategoryEnum {
@@ -652,6 +658,7 @@ export interface CollectionGroup {
 }
 
 export interface Structure {
+  competitionFormat?: CompetitionFormat;
   createdAt?: Date | string;
   extensions?: Extension[];
   finishingPosition?: FinishingPositionUnion;

@@ -454,7 +454,7 @@ tournamentEngine.scheduleMatchUps({
 
 ---
 
-## Linked Tournaments & Shared Venues
+## Linked Tournaments & Shared Venues {#linked-tournaments-shared-venues}
 
 Multiple tournaments can share venues (common for professional circuits):
 

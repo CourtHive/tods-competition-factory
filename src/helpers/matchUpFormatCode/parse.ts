@@ -162,8 +162,7 @@ function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
     }
   }
 
-  const timed =
-    (setFormat && (setFormat as SetFormat).timed) || (finalSetFormat && (finalSetFormat as SetFormat).timed);
+  const timed = (setFormat && setFormat.timed) || (finalSetFormat && finalSetFormat.timed);
 
   // Validation: for SET root, apply strict bestOf/exactly rules
   if (matchRoot === SET) {

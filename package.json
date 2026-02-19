@@ -38,6 +38,7 @@
   "module": "dist/index.mjs",
   "exports": {
     ".": {
+      "types": "./dist/tods-competition-factory.d.ts",
       "import": "./dist/index.mjs",
       "default": "./dist/index.js"
     }

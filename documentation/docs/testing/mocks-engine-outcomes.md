@@ -181,7 +181,7 @@ const { outcome } = mocksEngine.generateOutcome({
 });
 ```
 
-## generateOutcomeFromScoreString
+## generateOutcomeFromScoreString {#generateOutcomeFromScoreString}
 
 Create outcomes from score strings:
 
