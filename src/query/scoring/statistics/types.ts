@@ -140,3 +140,17 @@ export interface MatchStatistics {
     byPlayer?: number[];
   };
 }
+
+/**
+ * Display-ready statistic for visualization components.
+ *
+ * Each StatObject represents one row in a statistics display,
+ * with values for both sides (team 0 and team 1).
+ */
+export interface StatObject {
+  name: string;
+  numerator: [number, number];
+  denominator?: [number, number];
+  pct?: [number, number];
+  default?: 'numerator';
+}

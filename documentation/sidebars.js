@@ -102,6 +102,21 @@ module.exports = {
         'engines/subscriptions',
         'engines/custom-engines',
         'engines/global-state',
+        {
+          type: 'category',
+          label: 'Scoring Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'scoring-engine/scoring-engine-overview',
+            },
+            'scoring-engine/scoring-engine-api',
+            'scoring-engine/event-handlers',
+            'scoring-engine/format-support',
+            'scoring-engine/visualization-applications',
+          ],
+        },
       ],
     },
     {

@@ -27,25 +27,20 @@ export function getScore(matchUp: MatchUp, options?: GetScoreOptions): ScoreResu
   // Build score string
   const scoreString = buildScoreString(matchUp, options?.useBracketNotation);
 
-  // Get current games (last incomplete set or match score)
-  const currentSet = sets.length > 0 ? sets[sets.length - 1] : null;
-  const games = currentSet
-    ? [currentSet.side1Score || 0, currentSet.side2Score || 0]
-    : [0, 0];
+  // Get current games (last incomplete set only; completed sets return 0-0)
+  const currentSet = sets.length > 0 ? sets.at(-1) : null;
+  const games =
+    currentSet && currentSet.winningSide === undefined
+      ? [currentSet.side1Score || 0, currentSet.side2Score || 0]
+      : [0, 0];
 
   // Get current points (last game in current set)
   let points: number[] = [0, 0];
-  if (currentSet && currentSet.side1GameScores && currentSet.side2GameScores) {
-    const gameIndex = Math.max(
-      currentSet.side1GameScores.length,
-      currentSet.side2GameScores.length
-    ) - 1;
+  if (currentSet?.side1GameScores && currentSet.side2GameScores) {
+    const gameIndex = Math.max(currentSet.side1GameScores.length, currentSet.side2GameScores.length) - 1;
 
     if (gameIndex >= 0) {
-      points = [
-        currentSet.side1GameScores[gameIndex] || 0,
-        currentSet.side2GameScores[gameIndex] || 0,
-      ];
+      points = [currentSet.side1GameScores[gameIndex] || 0, currentSet.side2GameScores[gameIndex] || 0];
     }
   }
 
@@ -195,18 +190,19 @@ function computeSituation(matchUp: MatchUp): PointSituation | undefined {
   const isNoAD = !!(
     activeSetFormat?.NoAD ||
     activeSetFormat?.gameFormat?.NoAD ||
-    (isTiebreak && !!(
-      activeSetFormat?.tiebreakFormat?.NoAD ||
-      activeSetFormat?.tiebreakSet?.NoAD ||
-      formatStructure.finalSetFormat?.tiebreakSet?.NoAD
-    ))
+    (isTiebreak &&
+      !!(
+        activeSetFormat?.tiebreakFormat?.NoAD ||
+        activeSetFormat?.tiebreakSet?.NoAD ||
+        formatStructure.finalSetFormat?.tiebreakSet?.NoAD
+      ))
   );
 
   // isGoldenPoint: NoAD and both sides at deuce (both need 1 point to win)
   const isGoldenPoint = isNoAD && pointsToGame[0] === 1 && pointsToGame[1] === 1;
 
   // isGamePoint: server is 1 point from winning the game
-  const isGamePoint = server !== undefined ? pointsToGame[server] === 1 : false;
+  const isGamePoint = server === undefined ? false : pointsToGame[server] === 1;
 
   // isSetPoint: either side is 1 point from winning the set
   const isSetPoint = Math.min(pointsToSet[0], pointsToSet[1]) === 1;
@@ -238,7 +234,7 @@ function buildScoreString(matchUp: MatchUp, useBracketNotation: boolean = false)
     return '0-0';
   }
 
-  const setStrings = sets.map(set => {
+  const setStrings = sets.map((set) => {
     const s1 = set.side1Score || 0;
     const s2 = set.side2Score || 0;
 

@@ -25,7 +25,7 @@ export type {
 
 // Statistics types
 export type {
-  CalculatedStat, MatchStatistics, StatisticsOptions, StatCounters,
+  CalculatedStat, MatchStatistics, StatisticsOptions, StatCounters, StatObject,
 } from '@Query/scoring/statistics/types';
 
 // Scoring validators

@@ -38,10 +38,11 @@ import { isComplete } from '@Query/scoring/isComplete';
 import { getEpisodes } from '@Query/scoring/getEpisodes';
 import { parseFormat, resolveSetType, isAggregateFormat } from '@Tools/scoring/formatConverter';
 import { calculateMatchStatistics } from '@Query/scoring/statistics/standalone';
-import type { MatchStatistics, StatisticsOptions } from '@Query/scoring/statistics/types';
+import { toStatObjects } from '@Query/scoring/statistics/toStatObjects';
+import type { MatchStatistics, StatisticsOptions, StatObject } from '@Query/scoring/statistics/types';
 import type { PointMultiplier } from '@Mutate/scoring/resolvePointValue';
 
-// CompetitionFormat types (mirrored from factory for standalone use)
+// competitionFormat types (mirrored from factory for standalone use)
 export interface TimerProfile {
   shotClockSeconds?: number;
   segmentTimers?: { segmentType: string; minutes: number; direction?: string; stoppageTime?: boolean }[];
@@ -80,7 +81,7 @@ export interface PointProfile {
 
 export type ServerRule = 'ALTERNATE_GAMES' | 'WINNER_SERVES';
 
-export interface CompetitionFormat {
+export interface competitionFormat {
   competitionFormatId?: string;
   competitionFormatName?: string;
   matchUpFormat?: string;
@@ -134,7 +135,7 @@ export interface ScoringEngineOptions {
   matchUpFormat?: string;
   matchUpId?: string;
   isDoubles?: boolean;
-  competitionFormat?: CompetitionFormat;
+  competitionFormat?: competitionFormat;
   pointMultipliers?: PointMultiplier[];
   eventHandlers?: ScoringEventHandlers;
 }
@@ -149,7 +150,7 @@ export interface ScoringEngineSupplementaryState {
  *
  * Holds internal matchUp state and provides mutation operations.
  * Supports undo/redo across all input modes (points, games, sets, segments).
- * Supports CompetitionFormat consumption for gameplay rules.
+ * Supports competitionFormat consumption for gameplay rules.
  */
 export class ScoringEngine {
   private state!: MatchUp; // Definite assignment - initialized in constructor
@@ -159,7 +160,7 @@ export class ScoringEngine {
   private isDoubles: boolean;
   private initialScore?: InitialScoreOptions; // For late arrival
   private pointMultipliers: PointMultiplier[] = [];
-  private readonly competitionFormat?: CompetitionFormat;
+  private readonly competitionFormat?: competitionFormat;
   private initialLineUps?: Record<number, TeamCompetitor[]>;
   private cachedFormatStructure?: FormatStructure;
   private eventHandlers?: ScoringEventHandlers;
@@ -231,10 +232,8 @@ export class ScoringEngine {
     const pointIndex = this.state.history?.points.length || 0;
 
     // Snapshot game/set/match state before point for event detection
-    const prevTotalGames = this.state.score.sets.reduce(
-      (sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0), 0,
-    );
-    const prevCompletedSets = this.state.score.sets.filter(s => s.winningSide !== undefined).length;
+    const prevTotalGames = this.state.score.sets.reduce((sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0), 0);
+    const prevCompletedSets = this.state.score.sets.filter((s) => s.winningSide !== undefined).length;
     const prevComplete = this.state.matchUpStatus === 'COMPLETED';
 
     // Decorate active players from lineUp before adding point
@@ -288,23 +287,24 @@ export class ScoringEngine {
 
       // Detect game completion (total games across all sets increased)
       const curTotalGames = this.state.score.sets.reduce(
-        (sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0), 0,
+        (sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0),
+        0,
       );
       if (curTotalGames > prevTotalGames) {
         this.eventHandlers.onGameComplete?.({ ...ctx, gameWinner: options.winner });
       }
 
       // Detect set completion (number of sets with winningSide increased)
-      const curCompletedSets = this.state.score.sets.filter(s => s.winningSide !== undefined).length;
+      const curCompletedSets = this.state.score.sets.filter((s) => s.winningSide !== undefined).length;
       if (curCompletedSets > prevCompletedSets) {
-        const completedSet = this.state.score.sets.filter(s => s.winningSide !== undefined).at(-1);
-        const setWinner = (completedSet?.winningSide === 1 ? 0 : 1) as 0 | 1;
+        const completedSet = this.state.score.sets.findLast((s) => s.winningSide !== undefined);
+        const setWinner = completedSet?.winningSide === 1 ? 0 : 1;
         this.eventHandlers.onSetComplete?.({ ...ctx, setWinner });
       }
 
       // Detect match completion
       if (!prevComplete && this.state.matchUpStatus === 'COMPLETED') {
-        const matchWinner = (this.state.winningSide === 1 ? 0 : 1) as 0 | 1;
+        const matchWinner = this.state.winningSide === 1 ? 0 : 1;
         this.eventHandlers.onMatchComplete?.({ ...ctx, matchWinner });
       }
     }
@@ -590,6 +590,19 @@ export class ScoringEngine {
   }
 
   /**
+   * Get display-ready statistics as StatObject array
+   *
+   * Convenience method that calls getStatistics() and transforms the result
+   * into StatObject[] format for visualization components (e.g., statView).
+   *
+   * @param options - Statistics options (set filter, etc.)
+   * @returns StatObject[] for display consumption
+   */
+  getStatObjects(options?: StatisticsOptions): StatObject[] {
+    return toStatObjects(this.getStatistics(options));
+  }
+
+  /**
    * Get who serves the next point
    *
    * Uses format-driven server alternation (default) or competition format
@@ -863,7 +876,7 @@ export class ScoringEngine {
   }
 
   // ===========================================================================
-  // CompetitionFormat Profile Getters
+  // competitionFormat Profile Getters
   // ===========================================================================
 
   getPenaltyProfile(): PenaltyProfile | undefined {

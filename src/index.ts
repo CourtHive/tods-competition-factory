@@ -37,3 +37,8 @@ export * from './constants';
 // TYPES -----------------------------------------------------------------
 export type * from './types';
 
+// Statistics types (top-level convenience re-exports)
+export type { StatObject, MatchStatistics, StatCounters, StatisticsOptions } from './query/scoring/statistics/types';
+export { toStatObjects } from './query/scoring/statistics/toStatObjects';
+export { calculateMatchStatistics } from './query/scoring/statistics/standalone';
+
