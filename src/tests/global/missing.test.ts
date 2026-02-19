@@ -162,6 +162,12 @@ const skipMethods = new Set([
   'getWinner',
   'deduceMatchUpFormat',
   'noNulls',
+
+  // Standalone scoring utilities (don't use tournament state)
+  'calculateMatchStatistics',
+  'enrichPointHistory',
+  'getQuickStats',
+  'getEpisodes',
 ]);
 
 it.each([syncEngine, asyncEngine])(

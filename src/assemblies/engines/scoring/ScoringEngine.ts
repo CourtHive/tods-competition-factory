@@ -26,14 +26,19 @@ import type {
   SetScore,
   TeamCompetitor,
   SubstitutionEvent,
+  FormatStructure,
+  Episode,
 } from '@Types/scoring/types';
 import { createMatchUp } from '@Mutate/scoring/createMatchUp';
-import { addPoint } from '@Mutate/scoring/addPoint';
+import { addPoint, deriveServer } from '@Mutate/scoring/addPoint';
 import { getScore } from '@Query/scoring/getScore';
 import { getScoreboard } from '@Query/scoring/getScoreboard';
 import { getWinner } from '@Query/scoring/getWinner';
 import { isComplete } from '@Query/scoring/isComplete';
-import { parseFormat, isAggregateFormat } from '@Tools/scoring/formatConverter';
+import { getEpisodes } from '@Query/scoring/getEpisodes';
+import { parseFormat, resolveSetType, isAggregateFormat } from '@Tools/scoring/formatConverter';
+import { calculateMatchStatistics } from '@Query/scoring/statistics/standalone';
+import type { MatchStatistics, StatisticsOptions } from '@Query/scoring/statistics/types';
 import type { PointMultiplier } from '@Mutate/scoring/resolvePointValue';
 
 // CompetitionFormat types (mirrored from factory for standalone use)
@@ -73,6 +78,8 @@ export interface PointProfile {
   serveLocations?: string[];
 }
 
+export type ServerRule = 'ALTERNATE_GAMES' | 'WINNER_SERVES';
+
 export interface CompetitionFormat {
   competitionFormatId?: string;
   competitionFormatName?: string;
@@ -85,7 +92,42 @@ export interface CompetitionFormat {
   penaltyProfile?: PenaltyProfile;
   pointProfile?: PointProfile;
   pointMultipliers?: PointMultiplier[];
+  /** Server determination rule: 'ALTERNATE_GAMES' (default) or 'WINNER_SERVES' */
+  serverRule?: ServerRule;
   notes?: string;
+}
+
+/**
+ * Event handler context passed to all callbacks
+ */
+export interface ScoringEventContext {
+  /** Current matchUp state */
+  state: MatchUp;
+  /** Current score result */
+  score: ReturnType<typeof getScore>;
+}
+
+/**
+ * Optional event handlers fired during engine state changes
+ *
+ * All handlers receive the current engine context after the action completes.
+ * Handlers are called synchronously — keep them fast or dispatch async work.
+ */
+export interface ScoringEventHandlers {
+  /** Fired after a point is added */
+  onPoint?: (context: ScoringEventContext) => void;
+  /** Fired after undo */
+  onUndo?: (context: ScoringEventContext) => void;
+  /** Fired after redo */
+  onRedo?: (context: ScoringEventContext) => void;
+  /** Fired after reset */
+  onReset?: (context: ScoringEventContext) => void;
+  /** Fired when a game completes (within addPoint) */
+  onGameComplete?: (context: ScoringEventContext & { gameWinner: 0 | 1 }) => void;
+  /** Fired when a set completes (within addPoint) */
+  onSetComplete?: (context: ScoringEventContext & { setWinner: 0 | 1 }) => void;
+  /** Fired when the match completes */
+  onMatchComplete?: (context: ScoringEventContext & { matchWinner: 0 | 1 }) => void;
 }
 
 export interface ScoringEngineOptions {
@@ -94,6 +136,7 @@ export interface ScoringEngineOptions {
   isDoubles?: boolean;
   competitionFormat?: CompetitionFormat;
   pointMultipliers?: PointMultiplier[];
+  eventHandlers?: ScoringEventHandlers;
 }
 
 export interface ScoringEngineSupplementaryState {
@@ -118,6 +161,8 @@ export class ScoringEngine {
   private pointMultipliers: PointMultiplier[] = [];
   private readonly competitionFormat?: CompetitionFormat;
   private initialLineUps?: Record<number, TeamCompetitor[]>;
+  private cachedFormatStructure?: FormatStructure;
+  private eventHandlers?: ScoringEventHandlers;
 
   /**
    * Create new ScoringEngine
@@ -137,12 +182,16 @@ export class ScoringEngine {
 
     this.matchUpId = options.matchUpId;
     this.isDoubles = options.isDoubles || false;
+    this.eventHandlers = options.eventHandlers;
 
     this.state = createMatchUp({
       matchUpFormat: this.matchUpFormat,
       matchUpId: this.matchUpId,
       isDoubles: this.isDoubles,
     });
+
+    // Cache parsed format structure
+    this.cacheFormatStructure();
   }
 
   /**
@@ -157,6 +206,7 @@ export class ScoringEngine {
     this.isDoubles = matchUp.matchUpType === 'DOUBLES';
     this.redoStack = [];
     this.initialScore = undefined;
+    this.cacheFormatStructure();
   }
 
   /**
@@ -179,6 +229,13 @@ export class ScoringEngine {
    */
   addPoint(options: AddPointOptions): void {
     const pointIndex = this.state.history?.points.length || 0;
+
+    // Snapshot game/set/match state before point for event detection
+    const prevTotalGames = this.state.score.sets.reduce(
+      (sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0), 0,
+    );
+    const prevCompletedSets = this.state.score.sets.filter(s => s.winningSide !== undefined).length;
+    const prevComplete = this.state.matchUpStatus === 'COMPLETED';
 
     // Decorate active players from lineUp before adding point
     const activePlayersSnapshot = this.hasLineUp() ? this.getActivePlayers() : undefined;
@@ -222,6 +279,35 @@ export class ScoringEngine {
 
     // Clear redo stack (new branch - can't redo after new action)
     this.redoStack = [];
+
+    // Fire event handlers
+    if (this.eventHandlers) {
+      const ctx = this.buildEventContext();
+
+      this.eventHandlers.onPoint?.(ctx);
+
+      // Detect game completion (total games across all sets increased)
+      const curTotalGames = this.state.score.sets.reduce(
+        (sum, s) => sum + (s.side1Score || 0) + (s.side2Score || 0), 0,
+      );
+      if (curTotalGames > prevTotalGames) {
+        this.eventHandlers.onGameComplete?.({ ...ctx, gameWinner: options.winner });
+      }
+
+      // Detect set completion (number of sets with winningSide increased)
+      const curCompletedSets = this.state.score.sets.filter(s => s.winningSide !== undefined).length;
+      if (curCompletedSets > prevCompletedSets) {
+        const completedSet = this.state.score.sets.filter(s => s.winningSide !== undefined).at(-1);
+        const setWinner = (completedSet?.winningSide === 1 ? 0 : 1) as 0 | 1;
+        this.eventHandlers.onSetComplete?.({ ...ctx, setWinner });
+      }
+
+      // Detect match completion
+      if (!prevComplete && this.state.matchUpStatus === 'COMPLETED') {
+        const matchWinner = (this.state.winningSide === 1 ? 0 : 1) as 0 | 1;
+        this.eventHandlers.onMatchComplete?.({ ...ctx, matchWinner });
+      }
+    }
   }
 
   /**
@@ -350,6 +436,8 @@ export class ScoringEngine {
         }
       }
       this.rebuildFromEntries();
+
+      this.eventHandlers?.onUndo?.(this.buildEventContext());
       return true;
     }
 
@@ -372,6 +460,8 @@ export class ScoringEngine {
       });
     }
     this.rebuildState();
+
+    this.eventHandlers?.onUndo?.(this.buildEventContext());
     return true;
   }
 
@@ -400,6 +490,8 @@ export class ScoringEngine {
     }
 
     this.rebuildFromEntries();
+
+    this.eventHandlers?.onRedo?.(this.buildEventContext());
     return true;
   }
 
@@ -480,6 +572,132 @@ export class ScoringEngine {
    */
   getFormat(): string {
     return this.state.matchUpFormat;
+  }
+
+  // ===========================================================================
+  // Statistics, Introspection & Analysis
+  // ===========================================================================
+
+  /**
+   * Get match statistics calculated from point history
+   *
+   * @param options - Statistics options (set filter, etc.)
+   * @returns Complete statistics package with counters, calculated stats, and summary
+   */
+  getStatistics(options?: StatisticsOptions): MatchStatistics {
+    const points = this.state.history?.points || [];
+    return calculateMatchStatistics(this.state, points as any[], options);
+  }
+
+  /**
+   * Get who serves the next point
+   *
+   * Uses format-driven server alternation (default) or competition format
+   * server rule (e.g., WINNER_SERVES where last point winner serves).
+   *
+   * @returns 0 = side 1 serves, 1 = side 2 serves
+   */
+  getNextServer(): 0 | 1 {
+    const serverRule = this.competitionFormat?.serverRule;
+
+    if (serverRule === 'WINNER_SERVES') {
+      const lastPoint = this.state.history?.points.at(-1);
+      return lastPoint ? lastPoint.winner : 0;
+    }
+
+    // Default: format-driven server alternation
+    if (!this.cachedFormatStructure) return 0;
+
+    const setsWon: [number, number] = [0, 0];
+    this.state.score.sets.forEach((set) => {
+      if (set.winningSide === 1) setsWon[0]++;
+      if (set.winningSide === 2) setsWon[1]++;
+    });
+    const setType = resolveSetType(this.cachedFormatStructure, setsWon);
+
+    return deriveServer(this.state, this.cachedFormatStructure, setType);
+  }
+
+  /**
+   * Get episodes — point history enriched with game/set/match context
+   *
+   * Each episode contains the point data plus game boundaries, set boundaries,
+   * points needed at each level, and next server information. Suitable for
+   * timeline visualization and detailed analysis.
+   *
+   * @returns Array of episodes, one per point
+   */
+  getEpisodes(): Episode[] {
+    return getEpisodes(this.state);
+  }
+
+  /**
+   * Whether the format uses No-Advantage scoring (deciding point at deuce)
+   */
+  isNoAd(): boolean {
+    return !!(this.cachedFormatStructure?.setFormat?.NoAD || this.cachedFormatStructure?.setFormat?.gameFormat?.NoAD);
+  }
+
+  /**
+   * Number of sets needed to win the match
+   */
+  getSetsToWin(): number {
+    if (!this.cachedFormatStructure) return 2;
+    const bestOf = this.cachedFormatStructure.exactly || this.cachedFormatStructure.bestOf || 3;
+    return Math.ceil(bestOf / 2);
+  }
+
+  /**
+   * Game count at which a tiebreak is played, or null if no tiebreak
+   *
+   * For tiebreak-only formats (pickleball, etc.), returns null since
+   * the entire set IS the tiebreak.
+   */
+  getTiebreakAt(): number | null {
+    const sf = this.cachedFormatStructure?.setFormat;
+    if (!sf) return null;
+
+    // Tiebreak-only sets don't have a tiebreakAt threshold
+    if (sf.tiebreakSet) return null;
+
+    // Timed sets don't have tiebreaks
+    if (sf.timed) return null;
+
+    // No tiebreak explicitly configured
+    if (sf.noTiebreak) return null;
+
+    // Default: tiebreakAt = setTo (e.g., 6 for standard tennis)
+    const setTo = sf.setTo || 6;
+    return (typeof sf.tiebreakAt === 'number' ? sf.tiebreakAt : undefined) ?? setTo;
+  }
+
+  /**
+   * Whether a tiebreak is played in the final/deciding set
+   */
+  hasFinalSetTiebreak(): boolean {
+    const ff = this.cachedFormatStructure?.finalSetFormat;
+    if (!ff) {
+      // No separate final set format — use regular set format rules
+      return this.getTiebreakAt() !== null;
+    }
+
+    // Final set is a match tiebreak
+    if (ff.tiebreakSet) return true;
+
+    // Final set has no tiebreak (advantage set)
+    if (ff.noTiebreak) return false;
+
+    // Final set has standard tiebreak
+    return !!(ff.tiebreakFormat || ff.tiebreakAt !== undefined);
+  }
+
+  /**
+   * Get the parsed format structure (for advanced consumers)
+   *
+   * @returns The parsed FormatStructure or undefined if format is invalid
+   */
+  getFormatStructure(): FormatStructure | undefined {
+    return this.cachedFormatStructure;
   }
 
   /**
@@ -673,6 +891,26 @@ export class ScoringEngine {
   }
 
   // ===========================================================================
+  // Event Handlers
+  // ===========================================================================
+
+  /**
+   * Set or replace event handlers at runtime
+   *
+   * @param handlers - New event handlers (replaces all existing handlers)
+   */
+  setEventHandlers(handlers: ScoringEventHandlers | undefined): void {
+    this.eventHandlers = handlers;
+  }
+
+  /**
+   * Get current event handlers
+   */
+  getEventHandlers(): ScoringEventHandlers | undefined {
+    return this.eventHandlers;
+  }
+
+  // ===========================================================================
   // Decoration & Editing
   // ===========================================================================
 
@@ -769,6 +1007,8 @@ export class ScoringEngine {
     this.redoStack = [];
     this.initialScore = undefined;
     this.initialLineUps = undefined;
+
+    this.eventHandlers?.onReset?.(this.buildEventContext());
   }
 
   // ===========================================================================
@@ -778,6 +1018,24 @@ export class ScoringEngine {
   private ensureHistory(): void {
     this.state.history ??= { points: [] };
     this.state.history.entries ??= [];
+  }
+
+  /**
+   * Build event context for handler callbacks
+   */
+  private buildEventContext(): ScoringEventContext {
+    return {
+      state: this.state,
+      score: getScore(this.state),
+    };
+  }
+
+  /**
+   * Cache the parsed format structure for introspection methods
+   */
+  private cacheFormatStructure(): void {
+    const parsed = parseFormat(this.matchUpFormat);
+    this.cachedFormatStructure = parsed.isValid ? parsed.format : undefined;
   }
 
   /**

@@ -8,6 +8,7 @@ export type {
   ScoringEngineOptions,
   ScoringEngineSupplementaryState,
   CompetitionFormat,
+  ServerRule,
   TimerProfile,
   TimeoutRules,
   SubstitutionRules,

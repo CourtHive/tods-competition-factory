@@ -603,6 +603,26 @@ export interface AddGameOptions {
 // ============================================================================
 
 /**
+ * Point situation booleans for the NEXT point to be played
+ */
+export interface PointSituation {
+  /** Receiver is 1 point from winning the current game */
+  isBreakPoint: boolean;
+  /** Server is 1 point from winning the current game */
+  isGamePoint: boolean;
+  /** Either side is 1 point from winning the current set */
+  isSetPoint: boolean;
+  /** Either side is 1 point from winning the match */
+  isMatchPoint: boolean;
+  /** NoAD format and both sides at deuce (deciding point) */
+  isGoldenPoint: boolean;
+  /** Currently in a tiebreak game */
+  isTiebreak: boolean;
+  /** Who serves next: 0 = side 1, 1 = side 2 */
+  server?: 0 | 1;
+}
+
+/**
  * Score query result
  */
 export interface ScoreResult {
@@ -610,6 +630,10 @@ export interface ScoreResult {
   scoreString: string;
   games?: number[];
   points?: number[];
+  /** Display-formatted point values, e.g. ['40', 'AD'], ['15', '30'] */
+  pointDisplay?: [string, string];
+  /** Situation booleans for the next point to be played */
+  situation?: PointSituation;
 }
 
 /**
@@ -623,4 +647,93 @@ export interface Statistics {
   aces?: number[];
   doubleFaults?: number[];
   breakPoints?: number[];
+}
+
+// ============================================================================
+// Episode Types
+// ============================================================================
+
+/**
+ * Episode point context — enriched per-point data within an episode
+ */
+export interface EpisodePoint {
+  /** 0-indexed point index in match history */
+  index: number;
+  /** Point number within current game (0-indexed) */
+  number: number;
+  /** Winner: 0 = side 1, 1 = side 2 */
+  winner: 0 | 1;
+  /** Server: 0 = side 1, 1 = side 2 */
+  server?: 0 | 1;
+  /** Score display at this point (e.g. "15-30") */
+  score?: string;
+  /** Point result (e.g. 'Ace', 'Winner') */
+  result?: string;
+}
+
+/**
+ * Episode game context
+ */
+export interface EpisodeGame {
+  /** Game index within the set (0-indexed) */
+  index: number;
+  /** Whether this game is a tiebreak */
+  isTiebreak: boolean;
+  /** Whether a game was completed on this point */
+  complete: boolean;
+  /** Winner of this game if complete */
+  winner?: 0 | 1;
+}
+
+/**
+ * Episode set context
+ */
+export interface EpisodeSet {
+  /** Set index (0-indexed) */
+  index: number;
+  /** Whether a set was completed on this point */
+  complete: boolean;
+  /** Winner of this set if complete */
+  winner?: 0 | 1;
+}
+
+/**
+ * Episode "needed" context — points/games needed to win at each level
+ */
+export interface EpisodeNeeded {
+  /** Points each side needs to win current game: [side1, side2] */
+  pointsToGame?: [number, number];
+  /** Points each side needs to win current set: [side1, side2] */
+  pointsToSet?: [number, number];
+  /** Points each side needs to win the match: [side1, number] */
+  pointsToMatch?: [number, number];
+  /** Games each side needs to win current set: [side1, side2] */
+  gamesToSet?: [number, number];
+  /** Whether this is a breakpoint */
+  isBreakpoint?: boolean;
+}
+
+/**
+ * Episode — a single point enriched with full game/set/match context
+ *
+ * Transforms flat point history into structured episodes suitable for
+ * visualization, timeline rendering, and detailed analysis.
+ */
+export interface Episode {
+  /** Action type (always 'addPoint') */
+  action: 'addPoint';
+  /** Point-level data */
+  point: EpisodePoint;
+  /** Game-level context */
+  game: EpisodeGame;
+  /** Set-level context */
+  set: EpisodeSet;
+  /** Points/games needed at each level (before this point was played) */
+  needed: EpisodeNeeded;
+  /** Who serves the next point (0 or 1) */
+  nextService: number;
+  /** Point result type (e.g. 'Ace', 'Winner') */
+  result?: string;
+  /** Whether the match is complete after this point */
+  complete: boolean;
 }

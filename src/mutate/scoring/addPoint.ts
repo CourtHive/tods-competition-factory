@@ -657,8 +657,10 @@ function checkStandardSetWon(
 
 /**
  * Derive server from match state
+ *
+ * Exported for use by ScoringEngine.getNextServer() and getScore() situation.
  */
-function deriveServer(matchUp: MatchUp, formatStructure: FormatStructure, setType: SetType): 0 | 1 {
+export function deriveServer(matchUp: MatchUp, formatStructure: FormatStructure, setType: SetType): 0 | 1 {
   const currentSetIndex = matchUp.score.sets.length - 1;
   const currentSet = currentSetIndex >= 0 ? matchUp.score.sets[currentSetIndex] : undefined;
 
@@ -716,8 +718,10 @@ function deriveServer(matchUp: MatchUp, formatStructure: FormatStructure, setTyp
 
 /**
  * Format game score as tennis score string (e.g., '0-15', '30-30', '40-A')
+ *
+ * Exported for use by getScore() pointDisplay.
  */
-function formatGameScore(p1: number, p2: number, isTiebreak: boolean, isConsecutive?: boolean): string {
+export function formatGameScore(p1: number, p2: number, isTiebreak: boolean, isConsecutive?: boolean): string {
   if (isTiebreak || isConsecutive) {
     return `${p1}-${p2}`;
   }

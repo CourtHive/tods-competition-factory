@@ -14,6 +14,8 @@ import type { Extension } from './tournamentTypes';
 // Core CompetitionFormat
 // ============================================================================
 
+export type ServerRule = 'ALTERNATE_GAMES' | 'WINNER_SERVES';
+
 export interface CompetitionFormat {
   competitionFormatId?: string;
   competitionFormatName?: string;
@@ -26,6 +28,8 @@ export interface CompetitionFormat {
   penaltyProfile?: PenaltyProfile;
   pointProfile?: PointProfile;
   pointMultipliers?: PointMultiplier[];
+  /** Server determination rule: 'ALTERNATE_GAMES' (default) or 'WINNER_SERVES' */
+  serverRule?: ServerRule;
   extensions?: Extension[];
   notes?: string;
 }

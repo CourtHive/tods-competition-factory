@@ -19,8 +19,14 @@ export type {
   FormatStructure, SetFormatStructure, TiebreakFormatStructure,
   GameFormatStructure, PointResult, StrokeType, ServeLocation,
   RallyShot, GetScoreboardOptions, ValidationResult, ScoreResult,
-  Statistics,
+  Statistics, PointSituation,
+  Episode, EpisodePoint, EpisodeGame, EpisodeSet, EpisodeNeeded,
 } from '@Types/scoring/types';
+
+// Statistics types
+export type {
+  CalculatedStat, MatchStatistics, StatisticsOptions, StatCounters,
+} from '@Query/scoring/statistics/types';
 
 // Scoring validators
 export { validateMatchUp, validateSet, getSetScoreString } from '@Validators/scoring/validateMatchUp';
