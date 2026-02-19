@@ -1,8 +1,8 @@
 import { describe, it, expect } from 'vitest';
 import { ScoringEngine } from '@Assemblies/governors/scoreGovernor';
-import type { CompetitionFormat, PointMultiplier } from '@Assemblies/governors/scoreGovernor';
+import type { competitionFormat, PointMultiplier } from '@Assemblies/governors/scoreGovernor';
 
-const INTENNSE_STANDARD: CompetitionFormat = {
+const INTENNSE_STANDARD: competitionFormat = {
   competitionFormatName: 'INTENNSE_STANDARD',
   matchUpFormat: 'SET7XA-S:T10P',
   sport: 'INTENNSE',
@@ -55,7 +55,7 @@ const INTENNSE_STANDARD: CompetitionFormat = {
   ],
 };
 
-describe('ScoringEngine with CompetitionFormat', () => {
+describe('ScoringEngine with competitionFormat', () => {
   describe('Construction', () => {
     it('extracts matchUpFormat from competitionFormat', () => {
       const engine = new ScoringEngine({
@@ -83,9 +83,7 @@ describe('ScoringEngine with CompetitionFormat', () => {
     });
 
     it('standalone pointMultipliers override competitionFormat multipliers', () => {
-      const overrideMultipliers: PointMultiplier[] = [
-        { condition: { results: ['Ace'] }, value: 5 },
-      ];
+      const overrideMultipliers: PointMultiplier[] = [{ condition: { results: ['Ace'] }, value: 5 }];
 
       const engine = new ScoringEngine({
         competitionFormat: INTENNSE_STANDARD,
@@ -117,7 +115,7 @@ describe('ScoringEngine with CompetitionFormat', () => {
       const profile = engine.getPointProfile();
       expect(profile).toBeDefined();
       expect(profile!.pointResults.length).toBe(8);
-      expect(profile!.pointResults.find(p => p.result === 'Ace')?.isServe).toBe(true);
+      expect(profile!.pointResults.find((p) => p.result === 'Ace')?.isServe).toBe(true);
     });
 
     it('returns timer profile', () => {
@@ -253,22 +251,14 @@ describe('ScoringEngine with CompetitionFormat', () => {
       });
 
       // Set lineUps
-      engine.setLineUp(1, [
-        { participantId: 'P1' },
-        { participantId: 'P2' },
-        { participantId: 'P3' },
-      ]);
-      engine.setLineUp(2, [
-        { participantId: 'Q1' },
-        { participantId: 'Q2' },
-        { participantId: 'Q3' },
-      ]);
+      engine.setLineUp(1, [{ participantId: 'P1' }, { participantId: 'P2' }, { participantId: 'P3' }]);
+      engine.setLineUp(2, [{ participantId: 'Q1' }, { participantId: 'Q2' }, { participantId: 'Q3' }]);
 
       // Play some points in segment 1
-      engine.addPoint({ winner: 0, result: 'Ace' });     // +2
-      engine.addPoint({ winner: 1 });                     // +1
-      engine.addPoint({ winner: 0, result: 'Winner' });   // +2
-      engine.addPoint({ winner: 1, result: 'Ace' });      // +2
+      engine.addPoint({ winner: 0, result: 'Ace' }); // +2
+      engine.addPoint({ winner: 1 }); // +1
+      engine.addPoint({ winner: 0, result: 'Winner' }); // +2
+      engine.addPoint({ winner: 1, result: 'Ace' }); // +2
 
       let score = engine.getScore();
       expect(score.sets[0].side1Score).toBe(4); // 2+2

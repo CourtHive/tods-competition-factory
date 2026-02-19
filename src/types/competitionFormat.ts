@@ -1,5 +1,5 @@
 /**
- * CompetitionFormat — defines HOW a sport is played
+ * competitionFormat — defines HOW a sport is played
  *
  * Sits alongside tieFormat (WHAT is played) and matchUpFormat (scoring structure).
  * Covers timers, penalties, substitutions, point multipliers, point descriptors.
@@ -11,12 +11,12 @@
 import type { Extension } from './tournamentTypes';
 
 // ============================================================================
-// Core CompetitionFormat
+// Core competitionFormat
 // ============================================================================
 
 export type ServerRule = 'ALTERNATE_GAMES' | 'WINNER_SERVES';
 
-export interface CompetitionFormat {
+export interface competitionFormat {
   competitionFormatId?: string;
   competitionFormatName?: string;
   matchUpFormat?: string;
@@ -89,8 +89,8 @@ export type SubstitutionTiming = 'BETWEEN_GAMES' | 'BETWEEN_POINTS' | 'ANY';
 
 export interface SubstitutionRules {
   allowed: boolean;
-  maxPerMatchUp?: number;       // Omit = unlimited; 0 = none despite allowed: true
-  maxPerSegment?: number;       // Omit = unlimited per segment
+  maxPerMatchUp?: number; // Omit = unlimited; 0 = none despite allowed: true
+  maxPerSegment?: number; // Omit = unlimited per segment
   allowedMatchUpTypes?: ('SINGLES' | 'DOUBLES')[];
   timing?: SubstitutionTiming;
   minRosterSize?: number;
@@ -102,8 +102,8 @@ export interface SubstitutionRules {
 // ============================================================================
 
 export interface PlayerRules {
-  maxMinutesPerSegment?: number;               // e.g., 6 for INTENNSE SINGLES
-  matchUpTypes?: ('SINGLES' | 'DOUBLES')[];    // Which matchUp types this applies to
+  maxMinutesPerSegment?: number; // e.g., 6 for INTENNSE SINGLES
+  matchUpTypes?: ('SINGLES' | 'DOUBLES')[]; // Which matchUp types this applies to
 }
 
 // ============================================================================

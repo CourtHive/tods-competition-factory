@@ -7,7 +7,7 @@ export { ScoringEngine } from '@Assemblies/engines/scoring/ScoringEngine';
 export type {
   ScoringEngineOptions,
   ScoringEngineSupplementaryState,
-  CompetitionFormat,
+  competitionFormat,
   ServerRule,
   TimerProfile,
   TimeoutRules,

@@ -4,6 +4,7 @@ title: Draw Generation
 
 import BrowserOnly from '@docusaurus/BrowserOnly';
 import DrawType from '../components/DrawType';
+import BurstChart from '../components/BurstChart';
 
 ## Visual Example
 
@@ -240,6 +241,12 @@ After generating a draw definition:
 2. **Modify Structure**: Use position actions to adjust participant placement
 3. **Configure Scheduling**: Set up venues, courts, and scheduling profiles
 4. **Publish**: Use `publishEvent()` to make draw visible
+
+## Sunburst Visualization
+
+An alternative way to visualize tournament brackets is the sunburst chart from [courthive-components](https://github.com/CourtHive/courthive-components). The sunburst renders a radial layout where each ring represents a round, and segments represent participants progressing through the draw.
+
+<BrowserOnly>{() => <BurstChart />}</BrowserOnly>
 
 ## Related Documentation
 
