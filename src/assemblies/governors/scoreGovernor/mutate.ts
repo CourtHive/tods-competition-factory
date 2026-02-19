@@ -1,11 +1,8 @@
-// history
-export { calculateHistoryScore } from '@Mutate/matchUps/score/history/calculateHistoryScore';
-export { setServingSide } from '@Mutate/matchUps/score/history/setServingSide';
-export { clearHistory } from '@Mutate/matchUps/score/history/clearHistory';
-export { addPoint } from '@Mutate/matchUps/score/history/addPoint';
-export { addGame } from '@Mutate/matchUps/score/history/addGame';
-export { addShot } from '@Mutate/matchUps/score/history/addShot';
-export { addSet } from '@Mutate/matchUps/score/history/addSet';
-export { redo } from '@Mutate/matchUps/score/history/redo';
-export { undo } from '@Mutate/matchUps/score/history/undo';
-export { umo } from '@Mutate/matchUps/score/history/umo';
+export { createMatchUp } from '@Mutate/scoring/createMatchUp';
+export { addPoint } from '@Mutate/scoring/addPoint';
+export type { AddPointConfig } from '@Mutate/scoring/addPoint';
+export { resolvePointValue } from '@Mutate/scoring/resolvePointValue';
+export type { PointMultiplier } from '@Mutate/scoring/resolvePointValue';
+export { calculatePointsTo } from '@Mutate/scoring/pointsToCalculator';
+export type { PointsToDecoration } from '@Mutate/scoring/pointsToCalculator';
+export { inferServeSide } from '@Mutate/scoring/serveSideCalculator';

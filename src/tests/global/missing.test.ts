@@ -29,6 +29,10 @@ function handleMethodResult(method: string, result: any) {
     'createMap',
     'randomPop',
     'stringify',
+    'getSetScoreString',
+    'validateMatchUp',
+    'createMatchUp',
+    'validateSet',
     'isOdd',
     'parse',
     'UUIDS',
@@ -43,12 +47,14 @@ function handleMethodResult(method: string, result: any) {
     'validateSchedulingProfile',
     'generateTournamentRecord',
     'getMatchUpDependencies',
+    'removeTournamentRecord',
     'generateParticipants',
     'automatedPositioning',
     'getSeedingThresholds',
     'calculateWinCriteria',
     'removePersonRequests',
     'unPublishOrderOfPlay',
+    'setTournamentRecord',
     'newTournamentRecord',
     'setSchedulingProfile',
     'categoryCanContain',
@@ -60,11 +66,14 @@ function handleMethodResult(method: string, result: any) {
     'getPersonRequests',
     'getRoundMatchUps',
     'getTournamentIds',
+    'validateMCPMatch',
     'getPublishState',
     'setTournamentId',
     'getScaleValues',
     'analyzeScore',
+    'pbpValidator',
     'devContext',
+    'setState',
     'reset',
   ];
   const expectResultLength = ['courtGenerator'];
@@ -101,7 +110,7 @@ function isStateMethod(method: string) {
 }
 
 function isSuccessResult(result: any) {
-  return result.success || result.valid;
+  return result.success || result.valid || result.isValid;
 }
 
 function handleSuccessResult(method: string, result: any, successExpectedMethods: string[]) {
@@ -129,12 +138,36 @@ const skipMethods = new Set([
   'validateMatchUpScore',
   'hasAttributeValues',
   'extractAttributes',
+  'exportMatchUpJSON',
   'validateSetScore',
   'chunkSizeProfile',
   'undefinedToNull',
   'hasAttributes',
+  'groupByMatch',
+  'shotParser',
+  'pointParser',
+  'analyzeSequence',
+  'ScoringEngine',
+
+  'parseMCPPoint',
+  'mcpValidator',
   'groupValues',
+  'mcpParser',
+  'addPoint',
+  'resolvePointValue',
+  'calculatePointsTo',
+  'inferServeSide',
+  'getScore',
+  'getScoreboard',
+  'getWinner',
+  'deduceMatchUpFormat',
   'noNulls',
+
+  // Standalone scoring utilities (don't use tournament state)
+  'calculateMatchStatistics',
+  'enrichPointHistory',
+  'getQuickStats',
+  'getEpisodes',
 ]);
 
 it.each([syncEngine, asyncEngine])(

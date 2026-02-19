@@ -2,6 +2,7 @@ import { afterAll, describe, it, expect, vi } from 'vitest';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
 
+// constants
 import { SINGLES_EVENT } from '@Constants/eventConstants';
 import { RATING } from '@Constants/scaleConstants';
 import { ELO } from '@Constants/ratingConstants';
