@@ -8,7 +8,7 @@ The ScoringEngine supports a wide range of scoring formats across multiple sport
 
 A matchUpFormat code describes the complete scoring structure of a match. The grammar follows a hierarchical pattern:
 
-```
+```text
 SET<count>[XA] - S:<setFormat>[/<tiebreakFormat>] [-F:<finalSetFormat>]
 ```
 

@@ -73,26 +73,26 @@ export function toStatObjects(stats: MatchStatistics): StatObject[] {
     const serves2ndWon = [ct(counters, 0, 'serves2ndWon'), ct(counters, 1, 'serves2ndWon')] as [number, number];
     const serves2ndIn = [ct(counters, 0, 'serves2ndIn'), ct(counters, 1, 'serves2ndIn')] as [number, number];
 
-    so.push({
-      name: '1st Serve In',
-      numerator: serves1stIn,
-      denominator: pointsServed,
-      pct: [pct(serves1stIn[0], pointsServed[0]), pct(serves1stIn[1], pointsServed[1])],
-    });
-
-    so.push({
-      name: '1st Serve Points Won',
-      numerator: serves1stWon,
-      denominator: serves1stIn,
-      pct: [pct(serves1stWon[0], serves1stIn[0]), pct(serves1stWon[1], serves1stIn[1])],
-    });
-
-    so.push({
-      name: '2nd Serve Points Won',
-      numerator: serves2ndWon,
-      denominator: serves2ndIn,
-      pct: [pct(serves2ndWon[0], serves2ndIn[0]), pct(serves2ndWon[1], serves2ndIn[1])],
-    });
+    so.push(
+      {
+        name: '1st Serve In',
+        numerator: serves1stIn,
+        denominator: pointsServed,
+        pct: [pct(serves1stIn[0], pointsServed[0]), pct(serves1stIn[1], pointsServed[1])],
+      },
+      {
+        name: '1st Serve Points Won',
+        numerator: serves1stWon,
+        denominator: serves1stIn,
+        pct: [pct(serves1stWon[0], serves1stIn[0]), pct(serves1stWon[1], serves1stIn[1])],
+      },
+      {
+        name: '2nd Serve Points Won',
+        numerator: serves2ndWon,
+        denominator: serves2ndIn,
+        pct: [pct(serves2ndWon[0], serves2ndIn[0]), pct(serves2ndWon[1], serves2ndIn[1])],
+      },
+    );
   }
 
   // ── Total Points Won ──────────────────────────────────────────
@@ -136,62 +136,54 @@ export function toStatObjects(stats: MatchStatistics): StatObject[] {
   const bpFaced0 = ct(counters, 0, 'breakpointsFaced');
   const bpFaced1 = ct(counters, 1, 'breakpointsFaced');
 
-  so.push({
-    name: 'Break Points Saved',
-    numerator: [bpSaved0, bpSaved1],
-    denominator: [bpFaced0, bpFaced1],
-    pct: [pct(bpSaved0, bpFaced0), pct(bpSaved1, bpFaced1)],
-  });
-
-  // ── Winners ───────────────────────────────────────────────────
-  so.push({
-    name: 'Winners',
-    numerator: [ct(counters, 0, 'winners'), ct(counters, 1, 'winners')],
-    default: 'numerator',
-  });
-
-  // ── Unforced Errors ───────────────────────────────────────────
-  so.push({
-    name: 'Unforced Errors',
-    numerator: [ct(counters, 0, 'unforcedErrors'), ct(counters, 1, 'unforcedErrors')],
-    default: 'numerator',
-  });
-
-  // ── Forced Errors ─────────────────────────────────────────────
-  so.push({
-    name: 'Forced Errors',
-    numerator: [ct(counters, 0, 'forcedErrors'), ct(counters, 1, 'forcedErrors')],
-    default: 'numerator',
-  });
+  so.push(
+    {
+      name: 'Break Points Saved',
+      numerator: [bpSaved0, bpSaved1],
+      denominator: [bpFaced0, bpFaced1],
+      pct: [pct(bpSaved0, bpFaced0), pct(bpSaved1, bpFaced1)],
+    },
+    {
+      name: 'Winners',
+      numerator: [ct(counters, 0, 'winners'), ct(counters, 1, 'winners')],
+      default: 'numerator',
+    },
+    {
+      name: 'Unforced Errors',
+      numerator: [ct(counters, 0, 'unforcedErrors'), ct(counters, 1, 'unforcedErrors')],
+      default: 'numerator',
+    },
+    {
+      name: 'Forced Errors',
+      numerator: [ct(counters, 0, 'forcedErrors'), ct(counters, 1, 'forcedErrors')],
+      default: 'numerator',
+    },
+  );
 
   // ── Service Points Won ────────────────────────────────────────
   const svcWon = servesWon;
   const ptsSvd = [ct(counters, 0, 'pointsServed'), ct(counters, 1, 'pointsServed')] as [number, number];
 
-  so.push({
-    name: 'Service Points Won',
-    numerator: svcWon,
-    denominator: ptsSvd,
-    pct: [pct(svcWon[0], ptsSvd[0]), pct(svcWon[1], ptsSvd[1])],
-  });
-
-  // ── Games Won ─────────────────────────────────────────────────
-  so.push({
-    name: 'Games Won',
-    numerator: [ct(counters, 0, 'gamesWon'), ct(counters, 1, 'gamesWon')],
-  });
-
-  // ── Most Consecutive Points Won ───────────────────────────────
-  so.push({
-    name: 'Most Consecutive Points Won',
-    numerator: [calcValue(calculated, 'Max Pts/Row', 0), calcValue(calculated, 'Max Pts/Row', 1)],
-  });
-
-  // ── Most Consecutive Games Won ────────────────────────────────
-  so.push({
-    name: 'Most Consecutive Games Won',
-    numerator: [calcValue(calculated, 'Max Games/Row', 0), calcValue(calculated, 'Max Games/Row', 1)],
-  });
+  so.push(
+    {
+      name: 'Service Points Won',
+      numerator: svcWon,
+      denominator: ptsSvd,
+      pct: [pct(svcWon[0], ptsSvd[0]), pct(svcWon[1], ptsSvd[1])],
+    },
+    {
+      name: 'Games Won',
+      numerator: [ct(counters, 0, 'gamesWon'), ct(counters, 1, 'gamesWon')],
+    },
+    {
+      name: 'Most Consecutive Points Won',
+      numerator: [calcValue(calculated, 'Max Pts/Row', 0), calcValue(calculated, 'Max Pts/Row', 1)],
+    },
+    {
+      name: 'Most Consecutive Games Won',
+      numerator: [calcValue(calculated, 'Max Games/Row', 0), calcValue(calculated, 'Max Games/Row', 1)],
+    },
+  );
 
   return so;
 }
