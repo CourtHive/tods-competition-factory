@@ -575,7 +575,7 @@ describe('getEpisodes()', () => {
 
     const episodes = engine.getEpisodes();
     // Find the last point in set 0
-    const lastSetPoint = episodes.filter(e => e.set.index === 0).at(-1)!;
+    const lastSetPoint = episodes.findLast((e) => e.set.index === 0)!;
     expect(lastSetPoint.set.complete).toBe(true);
   });
 
@@ -929,8 +929,8 @@ describe('Event Handlers', () => {
       winGame(engine, 0);
 
       // onPoint fires for every point, onGameComplete on the last
-      expect(order.filter(e => e === 'point')).toHaveLength(4);
-      expect(order.filter(e => e === 'game')).toHaveLength(1);
+      expect(order.filter((e) => e === 'point')).toHaveLength(4);
+      expect(order.filter((e) => e === 'game')).toHaveLength(1);
       // The last two events should be point then game
       expect(order.at(-2)).toBe('point');
       expect(order.at(-1)).toBe('game');
