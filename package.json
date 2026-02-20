@@ -25,14 +25,14 @@
   "version": "2.4.0",
   "license": "MIT",
   "private": false,
-  "homepage": "https://courthive.github.io/tods-competition-factory/",
+  "homepage": "https://courthive.github.io/competition-factory/",
   "bugs": {
-    "url": "https://github.com/CourtHive/tods-competition-factory/issues",
+    "url": "https://github.com/CourtHive/competition-factory/issues",
     "email": "support@CourtHive.com"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CourtHive/tods-competition-factory.git"
+    "url": "git+https://github.com/CourtHive/competition-factory.git"
   },
   "main": "dist/index.js",
   "module": "dist/index.mjs",
