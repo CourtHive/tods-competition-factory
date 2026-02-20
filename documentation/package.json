@@ -23,7 +23,7 @@
     "courthive-components": "^0.9.25",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "tods-competition-factory": "2.3.18"
+    "tods-competition-factory": "2.4.1"
   },
   "browserslist": {
     "production": [

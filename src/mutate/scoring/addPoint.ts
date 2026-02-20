@@ -661,6 +661,19 @@ function checkStandardSetWon(
  * Exported for use by ScoringEngine.getNextServer() and getScore() situation.
  */
 export function deriveServer(matchUp: MatchUp, formatStructure: FormatStructure, setType: SetType): 0 | 1 {
+  const baseServer = deriveServerBase(matchUp, formatStructure, setType);
+
+  // Respect initial server choice: if the first recorded point was explicitly
+  // served by side 1, all format-based derivations (which assume side 0 starts)
+  // must be flipped to maintain correct alternation.
+  const firstPointServer = matchUp.history?.points?.[0]?.server;
+  if (firstPointServer === 1) {
+    return (1 - baseServer) as 0 | 1;
+  }
+  return baseServer;
+}
+
+function deriveServerBase(matchUp: MatchUp, formatStructure: FormatStructure, setType: SetType): 0 | 1 {
   const currentSetIndex = matchUp.score.sets.length - 1;
   const currentSet = currentSetIndex >= 0 ? matchUp.score.sets[currentSetIndex] : undefined;
 

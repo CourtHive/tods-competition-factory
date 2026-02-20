@@ -366,6 +366,106 @@ describe('getNextServer()', () => {
     engine.addPoint({ winner: 0 }); // 2-0
     expect(engine.getNextServer()).toBe(1);
   });
+
+  describe('initial server = 1', () => {
+    it('returns 1 after first point with server=1', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Side 1 serves first point
+      engine.addPoint({ winner: 1, server: 1 });
+      // Still in the first game, side 1 should still be serving
+      expect(engine.getNextServer()).toBe(1);
+    });
+
+    it('alternates server correctly when side 1 serves first', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Side 1 serves first game (wins 4-0)
+      engine.addPoint({ winner: 1, server: 1 });
+      engine.addPoint({ winner: 1, server: 1 });
+      engine.addPoint({ winner: 1, server: 1 });
+      engine.addPoint({ winner: 1, server: 1 });
+      // Game complete: side 0 should serve the second game
+      expect(engine.getNextServer()).toBe(0);
+    });
+
+    it('returns to side 1 for third game when side 1 served first', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Side 1 serves first game
+      for (let i = 0; i < 4; i++) engine.addPoint({ winner: 1, server: 1 });
+      expect(engine.getNextServer()).toBe(0);
+      // Side 0 serves second game
+      for (let i = 0; i < 4; i++) engine.addPoint({ winner: 0, server: 0 });
+      // Third game: side 1 should serve again
+      expect(engine.getNextServer()).toBe(1);
+    });
+
+    it('auto-derives server correctly after explicit first point', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Only first point has explicit server=1; subsequent points omit server
+      engine.addPoint({ winner: 1, server: 1 });
+      engine.addPoint({ winner: 1 }); // should auto-derive server=1
+      engine.addPoint({ winner: 1 });
+      engine.addPoint({ winner: 1 });
+      // After first game won by side 1, server should be side 0
+      expect(engine.getNextServer()).toBe(0);
+
+      // Play second game without explicit server
+      engine.addPoint({ winner: 0 });
+      engine.addPoint({ winner: 0 });
+      engine.addPoint({ winner: 0 });
+      engine.addPoint({ winner: 0 });
+      // After second game, server returns to side 1
+      expect(engine.getNextServer()).toBe(1);
+    });
+
+    it('handles tiebreak with initial server = 1', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Side 1 serves first game
+      for (let i = 0; i < 4; i++) engine.addPoint({ winner: 1, server: 1 });
+
+      // Alternate games to reach 6-6 (side 1 wins odd games, side 0 wins even)
+      // After first game (1-0 for side 1), play 10 more games to reach 6-5
+      // then one more to reach 6-6
+      for (let g = 1; g < 12; g++) {
+        // Even game index: side 0 serves (wins)
+        // Odd game index: side 1 serves (wins)
+        const winner = g % 2 === 0 ? 1 : 0;
+        for (let i = 0; i < 4; i++) engine.addPoint({ winner });
+      }
+
+      // Now at 6-6 tiebreak
+      // With initial server = 1: total 12 games played, initial server was 1
+      // Tiebreak starter should be side 1 (12 games, initial=1 → 1)
+      const tbServer = engine.getNextServer();
+      expect(tbServer).toBe(1);
+
+      // After 1 point, still same server
+      engine.addPoint({ winner: 0 });
+      expect(engine.getNextServer()).toBe(1);
+
+      // After 2 points, switch
+      engine.addPoint({ winner: 0 });
+      expect(engine.getNextServer()).toBe(0);
+    });
+
+    it('handles second set server after initial server = 1', () => {
+      const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+      // Side 1 serves first, wins set 6-0
+      for (let g = 0; g < 6; g++) {
+        for (let i = 0; i < 4; i++) {
+          if (g === 0) {
+            engine.addPoint({ winner: 1, server: 1 });
+          } else {
+            engine.addPoint({ winner: 1 });
+          }
+        }
+      }
+
+      // After 6 games (set complete), 2nd set first game server:
+      // Alternation pattern: 1,0,1,0,1,0 → 7th game continues with side 1
+      // (new set resets game count to 0, 0 % 2 = 0, flipped for initial=1 → 1)
+      expect(engine.getNextServer()).toBe(1);
+    });
+  });
 });
 
 // ============================================================================
@@ -475,7 +575,7 @@ describe('getEpisodes()', () => {
 
     const episodes = engine.getEpisodes();
     // Find the last point in set 0
-    const lastSetPoint = episodes.filter(e => e.set.index === 0).at(-1)!;
+    const lastSetPoint = episodes.findLast((e) => e.set.index === 0)!;
     expect(lastSetPoint.set.complete).toBe(true);
   });
 
@@ -829,8 +929,8 @@ describe('Event Handlers', () => {
       winGame(engine, 0);
 
       // onPoint fires for every point, onGameComplete on the last
-      expect(order.filter(e => e === 'point')).toHaveLength(4);
-      expect(order.filter(e => e === 'game')).toHaveLength(1);
+      expect(order.filter((e) => e === 'point')).toHaveLength(4);
+      expect(order.filter((e) => e === 'game')).toHaveLength(1);
       // The last two events should be point then game
       expect(order.at(-2)).toBe('point');
       expect(order.at(-1)).toBe('game');
