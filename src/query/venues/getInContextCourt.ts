@@ -1,3 +1,4 @@
+import { applyVenueConstraints } from './applyVenueConstraints';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findExtension } from '@Acquire/findExtension';
 import { isObject } from '@Tools/objects';
@@ -30,6 +31,8 @@ export function getInContextCourt({ convertExtensions, ignoreDisabled, venue, co
 
     inContextCourt.dateAvailability = dateAvailability;
   }
+
+  applyVenueConstraints({ inContextCourt, venue });
 
   return { inContextCourt };
 }

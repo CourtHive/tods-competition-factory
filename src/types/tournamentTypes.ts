@@ -1296,6 +1296,9 @@ export interface Venue {
   contacts?: Contact[];
   courts?: Court[];
   createdAt?: Date | string;
+  dateAvailability?: Availability[];
+  defaultEndTime?: string;
+  defaultStartTime?: string;
   extensions?: Extension[];
   isMock?: boolean;
   notes?: string;

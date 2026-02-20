@@ -22,6 +22,9 @@ export function generateVenues({ tournamentRecord, ignoreExistingVenues, venuePr
       venueAbbreviation,
       venueId = uuids?.pop() ?? UUID(),
       dateAvailability,
+      venueDateAvailability,
+      defaultStartTime,
+      defaultEndTime,
       startTime = '07:00',
       endTime = '19:00',
       courtTimings,
@@ -32,11 +35,14 @@ export function generateVenues({ tournamentRecord, ignoreExistingVenues, venuePr
       courtIds,
     } = venueProfile;
 
-    const newVenue = {
+    const newVenue: any = {
       venueName: venueName || `Venue ${index + 1}`,
       venueAbbreviation,
       venueId,
     };
+    if (defaultStartTime) newVenue.defaultStartTime = defaultStartTime;
+    if (defaultEndTime) newVenue.defaultEndTime = defaultEndTime;
+    if (venueDateAvailability) newVenue.dateAvailability = venueDateAvailability;
     const result = addVenue({ tournamentRecord, venue: newVenue });
     if (result.error) {
       if (ignoreExistingVenues) continue;

@@ -3158,6 +3158,18 @@
         },
         "venueType": {
           "type": "string"
+        },
+        "defaultStartTime": {
+          "type": "string"
+        },
+        "defaultEndTime": {
+          "type": "string"
+        },
+        "dateAvailability": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Availability"
+          }
         }
       },
       "required": ["venueId"],
