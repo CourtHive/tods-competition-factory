@@ -1,10 +1,12 @@
 import { getScheduledCourtMatchUps, getScheduledVenueMatchUps } from '@Query/venues/getScheduledCourtMatchUps';
 import { bulkScheduleTournamentMatchUps } from '../matchUps/schedule/bulkScheduleTournamentMatchUps';
+import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { deletionMessage } from '@Assemblies/generators/matchUps/deletionMessage';
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '@Assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { validTimePeriod } from '@Validators/time';
 import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { findVenue } from '@Query/venues/findVenue';
@@ -21,6 +23,7 @@ import {
   COURT_NOT_FOUND,
   ErrorType,
   INVALID_OBJECT,
+  INVALID_VALUES,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
   VENUE_NOT_FOUND,
@@ -161,6 +164,7 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
   error?: ErrorType;
   success?: boolean;
   venue?: Venue;
+  info?: string;
 } {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
   if (!modifications || typeof modifications !== 'object') return { error: INVALID_OBJECT };
@@ -190,14 +194,35 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
   if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
   const validReplacements = new Set(
-    validAttributes.filter((attribute) => !['courts', 'onlineResources'].includes(attribute)),
+    validAttributes.filter((attribute) => !['courts', 'onlineResources', 'dateAvailability'].includes(attribute)),
   );
 
   const validReplacementAttributes = Object.keys(modifications).filter((attribute) => validReplacements.has(attribute));
 
   if (!venue) return { error: VENUE_NOT_FOUND };
 
+  // Validate defaultStartTime/defaultEndTime before applying replacements
+  const modStartTime = modifications.defaultStartTime ?? venue.defaultStartTime;
+  const modEndTime = modifications.defaultEndTime ?? venue.defaultEndTime;
+  if (modStartTime || modEndTime) {
+    if (!modStartTime || !modEndTime) {
+      return { error: INVALID_VALUES, info: 'both defaultStartTime and defaultEndTime are required' };
+    }
+    if (!validTimePeriod({ startTime: modStartTime, endTime: modEndTime })) {
+      return { error: INVALID_VALUES, info: 'defaultEndTime must be after defaultStartTime' };
+    }
+  }
+
   validReplacementAttributes.forEach((attribute) => Object.assign(venue, { [attribute]: modifications[attribute] }));
+
+  // Handle venue dateAvailability modifications
+  if (modifications.dateAvailability !== undefined) {
+    if (Array.isArray(modifications.dateAvailability) && modifications.dateAvailability.length) {
+      const result = validDateAvailability({ dateAvailability: modifications.dateAvailability });
+      if (result.error) return result;
+    }
+    venue.dateAvailability = modifications.dateAvailability;
+  }
 
   // Handle court deletions
   const deletionResult = handleCourtDeletions({

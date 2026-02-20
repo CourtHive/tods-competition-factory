@@ -1,6 +1,8 @@
+import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { addExtension } from '../extensions/addExtension';
+import { validTimePeriod } from '@Validators/time';
 import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { UUID } from '@Tools/UUID';
@@ -69,7 +71,23 @@ function venueAdd({ tournamentRecord, disableNotice, context, venue }: AddVenueA
 
   if (venueExists) {
     return { error: VENUE_EXISTS };
-  } else {
+  }
+
+  if (venue.dateAvailability?.length) {
+    const result = validDateAvailability({ dateAvailability: venue.dateAvailability });
+    if (result.error) return result;
+  }
+
+  if (venue.defaultStartTime || venue.defaultEndTime) {
+    if (!venue.defaultStartTime || !venue.defaultEndTime) {
+      return { error: INVALID_VALUES, info: 'both defaultStartTime and defaultEndTime are required' };
+    }
+    if (!validTimePeriod({ startTime: venue.defaultStartTime, endTime: venue.defaultEndTime })) {
+      return { error: INVALID_VALUES, info: 'defaultEndTime must be after defaultStartTime' };
+    }
+  }
+
+  {
     if (context) {
       const extension = {
         value: context,
