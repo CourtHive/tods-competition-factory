@@ -41,13 +41,13 @@ test('stringify with timed set based P', () => {
   expect(result).toBe('T10P');
 });
 
-test('stringify with timed set based A', () => {
+test('stringify with timed set aggregate via match-level A', () => {
   const result = stringify({
     bestOf: 1,
-    simplified: true,
-    setFormat: { timed: true, minutes: 10, based: 'A' },
+    aggregate: true,
+    setFormat: { timed: true, minutes: 10 },
   });
-  expect(result).toBe('T10A');
+  expect(result).toBe('SET1A-S:T10');
 });
 
 test('stringify with tiebreakSet format', () => {

@@ -290,17 +290,12 @@ export function areFormatsEquivalent(code1: string, code2: string): boolean {
 /**
  * Check if a parsed format uses aggregate scoring
  *
- * Two ways aggregate is signaled:
- * 1. parsed.aggregate === true (match-level A: SET7XA, HAL2A)
- * 2. parsed.setFormat?.based === 'A' (set-level: SET3X-S:T10A)
+ * Aggregate is signaled by:
+ * parsed.aggregate === true (match-level A: SET7XA, HAL2A)
  */
 export function isAggregateFormat(parsed: FormatStructure | undefined | null): boolean {
   if (!parsed) return false;
-  return !!(
-    parsed.aggregate ||
-    parsed.setFormat?.based === 'A' ||
-    parsed.finalSetFormat?.based === 'A'
-  );
+  return !!parsed.aggregate;
 }
 
 /**

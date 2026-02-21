@@ -330,9 +330,9 @@ function parseTiebreakDetails(formatstring: string): TiebreakFormat | false {
 function parseTimedSet(formatstring: string): SetFormat | undefined {
   const timestring = formatstring.slice(1);
 
-  // Parse T{minutes}[P|G|A][/TB{n}]
-  // Examples: T10, T10A, T10P/TB1, T10G/TB1
-  const parts = /^(\d+)([PGA])?(?:\/TB(\d+))?(@[A-Za-z]+)?$/.exec(timestring);
+  // Parse T{minutes}[P|G][/TB{n}]
+  // Examples: T10, T10P/TB1, T10G/TB1
+  const parts = /^(\d+)([PG])?(?:\/TB(\d+))?(@[A-Za-z]+)?$/.exec(timestring);
   const minutes = getNumber(parts?.[1]);
   if (!minutes) return;
 
@@ -340,9 +340,7 @@ function parseTimedSet(formatstring: string): SetFormat | undefined {
 
   // Parse scoring method (P, G, or A)
   const scoringMethod = parts?.[2];
-  if (scoringMethod === 'A') {
-    setFormat.based = 'A';
-  } else if (scoringMethod === 'P') {
+  if (scoringMethod === 'P') {
     setFormat.based = 'P';
   } else if (scoringMethod === 'G') {
     setFormat.based = 'G';

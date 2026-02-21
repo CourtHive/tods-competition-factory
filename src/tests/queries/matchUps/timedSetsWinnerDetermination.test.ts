@@ -6,7 +6,7 @@ import { expect, it } from 'vitest';
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
 
 it('calculates winningSide for single timed set', () => {
-  const matchUpFormat = 'T20A';
+  const matchUpFormat = 'SET1A-S:T20';
 
   // Side 1 wins 50-45
   const result = generateOutcomeFromScoreString({
@@ -18,8 +18,8 @@ it('calculates winningSide for single timed set', () => {
   expect(result.outcome.score.sets[0].winningSide).toEqual(1);
 });
 
-it('calculates winningSide for aggregate scoring (SET2X-S:T10A)', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+it('calculates winningSide for aggregate scoring (SET2XA-S:T10)', () => {
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Clear aggregate winner: 60 vs 50 total
   let result = generateOutcomeFromScoreString({
@@ -41,7 +41,7 @@ it('calculates winningSide for aggregate scoring (SET2X-S:T10A)', () => {
 });
 
 it('calculates winningSide for aggregate with split sets', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Side 1 wins one set big, loses other small
   // Aggregate: 50+10 = 60 vs 10+30 = 40
@@ -53,7 +53,7 @@ it('calculates winningSide for aggregate with split sets', () => {
   expect(result.outcome.winningSide).toEqual(1);
   expect(result.outcome.score.sets[0].winningSide).toEqual(1);
   expect(result.outcome.score.sets[1].winningSide).toEqual(2);
-  
+
   // Verify aggregate calculation would be correct
   const analyzed = analyzeScore({
     score: result.outcome.score,
@@ -65,7 +65,7 @@ it('calculates winningSide for aggregate with split sets', () => {
 });
 
 it('calculates winningSide for aggregate with exactly 3 sets', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   // Aggregate: 30+20+35 = 85 vs 25+25+30 = 80
   const result = generateOutcomeFromScoreString({
@@ -74,7 +74,7 @@ it('calculates winningSide for aggregate with exactly 3 sets', () => {
   });
 
   expect(result.outcome.winningSide).toEqual(1);
-  
+
   // Verify each individual set has winningSide
   expect(result.outcome.score.sets[0].winningSide).toEqual(1);
   expect(result.outcome.score.sets[1].winningSide).toEqual(2);
@@ -112,10 +112,9 @@ it('calculates winningSide for games-based timed sets (default)', () => {
 });
 
 it('calculates winningSide for best-of with aggregate', () => {
-  const matchUpFormat = 'SET3-S:T10A';
+  const matchUpFormat = 'SET3A-S:T10';
 
   // Best of 3 with aggregate scoring
-  // Winner needs 2 sets OR higher aggregate (if rule applies)
   const result = generateOutcomeFromScoreString({
     scoreString: '30-25 25-30 35-30',
     matchUpFormat,
@@ -126,7 +125,7 @@ it('calculates winningSide for best-of with aggregate', () => {
 });
 
 it('handles tied individual sets in aggregate scoring', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Individual sets tied, but aggregate determines winner
   // 30+35 = 65 vs 30+30 = 60
@@ -137,16 +136,16 @@ it('handles tied individual sets in aggregate scoring', () => {
 
   // For aggregate, winningSide determined by total scores
   expect(result.outcome.winningSide).toEqual(1);
-  
+
   // Individual sets can have ties for aggregate
   expect(result.outcome.score.sets[0].side1Score).toEqual(30);
   expect(result.outcome.score.sets[0].side2Score).toEqual(30);
 });
 
 it('calculates winningSide for mixed format (regular + timed final)', () => {
-  const matchUpFormat = 'SET3-S:6/TB7-F:T20A';
+  const matchUpFormat = 'SET3-S:6/TB7-F:T20';
 
-  // Regular sets 1-1, then aggregate timed final set
+  // Regular sets 1-1, then timed final set
   const result = generateOutcomeFromScoreString({
     scoreString: '6-4 4-6 50-45',
     matchUpFormat,
@@ -159,7 +158,7 @@ it('calculates winningSide for mixed format (regular + timed final)', () => {
 });
 
 it('validates aggregate winningSide calculation is correct', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   // Generate outcome
   const result = generateOutcomeFromScoreString({
@@ -177,12 +176,12 @@ it('validates aggregate winningSide calculation is correct', () => {
     matchUpStatus: COMPLETED,
     winningSide: result.outcome.winningSide,
   });
-  
+
   expect(analyzed.valid).toEqual(true);
 });
 
 it('calculates winningSide correctly when side 2 wins aggregate', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   // Aggregate: 10+10+10 = 30 vs 15+15+15 = 45
   const result = generateOutcomeFromScoreString({
@@ -197,7 +196,7 @@ it('calculates winningSide correctly when side 2 wins aggregate', () => {
 });
 
 it('handles close aggregate scores correctly', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Very close aggregate: 60 vs 59
   const result = generateOutcomeFromScoreString({

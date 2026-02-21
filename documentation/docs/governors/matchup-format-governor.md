@@ -70,16 +70,18 @@ matchUpFormatCode: string; // TODS format code (e.g., "SET3-S:6/TB7")
     NoAD?: boolean;          // No-advantage games (no deuce)
     timed?: boolean;         // Is this a timed set?
     minutes?: number;        // Minutes for timed set
-    based?: string;          // Scoring basis: 'G' (games), 'P' (points), 'A' (aggregate)
+    based?: string;          // Scoring basis: 'G' (games), 'P' (points)
   };
   finalSetFormat?: {         // Same structure as setFormat, for final set
     // ... (all setFormat properties)
   };
   gameFormat?: {             // Game-level format specification (-G: section)
-    type: 'AGGR';            // Aggregate scoring (no individual game winners)
+    type: 'TRADITIONAL';     // Traditional tennis/padel game scoring (0-15-30-40)
+    deuceAfter?: number;     // Deuce cap: 1=golden point, 3=Star Point, undefined=unlimited
   } | {
     type: 'CONSECUTIVE';     // Consecutive points to win a game
     count: number;           // Number of consecutive points required
+    deuceAfter?: number;     // Optional deuce cap
   };
   simplified?: boolean;      // True for single-set formats like "T20"
 } | undefined                // undefined if parsing fails
@@ -154,12 +156,20 @@ const parsed = matchUpFormatGovernor.parse('SET7XA-S:T10P');
 //   setFormat: { timed: true, minutes: 10, based: 'P' }
 // }
 
-// Parse with aggregate game format
-const parsed = matchUpFormatGovernor.parse('SET3-S:T10-G:AGGR');
+// Parse Padel Star Point format
+const parsed = matchUpFormatGovernor.parse('SET3-S:6/TB7-G:TN3D');
 // {
 //   bestOf: 3,
-//   setFormat: { timed: true, minutes: 10 },
-//   gameFormat: { type: 'AGGR' }
+//   setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+//   gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 }
+// }
+
+// Parse explicit traditional game format
+const parsed = matchUpFormatGovernor.parse('SET3-S:6/TB7-G:TN');
+// {
+//   bestOf: 3,
+//   setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+//   gameFormat: { type: 'TRADITIONAL' }
 // }
 
 // Invalid format returns undefined
@@ -172,13 +182,13 @@ const parsed = matchUpFormatGovernor.parse('INVALID');
 - Returns `undefined` for invalid format codes
 - Supports standard sets, timed sets, and tiebreak sets
 - Handles special cases like no-advantage (NoAD) games and tiebreaks
-- Timed sets can be games-based (G), points-based (P), or aggregate-based (A)
+- Timed sets can be games-based (G) or points-based (P); aggregate scoring is signaled by the match-level `A` modifier
 - `matchRoot` is only included when the root is not `SET` (backward compatibility)
 - `aggregate` is only included when `true`
 - Sections (`-S:`, `-F:`, `-G:`) are dispatched by key, not by position, so order doesn't matter
 - For `SET` root, `bestOf` must be < 6 (for non-timed formats); non-`SET` roots have no limit
 - Format grammar: `{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}]`
-- Timed format: `T{minutes}[G|P|A][/TB{points}]`
+- Timed format: `T{minutes}[G|P][/TB{points}]`
 - See [matchUpFormat Codes](/docs/codes/matchup-format) for complete format specification and cross-sport examples
 
 ---
@@ -208,8 +218,9 @@ matchUpFormatObject: {       // Parsed format object
   setFormat?: object;
   finalSetFormat?: object;
   gameFormat?: {             // Emit -G: section
-    type: 'AGGR' | 'CONSECUTIVE';
+    type: 'TRADITIONAL' | 'CONSECUTIVE';
     count?: number;          // Required when type is 'CONSECUTIVE'
+    deuceAfter?: number;     // Optional deuce cap (e.g., 3 for Star Point)
   };
   simplified?: boolean;
 };
@@ -269,13 +280,13 @@ const formatString = matchUpFormatGovernor.stringify({
 });
 // "SET5-S:5-G:3C"
 
-// Stringify with aggregate game format
+// Stringify Padel Star Point format
 const formatString = matchUpFormatGovernor.stringify({
   bestOf: 3,
-  setFormat: { timed: true, minutes: 10 },
-  gameFormat: { type: 'AGGR' },
+  setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+  gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
 });
-// "SET3-S:T10-G:AGGR"
+// "SET3-S:6/TB7-G:TN3D"
 
 // Stringify INTENNSE format
 const formatString = matchUpFormatGovernor.stringify({
@@ -321,7 +332,7 @@ const formatString = matchUpFormatGovernor.stringify({
 - Games-based timed sets omit the 'G' suffix (it's the default)
 - `matchRoot` defaults to `SET` when not specified
 - `aggregate: true` adds the `A` suffix after the count (e.g., `HAL2A`)
-- `gameFormat` emits the `-G:` section (e.g., `-G:3C`, `-G:AGGR`)
+- `gameFormat` emits the `-G:` section (e.g., `-G:3C`, `-G:TN3D`)
 - Head modifier ordering is canonical: count → X → A (e.g., `SET7XA`)
 - See [matchUpFormat Codes](/docs/codes/matchup-format) for the complete format grammar
 
@@ -402,8 +413,8 @@ matchUpFormatGovernor.isValidMatchUpFormat({
 }); // true (TYPTI)
 
 matchUpFormatGovernor.isValidMatchUpFormat({
-  matchUpFormat: 'SET3-S:T10-G:AGGR',
-}); // true (aggregate game format)
+  matchUpFormat: 'SET3-S:6/TB7-G:TN3D',
+}); // true (Padel Star Point)
 
 // Valid pickleball formats
 matchUpFormatGovernor.isValidMatchUpFormat({

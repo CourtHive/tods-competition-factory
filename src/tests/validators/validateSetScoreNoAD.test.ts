@@ -10,7 +10,7 @@ import { validateSetScore } from '@Validators/validateMatchUpScore';
 describe('validateSetScore - NoAD property from parseScoreString', () => {
   describe('TB1 tiebreak-only sets with NoAD property', () => {
     it('should accept 1-0 when set.NoAD=true (from parseScoreString)', () => {
-      const format = 'SET3X-S:T10A-F:TB1';
+      const format = 'SET3XA-S:T10-F:TB1';
       const set = {
         side1Score: 1,
         side2Score: 0,
@@ -24,7 +24,7 @@ describe('validateSetScore - NoAD property from parseScoreString', () => {
     });
 
     it('should accept 0-1 when set.NoAD=true', () => {
-      const format = 'SET3X-S:T10A-F:TB1';
+      const format = 'SET3XA-S:T10-F:TB1';
       const set = {
         side1Score: 0,
         side2Score: 1,
@@ -69,7 +69,7 @@ describe('validateSetScore - NoAD property from parseScoreString', () => {
 
   describe('TB1NOAD format variations', () => {
     it('should accept 1-0 for TB1NOAD final set', () => {
-      const format = 'SET3X-S:T10A-F:TB1NOAD';
+      const format = 'SET3XA-S:T10-F:TB1NOAD';
       const set = {
         side1Score: 1,
         side2Score: 0,
@@ -231,7 +231,7 @@ describe('validateSetScore - NoAD property from parseScoreString', () => {
 describe('validateSetScore - Integration with parseScoreString flow', () => {
   it('should validate a complete parsed TB1 set', () => {
     // This simulates what parseScoreString returns
-    const format = 'SET3X-S:T10A-F:TB1';
+    const format = 'SET3XA-S:T10-F:TB1';
     const parsedSet = {
       side1Score: 1,
       side2Score: 0,

@@ -131,7 +131,7 @@ describe('validateSetScore - TB1NOAD (tiebreak-only to 1, NoAD)', () => {
 });
 
 describe('validateMatchUpScore - TB1NOAD final set with aggregate', () => {
-  const format = 'SET3X-S:T10A-F:TB1NOAD';
+  const format = 'SET3XA-S:T10-F:TB1NOAD';
 
   it('should accept aggregate tie resolved by TB1NOAD final set', () => {
     const sets = [

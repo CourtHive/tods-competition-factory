@@ -8,8 +8,8 @@ import { COMPLETED } from '@Constants/matchUpStatusConstants';
 // types
 import type { Set } from '@Types/tournamentTypes';
 
-it('determines winner for SET1-S:T10A (single set aggregate)', () => {
-  const matchUpFormat = 'SET1-S:T10A';
+it('determines winner for SET1A-S:T10 (single set aggregate)', () => {
+  const matchUpFormat = 'SET1A-S:T10';
 
   // Test clear winner: side 1 wins 25-20
   let score: { sets: Set[] } = {
@@ -70,8 +70,8 @@ it('determines winner for SET1-S:T10A (single set aggregate)', () => {
   expect(result.valid).toEqual(false);
 });
 
-it('determines winner for SET2X-S:T10A-F:TB1 (exactly 2 sets, aggregate with final TB)', () => {
-  const matchUpFormat = 'SET2X-S:T10A-F:TB1';
+it('determines winner for SET2XA-S:T10-F:TB1 (exactly 2 sets, aggregate with final TB)', () => {
+  const matchUpFormat = 'SET2XA-S:T10-F:TB1';
 
   // Test clear aggregate winner after 2 sets: 50-30 total
   let score: { sets: Set[] } = {
@@ -158,8 +158,8 @@ it('determines winner for SET2X-S:T10A-F:TB1 (exactly 2 sets, aggregate with fin
   expect(result.valid).toEqual(true);
 });
 
-it('determines winner for SET3X-S:T10A-F:TB1 (exactly 3 sets, aggregate)', () => {
-  const matchUpFormat = 'SET3X-S:T10A-F:TB1';
+it('determines winner for SET3XA-S:T10-F:TB1 (exactly 3 sets, aggregate)', () => {
+  const matchUpFormat = 'SET3XA-S:T10-F:TB1';
 
   // Test aggregate winner across 3 sets: 75 vs 60
   let score: { sets: Set[] } = {
@@ -306,7 +306,7 @@ it('handles SET3-S:T10/TB1 (best of 3 with set-level tiebreak)', () => {
 });
 
 it('handles aggregate scoring with one-sided results', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Test extreme score difference
   const score: { sets: Set[] } = {
@@ -339,7 +339,7 @@ it('handles aggregate scoring with one-sided results', () => {
 });
 
 it('rejects invalid winningSide for aggregate scoring', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   const score: { sets: Set[] } = {
     sets: [
@@ -477,7 +477,7 @@ it('INTENNSE SET7XA-S:T10P — rejects incomplete match (only 4 of 7 sets)', () 
 });
 
 it('validates aggregate with missing scores', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   // Incomplete - only 2 of 3 sets played
   const score: { sets: Set[] } = {

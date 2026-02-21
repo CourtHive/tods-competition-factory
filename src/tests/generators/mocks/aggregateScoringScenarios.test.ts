@@ -1,7 +1,7 @@
 /**
  * Tests for aggregate scoring scenarios similar to TMX freeScore usage
  * Tests parseScoreString, generateOutcomeFromScoreString, and analyzeScore
- * for aggregate formats like SET3X-S:T10A
+ * for aggregate formats like SET3XA-S:T10
  */
 import { describe, it, expect } from 'vitest';
 import { parseScoreString } from '@Tools/parseScoreString';
@@ -9,7 +9,7 @@ import { generateOutcomeFromScoreString } from '@Assemblies/generators/mocks/gen
 import { analyzeScore } from '@Query/matchUp/analyzeScore';
 
 describe('parseScoreString - Aggregate scoring with timed sets', () => {
-  const format = 'SET3X-S:T10A';
+  const format = 'SET3XA-S:T10';
 
   it('should parse 30-1 0-1 0-1 correctly', () => {
     const sets = parseScoreString({
@@ -27,7 +27,7 @@ describe('parseScoreString - Aggregate scoring with timed sets', () => {
   });
 
   it('should parse 10-11 11-10 1-0 with TB1 final set', () => {
-    const format = 'SET3X-S:T10A-F:TB1';
+    const format = 'SET3XA-S:T10-F:TB1';
     const sets = parseScoreString({
       scoreString: '10-11 11-10 [1-0]',
       matchUpFormat: format,
@@ -51,7 +51,7 @@ describe('parseScoreString - Aggregate scoring with timed sets', () => {
   });
 
   it('should parse aggregate tie with TB1 tiebreak', () => {
-    const format = 'SET3X-S:T10A-F:TB1NOAD';
+    const format = 'SET3XA-S:T10-F:TB1NOAD';
     const sets = parseScoreString({
       scoreString: '30-25 25-30 [1-0]',
       matchUpFormat: format,
@@ -74,7 +74,7 @@ describe('parseScoreString - Aggregate scoring with timed sets', () => {
 
 describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', () => {
   it('should calculate winningSide=1 for aggregate 30-3 (30-1, 0-1, 0-1)', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '30-1 0-1 0-1',
       matchUpFormat: format,
@@ -87,7 +87,7 @@ describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', (
   });
 
   it('should calculate winningSide=2 for aggregate 2-30 (1-30, 1-0, 0-0)', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '1-30 1-0 0-0',
       matchUpFormat: format,
@@ -98,7 +98,7 @@ describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', (
   });
 
   it('should calculate winningSide from TB1 when aggregate tied', () => {
-    const format = 'SET3X-S:T10A-F:TB1';
+    const format = 'SET3XA-S:T10-F:TB1';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '[30-25] [25-30] [1-0]',
       matchUpFormat: format,
@@ -109,7 +109,7 @@ describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', (
   });
 
   it('should calculate winningSide=2 when TB1 is 0-1', () => {
-    const format = 'SET3X-S:T10A-F:TB1NOAD';
+    const format = 'SET3XA-S:T10-F:TB1NOAD';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '[40-35] [30-35] [0-1]',
       matchUpFormat: format,
@@ -120,7 +120,7 @@ describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', (
   });
 
   it('should handle high aggregate scores', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '150-120 80-90 100-85',
       matchUpFormat: format,
@@ -144,7 +144,7 @@ describe('generateOutcomeFromScoreString - Aggregate winningSide calculation', (
 
 describe('analyzeScore - Aggregate scoring validation', () => {
   it('should validate winningSide=1 for aggregate 31-2', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const score = {
       sets: [
         { side1Score: 30, side2Score: 1, setNumber: 1 },
@@ -163,7 +163,7 @@ describe('analyzeScore - Aggregate scoring validation', () => {
   });
 
   it('should reject incorrect winningSide for aggregate scoring', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const score = {
       sets: [
         { side1Score: 30, side2Score: 1, setNumber: 1 },
@@ -186,7 +186,7 @@ describe('analyzeScore - Aggregate scoring validation', () => {
   });
 
   it('should validate TB1 tiebreak resolving aggregate tie', () => {
-    const format = 'SET3X-S:T10A-F:TB1';
+    const format = 'SET3XA-S:T10-F:TB1';
     const score = {
       sets: [
         { side1Score: 30, side2Score: 25, setNumber: 1, tiebreakSet: false },
@@ -229,7 +229,7 @@ describe('analyzeScore - Aggregate scoring validation', () => {
   });
 
   it('should validate SET4X aggregate format', () => {
-    const format = 'SET4X-S:T10A';
+    const format = 'SET4XA-S:T10';
     const score = {
       sets: [
         { side1Score: 30, side2Score: 25, setNumber: 1 },
@@ -252,7 +252,7 @@ describe('analyzeScore - Aggregate scoring validation', () => {
 
 describe('Edge cases - Aggregate scoring', () => {
   it('should handle one-sided aggregate victory (50-0, 0-1, 0-1)', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '50-0 0-1 0-1',
       matchUpFormat: format,
@@ -263,7 +263,7 @@ describe('Edge cases - Aggregate scoring', () => {
   });
 
   it('should handle all zeros except one set', () => {
-    const format = 'SET3X-S:T10A';
+    const format = 'SET3XA-S:T10';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '0-0 0-1 0-0',
       matchUpFormat: format,
@@ -274,7 +274,7 @@ describe('Edge cases - Aggregate scoring', () => {
   });
 
   it('should handle perfectly balanced aggregate before TB', () => {
-    const format = 'SET3X-S:T10A-F:TB1NOAD';
+    const format = 'SET3XA-S:T10-F:TB1NOAD';
     const { outcome } = generateOutcomeFromScoreString({
       scoreString: '[100-50] [50-100] [1-0]',
       matchUpFormat: format,

@@ -33,7 +33,7 @@ A matchUpFormat code has the structure:
 | `X`       | Exactly this many segments (not best-of) | `SET7X` = exactly 7 sets                                      |
 | `A`       | Aggregate scoring across segments        | `HAL2A` = 2 halves, aggregate                                 |
 | `-S:`     | Segment (set) format specification       | `-S:6/TB7`, `-S:T10P`, `-S:TB11`                              |
-| `-G:`     | Game-level format within segments        | `-G:3C`, `-G:AGGR`                                            |
+| `-G:`     | Game-level format within segments        | `-G:3C`, `-G:TN3D`                                            |
 | `-F:`     | Final segment format (when different)    | `-F:TB10`, `-F:6/TB7@12`                                      |
 
 ### Simplified Form
@@ -41,10 +41,10 @@ A matchUpFormat code has the structure:
 Single-set timed formats can use a shortened form:
 
 ```
-T{minutes}[P|G|A]
+T{minutes}[P|G]
 ```
 
-Examples: `T20` (20-minute timed), `T10P` (10-minute points-based), `T30A` (30-minute aggregate).
+Examples: `T20` (20-minute timed), `T10P` (10-minute points-based).
 
 ### Match Root Types
 
@@ -79,17 +79,28 @@ The `-S:` section describes how each segment is scored:
 | `TB{points}@{modifier}`   | Tiebreak with modifier            | `-S:TB21@RALLY`                   |
 | `T{minutes}`              | Timed set (games-based)           | `-S:T20`                          |
 | `T{minutes}P`             | Timed set (points-based)          | `-S:T10P`                         |
-| `T{minutes}A`             | Timed set (aggregate-based)       | `-S:T10A`                         |
 | `T{minutes}G`             | Timed set (games-based, explicit) | `-S:T10G` (same as `-S:T10`)      |
 
 ### Game Format Specification (`-G:`)
 
 The `-G:` section describes game-level scoring within each set:
 
-| Pattern    | Description                                    | Example                        |
-| ---------- | ---------------------------------------------- | ------------------------------ |
-| `AGGR`     | Aggregate scoring (no individual game winners) | `-G:AGGR`                      |
-| `{count}C` | Consecutive points to win a game               | `-G:3C` (3 consecutive points) |
+| Pattern         | Description                                     | Example                                  |
+| --------------- | ----------------------------------------------- | ---------------------------------------- |
+| `TN`            | Traditional tennis/padel game scoring (0-15-30-40) | `-G:TN` (explicit traditional)        |
+| `TN{n}D`        | Traditional with deuce cap                      | `-G:TN3D` (Star Point: decisive at 3rd deuce) |
+| `{count}C`      | Consecutive points to win a game                | `-G:3C` (3 consecutive points)           |
+| `{count}C{n}D`  | Consecutive with deuce cap                      | `-G:3C3D`                                |
+
+#### Deuce Spec (`{n}D`)
+
+The `{n}D` suffix caps the number of deuce cycles before a decisive point:
+
+| Code  | Meaning                                               |
+| ----- | ----------------------------------------------------- |
+| `1D`  | Golden point — decisive at 1st deuce (equivalent to NOAD) |
+| `3D`  | Star Point (Padel 2026) — up to 2 advantages, decisive at 3rd deuce |
+| (none)| Unlimited advantages (traditional)                    |
 
 ### Match-Level Modifiers
 
@@ -115,7 +126,7 @@ const {
   bestOf,
   matchRoot, // only present for non-SET roots (e.g., 'HAL', 'QTR')
   aggregate, // true when match-level A modifier is present
-  gameFormat, // { type: 'AGGR' } or { type: 'CONSECUTIVE', count: 3 }
+  gameFormat, // { type: 'TRADITIONAL', deuceAfter: 3 } or { type: 'CONSECUTIVE', count: 3 }
   setFormat: {
     setTo,
     tiebreakAt,
@@ -201,11 +212,10 @@ engine.setMatchUpStatus({
 
 #### INTENNSE (Timed Aggregate Tennis)
 
-| Format                     | Code                | Notes                                         |
-| -------------------------- | ------------------- | --------------------------------------------- |
-| Standard INTENNSE          | `SET7XA-S:T10P`     | Exactly 7 timed sets, aggregate, points-based |
-| Shortened                  | `SET5XA-S:T10P`     | Exactly 5 timed sets, aggregate               |
-| With aggregate game format | `SET3-S:T10-G:AGGR` | Aggregate game scoring                        |
+| Format            | Code            | Notes                                         |
+| ----------------- | --------------- | --------------------------------------------- |
+| Standard INTENNSE | `SET7XA-S:T10P` | Exactly 7 timed sets, aggregate, points-based |
+| Shortened         | `SET5XA-S:T10P` | Exactly 5 timed sets, aggregate               |
 
 #### TYPTI (Timed Yielding Points in Tennis Intervals)
 
@@ -238,6 +248,9 @@ engine.setMatchUpStatus({
 | Short sets                  | `SET3-S:4/TB7`              | Shortened format   |
 | With match tiebreak         | `SET3-S:6/TB7-F:TB10`       | Final set tiebreak |
 | Golden point + short + MTB  | `SET3-S:4NOAD/TB5@3-F:TB10` | Exhibition format  |
+| Star Point (2026)           | `SET3-S:6/TB7-G:TN3D`       | Decisive at 3rd deuce |
+| Golden point (deuce cap)    | `SET3-S:6/TB7-G:TN1D`       | Decisive at 1st deuce |
+| Star Point + match tiebreak | `SET3-S:6/TB7-G:TN3D-F:TB10`| Star Point + final TB |
 
 #### Squash
 

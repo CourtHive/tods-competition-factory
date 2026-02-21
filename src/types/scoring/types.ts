@@ -497,7 +497,7 @@ export interface SetFormatStructure {
   // Timed set
   timed?: boolean;
   minutes?: number;
-  based?: string;               // 'P' (points) | 'G' (games, default) | 'A' (aggregate)
+  based?: string;               // 'P' (points) | 'G' (games, default)
   modifier?: string;
   // Game format within set
   gameFormat?: GameFormatStructure;

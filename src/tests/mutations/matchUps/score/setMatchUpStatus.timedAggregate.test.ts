@@ -2,7 +2,7 @@ import { mocksEngine } from '@Assemblies/engines/mock';
 import { tournamentEngine } from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-it('can set score for timed aggregate format SET3X-S:T10A', () => {
+it('can set score for timed aggregate format SET3XA-S:T10', () => {
   const drawProfiles = [
     {
       drawSize: 4,
@@ -25,14 +25,14 @@ it('can set score for timed aggregate format SET3X-S:T10A', () => {
   const result = tournamentEngine.setMatchUpFormat({
     drawId,
     matchUpId: matchUp.matchUpId,
-    matchUpFormat: 'SET3X-S:T10A',
+    matchUpFormat: 'SET3XA-S:T10',
   });
   expect(result.success).toBe(true);
 
   // Set score: 10-11, 11-10, 1-0
   // Aggregate: side1=22, side2=21, winner=side1
   const outcome = {
-    matchUpFormat: 'SET3X-S:T10A',
+    matchUpFormat: 'SET3XA-S:T10',
     matchUpStatus: 'COMPLETED',
     score: {
       sets: [
