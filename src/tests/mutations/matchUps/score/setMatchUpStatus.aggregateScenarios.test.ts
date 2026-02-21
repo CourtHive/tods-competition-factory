@@ -3,7 +3,7 @@ import { COMPLETED } from '@Constants/tournamentConstants';
 import { tournamentEngine } from '@Engines/syncEngine';
 import { expect, it } from 'vitest';
 
-const exactly3aggregateTimedSets = 'SET3X-S:T10A';
+const exactly3aggregateTimedSets = 'SET3XA-S:T10';
 
 function generateMatchUpOutcome(params: { matchUpFormat: string }) {
   const drawProfiles = [
@@ -28,7 +28,7 @@ function generateMatchUpOutcome(params: { matchUpFormat: string }) {
   };
 }
 
-it('correctly calculates aggregate winner for SET3X-S:T10A with uneven scores (30-0, 0-1, 0-1)', () => {
+it('correctly calculates aggregate winner for SET3XA-S:T10 with uneven scores (30-0, 0-1, 0-1)', () => {
   const {
     drawId,
     matchUps: [matchUp],

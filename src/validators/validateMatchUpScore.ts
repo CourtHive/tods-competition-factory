@@ -284,7 +284,7 @@ export function validateSetScore(
   const setFormat = isDecidingSet && parsed.finalSetFormat ? parsed.finalSetFormat : parsed.setFormat;
   if (!setFormat) return { isValid: true };
 
-  // Handle timed sets (based: 'A'/'P'/'G' or timed: true)
+  // Handle timed sets (based: 'P'/'G' or timed: true)
   if (setFormat.timed) {
     // For timed sets, just validate that scores exist if set is complete
     if (!allowIncomplete) {
@@ -303,7 +303,7 @@ export function validateSetScore(
           return { isValid: false, error: 'Tied timed set requires tiebreak' };
         }
       }
-      // For aggregate ('A'), tied individual sets are fine - winner determined by total aggregate
+      // For aggregate (match-level A), tied individual sets are fine - winner determined by total aggregate
     }
     return { isValid: true };
   }

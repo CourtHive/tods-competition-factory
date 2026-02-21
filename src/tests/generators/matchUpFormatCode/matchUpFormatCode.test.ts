@@ -426,19 +426,6 @@ it('can parse and stringify "exactly" with X suffix for timed sets', () => {
   expect(stringified3).toEqual(format3);
 });
 
-it('supports -G:AGGR game format section', () => {
-  const format = 'SET3-S:T10-G:AGGR';
-  const parsed = matchUpFormatCode.parse(format);
-  expect(parsed).toEqual({
-    bestOf: 3,
-    setFormat: { timed: true, minutes: 10 },
-    gameFormat: { type: 'AGGR' },
-  });
-  const stringified = matchUpFormatCode.stringify(parsed);
-  expect(stringified).toEqual(format);
-  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
-});
-
 it('supports -G:3C consecutive game format (TYPTI)', () => {
   const format = 'SET5-S:5-G:3C';
   const parsed = matchUpFormatCode.parse(format);
@@ -512,14 +499,68 @@ it('rejects invalid duplicate -G: sections', () => {
 
 it('dispatches sections by key, not position (order-independent)', () => {
   // -G: before -F: should still parse correctly
-  const format = 'SET3-S:T10-G:AGGR-F:T20';
+  const format = 'SET3-S:T10-G:TN3D-F:T20';
   const parsed = matchUpFormatCode.parse(format);
   expect(parsed).toEqual({
     bestOf: 3,
     setFormat: { timed: true, minutes: 10 },
-    gameFormat: { type: 'AGGR' },
+    gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
     finalSetFormat: { timed: true, minutes: 20 },
   });
+});
+
+it('supports -G:TN3D Star Point format (Padel 2026)', () => {
+  const format = 'SET3-S:6/TB7-G:TN3D';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+    gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
+  });
+  expect(matchUpFormatCode.stringify(parsed)).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports -G:TN1D golden point format', () => {
+  const format = 'SET3-S:6/TB7-G:TN1D';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+    gameFormat: { type: 'TRADITIONAL', deuceAfter: 1 },
+  });
+  expect(matchUpFormatCode.stringify(parsed)).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports -G:TN (explicit traditional, no deuce cap)', () => {
+  const format = 'SET3-S:6/TB7-G:TN';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+    gameFormat: { type: 'TRADITIONAL' },
+  });
+  expect(matchUpFormatCode.stringify(parsed)).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('supports -G:3C3D consecutive with Star Point deuce', () => {
+  const format = 'SET3-S:4-G:3C3D';
+  const parsed = matchUpFormatCode.parse(format);
+  expect(parsed).toEqual({
+    bestOf: 3,
+    setFormat: { setTo: 4, noTiebreak: true },
+    gameFormat: { type: 'CONSECUTIVE', count: 3, deuceAfter: 3 },
+  });
+  expect(matchUpFormatCode.stringify(parsed)).toEqual(format);
+  expect(isValidMatchUpFormat({ matchUpFormat: format })).toEqual(true);
+});
+
+it('rejects invalid deuceSpec values', () => {
+  expect(matchUpFormatCode.parse('SET3-S:5-G:TN0D')).toBeUndefined(); // 0 not valid
+  expect(matchUpFormatCode.parse('SET3-S:5-G:D')).toBeUndefined(); // bare D invalid
+  expect(matchUpFormatCode.parse('SET3-S:5-G:3D')).toBeUndefined(); // missing base spec
 });
 
 it('treats SET1 and SET1X as equivalent (both use bestOf: 1)', () => {

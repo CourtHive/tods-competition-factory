@@ -1,4 +1,4 @@
-import { SET, NOAD, AGGR, CONSECUTIVE } from '@Constants/matchUpFormatConstants';
+import { SET, NOAD, CONSECUTIVE, TRADITIONAL } from '@Constants/matchUpFormatConstants';
 import { isObject } from '@Tools/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
@@ -16,11 +16,8 @@ function getNumber(formatstring) {
 function timedSetFormat(matchUpFormatObject) {
   let value = `T${matchUpFormatObject.minutes}`;
 
-  // Add scoring method suffix (A or P, omit G since it's default)
-  // Only add if not already in the value (for backward compatibility)
-  if (matchUpFormatObject.based === 'A') {
-    value += 'A';
-  } else if (matchUpFormatObject.based === 'P') {
+  // Add scoring method suffix (P only, omit G since it's default)
+  if (matchUpFormatObject.based === 'P') {
     value += 'P';
   }
   // Games-based ('G' or undefined) is default, no suffix needed
@@ -37,8 +34,12 @@ function timedSetFormat(matchUpFormatObject) {
 }
 
 function stringifyGameFormat(gameFormat) {
-  if (gameFormat?.type === AGGR) return AGGR;
-  if (gameFormat?.type === CONSECUTIVE && Number.isInteger(gameFormat.count)) return `${gameFormat.count}C`;
+  const deuceSuffix = gameFormat?.deuceAfter ? `${gameFormat.deuceAfter}D` : '';
+
+  if (gameFormat?.type === TRADITIONAL) return `TN${deuceSuffix}`;
+  if (gameFormat?.type === CONSECUTIVE && Number.isInteger(gameFormat.count))
+    return `${gameFormat.count}C${deuceSuffix}`;
+
   return undefined;
 }
 

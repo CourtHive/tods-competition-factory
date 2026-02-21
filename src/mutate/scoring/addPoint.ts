@@ -8,7 +8,7 @@
  * - Rally scoring (@RALLY modifier)
  * - Consecutive game format (TYPTI: -G:3C)
  * - Timed sets (records scoring events, doesn't auto-complete)
- * - Aggregate scoring (match-level A, set-level A, game-level AGGR)
+ * - Aggregate scoring (match-level A, set-level A)
  * - Exactly formats (all N sets must be played)
  * - NoAD games and tiebreaks
  */

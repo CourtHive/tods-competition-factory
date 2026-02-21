@@ -155,8 +155,8 @@ describe('Phase 2 - addSet() aggregate + exactly formats', () => {
     expect(engine.getState().matchUpStatus).toBe('IN_PROGRESS');
   });
 
-  test('SET2X-S:T10A — exactly 2 sets, aggregate winner', () => {
-    const engine = new ScoringEngine({ matchUpFormat: 'SET2X-S:T10A' });
+  test('SET2XA-S:T10 — exactly 2 sets, aggregate winner', () => {
+    const engine = new ScoringEngine({ matchUpFormat: 'SET2XA-S:T10' });
     engine.addSet({ side1Score: 25, side2Score: 20 });
     engine.addSet({ side1Score: 15, side2Score: 30 });
 
@@ -165,8 +165,8 @@ describe('Phase 2 - addSet() aggregate + exactly formats', () => {
     expect(engine.getState().winningSide).toBe(2);
   });
 
-  test('SET3X-S:T10A — aggregate tied does not complete', () => {
-    const engine = new ScoringEngine({ matchUpFormat: 'SET3X-S:T10A' });
+  test('SET3XA-S:T10 — aggregate tied does not complete', () => {
+    const engine = new ScoringEngine({ matchUpFormat: 'SET3XA-S:T10' });
     engine.addSet({ side1Score: 10, side2Score: 10 });
     engine.addSet({ side1Score: 10, side2Score: 10 });
     engine.addSet({ side1Score: 10, side2Score: 10 });

@@ -497,7 +497,7 @@ export interface SetFormatStructure {
   // Timed set
   timed?: boolean;
   minutes?: number;
-  based?: string;               // 'P' (points) | 'G' (games, default) | 'A' (aggregate)
+  based?: string;               // 'P' (points) | 'G' (games, default)
   modifier?: string;
   // Game format within set
   gameFormat?: GameFormatStructure;
@@ -516,8 +516,9 @@ export interface TiebreakFormatStructure {
  * Game format structure
  */
 export interface GameFormatStructure {
-  type?: 'AGGR' | 'CONSECUTIVE';
+  type?: 'CONSECUTIVE' | 'TRADITIONAL';
   count?: number;               // Consecutive points per game (for TYPTI)
+  deuceAfter?: number;          // Deuce cap: 1=golden point, 3=Star Point, undefined=unlimited
   NoAD?: boolean;
 }
 

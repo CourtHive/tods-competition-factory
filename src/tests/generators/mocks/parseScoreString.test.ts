@@ -156,7 +156,7 @@ it('uses default TB7 when no matchUpFormat provided', () => {
 
 describe('TB1 NoAD support', () => {
   it('should set NoAD=true for TB1 tiebreak-only final set', () => {
-    const format = 'SET3X-S:T10A-F:TB1';
+    const format = 'SET3XA-S:T10-F:TB1';
     const scoreString = '30-25 25-30 [1-0]';
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 
@@ -181,7 +181,7 @@ describe('TB1 NoAD support', () => {
   });
 
   it('should set NoAD=true for TB1NOAD tiebreak-only final set', () => {
-    const format = 'SET3X-S:T10A-F:TB1NOAD';
+    const format = 'SET3XA-S:T10-F:TB1NOAD';
     const scoreString = '40-35 30-35 [1-0]';
     const result = parseScoreString({ scoreString, matchUpFormat: format });
 

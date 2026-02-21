@@ -95,7 +95,7 @@ describe('generateOutcomeFromScoreString - preserveSideOrder parameter', () => {
 
   describe('Aggregate format (already preserves order)', () => {
     it('should preserve order without preserveSideOrder flag (existing behavior)', () => {
-      const format = 'SET3X-S:T10A';
+      const format = 'SET3XA-S:T10';
       const { outcome } = generateOutcomeFromScoreString({
         scoreString: '30-1 0-1 0-1',
         matchUpFormat: format,
@@ -108,7 +108,7 @@ describe('generateOutcomeFromScoreString - preserveSideOrder parameter', () => {
     });
 
     it('should still preserve order with preserveSideOrder=true (no-op)', () => {
-      const format = 'SET3X-S:T10A';
+      const format = 'SET3XA-S:T10';
       const { outcome } = generateOutcomeFromScoreString({
         scoreString: '1-30 1-0 1-0',
         matchUpFormat: format,

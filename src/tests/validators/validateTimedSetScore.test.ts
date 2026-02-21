@@ -54,7 +54,7 @@ it('validates timed sets with points-based scoring (P)', () => {
 });
 
 it('validates timed sets with aggregate scoring (A)', () => {
-  const matchUpFormat = 'SET2X-S:T10A';
+  const matchUpFormat = 'SET2XA-S:T10';
 
   // Valid: normal aggregate score
   let set = { side1Score: 45, side2Score: 38, winningSide: 1 };
@@ -99,7 +99,7 @@ it('validates timed sets with tied scores and tiebreak', () => {
 });
 
 it('validates timed sets without tiebreak format (tied allowed)', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   // Valid: tied scores without tiebreak format is allowed
   // (format doesn't specify tiebreak, so tie stands)
@@ -123,7 +123,7 @@ it('validates incomplete timed sets (in progress)', () => {
 });
 
 it('validates multiple timed sets in a match', () => {
-  const matchUpFormat = 'SET3X-S:T10A';
+  const matchUpFormat = 'SET3XA-S:T10';
 
   const sets = [
     { side1Score: 30, side2Score: 25, setNumber: 1, winningSide: 1 },
@@ -136,7 +136,7 @@ it('validates multiple timed sets in a match', () => {
 });
 
 it('validates timed sets with final set different format', () => {
-  const matchUpFormat = 'SET3X-S:T10A-F:T10P';
+  const matchUpFormat = 'SET3XA-S:T10-F:T10P';
 
   // Different final set format (points instead of aggregate)
   const sets = [
@@ -181,7 +181,7 @@ it('validates retired match with incomplete timed sets', () => {
 });
 
 it('validates single timed set format', () => {
-  const matchUpFormat = 'T20A';
+  const matchUpFormat = 'SET1A-S:T20';
 
   // Valid single timed set
   let set = { side1Score: 50, side2Score: 45, winningSide: 1 };
@@ -195,7 +195,7 @@ it('validates single timed set format', () => {
 });
 
 it('validates bestOf with timed sets', () => {
-  const matchUpFormat = 'SET3-S:T10A';
+  const matchUpFormat = 'SET3A-S:T10';
 
   const sets = [
     { side1Score: 35, side2Score: 30, setNumber: 1, winningSide: 1 },
