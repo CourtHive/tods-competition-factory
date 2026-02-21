@@ -1,4 +1,5 @@
 import { getMappedStructureMatchUps } from '@Query/matchUps/getMatchUpsMap';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { DOUBLE_DEFAULT, DOUBLE_WALKOVER } from '@Constants/matchUpStatusConstants';
@@ -14,10 +15,33 @@ export function getPairedPreviousMatchUpIsDoubleExit(params) {
     matchUpsMap,
   });
 
+  pushGlobalLog({
+    method: 'getPairedPreviousMatchUpIsDoubleExit',
+    color: 'brightcyan',
+    keyColors: { structureId: 'brightyellow', sourceMatchUpId: 'brightmagenta' },
+    structureId: structure.structureId?.slice(0, 8),
+    targetMatchUpId: targetMatchUp.matchUpId,
+    targetRound: [targetMatchUp.roundNumber, targetMatchUp.roundPosition],
+    previousRoundNumber,
+    sourceMatchUpId: sourceMatchUp?.matchUpId,
+    sourceStructureId: sourceMatchUp?.structureId?.slice(0, 8),
+    sourceRound: sourceMatchUp ? [sourceMatchUp.roundNumber, sourceMatchUp.roundPosition] : undefined,
+    drawPosition,
+    structureMatchUpCount: structureMatchUps?.length,
+  });
+
   if (!sourceMatchUp && drawPosition) {
     sourceMatchUp = structureMatchUps.find(
       ({ drawPositions, roundNumber }) => roundNumber === previousRoundNumber && drawPositions?.includes(drawPosition),
     );
+    pushGlobalLog({
+      method: 'getPairedPreviousMatchUpIsDoubleExit',
+      color: 'cyan',
+      info: 'resolved_sourceMatchUp_from_drawPosition',
+      resolvedMatchUpId: sourceMatchUp?.matchUpId,
+      resolvedRound: sourceMatchUp ? [sourceMatchUp.roundNumber, sourceMatchUp.roundPosition] : undefined,
+      resolvedStatus: sourceMatchUp?.matchUpStatus,
+    });
   }
 
   // look for paired round position in previous round
@@ -33,6 +57,19 @@ export function getPairedPreviousMatchUpIsDoubleExit(params) {
 
   const pairedPreviousMatchUpStatus = pairedPreviousMatchUp?.matchUpStatus;
   const pairedPreviousMatchUpIsDoubleExit = [DOUBLE_WALKOVER, DOUBLE_DEFAULT].includes(pairedPreviousMatchUpStatus);
+
+  pushGlobalLog({
+    method: 'getPairedPreviousMatchUpIsDoubleExit',
+    color: pairedPreviousMatchUpIsDoubleExit ? 'brightred' : 'brightgreen',
+    keyColors: { pairedMatchUpId: 'brightcyan', isDoubleExit: pairedPreviousMatchUpIsDoubleExit ? 'brightred' : 'brightgreen' },
+    sourceRoundPosition,
+    offset,
+    pairedRoundPosition,
+    pairedMatchUpId: pairedPreviousMatchUp?.matchUpId,
+    pairedRound: pairedPreviousMatchUp ? [pairedPreviousMatchUp.roundNumber, pairedPreviousMatchUp.roundPosition] : undefined,
+    pairedStatus: pairedPreviousMatchUpStatus,
+    isDoubleExit: pairedPreviousMatchUpIsDoubleExit,
+  });
 
   return { pairedPreviousMatchUp, pairedPreviousMatchUpIsDoubleExit };
 }
