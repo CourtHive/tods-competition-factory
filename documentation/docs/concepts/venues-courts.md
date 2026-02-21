@@ -35,6 +35,13 @@ A **venue** represents a physical location that contains one or more courts. Ven
   courts?: Court[];             // Array of court objects
   timeZone?: string;            // IANA timezone (e.g., 'America/New_York')
 
+  // Default operating hours (applied to all courts)
+  defaultStartTime?: string;    // HH:MM format (e.g., '09:00')
+  defaultEndTime?: string;      // HH:MM format (e.g., '17:00')
+
+  // Venue-level availability (date-specific overrides and bookings)
+  dateAvailability?: DateAvailability[];
+
   // Optional metadata
   notes?: string;
   onlineResources?: Array<{
@@ -345,6 +352,149 @@ tournamentEngine.modifyCourtDateAvailability({
   ],
 });
 ```
+
+---
+
+## Venue-Level Scheduling Constraints
+
+Venues can define default operating hours and date-specific availability that automatically apply to all of their courts. This eliminates the need to set availability on every court individually and ensures courts cannot operate outside the venue's open hours.
+
+### Default Operating Hours
+
+Use `defaultStartTime` and `defaultEndTime` to set the venue's standard operating hours. These are inherited by all courts that belong to the venue.
+
+```js
+const result = tournamentEngine.addVenue({
+  venue: {
+    venueName: 'Central Tennis Club',
+    defaultStartTime: '09:00',
+    defaultEndTime: '17:00',
+  },
+});
+
+// Courts added to this venue will be constrained to 09:00-17:00
+tournamentEngine.addCourts({
+  venueId: result.venue.venueId,
+  courtsCount: 4,
+});
+```
+
+**Validation rules:**
+
+- Both `defaultStartTime` and `defaultEndTime` are **required together** — you cannot set just one
+- `defaultEndTime` must be **after** `defaultStartTime`
+- Times use **24-hour `HH:MM` format** (e.g., `'09:00'`, `'17:00'`)
+
+**API Reference:** [addVenue](/docs/governors/venue-governor#addvenue)
+
+### Venue-Level Date Availability
+
+For more granular control, venues support a `dateAvailability` array — the same structure used on courts. This lets you define date-specific hours and bookings at the venue level.
+
+```js
+tournamentEngine.addVenue({
+  venue: {
+    venueName: 'Central Tennis Club',
+    defaultStartTime: '08:00',
+    defaultEndTime: '20:00',
+    dateAvailability: [
+      // Special hours on finals day
+      {
+        date: '2024-03-24',
+        startTime: '10:00',
+        endTime: '14:00',
+      },
+      // Venue-wide maintenance window
+      {
+        date: '2024-03-20',
+        startTime: '08:00',
+        endTime: '20:00',
+        bookings: [
+          {
+            startTime: '12:00',
+            endTime: '14:00',
+            bookingType: 'MAINTENANCE',
+            notes: 'Facility-wide maintenance',
+          },
+        ],
+      },
+    ],
+  },
+});
+```
+
+### How Courts Inherit Venue Constraints
+
+When courts are retrieved (e.g. via `getVenuesAndCourts()`), the engine applies venue constraints to compute effective court availability using **intersection logic**:
+
+**If a court has no `dateAvailability`:**
+
+The court fully inherits from the venue — either from the venue's `dateAvailability` array or from `defaultStartTime`/`defaultEndTime`.
+
+**If a court has its own `dateAvailability`:**
+
+The engine intersects court and venue availability:
+
+- **Start time** = the **later** of the court and venue start times
+- **End time** = the **earlier** of the court and venue end times
+- **Bookings** from both court and venue are **merged**
+
+This means a court can never operate outside its venue's hours, but it can have a narrower window.
+
+```js
+// Venue: 09:00 - 17:00
+// Court has: 07:00 - 19:00
+// Effective: 09:00 - 17:00  (venue constrains the court)
+
+// Venue: 09:00 - 17:00
+// Court has: 10:00 - 15:00
+// Effective: 10:00 - 15:00  (court's narrower window is preserved)
+```
+
+### Venue Availability Precedence
+
+When determining which venue constraint applies to a given date, the engine uses this precedence:
+
+1. **Date-specific entry** in the venue's `dateAvailability` (exact date match)
+2. **Dateless default entry** in the venue's `dateAvailability` (applies to all dates)
+3. **`defaultStartTime` / `defaultEndTime`** on the venue
+
+```js
+// Example: venue with both defaults and a date-specific override
+const venue = {
+  venueName: 'Tennis Complex',
+  defaultStartTime: '08:00',
+  defaultEndTime: '20:00',
+  dateAvailability: [{ date: '2024-01-15', startTime: '10:00', endTime: '14:00' }],
+};
+
+// Jan 15: uses date-specific entry → 10:00-14:00
+// Jan 16: uses defaultStartTime/defaultEndTime → 08:00-20:00
+```
+
+### Updating Venue Defaults
+
+You can set or update venue scheduling attributes via `modifyVenue`:
+
+```js
+tournamentEngine.modifyVenue({
+  venueId: 'venue-uuid',
+  modifications: {
+    defaultStartTime: '09:00',
+    defaultEndTime: '17:00',
+  },
+});
+
+// Add venue-level date availability
+tournamentEngine.modifyVenue({
+  venueId: 'venue-uuid',
+  modifications: {
+    dateAvailability: [{ date: '2024-03-20', startTime: '10:00', endTime: '14:00' }],
+  },
+});
+```
+
+**API Reference:** [modifyVenue](/docs/governors/venue-governor#modifyvenue)
 
 ---
 

@@ -62,10 +62,21 @@ Adds **venueId** if not provided. See examples in [Creating Venues](../concepts/
 
 ```js
 engine.addVenue({
-  venue: { venueName },
+  venue: {
+    venueName,
+    defaultStartTime, // optional - HH:MM format, paired with defaultEndTime
+    defaultEndTime, // optional - HH:MM format, paired with defaultStartTime
+    dateAvailability, // optional - venue-level date availability (same structure as court dateAvailability)
+  },
   context, // optional - adds detail in CONTEXT extension
 });
 ```
+
+**Notes:**
+
+- `defaultStartTime` and `defaultEndTime` must be provided **together** — setting only one returns an error
+- `defaultEndTime` must be after `defaultStartTime`
+- These defaults are inherited by all courts in the venue. See [Venue-Level Scheduling Constraints](../concepts/venues-courts.md#venue-level-scheduling-constraints)
 
 ---
 
@@ -378,13 +389,16 @@ const result = engine.modifyCourtAvailability({
 
 Courts present on venue will replaced with courts specified in parameters. If courts are not present in parameters, courts will be unchanged. See examples: [Modifying Venues](../concepts/venues-courts.md#modifying-venues).
 
-See [Scheduling](/docs/concepts/venues-courts) for more detail on court `dateAvailability`.
+See [Scheduling](/docs/concepts/venues-courts) for more detail on court `dateAvailability` and [Venue-Level Scheduling Constraints](../concepts/venues-courts.md#venue-level-scheduling-constraints) for venue-level defaults.
 
 ```js
 const modifications = {
   venueAbbreviation,
   onlineResources,
   venueName,
+  defaultStartTime, // optional - HH:MM format; validated with existing or modified defaultEndTime
+  defaultEndTime, // optional - HH:MM format; validated with existing or modified defaultStartTime
+  dateAvailability, // optional - venue-level date availability
   courts: [
     {
       courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
@@ -401,5 +415,10 @@ const modifications = {
 };
 engine.modifyVenue({ venueId, modifications });
 ```
+
+**Notes:**
+
+- When modifying `defaultStartTime` or `defaultEndTime`, the engine validates the **resulting pair** (merging with existing values). For example, if the venue already has `defaultStartTime: '09:00'` and you modify only `defaultEndTime`, the pair `('09:00', newEndTime)` is validated.
+- `dateAvailability` replaces the entire venue-level availability array when provided
 
 ---
