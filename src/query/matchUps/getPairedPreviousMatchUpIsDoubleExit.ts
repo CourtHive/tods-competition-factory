@@ -30,7 +30,30 @@ export function getPairedPreviousMatchUpIsDoubleExit(params) {
     structureMatchUpCount: structureMatchUps?.length,
   });
 
-  if (!sourceMatchUp && drawPosition) {
+  // When sourceMatchUp is from a different structure (e.g. main draw source
+  // feeding into a consolation target), re-resolve within the target structure
+  // so the paired round position lookup is scoped correctly.
+  if (sourceMatchUp && sourceMatchUp.structureId !== structure.structureId && drawPosition) {
+    pushGlobalLog({
+      method: 'getPairedPreviousMatchUpIsDoubleExit',
+      color: 'cyan',
+      info: 'cross_structure_sourceMatchUp_resolving_in_target',
+      originalSourceId: sourceMatchUp?.matchUpId,
+      originalSourceStructure: sourceMatchUp?.structureId?.slice(0, 8),
+      targetStructure: structure.structureId?.slice(0, 8),
+    });
+    sourceMatchUp = structureMatchUps.find(
+      ({ drawPositions, roundNumber }) => roundNumber === previousRoundNumber && drawPositions?.includes(drawPosition),
+    );
+    pushGlobalLog({
+      method: 'getPairedPreviousMatchUpIsDoubleExit',
+      color: 'cyan',
+      info: 'resolved_cross_structure_sourceMatchUp',
+      resolvedMatchUpId: sourceMatchUp?.matchUpId,
+      resolvedRound: sourceMatchUp ? [sourceMatchUp.roundNumber, sourceMatchUp.roundPosition] : undefined,
+      resolvedStatus: sourceMatchUp?.matchUpStatus,
+    });
+  } else if (!sourceMatchUp && drawPosition) {
     sourceMatchUp = structureMatchUps.find(
       ({ drawPositions, roundNumber }) => roundNumber === previousRoundNumber && drawPositions?.includes(drawPosition),
     );

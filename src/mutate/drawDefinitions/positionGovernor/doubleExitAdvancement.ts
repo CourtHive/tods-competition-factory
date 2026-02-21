@@ -78,18 +78,56 @@ export function doubleExitAdvancement(params) {
         event,
       });
       if (result.error) return decorateResult({ result, stack });
+    } else if (loserMatchUpIsEmptyExit) {
+      // The consolation matchUp already has an empty exit (WALKOVER/DEFAULTED
+      // with no participants, produced by a previous double exit). Another
+      // double exit arriving means this should become a DOUBLE_WALKOVER/DEFAULT.
+      const DOUBLE_EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DOUBLE_DEFAULT : DOUBLE_WALKOVER;
+      const EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : WALKOVER;
+
+      const noContextLoserMatchUp = matchUpsMap.drawMatchUps.find(
+        (matchUp) => matchUp.matchUpId === loserMatchUp.matchUpId,
+      );
+
+      pushGlobalLog({
+        method: stack,
+        color: 'brightred',
+        decision: 'EMPTY_EXIT_converting_to_DOUBLE_EXIT',
+        loserMatchUpId: loserMatchUp.matchUpId,
+        currentStatus: loserMatchUp.matchUpStatus,
+        newStatus: DOUBLE_EXIT,
+      });
+
+      if (noContextLoserMatchUp) {
+        const matchUpStatusCodes = [
+          { matchUpStatus: EXIT, previousMatchUpStatus: DOUBLE_EXIT, sideNumber: 1 },
+          { matchUpStatus: EXIT, previousMatchUpStatus: params.matchUpStatus, sideNumber: 2 },
+        ].map((code) => definedAttributes(code));
+
+        const result = modifyMatchUpScore({
+          ...params,
+          matchUp: noContextLoserMatchUp,
+          matchUpId: loserMatchUp.matchUpId,
+          matchUpStatus: DOUBLE_EXIT,
+          matchUpStatusCodes,
+          winningSide: undefined,
+          removeScore: true,
+          context: stack,
+        });
+        if (result.error) return decorateResult({ result, stack });
+      }
     } else if (!loserMatchUpIsDoubleExit) {
-      // only attemp to advance the loserMatchUp if it is not an 'empty' exit present
+      // only attempt to advance the loserMatchUp if it is not an 'empty' exit present
       const { feedRound, drawPositions, matchUpId } = loserMatchUp;
-      let walkoverWinningSide: number | undefined = feedRound ? 2 : 2 - drawPositions.indexOf(loserTargetDrawPosition);
-      walkoverWinningSide = loserMatchUpIsEmptyExit ? loserMatchUp.winningSide : walkoverWinningSide;
+      const walkoverWinningSide: number | undefined = feedRound
+        ? 2
+        : 2 - drawPositions.indexOf(loserTargetDrawPosition);
       pushGlobalLog({
         method: stack,
         color: 'cyan',
         decision: 'conditionallyAdvanceLoser',
         feedRound,
         walkoverWinningSide,
-        loserMatchUpIsEmptyExit,
         loserMatchUpId: matchUpId,
       });
       const result = conditionallyAdvanceDrawPosition({
@@ -185,7 +223,10 @@ function conditionallyAdvanceDrawPosition(params) {
   if (sameStructure && targetMatchUpDrawPositions.length > 1)
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
-  const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } = getPairedPreviousMatchUpIsDoubleExit(params);
+  const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } = getPairedPreviousMatchUpIsDoubleExit({
+    ...params,
+    structure, // use locally-computed structure (from targetMatchUp.structureId)
+  });
 
   pushGlobalLog({
     method: stack,
