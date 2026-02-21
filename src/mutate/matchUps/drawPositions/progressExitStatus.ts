@@ -23,10 +23,16 @@ export function progressExitStatus({
   const stack = 'progressExitStatus';
 
   pushGlobalLog({
-    matchUpId: loserMatchUp?.matchUpId,
-    matchUpStatus: sourceMatchUpStatus,
-    color: 'magenta',
     method: stack,
+    newline: true,
+    color: 'magenta',
+    keyColors: { loserMatchUpId: 'brightcyan', sourceMatchUpStatus: 'brightyellow' },
+    loserMatchUpId: loserMatchUp?.matchUpId,
+    loserMatchUpStatus: loserMatchUp?.matchUpStatus,
+    sourceMatchUpStatus,
+    sourceMatchUpStatusCodes: JSON.stringify(sourceMatchUpStatusCodes),
+    loserParticipantId: loserParticipantId?.slice(0, 8),
+    propagateExitStatus,
   });
 
   // RETIRED should not be propagated as an exit status
@@ -44,6 +50,24 @@ export function progressExitStatus({
 
   //find the updated loser match up
   const updatedLoserMatchUp = inContextMatchUps?.find((m) => m.matchUpId === loserMatchUp?.matchUpId);
+
+  pushGlobalLog({
+    method: stack,
+    color: 'magenta',
+    carryOverMatchUpStatus,
+    updatedLoserMatchUpId: updatedLoserMatchUp?.matchUpId,
+    updatedLoserStatus: updatedLoserMatchUp?.matchUpStatus,
+    updatedLoserSides: JSON.stringify(
+      updatedLoserMatchUp?.sides?.map((s) => ({
+        sn: s.sideNumber,
+        pid: s.participantId?.slice(0, 8),
+        bye: s.bye,
+      })),
+    ),
+    updatedLoserDP: JSON.stringify(updatedLoserMatchUp?.drawPositions),
+    existingStatusCodes: JSON.stringify(updatedLoserMatchUp?.matchUpStatusCodes),
+  });
+
   if (updatedLoserMatchUp?.matchUpId && loserMatchUpStatus) {
     let winningSide: number | undefined = undefined;
     //get rid of the double walkover special status codes
@@ -60,6 +84,18 @@ export function progressExitStatus({
         return current?.participantId ? count + 1 : count;
       }, 0);
 
+      pushGlobalLog({
+        method: stack,
+        color: 'brightyellow',
+        keyColors: { decision: 'brightgreen' },
+        loserSideNumber: loserParticipantSide.sideNumber,
+        participantsCount,
+        statusCodesLength: statusCodes.length,
+        existingStatusCodes: JSON.stringify(statusCodes),
+        loserMatchUpIsExit: isExit(loserMatchUp.matchUpStatus),
+        loserMatchUpOriginalStatus: loserMatchUp.matchUpStatus,
+      });
+
       //if only one participant we need to bring over the status code and
       //set it as the only one, and assign the empty side as the winner.
       //We also consider outcomes from a double walkover in the main draw, which
@@ -72,6 +108,13 @@ export function progressExitStatus({
         //this is flawed a bit, or at least the TDesk ui, as even if there are two participants
         //for a WO/DEFAULT, the status code is always the first element.
         statusCodes[0] = sourceMatchUpStatusCodes[0];
+        pushGlobalLog({
+          method: stack,
+          color: 'brightgreen',
+          decision: 'SINGLE_PARTICIPANT_no_existing_codes',
+          winningSide,
+          statusCodes: JSON.stringify(statusCodes),
+        });
       } else {
         //there was already a participant in the loser matchup
         //if the loser match is not already a WO or DEFAULT
@@ -80,6 +123,13 @@ export function progressExitStatus({
           winningSide = loserParticipantSide.sideNumber === 1 ? 2 : 1;
           //we still want to bring over the original status codes
           statusCodes[0] = sourceMatchUpStatusCodes[0];
+          pushGlobalLog({
+            method: stack,
+            color: 'brightgreen',
+            decision: 'TWO_PARTICIPANTS_not_exit',
+            winningSide,
+            statusCodes: JSON.stringify(statusCodes),
+          });
         } else {
           //both participants are either WO or DEFAULT
 
@@ -92,9 +142,38 @@ export function progressExitStatus({
 
           loserMatchUpStatus = DOUBLE_WALKOVER;
           winningSide = undefined;
+          pushGlobalLog({
+            method: stack,
+            color: 'brightred',
+            decision: 'BOTH_EXITS_converting_to_DOUBLE_WALKOVER',
+            loserMatchUpStatus,
+            winningSide,
+            statusCodes: JSON.stringify(statusCodes),
+          });
         }
       }
+    } else {
+      pushGlobalLog({
+        method: stack,
+        color: 'brightyellow',
+        decision: 'NO_LOSER_PARTICIPANT_SIDE_FOUND',
+        loserParticipantId: loserParticipantId?.slice(0, 8),
+        availableSides: JSON.stringify(
+          updatedLoserMatchUp.sides?.map((s) => ({ sn: s.sideNumber, pid: s.participantId?.slice(0, 8) })),
+        ),
+      });
     }
+
+    pushGlobalLog({
+      method: stack,
+      color: 'brightmagenta',
+      keyColors: { finalStatus: 'brightgreen', finalWinningSide: 'brightyellow' },
+      action: 'calling_setMatchUpState',
+      loserMatchUpId: loserMatchUp.matchUpId,
+      finalStatus: loserMatchUpStatus,
+      finalWinningSide: winningSide,
+      finalStatusCodes: JSON.stringify(statusCodes),
+    });
 
     const result = setMatchUpState({
       matchUpStatus: loserMatchUpStatus,

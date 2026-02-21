@@ -7,6 +7,7 @@ import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
 import { positionTargets } from '@Query/matchUp/positionTargets';
 import { definedAttributes } from '@Tools/definedAttributes';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 import { findStructure } from '@Acquire/findStructure';
 import { isExit } from '@Validators/isExit';
 import { overlap } from '@Tools/arrays';
@@ -34,14 +35,39 @@ export function doubleExitAdvancement(params) {
 
   const loserMatchUpIsDoubleExit = loserMatchUp?.matchUpStatus === DOUBLE_WALKOVER;
 
+  pushGlobalLog({
+    method: stack,
+    newline: true,
+    color: 'brightyellow',
+    keyColors: { sourceMatchUpId: 'brightcyan', loserMatchUpId: 'brightmagenta', winnerMatchUpId: 'brightgreen' },
+    sourceMatchUpId: sourceMatchUp?.matchUpId,
+    sourceStatus: params.matchUpStatus,
+    sourceDP: JSON.stringify(sourceMatchUp?.drawPositions),
+    loserMatchUpId: loserMatchUp?.matchUpId,
+    loserStatus: loserMatchUp?.matchUpStatus,
+    loserDP: JSON.stringify(loserMatchUp?.drawPositions),
+    loserTargetDP: loserTargetDrawPosition,
+    loserIsEmptyExit: loserMatchUpIsEmptyExit,
+    loserIsDoubleExit: loserMatchUpIsDoubleExit,
+    loserSides: JSON.stringify(loserMatchUp?.sides?.map((s) => ({ sn: s.sideNumber, pid: s.participantId?.slice(0, 8), fed: s.participantFed }))),
+    winnerMatchUpId: winnerMatchUp?.matchUpId,
+    winnerStatus: winnerMatchUp?.matchUpStatus,
+    winnerDP: JSON.stringify(winnerMatchUp?.drawPositions),
+  });
+
   if (loserMatchUp && loserMatchUp.matchUpStatus !== BYE) {
     const { loserTargetLink } = targetLinks;
-    if (
-      appliedPolicies?.progression?.doubleExitPropagateBye ||
-      //we also want to propagate a double exit as a BYE if we are targeting
-      //the fed in participant
-      (loserMatchUp.feedRound && loserMatchUp.sides?.[0]?.participantFed)
-    ) {
+    const propagateBye = appliedPolicies?.progression?.doubleExitPropagateBye;
+    const targetFedIn = loserMatchUp.feedRound && loserMatchUp.sides?.[0]?.participantFed;
+
+    if (propagateBye || targetFedIn) {
+      pushGlobalLog({
+        method: stack,
+        color: 'cyan',
+        decision: 'advanceByeToLoserMatchUp',
+        propagateBye,
+        targetFedIn: !!targetFedIn,
+      });
       const result = advanceByeToLoserMatchUp({
         loserTargetDrawPosition,
         tournamentRecord,
@@ -52,11 +78,58 @@ export function doubleExitAdvancement(params) {
         event,
       });
       if (result.error) return decorateResult({ result, stack });
+    } else if (loserMatchUpIsEmptyExit) {
+      // The consolation matchUp already has an empty exit (WALKOVER/DEFAULTED
+      // with no participants, produced by a previous double exit). Another
+      // double exit arriving means this should become a DOUBLE_WALKOVER/DEFAULT.
+      const DOUBLE_EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DOUBLE_DEFAULT : DOUBLE_WALKOVER;
+      const EXIT = params.matchUpStatus === DOUBLE_DEFAULT ? DEFAULTED : WALKOVER;
+
+      const noContextLoserMatchUp = matchUpsMap.drawMatchUps.find(
+        (matchUp) => matchUp.matchUpId === loserMatchUp.matchUpId,
+      );
+
+      pushGlobalLog({
+        method: stack,
+        color: 'brightred',
+        decision: 'EMPTY_EXIT_converting_to_DOUBLE_EXIT',
+        loserMatchUpId: loserMatchUp.matchUpId,
+        currentStatus: loserMatchUp.matchUpStatus,
+        newStatus: DOUBLE_EXIT,
+      });
+
+      if (noContextLoserMatchUp) {
+        const matchUpStatusCodes = [
+          { matchUpStatus: EXIT, previousMatchUpStatus: DOUBLE_EXIT, sideNumber: 1 },
+          { matchUpStatus: EXIT, previousMatchUpStatus: params.matchUpStatus, sideNumber: 2 },
+        ].map((code) => definedAttributes(code));
+
+        const result = modifyMatchUpScore({
+          ...params,
+          matchUp: noContextLoserMatchUp,
+          matchUpId: loserMatchUp.matchUpId,
+          matchUpStatus: DOUBLE_EXIT,
+          matchUpStatusCodes,
+          winningSide: undefined,
+          removeScore: true,
+          context: stack,
+        });
+        if (result.error) return decorateResult({ result, stack });
+      }
     } else if (!loserMatchUpIsDoubleExit) {
-      // only attemp to advance the loserMatchUp if it is not an 'empty' exit present
+      // only attempt to advance the loserMatchUp if it is not an 'empty' exit present
       const { feedRound, drawPositions, matchUpId } = loserMatchUp;
-      let walkoverWinningSide: number | undefined = feedRound ? 2 : 2 - drawPositions.indexOf(loserTargetDrawPosition);
-      walkoverWinningSide = loserMatchUpIsEmptyExit ? loserMatchUp.winningSide : walkoverWinningSide;
+      const walkoverWinningSide: number | undefined = feedRound
+        ? 2
+        : 2 - drawPositions.indexOf(loserTargetDrawPosition);
+      pushGlobalLog({
+        method: stack,
+        color: 'cyan',
+        decision: 'conditionallyAdvanceLoser',
+        feedRound,
+        walkoverWinningSide,
+        loserMatchUpId: matchUpId,
+      });
       const result = conditionallyAdvanceDrawPosition({
         ...params,
         targetMatchUp: loserMatchUp,
@@ -66,9 +139,22 @@ export function doubleExitAdvancement(params) {
         matchUpId,
       });
       if (result.error) return decorateResult({ result, stack });
+    } else {
+      pushGlobalLog({
+        method: stack,
+        color: 'brightyellow',
+        decision: 'SKIP_loserMatchUp_already_doubleExit',
+        loserMatchUpId: loserMatchUp.matchUpId,
+      });
     }
   }
   if (winnerMatchUp) {
+    pushGlobalLog({
+      method: stack,
+      color: 'cyan',
+      decision: 'conditionallyAdvanceWinner',
+      winnerMatchUpId: winnerMatchUp.matchUpId,
+    });
     const result = conditionallyAdvanceDrawPosition({
       ...params,
       matchUpId: winnerMatchUp.matchUpId,
@@ -104,6 +190,27 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const sameStructure = sourceMatchUp?.structureId === targetMatchUp.structureId;
 
+  pushGlobalLog({
+    method: stack,
+    newline: true,
+    color: 'magenta',
+    keyColors: { targetMatchUpId: 'brightcyan', sourceMatchUpId: 'brightyellow' },
+    targetMatchUpId: targetMatchUp.matchUpId,
+    targetStructureId: targetMatchUp.structureId?.slice(0, 8),
+    targetRound: [targetMatchUp.roundNumber, targetMatchUp.roundPosition],
+    targetDP: JSON.stringify(noContextTargetMatchUp.drawPositions),
+    targetStatus: noContextTargetMatchUp.matchUpStatus,
+    targetFeedRound: targetMatchUp.feedRound,
+    sourceMatchUpId: sourceMatchUp?.matchUpId,
+    sourceStructureId: sourceMatchUp?.structureId?.slice(0, 8),
+    sourceRound: sourceMatchUp ? [sourceMatchUp.roundNumber, sourceMatchUp.roundPosition] : undefined,
+    sourceDP: JSON.stringify(sourceDrawPositions),
+    sameStructure,
+    paramMatchUpStatus: params.matchUpStatus,
+    EXIT,
+    DOUBLE_EXIT,
+  });
+
   // ensure targetMatchUp.drawPositions does not contain sourceMatchUp.drawPositions
   // this covers the case where a pre-existing advancement was made
   if (sameStructure && overlap(sourceDrawPositions, targetMatchUpDrawPositions)) {
@@ -116,7 +223,21 @@ function conditionallyAdvanceDrawPosition(params) {
   if (sameStructure && targetMatchUpDrawPositions.length > 1)
     return decorateResult({ result: { error: DRAW_POSITION_ASSIGNED }, stack });
 
-  const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } = getPairedPreviousMatchUpIsDoubleExit(params);
+  const { pairedPreviousMatchUpIsDoubleExit, pairedPreviousMatchUp } = getPairedPreviousMatchUpIsDoubleExit({
+    ...params,
+    structure, // use locally-computed structure (from targetMatchUp.structureId)
+  });
+
+  pushGlobalLog({
+    method: stack,
+    color: 'magenta',
+    keyColors: { pairedMatchUpId: 'brightcyan' },
+    pairedMatchUpId: pairedPreviousMatchUp?.matchUpId,
+    pairedRound: pairedPreviousMatchUp ? [pairedPreviousMatchUp.roundNumber, pairedPreviousMatchUp.roundPosition] : undefined,
+    pairedStatus: pairedPreviousMatchUp?.matchUpStatus,
+    pairedStructureId: pairedPreviousMatchUp?.structureId?.slice(0, 8),
+    pairedIsDoubleExit: pairedPreviousMatchUpIsDoubleExit,
+  });
 
   // get the targets for the targetMatchUp
   const targetData = positionTargets({
@@ -164,6 +285,19 @@ function conditionallyAdvanceDrawPosition(params) {
 
   const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
 
+  pushGlobalLog({
+    method: stack,
+    color: 'brightyellow',
+    keyColors: { matchUpStatus: 'brightgreen', existingExit: 'brightred' },
+    existingExit,
+    isFinal,
+    matchUpStatus,
+    targetCurrentStatus: noContextTargetMatchUp.matchUpStatus,
+    targetDP: JSON.stringify(drawPositions),
+    hasDrawPosition,
+    walkoverWinningSide,
+  });
+
   const inContextPairedPreviousMatchUp = inContextDrawMatchUps.find(
     (candidate) => candidate.matchUpId === pairedPreviousMatchUp.matchUpId,
   );
@@ -187,6 +321,20 @@ function conditionallyAdvanceDrawPosition(params) {
         sourceSideNumber = 1;
       }
     } else if (walkoverWinningSide) sourceSideNumber = 3 - walkoverWinningSide;
+
+    pushGlobalLog({
+      method: stack,
+      color: 'cyan',
+      keyColors: { sourceSideNumber: 'brightgreen' },
+      sourceSideNumber,
+      sourceStructureId: sourceMatchUp.structureId?.slice(0, 8),
+      pairedStructureId: inContextPairedPreviousMatchUp?.structureId?.slice(0, 8),
+      targetStructureId: targetMatchUp.structureId?.slice(0, 8),
+      sameStructureAsPaired: sourceMatchUp?.structureId === inContextPairedPreviousMatchUp?.structureId,
+      targetFeedRound: targetMatchUp.feedRound,
+      sourceRP: sourceMatchUp.roundPosition,
+      pairedRP: pairedPreviousMatchUp?.roundPosition,
+    });
   }
 
   const sourceMatchUpStatus = params.matchUpStatus;
@@ -222,6 +370,19 @@ function conditionallyAdvanceDrawPosition(params) {
 
   if (matchUpStatusCodes.length) matchUpStatusCodes = matchUpStatusCodes.map((code) => definedAttributes(code));
 
+  pushGlobalLog({
+    method: stack,
+    color: 'brightgreen',
+    keyColors: { matchUpStatus: 'brightcyan', winningSide: 'brightyellow' },
+    action: 'modifyMatchUpScore',
+    targetMatchUpId: noContextTargetMatchUp.matchUpId,
+    matchUpStatus,
+    winningSide: walkoverWinningSide,
+    matchUpStatusCodes: JSON.stringify(matchUpStatusCodes),
+    sourceStatus: sourceMatchUpStatus,
+    pairedStatus: pairedMatchUpStatus,
+  });
+
   const result = modifyMatchUpScore({
     ...params,
     winningSide: walkoverWinningSide,
@@ -235,6 +396,13 @@ function conditionallyAdvanceDrawPosition(params) {
   // when there is an existing 'Double Exit", the created "Exit" is replaced
   // with a "Double Exit" and move on to advancing from this position
   if (existingExit) {
+    pushGlobalLog({
+      method: stack,
+      color: 'brightred',
+      decision: 'EXISTING_EXIT_triggers_recursive_doubleExitAdvancement',
+      targetMatchUpId: noContextTargetMatchUp.matchUpId,
+      matchUpStatus,
+    });
     return doubleExitAdvancement({
       ...params,
       matchUpStatus,
