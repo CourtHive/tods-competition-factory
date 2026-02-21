@@ -9,8 +9,8 @@ export const MATCH_ROOTS = ['SET', 'HAL', 'QTR', 'PER', 'INN', 'RND', 'FRM', 'MA
 export type MatchRoot = (typeof MATCH_ROOTS)[number];
 
 // Game format types
-export const AGGR = 'AGGR';
 export const CONSECUTIVE = 'CONSECUTIVE';
+export const TRADITIONAL = 'TRADITIONAL';
 
 export const sectionTypes = {
   S: NORMAL,

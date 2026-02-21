@@ -144,6 +144,41 @@ describe('Padel formats', () => {
   });
 });
 
+describe('Padel Star Point formats (2026)', () => {
+  it('standard padel with Star Point', () => {
+    expectRoundTrip('SET3-S:6/TB7-G:TN3D', {
+      bestOf: 3,
+      setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+      gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
+    });
+  });
+
+  it('padel with golden point (equivalent to NOAD)', () => {
+    expectRoundTrip('SET3-S:6/TB7-G:TN1D', {
+      bestOf: 3,
+      setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+      gameFormat: { type: 'TRADITIONAL', deuceAfter: 1 },
+    });
+  });
+
+  it('timed padel with Star Point', () => {
+    expectRoundTrip('SET3-S:T10-G:TN3D', {
+      bestOf: 3,
+      setFormat: { timed: true, minutes: 10 },
+      gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
+    });
+  });
+
+  it('padel with match tiebreak final set and Star Point', () => {
+    expectRoundTrip('SET3-S:6/TB7-G:TN3D-F:TB10', {
+      bestOf: 3,
+      setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+      gameFormat: { type: 'TRADITIONAL', deuceAfter: 3 },
+      finalSetFormat: { tiebreakSet: { tiebreakTo: 10 } },
+    });
+  });
+});
+
 describe('Squash formats', () => {
   it('modern PAR-11: best of 5 to 11', () => {
     expectRoundTrip('SET5-S:TB11', {
@@ -324,11 +359,11 @@ describe('INTENNSE format', () => {
     });
   });
 
-  it('with aggregate game format', () => {
-    expectRoundTrip('SET3-S:T10-G:AGGR', {
+  it('with traditional game format', () => {
+    expectRoundTrip('SET3-S:T10-G:TN', {
       bestOf: 3,
       setFormat: { timed: true, minutes: 10 },
-      gameFormat: { type: 'AGGR' },
+      gameFormat: { type: 'TRADITIONAL' },
     });
   });
 });
@@ -684,6 +719,7 @@ describe('Invalid cross-sport formats', () => {
 
   it('rejects invalid -G: values', () => {
     expect(matchUpFormatCode.parse('SET3-S:5-G:INVALID')).toBeUndefined();
+    expect(matchUpFormatCode.parse('SET3-S:5-G:AGGR')).toBeUndefined();
     expect(matchUpFormatCode.parse('SET3-S:5-G:0C')).toBeUndefined();
     expect(matchUpFormatCode.parse('SET3-S:5-G:')).toBeUndefined();
   });
@@ -696,7 +732,7 @@ describe('Invalid cross-sport formats', () => {
 
   it('rejects missing S: section', () => {
     expect(matchUpFormatCode.parse('SET3-G:3C')).toBeUndefined();
-    expect(matchUpFormatCode.parse('HAL2A-G:AGGR')).toBeUndefined();
+    expect(matchUpFormatCode.parse('HAL2A-G:TN')).toBeUndefined();
   });
 
   it('rejects unknown section keys', () => {
@@ -726,6 +762,11 @@ describe('Cross-sport comprehensive round-trip', () => {
     'SET3-S:6NOAD/TB7',
     'SET3-S:4/TB7',
     'SET3-S:6/TB7-F:TB10',
+    // Padel Star Point
+    'SET3-S:6/TB7-G:TN3D',
+    'SET3-S:6/TB7-G:TN1D',
+    'SET3-S:6/TB7-G:TN',
+    'SET3-S:4-G:3C3D',
     // Squash
     'SET5-S:TB11',
     'SET5-S:TB9',
@@ -743,7 +784,7 @@ describe('Cross-sport comprehensive round-trip', () => {
     'SET3-S:4/TB5-G:3C',
     // INTENNSE
     'SET7XA-S:T10P',
-    'SET3-S:T10-G:AGGR',
+    'SET3-S:T10-G:TN',
     // Volleyball
     'SET5-S:TB25-F:TB15',
     'SET3-S:TB21-F:TB15',

@@ -3,7 +3,15 @@ import { isConvertableInteger } from '@Tools/math';
 import { isString } from '@Tools/objects';
 
 // Constants
-import { SET, NOAD, TIMED, MATCH_ROOTS, sectionTypes, AGGR, CONSECUTIVE } from '@Constants/matchUpFormatConstants';
+import {
+  SET,
+  NOAD,
+  TIMED,
+  MATCH_ROOTS,
+  sectionTypes,
+  CONSECUTIVE,
+  TRADITIONAL,
+} from '@Constants/matchUpFormatConstants';
 
 type TiebreakFormat = {
   tiebreakTo: number;
@@ -29,11 +37,13 @@ type SetFormatResult = SetFormat | undefined | false;
 
 type GameFormat =
   | {
-      type: 'AGGR';
-    }
-  | {
       type: 'CONSECUTIVE';
       count: number;
+      deuceAfter?: number;
+    }
+  | {
+      type: 'TRADITIONAL';
+      deuceAfter?: number;
     };
 
 export type ParsedFormat = {
@@ -111,9 +121,29 @@ function parseMatchSpec(head: string):
 
 // Parse -G: section value
 function parseGameFormat(value: string): GameFormat | undefined {
-  if (value === AGGR) return { type: AGGR };
-  const match = /^([1-9]\d*)C$/.exec(value);
-  if (match) return { type: CONSECUTIVE, count: Number(match[1]) };
+  // Match optional deuceSpec suffix: {digits}D
+  const deuceMatch = /^(.+?)(\d+D)$/.exec(value);
+  const baseValue = deuceMatch ? deuceMatch[1] : value;
+  const deuceAfter = deuceMatch ? Number(deuceMatch[2].slice(0, -1)) : undefined;
+
+  // Validate deuceAfter if present (must be positive integer)
+  if (deuceAfter !== undefined && (deuceAfter < 1 || !Number.isInteger(deuceAfter))) return undefined;
+
+  // TN = traditional tennis/padel
+  if (baseValue === 'TN') {
+    const result: GameFormat = { type: TRADITIONAL };
+    if (deuceAfter) result.deuceAfter = deuceAfter;
+    return result;
+  }
+
+  // {n}C = consecutive points
+  const consMatch = /^([1-9]\d*)C$/.exec(baseValue);
+  if (consMatch) {
+    const result: GameFormat = { type: CONSECUTIVE, count: Number(consMatch[1]) };
+    if (deuceAfter) result.deuceAfter = deuceAfter;
+    return result;
+  }
+
   return undefined;
 }
 

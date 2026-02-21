@@ -1,4 +1,4 @@
-import { SET, NOAD, AGGR, CONSECUTIVE } from '@Constants/matchUpFormatConstants';
+import { SET, NOAD, CONSECUTIVE, TRADITIONAL } from '@Constants/matchUpFormatConstants';
 import { isObject } from '@Tools/objects';
 
 export function stringify(matchUpFormatObject, preserveRedundant?: boolean) {
@@ -37,8 +37,12 @@ function timedSetFormat(matchUpFormatObject) {
 }
 
 function stringifyGameFormat(gameFormat) {
-  if (gameFormat?.type === AGGR) return AGGR;
-  if (gameFormat?.type === CONSECUTIVE && Number.isInteger(gameFormat.count)) return `${gameFormat.count}C`;
+  const deuceSuffix = gameFormat?.deuceAfter ? `${gameFormat.deuceAfter}D` : '';
+
+  if (gameFormat?.type === TRADITIONAL) return `TN${deuceSuffix}`;
+  if (gameFormat?.type === CONSECUTIVE && Number.isInteger(gameFormat.count))
+    return `${gameFormat.count}C${deuceSuffix}`;
+
   return undefined;
 }
 

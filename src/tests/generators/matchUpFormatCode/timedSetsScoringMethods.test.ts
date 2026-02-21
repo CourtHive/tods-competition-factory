@@ -129,14 +129,13 @@ it('handles various tiebreak numbers at set level', () => {
   expect(result.setFormat.tiebreakFormat?.tiebreakTo).toEqual(10);
 });
 
-it('supports canonical aggregate via -G:AGGR (complement to legacy T10A)', () => {
-  // Canonical aggregate using -G:AGGR section
-  const format = 'SET3-S:T10-G:AGGR';
+it('supports traditional game format -G:TN', () => {
+  const format = 'SET3-S:T10-G:TN';
   const parsed: any = parse(format);
   expect(parsed.bestOf).toEqual(3);
   expect(parsed.setFormat.timed).toEqual(true);
   expect(parsed.setFormat.minutes).toEqual(10);
-  expect(parsed.gameFormat).toEqual({ type: 'AGGR' });
+  expect(parsed.gameFormat).toEqual({ type: 'TRADITIONAL' });
   expect(stringify(parsed)).toEqual(format);
 });
 
@@ -167,7 +166,7 @@ it('round-trips all variations correctly', () => {
     'SET5-S:T10P/TB1',
     // New multi-root and game format variations
     'SET7XA-S:T10P',
-    'SET3-S:T10-G:AGGR',
+    'SET3-S:T10-G:TN',
     'SET5-S:5-G:3C',
     'HAL2A-S:T45',
     'QTR4A-S:T10',
