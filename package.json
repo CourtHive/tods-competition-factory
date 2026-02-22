@@ -91,7 +91,7 @@
     "tuic": "vitest --ui --coverage.enabled",
     "tui": "vitest --ui",
     "coverage": "vitest run --coverage",
-    "coverage:badges": "vitest run --coverage && istanbul-badges-readme",
+    "coverage:badges": "vitest run --coverage --coverage.thresholds.statements=0 --coverage.thresholds.branches=0 --coverage.thresholds.functions=0 --coverage.thresholds.lines=0 && istanbul-badges-readme",
     "cov": "vitest run --coverage --config ./src/tests/vitest.noThreshold.config.ts",
     "format": "prettier --write src",
     "lint:staged": "TZ=UTC lint-staged",
