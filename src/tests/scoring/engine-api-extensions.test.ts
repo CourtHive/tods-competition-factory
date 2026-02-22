@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { ScoringEngine } from '@Assemblies/governors/scoreGovernor';
+import { describe, it, expect } from 'vitest';
 
 // Helper: play N points where side 0 wins all (quick game win in tennis)
 function winGame(engine: ScoringEngine, server: 0 | 1 = 0): void {

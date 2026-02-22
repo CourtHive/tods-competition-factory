@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
 import { ScoringEngine } from '@Assemblies/governors/scoreGovernor';
+import { describe, it, expect } from 'vitest';
 
 describe('Substitutions', () => {
   describe('SINGLES substitution', () => {
@@ -9,16 +9,8 @@ describe('Substitutions', () => {
       });
 
       // 3-player roster per side (SINGLES: first participant is active)
-      engine.setLineUp(1, [
-        { participantId: 'A1' },
-        { participantId: 'A2' },
-        { participantId: 'A3' },
-      ]);
-      engine.setLineUp(2, [
-        { participantId: 'B1' },
-        { participantId: 'B2' },
-        { participantId: 'B3' },
-      ]);
+      engine.setLineUp(1, [{ participantId: 'A1' }, { participantId: 'A2' }, { participantId: 'A3' }]);
+      engine.setLineUp(2, [{ participantId: 'B1' }, { participantId: 'B2' }, { participantId: 'B3' }]);
 
       // Play a point — activePlayers should reflect current lineUp
       engine.addPoint({ winner: 0 });
@@ -109,19 +101,16 @@ describe('Substitutions', () => {
         isDoubles: true,
       });
 
-      engine.setLineUp(1, [
-        { participantId: 'A1' },
-        { participantId: 'A2' },
-      ]);
-      engine.setLineUp(2, [
-        { participantId: 'B1' },
-        { participantId: 'B2' },
-      ]);
+      engine.setLineUp(1, [{ participantId: 'A1' }, { participantId: 'A2' }]);
+      engine.setLineUp(2, [{ participantId: 'B1' }, { participantId: 'B2' }]);
 
       engine.addPoint({ winner: 0 });
       const points = engine.getState().history!.points;
       // Doubles mode: returns arrays per side
-      expect(points[0].activePlayers).toEqual([['A1', 'A2'], ['B1', 'B2']]);
+      expect(points[0].activePlayers).toEqual([
+        ['A1', 'A2'],
+        ['B1', 'B2'],
+      ]);
     });
 
     it('substitute one doubles player', () => {
@@ -135,10 +124,7 @@ describe('Substitutions', () => {
         { participantId: 'A2' },
         { participantId: 'A3' }, // Reserve
       ]);
-      engine.setLineUp(2, [
-        { participantId: 'B1' },
-        { participantId: 'B2' },
-      ]);
+      engine.setLineUp(2, [{ participantId: 'B1' }, { participantId: 'B2' }]);
 
       engine.addPoint({ winner: 0 });
 
@@ -152,7 +138,10 @@ describe('Substitutions', () => {
       engine.addPoint({ winner: 1 });
       const points = engine.getState().history!.points;
       // After sub: A1, A3 (A2 replaced by A3)
-      expect(points[1].activePlayers).toEqual([['A1', 'A3', 'A3'], ['B1', 'B2']]);
+      expect(points[1].activePlayers).toEqual([
+        ['A1', 'A3', 'A3'],
+        ['B1', 'B2'],
+      ]);
     });
   });
 
@@ -191,7 +180,8 @@ describe('Substitutions', () => {
       engine.setLineUp(2, [{ participantId: 'B1' }]);
 
       engine.addPoint({ winner: 0 }); // entry 1
-      engine.substitute({             // entry 2
+      engine.substitute({
+        // entry 2
         sideNumber: 1,
         outParticipantId: 'A1',
         inParticipantId: 'A2',
@@ -250,10 +240,7 @@ describe('Substitutions', () => {
         matchUpFormat: 'SET7XA-S:T10P',
       });
 
-      engine.setLineUp(1, [
-        { participantId: 'A1' },
-        { participantId: 'A2' },
-      ]);
+      engine.setLineUp(1, [{ participantId: 'A1' }, { participantId: 'A2' }]);
 
       const active = engine.getActivePlayers();
       expect(active.side1).toEqual(['A1', 'A2']);

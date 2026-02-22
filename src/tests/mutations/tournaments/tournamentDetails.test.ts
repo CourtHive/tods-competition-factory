@@ -90,13 +90,13 @@ test('default getTournamentInfo does not include new dashboard fields', () => {
   });
   const { tournamentInfo } = tournamentEngine.getTournamentInfo();
   expect(tournamentInfo.matchUpStats).toBeUndefined();
-  expect(tournamentInfo.participantCount).toBeUndefined();
+  expect(tournamentInfo.individualParticipantCount).toBeUndefined();
   expect(tournamentInfo.eventCount).toBeUndefined();
   expect(tournamentInfo.structures).toBeUndefined();
   expect(tournamentInfo.venues).toBeUndefined();
 });
 
-test('withMatchUpStats returns participantCount, eventCount, and matchUpStats', () => {
+test('withMatchUpStats returns individualParticipantCount, eventCount, and matchUpStats', () => {
   mocksEngine.generateTournamentRecord({
     completeAllMatchUps: true,
     drawProfiles: [{ drawSize: 8 }],
@@ -104,7 +104,7 @@ test('withMatchUpStats returns participantCount, eventCount, and matchUpStats', 
   });
   const { tournamentInfo } = tournamentEngine.getTournamentInfo({ withMatchUpStats: true });
 
-  expect(tournamentInfo.participantCount).toBeGreaterThan(0);
+  expect(tournamentInfo.individualParticipantCount).toBeGreaterThan(0);
   expect(tournamentInfo.eventCount).toEqual(1);
   expect(tournamentInfo.matchUpStats).toBeDefined();
   expect(tournamentInfo.matchUpStats.total).toBeGreaterThan(0);
@@ -194,13 +194,13 @@ test('all dashboard booleans can be combined', () => {
     setState: true,
   });
   const { tournamentInfo } = tournamentEngine.getTournamentInfo({
-    withMatchUpStats: true,
     withStructureDetails: true,
+    withMatchUpStats: true,
     withVenueData: true,
   });
 
   expect(tournamentInfo.matchUpStats).toBeDefined();
-  expect(tournamentInfo.participantCount).toBeGreaterThan(0);
+  expect(tournamentInfo.individualParticipantCount).toBeGreaterThan(0);
   expect(tournamentInfo.eventCount).toEqual(1);
   expect(tournamentInfo.structures).toBeDefined();
   expect(tournamentInfo.structures.length).toBeGreaterThan(0);
@@ -219,7 +219,7 @@ test('empty tournament handles dashboard booleans gracefully', () => {
     withVenueData: true,
   });
 
-  expect(tournamentInfo.participantCount).toEqual(0);
+  expect(tournamentInfo.individualParticipantCount).toEqual(0);
   expect(tournamentInfo.eventCount).toEqual(0);
   expect(tournamentInfo.matchUpStats).toEqual({ total: 0, completed: 0, scheduled: 0, percentComplete: 0 });
   expect(tournamentInfo.structures).toEqual([]);

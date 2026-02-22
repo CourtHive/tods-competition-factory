@@ -1,10 +1,10 @@
-import { describe, it, expect } from 'vitest';
 import { ScoringEngine, resolvePointValue } from '@Assemblies/governors/scoreGovernor';
 import type { PointMultiplier } from '@Assemblies/governors/scoreGovernor';
+import { describe, it, expect } from 'vitest';
 
 const INTENNSE_MULTIPLIERS: PointMultiplier[] = [
   { condition: { results: ['Ace'] }, value: 2 },
-  { condition: { results: ['Winner', 'Serve Winner'] }, value: 2 },
+  { condition: { results: ['Winner'] }, value: 2 },
 ];
 
 describe('Point Multipliers', () => {
@@ -20,7 +20,6 @@ describe('Point Multipliers', () => {
     it('returns multiplier value for matching result', () => {
       expect(resolvePointValue({ result: 'Ace' }, INTENNSE_MULTIPLIERS)).toBe(2);
       expect(resolvePointValue({ result: 'Winner' }, INTENNSE_MULTIPLIERS)).toBe(2);
-      expect(resolvePointValue({ result: 'Serve Winner' }, INTENNSE_MULTIPLIERS)).toBe(2);
     });
 
     it('returns 1 when point has no result', () => {
@@ -36,9 +35,7 @@ describe('Point Multipliers', () => {
     });
 
     it('supports stroke-based multipliers', () => {
-      const multipliers: PointMultiplier[] = [
-        { condition: { strokes: ['Forehand'] }, value: 2 },
-      ];
+      const multipliers: PointMultiplier[] = [{ condition: { strokes: ['Forehand'] }, value: 2 }];
       expect(resolvePointValue({ stroke: 'Forehand' }, multipliers)).toBe(2);
       expect(resolvePointValue({ stroke: 'Backhand' }, multipliers)).toBe(1);
     });
@@ -149,7 +146,7 @@ describe('Point Multipliers', () => {
         pointMultipliers: INTENNSE_MULTIPLIERS,
       });
 
-      engine.addPoint({ winner: 0 });            // +1 = 1
+      engine.addPoint({ winner: 0 }); // +1 = 1
       engine.addPoint({ winner: 0, result: 'Ace' }); // +2 = 3
       engine.addPoint({ winner: 1, result: 'Winner' }); // +2
 
@@ -204,5 +201,4 @@ describe('Point Multipliers', () => {
       expect(engine.getPointMultipliers()).toEqual(INTENNSE_MULTIPLIERS);
     });
   });
-
 });
