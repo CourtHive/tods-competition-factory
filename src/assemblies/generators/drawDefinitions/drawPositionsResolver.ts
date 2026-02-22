@@ -46,9 +46,9 @@ export function resolveDrawPositions({ positionAssignments, participantFactors }
     }));
   }
 
-  const resolvedDrawPositions = Object.keys(drawPositionResolutions).map((dp) => ensureInt(dp));
+  const resolvedDrawPositions = new Set(Object.keys(drawPositionResolutions).map((dp) => ensureInt(dp)));
   let remainingDrawPositions = unassignedDrawPositions.filter(
-    (drawPosition) => !resolvedDrawPositions.includes(drawPosition),
+    (drawPosition) => !resolvedDrawPositions.has(drawPosition),
   );
   let unresolvedParticipantIds = Object.keys(participantPreferences);
 

@@ -45,20 +45,18 @@ export function generateBookings({
   // get a mapping of eventIds to category details
   const eventDetails = Object.assign(
     {},
-    ...Object.values(tournamentRecords)
-      .map((tournamentRecord) =>
-        (tournamentRecord.events ?? []).map((event) => {
-          const { scheduleTiming } = getScheduleTiming({
-            tournamentRecord,
-            event,
-          });
+    ...Object.values(tournamentRecords).flatMap((tournamentRecord) =>
+      (tournamentRecord.events ?? []).map((event) => {
+        const { scheduleTiming } = getScheduleTiming({
+          tournamentRecord,
+          event,
+        });
 
-          return {
-            [event.eventId]: { event, scheduleTiming },
-          };
-        }),
-      )
-      .flat(),
+        return {
+          [event.eventId]: { event, scheduleTiming },
+        };
+      }),
+    ),
   );
 
   const defaultTiming = {
@@ -66,12 +64,10 @@ export function generateBookings({
     recoveryTimes: [{ minutes: { default: defaultRecoveryMinutes } }],
   };
 
-  if (!dateScheduledMatchUps) {
-    dateScheduledMatchUps = matchUps?.filter((matchUp) => {
-      const schedule = matchUp.schedule;
-      return hasSchedule({ schedule }) && (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate);
-    });
-  }
+  dateScheduledMatchUps ??= matchUps?.filter((matchUp) => {
+    const schedule = matchUp.schedule;
+    return hasSchedule({ schedule }) && (!scheduleDate || matchUp.schedule.scheduledDate === scheduleDate);
+  });
 
   const relevantMatchUps = dateScheduledMatchUps?.filter(
     (matchUp) => (!venueIds.length || venueIds.includes(matchUp.schedule.venueId)) && matchUp.matchUpStatus !== BYE,

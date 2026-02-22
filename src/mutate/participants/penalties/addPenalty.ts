@@ -105,7 +105,7 @@ function penaltyAdd({
   }
 
   relevantParticipants.forEach((participant) => {
-    if (!participant.penalties) participant.penalties = [];
+    participant.penalties ??= [];
     participant.penalties.push(penaltyItem);
   });
 
