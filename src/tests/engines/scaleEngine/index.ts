@@ -9,5 +9,5 @@ const methods = {
 
 syncEngine.importMethods(methods);
 
-export const scaleEngine = syncEngine;
+export { syncEngine as scaleEngine };
 export default syncEngine;

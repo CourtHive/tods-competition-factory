@@ -5,11 +5,13 @@
  * Can be used with any matchUp and point history.
  */
 
-import { MatchUp } from '@Types/scoring/types';
-import { PointWithMetadata, MatchStatistics, StatisticsOptions } from './types';
-import { enrichPoint } from './pointParser';
 import { buildCounters, getCountersSummary } from './counters';
 import { calculateStats } from './calculator';
+import { enrichPoint } from './pointParser';
+
+// types
+import { PointWithMetadata, MatchStatistics, StatisticsOptions } from './types';
+import { MatchUp } from '@Types/scoring/types';
 
 /**
  * Calculate match statistics from point history
@@ -98,18 +100,6 @@ export function enrichPointHistory(rawPoints: any[]): PointWithMetadata[] {
     });
 
     enriched.push(enrichedPoint);
-
-    // Update state for next point
-    // Note: This is simplified - real implementation would track
-    // game/set completion and server changes based on match format
-    // For now, assume alternating server per game
-    if (enrichedPoint.game !== undefined && enrichedPoint.game !== currentGame) {
-      currentGame = enrichedPoint.game;
-      currentServer = 1 - currentServer;
-    }
-    if (enrichedPoint.set !== undefined && enrichedPoint.set !== currentSet) {
-      currentSet = enrichedPoint.set;
-    }
   });
 
   return enriched;

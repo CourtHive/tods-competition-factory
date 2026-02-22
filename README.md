@@ -8,6 +8,13 @@
 <a href="https://www.npmjs.com/~tods-competition-factory" target="_blank"><img src="https://img.shields.io/npm/l/tods-competition-factory" alt="Package License" /></a>
 <a href="https://www.npmjs.com/~tods-competition-factory" target="_blank"><img src="https://img.shields.io/npm/dm/tods-competition-factory" alt="NPM Downloads" /></a>
 </p>
+<p align="center">
+
+| Statements | Branches | Functions | Lines |
+| -----------|----------|-----------|-------|
+| ![Statements](https://img.shields.io/badge/statements-91.97%25-brightgreen.svg?style=flat) | ![Branches](https://img.shields.io/badge/branches-82.46%25-yellow.svg?style=flat) | ![Functions](https://img.shields.io/badge/functions-95.57%25-brightgreen.svg?style=flat) | ![Lines](https://img.shields.io/badge/lines-94.64%25-brightgreen.svg?style=flat) |
+
+</p>
 
 ## Competittion Business Rules
 

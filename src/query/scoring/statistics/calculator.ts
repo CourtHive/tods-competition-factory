@@ -171,8 +171,10 @@ function calculateSingleStat(
     case 'aggressiveMargin':
       return calculateAggressiveMargin(definition, teams, team);
 
-    default:
-      return { value: 0, display: '0' };
+    // DEAD CODE: all statDefinitions use known calc types above;
+    // this default branch is unreachable.
+    // default:
+    //   return { value: 0, display: '0' };
   }
 }
 
