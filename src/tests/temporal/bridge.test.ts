@@ -16,7 +16,7 @@ import {
   applyTemporalAvailabilityToTournamentRecord,
   buildSchedulingProfileFromUISelections,
   todsAvailabilityToBlocks,
-  validateSchedulingProfile,
+  validateSchedulingProfileFormat,
   validateDateAvailability,
   mergeOverlappingAvailability,
   calculateCourtHours,
@@ -416,7 +416,7 @@ describe('todsAvailabilityToBlocks', () => {
 // Validation Tests
 // ============================================================================
 
-describe('validateSchedulingProfile', () => {
+describe('validateSchedulingProfileFormat', () => {
   it('should validate correct profile', () => {
     const profile = [
       {
@@ -426,7 +426,7 @@ describe('validateSchedulingProfile', () => {
       }
     ];
 
-    const result = validateSchedulingProfile(profile);
+    const result = validateSchedulingProfileFormat(profile);
     expect(result.valid).toBe(true);
     expect(result.errors).toHaveLength(0);
   });
@@ -440,7 +440,7 @@ describe('validateSchedulingProfile', () => {
       }
     ];
 
-    const result = validateSchedulingProfile(profile);
+    const result = validateSchedulingProfileFormat(profile);
     expect(result.valid).toBe(false);
     expect(result.errors).toContain('Item 0: missing scheduleDate');
   });
@@ -454,7 +454,7 @@ describe('validateSchedulingProfile', () => {
       }
     ];
 
-    const result = validateSchedulingProfile(profile);
+    const result = validateSchedulingProfileFormat(profile);
     expect(result.valid).toBe(false);
     expect(result.errors.some((e) => e.includes('invalid scheduleDate format'))).toBe(true);
   });
@@ -468,7 +468,7 @@ describe('validateSchedulingProfile', () => {
       }
     ];
 
-    const result = validateSchedulingProfile(profile);
+    const result = validateSchedulingProfileFormat(profile);
     expect(result.valid).toBe(false);
     expect(result.errors.some((e) => e.includes('venueIds'))).toBe(true);
   });
@@ -482,7 +482,7 @@ describe('validateSchedulingProfile', () => {
       }
     ];
 
-    const result = validateSchedulingProfile(profile);
+    const result = validateSchedulingProfileFormat(profile);
     expect(result.valid).toBe(false);
     expect(result.errors.some((e) => e.includes('missing eventId'))).toBe(true);
   });

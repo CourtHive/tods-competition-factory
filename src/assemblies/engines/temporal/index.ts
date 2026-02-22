@@ -104,7 +104,7 @@ export {
   railsToDateAvailability,
   todsAvailabilityToBlocks,
   validateDateAvailability,
-  validateSchedulingProfile,
+  validateSchedulingProfileFormat,
   type BridgeConfig,
   type SchedulingProfile,
   type SchedulingProfileItem,

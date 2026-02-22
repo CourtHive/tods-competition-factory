@@ -419,7 +419,7 @@ export function todsAvailabilityToBlocks(params: {
 /**
  * Validate that a scheduling profile is well-formed
  */
-export function validateSchedulingProfile(profile: SchedulingProfile): {
+export function validateSchedulingProfileFormat(profile: SchedulingProfile): {
   valid: boolean;
   errors: string[];
 } {
