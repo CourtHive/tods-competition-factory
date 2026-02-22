@@ -52,7 +52,7 @@ describe('stringSort', () => {
   it('handles special characters', () => {
     const arr = ['!', '@', '#', 'a'];
     arr.sort(stringSort);
-    expect(arr[arr.length - 1]).toBe('a'); // Letters after symbols
+    expect(arr.at(-1)).toBe('a'); // Letters after symbols
   });
 
   it('handles whitespace', () => {

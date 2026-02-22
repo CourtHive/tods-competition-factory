@@ -111,36 +111,31 @@ export function getScoreboard(matchUp: MatchUp, options?: GetScoreboardOptions):
 function formatTennisScore(p1: number, p2: number): string {
   const points = ['0', '15', '30', '40'];
 
-  // Both under 3 points
+  // Both at 3 or under (includes deuce at 3-3 → '40-40')
   if (p1 <= 3 && p2 <= 3) {
-    return `${points[p1] || '40'}-${points[p2] || '40'}`;
+    return `${points[p1]}-${points[p2]}`;
   }
 
-  // Deuce
-  if (p1 === 3 && p2 === 3) {
-    return '40-40';
-  }
-
-  // Advantage or game point
+  // Advantage or game point (both sides at 3+, at least one > 3)
   if (p1 >= 3 && p2 >= 3) {
     const diff = p1 - p2;
     if (diff === 0) return '40-40';
     if (diff === 1) return 'A-40';
     if (diff === -1) return '40-A';
     if (diff >= 2) return 'G-40';
-    if (diff <= -2) return '40-G';
+    return '40-G';
   }
 
-  // One side at 40 or beyond
+  // One side at 4+ vs other at 0-2 (p1=3 with p2<3 caught by first check)
+  // Since min(p1) is 4 and max(p2) is 2, diff is always >= 2 → game won.
   if (p1 >= 3) {
-    if (p1 - p2 >= 2) return 'G-40';
-    return `40-${points[p2] || '40'}`;
+    return 'G-40';
   }
 
   if (p2 >= 3) {
-    if (p2 - p1 >= 2) return '40-G';
-    return `${points[p1] || '40'}-40`;
+    return '40-G';
   }
 
-  return `${points[p1] || '0'}-${points[p2] || '0'}`;
+  // DEAD CODE: all p1 < 3 && p2 < 3 cases are caught by the first check.
+  return `${points[p1]}-${points[p2]}`;
 }
