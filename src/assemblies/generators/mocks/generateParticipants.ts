@@ -150,9 +150,7 @@ export function generateParticipants(params): {
     addressProps || {};
 
   const valuesFromProfile = (profile) =>
-    Object.keys(profile)
-      .map((key) => generateRange(0, statesProfile[key]).map(() => key))
-      .flat();
+    Object.keys(profile).flatMap((key) => generateRange(0, statesProfile[key]).map(() => key));
 
   const cities =
     (citiesProfile && valuesFromProfile(citiesProfile)) ||
@@ -191,37 +189,35 @@ export function generateParticipants(params): {
   );
 
   const teamNames = nameMocks({ count: participantsCount }).names;
-  const participants = generateRange(0, participantsCount)
-    .map((i) => {
-      const sideParticipantsCount = (doubles && 2) || (team && (teamSize ?? 8)) || 1;
-      const individualParticipants = generateRange(0, sideParticipantsCount).map((j) => {
-        const participantIndex = i * sideParticipantsCount + j;
-        return generateIndividualParticipant(participantIndex);
-      });
+  const participants = generateRange(0, participantsCount).flatMap((i) => {
+    const sideParticipantsCount = (doubles && 2) || (team && (teamSize ?? 8)) || 1;
+    const individualParticipants = generateRange(0, sideParticipantsCount).map((j) => {
+      const participantIndex = i * sideParticipantsCount + j;
+      return generateIndividualParticipant(participantIndex);
+    });
 
-      const individualParticipantIds = individualParticipants.map((participant) => participant.participantId);
+    const individualParticipantIds = individualParticipants.map((participant) => participant.participantId);
 
-      const pairName = individualParticipants.map((i) => i.person.standardFamilyName).join('/');
+    const pairName = individualParticipants.map((i) => i.person.standardFamilyName).join('/');
 
-      const participantType = doubles ? PAIR : TEAM;
-      const groupParticipant: any = {
-        participantId: genParticipantId({
-          participantType,
-          index: i,
-          idPrefix,
-          uuids,
-        }),
-        participantName: doubles ? pairName : teamNames[i],
-        participantRole: COMPETITOR,
-        individualParticipantIds,
+    const participantType = doubles ? PAIR : TEAM;
+    const groupParticipant: any = {
+      participantId: genParticipantId({
         participantType,
-      };
+        index: i,
+        idPrefix,
+        uuids,
+      }),
+      participantName: doubles ? pairName : teamNames[i],
+      participantRole: COMPETITOR,
+      individualParticipantIds,
+      participantType,
+    };
 
-      if (inContext) groupParticipant.individualParticipants = individualParticipants;
+    if (inContext) groupParticipant.individualParticipants = individualParticipants;
 
-      return doubles || team ? [groupParticipant, ...individualParticipants] : individualParticipants;
-    })
-    .flat();
+    return doubles || team ? [groupParticipant, ...individualParticipants] : individualParticipants;
+  });
 
   return { participants, ...SUCCESS };
 

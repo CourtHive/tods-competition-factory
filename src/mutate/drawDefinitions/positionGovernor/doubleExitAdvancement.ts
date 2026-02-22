@@ -281,16 +281,14 @@ function conditionallyAdvanceDrawPosition(params) {
 
   // assign the WALKOVER status to targetMatchUp
   const existingExit = isExit(noContextTargetMatchUp.matchUpStatus) && !drawPositions.length;
-  const isFinal = noContextTargetMatchUp.finishingRound === 1;
 
-  const matchUpStatus = existingExit && !isFinal ? DOUBLE_EXIT : EXIT;
+  const matchUpStatus = existingExit ? DOUBLE_EXIT : EXIT;
 
   pushGlobalLog({
     method: stack,
     color: 'brightyellow',
     keyColors: { matchUpStatus: 'brightgreen', existingExit: 'brightred' },
     existingExit,
-    isFinal,
     matchUpStatus,
     targetCurrentStatus: noContextTargetMatchUp.matchUpStatus,
     targetDP: JSON.stringify(drawPositions),

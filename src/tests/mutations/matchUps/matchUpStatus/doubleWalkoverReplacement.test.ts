@@ -66,7 +66,7 @@ test('Replacing a DOUBLE_WALKOVER which has produced WALKOVERs with a score will
   expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
   targetMatchUp = getTarget({ matchUps, roundNumber: 3, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
   expect(targetMatchUp.winningSide).toBeUndefined();
 
   tournamentEngine.devContext({ scorePropagation: true });

@@ -27,11 +27,9 @@ export function findStructure(params: FindStructureArgs): ResultType & FoundStru
   const { drawDefinition, structureId } = params;
 
   const { structures } = getDrawStructures({ drawDefinition });
-  const allStructures = structures
-    ?.map((structure) => {
-      return structure.structures ? [...structure.structures].concat(structure) : structure;
-    })
-    .flat();
+  const allStructures = structures?.flatMap((structure) => {
+    return structure.structures ? [...structure.structures].concat(structure) : structure;
+  });
 
   const structure = allStructures?.find((structure) => structure.structureId === structureId);
 

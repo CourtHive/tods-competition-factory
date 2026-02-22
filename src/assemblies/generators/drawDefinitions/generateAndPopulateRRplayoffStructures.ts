@@ -53,10 +53,8 @@ export function generateAndPopulateRRplayoffStructures(params) {
   } = processResult;
 
   const positionsPlayedOff = finishingPositionTargets
-    ?.map(({ finishingPositions }) => finishingPositions)
-    .flat()
-    .map((finishingPosition) => positionRangeMap[finishingPosition].finishingPositions)
-    .flat();
+    ?.flatMap(({ finishingPositions }) => finishingPositions)
+    .flatMap((finishingPosition) => positionRangeMap[finishingPosition].finishingPositions);
 
   drawDefinition.structures.push(...playoffStructures);
   drawDefinition.links.push(...playoffLinks);
@@ -66,9 +64,9 @@ export function generateAndPopulateRRplayoffStructures(params) {
     drawDefinition,
   });
 
-  const newStructureIds = playoffStructures.map(({ structureId }) => structureId);
+  const newStructureIds = new Set(playoffStructures.map(({ structureId }) => structureId));
   const addedMatchUpIds = inContextDrawMatchUps
-    ?.filter(({ structureId }) => newStructureIds.includes(structureId))
+    ?.filter(({ structureId }) => newStructureIds.has(structureId))
     .map(getMatchUpId);
 
   const addedMatchUps = matchUpsMap?.drawMatchUps?.filter(({ matchUpId }) => addedMatchUpIds?.includes(matchUpId));
