@@ -22,6 +22,9 @@ export { askEngine } from './assemblies/engines/ask';
 export { matchUpEngine } from './assemblies/engines/matchUp';
 export { mocksEngine } from './assemblies/engines/mock';
 
+// ENGINES - Standalone class engines -----------------------------------
+export { TemporalEngine } from './assemblies/engines/temporal';
+
 // ENGINES - For backwards compatibility ---------------------------------
 export { competitionEngine } from './tests/engines/syncEngine';
 export { tournamentEngine } from './tests/engines/syncEngine';
