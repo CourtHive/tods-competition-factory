@@ -115,8 +115,7 @@ export function generateEventWithDraw(params) {
 
   const qualifyingParticipantsCount =
     (qualifyingProfiles
-      ?.map((profile) => profile.structureProfiles || [])
-      .flat() // in case each profile contains an array of stageSequences
+      ?.flatMap((profile) => profile.structureProfiles || []) // in case each profile contains an array of stageSequences
       .reduce((count, profile) => {
         const qpc =
           !profile.participantsCount || profile.participantsCount > profile.drawSize

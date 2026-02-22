@@ -727,10 +727,10 @@ test('drawSize: 16 - removing multiple DOUBLE_WALKOVERs cleans up WALKOVERs in s
     const { matchUpStatus } = matchUp;
     return statuses.includes(matchUpStatus) ? statuses : statuses.concat(matchUpStatus);
   }, []);
-  expect(statuses).toEqual([DOUBLE_WALKOVER, WALKOVER]);
+  expect(statuses).toEqual([DOUBLE_WALKOVER]);
 
   let targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
@@ -816,12 +816,12 @@ test('A produced WALKOVER in the Final will be replaced by a propagated winner',
   ]);
   modifiedMatchUpLog = [];
 
-  // expect the produced WALKOVER in the Final (R4P1) has not been converted to DOUBLE_WALKOVER
+  // the Final (R4P1) should be DOUBLE_WALKOVER when all feeders are exits
   ({ matchUps } = tournamentEngine.allTournamentMatchUps());
   targetMatchUp = getTarget({ matchUps, roundNumber: 2, roundPosition: 1 });
   expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
   targetMatchUp = getTarget({ matchUps, roundNumber: 4, roundPosition: 1 });
-  expect(targetMatchUp.matchUpStatus).toEqual(WALKOVER);
+  expect(targetMatchUp.matchUpStatus).toEqual(DOUBLE_WALKOVER);
 
   targetMatchUp = getTarget({ matchUps, roundNumber: 1, roundPosition: 1 });
   ({ outcome } = mocksEngine.generateOutcomeFromScoreString({

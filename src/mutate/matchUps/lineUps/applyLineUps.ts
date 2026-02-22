@@ -175,17 +175,17 @@ export function applyLineUps(params: ApplyLineUps) {
   if (!result.matchUp) return { error: MATCHUP_NOT_FOUND };
 
   const { matchUp } = result;
-  if (!matchUp.sides) matchUp.sides = [];
+  matchUp.sides ??= [];
 
   for (const sideNumber of [1, 2]) {
     const side = matchUp.sides.find((side) => side.sideNumber === sideNumber);
     const assignment = sideAssignments[sideNumber];
     if (!assignment) {
       continue;
-    } else if (!side) {
-      matchUp.sides.push({ lineUp: assignment, sideNumber });
-    } else {
+    } else if (side) {
       side.lineUp = assignment;
+    } else {
+      matchUp.sides.push({ lineUp: assignment, sideNumber });
     }
   }
 

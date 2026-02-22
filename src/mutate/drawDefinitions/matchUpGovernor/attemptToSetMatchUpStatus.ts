@@ -5,6 +5,7 @@ import { doubleExitAdvancement } from '@Mutate/drawDefinitions/positionGovernor/
 import { updateTieMatchUpScore } from '@Mutate/matchUps/score/updateTieMatchUpScore';
 import { modifyMatchUpScore } from '@Mutate/matchUps/score/modifyMatchUpScore';
 import { decorateResult } from '@Functions/global/decorateResult';
+import { pushGlobalLog } from '@Functions/global/globalLog';
 
 // constants
 import { INVALID_MATCHUP_STATUS, UNRECOGNIZED_MATCHUP_STATUS } from '@Constants/errorConditionConstants';
@@ -41,12 +42,53 @@ export function attemptToSetMatchUpStatus(params) {
 
   const changeCompletedToDoubleExit = existingWinningSide && isDoubleExit;
 
+  pushGlobalLog({
+    method: stack,
+    newline: true,
+    color: 'brightyellow',
+    keyColors: { matchUpStatus: 'brightcyan', matchUpId: 'brightmagenta' },
+    matchUpId: matchUp.matchUpId,
+    matchUpStatus,
+    existingStatus: matchUp.matchUpStatus,
+    existingWinningSide,
+    isDoubleExit,
+    isBYE,
+    directing,
+    nonDirecting,
+    unrecognized,
+    onlyModifyScore,
+    changeCompletedToDoubleExit,
+    propagateExitStatus: params.propagateExitStatus,
+    teamRoundRobinContext,
+  });
+
   const clearScore = () =>
     modifyMatchUpScore({
       ...params,
       removeScore: [CANCELLED, WALKOVER].includes(matchUpStatus),
       matchUpStatus: matchUpStatus || TO_BE_PLAYED,
     });
+
+  const route =
+    (unrecognized && 'unrecognized') ||
+    (onlyModifyScore && 'onlyModifyScore') ||
+    (changeCompletedToDoubleExit && 'changeCompletedToDoubleExit') ||
+    (existingWinningSide && 'existingWinningSide_removeDirected') ||
+    (nonDirecting && 'nonDirecting_clearScore') ||
+    (isBYE && 'isBYE') ||
+    (!directing && 'notDirecting_error') ||
+    (isDoubleExit && 'isDoubleExit_modifyAndAdvance') ||
+    (teamRoundRobinContext && 'teamRoundRobinContext') ||
+    (params.propagateExitStatus && 'propagateExitStatus') ||
+    'fallthrough_error';
+
+  pushGlobalLog({
+    method: stack,
+    color: 'brightgreen',
+    keyColors: { route: 'brightcyan' },
+    route,
+    matchUpId: matchUp.matchUpId,
+  });
 
   return (
     (unrecognized && { error: UNRECOGNIZED_MATCHUP_STATUS }) ||

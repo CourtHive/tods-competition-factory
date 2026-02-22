@@ -158,7 +158,7 @@ export function addDrawEntry(params: AddDrawEntryArgs) {
     });
   }
 
-  if (!drawDefinition.entries) drawDefinition.entries = [];
+  drawDefinition.entries ??= [];
   drawDefinition.entries.push(entry);
   modifyDrawNotice({ drawDefinition });
 
@@ -296,7 +296,7 @@ export function addDrawEntries(params: AddDrawEntriesArgs) {
           element: entry,
         });
       }
-      if (!drawDefinition.entries) drawDefinition.entries = [];
+      drawDefinition.entries ??= [];
       drawDefinition.entries.push(entry);
     });
 

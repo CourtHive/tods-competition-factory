@@ -38,12 +38,35 @@ it('built-in tally policies exist with correct structure', () => {
 });
 
 it('precision controls decimal precision of percentage calculations', () => {
+  // Use deterministic outcomes that produce repeating decimals (e.g., 2/3, 1/3)
+  // to avoid flakiness from random outcomes where trailing zeros get dropped
   const { tournamentRecord } = mocksEngine.generateTournamentRecord({
-    drawProfiles: [{ drawSize: 4, drawType: ROUND_ROBIN, eventType: SINGLES }],
-    completeAllMatchUps: true,
+    drawProfiles: [
+      {
+        drawSize: 4,
+        drawType: ROUND_ROBIN,
+        eventType: SINGLES,
+        outcomes: [
+          { drawPositions: [1, 2], scoreString: '6-3 6-3', winningSide: 1 },
+          { drawPositions: [1, 3], scoreString: '6-3 6-3', winningSide: 1 },
+          { drawPositions: [1, 4], scoreString: '6-3 6-3', winningSide: 1 },
+          { drawPositions: [2, 3], scoreString: '6-3 6-3', winningSide: 1 },
+          { drawPositions: [2, 4], scoreString: '6-3 6-3', winningSide: 1 },
+          { drawPositions: [3, 4], scoreString: '6-3 6-3', winningSide: 1 },
+        ],
+      },
+    ],
   });
   tournamentEngine.setState(tournamentRecord);
   const { matchUps } = tournamentEngine.allTournamentMatchUps();
+
+  // Find a participant whose gamesPct is a repeating decimal
+  const findRepeatingResult = (results: any) => {
+    return Object.values(results).find((r: any) => {
+      const len = r?.gamesPct?.toString().split('.').pop()?.length;
+      return len && len > 2;
+    }) as any;
+  };
 
   // Precision 5 (100000)
   const precision5Policy = {
@@ -53,10 +76,10 @@ it('precision controls decimal precision of percentage calculations', () => {
     policyDefinitions: precision5Policy,
     matchUps,
   });
-  let firstResult: any = Object.values(result.participantResults)[0];
-  let gamesPctLength = firstResult?.gamesPct.toString().split('.').pop()?.length;
-  if (gamesPctLength > 2) {
-    expect(gamesPctLength).toBeLessThanOrEqual(7); // e.g., 0.66667
+  let repeatingResult = findRepeatingResult(result.participantResults);
+  if (repeatingResult) {
+    const len = repeatingResult.gamesPct.toString().split('.').pop()?.length;
+    expect(len).toBeLessThanOrEqual(7); // e.g., 0.66667
   }
 
   // Precision 7 (10000000)
@@ -67,10 +90,10 @@ it('precision controls decimal precision of percentage calculations', () => {
     policyDefinitions: precision7Policy,
     matchUps,
   });
-  firstResult = Object.values(result.participantResults)[0];
-  gamesPctLength = firstResult?.gamesPct.toString().split('.').pop()?.length;
-  if (gamesPctLength > 2) {
-    expect(gamesPctLength).toBeGreaterThanOrEqual(7); // e.g., 0.6666667
+  repeatingResult = findRepeatingResult(result.participantResults);
+  if (repeatingResult) {
+    const len = repeatingResult.gamesPct.toString().split('.').pop()?.length;
+    expect(len).toBeGreaterThanOrEqual(7); // e.g., 0.6666667
   }
 });
 
