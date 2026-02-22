@@ -3,8 +3,10 @@
  * These tests verify that all code examples in docs/engines/custom-engines.md work as documented
  */
 
-import { governors, syncEngine, askEngine } from '../../../index';
-import { mocksEngine } from '../../../index';
+import * as governors from '@Assemblies/governors';
+import mocksEngine from '@Assemblies/engines/mock';
+import syncEngine from '@Assemblies/engines/sync';
+import askEngine from '@Assemblies/engines/ask';
 import { expect, it, describe, beforeEach } from 'vitest';
 
 describe('Custom Engines Documentation Examples', () => {
@@ -143,7 +145,7 @@ describe('Custom Engines Documentation Examples', () => {
   describe('Import Patterns', () => {
     it('Selective Import: explicitly lists needed methods', () => {
       syncEngine.reset();
-      
+
       syncEngine.importMethods({
         setState: governors.queryGovernor.setState,
         getParticipants: governors.queryGovernor.getParticipants,
@@ -168,7 +170,7 @@ describe('Custom Engines Documentation Examples', () => {
       // Import all query methods
       syncEngine.importMethods(governors.queryGovernor);
 
-      const { tournamentRecord} = mocksEngine.generateTournamentRecord();
+      const { tournamentRecord } = mocksEngine.generateTournamentRecord();
       syncEngine.setState(tournamentRecord);
 
       // All query governor methods available

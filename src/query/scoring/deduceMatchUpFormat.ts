@@ -147,10 +147,7 @@ export function deduceMatchUpFormat(scoreString: string): string {
   if (setStrings.length >= 3) {
     // For 3+ set matches, last set could be deciding set (if match was tied)
     const lastSet = setStrings.at(-1);
-    if (!lastSet) {
-      return `SET${bestOf}-S:${setTo}/TB7`;
-    }
-    const gamesOnly = lastSet.replace(/\([^)]*\)/g, '');
+    const gamesOnly = lastSet!.replace(/\([^)]*\)/g, '');
     const gameScores = gamesOnly.match(/(\d+)/g)?.map((n) => Number.parseInt(n, 10)) || [];
 
     if (gameScores.length === 2) {
@@ -171,8 +168,11 @@ export function deduceMatchUpFormat(scoreString: string): string {
     baseFormat = `SET${bestOf}-S:6/TB7`;
   } else if (setTo === 4) {
     baseFormat = `SET${bestOf}-S:4/TB7`;
-  } else if (setTo === 10) {
-    baseFormat = `SET${bestOf}-S:10/TB7`;
+    // DEAD CODE: setTo === 10 is unreachable because the match tiebreak
+    // detection (max === 10 || max > 10 && diff <= 2) returns early for
+    // any score that would yield setTo=10.
+    // } else if (setTo === 10) {
+    //   baseFormat = `SET${bestOf}-S:10/TB7`;
   } else {
     baseFormat = `SET${bestOf}-S:${setTo}/TB7`;
   }

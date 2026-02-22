@@ -1,6 +1,6 @@
 /**
  * UMO v4.0 - TODS TypeScript Interfaces
- * 
+ *
  * Pure TypeScript types matching TODS specification
  * All structures are JSON-serializable
  */
@@ -28,7 +28,7 @@ export interface MatchUp {
   roundPosition?: number;
   createdAt?: string;
   updatedAt?: string;
-  
+
   // Optional: History for undo functionality
   history?: MatchUpHistory;
 }
@@ -161,12 +161,12 @@ export interface ScoreEntry {
 
 /**
  * Point record stored in match history
- * 
+ *
  * @remarks
  * Points use 0-based player indices (NOT TODS sideNumber):
- * - 0 = side 1 (first player/team)  
+ * - 0 = side 1 (first player/team)
  * - 1 = side 2 (second player/team)
- * 
+ *
  * **MCP Decorations:**
  * Rich point metadata from Match Charting Project includes serve locations,
  * stroke types, court positions, and rally sequences. These decorations are
@@ -175,44 +175,44 @@ export interface ScoreEntry {
 export interface Point {
   /** Sequential point number (1-indexed) */
   pointNumber: number;
-  
+
   /** Winner of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
   winner: 0 | 1;
-  
+
   /** Server of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
   server?: 0 | 1;
-  
+
   /** ISO 8601 timestamp when point was played */
   timestamp?: string;
-  
+
   /** Number of shots in the rally */
   rallyLength?: number;
-  
+
   /** Score after this point (e.g., "15-0") */
   score?: string;
-  
+
   // MCP Decorations (from Match Charting Project data)
   /** Result of the point */
   result?: PointResult;
-  
+
   /** Stroke type used on the final shot */
   stroke?: StrokeType;
-  
+
   /** Hand/wing used on the final shot */
   hand?: 'Forehand' | 'Backhand';
-  
+
   /** Which serve (1st or 2nd) */
   serve?: 1 | 2;
-  
+
   /** Serve location */
   serveLocation?: ServeLocation;
-  
+
   /** Full rally shot sequence with details */
   rally?: RallyShot[];
-  
+
   /** Court location information */
   location?: string;
-  
+
   /** Was this a break point? */
   breakpoint?: boolean;
 
@@ -265,7 +265,7 @@ export interface Point {
 /**
  * Point result types (how the point ended)
  */
-export type PointResult = 
+export type PointResult =
   | 'Ace'
   | 'Winner'
   | 'Serve Winner'
@@ -309,22 +309,22 @@ export type ServeLocation = 'Wide' | 'Body' | 'T';
 export interface RallyShot {
   /** Shot number in the rally (1-indexed) */
   shotNumber: number;
-  
+
   /** Player who hit this shot (0 or 1) */
   player: 0 | 1;
-  
+
   /** Stroke type */
   stroke: StrokeType;
-  
+
   /** Direction of shot (1=FH side, 2=middle, 3=BH side) */
   direction?: 1 | 2 | 3;
-  
+
   /** Depth of shot */
   depth?: 'shallow' | 'deep' | 'very deep';
-  
+
   /** Court position */
   position?: 'baseline' | 'net' | 'approach';
-  
+
   /** Original MCP code for this shot */
   code?: string;
 }
@@ -342,7 +342,7 @@ export interface MatchUpState {
 // Enums & Constants
 // ============================================================================
 
-export type MatchUpStatus = 
+export type MatchUpStatus =
   | 'TO_BE_PLAYED'
   | 'IN_PROGRESS'
   | 'COMPLETED'
@@ -352,25 +352,13 @@ export type MatchUpStatus =
   | 'RETIRED'
   | 'WALKOVER';
 
-export type MatchUpType = 
-  | 'SINGLES'
-  | 'DOUBLES'
-  | 'TEAM';
+export type MatchUpType = 'SINGLES' | 'DOUBLES' | 'TEAM';
 
-export type ParticipantType = 
-  | 'INDIVIDUAL'
-  | 'PAIR'
-  | 'TEAM';
+export type ParticipantType = 'INDIVIDUAL' | 'PAIR' | 'TEAM';
 
-export type ParticipantRole = 
-  | 'COMPETITOR'
-  | 'ALTERNATE'
-  | 'SEED';
+export type ParticipantRole = 'COMPETITOR' | 'ALTERNATE' | 'SEED';
 
-export type ParticipantStatus = 
-  | 'ACTIVE'
-  | 'INACTIVE'
-  | 'WITHDRAWN';
+export type ParticipantStatus = 'ACTIVE' | 'INACTIVE' | 'WITHDRAWN';
 
 // ============================================================================
 // Function Options
@@ -389,22 +377,22 @@ export interface CreateMatchUpOptions {
 
 /**
  * Options for adding a point
- * 
+ *
  * @remarks
  * The winner and server use 0-based player indices (NOT TODS sideNumber):
  * - 0 = side 1 (first player/team)
  * - 1 = side 2 (second player/team)
- * 
+ *
  * This matches the common point-by-point notation used in tennis datasets
  * where points are represented as strings like "0011001100..." where each
  * character indicates the winner of that point (0 or 1).
- * 
+ *
  * @example
  * ```typescript
  * // Player 1 (side 1) wins the point
  * addPoint(matchUp, { winner: 0 });
- * 
- * // Player 2 (side 2) wins the point  
+ *
+ * // Player 2 (side 2) wins the point
  * addPoint(matchUp, { winner: 1, server: 0 });
  * ```
  */
@@ -459,7 +447,7 @@ export interface ValidationResult {
 // ============================================================================
 
 /**
- * Internal format structure (from parseFormat / matchUpFormatCode.parse)
+ * Internal format structure (from matchUpFormatCode.parse)
  *
  * Matches the full ParsedFormat from tods-competition-factory grammar:
  * SET3-S:6/TB7, SET7XA-S:T10P, HAL2A-S:T45, SET3-S:TB11@RALLY, SET5-S:5-G:3C, etc.
@@ -468,12 +456,12 @@ export interface FormatStructure {
   bestOf?: number;
   exactly?: number;
   aggregate?: boolean;
-  matchRoot?: string;           // Only when NOT 'SET': 'HAL' | 'QTR' | 'PER' | 'INN' | 'RND' | 'FRM' | 'MAP' | 'MAT'
-  matchMods?: string[];         // Unknown modifier letters (forward compat)
+  matchRoot?: string; // Only when NOT 'SET': 'HAL' | 'QTR' | 'PER' | 'INN' | 'RND' | 'FRM' | 'MAP' | 'MAT'
+  matchMods?: string[]; // Unknown modifier letters (forward compat)
   setFormat?: SetFormatStructure;
   finalSetFormat?: SetFormatStructure;
   gameFormat?: GameFormatStructure;
-  simplified?: boolean;         // True for standalone timed (T20, T10P)
+  simplified?: boolean; // True for standalone timed (T20, T10P)
 }
 
 /**
@@ -497,7 +485,7 @@ export interface SetFormatStructure {
   // Timed set
   timed?: boolean;
   minutes?: number;
-  based?: string;               // 'P' (points) | 'G' (games, default)
+  based?: string; // 'P' (points) | 'G' (games, default)
   modifier?: string;
   // Game format within set
   gameFormat?: GameFormatStructure;
@@ -508,8 +496,8 @@ export interface SetFormatStructure {
  */
 export interface TiebreakFormatStructure {
   tiebreakTo?: number;
-  modifier?: string;            // 'RALLY' for rally scoring
-  NoAD?: boolean;               // Win-by-1 tiebreak
+  modifier?: string; // 'RALLY' for rally scoring
+  NoAD?: boolean; // Win-by-1 tiebreak
 }
 
 /**
@@ -517,8 +505,8 @@ export interface TiebreakFormatStructure {
  */
 export interface GameFormatStructure {
   type?: 'CONSECUTIVE' | 'TRADITIONAL';
-  count?: number;               // Consecutive points per game (for TYPTI)
-  deuceAfter?: number;          // Deuce cap: 1=golden point, 3=Star Point, undefined=unlimited
+  count?: number; // Consecutive points per game (for TYPTI)
+  deuceAfter?: number; // Deuce cap: 1=golden point, 3=Star Point, undefined=unlimited
   NoAD?: boolean;
 }
 

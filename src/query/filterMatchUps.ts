@@ -162,7 +162,7 @@ export function filterMatchUps(params: FilterMatchUpsArgs) {
       const scheduledTimeDate = extractDate(scheduledTime);
       const comparisonDate = scheduledTimeDate || matchUpDate;
 
-      if (!targetScheduledDates.find((scheduledDate) => sameDay(scheduledDate, comparisonDate))) return false;
+      if (!targetScheduledDates.some((scheduledDate) => sameDay(scheduledDate, comparisonDate))) return false;
     }
 
     if (targetCourtIds.length) {

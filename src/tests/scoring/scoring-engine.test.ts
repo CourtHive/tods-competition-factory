@@ -1,6 +1,6 @@
-import { describe, it, expect } from 'vitest';
-import { ScoringEngine } from '@Assemblies/governors/scoreGovernor';
 import type { competitionFormat, PointMultiplier } from '@Assemblies/governors/scoreGovernor';
+import { ScoringEngine } from '@Assemblies/governors/scoreGovernor';
+import { describe, it, expect } from 'vitest';
 
 const INTENNSE_STANDARD: competitionFormat = {
   competitionFormatName: 'INTENNSE_STANDARD',

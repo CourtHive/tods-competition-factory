@@ -6,7 +6,8 @@
  */
 
 import type { MatchUp, ScoreResult, PointSituation, FormatStructure, SetFormatStructure } from '@Types/scoring/types';
-import { parseFormat, resolveSetType } from '@Tools/scoring/formatConverter';
+import { resolveSetType } from '@Tools/scoring/scoringUtilities';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { calculatePointsTo } from '@Mutate/scoring/pointsToCalculator';
 import { deriveServer, formatGameScore } from '@Mutate/scoring/addPoint';
 
@@ -67,10 +68,9 @@ function computePointDisplay(matchUp: MatchUp, points: number[]): [string, strin
     return undefined;
   }
 
-  const formatParsed = parseFormat(matchUp.matchUpFormat);
-  if (!formatParsed.isValid || !formatParsed.format) return undefined;
+  const formatStructure = parse(matchUp.matchUpFormat);
+  if (!formatStructure) return undefined;
 
-  const formatStructure = formatParsed.format;
   const currentSet = matchUp.score.sets.at(-1);
   if (!currentSet || currentSet.winningSide !== undefined) return undefined;
 
@@ -123,10 +123,9 @@ function computeSituation(matchUp: MatchUp): PointSituation | undefined {
     return undefined;
   }
 
-  const formatParsed = parseFormat(matchUp.matchUpFormat);
-  if (!formatParsed.isValid || !formatParsed.format) return undefined;
+  const formatStructure: FormatStructure | undefined = parse(matchUp.matchUpFormat);
+  if (!formatStructure) return undefined;
 
-  const formatStructure: FormatStructure = formatParsed.format;
   const bestOf = formatStructure.exactly || formatStructure.bestOf || 3;
   const setsToWin = Math.ceil(bestOf / 2);
 

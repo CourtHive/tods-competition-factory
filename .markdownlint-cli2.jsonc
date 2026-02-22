@@ -1,5 +1,8 @@
 {
   "config": {
+    "MD033": {
+      "allowed_elements": ["p", "a", "img", "div"]
+    },
     "MD036": false,
   },
   "ignores": ["**/node_modules/**", "dist/**", "build/**", "**/.git/**"],

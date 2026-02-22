@@ -13,7 +13,7 @@
  */
 
 import type { MatchUp, FormatStructure, SetFormatStructure, SetScore } from '@Types/scoring/types';
-import type { SetType } from '@Tools/scoring/formatConverter';
+import type { SetType } from '@Tools/scoring/scoringUtilities';
 
 export interface PointsToDecoration {
   pointsToGame: [number, number];

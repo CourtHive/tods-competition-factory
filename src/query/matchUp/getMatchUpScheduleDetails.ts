@@ -97,7 +97,7 @@ export function getMatchUpScheduleDetails(params: GetMatchUpScheduleDetailsArgs)
   const { eventIds, drawIds } = scheduleVisibilityFilters ?? {};
 
   if ((!eventIds || eventIds.includes(matchUp.eventId)) && (!drawIds || drawIds.includes(matchUp.drawId))) {
-    const getTimeStamp = (item) => (!item.createdAt ? 0 : new Date(item.createdAt).getTime());
+    const getTimeStamp = (item) => (item.createdAt ? new Date(item.createdAt).getTime() : 0);
 
     const timeItemMap = new Map();
     const sortedTimeItems = matchUp.timeItems?.toSorted((a, b) => getTimeStamp(a) - getTimeStamp(b)) ?? [];

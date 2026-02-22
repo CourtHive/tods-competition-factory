@@ -14,9 +14,9 @@
  * 10. editPoint
  */
 
-import { describe, test, expect, beforeEach } from 'vitest';
-import { ScoringEngine } from '@Assemblies/engines/scoring/ScoringEngine';
 import { createMatchUp, addPoint, getScore } from '@Assemblies/governors/scoreGovernor';
+import { ScoringEngine } from '@Assemblies/engines/scoring/ScoringEngine';
+import { describe, test, expect } from 'vitest';
 
 // ============================================================================
 // 1. Tiebreak-Only Sets
@@ -172,7 +172,7 @@ describe('Phase 1 - Aggregate + Exactly Formats', () => {
     // Play 7 timed sets, side 0 wins most
     for (let set = 0; set < 7; set++) {
       const winner = set < 4 ? 0 : 1; // Side 0 wins 4, side 1 wins 3
-      for (let i = 0; i < 5; i++) engine.addPoint({ winner: winner as 0 | 1 });
+      for (let i = 0; i < 5; i++) engine.addPoint({ winner: winner });
       for (let i = 0; i < 2; i++) engine.addPoint({ winner: (1 - winner) as 0 | 1 });
       engine.endSegment();
     }
@@ -305,7 +305,8 @@ describe('Phase 1 - pointsTo Decorations', () => {
     matchUp = addPoint(matchUp, { winner: 1 }); // 0-40
 
     // At 0-40 with server=0, receiver (side 1) needs 1 point => breakpoint
-    const breakPt = matchUp.history!.points[2];
+    const thirdPoint = matchUp.history!.points[2];
+    expect(thirdPoint.isBreakpoint).toBe(false);
     // The 3rd point was played when score was 0-30 (0-2 raw)
     // Receiver (side 1) needed 2 more points at that time
     // But the 4th point (if there were one) at 0-40 (0-3 raw) would be breakpoint
@@ -347,7 +348,7 @@ describe('Phase 1 - Serve Side Inference', () => {
     let matchUp = createMatchUp({ matchUpFormat: 'SET3-S:6/TB7' });
     for (let i = 0; i < 4; i++) matchUp = addPoint(matchUp, { winner: 0 });
 
-    const sides = matchUp.history!.points.map(p => p.serveSide);
+    const sides = matchUp.history!.points.map((p) => p.serveSide);
     expect(sides).toEqual(['deuce', 'ad', 'deuce', 'ad']);
   });
 
@@ -364,7 +365,7 @@ describe('Phase 1 - Serve Side Inference', () => {
     matchUp = addPoint(matchUp, { winner: 0 });
 
     expect(matchUp.history!.points[0].serveSide).toBe('deuce'); // 0 points = even
-    expect(matchUp.history!.points[1].serveSide).toBe('ad');    // 1 point = odd
+    expect(matchUp.history!.points[1].serveSide).toBe('ad'); // 1 point = odd
   });
 });
 
@@ -520,9 +521,7 @@ describe('Phase 1 - Late Arrival / setInitialScore', () => {
     const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
 
     engine.setInitialScore({
-      sets: [
-        { side1Score: 6, side2Score: 4 },
-      ],
+      sets: [{ side1Score: 6, side2Score: 4 }],
     });
 
     const state = engine.getState();
@@ -537,9 +536,7 @@ describe('Phase 1 - Late Arrival / setInitialScore', () => {
     const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
 
     engine.setInitialScore({
-      sets: [
-        { side1Score: 6, side2Score: 4 },
-      ],
+      sets: [{ side1Score: 6, side2Score: 4 }],
       currentSetScore: { side1Score: 3, side2Score: 2 },
       currentGameScore: { side1Points: 2, side2Points: 1 }, // 30-15
     });
@@ -556,9 +553,7 @@ describe('Phase 1 - Late Arrival / setInitialScore', () => {
     const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
 
     engine.setInitialScore({
-      sets: [
-        { side1Score: 6, side2Score: 4 },
-      ],
+      sets: [{ side1Score: 6, side2Score: 4 }],
       currentSetScore: { side1Score: 3, side2Score: 2 },
     });
 

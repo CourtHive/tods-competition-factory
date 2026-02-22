@@ -43,7 +43,7 @@ describe('accumulate', () => {
   });
 
   it('handles array with NaN values', () => {
-    expect(accumulate([1, NaN, 3])).toBe(4);
+    expect(accumulate([1, Number.NaN, 3])).toBe(4);
   });
 
   it('handles array with Infinity', () => {
@@ -93,7 +93,7 @@ describe('accumulate', () => {
   });
 
   it('handles sparse arrays', () => {
-    const sparse = [1, , 3]; // eslint-disable-line no-sparse-arrays
+    const sparse: any = [1, , 3]; // eslint-disable-line no-sparse-arrays
     expect(accumulate(sparse)).toBe(4);
   });
 
