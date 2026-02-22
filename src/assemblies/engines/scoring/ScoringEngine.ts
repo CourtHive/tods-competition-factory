@@ -36,7 +36,8 @@ import { getScoreboard } from '@Query/scoring/getScoreboard';
 import { getWinner } from '@Query/scoring/getWinner';
 import { isComplete } from '@Query/scoring/isComplete';
 import { getEpisodes } from '@Query/scoring/getEpisodes';
-import { parseFormat, resolveSetType, isAggregateFormat } from '@Tools/scoring/formatConverter';
+import { resolveSetType, isAggregateFormat } from '@Tools/scoring/scoringUtilities';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 import { calculateMatchStatistics } from '@Query/scoring/statistics/standalone';
 import { toStatObjects } from '@Query/scoring/statistics/toStatObjects';
 import type { MatchStatistics, StatisticsOptions, StatObject } from '@Query/scoring/statistics/types';
@@ -1047,8 +1048,7 @@ export class ScoringEngine {
    * Cache the parsed format structure for introspection methods
    */
   private cacheFormatStructure(): void {
-    const parsed = parseFormat(this.matchUpFormat);
-    this.cachedFormatStructure = parsed.isValid ? parsed.format : undefined;
+    this.cachedFormatStructure = parse(this.matchUpFormat);
   }
 
   /**
@@ -1179,10 +1179,8 @@ export class ScoringEngine {
    * Check and apply set completion for a given set
    */
   private checkSetCompletion(currentSet: SetScore): void {
-    const formatParsed = parseFormat(this.state.matchUpFormat);
-    if (!formatParsed.isValid || !formatParsed.format) return;
-
-    const formatStructure = formatParsed.format;
+    const formatStructure = parse(this.state.matchUpFormat);
+    if (!formatStructure) return;
     const bestOf = formatStructure.exactly || formatStructure.bestOf || 3;
     const setsToWin = Math.ceil(bestOf / 2);
 
@@ -1234,10 +1232,8 @@ export class ScoringEngine {
    * Check and apply match completion based on current sets
    */
   private checkMatchCompletion(): void {
-    const formatParsed = parseFormat(this.state.matchUpFormat);
-    if (!formatParsed.isValid || !formatParsed.format) return;
-
-    const formatStructure = formatParsed.format;
+    const formatStructure = parse(this.state.matchUpFormat);
+    if (!formatStructure) return;
     const bestOf = formatStructure.exactly || formatStructure.bestOf || 3;
     const setsToWin = Math.ceil(bestOf / 2);
     const isAggregate = isAggregateFormat(formatStructure);

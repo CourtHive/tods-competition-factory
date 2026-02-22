@@ -1,70 +1,8 @@
 // Format Converter Module
 
 import type { FormatStructure, SetFormatStructure, GameFormatStructure } from '@Types/scoring/types';
-import { stringify as factoryStringify } from '@Helpers/matchUpFormatCode/stringify';
-import { parse as factoryParse } from '@Helpers/matchUpFormatCode/parse';
-
-/**
- * Parse a format code
- *
- * @param code - Format code
- * @returns Parsed format object with metadata
- */
-export function parseFormat(code: string) {
-  // Try factory format first
-  const factoryParsed = factoryParse(code);
-  if (factoryParsed) {
-    // Add explicit gameFormat to setFormat (Option B2: Explicit Minimal)
-    // Regular games get {}, No-AD games get { NoAD: true }
-    if (factoryParsed.setFormat && !factoryParsed.setFormat.gameFormat) {
-      factoryParsed.setFormat.gameFormat = factoryParsed.setFormat.NoAD ? { NoAD: true } : {};
-    }
-
-    // Add gameFormat to finalSetFormat if it's a regular set (not tiebreakSet)
-    if (
-      factoryParsed.finalSetFormat &&
-      !factoryParsed.finalSetFormat.tiebreakSet &&
-      !factoryParsed.finalSetFormat.gameFormat
-    ) {
-      factoryParsed.finalSetFormat.gameFormat = factoryParsed.finalSetFormat.NoAD ? { NoAD: true } : {};
-    }
-
-    return {
-      format: factoryParsed,
-      type: 'factory' as const,
-      code,
-      isValid: true,
-    };
-  }
-
-  // Invalid format
-  return {
-    format: undefined,
-    type: 'unknown' as const,
-    code,
-    isValid: false,
-  };
-}
-
-/**
- * Stringify a format object to Factory format code
- *
- * @param formatObject - Parsed format object from Factory
- * @returns Factory format code string
- */
-export function stringifyFormat(formatObject: any): string | undefined {
-  return factoryStringify(formatObject);
-}
-
-/**
- * Check if a code is a valid Factory format
- *
- * @param code - Format code to check
- * @returns true if valid Factory format
- */
-export function isFactoryFormat(code: string): boolean {
-  return factoryParse(code) !== undefined;
-}
+import { stringify } from '@Helpers/matchUpFormatCode/stringify';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
 
 /**
  * Validate a format code (either type)
@@ -73,7 +11,7 @@ export function isFactoryFormat(code: string): boolean {
  * @returns true if valid
  */
 export function isValidFormat(code: string): boolean {
-  return isFactoryFormat(code);
+  return parse(code) !== undefined;
 }
 
 /**
@@ -126,10 +64,9 @@ export function extractFormatProperties(parsedFormat: any) {
  * @returns Human-readable description
  */
 export function getFormatDescription(code: string): string | undefined {
-  // If factory, parse and describe
-  const parsed = parseFormat(code);
-  if (parsed.isValid && parsed.format) {
-    const props = extractFormatProperties(parsed.format);
+  const parsed = parse(code);
+  if (parsed) {
+    const props = extractFormatProperties(parsed);
 
     let desc = '';
     if (props.bestOf) {
@@ -173,18 +110,14 @@ export function getFormatDescription(code: string): string | undefined {
  * @returns true if formats are equivalent
  */
 export function areFormatsEquivalent(code1: string, code2: string): boolean {
-  const parsed1 = parseFormat(code1);
-  const parsed2 = parseFormat(code2);
+  const parsed1 = parse(code1);
+  const parsed2 = parse(code2);
 
-  if (!parsed1.isValid || !parsed2.isValid) {
+  if (!parsed1 || !parsed2) {
     return false;
   }
 
-  // Compare the parsed structures
-  const stringify1 = stringifyFormat(parsed1.format);
-  const stringify2 = stringifyFormat(parsed2.format);
-
-  return stringify1 === stringify2;
+  return stringify(parsed1) === stringify(parsed2);
 }
 
 // ============================================================================

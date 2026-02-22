@@ -21,8 +21,9 @@ import type {
   FormatStructure,
   SetFormatStructure,
 } from '@Types/scoring/types';
-import { parseFormat, resolveSetType, isAggregateFormat } from '@Tools/scoring/formatConverter';
-import type { SetType } from '@Tools/scoring/formatConverter';
+import { resolveSetType, isAggregateFormat } from '@Tools/scoring/scoringUtilities';
+import { parse } from '@Helpers/matchUpFormatCode/parse';
+import type { SetType } from '@Tools/scoring/scoringUtilities';
 import { calculatePointsTo } from './pointsToCalculator';
 import { inferServeSide } from './serveSideCalculator';
 import { resolvePointValue } from './resolvePointValue';
@@ -55,12 +56,10 @@ export function addPoint(matchUp: MatchUp, options: AddPointOptions, config?: Ad
   newMatchUp.history ??= { points: [] };
 
   // Parse format to get structure
-  const formatParsed = parseFormat(matchUp.matchUpFormat);
-  if (!formatParsed.isValid || !formatParsed.format) {
+  const formatStructure: FormatStructure | undefined = parse(matchUp.matchUpFormat);
+  if (!formatStructure) {
     throw new Error(`Invalid matchUpFormat: ${matchUp.matchUpFormat}`);
   }
-
-  const formatStructure: FormatStructure = formatParsed.format;
   const bestOf = formatStructure.exactly || formatStructure.bestOf || 3;
   const setsToWin = Math.ceil(bestOf / 2);
 
