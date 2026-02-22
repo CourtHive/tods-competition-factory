@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "2.4.4",
+  "version": "2.4.5-beta.0",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/competition-factory/",
