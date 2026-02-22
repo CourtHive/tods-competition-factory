@@ -10,7 +10,7 @@
 </p>
 <div align="center">
 
-![Statements](https://img.shields.io/badge/statements-89.05%25-yellow.svg?style=flat) ![Branches](https://img.shields.io/badge/branches-80.34%25-yellow.svg?style=flat) ![Functions](https://img.shields.io/badge/functions-93.2%25-brightgreen.svg?style=flat) ![Lines](https://img.shields.io/badge/lines-91.43%25-brightgreen.svg?style=flat) |
+![Statements](https://img.shields.io/badge/statements-92.21%25-brightgreen.svg?style=flat) ![Branches](https://img.shields.io/badge/branches-82.74%25-yellow.svg?style=flat) ![Functions](https://img.shields.io/badge/functions-95.75%25-brightgreen.svg?style=flat) ![Lines](https://img.shields.io/badge/lines-94.88%25-brightgreen.svg?style=flat) |
 
 </div>
 
