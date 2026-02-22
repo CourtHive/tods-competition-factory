@@ -95,8 +95,8 @@ export function clampDragToCollisions(
   const rawStart = Math.min(anchorTime, cursorTime);
   const rawEnd = Math.max(anchorTime, cursorTime);
 
-  let clampedStart = rawStart;
-  let clampedEnd = rawEnd;
+  let clampedStart: number;
+  let clampedEnd: number;
   let clamped = false;
   let clampedBy: Block | undefined;
 
@@ -110,22 +110,18 @@ export function clampDragToCollisions(
       const blockEnd = new Date(block.end.endsWith('Z') ? block.end : block.end + 'Z').getTime();
 
       // Check if this block creates a boundary we need to stop at
-      if (blockStart > anchorTime && blockStart < rawEnd) {
-        if (blockStart < minClampEnd) {
-          minClampEnd = blockStart;
-          clamped = true;
-          clampedBy = block;
-        }
+      if (blockStart > anchorTime && blockStart < rawEnd && blockStart < minClampEnd) {
+        minClampEnd = blockStart;
+        clamped = true;
+        clampedBy = block;
       }
 
       // Also check if we're trying to overlap with this block
-      if (blockStart < rawEnd && blockEnd > anchorTime) {
+      if (blockStart < rawEnd && blockEnd > anchorTime && blockStart < minClampEnd && blockStart > anchorTime) {
         // Overlap detected - clamp to block start
-        if (blockStart < minClampEnd && blockStart > anchorTime) {
-          minClampEnd = blockStart;
-          clamped = true;
-          clampedBy = block;
-        }
+        minClampEnd = blockStart;
+        clamped = true;
+        clampedBy = block;
       }
     }
 
@@ -141,22 +137,18 @@ export function clampDragToCollisions(
       const blockEnd = new Date(block.end.endsWith('Z') ? block.end : block.end + 'Z').getTime();
 
       // Check if this block creates a boundary we need to stop at
-      if (blockEnd < anchorTime && blockEnd > rawStart) {
-        if (blockEnd > maxClampStart) {
-          maxClampStart = blockEnd;
-          clamped = true;
-          clampedBy = block;
-        }
+      if (blockEnd < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart) {
+        maxClampStart = blockEnd;
+        clamped = true;
+        clampedBy = block;
       }
 
       // Also check if we're trying to overlap with this block
-      if (blockStart < anchorTime && blockEnd > rawStart) {
+      if (blockStart < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart && blockEnd < anchorTime) {
         // Overlap detected - clamp to block end
-        if (blockEnd > maxClampStart && blockEnd < anchorTime) {
-          maxClampStart = blockEnd;
-          clamped = true;
-          clampedBy = block;
-        }
+        maxClampStart = blockEnd;
+        clamped = true;
+        clampedBy = block;
       }
     }
 

@@ -205,20 +205,17 @@ export const adjacentBlockEvaluator = {
         // Check if blocks are adjacent (one ends exactly when other starts)
         const isAdjacent = existing.end === block.start || block.end === existing.start;
 
-        if (isAdjacent) {
-          // Different block types adjacent = transition issue
-          if (existing.type !== block.type) {
-            conflicts.push({
-              code: 'NO_TRANSITION_TIME',
-              message: `${block.type} immediately follows ${existing.type} with no transition time (recommended: ${minTransitionMinutes} minutes)`,
-              severity: 'INFO',
-              timeRange: {
-                start: existing.end,
-                end: block.start,
-              },
-              courts: [block.court],
-            });
-          }
+        if (isAdjacent && existing.type !== block.type) {
+          conflicts.push({
+            code: 'NO_TRANSITION_TIME',
+            message: `${block.type} immediately follows ${existing.type} with no transition time (recommended: ${minTransitionMinutes} minutes)`,
+            severity: 'INFO',
+            timeRange: {
+              start: existing.end,
+              end: block.start,
+            },
+            courts: [block.court],
+          });
         }
       }
     }
@@ -258,20 +255,17 @@ export const lightingEvaluator = {
       // Check if block extends past sunset
       const blockEndTime = block.end.slice(11, 16); // Extract 'HH:MM'
 
-      if (blockEndTime > sunsetTime) {
-        // Only flag AVAILABLE blocks (actual scheduling)
-        if (block.type === BLOCK_TYPES.AVAILABLE || block.type === BLOCK_TYPES.RESERVED) {
-          conflicts.push({
-            code: 'AFTER_SUNSET',
-            message: `Court scheduled after sunset (${sunsetTime}). Verify court has adequate lighting.`,
-            severity: 'WARN', // WARN rather than ERROR since some courts may have lights
-            timeRange: {
-              start: `${block.start.slice(0, 11)}${sunsetTime}:00`,
-              end: block.end,
-            },
-            courts: [block.court],
-          });
-        }
+      if (blockEndTime > sunsetTime && (block.type === BLOCK_TYPES.AVAILABLE || block.type === BLOCK_TYPES.RESERVED)) {
+        conflicts.push({
+          code: 'AFTER_SUNSET',
+          message: `Court scheduled after sunset (${sunsetTime}). Verify court has adequate lighting.`,
+          severity: 'WARN', // WARN rather than ERROR since some courts may have lights
+          timeRange: {
+            start: `${block.start.slice(0, 11)}${sunsetTime}:00`,
+            end: block.end,
+          },
+          courts: [block.court],
+        });
       }
     }
 
@@ -500,11 +494,16 @@ export class EvaluatorRegistry {
  *
  * Implementation requires access to Competition Factory API.
  */
-export const createFollowByEvaluator = (_factoryAPI: any) => ({
+export const createFollowByEvaluator = (
+  _factoryAPI: any, // eslint-disable-line @typescript-eslint/no-unused-vars
+) => ({
   id: 'FOLLOW_BY',
   description: 'Player rest and follow-by conflicts using Competition Factory',
 
-  evaluate: (_ctx: EngineContext, _mutations: BlockMutation[]): EngineConflict[] => {
+  evaluate: (
+    _ctx: EngineContext, // eslint-disable-line @typescript-eslint/no-unused-vars
+    _mutations: BlockMutation[], // eslint-disable-line @typescript-eslint/no-unused-vars
+  ): EngineConflict[] => {
     // TODO: Implement when Competition Factory integration is ready
     return [];
   },
