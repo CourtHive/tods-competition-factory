@@ -22,7 +22,7 @@
     "seeding",
     "tennis"
   ],
-  "version": "2.4.5-beta.2",
+  "version": "2.4.5",
   "license": "MIT",
   "private": false,
   "homepage": "https://courthive.github.io/competition-factory/",
@@ -140,7 +140,7 @@
     "@rollup/plugin-terser": "0.4.4",
     "@rollup/plugin-typescript": "12.3.0",
     "@swc/cli": "0.8.0",
-    "@swc/core": "1.15.11",
+    "@swc/core": "1.15.13",
     "@types/express": "5.0.6",
     "@types/jest": "30.0.0",
     "@types/node": "24.10.13",
