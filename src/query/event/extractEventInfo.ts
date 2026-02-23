@@ -1,35 +1,38 @@
 export function extractEventInfo({ event }) {
-  const eventInfo = (({
-    eventId,
+  const {
+    surfaceCategory,
+    onlineResources,
+    matchUpFormat,
+    discipline,
+    eventLevel,
     eventName,
     eventType,
-    eventLevel,
-    surfaceCategory,
-    matchUpFormat,
-    category,
-    gender,
     startDate,
-    endDate,
+    category,
     ballType,
-    discipline,
-    onlineResources,
-    notes,
-  }) => ({
     eventId,
+    endDate,
+    gender,
+    notes,
+  } = event;
+
+  const eventInfo = {
+    drawDefinitionCount: event.drawDefinitions?.length,
+    surfaceCategory,
+    onlineResources,
+    matchUpFormat,
+    discipline,
+    eventLevel,
     eventName,
     eventType,
-    eventLevel,
-    surfaceCategory,
-    matchUpFormat,
-    category,
-    gender,
-    startDate,
-    endDate,
     ballType,
-    discipline,
-    onlineResources,
+    startDate,
+    category,
+    endDate,
+    eventId,
+    gender,
     notes,
-  }))(event);
+  };
 
   return { eventInfo };
 }
