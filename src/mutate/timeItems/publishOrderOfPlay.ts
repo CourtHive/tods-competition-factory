@@ -22,13 +22,22 @@ export function publishOrderOfPlay(params) {
   return { ...SUCCESS };
 }
 
-function publishOOP({ scheduledDates = [], removePriorValues, tournamentRecord, status = PUBLIC, eventIds = [] }) {
+function publishOOP({
+  scheduledDates = [],
+  removePriorValues,
+  tournamentRecord,
+  status = PUBLIC,
+  eventIds = [],
+  embargo,
+}) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTimeItem({ element: tournamentRecord, itemType });
   const itemValue = timeItem?.itemValue || { [status]: {} };
-  itemValue[status].orderOfPlay = { published: true, scheduledDates, eventIds };
+  const orderOfPlay: any = { published: true, scheduledDates, eventIds };
+  if (embargo) orderOfPlay.embargo = embargo;
+  itemValue[status].orderOfPlay = orderOfPlay;
   const updatedTimeItem = { itemValue, itemType };
 
   addTimeItem({

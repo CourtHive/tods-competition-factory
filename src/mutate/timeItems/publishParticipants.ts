@@ -22,13 +22,15 @@ export function publishParticipants(params) {
   return { ...SUCCESS };
 }
 
-function publish({ removePriorValues, tournamentRecord, status = PUBLIC }) {
+function publish({ removePriorValues, tournamentRecord, status = PUBLIC, embargo }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;
   const { timeItem } = getTimeItem({ element: tournamentRecord, itemType });
   const itemValue = timeItem?.itemValue || { [status]: {} };
-  itemValue[status].participants = { published: true };
+  const participants: any = { published: true };
+  if (embargo) participants.embargo = embargo;
+  itemValue[status].participants = participants;
   const updatedTimeItem = { itemValue, itemType };
 
   addTimeItem({

@@ -3,6 +3,7 @@ import { getStructureSeedAssignments } from '@Query/structure/getStructureSeedAs
 import { getAllStructureMatchUps } from '@Query/matchUps/getAllStructureMatchUps';
 import { getPositionAssignments } from '@Query/drawDefinition/positionsGetter';
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
+import { isVisiblyPublished } from '@Query/publishing/isEmbargoed';
 import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { getStructureGroups } from '@Query/structure/getStructureGroups';
 import { createSubOrderMap } from '@Query/structure/createSubOrderMap';
@@ -251,7 +252,7 @@ export function getDrawData(params): {
   // ...default to true when no structureDetails are found
   const structures = groupedStructures
     .flat()
-    .filter((structure) => !usePublishState || structureDetails?.[structure?.structureId]?.published || true);
+    .filter((structure) => !usePublishState || isVisiblyPublished(structureDetails?.[structure?.structureId]) || true);
 
   drawInfo.drawActive = drawActive;
   drawInfo.participantPlacements = participantPlacements;

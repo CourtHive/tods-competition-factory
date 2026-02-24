@@ -2,6 +2,7 @@ import { getTournamentPublishStatus } from '@Query/tournaments/getTournamentPubl
 import { isValidTournamentRecord } from '@Validators/isValidTournamentRecord';
 import { getEventPublishStatus } from '@Query/event/getEventPublishStatus';
 import { getDrawPublishStatus } from '@Query/event/getDrawPublishStatus';
+import { isEmbargoed } from '@Query/publishing/isEmbargoed';
 import { getDrawId } from '@Functions/global/extractors';
 
 // constants and types
@@ -91,12 +92,69 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
     }
   }
 
+  const embargoes: any[] = [];
+
   if (tournamentRecord) {
     const pubStatus: any = getTournamentPublishStatus({ tournamentRecord });
     publishState.tournament = pubStatus ?? {};
     if (pubStatus?.orderOfPlay?.published || pubStatus?.participants?.published) tournamentPublished = true;
     publishState.tournament.status = { published: tournamentPublished, publishedEventIds };
+
+    if (pubStatus?.orderOfPlay?.embargo) {
+      embargoes.push({
+        type: 'orderOfPlay',
+        embargo: pubStatus.orderOfPlay.embargo,
+        embargoActive: isEmbargoed(pubStatus.orderOfPlay),
+      });
+    }
+    if (pubStatus?.participants?.embargo) {
+      embargoes.push({
+        type: 'participants',
+        embargo: pubStatus.participants.embargo,
+        embargoActive: isEmbargoed(pubStatus.participants),
+      });
+    }
   }
+
+  for (const event of tournamentRecord?.events ?? []) {
+    const eventPubStatus = getEventPublishStatus({ event });
+    const drawDetails = eventPubStatus?.drawDetails ?? {};
+    for (const [drawId, detail] of Object.entries(drawDetails) as [string, any][]) {
+      if (detail?.publishingDetail?.embargo) {
+        embargoes.push({
+          type: 'draw',
+          id: drawId,
+          embargo: detail.publishingDetail.embargo,
+          embargoActive: isEmbargoed(detail.publishingDetail),
+        });
+      }
+      for (const [stage, stageDetail] of Object.entries(detail?.stageDetails ?? {}) as [string, any][]) {
+        if (stageDetail?.embargo) {
+          embargoes.push({
+            type: 'stage',
+            id: `${drawId}:${stage}`,
+            embargo: stageDetail.embargo,
+            embargoActive: isEmbargoed(stageDetail),
+          });
+        }
+      }
+      for (const [structureId, structureDetail] of Object.entries(detail?.structureDetails ?? {}) as [
+        string,
+        any,
+      ][]) {
+        if (structureDetail?.embargo) {
+          embargoes.push({
+            type: 'structure',
+            id: structureId,
+            embargo: structureDetail.embargo,
+            embargoActive: isEmbargoed(structureDetail),
+          });
+        }
+      }
+    }
+  }
+
+  if (embargoes.length) publishState.embargoes = embargoes;
 
   return { ...SUCCESS, publishState };
 }
@@ -127,7 +185,7 @@ function getPubStatus({ event }): any {
   const drawDetailPublishedIds =
     drawDetails &&
     Object.keys(drawDetails).length &&
-    Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId }));
+    Object.keys(drawDetails).filter((drawId) => getDrawPublishStatus({ drawDetails, drawId, ignoreEmbargo: true }));
 
   const publishedDrawIds = drawDetailPublishedIds?.length ? drawDetailPublishedIds : (eventPubStatus.drawIds ?? []);
 

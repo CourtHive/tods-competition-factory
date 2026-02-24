@@ -14,6 +14,7 @@ import { findEvent } from '@Acquire/findEvent';
 import { ParticipantsProfile, PolicyDefinitions, StructureSortConfig } from '@Types/factoryTypes';
 import { checkRequiredParameters } from '@Helpers/parameters/checkRequiredParameters';
 import { EVENT_NOT_FOUND, ErrorType } from '@Constants/errorConditionConstants';
+import { isVisiblyPublished } from '@Query/publishing/isEmbargoed';
 import { getDrawIsPublished } from '@Query/publishing/getDrawIsPublished';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { DISPLAY } from '@Constants/extensionConstants';
@@ -91,14 +92,14 @@ export function getEventData(params: GetEventDataArgs): {
     if (!usePublishState) return true;
     const stageDetails = publishStatus?.drawDetails?.[drawId]?.stageDetails;
     if (!stageDetails || !Object.keys(stageDetails).length) return true;
-    return stageDetails[stage]?.published;
+    return isVisiblyPublished(stageDetails[stage]);
   };
 
   const structureFilter = ({ structureId, drawId }) => {
     if (!usePublishState) return true;
     const structureDetails = publishStatus?.drawDetails?.[drawId]?.structureDetails;
     if (!structureDetails || !Object.keys(structureDetails).length) return true;
-    return structureDetails[structureId]?.published;
+    return isVisiblyPublished(structureDetails[structureId]);
   };
 
   const drawFilter = ({ drawId }) => {
