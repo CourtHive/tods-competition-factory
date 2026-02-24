@@ -17,10 +17,16 @@ Uses `isISODateString` from `@Tools/dateTime` for validation. Compares via `new 
 
 ## Type
 
-The `PublishingDetail` type (defined in `src/mutate/publishing/publishEvent.ts`) includes the embargo field:
+The types (defined in `src/mutate/publishing/publishEvent.ts`):
 
 ```ts
+type ScheduledRoundDetail = {
+  published?: boolean;
+  embargo?: string; // ISO 8601 timestamp
+};
+
 type PublishingDetail = {
+  scheduledRounds?: { [roundNumber: number]: ScheduledRoundDetail };
   roundLimit?: number;
   published?: boolean;
   embargo?: string; // ISO 8601 timestamp
@@ -40,20 +46,22 @@ type PublishingDetail = {
 
 ### Inline filters
 
-| File                                                | Location                     | Change                                                                                                         |
-| --------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- | --- | ----------------------------------------------------------- |
+| File                                                | Location                     | Description                                                                                                    |
+| --------------------------------------------------- | ---------------------------- | -------------------------------------------------------------------------------------------------------------- |
 | `src/query/event/getEventData.ts`                   | `stageFilter`                | `stageDetails[stage]?.published` → `isVisiblyPublished(stageDetails[stage])`                                   |
 | `src/query/event/getEventData.ts`                   | `structureFilter`            | `structureDetails[structureId]?.published` → `isVisiblyPublished(structureDetails[structureId])`               |
-| `src/query/drawDefinition/getDrawData.ts`           | line 254 filter              | `structureDetails?.published` → `isVisiblyPublished(structureDetails)` (note: `                                |     | true` fallback is a pre-existing no-op issue, not in scope) |
+| `src/query/event/getEventData.ts`                   | `roundLimitMapper`           | Now AD_HOC-only: early-returns if `drawType !== AD_HOC`. Non-AD_HOC brackets always show all rounds.           |
+| `src/query/drawDefinition/getDrawData.ts`           | line 254 filter              | `structureDetails?.published` → `isVisiblyPublished(structureDetails)`                                         |
 | `src/query/matchUps/competitionScheduleMatchUps.ts` | orderOfPlay check            | `tournamentPublishStatus?.orderOfPlay?.published` → `isVisiblyPublished(tournamentPublishStatus?.orderOfPlay)` |
 | `src/query/matchUps/competitionScheduleMatchUps.ts` | draw/stage/structure filters | All six `.published` checks → `isVisiblyPublished(...)`                                                        |
+| `src/query/matchUps/competitionScheduleMatchUps.ts` | round-level filter           | New block after stage/structure filter: enforces `roundLimit` ceiling, then `scheduledRounds` per-round publish/embargo via `isVisiblyPublished` |
 
 ### Reporting (NOT filtered)
 
 | File                                      | Function       | Change                                                                                                                                                                                                            |
 | ----------------------------------------- | -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `src/query/publishing/getPublishState.ts` | `getPubStatus` | Passes `{ ignoreEmbargo: true }` to `getDrawPublishStatus` — embargoed draws still reported as published for admin UIs.                                                                                           |
-| `src/query/publishing/getPublishState.ts` | main function  | Collects `embargoes` summary array from all drawDetails (publishingDetail, stageDetails, structureDetails) and tournament-level (orderOfPlay, participants). Attached as `publishState.embargoes` when non-empty. |
+| `src/query/publishing/getPublishState.ts` | main function  | Collects `embargoes` summary array from all drawDetails (publishingDetail, stageDetails, structureDetails, scheduledRounds within structureDetails) and tournament-level (orderOfPlay, participants). Attached as `publishState.embargoes` when non-empty. |
 
 ### Mutation points (accept embargo param)
 
@@ -105,6 +113,7 @@ Uses `vi.useFakeTimers()` for deterministic time control. Test cases:
 - **Non-AD_HOC draws**: filters **schedule only** — bracket always shows all rounds
 
 This split is enforced in:
+
 - `src/query/event/getEventData.ts` — `roundLimitMapper` checks `drawType === AD_HOC` before filtering bracket rounds
 - `src/query/matchUps/competitionScheduleMatchUps.ts` — `roundLimit` always filters schedule matchUps regardless of draw type
 
@@ -124,10 +133,10 @@ scheduledRounds?: { [roundNumber: number]: ScheduledRoundDetail };
 
 **Enforcement points:**
 
-| File | What it does |
-|---|---|
+| File                                                | What it does                                                                               |
+| --------------------------------------------------- | ------------------------------------------------------------------------------------------ |
 | `src/query/matchUps/competitionScheduleMatchUps.ts` | Filters schedule matchUps by `roundLimit` ceiling + `scheduledRounds` per-round visibility |
-| `src/query/publishing/getPublishState.ts` | Collects `type: 'scheduledRound'` entries in the `embargoes` array |
+| `src/query/publishing/getPublishState.ts`           | Collects `type: 'scheduledRound'` entries in the `embargoes` array                         |
 
 **Interaction:** `roundLimit` is the ceiling. `scheduledRounds` gates within the ceiling. When `scheduledRounds` is absent, all rounds up to `roundLimit` appear.
 
@@ -149,6 +158,6 @@ Uses `vi.useFakeTimers()` for deterministic time control. Test cases:
 
 ## Documentation
 
-- **Concepts:** `documentation/docs/concepts/publishing.md` — [Embargo section](../documentation/docs/concepts/publishing.md), [Scheduled Rounds section](../documentation/docs/concepts/publishing.md)
+- **Concepts:** `documentation/docs/concepts/publishing/publishing-embargo.md` — Embargo and Scheduled Rounds
 - **API Reference:** `documentation/docs/governors/publishing-governor.md` — embargo params on `publishEvent`, `publishOrderOfPlay`, `publishParticipants`, `getPublishState`; `scheduledRounds` in `publishEvent` structureDetails
 - **Query Reference:** `documentation/docs/governors/query-governor.md` — embargo notes on `getEventData`, `competitionScheduleMatchUps`; round-level filtering
