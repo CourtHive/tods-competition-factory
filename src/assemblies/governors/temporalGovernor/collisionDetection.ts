@@ -29,10 +29,10 @@ import type { Block, TimeRange } from './types';
  * @returns true if intervals overlap (share internal time points)
  */
 export function intervalsOverlap(a: TimeRange, b: TimeRange): boolean {
-  const aStart = new Date(a.start.endsWith('Z') ? a.start : a.start + 'Z').getTime();
-  const aEnd = new Date(a.end.endsWith('Z') ? a.end : a.end + 'Z').getTime();
-  const bStart = new Date(b.start.endsWith('Z') ? b.start : b.start + 'Z').getTime();
-  const bEnd = new Date(b.end.endsWith('Z') ? b.end : b.end + 'Z').getTime();
+  const aStart = new Date(a.start?.endsWith('Z') ? a.start : a.start + 'Z').getTime();
+  const aEnd = new Date(a.end?.endsWith('Z') ? a.end : a.end + 'Z').getTime();
+  const bStart = new Date(b?.start?.endsWith('Z') ? b?.start : b?.start + 'Z').getTime();
+  const bEnd = new Date(b?.end?.endsWith('Z') ? b?.end : b?.end + 'Z').getTime();
 
   return aStart < bEnd && aEnd > bStart;
 }
@@ -47,8 +47,8 @@ export function intervalsOverlap(a: TimeRange, b: TimeRange): boolean {
  * @returns true if time is inside the block
  */
 export function timeInsideBlock(time: number, block: Block): boolean {
-  const blockStart = new Date(block.start.endsWith('Z') ? block.start : block.start + 'Z').getTime();
-  const blockEnd = new Date(block.end.endsWith('Z') ? block.end : block.end + 'Z').getTime();
+  const blockStart = new Date(block?.start?.endsWith('Z') ? block?.start : block?.start + 'Z').getTime();
+  const blockEnd = new Date(block?.end?.endsWith('Z') ? block?.end : block?.end + 'Z').getTime();
 
   return blockStart <= time && time < blockEnd;
 }
@@ -61,6 +61,7 @@ export function timeInsideBlock(time: number, block: Block): boolean {
  * @returns Blocks containing the time point
  */
 export function findBlocksContainingTime(time: number, blocks: Block[]): Block[] {
+  if (!Array.isArray(blocks)) return [];
   return blocks.filter((block) => timeInsideBlock(time, block));
 }
 
@@ -132,23 +133,25 @@ export function clampDragToCollisions(
     // Find last block that ends before anchor and after/at cursor
     let maxClampStart = rawStart;
 
-    for (const block of blocks) {
-      const blockStart = new Date(block.start.endsWith('Z') ? block.start : block.start + 'Z').getTime();
-      const blockEnd = new Date(block.end.endsWith('Z') ? block.end : block.end + 'Z').getTime();
+    if (Array.isArray(blocks)) {
+      for (const block of blocks) {
+        const blockStart = new Date(block.start.endsWith('Z') ? block.start : block.start + 'Z').getTime();
+        const blockEnd = new Date(block.end.endsWith('Z') ? block.end : block.end + 'Z').getTime();
 
-      // Check if this block creates a boundary we need to stop at
-      if (blockEnd < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart) {
-        maxClampStart = blockEnd;
-        clamped = true;
-        clampedBy = block;
-      }
+        // Check if this block creates a boundary we need to stop at
+        if (blockEnd < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart) {
+          maxClampStart = blockEnd;
+          clamped = true;
+          clampedBy = block;
+        }
 
-      // Also check if we're trying to overlap with this block
-      if (blockStart < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart && blockEnd < anchorTime) {
-        // Overlap detected - clamp to block end
-        maxClampStart = blockEnd;
-        clamped = true;
-        clampedBy = block;
+        // Also check if we're trying to overlap with this block
+        if (blockStart < anchorTime && blockEnd > rawStart && blockEnd > maxClampStart && blockEnd < anchorTime) {
+          // Overlap detected - clamp to block end
+          maxClampStart = blockEnd;
+          clamped = true;
+          clampedBy = block;
+        }
       }
     }
 
@@ -172,6 +175,7 @@ export function clampDragToCollisions(
  * @param blocks Array of blocks to sort
  */
 export function sortBlocksByStart(blocks: Block[]): void {
+  if (!Array.isArray(blocks)) return;
   blocks.sort((a, b) => {
     const aStart = new Date(a.start.endsWith('Z') ? a.start : a.start + 'Z').getTime();
     const bStart = new Date(b.start.endsWith('Z') ? b.start : b.start + 'Z').getTime();

@@ -34,6 +34,13 @@ export function generateCapacityCurve(day: DayId, timelines: VenueDayTimeline[])
   // Collect all unique time points
   const timePoints = new Set<string>();
 
+  if (!Array.isArray(timelines)) {
+    return {
+      day,
+      points: [],
+    };
+  }
+
   for (const timeline of timelines) {
     for (const rail of timeline.rails) {
       for (const segment of rail.segments) {
@@ -163,7 +170,7 @@ export interface CapacityStats {
 }
 
 export function calculateCapacityStats(curve: CapacityCurve): CapacityStats {
-  if (curve.points.length === 0) {
+  if (!curve.points || curve.points.length === 0) {
     return {
       peakAvailable: 0,
       peakTime: '',
@@ -281,7 +288,7 @@ export function calculateCapacityStats(curve: CapacityCurve): CapacityStats {
  * Filter capacity curve to a specific time range
  */
 export function filterCapacityCurve(curve: CapacityCurve, timeRange: { start: string; end: string }): CapacityCurve {
-  const filteredPoints = curve.points.filter((point) => point.time >= timeRange.start && point.time <= timeRange.end);
+  const filteredPoints = curve.points?.filter((point) => point.time >= timeRange.start && point.time <= timeRange.end);
 
   return {
     ...curve,
@@ -293,7 +300,7 @@ export function filterCapacityCurve(curve: CapacityCurve, timeRange: { start: st
  * Sample capacity curve at regular intervals (for rendering)
  */
 export function sampleCapacityCurve(curve: CapacityCurve, intervalMinutes: number): CapacityCurve {
-  if (curve.points.length === 0) return curve;
+  if (!curve.points || curve.points.length === 0) return curve;
 
   const sampledPoints: CapacityPoint[] = [];
   const startTime = new Date(curve.points[0].time);
@@ -354,20 +361,20 @@ export function compareCapacityCurves(baseline: CapacityCurve, modified: Capacit
 
   // Collect all unique time points from both curves
   const allTimes = new Set<string>();
-  baseline.points.forEach((p) => allTimes.add(p.time));
-  modified.points.forEach((p) => allTimes.add(p.time));
+  baseline.points?.forEach((p) => allTimes.add(p.time));
+  modified?.points?.forEach((p) => allTimes.add(p.time));
 
   const sortedTimes = Array.from(allTimes).sort();
 
   for (const time of sortedTimes) {
-    const baselinePoint = baseline.points.find((p) => p.time === time) || {
+    const baselinePoint = baseline.points?.find((p) => p.time === time) || {
       time,
       courtsAvailable: 0,
       courtsSoftBlocked: 0,
       courtsHardBlocked: 0,
     };
 
-    const modifiedPoint = modified.points.find((p) => p.time === time) || {
+    const modifiedPoint = modified.points?.find((p) => p.time === time) || {
       time,
       courtsAvailable: 0,
       courtsSoftBlocked: 0,

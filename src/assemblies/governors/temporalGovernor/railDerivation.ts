@@ -78,8 +78,8 @@ export function resolveCourtId(court: { courtId?: string; courtName?: string }):
 export function clampToDayRange(block: Block, dayRange: TimeRange): Block | null {
   const blockStart = block.start;
   const blockEnd = block.end;
-  const dayStart = dayRange.start;
-  const dayEnd = dayRange.end;
+  const dayStart = dayRange?.start;
+  const dayEnd = dayRange?.end;
 
   // Block completely outside day range
   if (blockEnd <= dayStart || blockStart >= dayEnd) {
@@ -99,13 +99,13 @@ export function clampToDayRange(block: Block, dayRange: TimeRange): Block | null
 
 export function rangesOverlap(a: TimeRange, b: TimeRange): boolean {
   // String comparison works for ISO datetime strings
-  return a.start < b.end && b.start < a.end;
+  return a?.start < b?.end && b?.start < a?.end;
 }
 
 export function overlappingRange(a: TimeRange, b: TimeRange): TimeRange {
   // String comparison works for ISO datetime strings
-  const overlapStart = a.start > b.start ? a.start : b.start;
-  const overlapEnd = a.end < b.end ? a.end : b.end;
+  const overlapStart = a?.start > b?.start ? a?.start : b?.start;
+  const overlapEnd = a?.end < b?.end ? a?.end : b?.end;
 
   return {
     start: overlapStart,
@@ -116,7 +116,8 @@ export function overlappingRange(a: TimeRange, b: TimeRange): TimeRange {
 export function diffMinutes(start: string, end: string): number {
   const startDate = new Date(start);
   const endDate = new Date(end);
-  return (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+  const result = (endDate.getTime() - startDate.getTime()) / (1000 * 60);
+  return Number.isNaN(result) ? 0 : result;
 }
 
 // ============================================================================
@@ -136,7 +137,7 @@ export function resolveStatus(
   blocksById: Map<BlockId, Block>,
   precedence: BlockType[],
 ): BlockType {
-  if (contributingIds.length === 0) {
+  if (contributingIds.length === 0 || !precedence || precedence.length === 0) {
     return BLOCK_TYPES.AVAILABLE; // No blocks = available time (inverted paradigm)
   }
 
@@ -170,6 +171,8 @@ export function resolveStatus(
 export function buildEdges(blocks: Block[]): Edge[] {
   const edges: Edge[] = [];
 
+  if (!Array.isArray(blocks)) return edges;
+
   for (const block of blocks) {
     edges.push({
       time: block.start,
@@ -191,6 +194,7 @@ export function buildEdges(blocks: Block[]): Edge[] {
  * (to avoid zero-length segments)
  */
 export function sortEdges(edges: Edge[]): Edge[] {
+  if (!Array.isArray(edges)) return [];
   return edges.slice().sort((a, b) => {
     const timeCompare = a.time.localeCompare(b.time);
     if (timeCompare !== 0) return timeCompare;
@@ -221,12 +225,13 @@ export function sortEdges(edges: Edge[]): Edge[] {
  * @param config - Engine configuration (for type precedence)
  * @returns Non-overlapping rail segments
  */
-export function deriveRailSegments(
-  blocks: Block[],
-  dayRange: TimeRange,
-  config: EngineConfig,
-): RailSegment[] {
+export function deriveRailSegments(blocks: Block[], dayRange: TimeRange, config: EngineConfig): RailSegment[] {
   // Step 1: Clamp blocks to day range
+
+  if (!Array.isArray(blocks) || !dayRange || !config) {
+    return [];
+  }
+
   const clampedBlocks = blocks
     .map((block) => clampToDayRange(block, dayRange))
     .filter((block): block is Block => block !== null);
@@ -356,8 +361,8 @@ export function extractDay(isoDateTime: string): string {
  */
 export function buildDayRange(day: string, config: EngineConfig): TimeRange {
   return {
-    start: `${day}T${config.dayStartTime}:00`,
-    end: `${day}T${config.dayEndTime}:00`,
+    start: `${day}T${config?.dayStartTime}:00`,
+    end: `${day}T${config?.dayEndTime}:00`,
   };
 }
 

@@ -14,6 +14,8 @@
  * Convert 'HH:MM' string to minutes since midnight.
  */
 export function hhmmToMinutes(hhmm: string): number {
+  if (typeof hhmm !== 'string') return 0;
+
   const [h, m] = hhmm.split(':').map(Number);
   return h * 60 + m;
 }
@@ -69,6 +71,7 @@ export function snapIsoToGranularity(
   granularity: number,
   mode: 'floor' | 'ceil' | 'round' = 'round',
 ): string {
+  if (!iso || typeof iso !== 'string') return iso;
   const datePart = iso.slice(0, 10); // 'YYYY-MM-DD'
   const timePart = iso.slice(11, 16); // 'HH:MM'
   const minutes = hhmmToMinutes(timePart);

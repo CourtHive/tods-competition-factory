@@ -13,12 +13,7 @@
 
 import { extractDate } from '@Tools/dateTime';
 
-import {
-  BLOCK_TYPES,
-  type BlockMutation,
-  type EngineConflict,
-  type EngineContext,
-} from './types';
+import { BLOCK_TYPES, type BlockMutation, type EngineConflict, type EngineContext } from './types';
 
 import { diffMinutes, rangesOverlap } from './railDerivation';
 
@@ -521,8 +516,15 @@ export function groupConflictsBySeverity(conflicts: EngineConflict[]): {
   warnings: EngineConflict[];
   info: EngineConflict[];
 } {
+  if (!Array.isArray(conflicts)) {
+    return {
+      errors: [],
+      warnings: [],
+      info: [],
+    };
+  }
   return {
-    errors: conflicts.filter((c) => c.severity === 'ERROR'),
+    errors: conflicts?.filter((c) => c.severity === 'ERROR'),
     warnings: conflicts.filter((c) => c.severity === 'WARN'),
     info: conflicts.filter((c) => c.severity === 'INFO'),
   };
@@ -532,6 +534,7 @@ export function groupConflictsBySeverity(conflicts: EngineConflict[]): {
  * Get highest severity from conflict list
  */
 export function getHighestSeverity(conflicts: EngineConflict[]): 'ERROR' | 'WARN' | 'INFO' | null {
+  if (!Array.isArray(conflicts)) return null;
   if (conflicts.some((c) => c.severity === 'ERROR')) return 'ERROR';
   if (conflicts.some((c) => c.severity === 'WARN')) return 'WARN';
   if (conflicts.some((c) => c.severity === 'INFO')) return 'INFO';
@@ -542,6 +545,7 @@ export function getHighestSeverity(conflicts: EngineConflict[]): 'ERROR' | 'WARN
  * Format conflicts for display
  */
 export function formatConflicts(conflicts: EngineConflict[]): string[] {
+  if (!Array.isArray(conflicts)) return [];
   return conflicts.map((c) => {
     const courtStr = c.courts.map((court) => court.courtId).join(', ');
     const timeStr = `${c.timeRange.start.slice(11, 16)}-${c.timeRange.end.slice(11, 16)}`;

@@ -220,10 +220,7 @@ function validateCapacity(engine: TemporalEngine, plans: DayPlan[]): RuleResult[
     const courts = engine.listCourtMeta();
     // Filter courts by venue if all items target same venue
     const venueIds = new Set(plan.items.map((i) => i.venueId));
-    const relevantCourts =
-      venueIds.size === 1
-        ? courts.filter((c) => c.ref.venueId === [...venueIds][0])
-        : courts;
+    const relevantCourts = venueIds.size === 1 ? courts.filter((c) => c.ref.venueId === [...venueIds][0]) : courts;
     const totalAvailableMinutes = relevantCourts.length * dayLengthMinutes;
 
     if (totalDemandMinutes > totalAvailableMinutes) {
@@ -283,13 +280,11 @@ export function runValidationPipeline(params: ValidationPipelineParams): Validat
     const dayPlan = engine.getDayPlan(day);
     plans = dayPlan ? [dayPlan] : [];
   } else {
-    plans = engine.getAllPlans();
+    plans = engine?.getAllPlans();
   }
 
   // Determine which phases to run
-  const activePhases = phases
-    ? PHASE_ORDER.filter((p) => phases.includes(p))
-    : PHASE_ORDER;
+  const activePhases = phases ? PHASE_ORDER.filter((p) => phases.includes(p)) : PHASE_ORDER;
 
   // Run validators in phase order
   const results: RuleResult[] = [];
