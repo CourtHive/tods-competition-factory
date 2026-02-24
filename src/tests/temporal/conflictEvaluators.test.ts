@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { BLOCK_TYPES, type Block, type BlockMutation, type EngineConfig, type EngineContext } from '@Assemblies/engines/temporal/types';
+import { BLOCK_TYPES, type Block, type BlockMutation, type EngineConfig, type EngineContext } from '@Assemblies/governors/temporalGovernor/types';
 import {
   adjacentBlockEvaluator,
   blockDurationEvaluator,
@@ -19,7 +19,7 @@ import {
   lightingEvaluator,
   maintenanceWindowEvaluator,
   matchWindowEvaluator,
-} from '@Assemblies/engines/temporal/conflictEvaluators';
+} from '@Assemblies/governors/temporalGovernor/conflictEvaluators';
 
 // ============================================================================
 // Test Fixtures

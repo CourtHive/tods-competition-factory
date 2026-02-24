@@ -22,7 +22,7 @@ import {
   type ConflictEvaluator,
   type CourtRef,
   type EngineEvent,
-} from '@Assemblies/engines/temporal/types';
+} from '@Assemblies/governors/temporalGovernor/types';
 
 // ============================================================================
 // Test Fixtures

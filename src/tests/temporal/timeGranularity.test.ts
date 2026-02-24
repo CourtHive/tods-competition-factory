@@ -12,7 +12,7 @@ import {
   snapToGranularity,
   snapIsoToGranularity,
   iterateDayTicks,
-} from '@Assemblies/engines/temporal/timeGranularity';
+} from '@Assemblies/governors/temporalGovernor/timeGranularity';
 import { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
 
 // ============================================================================

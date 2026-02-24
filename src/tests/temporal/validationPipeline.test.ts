@@ -7,8 +7,8 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
-import { runValidationPipeline } from '@Assemblies/engines/temporal/validationPipeline';
-import type { ValidationPhase } from '@Assemblies/engines/temporal/validationPipeline';
+import { runValidationPipeline } from '@Assemblies/governors/temporalGovernor/validationPipeline';
+import type { ValidationPhase } from '@Assemblies/governors/temporalGovernor/validationPipeline';
 
 // ============================================================================
 // Test Fixtures

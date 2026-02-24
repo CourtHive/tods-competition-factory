@@ -17,14 +17,14 @@ import {
   type Block,
   type BlockType,
   type CourtRef,
-} from '@Assemblies/engines/temporal/types';
+} from '@Assemblies/governors/temporalGovernor/types';
 import {
   clampDragToCollisions,
   findBlocksContainingTime,
   intervalsOverlap,
   sortBlocksByStart,
   timeInsideBlock,
-} from '@Assemblies/engines/temporal/collisionDetection';
+} from '@Assemblies/governors/temporalGovernor/collisionDetection';
 
 // ============================================================================
 // Test Fixtures & Helpers

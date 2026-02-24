@@ -14,7 +14,7 @@
 
 import { BLOCK_TYPES, type BlockType, type CourtRef, type VenueDayTimeline, type RailSegment } from './types';
 import { resolveVenueId, resolveCourtId } from './railDerivation';
-import type { TemporalEngine } from './TemporalEngine';
+import type { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
 
 // ============================================================================
 // TODS Type Definitions

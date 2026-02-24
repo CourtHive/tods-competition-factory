@@ -18,14 +18,14 @@ import {
   filterCapacityCurve,
   sampleCapacityCurve,
   compareCapacityCurves,
-} from '@Assemblies/engines/temporal/capacityCurve';
+} from '@Assemblies/governors/temporalGovernor/capacityCurve';
 import {
   BLOCK_TYPES,
   type VenueDayTimeline,
   type RailSegment,
   type BlockType,
   type CourtRef,
-} from '@Assemblies/engines/temporal/types';
+} from '@Assemblies/governors/temporalGovernor/types';
 
 // ============================================================================
 // Test Fixtures & Helpers

@@ -11,7 +11,7 @@
  * - CAPACITY: Demand vs available court-hours
  */
 
-import type { TemporalEngine } from './TemporalEngine';
+import type { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
 import type { DayId } from './types';
 import type { DayPlan } from './planState';
 

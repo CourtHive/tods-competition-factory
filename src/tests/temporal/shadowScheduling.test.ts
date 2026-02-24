@@ -7,7 +7,7 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
-import { BLOCK_TYPES } from '@Assemblies/engines/temporal/types';
+import { BLOCK_TYPES } from '@Assemblies/governors/temporalGovernor/types';
 
 // ============================================================================
 // Test Fixtures

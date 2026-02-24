@@ -10,7 +10,7 @@ import {
   type VenueDayTimeline,
   type RailSegment,
   type BlockType
-} from '@Assemblies/engines/temporal/types';
+} from '@Assemblies/governors/temporalGovernor/types';
 import {
   railsToDateAvailability,
   applyTemporalAvailabilityToTournamentRecord,
@@ -23,7 +23,7 @@ import {
   type TodsDateAvailability,
   type SchedulingSelection,
   type TodsVenue
-} from '@Assemblies/engines/temporal/bridge';
+} from '@Assemblies/governors/temporalGovernor/bridge';
 import { HydratedVenue } from 'tods-competition-factory';
 
 // ============================================================================

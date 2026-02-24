@@ -11,7 +11,7 @@
  */
 
 import { describe, it, expect } from 'vitest';
-import { BLOCK_TYPES, type Block, type BlockType, type EngineConfig, type TimeRange } from '@Assemblies/engines/temporal/types';
+import { BLOCK_TYPES, type Block, type BlockType, type EngineConfig, type TimeRange } from '@Assemblies/governors/temporalGovernor/types';
 import {
   buildDayRange,
   clampToDayRange,
@@ -24,7 +24,7 @@ import {
   rangesOverlap,
   resolveStatus,
   validateSegments,
-} from '@Assemblies/engines/temporal/railDerivation';
+} from '@Assemblies/governors/temporalGovernor/railDerivation';
 
 // ============================================================================
 // Test Fixtures

@@ -11,8 +11,8 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
-import { venueKey, venueDayKey } from '@Assemblies/engines/temporal/railDerivation';
-import { BLOCK_TYPES } from '@Assemblies/engines/temporal/types';
+import { venueKey, venueDayKey } from '@Assemblies/governors/temporalGovernor/railDerivation';
+import { BLOCK_TYPES } from '@Assemblies/governors/temporalGovernor/types';
 
 // ============================================================================
 // Test Fixtures

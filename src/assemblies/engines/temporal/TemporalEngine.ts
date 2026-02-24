@@ -42,7 +42,7 @@ import {
   type SimulationResult,
   type Template,
   type TemplateId,
-} from './types';
+} from '@Assemblies/governors/temporalGovernor/types';
 
 import { extractDate } from '@Tools/dateTime';
 
@@ -54,11 +54,11 @@ import {
   extractDay,
   resolveVenueId,
   resolveCourtId,
-} from './railDerivation';
+} from '@Assemblies/governors/temporalGovernor/railDerivation';
 
-import { generateCapacityCurve } from './capacityCurve';
+import { generateCapacityCurve } from '@Assemblies/governors/temporalGovernor/capacityCurve';
 
-import { type PlanItem, type DayPlan, computePlanItemId } from './planState';
+import { type PlanItem, type DayPlan, computePlanItemId } from '@Assemblies/governors/temporalGovernor/planState';
 
 // ============================================================================
 // Temporal Engine Class
@@ -1028,7 +1028,7 @@ export class TemporalEngine {
    */
   private evaluateConflicts(mutations: BlockMutation[]) {
     const ctx = this.createContext();
-    const allConflicts: import('./types').EngineConflict[] = [];
+    const allConflicts: import('@Assemblies/governors/temporalGovernor/types').EngineConflict[] = [];
 
     for (const evaluator of this.config.conflictEvaluators || []) {
       try {

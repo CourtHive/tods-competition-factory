@@ -13,8 +13,8 @@
 
 import { describe, it, expect, beforeEach } from 'vitest';
 import { TemporalEngine } from '@Assemblies/engines/temporal/TemporalEngine';
-import { computePlanItemId, type PlanItem, type DayPlan } from '@Assemblies/engines/temporal/planState';
-import type { EngineEvent } from '@Assemblies/engines/temporal/types';
+import { computePlanItemId, type PlanItem, type DayPlan } from '@Assemblies/governors/temporalGovernor/planState';
+import type { EngineEvent } from '@Assemblies/governors/temporalGovernor/types';
 
 // ============================================================================
 // Test Fixtures
