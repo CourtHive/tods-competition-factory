@@ -6,6 +6,7 @@ import { getSchedulingProfile } from '@Mutate/tournaments/schedulingProfile';
 import { getVenuesAndCourts } from '../venues/venuesAndCourtsGetter';
 import { getCompetitionMatchUps } from './getCompetitionMatchUps';
 import { isVisiblyPublished } from '@Query/publishing/isEmbargoed';
+import { isConvertableInteger } from '@Tools/math';
 import { getTournamentId } from '@Global/state/globalState';
 
 // constants and types
@@ -189,6 +190,30 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
           !unpublishedStructureIds.includes(structureId) &&
           !publishedStructureIds.length
         );
+      }
+
+      return true;
+    });
+  }
+
+  if (detailsMap && usePublishState) {
+    relevantMatchUps = relevantMatchUps.filter((matchUp) => {
+      const { drawId, structureId, roundNumber } = matchUp;
+      if (!isConvertableInteger(roundNumber)) return true;
+
+      const structureDetail = detailsMap[drawId]?.structureDetails?.[structureId];
+      if (!structureDetail) return true;
+
+      const { scheduledRounds, roundLimit } = structureDetail;
+
+      // roundLimit is always the ceiling
+      if (isConvertableInteger(roundLimit) && roundNumber > roundLimit) return false;
+
+      // scheduledRounds provides per-round control within the ceiling
+      if (scheduledRounds) {
+        const roundDetail = scheduledRounds[roundNumber];
+        if (!roundDetail) return false; // round not in scheduledRounds → hidden
+        return isVisiblyPublished(roundDetail);
       }
 
       return true;

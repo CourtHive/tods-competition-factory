@@ -83,7 +83,18 @@ module.exports = {
             'concepts/scheduling-conflicts',
           ],
         },
-        'concepts/publishing',
+        {
+          Publishing: [
+            'concepts/publishing/publishing-overview',
+            'concepts/publishing/publishing-events',
+            'concepts/publishing/publishing-seeding',
+            'concepts/publishing/publishing-order-of-play',
+            'concepts/publishing/publishing-participants',
+            'concepts/publishing/publishing-embargo',
+            'concepts/publishing/publishing-data-subscriptions',
+            'concepts/publishing/publishing-workflows',
+          ],
+        },
       ],
     },
     {

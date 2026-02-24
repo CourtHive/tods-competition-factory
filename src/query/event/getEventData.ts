@@ -6,6 +6,7 @@ import { getDrawData } from '@Query/drawDefinition/getDrawData';
 import { getVenueData } from '@Query/venues/getVenueData';
 import { findExtension } from '@Acquire/findExtension';
 import { isConvertableInteger } from '@Tools/math';
+import { AD_HOC } from '@Constants/drawDefinitionConstants';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import { generateRange } from '@Tools/arrays';
 import { findEvent } from '@Acquire/findEvent';
@@ -109,8 +110,9 @@ export function getEventData(params: GetEventDataArgs): {
     return true;
   };
 
-  const roundLimitMapper = ({ drawId, structure }) => {
+  const roundLimitMapper = ({ drawId, drawType, structure }) => {
     if (!usePublishState) return structure;
+    if (drawType !== AD_HOC) return structure;
     const roundLimit = publishStatus?.drawDetails?.[drawId]?.structureDetails?.[structure.structureId]?.roundLimit;
     if (isConvertableInteger(roundLimit)) {
       const roundNumbers = generateRange(1, roundLimit + 1);
@@ -168,7 +170,7 @@ export function getEventData(params: GetEventDataArgs): {
                   structureFilter({ structureId, drawId: drawData.drawId }) &&
                   stageFilter({ stage, drawId: drawData.drawId }),
               )
-              .map((structure) => roundLimitMapper({ drawId: drawData.drawId, structure }));
+              .map((structure) => roundLimitMapper({ drawId: drawData.drawId, drawType: drawData.drawType, structure }));
             return {
               ...drawData,
               structures: filteredStructures,

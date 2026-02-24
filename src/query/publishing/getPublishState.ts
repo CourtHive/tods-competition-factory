@@ -150,6 +150,18 @@ export function getPublishState(params: GetPublishStateArgs): ResultType & { pub
             embargoActive: isEmbargoed(structureDetail),
           });
         }
+        if (structureDetail?.scheduledRounds) {
+          for (const [roundNumber, roundDetail] of Object.entries(structureDetail.scheduledRounds) as [string, any][]) {
+            if (roundDetail?.embargo) {
+              embargoes.push({
+                type: 'scheduledRound',
+                id: `${structureId}:round${roundNumber}`,
+                embargo: roundDetail.embargo,
+                embargoActive: isEmbargoed(roundDetail),
+              });
+            }
+          }
+        }
       }
     }
   }

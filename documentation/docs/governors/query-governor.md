@@ -57,7 +57,7 @@ const allPositionsFilled = engine.allPlayoffPositionsFilled({
 
 ## allTournamentMatchUps
 
-Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**. See examples in [Extension Hydration](../concepts/extensions.md#extension-hydration), [Clear Separation](../concepts/publishing.md#clear-separation), [Clear Separation](../concepts/publishing.md#clear-separation), [MatchUp Time Items](../concepts/timeItems.md#matchup-time-items), [Example Usage](../concepts/matchup-overview.md#example-usage), and 2 more.
+Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**. See examples in [Extension Hydration](../concepts/extensions.md#extension-hydration), [Clear Separation](../concepts/publishing/publishing-workflows.md#clear-separation), [Clear Separation](../concepts/publishing/publishing-workflows.md#clear-separation), [MatchUp Time Items](../concepts/timeItems.md#matchup-time-items), [Example Usage](../concepts/matchup-overview.md#example-usage), and 2 more.
 
 ```js
 const { matchUps, groupInfo } = engine.allTournamentMatchUps({
@@ -78,7 +78,7 @@ const { matchUps, groupInfo } = engine.allTournamentMatchUps({
 const matchUpFilters = {
   isMatchUpTie: false,
   scheduledDate, // scheduled date of matchUps to return
-};. See examples: [Querying Published Schedules](../concepts/publishing.md#querying-published-schedules), [Competition Schedule](../concepts/publishing.md#competition-schedule).
+};. See examples: [Querying Published Schedules](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules), [Competition Schedule](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules).
 
 const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues, participants } =
   engine.competitionScheduleMatchUps({
@@ -89,11 +89,20 @@ const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, ve
     withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
     minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
     sortDateMatchUps, // boolean boolean - optional - defaults to `true`
-    usePublishState, // boolean - when true filter out events and dates that have not been published
+    usePublishState, // boolean - when true filter out events and dates that have not been published; enforces embargo timestamps
     matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
     sortCourtsData, // boolean - optional
   });
 ```
+
+When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at all levels:
+- **Order of Play embargo**: returns empty `dateMatchUps` if the order of play embargo has not passed
+- **Draw embargo**: filters out matchUps from embargoed draws
+- **Stage embargo**: filters out matchUps from embargoed stages
+- **Structure embargo**: filters out matchUps from embargoed structures
+- **Round-level filtering**: `roundLimit` on a structure caps which rounds appear in the schedule (for all draw types). `scheduledRounds` provides per-round publish/embargo control within the ceiling set by `roundLimit`. See [Scheduled Rounds](../concepts/publishing/publishing-embargo#scheduled-rounds).
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
 
 ---
 
@@ -455,7 +464,7 @@ const { events } = engine.getEvents({
 
 ## getEventData
 
-Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`. See examples: [Event Data Payload](../concepts/publishing.md#event-data-payload), [Event Data](../concepts/publishing.md#event-data), [Test Publish State](../concepts/publishing.md#test-publish-state).
+Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`. See examples: [Event Data Payload](../concepts/publishing/publishing-data-subscriptions.md#event-data-payload), [Event Data](../concepts/publishing/publishing-workflows.md#event-data), [Test Publish State](../concepts/publishing/publishing-workflows.md#test-publish-state).
 
 See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
@@ -464,12 +473,16 @@ const { eventData } = engine.getEventData({
   allParticipantResults, // optional boolean; include round statistics per structure even for elimination structures
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   policyDefinitions, // optional
-  usePublishState, // optional - filter out draws which are not published
+  usePublishState, // optional - filter out draws which are not published; enforces embargo timestamps
   contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
   eventId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
+
+When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps — embargoed draws, stages, and structures are filtered from `drawsData` until the embargo passes.
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
 
 ---
 
@@ -788,7 +801,7 @@ const { participantResults } = engine.getParticipantResults({
 
 ## getParticipants
 
-Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward. See examples in [Basic Retrieval](../concepts/participants.md#basic-retrieval), [Participants](../concepts/publishing.md#participants), [withMatchUps](../concepts/participant-context.md#withmatchups), [Participant Filtering](../concepts/accessors.mdx#participant-filtering), [Basic Conflict Detection](../concepts/scheduling-conflicts.mdx#basic-conflict-detection), and 1 more.
+Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward. See examples in [Basic Retrieval](../concepts/participants.md#basic-retrieval), [Participants](../concepts/publishing/publishing-participants.md), [withMatchUps](../concepts/participant-context.md#withmatchups), [Participant Filtering](../concepts/accessors.mdx#participant-filtering), [Basic Conflict Detection](../concepts/scheduling-conflicts.mdx#basic-conflict-detection), and 1 more.
 
 ```js
 const participantFilters = {
