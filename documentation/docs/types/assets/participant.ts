@@ -8,7 +8,7 @@ export const participant = {
   participantName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   participantOtherName: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   participantRole:
-    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. COMPETITOR, OFFICIAL, COACH\\"}',
+    '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\",\\"note\\":\\"ADMINISTRATION, CAPTAIN, COACH, COMPETITOR, DIRECTOR, HOSPITALITY, MEDIA, MEDICAL, OFFICIAL, OTHER, SECURITY, STRINGER, SUPERVISOR, TRANSPORT, VOLUNTEER\\"}',
   participantRoleResponsibilities: '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   participantStatus: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"false\\"}',
   participantType:
