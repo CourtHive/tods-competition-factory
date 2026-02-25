@@ -60,7 +60,7 @@ module.exports = {
           ],
         },
         {
-          Draws: ['concepts/draws-overview', 'concepts/draw-types', 'concepts/actions'],
+          Draws: ['concepts/draws-overview', 'concepts/draw-types', 'concepts/finishing-positions', 'concepts/actions'],
         },
         {
           matchUps: [

@@ -63,7 +63,7 @@ See [Profile Selection](/docs/scale-engine/ranking-points-pipeline#profile-selec
 
 ### getAwardPoints
 
-Resolves a position value object into numeric points.
+Resolves a position value object into numeric points. The `accessor` is derived from [`finishingPositionRange`](/docs/concepts/finishing-positions#accessor).
 
 ```js
 const { awardPoints, requireWin } = rankingGovernor.getAwardPoints({

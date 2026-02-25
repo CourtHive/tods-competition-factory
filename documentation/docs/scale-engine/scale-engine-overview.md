@@ -97,9 +97,9 @@ The engine holds tournament state via `setState()`. All ranking methods access p
 The core pipeline for computing tournament ranking points:
 
 1. **Policy resolution** — Find attached or provided [ranking policy](/docs/policies/rankingPolicy)
-2. **Participant hydration** — `getParticipants({ withRankingProfile: true })` provides `structureParticipation` with `finishingPositionRange`, `winCount`, draw metadata
+2. **Participant hydration** — `getParticipants({ withRankingProfile: true })` provides `structureParticipation` with [`finishingPositionRange`](/docs/concepts/finishing-positions), `winCount`, draw metadata
 3. **Profile selection** — [getAwardProfile](/docs/scale-engine/ranking-points-pipeline#profile-selection) matches each participation against `awardProfiles` using specificity scoring
-4. **Position points** — `finishingPositionRanges[accessor]` resolved via `Math.max(finishingPositionRange)`
+4. **Position points** — `finishingPositionRanges[accessor]` resolved via [`Math.max(finishingPositionRange)`](/docs/concepts/finishing-positions#accessor)
 5. **Per-win points** — Accumulated from `pointsPerWin` or level-keyed `perWinPoints`, subject to `maxCountableMatches`
 6. **Bonus points** — Champion/finalist bonus from `bonusPoints` config
 7. **Quality win points** — Bonus for beating ranked opponents (see [Quality Win Points](/docs/scale-engine/quality-win-points))

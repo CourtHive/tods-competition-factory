@@ -8,7 +8,7 @@ title: drawEngine API
 
 ```js
 addFinishingRounds({
-  finishingPositionOffset = 0, // required for sub-structures; e.g. consolation fed from R32 would have { finishingPositionOffset: 16 }
+  finishingPositionOffset = 0, // required for sub-structures; e.g. consolation fed from R32 would have { finishingPositionOffset: 16 } — see Finishing Positions concept
   roundLimit, // for qualifying, offset the final round so that qualifyinground is finishingRound
   matchUps, // required - matchUps belonging to a single structure
 });

@@ -84,7 +84,9 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 });
 ```
 
-#### Round Robin with Playoffs
+#### Round Robin with Playoffs {#round-robin-with-playoffs}
+
+The `finishingPositions` array in each playoff group determines which group finishers advance to that bracket. See [Finishing Positions](./finishing-positions) for how these map to overall draw positions and ranking points.
 
 ```js
 
@@ -98,8 +100,8 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   structureOptions: {
     groupSize: 4,
     playoffGroups: [
-      { finishingPositions: [1], structureName: 'Gold Flight', drawType: 'SINGLE_ELIMINATION' },
-      { finishingPositions: [2], structureName: 'Silver Flight', drawType: 'SINGLE_ELIMINATION' },
+      { finishingPositions: [1], structureName: 'Gold Flight', drawType: 'SINGLE_ELIMINATION' }, // group winners
+      { finishingPositions: [2], structureName: 'Silver Flight', drawType: 'SINGLE_ELIMINATION' }, // group runners-up
     ],
   },
   automated: true,

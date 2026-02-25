@@ -148,7 +148,7 @@ Main Draw Structure (32 positions):
 
 ## How Links Work
 
-Links define the flow of participants between structures. Each link specifies:
+Links define the flow of participants between structures and determine [finishing positions](./finishing-positions) for ranking point calculations. Each link specifies:
 
 ### Link Structure
 

@@ -82,13 +82,15 @@ Round details help understand match position in draw:
   // For team events
   roundOrder: 1,
 
-  // Playoff rounds (consolation/playoff structures)
+  // Finishing position ranges (see Finishing Positions concept)
   finishingPositionRange: {
     winner: [9, 16],
     loser: [17, 32]
   }
 }
 ```
+
+See [Finishing Positions](./finishing-positions) for a full explanation of how `finishingPositionRange` is computed across draw types and how the accessor maps to ranking policy keys.
 
 ### Scheduling Context
 
