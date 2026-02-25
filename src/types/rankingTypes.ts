@@ -345,6 +345,30 @@ export interface CountingBucket {
 
   /** Optional level filter — only include results from these levels */
   levels?: number[];
+
+  /**
+   * Mandatory counting rules. Results from mandatory levels always count,
+   * even if they are worse than optional results. Mandatory results fill
+   * bestOfCount slots first; remaining slots are filled with the best
+   * optional results. If mandatory results exceed bestOfCount, all
+   * mandatory results still count (mandatory takes priority).
+   */
+  mandatoryRules?: MandatoryRule[];
+}
+
+/**
+ * Defines a set of tournament levels whose results must always count
+ * toward a participant's ranking, regardless of point value.
+ */
+export interface MandatoryRule {
+  /** Human-readable label (e.g., 'Grand Slams', 'ATP 1000') */
+  ruleName?: string;
+
+  /** Tournament levels that are mandatory under this rule */
+  levels: number[];
+
+  /** If set, only the best N results from these levels count; otherwise all count */
+  bestOfCount?: number;
 }
 
 export type PointComponent = 'positionPoints' | 'perWinPoints' | 'bonusPoints' | 'qualityWinPoints';

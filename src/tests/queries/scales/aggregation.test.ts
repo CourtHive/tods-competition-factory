@@ -302,3 +302,284 @@ describe('getParticipantPoints', () => {
     expect(result.totalPoints).toEqual(800); // 500 + 300
   });
 });
+
+describe('mandatory counting', () => {
+  it('mandatory level results count even when worse than optional results', () => {
+    // Player has: 4 high-scoring L5 results + 1 low-scoring L1 (Grand Slam) result
+    // bestOfCount=4, mandatory L1 means the GS result must count even though it's the worst
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 300, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 200, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }), // GS first-round loss
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 4,
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1] }],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // Mandatory: 10 (L1). Optional fill: best 3 from remaining = 500 + 400 + 300 = 1200
+    // Total = 10 + 1200 = 1210
+    expect(p1?.totalPoints).toEqual(1210);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(4);
+    // The 200-pt L5 result should be dropped
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(1);
+  });
+
+  it('mandatory with bestOfCount on rule — only best N from mandatory levels count', () => {
+    // 3 GS results but rule says best 2 mandatory
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 2000, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 100, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 4,
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1], bestOfCount: 2 }],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // Mandatory: best 2 of L1 = 2000 + 100 = 2100
+    // Optional fill: 2 slots left, best from remaining = 500 + 400 = 900
+    // (the 10-pt L1 result is NOT mandatory since rule.bestOfCount=2)
+    // Total = 2100 + 900 = 3000
+    expect(p1?.totalPoints).toEqual(3000);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(4);
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(1);
+  });
+
+  it('multiple mandatory rules targeting different level groups', () => {
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }),   // GS
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 50, level: 3 }),   // ATP 1000
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),  // ATP 500
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),  // ATP 500
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 300, level: 7 }),  // ATP 250
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 4,
+            mandatoryRules: [
+              { ruleName: 'Grand Slams', levels: [1] },
+              { ruleName: 'ATP 1000', levels: [3] },
+            ],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // Mandatory: 10 (L1) + 50 (L3) = 60
+    // Optional fill: 2 slots = 500 + 400 = 900
+    // Total = 60 + 900 = 960
+    expect(p1?.totalPoints).toEqual(960);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(4);
+  });
+
+  it('mandatory results count even if total exceeds bestOfCount', () => {
+    // 5 mandatory results but bestOfCount=3 — all 5 mandatory still count
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 100, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 90, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 80, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 70, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 60, level: 1 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 3,
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1] }],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // All 5 mandatory results count (exceeds bestOfCount=3)
+    // No optional slots left (5 > 3)
+    // Total = 100+90+80+70+60 = 400
+    expect(p1?.totalPoints).toEqual(400);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(5);
+    // The 500-pt L5 result is dropped because mandatory fills all slots
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(1);
+  });
+
+  it('falls back to standard bestOfCount when no mandatory results present', () => {
+    // All results are from non-mandatory levels
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 300, level: 7 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 200, level: 7 }),
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 3,
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1] }],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // No mandatory results → standard best 3: 500+400+300 = 1200
+    expect(p1?.totalPoints).toEqual(1200);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(3);
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(1);
+  });
+
+  it('applies both mandatory and maxResultsPerLevel correctly', () => {
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }),   // GS mandatory
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 300, level: 7 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 250, level: 7 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 200, level: 7 }), // capped by maxPerLevel
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 4,
+            maxResultsPerLevel: { 7: 2 },
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1] }],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // maxResultsPerLevel caps L7 to 2 (300+250), drops 200
+    // After cap: [400(L5), 300(L7), 250(L7), 10(L1)]
+    // Mandatory: 10 (L1)
+    // Optional fill: 3 slots = 400 + 300 + 250 = 950
+    // Total = 10 + 950 = 960
+    expect(p1?.totalPoints).toEqual(960);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(4);
+    // 200 (L7 level-capped)
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(1);
+  });
+
+  it('getParticipantPoints respects mandatory rules', () => {
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }),   // GS mandatory
+      makeAward({ personId: 'p2', eventType: SINGLES, positionPoints: 900, level: 5 }),
+    ];
+
+    const result = getParticipantPoints({
+      pointAwards: awards,
+      personId: 'p1',
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 2,
+            mandatoryRules: [{ ruleName: 'Grand Slams', levels: [1] }],
+          },
+        ],
+      },
+    });
+
+    // Mandatory: 10 (L1). Optional fill: 1 slot = 500. Total = 510
+    expect(result.totalPoints).toEqual(510);
+    expect(result.buckets[0].countingResults.length).toEqual(2);
+    expect(result.buckets[0].droppedResults.length).toEqual(1);
+  });
+
+  it('mixed mandatory and optional — correct slot filling', () => {
+    // bestOfCount=6, 2 mandatory GS + 1 mandatory ATP1000 = 3 mandatory, 3 optional slots
+    const awards = [
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 2000, level: 1 }),  // GS W
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 10, level: 1 }),    // GS R128
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 50, level: 3 }),    // ATP 1000
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 500, level: 5 }),   // ATP 500
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 400, level: 5 }),   // ATP 500
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 300, level: 7 }),   // ATP 250
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 200, level: 7 }),   // ATP 250
+      makeAward({ personId: 'p1', eventType: SINGLES, positionPoints: 100, level: 7 }),   // ATP 250
+    ];
+
+    const result = generateRankingList({
+      pointAwards: awards,
+      aggregationRules: {
+        countingBuckets: [
+          {
+            bucketName: 'Singles',
+            eventTypes: [SINGLES],
+            pointComponents: ['positionPoints'],
+            bestOfCount: 6,
+            mandatoryRules: [
+              { ruleName: 'Grand Slams', levels: [1] },
+              { ruleName: 'ATP 1000', levels: [3] },
+            ],
+          },
+        ],
+      },
+    });
+
+    const p1 = result.find((e) => e.personId === 'p1');
+    // Mandatory: 2000(L1) + 10(L1) + 50(L3) = 2060 (3 results)
+    // Optional fill: 3 slots → best 3 from [500, 400, 300, 200, 100] = 500+400+300 = 1200
+    // Total = 2060 + 1200 = 3260
+    expect(p1?.totalPoints).toEqual(3260);
+    expect(p1?.bucketBreakdown?.[0].countingResults.length).toEqual(6);
+    expect(p1?.bucketBreakdown?.[0].droppedResults.length).toEqual(2);
+  });
+});
