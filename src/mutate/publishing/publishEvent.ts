@@ -15,7 +15,13 @@ import { PUBLISH_EVENT } from '@Constants/topicConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 
+export type ScheduledRoundDetail = {
+  published?: boolean;
+  embargo?: string;
+};
+
 export type PublishingDetail = {
+  scheduledRounds?: { [roundNumber: number]: ScheduledRoundDetail };
   roundLimit?: number; // only applicable to structureDetails
   published?: boolean;
   embargo?: string;

@@ -188,5 +188,5 @@ Continue to the [Participants](./participants.md) page to see how TMX manages to
 
 - [Competition Factory Engines](../engines/engine-methods.md)
 - [CourtHive Components](https://courthive.github.io/courthive-components/)
-- [Publishing Concepts](../concepts/publishing.md)
+- [Publishing Concepts](../concepts/publishing/publishing-overview.md)
 - [State Management](../engines/state-engines.mdx)

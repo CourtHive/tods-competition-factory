@@ -382,14 +382,26 @@ const { updatedLimits } = engine.getMatchUpDailyLimitsUpdate({
 
 ## getMatchUpDependencies
 
-Returns matchUps that must complete before a target matchUp.
+Builds a directed acyclic graph (DAG) of matchUp dependencies across all structures and draws. Returns the complete transitive closure of upstream matchUpIds, direct downstream dependents, optional participant tracking, and cross-structure POSITION link dependencies (e.g., Round Robin → Playoff).
+
+Used internally by the [automated scheduling](../concepts/automated-scheduling) pipeline to enforce dependency ordering, recovery time, and participant conflict constraints. Also used by the `DependencyAdapter` pattern in `courthive-components` for interactive [scheduling profile](../concepts/scheduling-profile) validation.
 
 ```js
-const { dependencies } = engine.getMatchUpDependencies({
-  matchUpId, // required
-  drawId, // required
+const {
+  matchUpDependencies, // Record<matchUpId, { matchUpIds, dependentMatchUpIds, participantIds, sources }>
+  sourceMatchUpIds,    // Record<matchUpId, string[]> — direct feeder matchUpIds
+  positionDependencies,// Record<structureId, string[]> — cross-structure POSITION link deps
+  matchUps,            // HydratedMatchUp[] — the matchUps used for analysis
+} = engine.getMatchUpDependencies({
+  includeParticipantDependencies, // optional boolean (default false)
+  drawDefinition, // optional — scope to a single draw
+  matchUps,       // optional — pre-fetched inContext matchUps
+  matchUpIds,     // optional — restrict to specific matchUpIds
+  drawIds,        // optional — restrict to specific drawIds
 });
 ```
+
+For full documentation including return value details, cross-structure awareness, scheduling integration, and the DependencyAdapter pattern, see [getMatchUpDependencies in the Query Governor](./query-governor#getmatchupdependencies).
 
 ---
 

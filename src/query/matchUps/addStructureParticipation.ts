@@ -6,9 +6,11 @@ import type { ParticipantMap } from '@Types/factoryTypes';
 
 export function addStructureParticipation({
   finishingPositionRange: matchUpFinishingPositionRanges = { winner: [], loser: [] },
+  collectionPosition,
   participantMap,
   finishingRound,
   participantWon,
+  collectionId,
   matchUpStatus,
   participantId,
   stageSequence,
@@ -21,7 +23,9 @@ export function addStructureParticipation({
   finishingPositionRange?: MatchUpFinishingPositionRange;
   matchUpStatus?: MatchUpStatusUnion;
   participantMap: ParticipantMap;
+  collectionPosition?: number;
   participantWon: boolean;
+  collectionId?: string;
   stageSequence?: number;
   finishingRound?: number;
   stage?: StageTypeUnion;
@@ -78,5 +82,16 @@ export function addStructureParticipation({
       // participant won the structure
       structureParticipation.participantWon = participantWon;
     }
+  }
+
+  if (collectionPosition) {
+    if (!structureParticipation.lineParticipation) {
+      structureParticipation.lineParticipation = [];
+    }
+    structureParticipation.lineParticipation.push({
+      collectionPosition,
+      collectionId,
+      won: participantWon,
+    });
   }
 }

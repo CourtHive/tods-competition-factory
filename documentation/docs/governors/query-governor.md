@@ -57,7 +57,7 @@ const allPositionsFilled = engine.allPlayoffPositionsFilled({
 
 ## allTournamentMatchUps
 
-Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**. See examples in [Extension Hydration](../concepts/extensions.md#extension-hydration), [Clear Separation](../concepts/publishing.md#clear-separation), [Clear Separation](../concepts/publishing.md#clear-separation), [MatchUp Time Items](../concepts/timeItems.md#matchup-time-items), [Example Usage](../concepts/matchup-overview.md#example-usage), and 2 more.
+Return an array of all matchUps contained within a tournament. These matchUps are returned **inContext**. See examples in [Extension Hydration](../concepts/extensions.md#extension-hydration), [Clear Separation](../concepts/publishing/publishing-workflows.md#clear-separation), [Clear Separation](../concepts/publishing/publishing-workflows.md#clear-separation), [MatchUp Time Items](../concepts/timeItems.md#matchup-time-items), [Example Usage](../concepts/matchup-overview.md#example-usage), and 2 more.
 
 ```js
 const { matchUps, groupInfo } = engine.allTournamentMatchUps({
@@ -78,7 +78,7 @@ const { matchUps, groupInfo } = engine.allTournamentMatchUps({
 const matchUpFilters = {
   isMatchUpTie: false,
   scheduledDate, // scheduled date of matchUps to return
-};. See examples: [Querying Published Schedules](../concepts/publishing.md#querying-published-schedules), [Competition Schedule](../concepts/publishing.md#competition-schedule).
+};. See examples: [Querying Published Schedules](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules), [Competition Schedule](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules).
 
 const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues, participants } =
   engine.competitionScheduleMatchUps({
@@ -89,11 +89,20 @@ const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, ve
     withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
     minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
     sortDateMatchUps, // boolean boolean - optional - defaults to `true`
-    usePublishState, // boolean - when true filter out events and dates that have not been published
+    usePublishState, // boolean - when true filter out events and dates that have not been published; enforces embargo timestamps
     matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
     sortCourtsData, // boolean - optional
   });
 ```
+
+When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at all levels:
+- **Order of Play embargo**: returns empty `dateMatchUps` if the order of play embargo has not passed
+- **Draw embargo**: filters out matchUps from embargoed draws
+- **Stage embargo**: filters out matchUps from embargoed stages
+- **Structure embargo**: filters out matchUps from embargoed structures
+- **Round-level filtering**: `roundLimit` on a structure caps which rounds appear in the schedule (for all draw types). `scheduledRounds` provides per-round publish/embargo control within the ceiling set by `roundLimit`. See [Scheduled Rounds](../concepts/publishing/publishing-embargo#scheduled-rounds).
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
 
 ---
 
@@ -455,7 +464,7 @@ const { events } = engine.getEvents({
 
 ## getEventData
 
-Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`. See examples: [Event Data Payload](../concepts/publishing.md#event-data-payload), [Event Data](../concepts/publishing.md#event-data), [Test Publish State](../concepts/publishing.md#test-publish-state).
+Returns event information optimized for publishing: `matchUps` have context and separated into rounds for consumption by visualization libraries such as `tods-react-draws`. See examples: [Event Data Payload](../concepts/publishing/publishing-data-subscriptions.md#event-data-payload), [Event Data](../concepts/publishing/publishing-workflows.md#event-data), [Test Publish State](../concepts/publishing/publishing-workflows.md#test-publish-state).
 
 See [Policies](../concepts/policies) for more details on `policyDefinitions`.
 
@@ -464,12 +473,16 @@ const { eventData } = engine.getEventData({
   allParticipantResults, // optional boolean; include round statistics per structure even for elimination structures
   participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
   policyDefinitions, // optional
-  usePublishState, // optional - filter out draws which are not published
+  usePublishState, // optional - filter out draws which are not published; enforces embargo timestamps
   contextProfile, // optional: { inferGender: true, withCompetitiveness: true, withScaleValues: true, exclude: ['attribute', 'to', 'exclude']}
   eventId,
 });
 const { drawsData, venuesData, eventInfo, tournamentInfo } = eventData;
 ```
+
+When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps — embargoed draws, stages, and structures are filtered from `drawsData` until the embargo passes.
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
 
 ---
 
@@ -587,25 +600,153 @@ const { matchUpId, drawId, eventId, structureId, tournamentId } = engine.getMatc
 
 ## getMatchUpDependencies
 
-For each `matchUpId` returns an array of other `matchUpIds` which occur earlier in the draw.
+Builds a directed acyclic graph (DAG) of matchUp dependencies across all structures within a draw or across all draws in a tournament/competition. For every `matchUpId` the result contains the complete set of upstream matchUps that must finish first, downstream matchUps that depend on this one, optional participant tracking, and source information grouped by round distance.
 
-Optionally returns an array of `participantIds` which could potentially appear in each `matchUp`;
-used internally to ensure that auto scheduling respects the `timeAfterRecovery` of all potential participants.
+This is the factory's authoritative source for scheduling constraint data and is used internally by all automated scheduling paths.
+
+### Parameters
+
+```js
+const result = engine.getMatchUpDependencies({
+  includeParticipantDependencies, // optional boolean (default false) — when true, accumulates
+                                  // all potential participantIds for each matchUp transitively
+  drawDefinition, // optional — scope to a single draw definition
+  matchUps,       // optional — pre-fetched matchUps (must be inContext); avoids re-fetching
+  matchUpIds,     // optional — restrict dependency checking to specific matchUpIds
+  drawIds,        // optional — restrict to specific drawIds
+});
+```
+
+When called via a competition engine, `tournamentRecords` is supplied automatically. When calling the governor directly, pass either `tournamentRecord` or `tournamentRecords`.
+
+### Return Value
 
 ```js
 const {
-  matchUpDependencies: {
-    [matchUpId]: {
-      matchUpIds: [matchUpIdDependency], // array of all matchUpIds which occur prior to this matchUpId in the draw; crosses all structures
-      participantIds: [potentialParticipantIds], // array of all participantIds which could potentially appear in this matchUp
-      dependentMatchUpIds: [dependentMatchUpId], // array of matchUpIds which occur after this matchUpId in the draw; crosses all structures
-    },
-  },
-} = engine.getMatchUpDependencies({
-  includeParticipantDependencies, // boolean - defaults to false
-  drawIds, // optional array of drawIds to scope the analysis
-});
+  matchUpDependencies, // Record<matchUpId, DependencyEntry>
+  sourceMatchUpIds,    // Record<matchUpId, string[]> — direct feeder matchUpIds (non-transitive)
+  positionDependencies,// Record<structureId, string[]> — cross-structure POSITION link dependencies
+  matchUps,            // HydratedMatchUp[] — the matchUps used for analysis
+  success,             // boolean
+} = result;
 ```
+
+#### DependencyEntry
+
+Each entry in `matchUpDependencies` has the following shape:
+
+```js
+matchUpDependencies[matchUpId] = {
+  matchUpIds: string[],           // transitive closure of ALL upstream matchUpIds
+  dependentMatchUpIds: string[],  // direct downstream matchUpIds (matchUps that depend on this one)
+  participantIds: string[],       // all potential participantIds (when includeParticipantDependencies is true)
+  sources: string[][],            // upstream matchUpIds grouped by round distance:
+                                  //   sources[0] = direct feeders (1 round back)
+                                  //   sources[1] = 2 rounds back
+                                  //   sources[2] = 3 rounds back, etc.
+};
+```
+
+#### sourceMatchUpIds vs matchUpIds
+
+- `sourceMatchUpIds[matchUpId]` contains only the **direct** feeder matchUpIds (the two matchUps whose winner/loser feeds into this one)
+- `matchUpDependencies[matchUpId].matchUpIds` contains the **complete transitive closure** — every matchUp in the entire upstream chain
+
+#### positionDependencies
+
+For draws that use **POSITION links** (e.g., Round Robin → Playoff, Swiss → Playoff), `positionDependencies` maps a source `structureId` to all `matchUpIds` within that structure. This captures the constraint that _every_ matchUp in the source structure must complete before _any_ matchUp in the linked target structure can begin.
+
+```js
+positionDependencies = {
+  [sourceStructureId]: [matchUpId1, matchUpId2, ...], // all matchUpIds in the source structure
+};
+```
+
+### Cross-Structure Awareness
+
+`getMatchUpDependencies` follows **all** draw link types:
+
+| Link Type | How It's Captured |
+|---|---|
+| **Winner progression** (elimination draws) | `winnerMatchUpId` on each matchUp |
+| **Loser progression** (consolation, compass, feed-in) | `loserMatchUpId` on each matchUp |
+| **POSITION links** (RR → Playoff, Swiss → Playoff) | `positionDependencies` — all matchUps in the source structure become dependencies of every matchUp in the target structure |
+
+This means a consolation Round 1 matchUp will correctly list the main draw Round 1 matchUp it depends on (via `loserMatchUpId`), and a playoff matchUp after a Round Robin will list every RR group matchUp as a dependency.
+
+### Usage Example
+
+```js
+const {
+  matchUpDependencies,
+  sourceMatchUpIds,
+  positionDependencies,
+} = engine.getMatchUpDependencies({
+  includeParticipantDependencies: true,
+});
+
+// Check what must complete before a specific matchUp
+const deps = matchUpDependencies[targetMatchUpId];
+console.log(`${deps.matchUpIds.length} upstream matchUps must complete first`);
+console.log(`${deps.participantIds.length} potential participants`);
+
+// Check direct feeders only
+const feeders = sourceMatchUpIds[targetMatchUpId];
+console.log(`${feeders.length} direct feeder matchUps`);
+
+// Check round distance
+const oneRoundBack = deps.sources[0]; // direct feeders
+const twoRoundsBack = deps.sources[1]; // feeders of feeders
+```
+
+### Role in Automated Scheduling
+
+`getMatchUpDependencies` is the foundation of the factory's scheduling constraint enforcement. The [automated scheduling](../concepts/automated-scheduling) pipeline calls it early in the process (step 2 of [scheduleProfileRounds](../concepts/automated-scheduling#pseudocode)) and threads the dependency data through four constraint functions:
+
+| Function | Constraint | Uses |
+|---|---|---|
+| `checkDependenciesScheduled` | **Gate**: all upstream matchUps must already be scheduled before this one can be assigned a time | `matchUpIds` (transitive closure) |
+| `checkDependentTiming` | **Gate**: scheduling this matchUp must not create a timing conflict with already-scheduled downstream matchUps | `dependentMatchUpIds` |
+| `checkRecoveryTime` | **Gate**: every potential participant must have sufficient rest (`timeAfterRecovery`) since their last scheduled matchUp | `participantIds` |
+| `updateTimeAfterRecovery` | **State**: after scheduling a matchUp, updates the recovery deadline for all potential participants in downstream matchUps | `participantIds` |
+
+The [pro scheduler](../concepts/pro-scheduling) uses the same dependency data in its `proConflicts` post-hoc analysis to detect ordering violations, court double-bookings, and insufficient recovery gaps.
+
+### Relationship to the Scheduling Profile
+
+The [scheduling profile](../concepts/scheduling-profile) defines _which_ rounds to schedule on each date/venue. `getMatchUpDependencies` enforces _whether_ that ordering is valid:
+
+- **Profile validation**: The factory's `getSchedulingProfileIssues()` method calls `getMatchUpDependencies` and checks that no matchUp appears _after_ a matchUp it depends on within the profile ordering. It returns `profileIssues` with the violating round indices.
+- **Profile building**: Applications that build scheduling profiles interactively (e.g., using the `courthive-components` scheduling profile builder) can use the dependency data to validate the profile in real time before it is submitted for execution.
+
+### DependencyAdapter Pattern
+
+The `courthive-components` library provides a **DependencyAdapter** that lifts matchUp-level dependencies to round-level for scheduling profile validation:
+
+```ts
+interface DependencyAdapter {
+  getRoundDependencies: (roundKeyString: string) => string[];
+}
+```
+
+The adapter is built from `getMatchUpDependencies` results:
+
+1. Call `getMatchUpDependencies({ includeParticipantDependencies: true })` on the factory engine
+2. Build a `matchUpId → roundKey` index where `roundKey` is a compound string `"tournamentId|eventId|drawId|structureId|roundNumber"`
+3. For each matchUp, map its upstream `matchUpIds` to their corresponding `roundKey` values
+4. Aggregate to produce round-level dependencies: "Round A depends on Round B" if _any_ matchUp in Round A has a dependency on _any_ matchUp in Round B
+
+The adapter enables the profile builder to detect:
+
+- **Cross-date violations**: a round scheduled on Day 1 that depends on rounds not scheduled until Day 2
+- **Cross-structure violations**: rounds from linked structures scheduled in the wrong order on the same day (e.g., consolation R1 before main draw R1)
+- **Missing prerequisite rounds**: rounds scheduled that depend on rounds not present in the profile at all
+
+These are surfaced as `DEPENDENCY_VIOLATION` issues with suggested fix actions (`MOVE_ITEM_AFTER`, `MOVE_ITEM_BEFORE`, `JUMP_TO_ITEM`).
+
+:::tip
+**Performance**: `getMatchUpDependencies` walks all matchUps and builds transitive closures. For large tournaments, compute the result once per session and cache it. The dependency graph is stable unless draws are regenerated or entries change. Pass cached `matchUps` via the `matchUps` parameter to avoid redundant matchUp fetching.
+:::
 
 ---
 
@@ -788,7 +929,7 @@ const { participantResults } = engine.getParticipantResults({
 
 ## getParticipants
 
-Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward. See examples in [Basic Retrieval](../concepts/participants.md#basic-retrieval), [Participants](../concepts/publishing.md#participants), [withMatchUps](../concepts/participant-context.md#withmatchups), [Participant Filtering](../concepts/accessors.mdx#participant-filtering), [Basic Conflict Detection](../concepts/scheduling-conflicts.mdx#basic-conflict-detection), and 1 more.
+Returns **deepCopies** of competition participants filtered by participantFilters which are arrays of desired participant attribute values. This method is an optimization of `getCompetitionParticipants` and will replace it going forward. See examples in [Basic Retrieval](../concepts/participants.md#basic-retrieval), [Participants](../concepts/publishing/publishing-participants.md), [withMatchUps](../concepts/participant-context.md#withmatchups), [Participant Filtering](../concepts/accessors.mdx#participant-filtering), [Basic Conflict Detection](../concepts/scheduling-conflicts.mdx#basic-conflict-detection), and 1 more.
 
 ```js
 const participantFilters = {

@@ -112,6 +112,17 @@ The Competition Factory includes 16 governors organized into functional areas:
 - Scale items (rankings, ratings, seeding)
 - Participant extensions and representatives
 
+### Rankings & Ratings
+
+**[Ranking Governor](./ranking-governor)** - Ranking points and aggregation
+
+- Compute tournament ranking points from [ranking policies](/docs/policies/rankingPolicy)
+- Quality win bonus calculation
+- Multi-tournament ranking list generation
+- Persist ranking points to participant records
+- Per-participant point breakdowns
+- Composed into the [Scale Engine](/docs/scale-engine/scale-engine-overview)
+
 ### MatchUp Management
 
 **[MatchUp Governor](./matchup-governor)** - MatchUp operations
@@ -591,4 +602,4 @@ tournamentEngine.devContext({
 - **[Custom Engines](/docs/engines/custom-engines)** - Building custom engines with governors
 - **[Subscriptions](/docs/engines/subscriptions)** - Notification system
 - **[Policies](../concepts/policies)** - Policy system overview
-- **[Publishing](../concepts/publishing)** - Publishing workflows
+- **[Publishing](../concepts/publishing/publishing-overview)** - Publishing workflows

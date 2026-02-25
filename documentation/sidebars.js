@@ -45,7 +45,7 @@ module.exports = {
             'policies/scheduling',
             'policies/scoringPolicy',
             'policies/draws',
-            // 'policies/rankingPolicy',
+            'policies/rankingPolicy',
             'policies/progressionPolicy',
             'policies/consolationPolicy',
             'policies/competitiveBands',
@@ -83,7 +83,18 @@ module.exports = {
             'concepts/scheduling-conflicts',
           ],
         },
-        'concepts/publishing',
+        {
+          Publishing: [
+            'concepts/publishing/publishing-overview',
+            'concepts/publishing/publishing-events',
+            'concepts/publishing/publishing-seeding',
+            'concepts/publishing/publishing-order-of-play',
+            'concepts/publishing/publishing-participants',
+            'concepts/publishing/publishing-embargo',
+            'concepts/publishing/publishing-data-subscriptions',
+            'concepts/publishing/publishing-workflows',
+          ],
+        },
       ],
     },
     {
@@ -104,6 +115,21 @@ module.exports = {
         'engines/global-state',
         {
           type: 'category',
+          label: 'Scale Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'scale-engine/scale-engine-overview',
+            },
+            'scale-engine/scale-engine-api',
+            'scale-engine/ranking-points-pipeline',
+            'scale-engine/quality-win-points',
+            'scale-engine/aggregation',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Scoring Engine',
           items: [
             {
@@ -115,6 +141,21 @@ module.exports = {
             'scoring-engine/event-handlers',
             'scoring-engine/format-support',
             'scoring-engine/visualization-applications',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Temporal Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'temporal-engine/temporal-engine-overview',
+            },
+            'temporal-engine/temporal-engine-api',
+            'temporal-engine/event-system-and-validation',
+            'temporal-engine/block-types-and-algorithms',
+            'temporal-engine/ui-integration-scenarios',
           ],
         },
       ],
@@ -140,6 +181,7 @@ module.exports = {
         'governors/policy-governor',
         'governors/publishing-governor',
         'governors/query-governor',
+        'governors/ranking-governor',
         'governors/report-governor',
         'governors/schedule-governor',
         'governors/score-governor',

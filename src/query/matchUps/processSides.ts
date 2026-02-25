@@ -27,6 +27,7 @@ export function processSides(params) {
     stage,
 
     withRankingProfile,
+    collectionPosition,
     tieWinningSide,
     roundPosition,
     matchUpTieId,
@@ -119,8 +120,10 @@ export function processSides(params) {
       if (withRankingProfile) {
         addStructureParticipation({
           finishingPositionRange,
+          collectionPosition,
           participantMap,
           participantWon,
+          collectionId,
           finishingRound,
           matchUpStatus,
           participantId,

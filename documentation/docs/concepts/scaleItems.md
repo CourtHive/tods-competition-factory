@@ -8,12 +8,16 @@ title: Scale Items
 
 ### Key Concepts
 
-**Scale Types**: RANKING, RATING, SEEDING  
-**Scale Names**: Organization-specific identifiers (WTN, UTR, NTRP, etc.)  
-**Event Types**: SINGLES, DOUBLES, TEAM  
-**Scale Dates**: Effective date for the scale value  
-**Time Items**: Scale items are stored as time items with temporal validity  
+**Scale Types**: RANKING, RATING, SEEDING
+**Scale Names**: Organization-specific identifiers (WTN, UTR, NTRP, etc.)
+**Event Types**: SINGLES, DOUBLES, TEAM
+**Scale Dates**: Effective date for the scale value
+**Time Items**: Scale items are stored as time items with temporal validity
 **Accessors**: Path notation for accessing nested scale values
+
+:::tip
+The [Scale Engine](/docs/scale-engine/scale-engine-overview) can automatically compute and persist ranking point scale items from tournament results using [ranking policies](/docs/policies/rankingPolicy). See [applyTournamentRankingPoints](/docs/scale-engine/scale-engine-api#applytournamentrankingpoints).
+:::
 
 ## Scale Types
 

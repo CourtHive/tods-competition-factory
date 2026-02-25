@@ -96,7 +96,17 @@ export function getParticipantEntries(params) {
   for (const event of tournamentRecord?.events || []) {
     if (participantFilters?.eventIds && !participantFilters.eventIds.includes(event.eventId)) continue;
 
-    const { drawDefinitions = [], extensions = [], eventType, eventName, category, entries, eventId, gender } = event;
+    const {
+      drawDefinitions = [],
+      extensions = [],
+      wheelchairClass,
+      eventType,
+      eventName,
+      category,
+      entries,
+      eventId,
+      gender,
+    } = event;
 
     const { flightProfile } = getFlightProfile({ event });
     const flights = flightProfile?.flights ?? [];
@@ -112,6 +122,7 @@ export function getParticipantEntries(params) {
 
       derivedEventInfo[eventId] = {
         ...extensionConversions,
+        wheelchairClass,
         eventName,
         eventType,
         category,
@@ -449,6 +460,8 @@ export function getParticipantEntries(params) {
             winningSide: tieMatchUpWinningSide,
             sides: tieMatchUpSides = [],
             matchUpId: tieMatchUpId,
+            collectionPosition,
+            collectionId: tieCollectionId,
             matchUpStatus,
             matchUpType,
           } = tieMatchUp;
@@ -460,6 +473,8 @@ export function getParticipantEntries(params) {
             matchUpTieId: matchUpId,
             matchUpId: tieMatchUpId,
             sides: tieMatchUpSides,
+            collectionId: tieCollectionId,
+            collectionPosition,
             matchUpSides: sides,
             matchUpStatus,
             matchUpType,

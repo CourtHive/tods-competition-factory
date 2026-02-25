@@ -1,8 +1,10 @@
 import { getPolicyDefinitions } from '@Query/extensions/getAppliedPolicies';
 import { getParticipants } from '@Query/participants/getParticipants';
+import { getQualityWinPoints } from '@Query/scales/getQualityWinPoints';
 import { getTargetElement } from '@Query/scales/getTargetElement';
 import { getAwardProfile } from '@Query/scales/getAwardProfile';
 import { getAwardPoints } from '@Query/scales/getAwardPoints';
+import { getDevContext } from '@Global/state/globalState';
 import { unique } from '@Tools/arrays';
 
 // constants and types
@@ -13,6 +15,7 @@ import { POLICY_TYPE_RANKING_POINTS } from '@Constants/policyConstants';
 import { QUALIFYING } from '@Constants/drawDefinitionConstants';
 import { TEAM_EVENT } from '@Constants/eventConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { SPLIT_EVEN } from '@Constants/rankingConstants';
 import { Tournament } from '@Types/tournamentTypes';
 
 type GetTournamentPointsArgs = {
@@ -29,6 +32,8 @@ export function getTournamentPoints({
 }: GetTournamentPointsArgs) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
+  const devContext = getDevContext();
+
   const { policyDefinitions: attachedPolicies } = getPolicyDefinitions({
     policyTypes: [POLICY_TYPE_RANKING_POINTS],
     tournamentRecord,
@@ -41,6 +46,8 @@ export function getTournamentPoints({
   const awardProfiles = pointsPolicy.awardProfiles;
   let requireWinFirstRound = pointsPolicy.requireWinFirstRound;
   const requireWinForPoints = pointsPolicy.requireWinForPoints;
+  const doublesAttribution = pointsPolicy.doublesAttribution;
+  const qualityWinProfiles = pointsPolicy.qualityWinProfiles;
 
   const { participants, derivedEventInfo, derivedDrawInfo, mappedMatchUps } = getParticipants({
     withRankingProfile: true,
@@ -49,6 +56,18 @@ export function getTournamentPoints({
   });
 
   const participantsWithOutcomes = participants?.filter((p) => p.draws?.length);
+
+  // build lookup maps for resolving individual participantId → personId
+  const participantPersonMap: Record<string, string> = {};
+  const participantIndividualIdsMap: Record<string, string[]> = {};
+  for (const p of tournamentRecord.participants || []) {
+    if (p.person?.personId) {
+      participantPersonMap[p.participantId] = p.person.personId;
+    }
+    if (p.individualParticipantIds?.length) {
+      participantIndividualIdsMap[p.participantId] = p.individualParticipantIds;
+    }
+  }
 
   // keep track of points earned per person / per team
   const personPoints = {};
@@ -64,13 +83,13 @@ export function getTournamentPoints({
       const drawInfo = derivedDrawInfo[drawId];
       const drawType = drawInfo?.drawType;
 
-      const { category, eventType } = eventInfo || {};
+      const { category, eventType, gender, wheelchairClass } = eventInfo || {};
       const startDate = draw.startDate || eventInfo.startDate || tournamentRecord.startDate;
       const endDate = draw.endDate || eventInfo.endDate || tournamentRecord.endDate;
 
       // don't process INDIVIDUAL and PAIR participants in TEAM events
       // They are processed in the context of the TEAM in which they appear
-      if (eventType === TEAM_EVENT && participantId !== TEAM_PARTICIPANT) {
+      if (eventType === TEAM_EVENT && participantType !== TEAM_PARTICIPANT) {
         continue;
       }
 
@@ -81,7 +100,13 @@ export function getTournamentPoints({
         let totalWinsCount = 0;
         let positionPoints = 0;
         let perWinPoints = 0;
+        let bonusPoints = 0;
         let rangeAccessor;
+        let profileName;
+        let countedWins = 0;
+        let maxCountable: number | undefined;
+        let bestFinishingPosition: number | undefined;
+        let primaryAwardProfile: any;
 
         for (const participation of structureParticipation) {
           const { finishingPositionRange, participationOrder, participantWon, flightNumber, rankingStage, winCount } =
@@ -89,9 +114,18 @@ export function getTournamentPoints({
 
           totalWinsCount += winCount || 0;
 
+          // track best (lowest) finishing position for bonus points
+          if (Array.isArray(finishingPositionRange) && finishingPositionRange.length) {
+            const bestInParticipation = Math.min(...finishingPositionRange);
+            if (bestFinishingPosition === undefined || bestInParticipation < bestFinishingPosition) {
+              bestFinishingPosition = bestInParticipation;
+            }
+          }
+
           const drawSize = drawInfo?.drawSize;
 
           const { awardProfile } = getAwardProfile({
+            wheelchairClass,
             awardProfiles,
             participation,
             eventType,
@@ -100,12 +134,27 @@ export function getTournamentPoints({
             drawSize,
             drawType,
             endDate,
+            gender,
             level,
           });
 
           if (awardProfile) {
             // NOTE: for now drawSize: 0 indicates qualifying structure with no MAIN structure
             if (!drawSize) continue;
+
+            if (awardProfile.profileName) profileName = awardProfile.profileName;
+            if (!primaryAwardProfile) primaryAwardProfile = awardProfile;
+
+            // resolve maxCountableMatches (once per draw, from first profile that specifies it)
+            if (maxCountable === undefined && awardProfile.maxCountableMatches !== undefined) {
+              const mcm = awardProfile.maxCountableMatches;
+              if (typeof mcm === 'number') {
+                maxCountable = mcm;
+              } else if (typeof mcm === 'object') {
+                const resolved = getTargetElement(level, mcm.level ?? mcm);
+                if (typeof resolved === 'number') maxCountable = resolved;
+              }
+            }
 
             const accessor = Array.isArray(finishingPositionRange) && Math.max(...finishingPositionRange);
             const dashRange = unique(finishingPositionRange || []).join('-');
@@ -170,56 +219,130 @@ export function getTournamentPoints({
             if (awardPoints > positionPoints && (!requireWin || winCount)) {
               positionPoints = awardPoints;
               rangeAccessor = accessor;
+              primaryAwardProfile = awardProfile;
             }
 
-            if (!awardPoints && pointsPerWin && winCount) {
-              perWinPoints += winCount * pointsPerWin;
+            // cap wins for per-win calculations
+            const effectiveWinCount =
+              maxCountable !== undefined ? Math.min(winCount || 0, Math.max(0, maxCountable - countedWins)) : winCount;
+
+            if (!awardPoints && pointsPerWin && effectiveWinCount) {
+              perWinPoints += effectiveWinCount * pointsPerWin;
+              countedWins += effectiveWinCount;
               rangeAccessor = dashRange;
             }
 
             if (!awardPoints && winCount && ppwProfile) {
               const levelValue = getTargetElement(level, ppwProfile?.level);
-              if (levelValue) {
-                perWinPoints += winCount * levelValue;
-              } else if (ppwProfile.value) {
-                perWinPoints += winCount * ppwProfile.value;
+              if (typeof levelValue === 'number') {
+                perWinPoints += (effectiveWinCount || 0) * levelValue;
+                countedWins += effectiveWinCount || 0;
+              } else if (!levelValue && ppwProfile.value) {
+                perWinPoints += (effectiveWinCount || 0) * ppwProfile.value;
+                countedWins += effectiveWinCount || 0;
               }
+              // when levelValue is an object (e.g. { line: [...] }), line-based
+              // points are handled in the team tieMatchUp loop below
             }
           }
 
-          points = positionPoints + perWinPoints;
+          if (participantType === TEAM_PARTICIPANT && awardProfile) {
+            const ppw = Array.isArray(awardProfile.perWinPoints)
+              ? awardProfile.perWinPoints?.find((pwp) => pwp.participationOrders?.includes(participationOrder))
+              : awardProfile.perWinPoints;
+            const levelValue = ppw && getTargetElement(level, ppw.level);
 
-          if (participantType === TEAM_PARTICIPANT) {
-            const teamStructureMatchUps = (participant.matchUps || []).filter(
-              ({ structureId }) => structureId === participation.structureId,
-            );
-            for (const { matchUpId } of teamStructureMatchUps) {
-              const matchUp = mappedMatchUps[matchUpId];
-              const sideNumber = matchUp.sides.find((side) => side.participantId === participantId).sideNumber;
+            if (levelValue) {
+              const teamStructureMatchUps = (participant.matchUps || []).filter(
+                ({ structureId }) => structureId === participation.structureId,
+              );
+              for (const { matchUpId } of teamStructureMatchUps) {
+                const matchUp = mappedMatchUps[matchUpId];
+                const sideNumber = matchUp?.sides?.find((side) => side.participantId === participantId)?.sideNumber;
 
-              // for now only supporting line position awards per team win
-              if (matchUp.winningSice !== sideNumber) {
-                continue;
-              }
+                // only award line position points for team wins
+                if (!sideNumber || matchUp.winningSide !== sideNumber) continue;
 
-              for (const tieMatchUp of matchUp.tieMatchUps) {
-                // ingore matchUps with no winningSide
-                if (!tieMatchUp.winningSide) continue;
+                for (const tieMatchUp of matchUp.tieMatchUps || []) {
+                  if (!tieMatchUp.winningSide) continue;
+
+                  const { collectionPosition } = tieMatchUp;
+
+                  let lineValue;
+                  if (typeof levelValue === 'object' && levelValue.line) {
+                    if (levelValue.limit && collectionPosition > levelValue.limit) continue;
+                    lineValue = levelValue.line[collectionPosition - 1];
+                  } else if (typeof levelValue === 'number') {
+                    lineValue = levelValue;
+                  }
+
+                  if (!lineValue) continue;
+
+                  for (const side of tieMatchUp.sides || []) {
+                    if (side.sideNumber !== tieMatchUp.winningSide) continue;
+
+                    const sideParticipantId = side.participantId;
+                    if (!sideParticipantId) continue;
+
+                    // resolve personIds (handles both singles and doubles tieMatchUps)
+                    const individualIds = participantIndividualIdsMap[sideParticipantId];
+                    const targetIds = individualIds || [sideParticipantId];
+
+                    for (const targetId of targetIds) {
+                      const personId = participantPersonMap[targetId];
+                      if (!personId) continue;
+
+                      if (!personPoints[personId]) personPoints[personId] = [];
+                      personPoints[personId].push({
+                        linePoints: lineValue,
+                        collectionPosition,
+                        eventType,
+                        drawId,
+                      });
+                    }
+                  }
+                }
               }
             }
           }
         }
 
-        if (perWinPoints || positionPoints) {
-          const award = {
+        // compute bonus points from the primary award profile
+        if (primaryAwardProfile?.bonusPoints && bestFinishingPosition !== undefined) {
+          for (const bp of primaryAwardProfile.bonusPoints) {
+            if (bp.finishingPositions?.includes(bestFinishingPosition)) {
+              const bonusValue = bp.value;
+              if (typeof bonusValue === 'number') {
+                bonusPoints = bonusValue;
+              } else if (typeof bonusValue === 'object') {
+                const resolved = getTargetElement(level, bonusValue.level ?? bonusValue);
+                if (typeof resolved === 'number') bonusPoints = resolved;
+              }
+              break;
+            }
+          }
+        }
+
+        points = positionPoints + perWinPoints + bonusPoints;
+
+        if (perWinPoints || positionPoints || bonusPoints) {
+          const award: Record<string, any> = {
             winCount: totalWinsCount,
             positionPoints,
             rangeAccessor,
             perWinPoints,
+            bonusPoints,
             eventType,
             drawId,
             points,
+            category,
+            drawType,
+            startDate,
+            endDate,
+            level,
           };
+
+          if (devContext && profileName) award.profileName = profileName;
 
           const personId = person?.personId;
           if (personId) {
@@ -228,9 +351,68 @@ export function getTournamentPoints({
           } else if (participantType === PAIR) {
             if (!pairPoints[participantId]) pairPoints[participantId] = [];
             pairPoints[participantId].push(award);
+
+            // doublesAttribution: resolve pair to individuals
+            if (doublesAttribution) {
+              const multiplier = doublesAttribution === SPLIT_EVEN ? 0.5 : 1;
+              const individualIds = participantIndividualIdsMap[participantId] || [];
+              for (const indId of individualIds) {
+                const indPersonId = participantPersonMap[indId];
+                if (!indPersonId) continue;
+                const individualAward = {
+                  ...award,
+                  points: Math.round(award.points * multiplier),
+                  positionPoints: Math.round(award.positionPoints * multiplier),
+                  perWinPoints: Math.round(award.perWinPoints * multiplier),
+                  bonusPoints: Math.round(award.bonusPoints * multiplier),
+                  doublesParticipantId: participantId,
+                };
+                if (!personPoints[indPersonId]) personPoints[indPersonId] = [];
+                personPoints[indPersonId].push(individualAward);
+              }
+            }
           } else if (participantType === TEAM_PARTICIPANT) {
             if (!teamPoints[participantId]) teamPoints[participantId] = [];
             teamPoints[participantId].push(award);
+          }
+        }
+
+        // compute quality win points for this draw
+        if (qualityWinProfiles?.length && participant.matchUps) {
+          const drawMatchUps = Object.values(participant.matchUps as Record<string, any>).filter(
+            (m: any) => m.drawId === drawId && m.participantWon,
+          );
+
+          if (drawMatchUps.length) {
+            const wonMatchUpIds = drawMatchUps.map((m: any) => m.matchUpId);
+            const participantSideMap: Record<string, number> = {};
+            for (const m of drawMatchUps as any[]) {
+              participantSideMap[m.matchUpId] = m.sideNumber;
+            }
+
+            const { qualityWinPoints, qualityWins } = getQualityWinPoints({
+              qualityWinProfiles,
+              wonMatchUpIds,
+              mappedMatchUps,
+              participantId,
+              participantSideMap,
+              tournamentParticipants: tournamentRecord.participants || [],
+              tournamentStartDate: tournamentRecord.startDate,
+              level,
+            });
+
+            if (qualityWinPoints > 0) {
+              const personId = person?.personId;
+              if (personId) {
+                if (!personPoints[personId]) personPoints[personId] = [];
+                personPoints[personId].push({
+                  qualityWinPoints,
+                  qualityWins,
+                  eventType,
+                  drawId,
+                });
+              }
+            }
           }
         }
       }
