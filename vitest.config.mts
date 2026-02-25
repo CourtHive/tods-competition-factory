@@ -20,13 +20,14 @@ export default defineConfig({
         'src/**/*.config.{js,ts,jsx,tsx}',
         'src/**/*.test.{js,ts,jsx,tsx}',
         '**/conversion/**',
+        'src/**/index.ts',
         '**/examples/**',
         '**/scratch/**',
         '**/server/**',
         'src/forge/**',
         '**/types/**',
         '**/*.json',
-        // Deprecated/future code and data - excluded from coverage
+        // deprecated code and data - excluded from coverage
         'src/helpers/scoreParser/**',
         'src/mutate/score/staticScoreChange/**',
         'src/mutate/matchUps/score/history/**',

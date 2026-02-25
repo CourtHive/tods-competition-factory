@@ -9,12 +9,12 @@ import { publishingGovernor } from 'tods-competition-factory';
 ```
 
 :::tip
-See **[Publishing Concepts](../concepts/publishing)** for comprehensive coverage of publishing workflows, rationale, and best practices.
+See **[Publishing Concepts](../concepts/publishing/publishing-overview)** for comprehensive coverage of publishing workflows, rationale, and best practices.
 :::
 
 ## getPublishState
 
-Returns publishing details for tournament, event(s), and/or draws, enabling queries about current publish state before making changes. See examples: [Queryable Publish State](../concepts/publishing.md#queryable-publish-state), [Queryable Publish State](../concepts/publishing.md#queryable-publish-state).
+Returns publishing details for tournament, event(s), and/or draws, enabling queries about current publish state before making changes. See examples: [Queryable Publish State](../concepts/publishing/publishing-overview.md#queryable-publish-state), [Queryable Publish State](../concepts/publishing/publishing-overview.md#queryable-publish-state).
 
 ### Return All Publish State
 
@@ -53,12 +53,41 @@ const drawPublishDetail = publishState.status.drawDetail;
 // Example structure: { stages: ['MAIN'], structures: { [structureId]: { roundLimit: 2 } } }
 ```
 
+### Embargo Status
+
+When embargoes are present, the return includes an `embargoes` array summarizing all active and expired embargoes across the tournament:
+
+```js
+const { publishState } = engine.getPublishState();
+
+// publishState.embargoes is present when any embargoes exist
+publishState.embargoes?.forEach(({ type, id, embargo, embargoActive }) => {
+  console.log(`${type} ${id ?? ''}: ${embargo} (active: ${embargoActive})`);
+});
+```
+
+Each entry in the `embargoes` array:
+
+| Field | Type | Description |
+|---|---|---|
+| `type` | string | `'draw'`, `'stage'`, `'structure'`, `'scheduledRound'`, `'orderOfPlay'`, or `'participants'` |
+| `id` | string? | Identifier for the element. Absent for tournament-level types (`orderOfPlay`, `participants`). |
+| `embargo` | string | ISO 8601 timestamp |
+| `embargoActive` | boolean | `true` if the embargo is still in the future |
+
+:::note
+`getPublishState` intentionally **ignores** embargo timestamps when determining publish status. This is for admin/reporting use — embargoed elements appear as "published" so admin UIs can display their configuration correctly. See [Embargo: Admin vs Public Behavior](../concepts/publishing/publishing-embargo#admin-vs-public-behavior) for details.
+:::
+
 **Use Cases**:
 
 - Verify current state before publishing
 - Display publish status in admin UI
 - Determine if re-publishing is needed
-- Query embargo status
+- Query embargo status and expiry times
+- Build admin dashboards showing upcoming embargo releases
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for comprehensive embargo documentation.
 
 ---
 
@@ -217,6 +246,7 @@ const { drawInfo, structures } = engine.getDrawData({
 - Respects publish state when `usePublishState: true`
 - Applies privacy policies to participant data
 - Returns only published structures/rounds when appropriate
+- Enforces [embargo](../concepts/publishing/publishing-embargo) timestamps — embargoed structures are filtered out until the embargo passes
 - Used internally by `getEventData`
 
 ---
@@ -270,7 +300,7 @@ const { eventData, participants } = engine.getEventData({
 
 - When `usePublishState: true`, only returns published draws/structures
 - Respects round limits and stage restrictions
-- Honors embargo times
+- Enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at draw, stage, and structure levels — embargoed content is hidden until the embargo passes
 - Applies privacy policies
 
 **Notes:**
@@ -395,7 +425,7 @@ console.log(venueData.venueAddress);
 
 ## publishEvent
 
-Publishes event draws and structures with fine-grained control over visibility. Generates optimized `eventData` payload and triggers `PUBLISH_EVENT` subscription notifications. See examples in [Publishing All Draws](../concepts/publishing.md#publishing-all-draws).
+Publishes event draws and structures with fine-grained control over visibility. Generates optimized `eventData` payload and triggers `PUBLISH_EVENT` subscription notifications. See examples in [Publishing All Draws](../concepts/publishing/publishing-events.md#publishing-all-draws).
 
 **Key Features**:
 
@@ -498,23 +528,94 @@ engine.publishEvent({
 });
 ```
 
+#### Scheduled Rounds (Per-Round Schedule Control)
+
+Use `scheduledRounds` within `structureDetails` for fine-grained control over which rounds' matchUps appear in the schedule. This is separate from `roundLimit` bracket filtering (which only applies to AD_HOC draws).
+
+```js
+// Publish round 1 schedule immediately, embargo round 2
+engine.publishEvent({
+  eventId,
+  drawDetails: {
+    [drawId]: {
+      structureDetails: {
+        [structureId]: {
+          published: true,
+          roundLimit: 2, // bracket ceiling (AD_HOC only)
+          scheduledRounds: {
+            1: { published: true },
+            2: { published: true, embargo: '2024-06-16T08:00:00Z' },
+          },
+        },
+      },
+    },
+  },
+});
+```
+
+**Behavior:**
+- `roundLimit` always acts as a ceiling for the schedule (all draw types)
+- `scheduledRounds` provides per-round publish/embargo control within that ceiling
+- When `scheduledRounds` is absent, all rounds up to `roundLimit` appear in the schedule
+- When `scheduledRounds` is present, only rounds listed with `{ published: true }` (and not embargoed) appear
+
+**Note:** `roundLimit` only filters the bracket (draw data) for AD_HOC draw types. For elimination draws, the bracket always shows all rounds.
+
 #### Publishing with Embargo
+
+Embargo allows content to be marked as published but **hidden from public queries** until a specified time. The embargo field accepts an ISO 8601 timestamp string. Embargoes can be applied at draw, stage, and structure levels.
 
 ```js
 const embargoTime = new Date('2024-06-15T10:00:00Z').toISOString();
 
+// Draw-level embargo — entire draw hidden until embargo passes
 engine.publishEvent({
   eventId,
   drawDetails: {
     [drawId]: {
       publishingDetail: {
         published: true,
-        embargo: embargoTime, // Don't display until this time
+        embargo: embargoTime,
+      },
+    },
+  },
+});
+
+// Stage-level embargo — qualifying visible, main embargoed
+engine.publishEvent({
+  eventId,
+  drawDetails: {
+    [drawId]: {
+      publishingDetail: { published: true },
+      stageDetails: {
+        QUALIFYING: { published: true },
+        MAIN: { published: true, embargo: embargoTime },
+      },
+    },
+  },
+});
+
+// Structure-level embargo — specific structure hidden
+engine.publishEvent({
+  eventId,
+  drawDetails: {
+    [drawId]: {
+      publishingDetail: { published: true },
+      structureDetails: {
+        [structureId]: { published: true, embargo: embargoTime },
       },
     },
   },
 });
 ```
+
+Embargoed content is automatically visible once the system clock passes the embargo timestamp — no second mutation needed.
+
+**Affected queries**: [`getEventData`](/docs/governors/query-governor#geteventdata), [`getDrawData`](#getdrawdata), [`competitionScheduleMatchUps`](/docs/governors/query-governor#competitionschedulematchups) (when `usePublishState: true`).
+
+**Admin visibility**: [`getPublishState`](#getpublishstate) ignores embargoes and reports full publish configuration including embargo metadata.
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for comprehensive embargo documentation including workflows and admin vs public behavior.
 
 #### Publishing with Privacy Policies
 
@@ -568,13 +669,13 @@ const { eventData: clientData } = engine.getEventData({
 });
 ```
 
-**See**: [Publishing Concepts](../concepts/publishing#data-preparation-for-publishing) for details on eventData structure.
+**See**: [Publishing Concepts](../concepts/publishing/publishing-data-subscriptions) for details on eventData structure.
 
 ---
 
 ## publishEventSeeding
 
-Publishes event seeding information separately from draw structures, enabling flexible control over when seeding becomes publicly visible. See examples: [Publishing Seeding](../concepts/publishing.md#publishing-seeding), [Publishing Seeding](../concepts/publishing.md#publishing-seeding), [Coordinated Event and Seeding Release](../concepts/publishing.md#coordinated-event-and-seeding-release).
+Publishes event seeding information separately from draw structures, enabling flexible control over when seeding becomes publicly visible. See examples: [Publishing Seeding](../concepts/publishing/publishing-seeding.md#publishing-seeding), [Publishing Seeding](../concepts/publishing/publishing-seeding.md#publishing-seeding), [Coordinated Event and Seeding Release](../concepts/publishing/publishing-workflows.md#coordinated-event-and-seeding-release).
 
 **Why Separate Seeding Publication**:
 
@@ -641,7 +742,7 @@ engine.publishEventSeeding({
 
 ## publishOrderOfPlay
 
-Publishes scheduled matchUps (Order of Play), controlling visibility of which matches are scheduled for which courts and times. See examples in [Publishing Scheduled MatchUps](../concepts/publishing.md#publishing-scheduled-matchups).
+Publishes scheduled matchUps (Order of Play), controlling visibility of which matches are scheduled for which courts and times. See examples in [Publishing Scheduled MatchUps](../concepts/publishing/publishing-order-of-play.md#publishing-scheduled-matchups).
 
 **Why Order of Play Publishing**:
 
@@ -654,6 +755,7 @@ Publishes scheduled matchUps (Order of Play), controlling visibility of which ma
 engine.publishOrderOfPlay({
   scheduledDates, // optional - array of dates to publish
   eventIds, // optional - array of events to publish
+  embargo, // optional - ISO 8601 timestamp; schedule hidden until this time
   removePriorValues, // optional boolean - clear previous timeItems
 });
 ```
@@ -694,6 +796,20 @@ engine.publishOrderOfPlay({
 });
 ```
 
+#### Publish with Embargo
+
+```js
+// Schedule becomes visible after 6pm the evening before
+engine.publishOrderOfPlay({
+  scheduledDates: ['2024-06-15'],
+  embargo: '2024-06-14T18:00:00Z',
+});
+```
+
+When embargoed, [`competitionScheduleMatchUps`](/docs/governors/query-governor#competitionschedulematchups) with `usePublishState: true` returns empty `dateMatchUps` until the embargo passes.
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for comprehensive embargo documentation.
+
 #### Replace All Previous Publications
 
 ```js
@@ -718,7 +834,7 @@ const { dateMatchUps } = engine.competitionScheduleMatchUps({
 
 ## publishParticipants
 
-Publishes the tournament participant list, controlling when participant information becomes publicly visible. See examples: [Why Participant Publishing?](../concepts/publishing.md#why-participant-publishing), [Why Participant Publishing?](../concepts/publishing.md#why-participant-publishing).
+Publishes the tournament participant list, controlling when participant information becomes publicly visible. See examples: [Why Participant Publishing?](../concepts/publishing/publishing-participants.md#why-participant-publishing), [Why Participant Publishing?](../concepts/publishing/publishing-participants.md#why-participant-publishing).
 
 **Why Participant Publishing**:
 
@@ -729,6 +845,7 @@ Publishes the tournament participant list, controlling when participant informat
 
 ```js
 engine.publishParticipants({
+  embargo, // optional - ISO 8601 timestamp; participant list hidden until this time
   removePriorValues, // optional boolean - clear previous timeItems
 });
 ```
@@ -740,6 +857,17 @@ engine.publishParticipants({
 ```js
 engine.publishParticipants();
 ```
+
+#### Publish with Embargo
+
+```js
+// Participant list visible after 9am on June 10th
+engine.publishParticipants({
+  embargo: '2024-06-10T09:00:00Z',
+});
+```
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for comprehensive embargo documentation.
 
 #### Replace Previous Publication
 
@@ -753,7 +881,7 @@ engine.publishParticipants({
 
 ## setEventDisplay
 
-Sets display configuration for event data, controlling which attributes are visible for specific draws and dates. See examples: [Display Settings](../concepts/publishing.md#display-settings).
+Sets display configuration for event data, controlling which attributes are visible for specific draws and dates. See examples: [Display Settings](../concepts/publishing/publishing-participants.md#display-settings).
 
 ```js
 engine.setEventDisplay({
@@ -769,7 +897,7 @@ engine.setEventDisplay({
 
 ## unPublishEvent
 
-Removes event from public visibility. Triggers `UNPUBLISH_EVENT` subscription notification. See examples: [Unpublishing Events](../concepts/publishing.md#unpublishing-events).
+Removes event from public visibility. Triggers `UNPUBLISH_EVENT` subscription notification. See examples: [Unpublishing Events](../concepts/publishing/publishing-events.md#unpublishing-events).
 
 ```js
 engine.unPublishEvent({
@@ -802,7 +930,7 @@ engine.unPublishEvent({
 
 ## unPublishEventSeeding
 
-Removes seeding information from public visibility. See examples: [Unpublishing Seeding](../concepts/publishing.md#unpublishing-seeding).
+Removes seeding information from public visibility. See examples: [Unpublishing Seeding](../concepts/publishing/publishing-seeding.md#unpublishing-seeding).
 
 ```js
 engine.unPublishEventSeeding({
@@ -839,7 +967,7 @@ engine.unPublishEventSeeding({
 
 ## unPublishOrderOfPlay
 
-Removes Order of Play from public visibility. See examples: [Unpublishing Order of Play](../concepts/publishing.md#unpublishing-order-of-play).
+Removes Order of Play from public visibility. See examples: [Unpublishing Order of Play](../concepts/publishing/publishing-order-of-play.md#unpublishing-order-of-play).
 
 ```js
 engine.unPublishOrderOfPlay({
@@ -870,7 +998,7 @@ engine.unPublishOrderOfPlay({
 
 ## unPublishParticipants
 
-Removes participant list from public visibility. See examples: [Unpublishing Participants](../concepts/publishing.md#unpublishing-participants).
+Removes participant list from public visibility. See examples: [Unpublishing Participants](../concepts/publishing/publishing-participants.md#unpublishing-participants).
 
 ```js
 engine.unPublishParticipants({
@@ -950,8 +1078,9 @@ engine.devContext({ subscriptions });
 
 ## Related Documentation
 
-- **[Publishing Concepts](../concepts/publishing)** - Comprehensive workflows and best practices
+- **[Publishing Concepts](../concepts/publishing/publishing-overview)** - Comprehensive workflows and best practices
+- **[Embargo](../concepts/publishing/publishing-embargo)** - Time-based visibility control for published content
 - **[Time Items](../concepts/timeItems)** - How publish state is stored
 - **[Subscriptions](/docs/engines/subscriptions)** - Notification system
-- **[Query Governor](/docs/governors/query-governor)** - Methods using publish state
+- **[Query Governor](/docs/governors/query-governor)** - Methods using publish state with embargo enforcement
 - **[Policies](../concepts/policies)** - Privacy and display policies

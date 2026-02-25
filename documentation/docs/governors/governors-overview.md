@@ -591,4 +591,4 @@ tournamentEngine.devContext({
 - **[Custom Engines](/docs/engines/custom-engines)** - Building custom engines with governors
 - **[Subscriptions](/docs/engines/subscriptions)** - Notification system
 - **[Policies](../concepts/policies)** - Policy system overview
-- **[Publishing](../concepts/publishing)** - Publishing workflows
+- **[Publishing](../concepts/publishing/publishing-overview)** - Publishing workflows

@@ -83,7 +83,18 @@ module.exports = {
             'concepts/scheduling-conflicts',
           ],
         },
-        'concepts/publishing',
+        {
+          Publishing: [
+            'concepts/publishing/publishing-overview',
+            'concepts/publishing/publishing-events',
+            'concepts/publishing/publishing-seeding',
+            'concepts/publishing/publishing-order-of-play',
+            'concepts/publishing/publishing-participants',
+            'concepts/publishing/publishing-embargo',
+            'concepts/publishing/publishing-data-subscriptions',
+            'concepts/publishing/publishing-workflows',
+          ],
+        },
       ],
     },
     {
@@ -115,6 +126,21 @@ module.exports = {
             'scoring-engine/event-handlers',
             'scoring-engine/format-support',
             'scoring-engine/visualization-applications',
+          ],
+        },
+        {
+          type: 'category',
+          label: 'Temporal Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'temporal-engine/temporal-engine-overview',
+            },
+            'temporal-engine/temporal-engine-api',
+            'temporal-engine/event-system-and-validation',
+            'temporal-engine/block-types-and-algorithms',
+            'temporal-engine/ui-integration-scenarios',
           ],
         },
       ],

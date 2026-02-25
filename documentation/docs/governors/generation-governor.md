@@ -121,7 +121,7 @@ const drawDefinitionValues = {
   automated, // optional - whether or not to automatically place participants in structures; true/false or 'truthy' { seedsOnly: true }
   matchUpType, // optional - SINGLES, DOUBLES, or TEAM
   matchUpFormat, // optional - default matchUpFormatCode for all contained matchUps
-  playoffMatchUpFormat, // optional - relevant for ROUND_ROBIN_WITH_PLAYOFFS
+  playoffMatchUpFormat, // optional - relevant for ROUND_ROBIN_WITH_PLAYOFF
   hydrateCollections, // optional - propagate { category, gender } for event to collectionDefinitions in tieFormats
   tieFormat, // optional - { collectionDefinitions, winCriteria } for 'dual' or 'tie' matchUps
   seedsCount, // optional - number of seeds to generate if no seededParticipants provided
