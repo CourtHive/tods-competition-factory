@@ -222,6 +222,8 @@ const { tournamentInfo } = engine.getTournamentInfo();
 
 **Returns:** Tournament name, dates, location, and other metadata.
 
+If a [primary venue](../concepts/venues-courts.md#primary-venue) is designated and has at least one address, `tournamentInfo.tournamentAddress` will contain that venue's first address. This is always included regardless of the `withVenueData` option.
+
 ---
 
 ## getTournamentPenalties

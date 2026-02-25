@@ -2528,7 +2528,7 @@
     },
     "ParticipantRoleEnum": {
       "type": "string",
-      "enum": ["ADMINISTRATION", "CAPTAIN", "COACH", "COMPETITOR", "MEDIA", "MEDICAL", "OFFICIAL", "OTHER", "SECURITY"]
+      "enum": ["ADMINISTRATION", "CAPTAIN", "COACH", "COMPETITOR", "DIRECTOR", "HOSPITALITY", "MEDIA", "MEDICAL", "OFFICIAL", "OTHER", "SECURITY", "STRINGER", "SUPERVISOR", "TRANSPORT", "VOLUNTEER"]
     },
     "ParticipantStatusEnum": {
       "type": "string",

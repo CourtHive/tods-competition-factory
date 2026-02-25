@@ -2,9 +2,10 @@ import { validDateAvailability } from '@Validators/validateDateAvailability';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { definedAttributes } from '@Tools/definedAttributes';
 import { addExtension } from '../extensions/addExtension';
-import { validTimePeriod } from '@Validators/time';
+import { clearPrimaryVenue } from './clearPrimaryVenue';
 import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
+import { validTimePeriod } from '@Validators/time';
 import { UUID } from '@Tools/UUID';
 
 // constants and types
@@ -87,24 +88,26 @@ function venueAdd({ tournamentRecord, disableNotice, context, venue }: AddVenueA
     }
   }
 
-  {
-    if (context) {
-      const extension = {
-        value: context,
-        name: CONTEXT,
-      };
-      addExtension({ element: venue, extension });
-    }
-
-    tournamentRecord.venues.push(venue);
-
-    if (!disableNotice) {
-      addNotice({
-        payload: { venue, tournamentId: tournamentRecord.tournamentId },
-        topic: ADD_VENUE,
-      });
-    }
-
-    return { ...SUCCESS, venue: makeDeepCopy(venue) };
+  if (context) {
+    const extension = {
+      value: context,
+      name: CONTEXT,
+    };
+    addExtension({ element: venue, extension });
   }
+
+  if (venue.isPrimary) {
+    clearPrimaryVenue({ tournamentRecord });
+  }
+
+  tournamentRecord.venues.push(venue);
+
+  if (!disableNotice) {
+    addNotice({
+      payload: { venue, tournamentId: tournamentRecord.tournamentId },
+      topic: ADD_VENUE,
+    });
+  }
+
+  return { ...SUCCESS, venue: makeDeepCopy(venue) };
 }

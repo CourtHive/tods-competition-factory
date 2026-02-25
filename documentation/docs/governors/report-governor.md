@@ -372,11 +372,11 @@ Generates comprehensive reports about draw structures including size, format, pa
     structureType: string;                // SINGLE_ELIMINATION, ROUND_ROBIN, etc.
     stage: string;                        // MAIN, QUALIFYING, CONSOLATION, PLAY_OFF
     stageSequence: number;
-    finishingPositionRange: {
+    finishingPositionRange: {           // see Finishing Positions concept
       winner: number;
       loser: number;
     };
-    
+
     // Size and participant info
     structureSize: number;                // Number of draw positions
     participantsCount: number;            // Actual participants assigned

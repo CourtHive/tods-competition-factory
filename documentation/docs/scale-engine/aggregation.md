@@ -6,7 +6,7 @@ The aggregation layer combines point awards from multiple tournaments into ranki
 
 ## Aggregation Pipeline
 
-```
+```text
   PointAward[] (from multiple tournaments)
        |
   1. Category Filter     ageCategoryCodes, genders, eventTypes
@@ -19,7 +19,8 @@ The aggregation layer combines point awards from multiple tournaments into ranki
        |                    - Filter by eventTypes + pointComponents
        +-> Sort descending  - Sort by computed value
        +-> Level cap        - Apply maxResultsPerLevel
-       +-> Best-of-N        - Apply bestOfCount
+       +-> Mandatory select - Apply mandatoryRules (if any)
+       +-> Best-of-N        - Fill remaining slots via bestOfCount
        +-> Sum              - Bucket total
        |
   5. Total Points         Sum across all buckets
@@ -50,7 +51,7 @@ for (const tournamentRecord of seasonTournaments) {
   });
 
   for (const [personId, awards] of Object.entries(personPoints)) {
-    allAwards.push(...awards.map(a => ({ ...a, personId })));
+    allAwards.push(...awards.map((a) => ({ ...a, personId })));
   }
 }
 
@@ -95,14 +96,14 @@ aggregationRules: {
 
 The `pointComponents` array specifies which fields on each award to sum for the bucket value:
 
-| Component | Source |
-| --- | --- |
-| `'positionPoints'` | Finishing position points |
-| `'perWinPoints'` | Per-win points |
-| `'bonusPoints'` | Champion/finalist bonus |
-| `'qualityWinPoints'` | Quality win bonus |
-| `'linePoints'` | Team line position points |
-| `'points'` | Combined total (position + perWin + bonus) |
+| Component            | Source                                     |
+| -------------------- | ------------------------------------------ |
+| `'positionPoints'`   | Finishing position points                  |
+| `'perWinPoints'`     | Per-win points                             |
+| `'bonusPoints'`      | Champion/finalist bonus                    |
+| `'qualityWinPoints'` | Quality win bonus                          |
+| `'linePoints'`       | Team line position points                  |
+| `'points'`           | Combined total (position + perWin + bonus) |
 
 ### bestOfCount
 
@@ -119,6 +120,46 @@ maxResultsPerLevel: { 7: 2, 6: 3 }
 ```
 
 Results exceeding the level cap are moved to `droppedResults`.
+
+### mandatoryRules
+
+Real-world ranking systems (ATP, WTA) require that results from certain tournament levels always count toward a player's ranking, even if those results are worse than results from lower-tier events. The `mandatoryRules` array on a counting bucket enforces this:
+
+```js
+{
+  bucketName: 'Singles',
+  eventTypes: ['SINGLES'],
+  pointComponents: ['positionPoints', 'perWinPoints', 'bonusPoints'],
+  bestOfCount: 19,
+  mandatoryRules: [
+    { ruleName: 'Grand Slams', levels: [1] },           // all GS results count
+    { ruleName: 'WTA 1000 Combined', levels: [3], bestOfCount: 6 }, // best 6 of L3
+  ],
+}
+```
+
+Each `MandatoryRule` has:
+
+| Field         | Description                                                                          |
+| ------------- | ------------------------------------------------------------------------------------ |
+| `ruleName`    | Optional label for debugging/display                                                 |
+| `levels`      | Tournament levels whose results are mandatory                                        |
+| `bestOfCount` | If set, only the best N results from these levels are mandatory; otherwise all count |
+
+**Algorithm:**
+
+1. After scoring and sorting, `maxResultsPerLevel` caps are applied first.
+2. For each mandatory rule, matching results are selected (best N if `bestOfCount` is set, otherwise all).
+3. Mandatory results fill counting slots first.
+4. Remaining `bestOfCount` slots are filled with the best non-mandatory results.
+5. If mandatory results exceed `bestOfCount`, all mandatory results still count — mandatory rules take priority.
+
+**Example:** A player with bestOfCount=4 and a Grand Slam mandatory rule who has 3 optional results at 500, 400, 300 points and 1 Grand Slam result at 10 points:
+
+- Without mandatory: best 4 would be impossible (only 4 total), all count = 1210
+- With mandatory: GS 10pts counts + best 3 optional (500+400+300) = 1210
+
+The difference becomes clear when there are more results than slots — the mandatory result displaces a higher-scoring optional result that would otherwise count.
 
 ## Without Counting Buckets
 
@@ -188,11 +229,11 @@ aggregationRules: {
 }
 ```
 
-| Criterion | Resolution |
-| --- | --- |
+| Criterion               | Resolution                                               |
+| ----------------------- | -------------------------------------------------------- |
 | `'highestSingleResult'` | Highest individual `points` value among counting results |
-| `'mostCountingResults'` | More counting results wins |
-| `'mostWins'` | More total `winCount` across counting results wins |
+| `'mostCountingResults'` | More counting results wins                               |
+| `'mostWins'`            | More total `winCount` across counting results wins       |
 
 Tied entries that remain unresolved after all criteria share the same rank.
 
@@ -228,6 +269,73 @@ const { buckets, totalPoints } = getParticipantPoints({
   aggregationRules,
 });
 ```
+
+## Ranking Policy Examples
+
+The factory ships with complete ranking policies that demonstrate real-world aggregation configurations. These are located in `src/fixtures/policies/`:
+
+### ATP (`POLICY_RANKING_POINTS_ATP.ts`)
+
+The ATP policy demonstrates:
+
+- **Separate singles/doubles buckets** — Singles best-of-19, Doubles best-of-18
+- **Mandatory counting** — Grand Slams (level 1) and ATP 1000 (levels 3, 4) always count in the Singles bucket, even if the results are worse than optional results
+- **Rolling 52-week period** — `rollingPeriodDays: 364`
+- **No gender/category separation** — ATP is a single-gender tour
+
+```js
+// from POLICY_RANKING_POINTS_ATP.ts
+countingBuckets: [
+  {
+    bucketName: 'Singles',
+    eventTypes: ['SINGLES'],
+    bestOfCount: 19,
+    pointComponents: ['positionPoints', 'perWinPoints', 'bonusPoints'],
+    mandatoryRules: [
+      { ruleName: 'Grand Slams', levels: [1] },
+      { ruleName: 'ATP 1000', levels: [3, 4] },
+    ],
+  },
+  {
+    bucketName: 'Doubles',
+    eventTypes: ['DOUBLES'],
+    bestOfCount: 18,
+    pointComponents: ['positionPoints', 'perWinPoints', 'bonusPoints'],
+  },
+],
+```
+
+### WTA (`POLICY_RANKING_POINTS_WTA.ts`)
+
+The WTA policy demonstrates:
+
+- **Mandatory counting with `bestOfCount` on a rule** — Grand Slams (level 1) all count; best 6 of the combined WTA 1000 events (level 3) are mandatory via `bestOfCount: 6`
+- **Minimum countable results** — `minCountableResults: 3`
+- **Tiebreakers** — `highestSingleResult` then `mostCountingResults`
+
+```js
+// from POLICY_RANKING_POINTS_WTA.ts
+countingBuckets: [
+  {
+    bucketName: 'Singles',
+    eventTypes: ['SINGLES'],
+    bestOfCount: 19,
+    pointComponents: ['positionPoints', 'perWinPoints', 'bonusPoints'],
+    mandatoryRules: [
+      { ruleName: 'Grand Slams', levels: [1] },
+      { ruleName: 'WTA 1000 Combined', levels: [3], bestOfCount: 6 },
+    ],
+  },
+  {
+    bucketName: 'Doubles',
+    eventTypes: ['DOUBLES'],
+    bestOfCount: 12,
+    pointComponents: ['positionPoints', 'perWinPoints', 'bonusPoints'],
+  },
+],
+```
+
+Both policies also include full award profiles (finishing position points, qualifying bonuses, per-win points) for every tournament level in their respective tours. See the source files for the complete definitions.
 
 ## Related Documentation
 

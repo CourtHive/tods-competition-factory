@@ -76,6 +76,11 @@ export function getTournamentInfo(params?: {
 
   const tournamentInfo: any = extractTournamentInfo(tournamentRecord);
 
+  const primaryVenue = tournamentRecord.venues?.find((v) => v.isPrimary);
+  if (primaryVenue?.addresses?.length) {
+    tournamentInfo.tournamentAddress = primaryVenue.addresses[0];
+  }
+
   const participantResult = getParticipants({
     participantFilters: { participantRoles: [ADMINISTRATION, OFFICIAL, MEDIA, MEDICAL, SECURITY] },
     policyDefinitions: POLICY_PRIVACY_STAFF,

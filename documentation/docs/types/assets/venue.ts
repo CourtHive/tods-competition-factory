@@ -4,6 +4,8 @@ export const venue = {
   courts: '{\\"type\\":\\"object\\",\\"object\\":\\"court\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   onlineResources:
     '{\\"type\\":\\"object\\",\\"object\\":\\"onlineResource\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
+  isPrimary:
+    '{\\"type\\":\\"boolean\\",\\"required\\":\\"false\\",\\"note\\":\\"at most one venue per tournament; auto-cleared when another venue is set as primary\\"}',
   parentOrganisationId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   roles:
     '{\\"type\\":\\"string\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\",\\"note\\":\\"e.g. courts, sign-in, hospitality\\"}',

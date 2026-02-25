@@ -144,19 +144,48 @@ type GroupParticipant = {
 
 Participants can have different roles within a tournament:
 
-- **COMPETITOR** - Active participant in tournament events (default)
-- **ALTERNATE** - Standby participant who can replace withdrawn competitors
-- **OFFICIAL** - Referee, umpire, or other tournament official
+| Role               | Description                                                                               |
+| ------------------ | ----------------------------------------------------------------------------------------- |
+| **COMPETITOR**     | Active participant in tournament events (default)                                         |
+| **DIRECTOR**       | Tournament Director — responsible for all organizational aspects of the tournament        |
+| **SUPERVISOR**     | Tournament Supervisor — on-site authority for rules and regulations (e.g. ITF Supervisor) |
+| **OFFICIAL**       | On-court officials: referee, chair umpire, line umpire, etc.                              |
+| **CAPTAIN**        | Team captain                                                                              |
+| **COACH**          | Player coach                                                                              |
+| **ADMINISTRATION** | Administrative staff                                                                      |
+| **MEDICAL**        | Medical personnel: doctors, physiotherapists, trainers                                    |
+| **MEDIA**          | Press, broadcasters, photographers                                                        |
+| **SECURITY**       | Security personnel                                                                        |
+| **HOSPITALITY**    | Player lounge, catering, accommodation liaison                                            |
+| **STRINGER**       | Racket stringing services                                                                 |
+| **TRANSPORT**      | Player transport and logistics                                                            |
+| **VOLUNTEER**      | Ball persons, court monitors, general volunteers                                          |
+| **OTHER**          | Any role not covered above                                                                |
+
+Use `participantRoleResponsibilities` (a string array on `Participant`) to further specify sub-roles within a category — for example, an `OFFICIAL` with responsibilities `['REFEREE']` or `['CHAIR_UMPIRE']`.
 
 ```js
-// Adding an official
+// Adding a tournament director
+tournamentEngine.addParticipant({
+  participant: {
+    participantType: 'INDIVIDUAL',
+    participantRole: 'DIRECTOR',
+    person: {
+      standardFamilyName: 'Johnson',
+      standardGivenName: 'Mark',
+    },
+  },
+});
+
+// Adding an official with specific responsibilities
 tournamentEngine.addParticipant({
   participant: {
     participantType: 'INDIVIDUAL',
     participantRole: 'OFFICIAL',
+    participantRoleResponsibilities: ['REFEREE'],
     person: {
-      standardFamilyName: 'Johnson',
-      standardGivenName: 'Mark',
+      standardFamilyName: 'Smith',
+      standardGivenName: 'Jane',
     },
   },
 });

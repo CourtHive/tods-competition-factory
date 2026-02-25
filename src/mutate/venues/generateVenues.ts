@@ -42,6 +42,7 @@ export function generateVenues({ tournamentRecord, ignoreExistingVenues, venuePr
     };
     if (defaultStartTime) newVenue.defaultStartTime = defaultStartTime;
     if (defaultEndTime) newVenue.defaultEndTime = defaultEndTime;
+    if (venueProfile.isPrimary) newVenue.isPrimary = true;
     if (venueDateAvailability) newVenue.dateAvailability = venueDateAvailability;
     const result = addVenue({ tournamentRecord, venue: newVenue });
     if (result.error) {

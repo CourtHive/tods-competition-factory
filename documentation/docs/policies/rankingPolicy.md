@@ -90,7 +90,7 @@ awardProfiles: [
   // Priority override (bypasses specificity scoring)
   priority: 10,
 
-  // Position points (key = Math.max(finishingPositionRange))
+  // Position points (key = Math.max(finishingPositionRange), see Finishing Positions concept)
   finishingPositionRanges: {
     1: { level: { 1: 3000, 2: 1650, 3: 990 } },
     2: { level: { 1: 2400, 2: 1320, 3: 792 } },
@@ -125,6 +125,8 @@ awardProfiles: [
 ```
 
 ## Position Value Resolution
+
+The keys in `finishingPositionRanges` are [accessors](/docs/concepts/finishing-positions#accessor) — each key equals `Math.max(finishingPositionRange)` for the corresponding draw round. See [Finishing Positions](/docs/concepts/finishing-positions) for how these values are computed from draw structures.
 
 Values in `finishingPositionRanges` can be expressed in several forms:
 

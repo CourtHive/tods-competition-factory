@@ -1,3 +1,6 @@
+import { processBucketResults } from './processBucketResults';
+import type { MandatoryRule } from '@Types/rankingTypes';
+
 type PointAward = Record<string, any>;
 
 type CountingBucket = {
@@ -6,6 +9,7 @@ type CountingBucket = {
   pointComponents: string[];
   bestOfCount: number;
   maxResultsPerLevel?: Record<number, number>;
+  mandatoryRules?: MandatoryRule[];
 };
 
 type AggregationRules = {
@@ -113,7 +117,7 @@ export function generateRankingList({
       bucketBreakdown = [];
 
       for (const bucket of countingBuckets) {
-        const { bucketName, eventTypes, pointComponents, bestOfCount: bucketBestOf, maxResultsPerLevel: bucketMaxPerLevel } = bucket;
+        const { bucketName, eventTypes, pointComponents, bestOfCount: bucketBestOf, maxResultsPerLevel: bucketMaxPerLevel, mandatoryRules } = bucket;
 
         // Filter awards into this bucket
         let bucketAwards = awards;
@@ -121,47 +125,14 @@ export function generateRankingList({
           bucketAwards = bucketAwards.filter((a) => a.eventType && eventTypes.includes(a.eventType));
         }
 
-        // Extract relevant point value for each award based on pointComponents
-        const scoredAwards = bucketAwards.map((a) => {
-          let value = 0;
-          for (const component of pointComponents) {
-            value += typeof a[component] === 'number' ? a[component] : 0;
-          }
-          return { award: a, value };
+        const { counting, dropped, bucketTotal } = processBucketResults({
+          awards: bucketAwards,
+          pointComponents,
+          bestOfCount: bucketBestOf,
+          maxResultsPerLevel: bucketMaxPerLevel,
+          mandatoryRules,
         });
 
-        // Sort by value descending
-        scoredAwards.sort((a, b) => b.value - a.value);
-
-        // Apply maxResultsPerLevel
-        let capped = scoredAwards;
-        let levelDropped: typeof scoredAwards = [];
-        if (bucketMaxPerLevel) {
-          const levelCounts: Record<number, number> = {};
-          capped = [];
-          for (const sa of scoredAwards) {
-            const lvl = sa.award.level;
-            if (lvl === undefined || !bucketMaxPerLevel[lvl]) {
-              capped.push(sa);
-            } else {
-              levelCounts[lvl] = (levelCounts[lvl] || 0) + 1;
-              if (levelCounts[lvl] <= bucketMaxPerLevel[lvl]) {
-                capped.push(sa);
-              } else {
-                levelDropped.push(sa);
-              }
-            }
-          }
-        }
-
-        // Apply bestOfCount
-        const counting = bucketBestOf > 0 ? capped.slice(0, bucketBestOf) : capped;
-        const dropped = [
-          ...(bucketBestOf > 0 ? capped.slice(bucketBestOf) : []),
-          ...levelDropped,
-        ];
-
-        const bucketTotal = counting.reduce((sum, sa) => sum + sa.value, 0);
         totalPoints += bucketTotal;
 
         allCountingResults.push(...counting.map((sa) => sa.award));
@@ -176,41 +147,14 @@ export function generateRankingList({
       }
     } else {
       // No buckets — use global bestOfCount/maxResultsPerLevel
-      const scoredAwards = awards.map((a) => ({
-        award: a,
-        value: (a.points || 0) + (a.qualityWinPoints || 0),
-      }));
+      const { counting, dropped, bucketTotal } = processBucketResults({
+        awards,
+        pointComponents: ['points', 'qualityWinPoints'],
+        bestOfCount: bestOfCount || 0,
+        maxResultsPerLevel,
+      });
 
-      scoredAwards.sort((a, b) => b.value - a.value);
-
-      // Apply maxResultsPerLevel
-      let capped = scoredAwards;
-      let levelDropped: typeof scoredAwards = [];
-      if (maxResultsPerLevel) {
-        const levelCounts: Record<number, number> = {};
-        capped = [];
-        for (const sa of scoredAwards) {
-          const lvl = sa.award.level;
-          if (lvl === undefined || !maxResultsPerLevel[lvl]) {
-            capped.push(sa);
-          } else {
-            levelCounts[lvl] = (levelCounts[lvl] || 0) + 1;
-            if (levelCounts[lvl] <= maxResultsPerLevel[lvl]) {
-              capped.push(sa);
-            } else {
-              levelDropped.push(sa);
-            }
-          }
-        }
-      }
-
-      const counting = bestOfCount && bestOfCount > 0 ? capped.slice(0, bestOfCount) : capped;
-      const dropped = [
-        ...(bestOfCount && bestOfCount > 0 ? capped.slice(bestOfCount) : []),
-        ...levelDropped,
-      ];
-
-      totalPoints = counting.reduce((sum, sa) => sum + sa.value, 0);
+      totalPoints = bucketTotal;
       allCountingResults = counting.map((sa) => sa.award);
       allDroppedResults = dropped.map((sa) => sa.award);
     }

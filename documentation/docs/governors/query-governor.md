@@ -197,7 +197,7 @@ const { availableMatchUpsCount } = engine.getAvailableMatchUpsCount({
 
 ## getAvailablePlayoffProfiles
 
-If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures.
+If provided a `structureId`, returns rounds of the selected structure which are available for adding playoff structures. See [Finishing Positions](/docs/concepts/finishing-positions#playofffinishingpositionranges) for how these ranges map to overall draw positions.
 
 ```js
 const { playoffRounds, playoffRoundsRanges, positionsPlayedOff } = engine.getAvailablePlayoffProfiles({

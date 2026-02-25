@@ -1067,11 +1067,17 @@ export enum ParticipantRoleEnum {
   CAPTAIN = 'CAPTAIN',
   COACH = 'COACH',
   COMPETITOR = 'COMPETITOR',
+  DIRECTOR = 'DIRECTOR',
+  HOSPITALITY = 'HOSPITALITY',
   MEDIA = 'MEDIA',
   MEDICAL = 'MEDICAL',
   OFFICIAL = 'OFFICIAL',
   OTHER = 'OTHER',
   SECURITY = 'SECURITY',
+  STRINGER = 'STRINGER',
+  SUPERVISOR = 'SUPERVISOR',
+  TRANSPORT = 'TRANSPORT',
+  VOLUNTEER = 'VOLUNTEER',
 }
 export type ParticipantRoleUnion = keyof typeof ParticipantRoleEnum;
 
@@ -1301,6 +1307,7 @@ export interface Venue {
   defaultStartTime?: string;
   extensions?: Extension[];
   isMock?: boolean;
+  isPrimary?: boolean;
   notes?: string;
   onlineResources?: OnlineResource[];
   parentOrganisationId?: string;

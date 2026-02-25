@@ -6,6 +6,7 @@ export const venueTemplate = () => ({
   venueType: undefined,
   defaultStartTime: undefined,
   defaultEndTime: undefined,
+  isPrimary: undefined,
   dateAvailability: [],
   addresses: [],
   contacts: [],

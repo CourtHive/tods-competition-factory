@@ -78,7 +78,7 @@ Each field uses contains semantics: if the scope field is present, the event val
 
 ## Position Points
 
-Position points are determined by the participant's `finishingPositionRange` — a numeric range representing where they finished in the draw structure.
+Position points are determined by the participant's [`finishingPositionRange`](/docs/concepts/finishing-positions) — a numeric range representing where they finished in the draw structure.
 
 ### The Accessor
 
@@ -112,7 +112,7 @@ The value at each policy key can be:
 
 ### Multi-Structure Draws
 
-For draws with multiple structures (FIC, Curtis Consolation, Compass), participants may have `structureParticipation` entries in multiple structures. The pipeline iterates all entries and takes the **maximum position points** across structures:
+For draws with multiple structures (FIC, Curtis Consolation, Compass), participants may have `structureParticipation` entries in multiple structures. The pipeline iterates all entries and takes the **maximum position points** across structures (see [Multi-Structure Draws](/docs/concepts/finishing-positions#multi-structure-draws)):
 
 ```
 Main draw R2 loser:      accessor 24 -> 75 pts

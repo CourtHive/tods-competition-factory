@@ -338,8 +338,8 @@ mocksGovernor.modifyTournamentRecord({
     },
   ],
 
-  // Add venues
-  venueProfiles: [{ courtsCount: 4, venueName: 'Court Complex B' }],
+  // Add venues (isPrimary designates the tournament's primary venue)
+  venueProfiles: [{ courtsCount: 4, venueName: 'Court Complex B', isPrimary: true }],
 
   // Add scheduling
   schedulingProfile: [
