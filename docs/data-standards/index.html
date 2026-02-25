@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="generator" content="Docusaurus v3.9.2">
 <title data-rh="true">Data Standards | Competition Factory</title><meta data-rh="true" name="viewport" content="width=device-width,initial-scale=1"><meta data-rh="true" name="twitter:card" content="summary_large_image"><meta data-rh="true" property="og:url" content="https://courthive.github.com/competition-factory/docs/data-standards"><meta data-rh="true" property="og:locale" content="en"><meta data-rh="true" name="docusaurus_locale" content="en"><meta data-rh="true" name="docsearch:language" content="en"><meta data-rh="true" name="docusaurus_version" content="current"><meta data-rh="true" name="docusaurus_tag" content="docs-default-current"><meta data-rh="true" name="docsearch:version" content="current"><meta data-rh="true" name="docsearch:docusaurus_tag" content="docs-default-current"><meta data-rh="true" property="og:title" content="Data Standards | Competition Factory"><meta data-rh="true" name="description" content="The Importance of Standardization"><meta data-rh="true" property="og:description" content="The Importance of Standardization"><link data-rh="true" rel="icon" href="/competition-factory/img/favicon.ico"><link data-rh="true" rel="canonical" href="https://courthive.github.com/competition-factory/docs/data-standards"><link data-rh="true" rel="alternate" href="https://courthive.github.com/competition-factory/docs/data-standards" hreflang="en"><link data-rh="true" rel="alternate" href="https://courthive.github.com/competition-factory/docs/data-standards" hreflang="x-default"><script data-rh="true" type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Data Standards","item":"https://courthive.github.com/competition-factory/docs/data-standards"}]}</script><link rel="stylesheet" href="/competition-factory/assets/css/styles.878b61a3.css">
-<script src="/competition-factory/assets/js/runtime~main.7563e367.js" defer="defer"></script>
+<script src="/competition-factory/assets/js/runtime~main.52852d56.js" defer="defer"></script>
 <script src="/competition-factory/assets/js/main.cfb1a545.js" defer="defer"></script>
 </head>
 <body class="navigation-with-keyboard">
@@ -43,7 +43,18 @@
 <li class="">Historical analysis and statistical research</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_h3qY" id="tennis-open-data-standards-tods">Tennis Open Data Standards (TODS)<a href="#tennis-open-data-standards-tods" class="hash-link" aria-label="Direct link to Tennis Open Data Standards (TODS)" title="Direct link to Tennis Open Data Standards (TODS)" translate="no">​</a></h3>
-<p>TODS provides a <strong>JSON-based document format</strong> that captures:</p>
+<p>The <strong>Competition Factory</strong> began as an implementation of the <strong><a href="https://itftennis.atlassian.net/wiki/spaces/TODS/overview" target="_blank" rel="noopener noreferrer" class="">Tennis Open Data Standards (TODS)</a></strong>, an ITF-led initiative to create a vendor-independent, JSON-based document format for tennis competition data. TODS provided the foundational data model — tournaments, events, draws, matchUps, participants, scoring, venues, and scheduling — and the factory fully supports TODS-compliant documents.</p>
+<h3 class="anchor anchorTargetStickyNavbar_h3qY" id="codes">From TODS to CODES<a href="#codes" class="hash-link" aria-label="Direct link to From TODS to CODES" title="Direct link to From TODS to CODES" translate="no">​</a></h3>
+<p>As the <strong>Competition Factory</strong> was deployed across more sports it was proven that the underlying data structures are not tennis-specific. The core concepts of participants, events, draws, matchUps, and scoring translate naturally across any sport that organizes bracket-based or round-robin competitions. The <a class="" href="/competition-factory/docs/codes/matchup-format">matchUpFormat</a> code capabilities were extended to support the scoring needs of almost all imaginable sports.</p>
+<p>To reflect this cross-sport reality, the data model used by the Competition Factory is now called <strong>CODES</strong> — <strong>Competition Open Data Exchange Standards</strong>.</p>
+<p><strong>CODES builds on TODS rather than replacing it.</strong> Any valid TODS document is a valid CODES document. CODES extends the model with:</p>
+<ul>
+<li class="">Sport-agnostic terminology and conventions</li>
+<li class="">Broader applicability beyond racquet sports</li>
+<li class="">A governance model open to multiple sports federations</li>
+</ul>
+<h3 class="anchor anchorTargetStickyNavbar_h3qY" id="what-codes-provides">What CODES Provides<a href="#what-codes-provides" class="hash-link" aria-label="Direct link to What CODES Provides" title="Direct link to What CODES Provides" translate="no">​</a></h3>
+<p>CODES provides a <strong>JSON-based document format</strong> that captures:</p>
 <p><strong>Tournament Structure</strong>:</p>
 <ul>
 <li class="">Tournament metadata (dates, location, categories)</li>
@@ -55,7 +66,7 @@
 <ul>
 <li class="">Individual persons with biographical and contact information</li>
 <li class="">Pair participants (doubles teams)</li>
-<li class="">Team participants (Davis Cup, Fed Cup teams)</li>
+<li class="">Team participants with roster management</li>
 <li class="">Representative organizations and officials</li>
 </ul>
 <p><strong>Competition Elements</strong>:</p>
@@ -78,9 +89,6 @@
 <li class="">Officials assignments and notes</li>
 <li class="">External references and media</li>
 </ul>
-<h3 class="anchor anchorTargetStickyNavbar_h3qY" id="cross-sport-applicability">Cross-Sport Applicability<a href="#cross-sport-applicability" class="hash-link" aria-label="Direct link to Cross-Sport Applicability" title="Direct link to Cross-Sport Applicability" translate="no">​</a></h3>
-<p>While TODS emerged from the sport of Tennis, the data structures have proven applicable across many sports. The <strong>Competition Factory</strong> has been successfully used for more than <strong>five racquet sports</strong>:</p>
-<p>The core concepts of participants, events, draws, matchUps, and scoring translate naturally across racquet sports and beyond. Organizations in other sports (table tennis, badminton, racquetball) have expressed interest in adopting TODS-based systems.</p>
 <h3 class="anchor anchorTargetStickyNavbar_h3qY" id="benefits-over-legacy-systems">Benefits Over Legacy Systems<a href="#benefits-over-legacy-systems" class="hash-link" aria-label="Direct link to Benefits Over Legacy Systems" title="Direct link to Benefits Over Legacy Systems" translate="no">​</a></h3>
 <p>Traditional tournament management systems store data in <strong>relational database schemas</strong> that evolve over time, creating:</p>
 <p><strong>Schema Fragmentation</strong>: Each system version introduces schema changes, requiring:</p>
@@ -104,29 +112,29 @@
 <li class="">Relationship reconstruction</li>
 <li class="">Manual validation and reconciliation</li>
 </ul>
-<p><strong>TODS Eliminates These Problems</strong>:</p>
+<p><strong>CODES Eliminates These Problems</strong>:</p>
 <ul>
 <li class=""><strong>Single Document Format</strong>: All tournament data in one JSON file</li>
 <li class=""><strong>Self-Describing</strong>: Schema embedded in document structure</li>
-<li class=""><strong>Version Independent</strong>: Documents readable by any TODS-compliant processor</li>
+<li class=""><strong>Version Independent</strong>: Documents readable by any CODES-compliant processor</li>
 <li class=""><strong>Database Agnostic</strong>: Store in filesystem, NoSQL, or relational databases</li>
 <li class=""><strong>Human Readable</strong>: JSON format accessible to developers and analysts</li>
 </ul>
 <h3 class="anchor anchorTargetStickyNavbar_h3qY" id="implementation-in-competition-factory">Implementation in Competition Factory<a href="#implementation-in-competition-factory" class="hash-link" aria-label="Direct link to Implementation in Competition Factory" title="Direct link to Implementation in Competition Factory" translate="no">​</a></h3>
 <p>The <strong>Competition Factory</strong> provides:</p>
-<p><strong>Validation</strong>: Ensuring tournament records conform to TODS specifications<br>
-<strong>Transformation</strong>: Converting legacy data to TODS format<br>
-<strong>Generation</strong>: Creating valid TODS documents from scratch<br>
-<strong>Querying</strong>: Extracting information from TODS documents efficiently<br>
-<strong>Mutation</strong>: Modifying tournament state while maintaining TODS compliance</p>
-<p>All factory operations preserve TODS compliance, ensuring that tournament records remain portable, accessible, and standards-compliant throughout their lifecycle.</p>
+<p><strong>Validation</strong>: Ensuring tournament records conform to CODES specifications
+<strong>Transformation</strong>: Converting legacy data to CODES format
+<strong>Generation</strong>: Creating valid CODES documents from scratch
+<strong>Querying</strong>: Extracting information from CODES documents efficiently
+<strong>Mutation</strong>: Modifying tournament state while maintaining CODES compliance</p>
+<p>All factory operations preserve CODES compliance, ensuring that tournament records remain portable, accessible, and standards-compliant throughout their lifecycle.</p>
 <h2 class="anchor anchorTargetStickyNavbar_h3qY" id="related-documentation">Related Documentation<a href="#related-documentation" class="hash-link" aria-label="Direct link to Related Documentation" title="Direct link to Related Documentation" translate="no">​</a></h2>
 <ul>
 <li class=""><strong><a class="" href="/competition-factory/docs/">Introduction</a></strong> - Overview of Competition Factory architecture</li>
-<li class=""><strong><a class="" href="/competition-factory/docs/time-capsule">Time Capsule</a></strong> - TODS as immutable historical records</li>
-<li class=""><strong><a class="" href="/competition-factory/docs/concepts/scaleItems">Scale Items</a></strong> - Rankings and ratings in TODS</li>
+<li class=""><strong><a class="" href="/competition-factory/docs/time-capsule">Time Capsule</a></strong> - CODES as immutable historical records</li>
+<li class=""><strong><a class="" href="/competition-factory/docs/concepts/scaleItems">Scale Items</a></strong> - Rankings and ratings in CODES</li>
 <li class=""><strong><a class="" href="/competition-factory/docs/concepts/timeItems">Time Items</a></strong> - Temporal data management</li>
 <li class=""><strong><a class="" href="/competition-factory/docs/concepts/extensions">Extensions</a></strong> - Custom data and metadata</li>
-</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/competition-factory/docs/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Introduction</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/competition-factory/docs/time-capsule"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Time Capsule</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_okOB thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#the-importance-of-standardization" class="table-of-contents__link toc-highlight">The Importance of Standardization</a><ul><li><a href="#why-data-standards-matter" class="table-of-contents__link toc-highlight">Why Data Standards Matter</a></li><li><a href="#tennis-open-data-standards-tods" class="table-of-contents__link toc-highlight">Tennis Open Data Standards (TODS)</a></li><li><a href="#cross-sport-applicability" class="table-of-contents__link toc-highlight">Cross-Sport Applicability</a></li><li><a href="#benefits-over-legacy-systems" class="table-of-contents__link toc-highlight">Benefits Over Legacy Systems</a></li><li><a href="#implementation-in-competition-factory" class="table-of-contents__link toc-highlight">Implementation in Competition Factory</a></li></ul></li><li><a href="#related-documentation" class="table-of-contents__link toc-highlight">Related Documentation</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 CourtHive</div></div></div></footer></div>
+</ul></div></article><nav class="docusaurus-mt-lg pagination-nav" aria-label="Docs pages"><a class="pagination-nav__link pagination-nav__link--prev" href="/competition-factory/docs/"><div class="pagination-nav__sublabel">Previous</div><div class="pagination-nav__label">Introduction</div></a><a class="pagination-nav__link pagination-nav__link--next" href="/competition-factory/docs/time-capsule"><div class="pagination-nav__sublabel">Next</div><div class="pagination-nav__label">Time Capsule</div></a></nav></div></div><div class="col col--3"><div class="tableOfContents_okOB thin-scrollbar theme-doc-toc-desktop"><ul class="table-of-contents table-of-contents__left-border"><li><a href="#the-importance-of-standardization" class="table-of-contents__link toc-highlight">The Importance of Standardization</a><ul><li><a href="#why-data-standards-matter" class="table-of-contents__link toc-highlight">Why Data Standards Matter</a></li><li><a href="#tennis-open-data-standards-tods" class="table-of-contents__link toc-highlight">Tennis Open Data Standards (TODS)</a></li><li><a href="#codes" class="table-of-contents__link toc-highlight">From TODS to CODES</a></li><li><a href="#what-codes-provides" class="table-of-contents__link toc-highlight">What CODES Provides</a></li><li><a href="#benefits-over-legacy-systems" class="table-of-contents__link toc-highlight">Benefits Over Legacy Systems</a></li><li><a href="#implementation-in-competition-factory" class="table-of-contents__link toc-highlight">Implementation in Competition Factory</a></li></ul></li><li><a href="#related-documentation" class="table-of-contents__link toc-highlight">Related Documentation</a></li></ul></div></div></div></div></main></div></div></div><footer class="theme-layout-footer footer footer--dark"><div class="container container-fluid"><div class="footer__bottom text--center"><div class="footer__copyright">Copyright © 2026 CourtHive</div></div></div></footer></div>
 </body>
 </html>
