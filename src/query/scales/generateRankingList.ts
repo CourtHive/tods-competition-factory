@@ -74,10 +74,7 @@ export function generateRankingList({
         const gender = award.category?.gender || award.gender;
         if (!gender || !categoryFilter.genders.includes(gender)) return false;
       }
-      if (categoryFilter.eventTypes?.length) {
-        if (!award.eventType || !categoryFilter.eventTypes.includes(award.eventType)) return false;
-      }
-      return true;
+      return !(categoryFilter.eventTypes?.length && (!award.eventType || !categoryFilter.eventTypes.includes(award.eventType)));
     });
   }
 

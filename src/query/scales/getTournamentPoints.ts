@@ -246,8 +246,6 @@ export function getTournamentPoints({
             }
           }
 
-          points = positionPoints + perWinPoints;
-
           if (participantType === TEAM_PARTICIPANT && awardProfile) {
             const ppw = Array.isArray(awardProfile.perWinPoints)
               ? awardProfile.perWinPoints?.find((pwp) => pwp.participationOrders?.includes(participationOrder))
