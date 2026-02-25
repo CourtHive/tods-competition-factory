@@ -241,7 +241,14 @@ export type ScheduleConflict = {
   matchUpIdWithConflict: string;
 };
 
+export type LineParticipation = {
+  collectionPosition: number;
+  collectionId?: string;
+  won: boolean;
+};
+
 export type StructureParticipation = {
+  lineParticipation?: LineParticipation[];
   rankingStage: StageTypeUnion;
   walkoverWinCount: number;
   defaultWinCount: number;

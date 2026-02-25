@@ -45,7 +45,7 @@ module.exports = {
             'policies/scheduling',
             'policies/scoringPolicy',
             'policies/draws',
-            // 'policies/rankingPolicy',
+            'policies/rankingPolicy',
             'policies/progressionPolicy',
             'policies/consolationPolicy',
             'policies/competitiveBands',
@@ -115,6 +115,21 @@ module.exports = {
         'engines/global-state',
         {
           type: 'category',
+          label: 'Scale Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'scale-engine/scale-engine-overview',
+            },
+            'scale-engine/scale-engine-api',
+            'scale-engine/ranking-points-pipeline',
+            'scale-engine/quality-win-points',
+            'scale-engine/aggregation',
+          ],
+        },
+        {
+          type: 'category',
           label: 'Scoring Engine',
           items: [
             {
@@ -166,6 +181,7 @@ module.exports = {
         'governors/policy-governor',
         'governors/publishing-governor',
         'governors/query-governor',
+        'governors/ranking-governor',
         'governors/report-governor',
         'governors/schedule-governor',
         'governors/score-governor',

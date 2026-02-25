@@ -16,6 +16,7 @@ export { participantRoles } from './participantRoles';
 export { penaltyConstants } from './penaltyConstants';
 export { policyConstants } from './policyConstants';
 export { positionActionConstants } from './positionActionConstants';
+export { rankingConstants } from './rankingConstants';
 export { ratingConstants } from './ratingConstants';
 export { requestConstants } from './requestConstants';
 export { resourceContants } from './resourceConstants';

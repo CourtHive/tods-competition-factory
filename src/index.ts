@@ -26,10 +26,12 @@ export { mocksEngine } from './assemblies/engines/mock';
 export { TemporalEngine } from './assemblies/engines/temporal';
 export * as temporal from './assemblies/engines/temporal';
 
+// ENGINES - Scale engine -----------------------------------------------
+export { scaleEngine } from './assemblies/engines/scale';
+
 // ENGINES - For backwards compatibility ---------------------------------
 export { competitionEngine } from './tests/engines/syncEngine';
 export { tournamentEngine } from './tests/engines/syncEngine';
-export { scaleEngine } from './tests/engines/scaleEngine';
 
 // FIXTURES --------------------------------------------------------------
 export { fixtures } from './fixtures';

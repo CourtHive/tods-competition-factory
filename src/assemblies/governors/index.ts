@@ -10,6 +10,7 @@ export * as participantGovernor from './participantGovernor';
 export * as policyGovernor from './policyGovernor';
 export * as publishingGovernor from './publishingGovernor';
 export * as queryGovernor from './queryGovernor';
+export * as rankingGovernor from './rankingGovernor';
 export * as reportGovernor from './reportGovernor';
 export * as scheduleGovernor from './scheduleGovernor';
 export * as scoreGovernor from './scoreGovernor';
