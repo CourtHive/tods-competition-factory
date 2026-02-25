@@ -473,7 +473,7 @@ venues.forEach(venue => {
 
 ### 4. Consider Dependencies
 
-Schedule rounds in order that respects match dependencies:
+Schedule rounds in order that respects match dependencies. The factory's [`getMatchUpDependencies`](../governors/query-governor#getmatchupdependencies) method builds a full dependency graph that crosses structure boundaries (e.g., consolation draws, Round Robin → Playoff links) and can be used to validate profile ordering programmatically:
 
 ```js
 // Day 1: Round 1 must complete before Round 2 can start
