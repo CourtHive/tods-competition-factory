@@ -67,6 +67,7 @@ engine.addVenue({
     defaultStartTime, // optional - HH:MM format, paired with defaultEndTime
     defaultEndTime, // optional - HH:MM format, paired with defaultStartTime
     dateAvailability, // optional - venue-level date availability (same structure as court dateAvailability)
+    isPrimary, // optional boolean - designates this as the tournament's primary venue
   },
   context, // optional - adds detail in CONTEXT extension
 });
@@ -77,6 +78,7 @@ engine.addVenue({
 - `defaultStartTime` and `defaultEndTime` must be provided **together** — setting only one returns an error
 - `defaultEndTime` must be after `defaultStartTime`
 - These defaults are inherited by all courts in the venue. See [Venue-Level Scheduling Constraints](../concepts/venues-courts.md#venue-level-scheduling-constraints)
+- Setting `isPrimary: true` automatically clears `isPrimary` from any previously-primary venue (at most one venue can be primary). See [Primary Venue](../concepts/venues-courts.md#primary-venue)
 
 ---
 
@@ -94,6 +96,8 @@ engine.deleteCourt({
 ## deleteVenue
 
 If a venue has scheduled matchUps then it will not be deleted unless `{ force: true }` in which case all relevant matchUps will be unscheduled.
+
+Deleting a primary venue does **not** auto-promote another venue — the caller must explicitly designate a new primary via `modifyVenue`.
 
 ```js
 engine.deleteVenue({ venueId, force });
@@ -399,6 +403,7 @@ const modifications = {
   defaultStartTime, // optional - HH:MM format; validated with existing or modified defaultEndTime
   defaultEndTime, // optional - HH:MM format; validated with existing or modified defaultStartTime
   dateAvailability, // optional - venue-level date availability
+  isPrimary, // optional boolean - set or clear this venue as the tournament's primary venue
   courts: [
     {
       courtId: 'b9df6177-e430-4a70-ba47-9b9ff60258cb',
@@ -420,5 +425,6 @@ engine.modifyVenue({ venueId, modifications });
 
 - When modifying `defaultStartTime` or `defaultEndTime`, the engine validates the **resulting pair** (merging with existing values). For example, if the venue already has `defaultStartTime: '09:00'` and you modify only `defaultEndTime`, the pair `('09:00', newEndTime)` is validated.
 - `dateAvailability` replaces the entire venue-level availability array when provided
+- Setting `isPrimary: true` automatically clears `isPrimary` from any previously-primary venue. Setting `isPrimary: false` removes the property entirely (clean serialization). See [Primary Venue](../concepts/venues-courts.md#primary-venue)
 
 ---

@@ -1301,6 +1301,7 @@ export interface Venue {
   defaultStartTime?: string;
   extensions?: Extension[];
   isMock?: boolean;
+  isPrimary?: boolean;
   notes?: string;
   onlineResources?: OnlineResource[];
   parentOrganisationId?: string;

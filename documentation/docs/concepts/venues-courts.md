@@ -42,6 +42,9 @@ A **venue** represents a physical location that contains one or more courts. Ven
   // Venue-level availability (date-specific overrides and bookings)
   dateAvailability?: DateAvailability[];
 
+  // Primary venue designation
+  isPrimary?: boolean;          // At most one venue per tournament
+
   // Optional metadata
   notes?: string;
   onlineResources?: Array<{
@@ -498,6 +501,86 @@ tournamentEngine.modifyVenue({
 
 ---
 
+## Primary Venue
+
+A tournament can designate one venue as its **primary venue**. This is useful for surfacing a "tournament address" in display, search, or federation reporting — since tournaments themselves don't have addresses in the data schema, only venues do.
+
+### Setting a Primary Venue
+
+Set `isPrimary: true` when adding or modifying a venue:
+
+```js
+// When adding a new venue
+engine.addVenue({
+  venue: {
+    venueName: 'National Tennis Center',
+    isPrimary: true,
+    addresses: [
+      {
+        addressLine1: '123 Tennis Drive',
+        city: 'Austin',
+        state: 'TX',
+        postalCode: '78701',
+      },
+    ],
+  },
+});
+
+// When modifying an existing venue
+engine.modifyVenue({
+  venueId: 'venue-uuid',
+  modifications: { isPrimary: true },
+});
+```
+
+### Auto-Clear Behavior
+
+At most one venue can be primary per tournament. Setting `isPrimary: true` on a venue **automatically clears** `isPrimary` from any previously-primary venue — no need for two API calls.
+
+### Clearing the Primary Flag
+
+Setting `isPrimary: false` (or any falsy value) via `modifyVenue` removes the property entirely, keeping serialization clean:
+
+```js
+engine.modifyVenue({
+  venueId: 'venue-uuid',
+  modifications: { isPrimary: false },
+});
+```
+
+### Deleting a Primary Venue
+
+Deleting a primary venue does **not** auto-promote another venue. The caller must explicitly designate a new primary if needed.
+
+### Tournament Address
+
+`getTournamentInfo()` automatically derives `tournamentAddress` from the primary venue's first address:
+
+```js
+const { tournamentInfo } = engine.getTournamentInfo();
+console.log(tournamentInfo.tournamentAddress);
+// { addressLine1: '123 Tennis Drive', city: 'Austin', state: 'TX', postalCode: '78701' }
+```
+
+If there is no primary venue or it has no addresses, `tournamentAddress` is omitted.
+
+### Mock Generation
+
+`venueProfiles` passed to `generateTournamentRecord` or `modifyTournamentRecord` also support `isPrimary`:
+
+```js
+const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  venueProfiles: [
+    { courtsCount: 4, venueName: 'Main Venue', isPrimary: true },
+    { courtsCount: 2, venueName: 'Practice Courts' },
+  ],
+});
+```
+
+**API Reference:** [addVenue](/docs/governors/venue-governor#addvenue), [modifyVenue](/docs/governors/venue-governor#modifyvenue), [getTournamentInfo](/docs/governors/tournament-governor#gettournamentinfo)
+
+---
+
 ## Scheduling Integration
 
 ### How Automated Scheduling Uses Venues/Courts
@@ -542,14 +625,16 @@ This flexibility supports workflows where:
 
 ## Multi-Venue Tournaments
 
-Professional tournaments often use multiple venues:
+Professional tournaments often use multiple venues. Use `isPrimary` to designate the main venue — its address will be surfaced as `tournamentAddress` in `getTournamentInfo()`:
 
 ```js
-// Main tournament venue
+// Main tournament venue (primary — address used as tournament address)
 const mainVenue = tournamentEngine.addVenue({
   venue: {
     venueName: 'Tennis Stadium',
     venueAbbreviation: 'STAD',
+    isPrimary: true,
+    addresses: [{ addressLine1: '100 Centre Court Rd', city: 'London' }],
   },
 });
 

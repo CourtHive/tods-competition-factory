@@ -6,6 +6,7 @@ import { deletionMessage } from '@Assemblies/generators/matchUps/deletionMessage
 import { checkAndUpdateSchedulingProfile } from '../tournaments/schedulingProfile';
 import venueTemplate from '@Assemblies/generators/templates/venueTemplate';
 import { getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+import { clearPrimaryVenue } from './clearPrimaryVenue';
 import { validTimePeriod } from '@Validators/time';
 import { addNotice } from '@Global/state/globalState';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
@@ -194,7 +195,9 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
   if (!validModificationAttributes.length) return { error: NO_VALID_ATTRIBUTES };
 
   const validReplacements = new Set(
-    validAttributes.filter((attribute) => !['courts', 'onlineResources', 'dateAvailability'].includes(attribute)),
+    validAttributes.filter(
+      (attribute) => !['courts', 'onlineResources', 'dateAvailability', 'isPrimary'].includes(attribute),
+    ),
   );
 
   const validReplacementAttributes = Object.keys(modifications).filter((attribute) => validReplacements.has(attribute));
@@ -214,6 +217,16 @@ export function venueModify({ tournamentRecord, modifications, venueId, force }:
   }
 
   validReplacementAttributes.forEach((attribute) => Object.assign(venue, { [attribute]: modifications[attribute] }));
+
+  // Handle isPrimary modifications
+  if ('isPrimary' in modifications) {
+    if (modifications.isPrimary) {
+      clearPrimaryVenue({ tournamentRecord });
+      venue.isPrimary = true;
+    } else {
+      delete venue.isPrimary;
+    }
+  }
 
   // Handle venue dateAvailability modifications
   if (modifications.dateAvailability !== undefined) {
