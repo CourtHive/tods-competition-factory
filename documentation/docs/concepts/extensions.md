@@ -4,14 +4,14 @@ title: Extensions
 
 ## Overview
 
-**Extensions** capture configuration parameters, calculated results, and custom data that are not part of the core TODS specification. They further extend the tournament "time capsule" - ensuring what happened during a tournament can be accurately reconstructed.
+**Extensions** capture configuration parameters, calculated results, and custom data that are not part of the core [CODES](/docs/data-standards#codes) specification. They further extend the tournament "time capsule" - ensuring what happened during a tournament can be accurately reconstructed.
 
 ### Key Concepts
 
 **Non-Temporal Data**: Unlike [Time Items](./timeItems), extensions don't track changes over time  
 **Name-Value Pairs**: Each extension has `{ name, value }` structure  
 **Uniqueness**: Only one extension with a given name per `.extensions` array  
-**Hierarchical Scope**: Extensions can exist on any TODS document element  
+**Hierarchical Scope**: Extensions can exist on any CODES document element  
 **Factory Constants**: Pre-defined extension names recognized by the factory  
 **Custom Extensions**: User-defined extensions for application-specific data
 
@@ -23,13 +23,13 @@ type Extension = {
   value: any;      // Any JSON-serializable data
 };
 
-// On any TODS element
+// On any CODES element
 {
   extensions: Extension[];
 }
 ```
 
-### Location in TODS
+### Location in CODES
 
 Extensions can be attached to any element in a tournament record:
 
@@ -477,7 +477,7 @@ Purpose: Indicates participant has active suspension affecting eligibility.
 
 Attached to: `tournamentRecords`
 
-Purpose: Captures version of factory (and other TODS processors) that created/mutated the tournament record.
+Purpose: Captures version of factory (and other CODES processors) that created/mutated the tournament record.
 
 ```js
 {

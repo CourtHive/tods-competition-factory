@@ -12,7 +12,7 @@ tools.makeDeepCopy(element, convertExtensions, internalUse);
 
 ## convertExtensions
 
-When **convertExtensions** is **true**, TODS extensions objects are converted as follows:
+When **convertExtensions** is **true**, [CODES](/docs/data-standards#codes) extensions objects are converted as follows:
 
 ```js
 // original

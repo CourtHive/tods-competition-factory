@@ -10,7 +10,7 @@ export const matchUp = {
   loserMatchUpId: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   matchUpDuration: '{\\"type\\":\\"string\\",\\"required\\":\\"false\\"}',
   matchUpFormat:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"TODS matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
+    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"CODES matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
   matchUpId: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\"}',
   matchUpStatus: '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"true\\"}',
   matchUpStatusCodes:

@@ -59,7 +59,7 @@ import { tools } from 'tods-competition-factory';
 
 - **dateTime** - Date and time manipulation utilities
 - **generateDateRange** - Create arrays of dates within a range
-- **getTimeItem** - Extract time items from TODS objects
+- **getTimeItem** - Extract time items from [CODES](/docs/data-standards#codes) objects
 - **generateRange** - Generate numeric ranges
 
 ### Scoring & Match Data
@@ -74,7 +74,7 @@ import { tools } from 'tods-competition-factory';
 
 ### Extensions & Metadata
 
-- **addExtension** - Add extensions to TODS objects with validation
+- **addExtension** - Add extensions to CODES objects with validation
 - **findExtension** - Locate extensions by name
 - **getScaleValues** - Extract scale values (rankings, ratings) from participants
 
@@ -132,7 +132,7 @@ const { valid } = tools.categoryCanContain({
 ## Key Features
 
 - **No Side Effects**: Tools are pure functions that don't modify inputs
-- **TODS Compliance**: Built for TODS data structures but usable with any JSON
+- **CODES Compliance**: Built for CODES data structures but usable with any JSON
 - **Flexible Configuration**: Most tools accept optional configuration objects
 - **Type Safety**: Written in TypeScript with full type definitions
 - **Well-Tested**: Comprehensive test coverage across all utilities
@@ -140,6 +140,7 @@ const { valid } = tools.categoryCanContain({
 ## When to Use Tools
 
 **Use tools when you need to:**
+
 - Convert or transform tournament data
 - Validate tournament structures or configurations
 - Generate test data or identifiers
@@ -147,6 +148,7 @@ const { valid } = tools.categoryCanContain({
 - Sort or filter tournament objects
 
 **Don't use tools for:**
+
 - Modifying tournament state (use engines/governors instead)
 - Querying tournament records (use query governor methods)
 - Mutating tournaments (use mutation engines)

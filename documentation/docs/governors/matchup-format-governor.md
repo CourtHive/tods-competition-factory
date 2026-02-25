@@ -41,7 +41,7 @@ Parses a matchUp format code string into a structured object representation.
 **Parameters:**
 
 ```ts
-matchUpFormatCode: string; // TODS format code (e.g., "SET3-S:6/TB7")
+matchUpFormatCode: string; // CODES format code (e.g., "SET3-S:6/TB7")
 ```
 
 **Returns:**
@@ -197,7 +197,7 @@ const parsed = matchUpFormatGovernor.parse('INVALID');
 
 Converts a parsed matchUp format object back into a compact format code string.
 
-**Purpose:** Generate a standard TODS format code from a structured format object. This is the inverse operation of `parse()` and is useful for creating format codes programmatically.
+**Purpose:** Generate a standard CODES format code from a structured format object. This is the inverse operation of `parse()` and is useful for creating format codes programmatically.
 
 **When to Use:**
 
@@ -342,7 +342,7 @@ const formatString = matchUpFormatGovernor.stringify({
 
 Validates whether a format code string is properly formed and can be successfully parsed and round-tripped.
 
-**Purpose:** Verify that a format code string conforms to TODS specification. This ensures the format can be used reliably throughout the system.
+**Purpose:** Verify that a format code string conforms to CODES specification. This ensures the format can be used reliably throughout the system.
 
 **When to Use:**
 

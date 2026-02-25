@@ -24,11 +24,12 @@ Rather than hardcoding tournament structures or embedding business rules in data
 
 ### Cross-Sport Applicability
 
-While the **Competition Factory** utilizes the **[Tennis Open Data Standards (TODS)](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, the data structures and configurable operations apply to tournaments across many sports. The factory has already been successfully deployed across **five racquet sports**, demonstrating the universality of its architectural approach to competition management.
+While the **Competition Factory** was originally inspired by the **[Tennis Open Data Standards (TODS)](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, the data structures and configurable operations apply to tournaments across many sports. The factory has already been successfully deployed across **five racquet sports**, demonstrating the universality of its approach. This cross-sport reality is now reflected in **[CODES](/docs/data-standards#codes)** (Competition Open Data Exchange Standards), the factory's expanded data model.
 
 ### State Management and Extensibility
 
 The **Competition Factory** includes synchronous and asynchronous **state engines** that provide services for:
+
 - Managing tournament record state throughout event lifecycles
 - Publishing subscriptions for real-time data synchronization
 - Notifications and logging for audit trails
@@ -50,7 +51,7 @@ The **Competition Factory** eliminates these constraints through document-based 
 
 ## Learn More
 
-- **[Data Standards](./data-standards)** - Understanding TODS and the importance of standardized tournament data
-- **[Time Capsule](./time-capsule)** - How TODS documents preserve complete tournament history
+- **[Data Standards](./data-standards)** - Understanding CODES and the importance of standardized tournament data
+- **[Time Capsule](./time-capsule)** - How CODES documents preserve complete tournament history
 - **[State Engines](/docs/engines/state-engines)** - Managing tournament state and subscriptions
 - **[Acknowledgements](./acknowledgements)** - Contributors and interactive examples

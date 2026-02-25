@@ -4,7 +4,7 @@ title: MatchUps Overview
 
 ## Overview
 
-**MatchUps** are the fundamental competitive units in TODS, representing individual contests between participants. A matchUp can be a singles match, doubles match, or team match, and contains all information about the competition: participants, scores, schedule, officials, and outcome.
+**MatchUps** are the fundamental competitive units in [CODES](/docs/data-standards#codes), representing individual contests between participants. A matchUp can be a singles match, doubles match, or team match, and contains all information about the competition: participants, scores, schedule, officials, and outcome.
 
 ### Key Concepts
 
@@ -25,19 +25,19 @@ A matchUp between two INDIVIDUAL participants:
 type SinglesMatchUp = {
   matchUpId: string;
   matchUpType: 'SINGLES';
-  matchUpFormat: string;  // e.g., 'SET3-S:6/TB7'
+  matchUpFormat: string; // e.g., 'SET3-S:6/TB7'
   matchUpStatus: MatchUpStatus;
   sides: [
     {
-      sideNumber: 1,
-      participantId: string,  // INDIVIDUAL participant
-      participant?: Participant
+      sideNumber: 1;
+      participantId: string; // INDIVIDUAL participant
+      participant?: Participant;
     },
     {
-      sideNumber: 2,
-      participantId: string,
-      participant?: Participant
-    }
+      sideNumber: 2;
+      participantId: string;
+      participant?: Participant;
+    },
   ];
   score?: Score;
   winningSide?: 1 | 2;
@@ -57,15 +57,15 @@ type DoublesMatchUp = {
   matchUpStatus: MatchUpStatus;
   sides: [
     {
-      sideNumber: 1,
-      participantId: string,  // PAIR participant
-      participant?: PairParticipant
+      sideNumber: 1;
+      participantId: string; // PAIR participant
+      participant?: PairParticipant;
     },
     {
-      sideNumber: 2,
-      participantId: string,
-      participant?: PairParticipant
-    }
+      sideNumber: 2;
+      participantId: string;
+      participant?: PairParticipant;
+    },
   ];
   score?: Score;
   winningSide?: 1 | 2;
@@ -81,20 +81,20 @@ type TeamMatchUp = {
   matchUpId: string;
   matchUpType: 'TEAM';
   matchUpStatus: MatchUpStatus;
-  tieFormat: TieFormat;  // Defines structure of team match
+  tieFormat: TieFormat; // Defines structure of team match
   sides: [
     {
-      sideNumber: 1,
-      participantId: string,  // TEAM participant
-      lineUp?: IndividualParticipant[]
+      sideNumber: 1;
+      participantId: string; // TEAM participant
+      lineUp?: IndividualParticipant[];
     },
     {
-      sideNumber: 2,
-      participantId: string,
-      lineUp?: IndividualParticipant[]
-    }
+      sideNumber: 2;
+      participantId: string;
+      lineUp?: IndividualParticipant[];
+    },
   ];
-  tieMatchUps?: CollectionMatchUp[];  // Individual matches within team match
+  tieMatchUps?: CollectionMatchUp[]; // Individual matches within team match
   score?: TeamScore;
   winningSide?: 1 | 2;
 };
@@ -132,8 +132,8 @@ MatchUps progress through various states:
 ```js
 const { matchUps } = tournamentEngine.allTournamentMatchUps({
   matchUpFilters: {
-    matchUpStatuses: ['COMPLETED', 'RETIRED', 'DEFAULTED']
-  }
+    matchUpStatuses: ['COMPLETED', 'RETIRED', 'DEFAULTED'],
+  },
 });
 
 console.log(`${matchUps.length} finished matches`);
@@ -251,15 +251,15 @@ After completion, winningSide indicates the victor:
 
 ```js
 if (matchUp.matchUpStatus === 'COMPLETED') {
-  const winner = matchUp.sides.find(s => s.sideNumber === matchUp.winningSide);
-  const loser = matchUp.sides.find(s => s.sideNumber !== matchUp.winningSide);
+  const winner = matchUp.sides.find((s) => s.sideNumber === matchUp.winningSide);
+  const loser = matchUp.sides.find((s) => s.sideNumber !== matchUp.winningSide);
   console.log(`Winner: ${winner.participant.person.standardFamilyName}`);
 }
 ```
 
 ## Scores
 
-MatchUp scores follow TODS score structure:
+MatchUp scores follow CODES score structure:
 
 ```js
 {
@@ -298,11 +298,11 @@ tournamentEngine.setMatchUpStatus({
     score: {
       sets: [
         { side1Score: 6, side2Score: 4, winningSide: 1 },
-        { side1Score: 6, side2Score: 3, winningSide: 1 }
-      ]
+        { side1Score: 6, side2Score: 3, winningSide: 1 },
+      ],
     },
-    winningSide: 1
-  }
+    winningSide: 1,
+  },
 });
 ```
 
@@ -341,8 +341,8 @@ tournamentEngine.addMatchUpScheduleItems({
     scheduledDate: '2024-06-15',
     scheduledTime: '14:00',
     venueId: 'venue-123',
-    courtId: 'court-5'
-  }
+    courtId: 'court-5',
+  },
 });
 ```
 
@@ -358,7 +358,7 @@ tournamentEngine.addMatchUpOfficial({
   matchUpId: 'match-123',
   drawId: 'draw-456',
   participantId: 'official-789',
-  officialType: 'REFEREE'
+  officialType: 'REFEREE',
 });
 ```
 
@@ -370,11 +370,11 @@ Track participant availability:
 // Check in participants
 tournamentEngine.checkInParticipant({
   matchUpId: 'match-123',
-  participantId: 'player-1'
+  participantId: 'player-1',
 });
 
 // Both participants checked in?
-if (matchUp.sides.every(side => side.checkInState === 'CHECKED_IN')) {
+if (matchUp.sides.every((side) => side.checkInState === 'CHECKED_IN')) {
   console.log('Match ready to start');
 }
 ```
@@ -450,10 +450,10 @@ Get available actions for a matchUp:
 ```js
 const { validActions } = tournamentEngine.matchUpActions({
   matchUpId: 'match-123',
-  drawId: 'draw-456'
+  drawId: 'draw-456',
 });
 
-validActions.forEach(action => {
+validActions.forEach((action) => {
   console.log(`Available: ${action.type}`);
   // - SCORE: Can enter score
   // - SCHEDULE: Can set schedule
@@ -513,7 +513,7 @@ const { matchUps } = tournamentEngine.allTournamentMatchUps({
 
 // Sort by completion time
 matchUps
-  .sort((a, b) => 
+  .sort((a, b) =>
     new Date(b.schedule?.endTime || 0) - new Date(a.schedule?.endTime || 0)
   )
   .slice(0, 10)  // Latest 10 results

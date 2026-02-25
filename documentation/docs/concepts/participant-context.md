@@ -4,7 +4,7 @@ title: Participant Context & Hydration
 
 ## Overview
 
-**Participants** can be returned with contextual information that is not part of the core TODS document node. The process of adding this contextual information is called **"hydration"** or adding **"context"**.
+**Participants** can be returned with contextual information that is not part of the core [CODES](/docs/data-standards#codes) document node. The process of adding this contextual information is called **"hydration"** or adding **"context"**.
 
 By default, a participant in the tournament record contains only essential data. Through hydration, the Competition Factory can enrich participant objects with:
 
@@ -511,4 +511,4 @@ const { participants } = tournamentEngine.getParticipants({
 - **[Scheduling Conflicts](./scheduling-conflicts)** - Understanding schedule analysis
 - **[Participant Policy](/docs/policies/participantPolicy)** - Privacy and data filtering
 - **[Query Governor](/docs/governors/query-governor#getparticipants)** - Complete API reference
-- **[Extensions](./extensions)** - Understanding TODS extensions system
+- **[Extensions](./extensions)** - Understanding CODES extensions system

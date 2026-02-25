@@ -492,7 +492,7 @@ test('creates specific match scenario', () => {
 The generated outcomes are automatically validated against:
 
 - **MatchUp format constraints** (set count, games per set, tiebreak rules)
-- **TODS schema compliance**
+- **[CODES](/docs/data-standards#codes) schema compliance**
 - **Score string parsability**
 - **Logical consistency** (winner matches final score)
 

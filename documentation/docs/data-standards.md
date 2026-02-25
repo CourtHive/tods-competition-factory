@@ -38,7 +38,23 @@ title: Data Standards
 
 ### Tennis Open Data Standards (TODS)
 
-TODS provides a **JSON-based document format** that captures:
+The **Competition Factory** began as an implementation of the **[Tennis Open Data Standards (TODS)](https://itftennis.atlassian.net/wiki/spaces/TODS/overview)**, an ITF-led initiative to create a vendor-independent, JSON-based document format for tennis competition data. TODS provided the foundational data model — tournaments, events, draws, matchUps, participants, scoring, venues, and scheduling — and the factory fully supports TODS-compliant documents.
+
+### From TODS to CODES {#codes}
+
+As the **Competition Factory** was deployed across more sports it was proven that the underlying data structures are not tennis-specific. The core concepts of participants, events, draws, matchUps, and scoring translate naturally across any sport that organizes bracket-based or round-robin competitions. The [matchUpFormat](/docs/codes/matchup-format) code capabilities were extended to support the scoring needs of almost all imaginable sports.
+
+To reflect this cross-sport reality, the data model used by the Competition Factory is now called **CODES** — **Competition Open Data Exchange Standards**.
+
+**CODES builds on TODS rather than replacing it.** Any valid TODS document is a valid CODES document. CODES extends the model with:
+
+- Sport-agnostic terminology and conventions
+- Broader applicability beyond racquet sports
+- A governance model open to multiple sports federations
+
+### What CODES Provides
+
+CODES provides a **JSON-based document format** that captures:
 
 **Tournament Structure**:
 
@@ -51,7 +67,7 @@ TODS provides a **JSON-based document format** that captures:
 
 - Individual persons with biographical and contact information
 - Pair participants (doubles teams)
-- Team participants (Davis Cup, Fed Cup teams)
+- Team participants with roster management
 - Representative organizations and officials
 
 **Competition Elements**:
@@ -73,12 +89,6 @@ TODS provides a **JSON-based document format** that captures:
 - Score history and point-by-point data
 - Officials assignments and notes
 - External references and media
-
-### Cross-Sport Applicability
-
-While TODS emerged from the sport of Tennis, the data structures have proven applicable across many sports. The **Competition Factory** has been successfully used for more than **five racquet sports**:
-
-The core concepts of participants, events, draws, matchUps, and scoring translate naturally across racquet sports and beyond. Organizations in other sports (table tennis, badminton, racquetball) have expressed interest in adopting TODS-based systems.
 
 ### Benefits Over Legacy Systems
 
@@ -105,11 +115,11 @@ Traditional tournament management systems store data in **relational database sc
 - Relationship reconstruction
 - Manual validation and reconciliation
 
-**TODS Eliminates These Problems**:
+**CODES Eliminates These Problems**:
 
 - **Single Document Format**: All tournament data in one JSON file
 - **Self-Describing**: Schema embedded in document structure
-- **Version Independent**: Documents readable by any TODS-compliant processor
+- **Version Independent**: Documents readable by any CODES-compliant processor
 - **Database Agnostic**: Store in filesystem, NoSQL, or relational databases
 - **Human Readable**: JSON format accessible to developers and analysts
 
@@ -117,18 +127,18 @@ Traditional tournament management systems store data in **relational database sc
 
 The **Competition Factory** provides:
 
-**Validation**: Ensuring tournament records conform to TODS specifications  
-**Transformation**: Converting legacy data to TODS format  
-**Generation**: Creating valid TODS documents from scratch  
-**Querying**: Extracting information from TODS documents efficiently  
-**Mutation**: Modifying tournament state while maintaining TODS compliance
+**Validation**: Ensuring tournament records conform to CODES specifications
+**Transformation**: Converting legacy data to CODES format
+**Generation**: Creating valid CODES documents from scratch
+**Querying**: Extracting information from CODES documents efficiently
+**Mutation**: Modifying tournament state while maintaining CODES compliance
 
-All factory operations preserve TODS compliance, ensuring that tournament records remain portable, accessible, and standards-compliant throughout their lifecycle.
+All factory operations preserve CODES compliance, ensuring that tournament records remain portable, accessible, and standards-compliant throughout their lifecycle.
 
 ## Related Documentation
 
 - **[Introduction](./)** - Overview of Competition Factory architecture
-- **[Time Capsule](./time-capsule)** - TODS as immutable historical records
-- **[Scale Items](./concepts/scaleItems)** - Rankings and ratings in TODS
+- **[Time Capsule](./time-capsule)** - CODES as immutable historical records
+- **[Scale Items](./concepts/scaleItems)** - Rankings and ratings in CODES
 - **[Time Items](./concepts/timeItems)** - Temporal data management
 - **[Extensions](./concepts/extensions)** - Custom data and metadata

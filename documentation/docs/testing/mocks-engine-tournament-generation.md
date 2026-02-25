@@ -67,7 +67,8 @@ interface GenerateTournamentRecordOptions {
 ## Tournament Properties
 
 :::note Sex vs Gender
-In the TODS data model:
+In the [CODES](/docs/data-standards#codes) data model:
+
 - **Persons have `sex`** - A biological attribute (MALE/FEMALE) stored in `person.sex`
 - **Events have `gender`** - A competition category attribute (MALE/FEMALE/MIXED/ANY) stored in `event.gender`
 
@@ -270,9 +271,9 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     {
       drawSize: 32,
       eventType: 'SINGLES',
-      gender: 'FEMALE',             // Event gender category
+      gender: 'FEMALE', // Event gender category
       participantsProfile: {
-        sex: 'FEMALE',              // Person sex - generates female participants
+        sex: 'FEMALE', // Person sex - generates female participants
         category: {
           categoryName: 'U18',
           ageCategoryCode: 'U18',
@@ -283,9 +284,9 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     {
       drawSize: 16,
       eventType: 'DOUBLES',
-      gender: 'MALE',               // Event gender category
+      gender: 'MALE', // Event gender category
       participantsProfile: {
-        sex: 'MALE',                // Person sex - generates male participants
+        sex: 'MALE', // Person sex - generates male participants
         nationalityCodes: ['USA', 'CAN', 'MEX'], // North American players
       },
     },
@@ -358,9 +359,9 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
 ### Draw with Qualifying Structure
 
 :::important Qualifying as a Stage
-In the Tennis Open Data Standards (TODS), **qualifying is a stage within a draw**, not a separate draw. A drawDefinition describes how participants move between structures (QUALIFYING → MAIN). Use `qualifyingProfiles` to create qualifying structures within a single draw.
+In CODES, **qualifying is a stage within a draw**, not a separate draw. A drawDefinition describes how participants move between structures (QUALIFYING → MAIN). Use `qualifyingProfiles` to create qualifying structures within a single draw.
 
-Do **NOT** create separate draws with `stage: 'QUALIFYING'` - this violates the TODS structure where draws describe participant progression between stages.
+Do **NOT** create separate draws with `stage: 'QUALIFYING'` - this violates the CODES structure where draws describe participant progression between stages.
 :::
 
 Use `qualifyingProfiles` to create qualifying structures within a single draw:
@@ -371,14 +372,14 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
     {
       drawSize: 32,
       drawName: 'Singles Championship',
-      qualifiersCount: 8,  // 8 positions for qualifiers in main draw
+      qualifiersCount: 8, // 8 positions for qualifiers in main draw
       qualifyingProfiles: [
         {
-          roundTarget: 1,  // Which round of main draw qualifiers enter
+          roundTarget: 1, // Which round of main draw qualifiers enter
           structureProfiles: [
             {
               stageSequence: 1,
-              drawSize: 16,  // 16 players compete for 8 qualifying spots
+              drawSize: 16, // 16 players compete for 8 qualifying spots
               seedsCount: 4,
             },
           ],
@@ -457,7 +458,7 @@ Each `eventProfile` can include a `participantsProfile` that applies to all draw
 const { tournamentRecord } = mocksEngine.generateTournamentRecord({
   eventProfiles: [
     {
-      eventName: 'Women\'s Championship',
+      eventName: "Women's Championship",
       eventType: 'SINGLES',
       gender: 'FEMALE',
       // Event-level participantsProfile
@@ -474,14 +475,14 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
         {
           drawSize: 64,
           drawName: 'Singles Championship',
-          qualifiersCount: 16,  // 16 qualifying positions
+          qualifiersCount: 16, // 16 qualifying positions
           qualifyingProfiles: [
             {
               roundTarget: 1,
               structureProfiles: [
                 {
                   stageSequence: 1,
-                  drawSize: 32,  // 32 players compete for 16 spots
+                  drawSize: 32, // 32 players compete for 16 spots
                   seedsCount: 8,
                 },
               ],
@@ -514,8 +515,8 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
       eventName: 'International Singles',
       // Event-level (overrides tournament-level for this event)
       participantsProfile: {
-        nationalityCodes: ['GBR', 'FRA', 'ESP'],  // Overrides tournament-level
-        sex: 'FEMALE',                             // Adds to tournament-level
+        nationalityCodes: ['GBR', 'FRA', 'ESP'], // Overrides tournament-level
+        sex: 'FEMALE', // Adds to tournament-level
       },
       drawProfiles: [
         {
@@ -526,7 +527,7 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
           drawSize: 16,
           // Draw-level (overrides both)
           participantsProfile: {
-            nationalityCodes: ['JPN', 'CHN', 'KOR'],  // Asian players only
+            nationalityCodes: ['JPN', 'CHN', 'KOR'], // Asian players only
           },
         },
       ],
@@ -760,13 +761,13 @@ import { POLICY_SEEDING_ITF, POLICY_SEEDING_USTA } from '@Fixtures/policies/seed
 const { tournamentRecord } = mocksEngine.generateTournamentRecord({
   // Tournament-level default
   policyDefinitions: POLICY_SEEDING_USTA,
-  
+
   drawProfiles: [
     {
       drawSize: 32,
       drawName: 'Professional Draw',
       // Draw-level override
-      policyDefinitions: POLICY_SEEDING_ITF,  // This draw uses ITF seeding
+      policyDefinitions: POLICY_SEEDING_ITF, // This draw uses ITF seeding
     },
     {
       drawSize: 16,
@@ -799,14 +800,14 @@ const { tournamentRecord, eventIds } = mocksEngine.generateTournamentRecord({
           drawSize: 64,
           drawName: 'Singles Championship',
           seedsCount: 16,
-          qualifiersCount: 8,  // 8 qualifier positions in main draw
+          qualifiersCount: 8, // 8 qualifier positions in main draw
           qualifyingProfiles: [
             {
               roundTarget: 1,
               structureProfiles: [
                 {
                   stageSequence: 1,
-                  drawSize: 16,  // 16 players for 8 qualifying spots
+                  drawSize: 16, // 16 players for 8 qualifying spots
                   seedsCount: 4,
                 },
               ],

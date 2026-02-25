@@ -203,7 +203,7 @@ const sets = [
   { side1Score: 3 },
 ];
 let result = scoreGovernor.generateScoreString({
-    sets, // TODS sets object
+    sets, // CODES sets object
     winningSide, // optional - 1 or 2
     reversed, // optional - reverse the score
     winnerFirst = true, // optional - boolean - tranform sets so that winningSide is first (on left)
@@ -337,7 +337,7 @@ const GEM =
 
 ## parseScoreString
 
-Produces TODS sets objects.
+Produces CODES sets objects.
 
 ```js
 const sets = mocksEngine.parseScoreString({ scoreString: '1-6 1-6' });

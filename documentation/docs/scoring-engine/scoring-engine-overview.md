@@ -21,7 +21,7 @@ The **ScoringEngine** is a stateful mutation engine for point-by-point match sco
 - **Undo/redo** — Full undo/redo stack across all input modes (points, games, sets, segments)
 - **Event handlers** — Callbacks for point, game completion, set completion, match completion, undo, redo, and reset
 - **Multi-sport format support** — [matchUpFormat codes](/docs/codes/matchup-format) convering many sports
-- **TODS-compliant state** — Internal state is a standard TODS `MatchUp` object
+- **[CODES](/docs/data-standards#codes)-compliant state** — Internal state is a standard CODES `MatchUp` object
 - **Mixed-mode input** — Combine point-level, game-level, and set-level input in the same match
 - **competitionFormat integration** — support for penalty types, timer profiles, substitution rules, and more
 - **Persistence** — Save and restore complete engine state including redo stack and lineup snapshots
@@ -71,11 +71,11 @@ The ScoringEngine follows the Competition Factory's architecture pattern where *
 │  (addPoint, getScore,    │
 │   isComplete, ...)       │
 ├──────────────────────────┤
-│    TODS MatchUp State    │  Standard data model
+│   CODES MatchUp State    │  Standard data model
 └──────────────────────────┘
 ```
 
-The engine holds a TODS `MatchUp` object as internal state. All mutations (adding points, games, sets) update this state and record entries in a unified history timeline. The undo/redo system replays this timeline to reconstruct state.
+The engine holds a CODES `MatchUp` object as internal state. All mutations (adding points, games, sets) update this state and record entries in a unified history timeline. The undo/redo system replays this timeline to reconstruct state.
 
 ## Constructor Options
 

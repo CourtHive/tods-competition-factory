@@ -12,7 +12,7 @@ The mocksEngine generates individual, pair and team participants with demographi
 <BrowserOnly>{() => <MockParticipantsDemo />}</BrowserOnly>
 
 :::note Sex vs Gender
-In the TODS data model:
+In the [CODES](/docs/data-standards#codes) data model:
 
 - **Persons have `sex`** - A biological attribute (MALE/FEMALE) stored in the `person` object
 - **Events have `gender`** - A competition category attribute (MALE/FEMALE/MIXED/etc.) stored in the event object

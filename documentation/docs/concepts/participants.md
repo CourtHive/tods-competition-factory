@@ -4,7 +4,7 @@ title: Participants Overview
 
 ## Overview
 
-Participants are the core entities in TODS that represent players, teams, and other competing units in tournament structures. The Competition Factory provides a flexible, type-agnostic participant system that supports individuals, pairs (doubles), teams, and groups.
+Participants are the core entities in [CODES](/docs/data-standards#codes) that represent players, teams, and other competing units in tournament structures. The Competition Factory provides a flexible, type-agnostic participant system that supports individuals, pairs (doubles), teams, and groups.
 
 ### Key Concepts
 
@@ -16,7 +16,7 @@ Participants are the core entities in TODS that represent players, teams, and ot
 
 ## Participant Types
 
-TODS defines four core participant types:
+CODES defines four core participant types:
 
 ### INDIVIDUAL
 
@@ -193,7 +193,7 @@ tournamentEngine.addParticipant({
 
 ## Participant-Agnostic Logic
 
-A fundamental design principle of TODS: **draw logic is participant-agnostic**. The system doesn't differentiate between INDIVIDUAL, PAIR, or TEAM participants when managing draw structures and participant progression.
+A fundamental design principle of CODES: **draw logic is participant-agnostic**. The system doesn't differentiate between INDIVIDUAL, PAIR, or TEAM participants when managing draw structures and participant progression.
 
 ### How It Works
 

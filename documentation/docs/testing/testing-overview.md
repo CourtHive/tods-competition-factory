@@ -2,13 +2,13 @@
 title: Testing Overview
 ---
 
-The TODS Competition Factory provides comprehensive testing utilities and patterns for building reliable tournament management applications. The testing toolkit includes mock data generation, test servers, and best practices for testing tournament scenarios.
+The Competition Factory provides comprehensive testing utilities and patterns for building reliable tournament management applications. The testing toolkit includes mock data generation, test servers, and best practices for testing tournament scenarios.
 
 ## Testing Tools
 
 ### mocksEngine - Primary Testing Tool
 
-The **[mocksEngine](./mocks-engine-overview.md)** is the primary tool for generating test data. It creates realistic tournaments, participants, draws, match outcomes, and complete tournament scenarios with full TODS schema compliance.
+The **[mocksEngine](./mocks-engine-overview.md)** is the primary tool for generating test data. It creates realistic tournaments, participants, draws, match outcomes, and complete tournament scenarios with full [CODES](/docs/data-standards#codes) schema compliance.
 
 **Quick Start:**
 
