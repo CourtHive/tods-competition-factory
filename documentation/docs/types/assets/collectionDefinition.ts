@@ -7,7 +7,7 @@ export const collectionDefinition = {
     '{\\"type\\":\\"object\\",\\"object\\":\\"collectionValueProfiles\\",\\"array\\":\\"true\\",\\"required\\":\\"true\\"}',
   matchUpCount: '{\\"type\\":\\"number\\",\\"required\\":\\"true\\"}',
   matchUpFormat:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"TODS matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
+    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"CODES matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
   matchUpType:
     '{\\"type\\":\\"enum\\",\\"enum\\": \\"\\",\\"required\\":\\"true\\",\\"note\\":\\"SINGLES, DOUBLES, or TEAM\\"}',
   matchUpValue: '{\\"type\\":\\"number\\",\\"required\\":\\"false\\"}',

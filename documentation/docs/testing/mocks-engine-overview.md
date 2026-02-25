@@ -4,7 +4,7 @@ title: mocksEngine Overview
 
 # mocksEngine Overview
 
-The **mocksEngine** is a powerful testing utility within the TODS Competition Factory that generates realistic tournament data, participants, match outcomes, and complete tournament scenarios. It's designed to make testing comprehensive, repeatable, and efficient.
+The **mocksEngine** is a powerful testing utility within the Competition Factory that generates realistic tournament data, participants, match outcomes, and complete tournament scenarios. It's designed to make testing comprehensive, repeatable, and efficient.
 
 ## Why mocksEngine?
 
@@ -24,7 +24,7 @@ Creating this data manually for each test is time-consuming and error-prone. The
 - **Create consistent test data** across your test suite
 - **Test edge cases easily** by generating specific scenarios
 - **Maintain test readability** by removing boilerplate setup code
-- **Ensure data validity** with built-in TODS schema compliance
+- **Ensure data validity** with built-in [CODES](/docs/data-standards#codes) schema compliance
 
 ## Key Capabilities
 

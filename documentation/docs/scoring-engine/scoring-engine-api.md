@@ -5,7 +5,7 @@ title: Core API Reference
 Complete method reference for the `ScoringEngine` class.
 
 :::info
-The ScoringEngine uses **0-based side indexing** for `winner` and `server` parameters: `0` = side 1, `1` = side 2. This differs from TODS `sideNumber` which is 1-based. Return values like `getWinner()` use TODS convention (1 or 2).
+The ScoringEngine uses **0-based side indexing** for `winner` and `server` parameters: `0` = side 1, `1` = side 2. This differs from [CODES](/docs/data-standards#codes) `sideNumber` which is 1-based. Return values like `getWinner()` use CODES convention (1 or 2).
 :::
 
 ## Scoring Methods
@@ -119,7 +119,7 @@ engine.setInitialScore({
 setState(matchUp: MatchUp): void
 ```
 
-Load matchUp state from a TODS MatchUp JSON object. Replaces all internal state, clears redo stack.
+Load matchUp state from a CODES MatchUp JSON object. Replaces all internal state, clears redo stack.
 
 ```js
 const savedMatchUp = JSON.parse(localStorage.getItem('matchUp'));
@@ -134,7 +134,7 @@ engine.setState(savedMatchUp);
 getState(): MatchUp
 ```
 
-Get current matchUp state as a TODS MatchUp object. Returns a direct reference (not a copy).
+Get current matchUp state as a CODES MatchUp object. Returns a direct reference (not a copy).
 
 ```js
 const matchUp = engine.getState();

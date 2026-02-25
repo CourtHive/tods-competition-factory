@@ -418,7 +418,7 @@ const { scaleItemsWithParticipantIds } = engine.generateSeedingScaleItems({
 **Use Cases:**
 
 - Custom seeding logic that requires manual scale generation
-- Converting external rating systems to TODS scale format
+- Converting external rating systems to CODES scale format
 - Testing seeding scenarios with specific scale values
 
 ---

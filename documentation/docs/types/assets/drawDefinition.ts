@@ -12,7 +12,7 @@ export const drawDefinition = {
   links: '{\\"type\\":\\"object\\",\\"object\\":\\"link\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   matchUps: '{\\"type\\":\\"object\\",\\"object\\":\\"matchUp\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',
   matchUpFormat:
-    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"TODS matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
+    '{\\"type\\":\\"string\\",\\"required\\":\\"false\\",\\"note\\":\\"CODES matchup format, e.g. \'SET3-S:6/TB7\'\\"}',
   startDate: '{\\"type\\":\\"string\\",\\"required\\":\\"true\\",\\"note\\":\\"\'YYYY-MM-DD\'\\"}',
   structures:
     '{\\"type\\":\\"object\\",\\"object\\":\\"structure\\",\\"array\\":\\"true\\",\\"required\\":\\"false\\"}',

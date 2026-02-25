@@ -757,7 +757,7 @@ Removes all tournament records that are not referenced in the `LINKED_TOURNAMENT
 **Returns:** `void`
 
 **Background:**
-The TODS (Tennis Open Data Standards) supports linking related tournaments through the `LINKED_TOURNAMENTS` extension. This method keeps only tournaments that are referenced in this extension, removing any others.
+[CODES](/docs/data-standards#codes) (Competition Open Data Exchange Standards) supports linking related tournaments through the `LINKED_TOURNAMENTS` extension. This method keeps only tournaments that are referenced in this extension, removing any others.
 
 **Example:**
 

@@ -149,7 +149,7 @@ const anonymized = mocksGovernor.anonymizeTournamentRecord({
 
 - **Deterministic generation:** Using the same `personIds` array produces the same mock names
 - **Referential integrity:** All participantIds and personIds are updated consistently throughout the tournament
-- **TODS compliance:** Anonymized record is valid TODS schema
+- **CODES compliance:** Anonymized record is valid CODES schema
 - **Non-destructive:** Original tournament record is not modified
 
 ---
@@ -479,7 +479,7 @@ mocksGovernor.modifyTournamentRecord({
 - **Participant reuse:** Existing participants are used when possible
 - **Event creation:** `drawProfiles` creates new events; `eventProfiles` can target existing events
 - **No duplication:** Won't create duplicate participants if they already exist
-- **Schema compliance:** Modified tournament maintains TODS schema validity
+- **Schema compliance:** Modified tournament maintains CODES schema validity
 
 ---
 

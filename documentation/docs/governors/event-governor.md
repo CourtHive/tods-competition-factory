@@ -248,7 +248,7 @@ const {
 } = engine.getCategoryAgeDetails({
   consideredDate, // optional - date string 'YYYY-MM-DD'; defaults to current date
   category: {
-    ageCategoryCode, // TODS code, e.g. 'U18', '18U', '18O', 'O18', '8O-U18', 'C50-70'
+    ageCategoryCode, // CODES code, e.g. 'U18', '18U', '18O', 'O18', '8O-U18', 'C50-70'
     categoryName, // when no ageCategoryCode is provided, an attempt is made to find in categoryName
     ageMaxDate, // latest/most recent date acceptable for eligibilty
     ageMinDate, // earliest date acceptable for eligibility

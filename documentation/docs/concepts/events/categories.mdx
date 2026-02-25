@@ -14,7 +14,7 @@ Categories define the eligibility criteria and characteristics of an event. Cate
 ```js
 const category = {
   categoryName: 'Boys Under 18', // Display name
-  ageCategoryCode: '18U', // ITF TODS age code
+  ageCategoryCode: '18U', // CODES age code
   ageMax: 18, // Maximum age (calculated)
   ageMinDate: '2006-01-01', // Minimum birth date (calculated)
   ratingType: 'UTR', // Optional rating system
@@ -74,9 +74,10 @@ const combinedCategory = {
 
 ## Age Category Codes
 
-Age category codes follow ITF TODS standards. See [Age Category Codes](/docs/codes/age-category) for:
+Age category codes follow [CODES](/docs/data-standards#codes) standards. See [Age Category Codes](/docs/codes/age-category) for:
+
 - Interactive code builder
-- Format specifications  
+- Format specifications
 - Age calculation details
 
 Common formats:
@@ -145,6 +146,7 @@ tournamentEngine.addEvent({ event });
 ## Shared Category Benefits
 
 All drawDefinitions within an event share the same category, which:
+
 - Ensures consistent eligibility rules across all flights and draws
 - Simplifies tournament management
 - Maintains logical grouping of related competitions

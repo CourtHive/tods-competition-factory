@@ -96,6 +96,7 @@ const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, ve
 ```
 
 When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at all levels:
+
 - **Order of Play embargo**: returns empty `dateMatchUps` if the order of play embargo has not passed
 - **Draw embargo**: filters out matchUps from embargoed draws
 - **Stage embargo**: filters out matchUps from embargoed stages
@@ -175,7 +176,7 @@ const drawTypes = engine.getAllowedDrawTypes();
 
 ## getAllowedMatchUpFormats
 
-Returns an array of TODS matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
+Returns an array of CODES matchUpFormat codes for allowed scoring formats, if any applicable policies have been applied to the tournamentRecord.
 
 ```js
 const drawTypes = engine.getAllowedMatchUpFormats();
@@ -535,7 +536,7 @@ Requires an array of `matchUpFormats` either be defined in scoring policy that i
 ```js
 const { eventMatchUpFormatTiming } = engine.getEventMatchUpFormatTiming({
   matchUpFormats, // optional - can be retrieved from policy
-  categoryType, // optional - categoryType is not part of TODS or event attributes, but can be defined in a policy
+  categoryType, // optional - categoryType is not part of CODES or event attributes, but can be defined in a policy
   eventId,
 });
 ```
@@ -609,11 +610,11 @@ This is the factory's authoritative source for scheduling constraint data and is
 ```js
 const result = engine.getMatchUpDependencies({
   includeParticipantDependencies, // optional boolean (default false) — when true, accumulates
-                                  // all potential participantIds for each matchUp transitively
+  // all potential participantIds for each matchUp transitively
   drawDefinition, // optional — scope to a single draw definition
-  matchUps,       // optional — pre-fetched matchUps (must be inContext); avoids re-fetching
-  matchUpIds,     // optional — restrict dependency checking to specific matchUpIds
-  drawIds,        // optional — restrict to specific drawIds
+  matchUps, // optional — pre-fetched matchUps (must be inContext); avoids re-fetching
+  matchUpIds, // optional — restrict dependency checking to specific matchUpIds
+  drawIds, // optional — restrict to specific drawIds
 });
 ```
 
@@ -624,10 +625,10 @@ When called via a competition engine, `tournamentRecords` is supplied automatica
 ```js
 const {
   matchUpDependencies, // Record<matchUpId, DependencyEntry>
-  sourceMatchUpIds,    // Record<matchUpId, string[]> — direct feeder matchUpIds (non-transitive)
-  positionDependencies,// Record<structureId, string[]> — cross-structure POSITION link dependencies
-  matchUps,            // HydratedMatchUp[] — the matchUps used for analysis
-  success,             // boolean
+  sourceMatchUpIds, // Record<matchUpId, string[]> — direct feeder matchUpIds (non-transitive)
+  positionDependencies, // Record<structureId, string[]> — cross-structure POSITION link dependencies
+  matchUps, // HydratedMatchUp[] — the matchUps used for analysis
+  success, // boolean
 } = result;
 ```
 
@@ -666,22 +667,18 @@ positionDependencies = {
 
 `getMatchUpDependencies` follows **all** draw link types:
 
-| Link Type | How It's Captured |
-|---|---|
-| **Winner progression** (elimination draws) | `winnerMatchUpId` on each matchUp |
-| **Loser progression** (consolation, compass, feed-in) | `loserMatchUpId` on each matchUp |
-| **POSITION links** (RR → Playoff, Swiss → Playoff) | `positionDependencies` — all matchUps in the source structure become dependencies of every matchUp in the target structure |
+| Link Type                                             | How It's Captured                                                                                                          |
+| ----------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| **Winner progression** (elimination draws)            | `winnerMatchUpId` on each matchUp                                                                                          |
+| **Loser progression** (consolation, compass, feed-in) | `loserMatchUpId` on each matchUp                                                                                           |
+| **POSITION links** (RR → Playoff, Swiss → Playoff)    | `positionDependencies` — all matchUps in the source structure become dependencies of every matchUp in the target structure |
 
 This means a consolation Round 1 matchUp will correctly list the main draw Round 1 matchUp it depends on (via `loserMatchUpId`), and a playoff matchUp after a Round Robin will list every RR group matchUp as a dependency.
 
 ### Usage Example
 
 ```js
-const {
-  matchUpDependencies,
-  sourceMatchUpIds,
-  positionDependencies,
-} = engine.getMatchUpDependencies({
+const { matchUpDependencies, sourceMatchUpIds, positionDependencies } = engine.getMatchUpDependencies({
   includeParticipantDependencies: true,
 });
 
@@ -703,12 +700,12 @@ const twoRoundsBack = deps.sources[1]; // feeders of feeders
 
 `getMatchUpDependencies` is the foundation of the factory's scheduling constraint enforcement. The [automated scheduling](../concepts/automated-scheduling) pipeline calls it early in the process (step 2 of [scheduleProfileRounds](../concepts/automated-scheduling#pseudocode)) and threads the dependency data through four constraint functions:
 
-| Function | Constraint | Uses |
-|---|---|---|
-| `checkDependenciesScheduled` | **Gate**: all upstream matchUps must already be scheduled before this one can be assigned a time | `matchUpIds` (transitive closure) |
-| `checkDependentTiming` | **Gate**: scheduling this matchUp must not create a timing conflict with already-scheduled downstream matchUps | `dependentMatchUpIds` |
-| `checkRecoveryTime` | **Gate**: every potential participant must have sufficient rest (`timeAfterRecovery`) since their last scheduled matchUp | `participantIds` |
-| `updateTimeAfterRecovery` | **State**: after scheduling a matchUp, updates the recovery deadline for all potential participants in downstream matchUps | `participantIds` |
+| Function                     | Constraint                                                                                                                 | Uses                              |
+| ---------------------------- | -------------------------------------------------------------------------------------------------------------------------- | --------------------------------- |
+| `checkDependenciesScheduled` | **Gate**: all upstream matchUps must already be scheduled before this one can be assigned a time                           | `matchUpIds` (transitive closure) |
+| `checkDependentTiming`       | **Gate**: scheduling this matchUp must not create a timing conflict with already-scheduled downstream matchUps             | `dependentMatchUpIds`             |
+| `checkRecoveryTime`          | **Gate**: every potential participant must have sufficient rest (`timeAfterRecovery`) since their last scheduled matchUp   | `participantIds`                  |
+| `updateTimeAfterRecovery`    | **State**: after scheduling a matchUp, updates the recovery deadline for all potential participants in downstream matchUps | `participantIds`                  |
 
 The [pro scheduler](../concepts/pro-scheduling) uses the same dependency data in its `proConflicts` post-hoc analysis to detect ordering violations, court double-bookings, and insufficient recovery gaps.
 
@@ -851,7 +848,7 @@ Returns `averageTimes` and `recoveryTimes` configuration objects for specified `
 
 ```js
 const { matchUpFormat, averageTimes, recoveryTimes } = engine.getModifiedMatchUpFormatTiming({
-  matchUpFormat, // TODS matchUpFormat code
+  matchUpFormat, // CODES matchUpFormat code
   event, // optional - include event in scope for search
 });
 ```
@@ -2112,7 +2109,7 @@ if (extension) {
 
 ## credits
 
-Returns an acknowledgments string recognizing contributors to the CourtHive/TODS project.
+Returns an acknowledgments string recognizing contributors to the CourtHive/CODES project.
 
 ```js
 const acknowledgments = engine.credits();
@@ -2121,6 +2118,6 @@ console.log(acknowledgments);
 
 **Returns:** `string` - Multi-line acknowledgments text
 
-**Note:** This method provides attribution and thanks to the many people who contributed to the development of the tournament management system and TODS standards.
+**Note:** This method provides attribution and thanks to the many people who contributed to the development of the tournament management system and CODES standards.
 
 ---

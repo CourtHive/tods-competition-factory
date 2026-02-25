@@ -17,7 +17,7 @@ Try the Age Category Code editor to build and visualize age category codes:
 
 ## Code Format
 
-Age category codes follow ITF TODS standards and support several formats:
+Age category codes follow [CODES](/docs/data-standards#codes) standards and support several formats:
 
 - **Open**: `OPEN` - No age restrictions
 - **Under (U)**: `18U` or `U18` - 18 and under
@@ -68,8 +68,8 @@ const event = {
   eventType: 'SINGLES',
   category: {
     categoryName: 'Boys Under 18',
-    ageCategoryCode: '18U'
-  }
+    ageCategoryCode: '18U',
+  },
 };
 
 tournamentEngine.addEvent({ event });

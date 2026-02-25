@@ -2,42 +2,42 @@
 title: Block Types & Algorithms
 ---
 
-This page covers the domain-specific technical details of the TemporalEngine: the inverted availability paradigm, block types, the sweep-line rail derivation algorithm, capacity curves, collision detection, time granularity, and the TODS bridge.
+This page covers the domain-specific technical details of the TemporalEngine: the inverted availability paradigm, block types, the sweep-line rail derivation algorithm, capacity curves, collision detection, time granularity, and the CODES bridge.
 
 ## The Inverted Paradigm
 
 The TemporalEngine uses an **inverted model** — instead of tracking when courts are available, it tracks when they are _unavailable_. Available time is whatever remains after all blocks are accounted for.
 
-| Aspect | Traditional Model | Temporal Engine |
-| --- | --- | --- |
-| Canonical state | Available time slots | Blocks (unavailable time) |
-| Adding unavailability | Remove/split available slots | Add a block |
-| Querying availability | Read available slot list | Derive rails (subtract blocks from day range) |
-| Overlap resolution | Merge available slots | Precedence-based sweep line |
-| Storage efficiency | Grows with available time | Grows with constraints |
+| Aspect                | Traditional Model            | Temporal Engine                               |
+| --------------------- | ---------------------------- | --------------------------------------------- |
+| Canonical state       | Available time slots         | Blocks (unavailable time)                     |
+| Adding unavailability | Remove/split available slots | Add a block                                   |
+| Querying availability | Read available slot list     | Derive rails (subtract blocks from day range) |
+| Overlap resolution    | Merge available slots        | Precedence-based sweep line                   |
+| Storage efficiency    | Grows with available time    | Grows with constraints                        |
 
 This approach is particularly effective for tournament scheduling where courts start fully available and constraints are added incrementally — a few maintenance windows, practice blocks, and reserved periods define the day's shape more compactly than enumerating every free slot.
 
 ## Block Types
 
-| Type | Meaning | Typical Source | Category |
-| --- | --- | --- | --- |
-| `MAINTENANCE` | Court under maintenance | Template / User | Hard constraint |
-| `PRACTICE` | Reserved for practice | User | Soft constraint |
-| `RESERVED` | Reserved (general purpose) | User / System | Soft constraint |
-| `BLOCKED` | Generically blocked | User | Hard constraint |
-| `CLOSED` | Court closed for the day | System | Hard constraint |
-| `SCHEDULED` | Match scheduled here | System (import) | Informational |
-| `SOFT_BLOCK` | Soft block (can be overridden) | User / Rule | Soft constraint |
-| `HARD_BLOCK` | Hard block (cannot be overridden) | User / Rule | Hard constraint |
-| `LOCKED` | Locked — immutable | System | Hard constraint |
-| `AVAILABLE` | Explicitly available | Derived | Free time |
-| `UNSPECIFIED` | Unknown/default | Fallback | Neutral |
+| Type          | Meaning                           | Typical Source  | Category        |
+| ------------- | --------------------------------- | --------------- | --------------- |
+| `MAINTENANCE` | Court under maintenance           | Template / User | Hard constraint |
+| `PRACTICE`    | Reserved for practice             | User            | Soft constraint |
+| `RESERVED`    | Reserved (general purpose)        | User / System   | Soft constraint |
+| `BLOCKED`     | Generically blocked               | User            | Hard constraint |
+| `CLOSED`      | Court closed for the day          | System          | Hard constraint |
+| `SCHEDULED`   | Match scheduled here              | System (import) | Informational   |
+| `SOFT_BLOCK`  | Soft block (can be overridden)    | User / Rule     | Soft constraint |
+| `HARD_BLOCK`  | Hard block (cannot be overridden) | User / Rule     | Hard constraint |
+| `LOCKED`      | Locked — immutable                | System          | Hard constraint |
+| `AVAILABLE`   | Explicitly available              | Derived         | Free time       |
+| `UNSPECIFIED` | Unknown/default                   | Fallback        | Neutral         |
 
 **Default `typePrecedence`:**
 
 ```js
-['HARD_BLOCK', 'LOCKED', 'MAINTENANCE', 'BLOCKED', 'PRACTICE', 'RESERVED', 'SOFT_BLOCK', 'AVAILABLE', 'UNSPECIFIED']
+['HARD_BLOCK', 'LOCKED', 'MAINTENANCE', 'BLOCKED', 'PRACTICE', 'RESERVED', 'SOFT_BLOCK', 'AVAILABLE', 'UNSPECIFIED'];
 ```
 
 When multiple blocks overlap on the same court at the same time, the block with the highest precedence (leftmost in the array) wins.
@@ -51,10 +51,10 @@ interface Block extends TimeRange {
   type: BlockType;
   reason?: string;
   priority?: number;
-  hardSoft?: BlockHardness;      // 'HARD' | 'SOFT'
+  hardSoft?: BlockHardness; // 'HARD' | 'SOFT'
   recurrenceKey?: string;
-  source?: BlockSource;          // 'USER' | 'TEMPLATE' | 'RULE' | 'SYSTEM'
-  matchUpId?: string;            // For SCHEDULED blocks
+  source?: BlockSource; // 'USER' | 'TEMPLATE' | 'RULE' | 'SYSTEM'
+  matchUpId?: string; // For SCHEDULED blocks
 }
 ```
 
@@ -88,19 +88,19 @@ flowchart TD
 
 ```ts
 interface RailSegment extends TimeRange {
-  status: BlockType;                  // Effective status after precedence resolution
-  contributingBlocks: BlockId[];      // All blocks that overlap this segment
+  status: BlockType; // Effective status after precedence resolution
+  contributingBlocks: BlockId[]; // All blocks that overlap this segment
 }
 
 interface CourtRail {
   court: CourtRef;
-  segments: RailSegment[];            // Non-overlapping, sorted by start time
+  segments: RailSegment[]; // Non-overlapping, sorted by start time
 }
 
 interface VenueDayTimeline {
   day: DayId;
   venueId: VenueId;
-  rails: CourtRail[];                 // One rail per court
+  rails: CourtRail[]; // One rail per court
 }
 ```
 
@@ -108,7 +108,7 @@ interface VenueDayTimeline {
 
 Given three overlapping blocks on a court:
 
-```
+```text
 Block A (PRACTICE):    |████████████████|
 Block B (MAINTENANCE):        |██████████████|
 Block C (RESERVED):                 |████████████████|
@@ -278,14 +278,14 @@ function* iterateDayTicks(startHhmm: string, endHhmm: string, granularity: numbe
 // [...iterateDayTicks('08:00', '10:00', 30)] → ['08:00', '08:30', '09:00', '09:30', '10:00']
 ```
 
-## TODS Bridge
+## CODES Bridge
 
-The bridge module provides bidirectional translation between TemporalEngine structures and TODS (Tournament Open Data Standards) tournament record structures.
+The bridge module provides bidirectional translation between TemporalEngine structures and [CODES](/docs/data-standards#codes) (Competition Open Data Exchange Standards) tournament record structures.
 
-### Engine → TODS
+### Engine → CODES
 
 ```ts
-// Convert derived rails to TODS dateAvailability entries
+// Convert derived rails to CODES dateAvailability entries
 railsToDateAvailability(
   timelines: VenueDayTimeline[],
   config?: BridgeConfig,
@@ -300,10 +300,10 @@ applyTemporalAvailabilityToTournamentRecord(params: {
 }): any
 ```
 
-### TODS → Engine
+### CODES → Engine
 
 ```ts
-// Convert TODS venue availability to engine blocks
+// Convert CODES venue availability to engine blocks
 todsAvailabilityToBlocks(params: {
   venue: TodsVenue;
   tournamentId: string;

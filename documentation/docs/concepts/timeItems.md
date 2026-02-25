@@ -4,7 +4,7 @@ title: Time Items
 
 ## Overview
 
-**Time Items** are temporal records that capture attributes which change over time on any TODS document element. They provide a complete audit trail of changes, enabling historical reconstruction and duration calculations.
+**Time Items** are temporal records that capture attributes which change over time on any [CODES](/docs/data-standards#codes) document element. They provide a complete audit trail of changes, enabling historical reconstruction and duration calculations.
 
 ### Key Concepts
 

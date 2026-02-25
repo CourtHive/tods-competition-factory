@@ -71,7 +71,7 @@ Applies `lineUps` to the `sides` of a _TEAM_ matchUp. Order is not important as 
 ```js
 result = engine.applyLineUps({
   matchUpId, // must be { matchUpType: TEAM }
-  lineUps, // array of at most two lineUps (see TODS)
+  lineUps, // array of at most two lineUps (see CODES)
   drawId, // reference to draw in which matchUp occurs
 });
 ```
@@ -389,15 +389,15 @@ Used internally by the [automated scheduling](../concepts/automated-scheduling) 
 ```js
 const {
   matchUpDependencies, // Record<matchUpId, { matchUpIds, dependentMatchUpIds, participantIds, sources }>
-  sourceMatchUpIds,    // Record<matchUpId, string[]> — direct feeder matchUpIds
-  positionDependencies,// Record<structureId, string[]> — cross-structure POSITION link deps
-  matchUps,            // HydratedMatchUp[] — the matchUps used for analysis
+  sourceMatchUpIds, // Record<matchUpId, string[]> — direct feeder matchUpIds
+  positionDependencies, // Record<structureId, string[]> — cross-structure POSITION link deps
+  matchUps, // HydratedMatchUp[] — the matchUps used for analysis
 } = engine.getMatchUpDependencies({
   includeParticipantDependencies, // optional boolean (default false)
   drawDefinition, // optional — scope to a single draw
-  matchUps,       // optional — pre-fetched inContext matchUps
-  matchUpIds,     // optional — restrict to specific matchUpIds
-  drawIds,        // optional — restrict to specific drawIds
+  matchUps, // optional — pre-fetched inContext matchUps
+  matchUpIds, // optional — restrict to specific matchUpIds
+  drawIds, // optional — restrict to specific drawIds
 });
 ```
 
@@ -759,7 +759,7 @@ The `force` attribute will remove the `matchUpFormat` from all targeted `matchUp
 
 ```js
 engine.setMatchUpFormat({
-  matchUpFormat, // TODS matchUpFormatCode
+  matchUpFormat, // CODES matchUpFormatCode
   eventType, // optional - restrict to SINGLES or DOUBLES
 
   matchUpId, // optional - set matchUpFormat for a specific matchUp

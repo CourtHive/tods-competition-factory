@@ -10,7 +10,7 @@ Scheduling is the process of assigning **dates**, **venues**, **courts**, and **
 
 ### TimeItems Architecture
 
-In TODS (Tennis Open Data Standards), scheduling information is attached to matchUps as `timeItems` rather than stored in a centralized schedule object. This decentralized approach provides several advantages:
+In [CODES](/docs/data-standards#codes), scheduling information is attached to matchUps as `timeItems` rather than stored in a centralized schedule object. This decentralized approach provides several advantages:
 
 - **No orphaned schedules**: When draws or structures are deleted, their scheduling information is automatically removed
 - **Granular control**: Each matchUp independently tracks its scheduling history
@@ -104,6 +104,7 @@ The Competition Factory implements an enhanced version of the Garman scheduling 
 ### Standard Garman Formula
 
 The traditional Garman formula calculates available time slots based on:
+
 - Court availability (start/end times)
 - Average match duration
 - Number of matches to schedule
@@ -138,15 +139,15 @@ This approach allows matches of different durations to be efficiently scheduled 
 
 MatchUps progress through several scheduling states:
 
-| State | Description | TimeItem Type |
-|-------|-------------|---------------|
-| **Unscheduled** | No scheduling information | None |
-| **Date Assigned** | Has `scheduledDate` but no time | `SCHEDULE.DATE` |
-| **Time Assigned** | Has `scheduledDate` and `scheduledTime` | `SCHEDULE.TIME` |
-| **Venue Assigned** | Assigned to a venue (may or may not have court) | `SCHEDULE.VENUE` |
-| **Court Assigned** | Assigned to a specific court | `SCHEDULE.COURT` |
-| **In Progress** | Match has started | `STATUS.${matchUpStatus}` |
-| **Completed** | Match has finished | `STATUS.COMPLETE` |
+| State              | Description                                     | TimeItem Type             |
+| ------------------ | ----------------------------------------------- | ------------------------- |
+| **Unscheduled**    | No scheduling information                       | None                      |
+| **Date Assigned**  | Has `scheduledDate` but no time                 | `SCHEDULE.DATE`           |
+| **Time Assigned**  | Has `scheduledDate` and `scheduledTime`         | `SCHEDULE.TIME`           |
+| **Venue Assigned** | Assigned to a venue (may or may not have court) | `SCHEDULE.VENUE`          |
+| **Court Assigned** | Assigned to a specific court                    | `SCHEDULE.COURT`          |
+| **In Progress**    | Match has started                               | `STATUS.${matchUpStatus}` |
+| **Completed**      | Match has finished                              | `STATUS.COMPLETE`         |
 
 :::note Scheduling Flexibility
 A matchUp can have a date/time without a venue/court (for preliminary schedules), or a venue/court without a specific time (for on-site day-of scheduling).
@@ -166,7 +167,7 @@ The system enforces multiple types of constraints:
 ### Soft Constraints (Should Be Satisfied)
 
 - **Recovery times**: Minimum rest between a player's matches
-- **Daily limits**: Maximum matches per player per day  
+- **Daily limits**: Maximum matches per player per day
 - **Not-before times**: Preferred start times for matches
 - **Court preferences**: Priority courts for seeded players or finals
 - **Person requests**: Player-specific preferences or restrictions
@@ -215,6 +216,7 @@ The Competition Factory provides tools for optimizing schedules:
 ### Person Requests
 
 Schedule around player commitments:
+
 - **Do Not Schedule**: Block times when player unavailable
 - **Practice Times**: Reserved court time
 - **Media Obligations**: Press conferences, interviews
@@ -223,6 +225,7 @@ Schedule around player commitments:
 ### Scheduling Profile
 
 Define complex multi-day schedules:
+
 - Which rounds play on which days
 - Which venues host which events
 - Order of play within each day
@@ -231,6 +234,7 @@ Define complex multi-day schedules:
 ### Grid-Based Scheduling
 
 Professional tournaments use grid scheduling:
+
 - Fixed time slots (e.g., 10:00 AM, 12:00 PM, 2:00 PM, 4:00 PM)
 - Predictable scheduling for players and spectators
 - TV-friendly programming
@@ -239,6 +243,7 @@ Professional tournaments use grid scheduling:
 ### Real-Time Adjustments
 
 Adapt schedules as tournament progresses:
+
 - Delay remaining matches when running behind
 - Move matches to alternate courts
 - Accelerate scheduling when ahead of schedule

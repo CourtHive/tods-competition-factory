@@ -6,17 +6,17 @@ The **TemporalEngine** is a pure JavaScript state machine that models court avai
 
 ## When to Use TemporalEngine vs scheduleGovernor
 
-| Use Case | Recommended |
-| --- | --- |
-| Interactive visual scheduling (timeline editor) | **TemporalEngine** |
-| Real-time availability queries | **TemporalEngine** |
-| What-if simulation (preview before commit) | **TemporalEngine** |
-| Capacity analysis and utilization stats | **TemporalEngine** |
-| Conflict detection with pluggable evaluators | **TemporalEngine** |
-| Plan management (round assignment to days) | **TemporalEngine** |
-| Automated Garman scheduling | **scheduleGovernor** |
-| Bulk matchUp time assignment | **scheduleGovernor** |
-| Scheduling policy enforcement | **scheduleGovernor** |
+| Use Case                                        | Recommended          |
+| ----------------------------------------------- | -------------------- |
+| Interactive visual scheduling (timeline editor) | **TemporalEngine**   |
+| Real-time availability queries                  | **TemporalEngine**   |
+| What-if simulation (preview before commit)      | **TemporalEngine**   |
+| Capacity analysis and utilization stats         | **TemporalEngine**   |
+| Conflict detection with pluggable evaluators    | **TemporalEngine**   |
+| Plan management (round assignment to days)      | **TemporalEngine**   |
+| Automated Garman scheduling                     | **scheduleGovernor** |
+| Bulk matchUp time assignment                    | **scheduleGovernor** |
+| Scheduling policy enforcement                   | **scheduleGovernor** |
 
 ## Key Capabilities
 
@@ -27,7 +27,7 @@ The **TemporalEngine** is a pure JavaScript state machine that models court avai
 - **Pluggable conflict evaluators** — Register built-in or custom evaluators for overlap detection, day boundary checks, lighting, maintenance windows, and more
 - **Multi-phase validation pipeline** — PRECHECK → INTEGRITY → ORDERING → CAPACITY pipeline validates plan state
 - **What-if simulation** — Preview mutations on a disposable snapshot without affecting real state
-- **TODS bridge** — Bidirectional translation between engine blocks/rails and TODS tournament record structures
+- **[CODES](/docs/data-standards#codes) bridge** — Bidirectional translation between engine blocks/rails and CODES tournament record structures
 - **Availability hierarchy** — Court-day → court-default → venue-day → venue-default → global-default → engine config fallback
 - **Standalone class** — Instantiate directly with `new TemporalEngine()`, no factory integration required
 
@@ -62,7 +62,7 @@ const rail = engine.getCourtRail('2026-06-15', court1Ref);
 
 The TemporalEngine follows a three-layer architecture where blocks are the only canonical state and everything else is derived:
 
-```
+```text
 ┌──────────────────────────────────┐
 │        TemporalEngine            │  Standalone class / facade
 │  (block CRUD, plans, events,     │
@@ -75,7 +75,7 @@ The TemporalEngine follows a three-layer architecture where blocks are the only 
 │   validationPipeline, planState, │
 │   timeGranularity)               │
 ├──────────────────────────────────┤
-│    TODS Tournament Record        │  Standard data model
+│    CODES Tournament Record       │  Standard data model
 └──────────────────────────────────┘
 ```
 
@@ -96,19 +96,19 @@ The `EngineConfig` interface:
 
 ```ts
 interface EngineConfig {
-  tournamentId: TournamentId;           // Defaults to tournamentRecord.tournamentId
-  dayStartTime: string;                 // 'HH:MM' — default '06:00'
-  dayEndTime: string;                   // 'HH:MM' — default '23:00'
-  slotMinutes: number;                  // Rendering granularity — default 15
-  granularityMinutes?: number;          // Canonical time granularity (overrides slotMinutes)
-  typePrecedence: BlockType[];          // Priority order for resolving overlapping blocks
-  conflictEvaluators?: ConflictEvaluator[];  // Pluggable conflict evaluators
+  tournamentId: TournamentId; // Defaults to tournamentRecord.tournamentId
+  dayStartTime: string; // 'HH:MM' — default '06:00'
+  dayEndTime: string; // 'HH:MM' — default '23:00'
+  slotMinutes: number; // Rendering granularity — default 15
+  granularityMinutes?: number; // Canonical time granularity (overrides slotMinutes)
+  typePrecedence: BlockType[]; // Priority order for resolving overlapping blocks
+  conflictEvaluators?: ConflictEvaluator[]; // Pluggable conflict evaluators
 }
 ```
 
 **Default `typePrecedence`:**
 
-```
+```text
 HARD_BLOCK → LOCKED → MAINTENANCE → BLOCKED → PRACTICE → RESERVED → SOFT_BLOCK → AVAILABLE → UNSPECIFIED
 ```
 

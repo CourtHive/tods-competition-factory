@@ -4,7 +4,7 @@ title: Draw Types
 
 ## Overview
 
-TODS (Tournament Organization Data Structures) provides a powerful framework for describing tournament draws of arbitrary complexity using **linked structures**. A draw can consist of multiple structures connected by links that define how participants flow between them based on match outcomes, finishing positions, or qualifying results.
+[CODES](/docs/data-standards#codes) provides a powerful framework for describing tournament draws of arbitrary complexity using **linked structures**. A draw can consist of multiple structures connected by links that define how participants flow between them based on match outcomes, finishing positions, or qualifying results.
 
 ### Key Concepts
 
@@ -15,7 +15,7 @@ TODS (Tournament Organization Data Structures) provides a powerful framework for
 
 ## Understanding Linked Structures
 
-Traditional tournament software often treats draws as monolithic entities. TODS takes a different approach: **any draw is a collection of linked structures** that can be configured in unlimited ways.
+Traditional tournament software often treats draws as monolithic entities. CODES takes a different approach: **any draw is a collection of linked structures** that can be configured in unlimited ways.
 
 ### Basic Example: Feed-In Championship
 
@@ -71,27 +71,31 @@ The convenience method `engine.generateDrawDefinition()` generates the following
 
 ## Stages: Organizing Structures
 
-In TODS, **qualifying is conceptualized as a STAGE of a draw**, not a separate draw. This is a fundamental difference from traditional systems.
+In CODES, **qualifying is conceptualized as a STAGE of a draw**, not a separate draw. This is a fundamental difference from traditional systems.
 
 ### Stage Types
 
 **QUALIFYING Stage:**
+
 - Contains one or more qualifying structures
 - Each structure can produce qualifiers
 - Different qualifying structures can feed into different rounds of the main draw
 - Qualifiers from one structure can enter at Round 1 while qualifiers from another structure enter at Round 2
 
 **MAIN Stage:**
+
 - The primary competition structure
 - Can receive qualifiers at multiple entry points
 - Can feed participants into consolation or playoff structures
 
 **CONSOLATION Stage:**
+
 - Receives participants who lose in the main draw
 - Can receive participants from multiple rounds
 - Provides additional competition opportunities
 
 **PLAY_OFF Stage:**
+
 - Playoff structures for determining specific finishing positions
 - Common after round robin group play
 
@@ -105,19 +109,19 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
   drawType: 'SINGLE_ELIMINATION',
   qualifyingProfiles: [
     {
-      roundTarget: 1,  // Feed into Round 1
+      roundTarget: 1, // Feed into Round 1
       structureProfiles: [
-        { drawSize: 16, qualifyingPositions: 4 },  // Qualifying Structure A → 4 qualifiers
-        { drawSize: 8, qualifyingPositions: 2 }    // Qualifying Structure B → 2 qualifiers
-      ]
+        { drawSize: 16, qualifyingPositions: 4 }, // Qualifying Structure A → 4 qualifiers
+        { drawSize: 8, qualifyingPositions: 2 }, // Qualifying Structure B → 2 qualifiers
+      ],
     },
     {
-      roundTarget: 2,  // Feed into Round 2
+      roundTarget: 2, // Feed into Round 2
       structureProfiles: [
-        { drawSize: 8, qualifyingPositions: 2 }    // Qualifying Structure C → 2 qualifiers
-      ]
-    }
-  ]
+        { drawSize: 8, qualifyingPositions: 2 }, // Qualifying Structure C → 2 qualifiers
+      ],
+    },
+  ],
 });
 
 // Result:
@@ -140,7 +144,7 @@ Main Draw Structure (32 positions):
     ├─ Positions 1-4: Qualifiers from Qualifying A
     ├─ Positions 5-6: Qualifiers from Qualifying B
     └─ Positions 7-16: Direct acceptances
-  
+
   Round 2 (8 positions):
     ├─ 6 positions: Winners from Round 1
     └─ Positions 7-8: Qualifiers from Qualifying C (late entry)
@@ -154,16 +158,16 @@ Links define the flow of participants between structures and determine [finishin
 
 ```ts
 type Link = {
-  linkType: 'LOSER' | 'WINNER' | 'POSITION';  // Type of participant flow
+  linkType: 'LOSER' | 'WINNER' | 'POSITION'; // Type of participant flow
   source: {
-    structureId: string;      // Source structure UUID
-    roundNumber?: number;     // Optional: specific round
-    finishingPositions?: number[];  // For POSITION links
+    structureId: string; // Source structure UUID
+    roundNumber?: number; // Optional: specific round
+    finishingPositions?: number[]; // For POSITION links
   };
   target: {
-    structureId: string;      // Destination structure UUID
-    roundNumber?: number;     // Optional: target round
-    feedProfile?: string;     // Feed pattern (e.g., 'DRAW')
+    structureId: string; // Destination structure UUID
+    roundNumber?: number; // Optional: target round
+    feedProfile?: string; // Feed pattern (e.g., 'DRAW')
   };
 };
 ```
@@ -171,6 +175,7 @@ type Link = {
 ### Link Types
 
 **LOSER Links** - Direct losing participants:
+
 ```js
 {
   linkType: 'LOSER',
@@ -187,6 +192,7 @@ type Link = {
 ```
 
 **WINNER Links** - Direct winning participants:
+
 ```js
 {
   linkType: 'WINNER',
@@ -202,6 +208,7 @@ type Link = {
 ```
 
 **POSITION Links** - Feed based on finishing position:
+
 ```js
 {
   linkType: 'POSITION',
@@ -231,19 +238,31 @@ A Compass draw (8 structures) uses multiple links:
 ```js
 drawDefinition.links = [
   // Main draw losers to compass points
-  { linkType: 'LOSER', source: { structureId: 'main', roundNumber: 1 }, 
-    target: { structureId: 'east', roundNumber: 1 } },
-  { linkType: 'LOSER', source: { structureId: 'main', roundNumber: 2 }, 
-    target: { structureId: 'west', roundNumber: 1 } },
-  
+  {
+    linkType: 'LOSER',
+    source: { structureId: 'main', roundNumber: 1 },
+    target: { structureId: 'east', roundNumber: 1 },
+  },
+  {
+    linkType: 'LOSER',
+    source: { structureId: 'main', roundNumber: 2 },
+    target: { structureId: 'west', roundNumber: 1 },
+  },
+
   // East losers to southeast
-  { linkType: 'LOSER', source: { structureId: 'east', roundNumber: 1 }, 
-    target: { structureId: 'southeast', roundNumber: 1 } },
-  
-  // West losers to southwest  
-  { linkType: 'LOSER', source: { structureId: 'west', roundNumber: 1 }, 
-    target: { structureId: 'southwest', roundNumber: 1 } },
-  
+  {
+    linkType: 'LOSER',
+    source: { structureId: 'east', roundNumber: 1 },
+    target: { structureId: 'southeast', roundNumber: 1 },
+  },
+
+  // West losers to southwest
+  {
+    linkType: 'LOSER',
+    source: { structureId: 'west', roundNumber: 1 },
+    target: { structureId: 'southwest', roundNumber: 1 },
+  },
+
   // ... more links for all 8 structures
 ];
 ```
@@ -257,13 +276,13 @@ While pre-defined draw types cover most scenarios, you can create custom configu
 const { structure: mainStructure } = tournamentEngine.generateStructure({
   structureName: 'Main Draw',
   stage: 'MAIN',
-  drawSize: 16
+  drawSize: 16,
 });
 
 const { structure: consolationStructure } = tournamentEngine.generateStructure({
   structureName: 'Consolation',
-  stage: 'CONSOLATION', 
-  drawSize: 8
+  stage: 'CONSOLATION',
+  drawSize: 8,
 });
 
 // Define custom links
@@ -271,27 +290,29 @@ const links = [
   {
     linkType: 'LOSER',
     source: { structureId: mainStructure.structureId, roundNumber: 1 },
-    target: { structureId: consolationStructure.structureId, roundNumber: 1 }
-  }
+    target: { structureId: consolationStructure.structureId, roundNumber: 1 },
+  },
 ];
 
 // Combine into draw definition
 const drawDefinition = {
   drawId: UUID(),
   structures: [mainStructure, consolationStructure],
-  links: links
+  links: links,
 };
 ```
 
 ## Qualifying Conceptual Model
 
-### Traditional View (Incorrect in TODS)
+### Traditional View (Incorrect in CODES)
+
 ```
 Main Draw (separate entity)
 Qualifying Draw (separate entity)
 ```
 
-### TODS View (Correct)
+### CODES View (Correct)
+
 ```
 Draw:
   ├─ QUALIFYING Stage
@@ -322,10 +343,10 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
       roundTarget: 1,
       structureProfiles: [
         // 64 players compete for 16 qualifying spots
-        { drawSize: 64, seedsCount: 16, qualifyingPositions: 16 }
-      ]
-    }
-  ]
+        { drawSize: 64, seedsCount: 16, qualifyingPositions: 16 },
+      ],
+    },
+  ],
 });
 
 // Results in:
@@ -353,7 +374,7 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
       ]
     },
     {
-      roundTarget: 2,  
+      roundTarget: 2,
       structureProfiles: [
         { drawSize: 32, qualifyingPositions: 4 }    // Lucky loser qualifying
       ]
@@ -370,19 +391,22 @@ const { drawDefinition } = tournamentEngine.generateDrawDefinition({
 
 :::note
 **Additional Playoff Structures**
+
 - `getAvailablePlayoffProfiles()` - Valid attributes for playoff structures generation
 - `generateAndPopulatePlayoffStructures()` - Generates playoff structures
 - `attachPlayoffStructures()` - Attaches playoff structures to target drawDefinition
 - `addPlayoffStructures()` - Combines generation and attachment of playoff structures
 
 **Voluntary Consolation Structure**
+
 - `getEligibleVoluntaryConsolationParticipants()` - Configurable method for determining eligibility
 - `generateVoluntaryConsolation()` - Generates matchUps for consolation structure
 
 **Feed-In Configuration**
+
 - [Feed-In Policy](/docs/policies/feedInPolicy) - Configure consolation feed patterns
 - [Progression Policy](/docs/policies/progressionPolicy) - Control automatic qualifier placement
-:::
+  :::
 
 ## Related Documentation
 

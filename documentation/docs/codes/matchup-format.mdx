@@ -14,7 +14,7 @@ While originally designed for tennis, the format code grammar supports **any spo
 
 ## Interactive Format Editor
 
-Configure matchUp formats interactively and generate TODS-compliant format codes:
+Configure matchUp formats interactively and generate CODES-compliant format codes:
 
 <MatchUpFormatDemo />
 
@@ -85,22 +85,22 @@ The `-S:` section describes how each segment is scored:
 
 The `-G:` section describes game-level scoring within each set:
 
-| Pattern         | Description                                     | Example                                  |
-| --------------- | ----------------------------------------------- | ---------------------------------------- |
-| `TN`            | Traditional tennis/padel game scoring (0-15-30-40) | `-G:TN` (explicit traditional)        |
-| `TN{n}D`        | Traditional with deuce cap                      | `-G:TN3D` (Star Point: decisive at 3rd deuce) |
-| `{count}C`      | Consecutive points to win a game                | `-G:3C` (3 consecutive points)           |
-| `{count}C{n}D`  | Consecutive with deuce cap                      | `-G:3C3D`                                |
+| Pattern        | Description                                        | Example                                       |
+| -------------- | -------------------------------------------------- | --------------------------------------------- |
+| `TN`           | Traditional tennis/padel game scoring (0-15-30-40) | `-G:TN` (explicit traditional)                |
+| `TN{n}D`       | Traditional with deuce cap                         | `-G:TN3D` (Star Point: decisive at 3rd deuce) |
+| `{count}C`     | Consecutive points to win a game                   | `-G:3C` (3 consecutive points)                |
+| `{count}C{n}D` | Consecutive with deuce cap                         | `-G:3C3D`                                     |
 
 #### Deuce Spec (`{n}D`)
 
 The `{n}D` suffix caps the number of deuce cycles before a decisive point:
 
-| Code  | Meaning                                               |
-| ----- | ----------------------------------------------------- |
-| `1D`  | Golden point — decisive at 1st deuce (equivalent to NOAD) |
-| `3D`  | Star Point (Padel 2026) — up to 2 advantages, decisive at 3rd deuce |
-| (none)| Unlimited advantages (traditional)                    |
+| Code   | Meaning                                                             |
+| ------ | ------------------------------------------------------------------- |
+| `1D`   | Golden point — decisive at 1st deuce (equivalent to NOAD)           |
+| `3D`   | Star Point (Padel 2026) — up to 2 advantages, decisive at 3rd deuce |
+| (none) | Unlimited advantages (traditional)                                  |
 
 ### Match-Level Modifiers
 
@@ -152,7 +152,7 @@ const result = matchUpFormatCode.stringify({
 
 ## matchUpFormat discovery
 
-In TODS, a **drawDefinition** is a collection of **structures**. For example, a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another.
+In CODES, a **drawDefinition** is a collection of **structures**. For example, a MAIN **structure** and a CONSOLATION **structure** are considered to be part of the same **drawDefinition** because they have a logical relationship whereby participants move from one **structure** to another.
 
 ```js
  tournament.events[].drawDefinitions[].structures[].matchUps[]
@@ -241,16 +241,16 @@ engine.setMatchUpStatus({
 
 #### Padel
 
-| Format                      | Code                        | Notes              |
-| --------------------------- | --------------------------- | ------------------ |
-| Standard                    | `SET3-S:6/TB7`              | Same as tennis     |
-| Golden point (no advantage) | `SET3-S:6NOAD/TB7`          | Premier Padel Tour |
-| Short sets                  | `SET3-S:4/TB7`              | Shortened format   |
-| With match tiebreak         | `SET3-S:6/TB7-F:TB10`       | Final set tiebreak |
-| Golden point + short + MTB  | `SET3-S:4NOAD/TB5@3-F:TB10` | Exhibition format  |
-| Star Point (2026)           | `SET3-S:6/TB7-G:TN3D`       | Decisive at 3rd deuce |
-| Golden point (deuce cap)    | `SET3-S:6/TB7-G:TN1D`       | Decisive at 1st deuce |
-| Star Point + match tiebreak | `SET3-S:6/TB7-G:TN3D-F:TB10`| Star Point + final TB |
+| Format                      | Code                         | Notes                 |
+| --------------------------- | ---------------------------- | --------------------- |
+| Standard                    | `SET3-S:6/TB7`               | Same as tennis        |
+| Golden point (no advantage) | `SET3-S:6NOAD/TB7`           | Premier Padel Tour    |
+| Short sets                  | `SET3-S:4/TB7`               | Shortened format      |
+| With match tiebreak         | `SET3-S:6/TB7-F:TB10`        | Final set tiebreak    |
+| Golden point + short + MTB  | `SET3-S:4NOAD/TB5@3-F:TB10`  | Exhibition format     |
+| Star Point (2026)           | `SET3-S:6/TB7-G:TN3D`        | Decisive at 3rd deuce |
+| Golden point (deuce cap)    | `SET3-S:6/TB7-G:TN1D`        | Decisive at 1st deuce |
+| Star Point + match tiebreak | `SET3-S:6/TB7-G:TN3D-F:TB10` | Star Point + final TB |
 
 #### Squash
 
@@ -350,10 +350,10 @@ engine.setMatchUpStatus({
 ## Note on NoAD in Tiebreak Formats (Non-Standard Extension)
 
 :::caution Non-Standard Extension
-The use of `NOAD` applied to tiebreak formats (e.g., `TB10NOAD`) is a **non-standard extension** for recreational tennis use and is **not part of the official ITF Tennis Open Data Standards (TODS) specification**.
+The use of `NOAD` applied to tiebreak formats (e.g., `TB10NOAD`) is a **non-standard extension** for recreational tennis use and is **not part of the official ITF TODS specification**.
 :::
 
-### Standard TODS Behavior
+### Standard Behavior
 
 - `NOAD` is officially documented only for game-level scoring (e.g., `SET3-S:6NOAD`)
 - All standard tennis tiebreak formats require win-by-2:
@@ -371,4 +371,4 @@ When `NOAD` is applied to a tiebreak format (e.g., `SET3-S:6/TB7@5-F:TB10NOAD`):
 
 ### Implementation Note
 
-This implementation supports `tiebreakSet.NoAD` to enable recreational formats, but developers should be aware this is an extension beyond the TODS specification. When interoperating with other TODS-compliant systems, tiebreak `NOAD` notation may not be recognized or may be interpreted differently.
+This implementation supports `tiebreakSet.NoAD` to enable recreational formats, but developers should be aware this is an extension beyond the CODES specification. When interoperating with other CODES-compliant systems, tiebreak `NOAD` notation may not be recognized or may be interpreted differently.

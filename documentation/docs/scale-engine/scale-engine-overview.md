@@ -6,17 +6,17 @@ The **ScaleEngine** is a stateful engine for computing, persisting, and aggregat
 
 ## When to Use ScaleEngine vs rankingGovernor
 
-| Use Case | Recommended |
-| --- | --- |
-| Compute ranking points for a tournament | **ScaleEngine** |
-| Persist ranking points to participant records | **ScaleEngine** |
-| Generate multi-tournament ranking lists | **ScaleEngine** |
-| Get per-participant point breakdowns | **ScaleEngine** |
-| Compute quality win bonuses | **ScaleEngine** |
-| Generate dynamic ratings | **ScaleEngine** |
+| Use Case                                                   | Recommended         |
+| ---------------------------------------------------------- | ------------------- |
+| Compute ranking points for a tournament                    | **ScaleEngine**     |
+| Persist ranking points to participant records              | **ScaleEngine**     |
+| Generate multi-tournament ranking lists                    | **ScaleEngine**     |
+| Get per-participant point breakdowns                       | **ScaleEngine**     |
+| Compute quality win bonuses                                | **ScaleEngine**     |
+| Generate dynamic ratings                                   | **ScaleEngine**     |
 | Stateless point computation with explicit tournamentRecord | **rankingGovernor** |
-| Custom pipeline orchestration | **rankingGovernor** |
-| Profile selection without full tournament context | **rankingGovernor** |
+| Custom pipeline orchestration                              | **rankingGovernor** |
+| Profile selection without full tournament context          | **rankingGovernor** |
 
 ## Key Capabilities
 
@@ -58,8 +58,18 @@ const rankingList = generateRankingList({
   pointAwards: allTournamentAwards, // collected from multiple tournaments
   aggregationRules: {
     countingBuckets: [
-      { bucketName: 'Singles', eventTypes: ['SINGLES'], pointComponents: ['positionPoints', 'perWinPoints'], bestOfCount: 6 },
-      { bucketName: 'Doubles', eventTypes: ['DOUBLES'], pointComponents: ['positionPoints', 'perWinPoints'], bestOfCount: 2 },
+      {
+        bucketName: 'Singles',
+        eventTypes: ['SINGLES'],
+        pointComponents: ['positionPoints', 'perWinPoints'],
+        bestOfCount: 6,
+      },
+      {
+        bucketName: 'Doubles',
+        eventTypes: ['DOUBLES'],
+        pointComponents: ['positionPoints', 'perWinPoints'],
+        bestOfCount: 2,
+      },
       { bucketName: 'Quality Wins', pointComponents: ['qualityWinPoints'], bestOfCount: 0 },
     ],
     rollingPeriodDays: 365,
@@ -84,7 +94,7 @@ The ScaleEngine follows the Competition Factory pattern where **governors** prov
 |   aggregation,    ratings,    |
 |   write-back)     calculations)|
 +---------------+--------------+
-|    TODS Tournament Record     |  Standard data model
+|    CODES Tournament Record    |  Standard data model
 |   (participants, scaleItems,  |
 |    matchUps, policies)        |
 +------------------------------+
