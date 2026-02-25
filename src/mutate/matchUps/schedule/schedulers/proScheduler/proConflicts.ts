@@ -17,15 +17,19 @@ import {
   SCHEDULE_STATE,
   CONFLICT_MATCHUP_ORDER,
   CONFLICT_PARTICIPANTS,
+  CONFLICT_POTENTIAL_PARTICIPANTS,
   CONFLICT_COURT_DOUBLE_BOOKING,
+  CONFLICT_POSITION_LINK,
 } from '@Constants/scheduleConstants';
 
 // NOTE: matchUps are assumed to be { inContext: true, nextMatchUps: true }
 type ProConflictsArgs = {
   tournamentRecords: { [key: string]: Tournament };
+  useDeepDependencies?: boolean;
   matchUps: HydratedMatchUp[];
 };
 export function proConflicts({
+  useDeepDependencies = false,
   tournamentRecords,
   matchUps,
 }: ProConflictsArgs):
@@ -55,11 +59,13 @@ export function proConflicts({
   sortedFiltered.forEach(({ schedule }) => delete schedule[SCHEDULE_STATE]);
 
   const drawIds = unique(matchUps.map(({ drawId }) => drawId));
-  const deps = getMatchUpDependencies({
+  const depsResult = getMatchUpDependencies({
     includeParticipantDependencies: true,
     tournamentRecords,
     drawIds,
-  }).matchUpDependencies;
+  });
+  const deps = depsResult.matchUpDependencies;
+  const positionDeps = useDeepDependencies ? (depsResult.positionDependencies ?? {}) : {};
 
   type Profile = {
     sourceMatchUpIds: string[];
@@ -294,6 +300,137 @@ export function proConflicts({
       }
     });
   });
+
+  if (useDeepDependencies) {
+    // Pre-compute Set-based lookups for efficiency
+    const allGridMatchUpIds = new Set(Object.keys(rowIndices));
+
+    // Build dependentSets: { matchUpId -> Set<dependentMatchUpId> }
+    const dependentSets: { [key: string]: Set<string> } = {};
+    for (const matchUpId of allGridMatchUpIds) {
+      dependentSets[matchUpId] = new Set(deps[matchUpId]?.dependentMatchUpIds ?? []);
+    }
+
+    // Compute maxSourceDepth from the dependency data
+    let maxSourceDepth = 0;
+    for (const matchUpId of allGridMatchUpIds) {
+      const sourcesLength = deps[matchUpId]?.sources?.length ?? 0;
+      if (sourcesLength > maxSourceDepth) maxSourceDepth = sourcesLength;
+    }
+
+    // Pass A: Potential Participant Recovery Conflicts
+    // Detects when deep-propagated participantIds overlap within a row or between adjacent rows
+    // Note: deps[matchUpId].participantIds can contain duplicates (e.g., RR players appear
+    // once per group match), so we use Sets to map each participant to unique matchUpIds.
+    const buildDeepParticipantMap = (row: Profile) => {
+      const directParticipantIds = new Set(row.participantIds);
+      const deepMap: { [key: string]: Set<string> } = {};
+      for (const matchUpId of row.matchUpIds) {
+        const depParticipantIds = deps[matchUpId]?.participantIds ?? [];
+        for (const id of depParticipantIds) {
+          if (!directParticipantIds.has(id)) {
+            if (!deepMap[id]) deepMap[id] = new Set();
+            deepMap[id].add(matchUpId);
+          }
+        }
+      }
+      return deepMap;
+    };
+
+    rowProfiles.forEach((row, rowIndex) => {
+      const deepParticipantMap = buildDeepParticipantMap(row);
+
+      // Within-row: participants appearing in deep deps of multiple matchUps
+      for (const [, matchUpIdSet] of Object.entries(deepParticipantMap)) {
+        if (matchUpIdSet.size > 1) {
+          const matchUpIds = [...matchUpIdSet];
+          for (const matchUpId of matchUpIds) {
+            annotate(matchUpId, SCHEDULE_WARNING, CONFLICT_POTENTIAL_PARTICIPANTS, matchUpIds.filter((id) => id !== matchUpId));
+          }
+        }
+      }
+
+      // Adjacent row check: deep participantIds overlapping with previous row's deep participantIds
+      if (rowIndex > 0) {
+        const previousRow = rowProfiles[rowIndex - 1];
+        const previousDeepMap = buildDeepParticipantMap(previousRow);
+
+        // Find overlapping deep participant IDs between rows
+        for (const [participantId, currentMatchUpIdSet] of Object.entries(deepParticipantMap)) {
+          if (previousDeepMap[participantId]) {
+            const involvedMatchUpIds = [...new Set([...currentMatchUpIdSet, ...previousDeepMap[participantId]])];
+            for (const matchUpId of involvedMatchUpIds) {
+              annotate(matchUpId, SCHEDULE_WARNING, CONFLICT_POTENTIAL_PARTICIPANTS, involvedMatchUpIds.filter((id) => id !== matchUpId));
+            }
+          }
+        }
+      }
+    });
+
+    // Pass B: Extended sourceDistance Gap Analysis
+    // Checks rows beyond just adjacent for insufficient gap based on sourceDistance
+    rowProfiles.forEach((row, rowIndex) => {
+      for (const matchUpId of row.matchUpIds) {
+        for (let k = 2; k <= Math.min(rowIndex, maxSourceDepth); k++) {
+          const earlierRow = rowProfiles[rowIndex - k];
+          for (const prevId of earlierRow.matchUpIds) {
+            const distance = sourceDistance(matchUpId, prevId);
+            if (distance > 0 && k < distance) {
+              annotate(matchUpId, SCHEDULE_ISSUE, CONFLICT_MATCHUP_ORDER, [prevId]);
+              annotate(prevId, SCHEDULE_ISSUE, CONFLICT_MATCHUP_ORDER, [matchUpId]);
+            }
+          }
+        }
+      }
+    });
+
+    // Pass C: Forward-Looking dependentMatchUpIds Checks
+    // Validates ordering from the dependent direction (complementary to source-direction checks)
+    rowProfiles.forEach((row, rowIndex) => {
+      for (const matchUpId of row.matchUpIds) {
+        const dependents = dependentSets[matchUpId];
+        if (!dependents?.size) continue;
+
+        // Check earlier rows for dependents (should be ERROR - dependents scheduled before source)
+        for (let k = 0; k < rowIndex; k++) {
+          const earlierDependents = rowProfiles[k].matchUpIds.filter((id) => dependents.has(id));
+          if (earlierDependents.length) {
+            for (const id of earlierDependents) {
+              annotate(id, SCHEDULE_ERROR, CONFLICT_MATCHUP_ORDER, [matchUpId]);
+            }
+            annotate(matchUpId, SCHEDULE_ERROR, CONFLICT_MATCHUP_ORDER, earlierDependents);
+          }
+        }
+
+        // Check same row for dependents (CONFLICT - source and dependent in same row)
+        const sameRowDependents = row.matchUpIds.filter((id) => id !== matchUpId && dependents.has(id));
+        if (sameRowDependents.length) {
+          for (const id of sameRowDependents) {
+            annotate(id, SCHEDULE_CONFLICT, CONFLICT_MATCHUP_ORDER, [matchUpId]);
+          }
+          annotate(matchUpId, SCHEDULE_CONFLICT, CONFLICT_MATCHUP_ORDER, sameRowDependents);
+        }
+      }
+    });
+
+    // Pass D: Cross-Draw Position Link Checks
+    // Detects when consolation/target-structure matchUps are scheduled but their position-linked
+    // source-structure matchUps are not on the grid at all
+    if (Object.keys(positionDeps).length) {
+      const positionSourceIdSet = new Set(Object.values(positionDeps).flat() as string[]);
+
+      rowProfiles.forEach((row) => {
+        for (const matchUpId of row.matchUpIds) {
+          const sourceMatchUpIds = deps[matchUpId]?.matchUpIds ?? [];
+          const relevantSources = sourceMatchUpIds.filter((id) => positionSourceIdSet.has(id));
+          const unscheduledSources = relevantSources.filter((id) => !allGridMatchUpIds.has(id));
+          if (unscheduledSources.length) {
+            annotate(matchUpId, SCHEDULE_WARNING, CONFLICT_POSITION_LINK, unscheduledSources);
+          }
+        }
+      });
+    }
+  }
 
   return { courtIssues, rowIssues };
 }

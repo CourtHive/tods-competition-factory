@@ -207,11 +207,11 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
       const { scheduledRounds, roundLimit } = structureDetail;
 
       // roundLimit is always the ceiling
-      if (isConvertableInteger(roundLimit) && roundNumber > roundLimit) return false;
+      if (isConvertableInteger(roundLimit) && roundNumber! > roundLimit) return false;
 
       // scheduledRounds provides per-round control within the ceiling
       if (scheduledRounds) {
-        const roundDetail = scheduledRounds[roundNumber];
+        const roundDetail = scheduledRounds[roundNumber!];
         if (!roundDetail) return false; // round not in scheduledRounds → hidden
         return isVisiblyPublished(roundDetail);
       }
