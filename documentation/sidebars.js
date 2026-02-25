@@ -128,6 +128,21 @@ module.exports = {
             'scoring-engine/visualization-applications',
           ],
         },
+        {
+          type: 'category',
+          label: 'Temporal Engine',
+          items: [
+            {
+              type: 'doc',
+              label: 'Overview',
+              id: 'temporal-engine/temporal-engine-overview',
+            },
+            'temporal-engine/temporal-engine-api',
+            'temporal-engine/event-system-and-validation',
+            'temporal-engine/block-types-and-algorithms',
+            'temporal-engine/ui-integration-scenarios',
+          ],
+        },
       ],
     },
     {
