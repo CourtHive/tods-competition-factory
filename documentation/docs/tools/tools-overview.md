@@ -57,10 +57,21 @@ import { tools } from 'tods-competition-factory';
 
 ### Date & Time
 
-- **dateTime** - Date and time manipulation utilities
+- **dateTime** - Date and time manipulation utilities (formatting, parsing, validation)
+- **dateTime.isValidEmbargoDate** - Validate that an embargo string includes timezone context
 - **generateDateRange** - Create arrays of dates within a range
 - **getTimeItem** - Extract time items from [CODES](/docs/data-standards#codes) objects
 - **generateRange** - Generate numeric ranges
+
+### Timezone
+
+- **timeZone.isValidIANATimeZone** - Validate IANA timezone identifiers (e.g. `'America/New_York'`)
+- **timeZone.getTimeZoneOffsetMinutes** - Get DST-aware UTC offset for a timezone at a given instant
+- **timeZone.wallClockToUTC** - Convert wall-clock date/time at a timezone to a UTC ISO string
+- **timeZone.utcToWallClock** - Convert a UTC ISO string to wall-clock date/time at a timezone
+- **timeZone.toEmbargoUTC** - Convert wall-clock time to a validated UTC embargo string
+
+See [Date and Time Handling](/docs/concepts/date-time-handling) for usage patterns and the complete date/time/timezone story.
 
 ### Scoring & Match Data
 

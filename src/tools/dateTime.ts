@@ -150,6 +150,13 @@ export function isISODateString(dateString) {
   return re.test(dateString);
 }
 
+export function isValidEmbargoDate(value: unknown): boolean {
+  if (typeof value !== 'string') return false;
+  if (!isISODateString(value)) return false;
+  // Must include a timezone indicator (Z or ±HH:MM offset)
+  return /([zZ]|[+-]\d{2}:?\d{2})$/.test(value);
+}
+
 export function isTimeString(timeString) {
   if (typeof timeString !== 'string') return false;
   const noZ = timeString.split('Z')[0];
@@ -356,6 +363,7 @@ export const dateTime = {
   formatDate,
   getDateByWeek,
   isISODateString,
+  isValidEmbargoDate,
   isDate,
   isTimeString,
   offsetDate,

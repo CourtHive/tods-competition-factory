@@ -83,6 +83,7 @@ module.exports = {
             'concepts/scheduling-conflicts',
           ],
         },
+        'concepts/date-time-handling',
         {
           Publishing: [
             'concepts/publishing/publishing-overview',

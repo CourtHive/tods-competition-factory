@@ -20,7 +20,7 @@ Extract unique values from an array.
 const uniqueValues = tools.unique([1, 2, 2, 3, 3, 3]);
 // Result: [1, 2, 3]
 
-const uniqueRounds = tools.unique(matchUps.map(m => m.roundNumber));
+const uniqueRounds = tools.unique(matchUps.map((m) => m.roundNumber));
 ```
 
 ### intersection
@@ -184,7 +184,7 @@ Create a lookup map from an array of objects.
 ```js
 const participants = [
   { participantId: 'id1', participantName: 'Player 1' },
-  { participantId: 'id2', participantName: 'Player 2' }
+  { participantId: 'id2', participantName: 'Player 2' },
 ];
 const participantsMap = tools.createMap(participants, 'participantId');
 // Result: { id1: { participantId: 'id1', ... }, id2: { ... } }
@@ -208,7 +208,7 @@ const clean = tools.definedAttributes({
   a: 1,
   b: undefined,
   c: null,
-  d: 2
+  d: 2,
 });
 // Result: { a: 1, c: null, d: 2 }
 ```
@@ -323,6 +323,21 @@ const future = tools.dateTime.addDays(new Date(), 7);
 const dates = tools.dateTime.generateDateRange('2024-01-01', '2024-01-07');
 ```
 
+### isValidEmbargoDate
+
+Validate that a string is a valid ISO 8601 datetime **with** timezone context (`Z` or `±HH:MM`). Used internally by all publishing methods; also available for pre-validation.
+
+```js
+tools.dateTime.isValidEmbargoDate('2024-06-15T10:00:00Z'); // true
+tools.dateTime.isValidEmbargoDate('2024-06-15T10:00:00+05:30'); // true
+tools.dateTime.isValidEmbargoDate('2024-06-15T10:00:00'); // false — no timezone
+tools.dateTime.isValidEmbargoDate('2024-06-15'); // false — date only
+tools.dateTime.isValidEmbargoDate(42); // false — not a string
+
+// Also available as a standalone import
+import { isValidEmbargoDate } from 'tods-competition-factory';
+```
+
 ### generateDateRange
 
 Generate an array of dates between start and end dates.
@@ -331,6 +346,123 @@ Generate an array of dates between start and end dates.
 const dates = tools.generateDateRange('2024-01-01', '2024-01-05');
 // Result: ['2024-01-01', '2024-01-02', '2024-01-03', '2024-01-04', '2024-01-05']
 ```
+
+---
+
+## Timezone
+
+Zero-dependency timezone utilities built on `Intl.DateTimeFormat`. These functions handle DST transitions correctly and require no external libraries.
+
+```js
+import { tools } from 'tods-competition-factory';
+// All functions are under tools.timeZone
+```
+
+### isValidIANATimeZone
+
+Validate that a string is a recognized IANA timezone identifier.
+
+```js
+tools.timeZone.isValidIANATimeZone('America/New_York'); // true
+tools.timeZone.isValidIANATimeZone('Europe/London'); // true
+tools.timeZone.isValidIANATimeZone('UTC'); // true
+tools.timeZone.isValidIANATimeZone('Not/A/Zone'); // false
+tools.timeZone.isValidIANATimeZone(''); // false
+```
+
+Used internally to validate `localTimeZone` when creating tournament records.
+
+### getTimeZoneOffsetMinutes
+
+Returns the UTC offset in minutes for a given IANA timezone at a specific instant. Positive values are east of UTC, negative values are west.
+
+```js
+// Winter (EST = UTC-5)
+tools.timeZone.getTimeZoneOffsetMinutes('America/New_York', new Date('2024-01-15T12:00:00Z'));
+// Result: -300
+
+// Summer (EDT = UTC-4)
+tools.timeZone.getTimeZoneOffsetMinutes('America/New_York', new Date('2024-06-15T12:00:00Z'));
+// Result: -240
+
+tools.timeZone.getTimeZoneOffsetMinutes('UTC'); // 0
+tools.timeZone.getTimeZoneOffsetMinutes('Asia/Kolkata'); // 330 (UTC+5:30)
+```
+
+### wallClockToUTC
+
+Convert a wall-clock date and time at a specific IANA timezone to a UTC ISO string. Handles DST transitions automatically.
+
+```js
+// 3:00 AM Eastern in summer (EDT, UTC-4)
+tools.timeZone.wallClockToUTC('2024-06-20', '03:00', 'America/New_York');
+// Result: '2024-06-20T07:00:00.000Z'
+
+// 3:00 AM Eastern in winter (EST, UTC-5)
+tools.timeZone.wallClockToUTC('2024-01-15', '03:00', 'America/New_York');
+// Result: '2024-01-15T08:00:00.000Z'
+
+// Invalid timezone returns error
+tools.timeZone.wallClockToUTC('2024-06-20', '03:00', 'Invalid/Zone');
+// Result: { error: INVALID_TIME_ZONE }
+```
+
+| Parameter  | Type     | Description                            |
+| ---------- | -------- | -------------------------------------- |
+| `date`     | `string` | Wall-clock date in `YYYY-MM-DD` format |
+| `time`     | `string` | Wall-clock time in `HH:MM` format      |
+| `timeZone` | `string` | IANA timezone identifier               |
+
+**Returns:** UTC ISO string (ending in `Z`) or `{ error: INVALID_TIME_ZONE }`.
+
+### utcToWallClock
+
+Convert a UTC ISO string to wall-clock date and time in a specific timezone.
+
+```js
+tools.timeZone.utcToWallClock('2024-06-20T07:00:00.000Z', 'America/New_York');
+// Result: { date: '2024-06-20', time: '03:00' }
+
+// Handles day boundaries
+tools.timeZone.utcToWallClock('2024-06-21T03:00:00.000Z', 'America/New_York');
+// Result: { date: '2024-06-20', time: '23:00' }
+
+// Invalid timezone returns error
+tools.timeZone.utcToWallClock('2024-06-20T07:00:00.000Z', 'Invalid/Zone');
+// Result: { error: INVALID_TIME_ZONE }
+```
+
+| Parameter  | Type     | Description                  |
+| ---------- | -------- | ---------------------------- |
+| `utcIso`   | `string` | UTC ISO 8601 datetime string |
+| `timeZone` | `string` | IANA timezone identifier     |
+
+**Returns:** `{ date: string, time: string }` or `{ error: INVALID_TIME_ZONE }`.
+
+### toEmbargoUTC
+
+Convenience wrapper that converts a wall-clock date/time at a timezone to a validated UTC embargo string. The result is guaranteed to pass `isValidEmbargoDate()` and can be passed directly to `publishEvent`, `publishOrderOfPlay`, or `publishParticipants`.
+
+```js
+const embargo = tools.timeZone.toEmbargoUTC('2024-06-15', '08:00', 'America/New_York');
+// Result: '2024-06-15T12:00:00.000Z'
+
+// Use directly in publishing
+engine.publishEvent({
+  eventId,
+  drawDetails: {
+    [drawId]: { publishingDetail: { published: true, embargo } },
+  },
+});
+```
+
+| Parameter  | Type     | Description                            |
+| ---------- | -------- | -------------------------------------- |
+| `date`     | `string` | Wall-clock date in `YYYY-MM-DD` format |
+| `time`     | `string` | Wall-clock time in `HH:MM` format      |
+| `timeZone` | `string` | IANA timezone identifier               |
+
+**Returns:** UTC ISO string (ending in `Z`) or `{ error: INVALID_TIME_ZONE }`.
 
 ---
 
@@ -425,7 +557,7 @@ Convert JSON array to CSV format. See [dedicated page](./json-to-csv.mdx).
 ```js
 const csv = tools.JSON2CSV(arrayOfObjects, {
   columnAccessors: ['id', 'name', 'score'],
-  columnMap: { id: 'ID', name: 'Name', score: 'Score' }
+  columnMap: { id: 'ID', name: 'Name', score: 'Score' },
 });
 ```
 
@@ -434,9 +566,12 @@ const csv = tools.JSON2CSV(arrayOfObjects, {
 Flatten a nested JSON object.
 
 ```js
-const flat = tools.flattenJSON({
-  a: { b: { c: 1 } }
-}, '.');
+const flat = tools.flattenJSON(
+  {
+    a: { b: { c: 1 } },
+  },
+  '.',
+);
 // Result: { 'a.b.c': 1 }
 ```
 
@@ -481,7 +616,7 @@ Generate color-coded console output of match schedule.
 ```js
 tools.visualizeScheduledMatchUps({
   scheduledMatchUps,
-  showGlobalLogs: true
+  showGlobalLogs: true,
 });
 ```
 
@@ -492,7 +627,7 @@ Parse a score string into structured data.
 ```js
 const parsed = tools.parseScoreString({
   scoreString: '6-4 3-6 7-6(3)',
-  matchUpFormat: 'SET3-S:6/TB7'
+  matchUpFormat: 'SET3-S:6/TB7',
 });
 // Result: { sets: [...], winningSide: 1, ... }
 ```
@@ -522,7 +657,7 @@ import { matchUpGovernor } from 'tods-competition-factory';
 
 // Calculate win criteria for tieFormats
 const { valueGoal } = matchUpGovernor.calculateWinCriteria({
-  collectionDefinitions
+  collectionDefinitions,
 });
 ```
 
