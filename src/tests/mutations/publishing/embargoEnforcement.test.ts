@@ -1,7 +1,9 @@
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import tournamentEngine from '@Engines/syncEngine';
 import mocksEngine from '@Assemblies/engines/mock';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
+// constants
+import { INVALID_EMBARGO } from '@Constants/errorConditionConstants';
 import { MAIN, QUALIFYING } from '@Constants/drawDefinitionConstants';
 
 const NOW = new Date('2025-06-15T12:00:00Z').getTime();
@@ -292,5 +294,120 @@ describe('embargo enforcement', () => {
     // No qualifying matchUps should be present
     const qualifyingMatchUps = (result.dateMatchUps ?? []).filter((m) => m.stage === QUALIFYING);
     expect(qualifyingMatchUps.length).toEqual(0);
+  });
+
+  it('rejects embargo without timezone indicator', () => {
+    const drawId = 'draw1';
+    const eventId = 'event1';
+    mocksEngine.generateTournamentRecord({
+      eventProfiles: [{ eventId, drawProfiles: [{ drawSize: 4, drawId }] }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishEvent({
+      drawDetails: {
+        [drawId]: {
+          publishingDetail: { published: true, embargo: '2025-06-20T12:00:00' },
+        },
+      },
+      eventId,
+    });
+    expect(result.error).toEqual(INVALID_EMBARGO);
+  });
+
+  it('rejects non-ISO embargo string', () => {
+    const drawId = 'draw1';
+    const eventId = 'event1';
+    mocksEngine.generateTournamentRecord({
+      eventProfiles: [{ eventId, drawProfiles: [{ drawSize: 4, drawId }] }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishEvent({
+      drawDetails: {
+        [drawId]: {
+          publishingDetail: { published: true, embargo: 'June 20, 2025' },
+        },
+      },
+      eventId,
+    });
+    expect(result.error).toEqual(INVALID_EMBARGO);
+  });
+
+  it('accepts embargo with Z suffix', () => {
+    const drawId = 'draw1';
+    const eventId = 'event1';
+    mocksEngine.generateTournamentRecord({
+      eventProfiles: [{ eventId, drawProfiles: [{ drawSize: 4, drawId }] }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishEvent({
+      drawDetails: {
+        [drawId]: {
+          publishingDetail: { published: true, embargo: '2025-06-20T12:00:00Z' },
+        },
+      },
+      eventId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  it('accepts embargo with positive offset', () => {
+    const drawId = 'draw1';
+    const eventId = 'event1';
+    mocksEngine.generateTournamentRecord({
+      eventProfiles: [{ eventId, drawProfiles: [{ drawSize: 4, drawId }] }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishEvent({
+      drawDetails: {
+        [drawId]: {
+          publishingDetail: { published: true, embargo: '2025-06-20T12:00:00+05:30' },
+        },
+      },
+      eventId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  it('accepts embargo with negative offset', () => {
+    const drawId = 'draw1';
+    const eventId = 'event1';
+    mocksEngine.generateTournamentRecord({
+      eventProfiles: [{ eventId, drawProfiles: [{ drawSize: 4, drawId }] }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishEvent({
+      drawDetails: {
+        [drawId]: {
+          publishingDetail: { published: true, embargo: '2025-06-20T08:00:00-04:00' },
+        },
+      },
+      eventId,
+    });
+    expect(result.success).toEqual(true);
+  });
+
+  it('rejects embargo at orderOfPlay level without timezone', () => {
+    mocksEngine.generateTournamentRecord({
+      drawProfiles: [{ drawSize: 4 }],
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishOrderOfPlay({ embargo: '2025-06-20T12:00:00' });
+    expect(result.error).toEqual(INVALID_EMBARGO);
+  });
+
+  it('rejects embargo at participants level without timezone', () => {
+    mocksEngine.generateTournamentRecord({
+      participantsProfile: { participantsCount: 10 },
+      setState: true,
+    });
+
+    const result = tournamentEngine.publishParticipants({ embargo: '2025-06-20T12:00:00' });
+    expect(result.error).toEqual(INVALID_EMBARGO);
   });
 });

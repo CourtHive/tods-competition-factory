@@ -7,13 +7,14 @@ import { addNotice, getTopics } from '@Global/state/globalState';
 import { getEventData } from '@Query/event/getEventData';
 
 // constants and types
-import { DRAW_DEFINITION_NOT_FOUND, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
+import { DRAW_DEFINITION_NOT_FOUND, INVALID_EMBARGO, STRUCTURE_NOT_FOUND } from '@Constants/errorConditionConstants';
 import { EVENT, OBJECT, OF_TYPE, TOURNAMENT_RECORD } from '@Constants/attributeConstants';
 import { PolicyDefinitions, ResultType } from '@Types/factoryTypes';
 import { Event, Tournament } from '@Types/tournamentTypes';
 import { PUBLISH_EVENT } from '@Constants/topicConstants';
 import { PUBLIC } from '@Constants/timeItemConstants';
 import { SUCCESS } from '@Constants/resultConstants';
+import { isValidEmbargoDate } from '@Tools/dateTime';
 
 export type ScheduledRoundDetail = {
   published?: boolean;
@@ -95,6 +96,38 @@ export function publishEvent(params: PublishEventType): ResultType & { eventData
       result: { error: DRAW_DEFINITION_NOT_FOUND },
       context: { invalidDrawIds },
     });
+  }
+
+  // Validate all embargo values in incoming drawDetails before processing
+  if (params.drawDetails) {
+    for (const drawId of Object.keys(params.drawDetails)) {
+      const detail = params.drawDetails[drawId];
+      if (detail.publishingDetail?.embargo && !isValidEmbargoDate(detail.publishingDetail.embargo)) {
+        return { error: INVALID_EMBARGO };
+      }
+      if (detail.stageDetails) {
+        for (const stage of Object.keys(detail.stageDetails)) {
+          if (detail.stageDetails[stage].embargo && !isValidEmbargoDate(detail.stageDetails[stage].embargo)) {
+            return { error: INVALID_EMBARGO };
+          }
+        }
+      }
+      if (detail.structureDetails) {
+        for (const id of Object.keys(detail.structureDetails)) {
+          const sd = detail.structureDetails[id];
+          if (sd.embargo && !isValidEmbargoDate(sd.embargo)) {
+            return { error: INVALID_EMBARGO };
+          }
+          if (sd.scheduledRounds) {
+            for (const round of Object.keys(sd.scheduledRounds)) {
+              if (sd.scheduledRounds[round].embargo && !isValidEmbargoDate(sd.scheduledRounds[round].embargo)) {
+                return { error: INVALID_EMBARGO };
+              }
+            }
+          }
+        }
+      }
+    }
   }
 
   const pubStatus = getEventPublishStatus({ event, status });

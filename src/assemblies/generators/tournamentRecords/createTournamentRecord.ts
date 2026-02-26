@@ -3,8 +3,10 @@ import { isISODateString } from '@Tools/dateTime';
 import { validDateString } from '@Validators/regex';
 import { UUID } from '@Tools/UUID';
 
+import { isValidIANATimeZone } from '@Tools/timeZone';
+
 // constants
-import { INVALID_DATE } from '@Constants/errorConditionConstants';
+import { INVALID_DATE, INVALID_TIME_ZONE } from '@Constants/errorConditionConstants';
 
 export function createTournamentRecord(params): any {
   const { tournamentRecord, tournamentRecords, activeTournamentId, ...attributes } = params || {};
@@ -15,6 +17,10 @@ export function createTournamentRecord(params): any {
 
   if (attributes.endDate && !isISODateString(attributes.endDate) && !validDateString.test(attributes.endDate)) {
     return { error: INVALID_DATE };
+  }
+
+  if (attributes.localTimeZone && !isValidIANATimeZone(attributes.localTimeZone)) {
+    return { error: INVALID_TIME_ZONE };
   }
 
   if (attributes.extensions) {

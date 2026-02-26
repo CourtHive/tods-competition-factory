@@ -1,9 +1,10 @@
-import { expect, it, test } from 'vitest';
+import { expect, it, test, describe } from 'vitest';
 import {
   getUTCdateString,
   dayMinutesToTimeString,
   extractTime,
   formatDate,
+  isValidEmbargoDate,
   militaryTime,
   offsetTime,
   tidyTime,
@@ -164,12 +165,42 @@ test('timeUTC handles various date inputs', () => {
 
 test('timeSort handles various time formats', () => {
   const times = ['14:30', '09:00', '23:59', '00:00', '12:00'];
-  const sorted = times.sort(timeSort);
+  const sorted = times.toSorted(timeSort);
   expect(sorted[0]).toBe('00:00');
-  expect(sorted[sorted.length - 1]).toBe('23:59');
+  expect(sorted.at(-1)).toBe('23:59');
 });
 
 test('offsetTime with no arguments', () => {
   const result = offsetTime();
   expect(typeof result).toBe('number');
+});
+
+describe('isValidEmbargoDate', () => {
+  it('accepts ISO string with Z suffix', () => {
+    expect(isValidEmbargoDate('2025-06-20T12:00:00Z')).toBe(true);
+  });
+  it('accepts ISO string with positive offset', () => {
+    expect(isValidEmbargoDate('2025-06-20T12:00:00+05:30')).toBe(true);
+  });
+  it('accepts ISO string with negative offset', () => {
+    expect(isValidEmbargoDate('2025-06-20T08:00:00-04:00')).toBe(true);
+  });
+  it('rejects ISO string without timezone', () => {
+    expect(isValidEmbargoDate('2025-06-20T12:00:00')).toBe(false);
+  });
+  it('rejects date-only string', () => {
+    expect(isValidEmbargoDate('2025-06-20')).toBe(false);
+  });
+  it('rejects non-ISO string', () => {
+    expect(isValidEmbargoDate('not a date')).toBe(false);
+  });
+  it('rejects undefined', () => {
+    expect(isValidEmbargoDate(undefined)).toBe(false);
+  });
+  it('rejects null', () => {
+    expect(isValidEmbargoDate(null)).toBe(false);
+  });
+  it('rejects number', () => {
+    expect(isValidEmbargoDate(42)).toBe(false);
+  });
 });
