@@ -138,12 +138,12 @@ engine.publishParticipants({
 
 Embargo enforcement applies only to **public-facing query paths** — methods called with `usePublishState: true`:
 
-| Method | Embargo enforced? | Notes |
-|---|---|---|
-| [`getEventData`](/docs/governors/query-governor#geteventdata) | Yes (when `usePublishState: true`) | Filters draws, stages, structures |
-| [`competitionScheduleMatchUps`](/docs/governors/query-governor#competitionschedulematchups) | Yes (when `usePublishState: true`) | Filters orderOfPlay and matchUps |
-| [`getDrawData`](/docs/governors/publishing-governor#getdrawdata) | Yes (when `usePublishState: true`) | Filters structures |
-| [`getPublishState`](/docs/governors/publishing-governor#getpublishstate) | **No** | Reports full publish config including embargo metadata |
+| Method                                                                                      | Embargo enforced?                  | Notes                                                  |
+| ------------------------------------------------------------------------------------------- | ---------------------------------- | ------------------------------------------------------ |
+| [`getEventData`](/docs/governors/query-governor#geteventdata)                               | Yes (when `usePublishState: true`) | Filters draws, stages, structures                      |
+| [`competitionScheduleMatchUps`](/docs/governors/query-governor#competitionschedulematchups) | Yes (when `usePublishState: true`) | Filters orderOfPlay and matchUps                       |
+| [`getDrawData`](/docs/governors/publishing-governor#getdrawdata)                            | Yes (when `usePublishState: true`) | Filters structures                                     |
+| [`getPublishState`](/docs/governors/publishing-governor#getpublishstate)                    | **No**                             | Reports full publish config including embargo metadata |
 
 **`getPublishState`** is the **admin/reporting** function. It intentionally **ignores** embargo timestamps so that admin clients (like TMX) can see:
 
@@ -180,12 +180,71 @@ publishState.embargoes?.forEach(({ type, id, embargo, embargoActive }) => {
 
 Each entry contains:
 
-| Field | Type | Description |
-|---|---|---|
-| `type` | string | `'draw'`, `'stage'`, `'structure'`, `'scheduledRound'`, `'orderOfPlay'`, or `'participants'` |
-| `id` | string? | Identifier (drawId, `drawId:stage`, structureId, `structureId:roundN`). Absent for tournament-level types. |
-| `embargo` | string | ISO 8601 timestamp |
-| `embargoActive` | boolean | `true` if the embargo is still in the future |
+| Field           | Type    | Description                                                                                                |
+| --------------- | ------- | ---------------------------------------------------------------------------------------------------------- |
+| `type`          | string  | `'draw'`, `'stage'`, `'structure'`, `'scheduledRound'`, `'orderOfPlay'`, or `'participants'`               |
+| `id`            | string? | Identifier (drawId, `drawId:stage`, structureId, `structureId:roundN`). Absent for tournament-level types. |
+| `embargo`       | string  | ISO 8601 timestamp                                                                                         |
+| `embargoActive` | boolean | `true` if the embargo is still in the future                                                               |
+
+### Embargo Validation
+
+The factory **enforces** that all embargo values include a timezone indicator — either a `Z` suffix (UTC) or an explicit offset like `+05:30` or `-04:00`. A bare datetime string like `'2025-06-20T12:00:00'` (no timezone) is **rejected** with an `INVALID_EMBARGO` error.
+
+This validation is applied in all publishing methods that accept embargo values:
+
+- `publishEvent` — validates embargo in `publishingDetail`, `stageDetails`, `structureDetails`, and `scheduledRounds`
+- `publishOrderOfPlay` — validates the top-level `embargo` parameter
+- `publishParticipants` — validates the top-level `embargo` parameter
+
+```js
+// ✓ Valid embargo values
+'2024-06-15T10:00:00Z'; // UTC (Z suffix)
+'2024-06-15T10:00:00+05:30'; // Explicit positive offset
+'2024-06-15T06:00:00-04:00'; // Explicit negative offset
+
+// ✗ Invalid — rejected with INVALID_EMBARGO error
+'2024-06-15T10:00:00'; // No timezone indicator
+'2024-06-15'; // Date only
+'June 15, 2024'; // Non-ISO format
+```
+
+**Why this matters:** A bare `'2024-06-15T10:00:00'` is interpreted differently depending on the runtime's local timezone. A client in EST setting an embargo would have that embargo interpreted 5 hours earlier by a server running in UTC. Requiring timezone context makes embargo behavior identical regardless of where the code executes.
+
+#### Validating embargo values directly
+
+The `isValidEmbargoDate` utility function is available for pre-validating embargo strings before passing them to publishing methods:
+
+```js
+import { tools } from 'tods-competition-factory';
+
+tools.dateTime.isValidEmbargoDate('2024-06-15T10:00:00Z'); // true
+tools.dateTime.isValidEmbargoDate('2024-06-15T10:00:00'); // false
+```
+
+#### Converting wall-clock time to UTC embargo strings
+
+When a tournament operates in a specific timezone (set via `localTimeZone` on the tournament record), use `toEmbargoUTC` to convert a local wall-clock time to a valid UTC embargo string:
+
+```js
+import { tools } from 'tods-competition-factory';
+
+// Convert "8:00 AM Eastern" on June 15 to a UTC embargo string
+const embargo = tools.timeZone.toEmbargoUTC('2024-06-15', '08:00', 'America/New_York');
+// Result: '2024-06-15T12:00:00.000Z' (EDT is UTC-4 in June)
+
+// Use the result directly in publishEvent
+engine.publishEvent({
+  eventId,
+  drawDetails: {
+    [drawId]: {
+      publishingDetail: { published: true, embargo },
+    },
+  },
+});
+```
+
+See [Date and Time Handling](/docs/concepts/date-time-handling) for the complete timezone utility reference.
 
 ### Embargo Expiry
 
@@ -193,7 +252,7 @@ Embargoes are evaluated at query time — there is no background process. When t
 
 - **No cron jobs needed** — visibility is always current
 - **No second mutation needed** — the embargo is self-resolving
-- **Time zone handling** — use ISO 8601 timestamps with timezone offsets (e.g. `2024-06-15T10:00:00Z`) for unambiguous behavior
+- **Time zone safety** — all embargo values are validated to include timezone context, ensuring consistent behavior across clients and servers regardless of their local timezone
 
 ### Embargo Workflow Example
 
@@ -252,7 +311,7 @@ engine.publishEvent({
       structureDetails: {
         [structureId]: {
           published: true,
-          roundLimit: 3,            // schedule ceiling: rounds 1-3
+          roundLimit: 3, // schedule ceiling: rounds 1-3
           scheduledRounds: {
             1: { published: true }, // round 1 visible in schedule
             2: { published: true, embargo: '2024-06-16T08:00:00Z' }, // round 2 embargoed

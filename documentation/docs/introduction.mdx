@@ -19,6 +19,7 @@ Rather than hardcoding tournament structures or embedding business rules in data
 - **Scalable Architectures**: Server deployments support highly scalable asynchronous processing models in **Node.js**
 - **Configurable Behavior**: Reasonable defaults for all operations, with extensive configuration options through policy definitions
 - **Consistent Results**: The same configuration produces identical tournament structures regardless of where operations execute
+- **Zero Dependencies**: The factory has no runtime dependencies — every utility, from date/time handling to timezone conversion, is built on platform APIs (`Intl.DateTimeFormat`, `Date`). This eliminates supply-chain risk, keeps bundle sizes minimal, and guarantees the factory runs anywhere JavaScript runs without version conflicts or transitive vulnerabilities
 
 <BrowserOnly>{() => <DrawType drawSize={4} />}</BrowserOnly>
 
