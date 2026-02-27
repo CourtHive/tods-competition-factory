@@ -217,6 +217,8 @@ The ScoringEngine tracks team lineups and substitutions for doubles or team form
 
 ### Setting Up LineUps
 
+Register a side's roster before processing points. This enables substitution tracking and per-point active player snapshots.
+
 ```js
 engine.setLineUp(1, [
   { participantId: 'player-A', participantName: 'Alice' },
@@ -229,6 +231,8 @@ engine.setLineUp(2, [
 ]);
 ```
 
+The initial lineup is saved internally so the engine can reconstruct state during undo/redo. Lineups are persisted via `getSupplementaryState()`.
+
 ### Making Substitutions
 
 ```js
@@ -236,19 +240,82 @@ engine.substitute({
   sideNumber: 1,
   outParticipantId: 'player-B',
   inParticipantId: 'player-E',
+  timestamp: new Date().toISOString(), // optional
 });
 ```
 
-Substitutions are recorded in the unified timeline and are undoable/redoable like any other action.
+When a substitution is applied:
+
+1. The outgoing player is found in the side's lineup by `participantId`
+2. Their `participantId` is replaced with the incoming player's ID
+3. A `SubstitutionEvent` is recorded in `matchUp.history.substitutions[]` with a `beforePointIndex` indicating where in the point sequence it occurred
+4. An entry is added to the unified `matchUp.history.entries[]` timeline
+
+Substitutions are undoable/redoable like any other action. If the `outParticipantId` is not found in the side's lineup, the call is a no-op.
 
 ### Querying Active Players
 
 ```js
 const active = engine.getActivePlayers();
 // { side1: ['player-A', 'player-E'], side2: ['player-C', 'player-D'] }
+
+engine.hasLineUp(); // true — at least one side has a lineup set
 ```
 
-When lineups are set, each point automatically records which players were active at the time of the point, enabling per-player statistics.
+### Per-Point Active Player Snapshots
+
+When lineups are set, each `addPoint()` call automatically snapshots the active players at that moment and stores it on the `Point` record:
+
+```ts
+// After addPoint, the stored point contains:
+point.activePlayers;
+// Singles: ['player-A', 'player-C']
+// Doubles: [['player-A', 'player-B'], ['player-C', 'player-D']]
+```
+
+This enables per-player statistics and analysis of who was on court for each point.
+
+---
+
+## Doubles Serving Rotation
+
+In doubles, the `serverParticipantId` field on `addPoint()` tracks which specific participant within the serving side is serving. This goes beyond `server`/`serverSideNumber` (which only identifies the side) to record the individual player.
+
+```js
+engine.addPoint({
+  winningSide: 1,
+  serverSideNumber: 1,
+  serverParticipantId: 'player-A', // Alice serves
+});
+
+engine.addPoint({
+  winningSide: 2,
+  serverSideNumber: 1,
+  serverParticipantId: 'player-A', // Still Alice's service game
+});
+```
+
+The `serverParticipantId` is stored on the `Point` record in match history, enabling analysis of serving patterns and rotation compliance across a doubles match.
+
+---
+
+## Score Value Override
+
+The `scoreValue` field on `addPoint()` overrides the default point increment (normally 1). This is useful for formats where certain points are worth more than others — for example, timed formats with power points or bonus scoring rules.
+
+```js
+// Normal point — worth 1
+engine.addPoint({ winningSide: 1 });
+
+// Power point — worth 2
+engine.addPoint({ winningSide: 2, scoreValue: 2 });
+```
+
+When `scoreValue` is specified, it bypasses the normal point value resolution (including any `pointMultipliers`). The effective score increment is stored on the `Point` record as `point.scoreValue`.
+
+:::note
+`scoreValue` is distinct from `pointMultipliers`. Multipliers are condition-based rules defined in the competition format (e.g., "aces worth 2x"). `scoreValue` is a per-point override set explicitly by the caller, typically derived from external data where the score delta is already known.
+:::
 
 ---
 

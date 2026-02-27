@@ -267,7 +267,10 @@ export class ScoringEngine {
       type: 'point',
       data: {
         winner: options.winner,
+        winningSide: options.winningSide,
         server: options.server,
+        serverSideNumber: options.serverSideNumber,
+        serverParticipantId: options.serverParticipantId,
         timestamp: options.timestamp,
         rallyLength: options.rallyLength,
         result: options.result,

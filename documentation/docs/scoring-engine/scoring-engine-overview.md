@@ -34,9 +34,11 @@ import { ScoringEngine } from 'tods-competition-factory';
 // Create engine with standard tennis format
 const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
 
-// Add points (0 = side 1 wins point, 1 = side 2 wins point)
-engine.addPoint({ winner: 0 });
-engine.addPoint({ winner: 0 });
+// Add points — two conventions are supported:
+// 0-based: winner: 0 (side 1) or 1 (side 2)
+// 1-based: winningSide: 1 (side 1) or 2 (side 2)
+engine.addPoint({ winner: 0 }); // 0-based: side 1 wins
+engine.addPoint({ winningSide: 1 }); // 1-based: same thing
 engine.addPoint({ winner: 0 });
 engine.addPoint({ winner: 0 }); // Side 1 wins first game
 
@@ -61,7 +63,7 @@ engine.getWinner(); // undefined
 
 The ScoringEngine follows the Competition Factory's architecture pattern where **governors** provide pure functions and **engines** provide stateful facades:
 
-```
+```text
 ┌──────────────────────────┐
 │      ScoringEngine       │  Stateful facade
 │  (undo/redo, events,     │
