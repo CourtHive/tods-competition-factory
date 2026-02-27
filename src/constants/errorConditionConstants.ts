@@ -814,6 +814,23 @@ export const METHOD_NOT_FOUND = {
   code: 'ERR_NOT_FOUND_METHOD',
 };
 
+export const MUTATION_LOCKED = {
+  message: 'Mutation blocked by active lock',
+  code: 'ERR_MUTATION_LOCKED',
+};
+export const MUTATION_LOCK_EXISTS = {
+  message: 'Active mutation lock already exists for scope',
+  code: 'ERR_EXISTING_MUTATION_LOCK',
+};
+export const MUTATION_LOCK_NOT_FOUND = {
+  message: 'Mutation lock not found',
+  code: 'ERR_NOT_FOUND_MUTATION_LOCK',
+};
+export const UNAUTHORIZED_LOCK_OPERATION = {
+  message: 'Lock token does not match',
+  code: 'ERR_UNAUTHORIZED_LOCK_OPERATION',
+};
+
 export const SCHEDULED_MATCHUPS = {
   message: 'Scheduled matchUps',
   code: 'ERR_SCHEDULED_MATCHUPS',
@@ -913,6 +930,9 @@ export const errorConditionConstants = {
   INVALID_WINNING_SIDE,
   MATCHUP_NOT_FOUND,
   METHOD_NOT_FOUND,
+  MUTATION_LOCKED,
+  MUTATION_LOCK_EXISTS,
+  MUTATION_LOCK_NOT_FOUND,
   MISSING_ASSIGNMENTS,
   MISSING_ASYNC_STATE_PROVIDER,
   MISSING_AVOIDANCE_POLICY,
@@ -999,6 +1019,7 @@ export const errorConditionConstants = {
   STRUCTURE_NOT_FOUND,
   TEAM_NOT_FOUND,
   UNABLE_TO_ASSIGN_COURT,
+  UNAUTHORIZED_LOCK_OPERATION,
   UNLINKED_STRUCTURES,
   UNRECOGNIZED_DRAW_TYPE,
   UNRECOGNIZED_MATCHUP_FORMAT,

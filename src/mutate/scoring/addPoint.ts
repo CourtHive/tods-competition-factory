@@ -47,10 +47,22 @@ export interface AddPointConfig {
  */
 export function addPoint(matchUp: MatchUp, options: AddPointOptions, config?: AddPointConfig): MatchUp {
   // IMPORTANT: Do NOT clone matchUp! The v3 adapter needs mutation to work.
-  if (!isObject(options) || options.winner === undefined || options.winner === null) return matchUp;
-  const newMatchUp = matchUp;
+  if (!isObject(options)) return matchUp;
 
-  let { winner, server, timestamp } = options;
+  // Normalize between 0-indexed (winner/server) and 1-indexed (winningSide/serverSideNumber)
+  let winner = options.winner;
+  let server = options.server;
+  const { timestamp } = options;
+
+  if (winner === undefined && options.winningSide !== undefined) {
+    winner = (options.winningSide - 1) as 0 | 1;
+  }
+  if (server === undefined && options.serverSideNumber !== undefined) {
+    server = (options.serverSideNumber - 1) as 0 | 1;
+  }
+
+  if (winner === undefined || winner === null) return matchUp;
+  const newMatchUp = matchUp;
 
   // Initialize history if not present
   newMatchUp.history ??= { points: [] };
@@ -102,7 +114,10 @@ export function addPoint(matchUp: MatchUp, options: AddPointOptions, config?: Ad
     ...options,
     pointNumber,
     winner,
+    winningSide: (winner + 1) as 1 | 2,
     server,
+    serverSideNumber: server !== undefined ? ((server + 1) as 1 | 2) : undefined,
+    serverParticipantId: options.serverParticipantId,
     timestamp: timestamp || new Date().toISOString(),
   };
 
@@ -131,10 +146,11 @@ export function addPoint(matchUp: MatchUp, options: AddPointOptions, config?: Ad
   }
 
   // Resolve point multiplier for score increment
+  // If scoreValue is explicitly set on options, use it directly (parser override)
   const multipliers = config?.pointMultipliers || [];
-  const scoreIncrement = resolvePointValue(point, multipliers);
+  const scoreIncrement = options.scoreValue ?? resolvePointValue(point, multipliers);
   if (scoreIncrement !== 1) {
-    (point as any).scoreValue = scoreIncrement;
+    point.scoreValue = scoreIncrement;
   }
 
   // Add point to history
@@ -220,8 +236,11 @@ function handleStandardSet(
   let side2Points = currentGameIndex >= 0 ? (side2GameScores[currentGameIndex] ?? 0) : 0;
 
   // V3-compatible point metadata
+  // gameOffset accounts for games added via addGame() that have no gameScores entries
+  const pointBasedGames = Math.max(side1GameScores.length, side2GameScores.length) - 1;
+  const gameOffset = (side1Games + side2Games) - pointBasedGames;
   (point as any).set = currentSetIndex;
-  (point as any).game = currentGameIndex;
+  (point as any).game = gameOffset + currentGameIndex;
   (point as any).number = side1Points + side2Points;
 
   // Get format details

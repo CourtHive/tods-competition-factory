@@ -5,7 +5,12 @@ title: Core API Reference
 Complete method reference for the `ScoringEngine` class.
 
 :::info
-The ScoringEngine uses **0-based side indexing** for `winner` and `server` parameters: `0` = side 1, `1` = side 2. This differs from [CODES](/docs/data-standards#codes) `sideNumber` which is 1-based. Return values like `getWinner()` use CODES convention (1 or 2).
+The ScoringEngine supports **two indexing conventions** for `addPoint()`:
+
+- **0-based** (original): `winner: 0 | 1`, `server: 0 | 1` — where `0` = side 1, `1` = side 2
+- **1-based** ([CODES](/docs/data-standards#codes)-aligned): `winningSide: 1 | 2`, `serverSideNumber: 1 | 2`
+
+You can use either convention. Provide `winner` **or** `winningSide` (not both). Both values are always stored on the resulting `Point` record. Return values like `getWinner()` use CODES convention (1 or 2).
 :::
 
 ## Scoring Methods
@@ -19,19 +24,45 @@ addPoint(options: AddPointOptions): void
 Add a point to the match. This is the primary input method for point-by-point scoring.
 
 ```js
+// 0-based convention
 engine.addPoint({ winner: 0 }); // Side 1 wins the point
 engine.addPoint({ winner: 1, server: 0 }); // Side 2 wins, side 1 served
+
+// 1-based convention (CODES-aligned)
+engine.addPoint({ winningSide: 1 }); // Side 1 wins the point
+engine.addPoint({ winningSide: 2, serverSideNumber: 1 }); // Side 2 wins, side 1 served
+
+// With metadata (works with either convention)
 engine.addPoint({ winner: 0, result: 'Ace' }); // Side 1 wins with an ace
-engine.addPoint({ winner: 1, rallyLength: 12 }); // Side 2 wins after 12-shot rally
+engine.addPoint({ winningSide: 2, rallyLength: 12 }); // Side 2 wins after 12-shot rally
 engine.addPoint({ winner: 0, timestamp: new Date().toISOString() });
+
+// Doubles with specific server
+engine.addPoint({ winningSide: 1, serverSideNumber: 1, serverParticipantId: 'player-A' });
+
+// Override point value (e.g., power points in timed formats)
+engine.addPoint({ winningSide: 1, scoreValue: 2 }); // Worth 2 points instead of 1
 ```
 
 The `AddPointOptions` interface:
 
 ```ts
 interface AddPointOptions {
-  winner: 0 | 1; // Which side won the point
+  // 0-based convention
+  winner?: 0 | 1; // Which side won (0 = side 1, 1 = side 2)
   server?: 0 | 1; // Which side served (auto-derived if omitted)
+
+  // 1-based convention (CODES-aligned)
+  winningSide?: 1 | 2; // Which side won (1 = side 1, 2 = side 2)
+  serverSideNumber?: 1 | 2; // Which side served
+
+  // Doubles rotation
+  serverParticipantId?: string; // Specific participant serving
+
+  // Score override
+  scoreValue?: number; // Override score increment (default: 1)
+
+  // Metadata
   timestamp?: string; // ISO timestamp
   rallyLength?: number; // Number of shots in the rally
   result?: string; // Point result label (e.g., 'Ace', 'Double Fault')
@@ -39,6 +70,29 @@ interface AddPointOptions {
   penaltyPoint?: boolean; // Whether this was a penalty point
   wrongSide?: boolean; // Tracking flag for wrong-side serve
   wrongServer?: boolean; // Tracking flag for wrong server
+}
+```
+
+:::tip
+Provide `winner` **or** `winningSide`, not both. The engine normalizes internally — the resulting `Point` record always contains both `winner` and `winningSide`. The same applies to `server` / `serverSideNumber`.
+:::
+
+#### Stored Point Record
+
+After `addPoint()`, the resulting `Point` in `matchUp.history.points` always contains both indexing conventions regardless of which was passed in:
+
+```ts
+interface Point {
+  pointNumber: number; // Sequential (1-indexed)
+  winner: 0 | 1; // Always set
+  winningSide: 1 | 2; // Always set
+  server?: 0 | 1; // Set if server was provided or derived
+  serverSideNumber?: 1 | 2; // Set if server was provided or derived
+  serverParticipantId?: string; // Set if provided (doubles)
+  scoreValue?: number; // Set if override was provided
+  timestamp?: string; // ISO 8601
+  activePlayers?: [string, string] | [string[], string[]]; // Set if lineups exist
+  // ... plus result, rallyLength, serve metadata, etc.
 }
 ```
 

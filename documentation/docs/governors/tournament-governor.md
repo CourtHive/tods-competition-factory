@@ -26,6 +26,26 @@ engine.addExtension({
 
 ---
 
+## addMutationLock
+
+Acquires a [mutation lock](../concepts/mutation-locks) on a tournament element. Automatically enables the mutation locks feature gate on the tournament record.
+
+```js
+const { success, lockId } = engine.addMutationLock({
+  scope, // required - lock scope (e.g. 'SCHEDULING', 'SCORING', 'DRAWS')
+  lockToken, // required - opaque string token
+  expiresAt, // optional - ISO 8601 UTC string or null for permanent (default: null)
+  methods, // optional - string[] to restrict to specific methods within scope
+  drawId, // optional - lock on specific draw
+  eventId, // optional - lock on specific event
+  venueId, // optional - lock on specific venue
+});
+```
+
+**Purpose:** Control concurrent access to scoped mutations. See [Mutation Locks](../concepts/mutation-locks) for details.
+
+---
+
 ## addNotes
 
 Adds notes to a tournament record or specific element.
@@ -98,6 +118,18 @@ const { tournamentRecord } = engine.copyTournamentRecord({
 ```
 
 **Purpose:** Clone tournament data for modifications or comparisons.
+
+---
+
+## cleanExpiredMutationLocks
+
+Proactively removes expired [mutation locks](../concepts/mutation-locks) from all elements in the tournament.
+
+```js
+const { success, removedCount } = engine.cleanExpiredMutationLocks();
+```
+
+**Purpose:** Housekeeping for time-limited locks. Expired locks are also cleaned lazily when encountered during lock checks.
 
 ---
 
@@ -197,6 +229,20 @@ const { penalties } = engine.getCompetitionPenalties({
 ```
 
 **Purpose:** Aggregate penalties across competition.
+
+---
+
+## getMutationLocks
+
+Returns all active (non-expired) [mutation locks](../concepts/mutation-locks) across the entire tournament, including locks on events, draws, and venues.
+
+```js
+const { mutationLocks } = engine.getMutationLocks({
+  scope, // optional - filter by scope
+});
+```
+
+**Returns:** Array of lock objects, each with `lockId`, `lockToken`, `scope`, `expiresAt`, `createdAt`, and optional `drawId`, `eventId`, `venueId` identifying where the lock is stored.
 
 ---
 
@@ -338,6 +384,26 @@ engine.removeExtension({
 ```
 
 **Purpose:** Remove custom metadata from tournament elements.
+
+---
+
+## removeMutationLock
+
+Releases a [mutation lock](../concepts/mutation-locks). Requires the matching `lockToken` unless `forceRelease: true`.
+
+```js
+const { success } = engine.removeMutationLock({
+  lockId, // optional - identify lock by ID
+  scope, // optional - identify lock by scope (alternative to lockId)
+  lockToken, // required unless forceRelease
+  forceRelease, // optional - bypass token check (admin override)
+  drawId, // optional - target element
+  eventId, // optional - target element
+  venueId, // optional - target element
+});
+```
+
+**Purpose:** Release a mutation lock to restore normal access.
 
 ---
 

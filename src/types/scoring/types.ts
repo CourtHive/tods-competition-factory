@@ -179,8 +179,17 @@ export interface Point {
   /** Winner of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
   winner: 0 | 1;
 
+  /** Winner of the point: 1 = side 1, 2 = side 2 (TODS sideNumber) */
+  winningSide?: 1 | 2;
+
   /** Server of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
   server?: 0 | 1;
+
+  /** Server side: 1 = side 1, 2 = side 2 (TODS sideNumber) */
+  serverSideNumber?: 1 | 2;
+
+  /** Specific participant serving (for doubles rotation tracking) */
+  serverParticipantId?: string;
 
   /** ISO 8601 timestamp when point was played */
   timestamp?: string;
@@ -397,11 +406,25 @@ export interface CreateMatchUpOptions {
  * ```
  */
 export interface AddPointOptions {
+  // 0-indexed convention (existing)
   /** Winner of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
-  winner: 0 | 1;
+  winner?: 0 | 1;
 
   /** Server of the point: 0 = side 1, 1 = side 2 (player index, not sideNumber) */
   server?: 0 | 1;
+
+  // 1-indexed convention (TODS-aligned)
+  /** Winner of the point: 1 = side 1, 2 = side 2 (TODS sideNumber) */
+  winningSide?: 1 | 2;
+
+  /** Server side: 1 = side 1, 2 = side 2 (TODS sideNumber) */
+  serverSideNumber?: 1 | 2;
+
+  /** Specific participant serving (for doubles rotation tracking) */
+  serverParticipantId?: string;
+
+  /** Override score increment for this point (default 1, used by timed/IONSport formats) */
+  scoreValue?: number;
 
   /** ISO 8601 timestamp when point was played */
   timestamp?: string;

@@ -471,6 +471,49 @@ Purpose: Indicates participant has active suspension affecting eligibility.
 }
 ```
 
+### Concurrency & Access Control Extensions
+
+**`mutationLocks`** - Mutation lock enforcement
+
+Attached to: `tournamentRecords`, `events`, `drawDefinitions`, `venues`
+
+Purpose: Controls concurrent access to scoped mutations. The tournament-level extension includes an `enabled` flag that acts as a feature gate; element-level extensions store the locks themselves. See [Mutation Locks](./mutation-locks) for full details.
+
+```js
+// Tournament-level (feature gate + tournament locks)
+{
+  name: 'mutationLocks',
+  value: {
+    enabled: true,
+    locks: [
+      {
+        lockId: 'uuid-1',
+        lockToken: 'opaque-token',
+        scope: 'SCHEDULING',
+        expiresAt: '2026-03-01T12:00:00.000Z',
+        createdAt: '2026-02-27T10:00:00.000Z',
+      }
+    ]
+  }
+}
+
+// Element-level (draw, event, or venue)
+{
+  name: 'mutationLocks',
+  value: {
+    locks: [
+      {
+        lockId: 'uuid-2',
+        lockToken: 'scorer-token',
+        scope: 'SCORING',
+        expiresAt: null,
+        createdAt: '2026-02-27T10:00:00.000Z',
+      }
+    ]
+  }
+}
+```
+
 ### Auditing & System Extensions
 
 **`factory`** - Factory version tracking

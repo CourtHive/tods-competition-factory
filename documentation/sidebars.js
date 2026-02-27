@@ -96,6 +96,7 @@ module.exports = {
             'concepts/publishing/publishing-workflows',
           ],
         },
+        'concepts/mutation-locks',
       ],
     },
     {
