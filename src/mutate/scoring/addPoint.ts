@@ -236,8 +236,11 @@ function handleStandardSet(
   let side2Points = currentGameIndex >= 0 ? (side2GameScores[currentGameIndex] ?? 0) : 0;
 
   // V3-compatible point metadata
+  // gameOffset accounts for games added via addGame() that have no gameScores entries
+  const pointBasedGames = Math.max(side1GameScores.length, side2GameScores.length) - 1;
+  const gameOffset = (side1Games + side2Games) - pointBasedGames;
   (point as any).set = currentSetIndex;
-  (point as any).game = currentGameIndex;
+  (point as any).game = gameOffset + currentGameIndex;
   (point as any).number = side1Points + side2Points;
 
   // Get format details
