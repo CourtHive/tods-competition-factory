@@ -1,4 +1,5 @@
 import { engineLogging } from '@Global/state/engineLogging';
+import { checkMutationLock } from './checkMutationLock';
 import { paramsMiddleware } from './paramsMiddleware';
 import { makeDeepCopy } from '@Tools/makeDeepCopy';
 import {
@@ -38,6 +39,9 @@ export function executeFunction(
   const paramsToLog = params ? makeDeepCopy(params, undefined, true) : undefined;
   const augmentedParams = params ? paramsMiddleware(tournamentRecords, params) : undefined;
   if (augmentedParams?.error) return augmentedParams;
+
+  const lockError = checkMutationLock(methodName, augmentedParams, tournamentRecord);
+  if (lockError) return lockError;
 
   const result = invoke({
     params: augmentedParams,

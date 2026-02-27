@@ -1,5 +1,6 @@
 export { getAllowedDrawTypes, getAllowedMatchUpFormats } from '@Query/tournaments/allowedTypes';
 export { getPolicyDefinitions, getAppliedPolicies } from '@Query/extensions/getAppliedPolicies';
+export { cleanExpiredMutationLocks } from '@Query/tournaments/cleanExpiredMutationLocks';
 export { getCompetitionPenalties } from '@Query/participants/getCompetitionPenalties';
 export { getCompetitionDateRange } from '@Query/tournaments/getCompetitionDateRange';
 export { getTournamentPenalties } from '@Query/participants/getTournamentPenalties';
@@ -9,5 +10,6 @@ export { getTournamentStructures } from '@Query/structure/structureGetter';
 export { analyzeTournament } from '@Query/tournaments/analyzeTournament';
 export { getTournamentInfo } from '@Query/tournaments/getTournamentInfo';
 export { getTournamentPoints } from '@Query/scales/getTournamentPoints';
+export { getMutationLocks } from '@Query/tournaments/getMutationLocks';
 export { analyzeDraws } from '@Query/tournaments/analyzeDraws';
 export { getTournamentTimeItem } from '@Query/base/timeItems';

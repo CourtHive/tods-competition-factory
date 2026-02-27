@@ -295,7 +295,7 @@ export class ScoringEngine {
         0,
       );
       if (curTotalGames > prevTotalGames) {
-        this.eventHandlers.onGameComplete?.({ ...ctx, gameWinner: options.winner });
+        this.eventHandlers.onGameComplete?.({ ...ctx, gameWinner: options.winner! });
       }
 
       // Detect set completion (number of sets with winningSide increased)
