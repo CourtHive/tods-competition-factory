@@ -4,15 +4,15 @@ import { getTimeItem } from '@Query/base/timeItems';
 import { addTimeItem } from './addTimeItem';
 
 // constants
+import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
+import { PUBLISH_PARTICIPANTS } from '@Constants/topicConstants';
+import { SUCCESS } from '@Constants/resultConstants';
+import { isValidEmbargoDate } from '@Tools/dateTime';
 import {
   INVALID_EMBARGO,
   MISSING_TOURNAMENT_RECORD,
   MISSING_TOURNAMENT_RECORDS,
 } from '@Constants/errorConditionConstants';
-import { PUBLIC, PUBLISH, STATUS } from '@Constants/timeItemConstants';
-import { PUBLISH_PARTICIPANTS } from '@Constants/topicConstants';
-import { SUCCESS } from '@Constants/resultConstants';
-import { isValidEmbargoDate } from '@Tools/dateTime';
 
 export function publishParticipants(params) {
   const tournamentRecords = resolveTournamentRecords(params);
@@ -27,7 +27,7 @@ export function publishParticipants(params) {
   return { ...SUCCESS };
 }
 
-function publish({ removePriorValues, tournamentRecord, status = PUBLIC, embargo }) {
+function publish({ removePriorValues, tournamentRecord, status = PUBLIC, embargo, columns, language }) {
   if (!tournamentRecord) return { error: MISSING_TOURNAMENT_RECORD };
 
   const itemType = `${PUBLISH}.${STATUS}`;
@@ -36,7 +36,9 @@ function publish({ removePriorValues, tournamentRecord, status = PUBLIC, embargo
   const participants: any = { published: true };
   if (embargo && !isValidEmbargoDate(embargo)) return { error: INVALID_EMBARGO };
   if (embargo) participants.embargo = embargo;
+  if (columns) participants.columns = columns;
   itemValue[status].participants = participants;
+  if (language) itemValue[status].language = language;
   const updatedTimeItem = { itemValue, itemType };
 
   addTimeItem({
