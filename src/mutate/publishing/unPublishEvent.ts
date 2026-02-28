@@ -1,3 +1,4 @@
+import { checkAndNotifyUnpublishTournament } from './checkAndNotifyUnpublishTournament';
 import { modifyEventPublishStatus } from '../events/modifyEventPublishStatus';
 import { getEventTimeItem } from '@Query/base/timeItems';
 import { addEventTimeItem } from '../timeItems/addTimeItem';
@@ -46,6 +47,8 @@ export function unPublishEvent({ removePriorValues = true, tournamentRecord, sta
       eventId: event.eventId,
     },
   });
+
+  checkAndNotifyUnpublishTournament({ tournamentRecord });
 
   return { eventId: event.eventId, ...SUCCESS };
 }

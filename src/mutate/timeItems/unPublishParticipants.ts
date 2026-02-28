@@ -1,3 +1,4 @@
+import { checkAndNotifyUnpublishTournament } from '@Mutate/publishing/checkAndNotifyUnpublishTournament';
 import { resolveTournamentRecords } from '@Helpers/parameters/resolveTournamentRecords';
 import { addNotice } from '@Global/state/globalState';
 import { getTimeItem } from '@Query/base/timeItems';
@@ -40,6 +41,8 @@ function unpublish({ removePriorValues = true, tournamentRecord, status = PUBLIC
     payload: { tournamentId: tournamentRecord.tournamentId },
     topic: UNPUBLISH_PARTICIPANTS,
   });
+
+  checkAndNotifyUnpublishTournament({ tournamentRecord });
 
   return { ...SUCCESS };
 }
