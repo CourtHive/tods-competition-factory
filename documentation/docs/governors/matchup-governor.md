@@ -182,14 +182,56 @@ const { isComplete } = engine.checkMatchUpIsComplete({
 
 ## competitionScheduleMatchUps
 
-Returns scheduled matchUps across all tournaments in a competition.
+Returns scheduled matchUps across all tournaments in a competition, with support for publish-state filtering and embargo enforcement. See examples: [Querying Published Schedules](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules).
 
 ```js
-const { matchUps } = engine.competitionScheduleMatchUps({
-  tournamentRecords, // required
-  scheduleDate, // optional - filter by date
+const {
+  completedMatchUps, // completed matchUps (for the filtered date when not using alwaysReturnCompleted)
+  mappedParticipants, // { [participantId]: participant } - returned when hydrateParticipants is false
+  dateMatchUps, // all incomplete matchUps for the filtered date(s)
+  courtPrefix, // court prefix string (returned when withCourtGridRows is true)
+  courtsData, // array of court objects, each with a matchUps array
+  groupInfo, // group/round-robin information
+  venues, // venue data
+  rows, // court grid rows (returned when withCourtGridRows is true)
+} = engine.competitionScheduleMatchUps({
+  courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps; useful for pro-scheduling
+  alwaysReturnCompleted, // boolean - return completed matchUps regardless of publish state
+  activeTournamentId, // optional string - target a specific tournament in multi-tournament competitions
+  hydrateParticipants, // boolean - defaults to true; when false, sides contain participantId and context-specific attributes only
+  participantsProfile, // optional - specify additions to context (see getParticipants())
+  policyDefinitions, // optional - e.g. privacy policies
+  withCourtGridRows, // optional boolean - return { rows } of matchUps for courts laid out as a grid, with empty cells
+  minCourtGridRows, // optional integer - minimum number of rows to return
+  sortDateMatchUps, // boolean - optional - defaults to true
+  usePublishState, // boolean - filter by publish state: published eventIds, scheduledDates, and embargo timestamps
+  contextFilters, // optional - filters based on context attributes (e.g. drawIds)
+  matchUpFilters, // optional - { scheduledDate, scheduledDates[], courtIds[], stages[], roundNumbers[], matchUpStatuses[], matchUpFormats[], eventIds[], isMatchUpTie }
+  sortCourtsData, // boolean - optional
+  nextMatchUps, // boolean - include winnerTo and loserTo matchUps
+  status, // optional string - publish status key, defaults to 'PUBLIC'
 });
 ```
+
+### Publish-state filtering
+
+When `usePublishState: true`, the method reads the `PUBLISH.STATUS` timeItem from the tournament and applies the following filters:
+
+- **Published dates**: only matchUps whose `scheduledDate` is in `orderOfPlay.scheduledDates` are returned. An empty `scheduledDates` array (or omitted) means all dates are published.
+- **Published events**: if `orderOfPlay.eventIds` is non-empty, only matchUps from those events are returned.
+- **Published draws**: only matchUps from published draws are included, determined by event-level publish status.
+
+### Embargo enforcement
+
+When `usePublishState: true`, this method also enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at all levels:
+
+- **Order of Play embargo**: returns empty `dateMatchUps` if the OOP embargo timestamp has not passed
+- **Draw embargo**: filters out matchUps from embargoed draws
+- **Stage embargo**: filters out matchUps from embargoed stages
+- **Structure embargo**: filters out matchUps from embargoed structures
+- **Round-level filtering**: `roundLimit` on a structure caps which rounds appear in the schedule. `scheduledRounds` provides per-round publish/embargo control within the ceiling set by `roundLimit`. See [Scheduled Rounds](../concepts/publishing/publishing-embargo#scheduled-rounds).
+
+**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
 
 ---
 
