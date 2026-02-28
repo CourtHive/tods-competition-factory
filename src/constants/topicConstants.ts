@@ -28,6 +28,7 @@ export const UNPUBLISH_EVENT = 'unPublishEvent';
 export const UNPUBLISH_EVENT_SEEDING = 'unPublishEventSeeding';
 export const UNPUBLISH_ORDER_OF_PLAY = 'unPublishOrderOfPlay';
 export const UNPUBLISH_PARTICIPANTS = 'unPublishParticipants';
+export const UNPUBLISH_TOURNAMENT = 'unPublishTournament';
 export const UPDATE_INCONTEXT_MATCHUP = 'updateInContextMatchUp';
 
 export const topicConstants = {
@@ -61,5 +62,6 @@ export const topicConstants = {
   UNPUBLISH_EVENT,
   UNPUBLISH_ORDER_OF_PLAY,
   UNPUBLISH_PARTICIPANTS,
+  UNPUBLISH_TOURNAMENT,
   UPDATE_INCONTEXT_MATCHUP,
 };
