@@ -74,36 +74,7 @@ const { matchUps, groupInfo } = engine.allTournamentMatchUps({
 
 ## competitionScheduleMatchUps
 
-```js
-const matchUpFilters = {
-  isMatchUpTie: false,
-  scheduledDate, // scheduled date of matchUps to return
-};. See examples: [Querying Published Schedules](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules), [Competition Schedule](../concepts/publishing/publishing-order-of-play.md#querying-published-schedules).
-
-const { completedMatchUps, dateMatchUps, courtsData, groupInfo, participants, venues, participants } =
-  engine.competitionScheduleMatchUps({
-    courtCompletedMatchUps, // boolean - include completed matchUps in court.matchUps - useful for pro-scheduling
-    alwaysReturnCompleted, // boolean - when true return completed matchUps regardless of publish state
-    hydrateParticipants, // boolean - defaults to true; when false, matchUp sides contain participantId and only context specific attributes of participant: { entryStatus, entryStage }
-    participantsProfile, // optional - ability to specify additions to context (see parameters of getParticipants())
-    withCourtGridRows, // optional boolean - return { rows } of matchUps for courts layed out as a grid, with empty cells
-    minCourtGridRows, // optional integer - minimum number of rows to return (compared to auto-calculated rows)
-    sortDateMatchUps, // boolean boolean - optional - defaults to `true`
-    usePublishState, // boolean - when true filter out events and dates that have not been published; enforces embargo timestamps
-    matchUpFilters, // optional; [ scheduledDate, scheduledDates: [], courtIds: [], stages: [], roundNumbers: [], matchUpStatuses: [], matchUpFormats: []]
-    sortCourtsData, // boolean - optional
-  });
-```
-
-When `usePublishState: true`, this method enforces [embargo](../concepts/publishing/publishing-embargo) timestamps at all levels:
-
-- **Order of Play embargo**: returns empty `dateMatchUps` if the order of play embargo has not passed
-- **Draw embargo**: filters out matchUps from embargoed draws
-- **Stage embargo**: filters out matchUps from embargoed stages
-- **Structure embargo**: filters out matchUps from embargoed structures
-- **Round-level filtering**: `roundLimit` on a structure caps which rounds appear in the schedule (for all draw types). `scheduledRounds` provides per-round publish/embargo control within the ceiling set by `roundLimit`. See [Scheduled Rounds](../concepts/publishing/publishing-embargo#scheduled-rounds).
-
-**See**: [Embargo](../concepts/publishing/publishing-embargo) for details on how embargo timestamps work.
+Returns scheduled matchUps for a competition, with optional publish-state and embargo filtering. See full documentation in the [MatchUp Governor](./matchup-governor.md#competitionschedulematchups).
 
 ---
 

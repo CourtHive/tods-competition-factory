@@ -108,33 +108,35 @@ export function competitionScheduleMatchUps(params: CompetitionScheduleMatchUpsA
     }
   }
 
-  if (tournamentPublishStatus?.eventIds?.length) {
+  const publishedOrderOfPlay = tournamentPublishStatus?.orderOfPlay;
+
+  if (publishedOrderOfPlay?.eventIds?.length) {
     params.matchUpFilters ??= {};
     if (params.matchUpFilters?.eventIds) {
       if (params.matchUpFilters.eventIds.length) {
         params.matchUpFilters.eventIds = params.matchUpFilters.eventIds.filter((eventId) =>
-          tournamentPublishStatus.eventIds.includes(eventId),
+          publishedOrderOfPlay.eventIds.includes(eventId),
         );
       } else {
-        params.matchUpFilters.eventIds = tournamentPublishStatus.eventIds;
+        params.matchUpFilters.eventIds = publishedOrderOfPlay.eventIds;
       }
     } else {
-      params.matchUpFilters.eventIds = tournamentPublishStatus.eventIds;
+      params.matchUpFilters.eventIds = publishedOrderOfPlay.eventIds;
     }
   }
 
-  if (tournamentPublishStatus?.scheduledDates?.length) {
+  if (publishedOrderOfPlay?.scheduledDates?.length) {
     params.matchUpFilters ??= {};
     if (params.matchUpFilters.scheduledDates) {
       if (params.matchUpFilters.scheduledDates.length) {
         params.matchUpFilters.scheduledDates = params.matchUpFilters.scheduledDates.filter((scheduledDate) =>
-          tournamentPublishStatus.scheduledDates.includes(scheduledDate),
+          publishedOrderOfPlay.scheduledDates.includes(scheduledDate),
         );
       } else {
-        params.matchUpFilters.scheduledDates = tournamentPublishStatus.scheduledDates;
+        params.matchUpFilters.scheduledDates = publishedOrderOfPlay.scheduledDates;
       }
     } else {
-      params.matchUpFilters.scheduledDates = tournamentPublishStatus.scheduledDates;
+      params.matchUpFilters.scheduledDates = publishedOrderOfPlay.scheduledDates;
     }
   }
 

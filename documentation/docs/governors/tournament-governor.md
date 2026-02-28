@@ -142,11 +142,16 @@ const { tournamentRecord } = engine.createTournamentRecord({
   tournamentName, // optional
   startDate, // optional - 'YYYY-MM-DD'
   endDate, // optional - 'YYYY-MM-DD'
+  activeDates, // optional - string[] of 'YYYY-MM-DD' dates within start/end range when play occurs
+  localTimeZone, // optional - IANA timezone identifier (e.g. 'America/New_York')
   tournamentId, // optional - provide specific ID
+  extensions, // optional - array of extensions (validated)
 });
 ```
 
 **Purpose:** Initialize a new tournament.
+
+When `activeDates` is provided, each date is validated as a proper date string and all `activeDates` must fall within the `startDate`/`endDate` range — otherwise an `INVALID_DATE` error is returned. If `startDate` or `endDate` are not provided, they are automatically derived from the earliest and latest `activeDates` respectively, ensuring the tournament record always has valid date boundaries. Falsy values in the array are automatically filtered out. See [Date and Time Handling](../concepts/date-time-handling.md) for more on `activeDates`.
 
 ---
 

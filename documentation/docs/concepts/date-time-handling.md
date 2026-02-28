@@ -218,11 +218,12 @@ console.log(`Embargo lifts at ${time} on ${date} (${localTimeZone})`);
 Tournament records track dates as `YYYY-MM-DD` strings. Validation is applied on creation and when modifying dates:
 
 ```js
-// startDate and endDate are validated as ISO date strings
+// startDate, endDate, and activeDates are validated as ISO date strings
 engine.createTournamentRecord({
   tournamentName: 'Summer Open',
   startDate: '2024-06-10',
   endDate: '2024-06-16',
+  activeDates: ['2024-06-10', '2024-06-12', '2024-06-14', '2024-06-16'], // optional
   localTimeZone: 'America/New_York', // validated as IANA timezone
 });
 
@@ -230,6 +231,45 @@ engine.createTournamentRecord({
 engine.setTournamentDates({
   startDate: '2024-06-11',
   endDate: '2024-06-15',
+  activeDates: ['2024-06-11', '2024-06-13', '2024-06-15'], // optional
+});
+```
+
+### Active Dates
+
+`activeDates` is an optional array of `YYYY-MM-DD` date strings representing the specific dates within a tournament's (or event's) date range when play actually occurs. This is useful for tournaments that span a date range but don't play every day — for example, a week-long tournament with rest days.
+
+- **Omitted or `undefined`**: all dates in the `startDate`–`endDate` range are implicitly active
+- **Non-empty array**: only the listed dates are active play dates
+- **Validation**: every date must be a valid date string and must fall within `startDate`/`endDate`; returns `INVALID_DATE` on failure
+- **Derivation**: when `createTournamentRecord` is called with `activeDates` but without `startDate` and/or `endDate`, the missing boundaries are derived from the earliest and latest active dates. This ensures the tournament record always has valid `startDate`/`endDate` for scheduling, court availability, and other subsystems that depend on them.
+- **Falsy filtering**: falsy values (empty strings, `null`) are automatically filtered out before validation
+
+`activeDates` can be set at creation time via `createTournamentRecord` or later via `setTournamentDates`. Events also support `activeDates` via `setEventDates`.
+
+```js
+// Set activeDates at creation — startDate/endDate provided explicitly
+engine.createTournamentRecord({
+  startDate: '2024-06-10',
+  endDate: '2024-06-16',
+  activeDates: ['2024-06-10', '2024-06-12', '2024-06-14', '2024-06-16'],
+});
+
+// Set activeDates at creation — startDate/endDate derived automatically
+// startDate becomes '2024-06-10', endDate becomes '2024-06-16'
+engine.createTournamentRecord({
+  activeDates: ['2024-06-10', '2024-06-12', '2024-06-14', '2024-06-16'],
+});
+
+// Update activeDates later
+engine.setTournamentDates({
+  activeDates: ['2024-06-10', '2024-06-11', '2024-06-14', '2024-06-16'],
+});
+
+// Set event-level activeDates
+engine.setEventDates({
+  eventId,
+  activeDates: ['2024-06-10', '2024-06-14'],
 });
 ```
 
