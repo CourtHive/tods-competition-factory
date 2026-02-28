@@ -5,8 +5,8 @@
  * point-by-point play. Exercises the data that buildEpisodes relies on.
  */
 
-import { describe, test, expect } from 'vitest';
 import { ScoringEngine } from '@Assemblies/engines/scoring/ScoringEngine';
+import { describe, test, expect } from 'vitest';
 
 /** Helper: win a game by playing 4 points (no-deuce scenario) */
 function winGameByPoints(engine: ScoringEngine, winner: 0 | 1) {
@@ -73,6 +73,42 @@ describe('Mixed addGame + addPoint', () => {
     // The last episode should indicate game completion
     const lastEpisode = episodes[episodes.length - 1];
     expect(lastEpisode.game.complete).toBe(true);
+  });
+
+  test('addGame p1 + addGame p2 + points p1: game index and scores correct', () => {
+    const engine = new ScoringEngine({ matchUpFormat: 'SET3-S:6/TB7' });
+
+    // addGame for player 0, addGame for player 1 → 1-1
+    engine.addGame({ winner: 0 });
+    engine.addGame({ winner: 1 });
+    expect(engine.getScore().games).toEqual([1, 1]);
+
+    // Play a full game via points for player 0 → 2-1
+    winGameByPoints(engine, 0);
+
+    const state = engine.getState();
+    const score = engine.getScore();
+
+    expect(score.games).toEqual([2, 1]);
+    expect(state.score.sets[0].side1Score).toBe(2);
+    expect(state.score.sets[0].side2Score).toBe(1);
+
+    // Points should be in game index 2 (0-indexed: game 0=addGame p1, game 1=addGame p2, game 2=points)
+    const points = state.history?.points || [];
+    expect(points.length).toBe(4);
+    points.forEach((point: any) => {
+      expect(point.set).toBe(0);
+      expect(point.game).toBe(2);
+    });
+
+    // Entries: 2 game entries + 4 point entries
+    const entries = state.history?.entries || [];
+    expect(entries.length).toBe(6);
+    expect(entries[0].type).toBe('game');
+    expect(entries[1].type).toBe('game');
+    entries.slice(2).forEach((entry: any) => {
+      expect(entry.type).toBe('point');
+    });
   });
 
   test('addSet then addGame then points: score data is correct', () => {
