@@ -19,6 +19,24 @@ export function createTournamentRecord(params): any {
     return { error: INVALID_DATE };
   }
 
+  if (attributes.activeDates) {
+    const activeDates = attributes.activeDates.filter(Boolean);
+    if (!activeDates.every((d) => isISODateString(d) || validDateString.test(d))) {
+      return { error: INVALID_DATE };
+    }
+    if (activeDates.length) {
+      // derive startDate/endDate from activeDates if not provided
+      const sorted = [...activeDates].sort();
+      if (!attributes.startDate) attributes.startDate = sorted[0];
+      if (!attributes.endDate) attributes.endDate = sorted[sorted.length - 1];
+
+      const validStart = activeDates.every((d) => new Date(d) >= new Date(attributes.startDate));
+      const validEnd = activeDates.every((d) => new Date(d) <= new Date(attributes.endDate));
+      if (!validStart || !validEnd) return { error: INVALID_DATE };
+    }
+    attributes.activeDates = activeDates;
+  }
+
   if (attributes.localTimeZone && !isValidIANATimeZone(attributes.localTimeZone)) {
     return { error: INVALID_TIME_ZONE };
   }
