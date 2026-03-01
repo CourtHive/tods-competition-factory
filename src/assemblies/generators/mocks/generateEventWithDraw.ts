@@ -166,6 +166,20 @@ export function generateEventWithDraw(params) {
         tieFormat,
         drawSize,
       }));
+
+      // Apply teamGenders override from drawProfile (floor, not ceiling)
+      const teamGenders = drawProfileCopy.teamGenders;
+      if (teamGenders) {
+        for (const key of Object.keys(teamGenders)) {
+          if (genders[key] !== undefined && teamGenders[key] > genders[key]) {
+            genders[key] = teamGenders[key];
+          }
+        }
+        // Ensure teamSize accommodates the overridden gender counts
+        const genderTotal = (genders[MALE] || 0) + (genders[FEMALE] || 0);
+        if (genderTotal > teamSize) teamSize = genderTotal;
+      }
+
       Object.keys(genders).forEach((key) => {
         const coerced = coercedGender(key);
         if (coerced && isGendered(key) && genders[coerced]) {
@@ -241,7 +255,7 @@ export function generateEventWithDraw(params) {
         mIndex += genders[MALE];
         rIndex += mixedCount;
 
-        const individualParticipantIds = buildTeams !== false ? [...fPIDs, ...mPIDs, ...rIDs] : [];
+        const individualParticipantIds = buildTeams !== false ? [...fPIDs, ...mPIDs, ...rIDs] : []; // NOSONAR
         return {
           participantName: teamNames[teamIndex] || `Team ${teamIndex + 1}`,
           participantOtherName: `TM${teamIndex + 1}`,

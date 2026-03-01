@@ -881,6 +881,67 @@ const { tournamentRecord } = mocksEngine.generateTournamentRecord({
 });
 ```
 
+### Team Gender Composition Override
+
+By default, `processTieFormat` computes per-team gender counts from the maximum gendered collection requirements. When a tieFormat requires more gendered players than the MAX-per-collection heuristic produces (e.g. collections needing 3 men and 3 women total, but the MAX only detects 2 of each), use `teamGenders` as a floor override:
+
+```js
+const { tournamentRecord } = mocksEngine.generateTournamentRecord({
+  drawProfiles: [
+    {
+      drawSize: 2,
+      eventType: 'TEAM',
+      teamNames: ['Team Alpha', 'Team Beta'],
+      teamGenders: { MALE: 3, FEMALE: 3 }, // Override: at least 3M + 3F per team
+      tieFormat: {
+        tieFormatName: 'INTENNSE',
+        winCriteria: { aggregateValue: true },
+        collectionDefinitions: [
+          {
+            collectionName: "Men's Singles",
+            matchUpType: 'SINGLES',
+            matchUpCount: 2,
+            matchUpFormat: 'SET2XA-S:T10',
+            gender: 'MALE',
+          },
+          {
+            collectionName: "Women's Singles",
+            matchUpType: 'SINGLES',
+            matchUpCount: 2,
+            matchUpFormat: 'SET2XA-S:T10',
+            gender: 'FEMALE',
+          },
+          {
+            collectionName: "Men's Doubles",
+            matchUpType: 'DOUBLES',
+            matchUpCount: 1,
+            matchUpFormat: 'SET1A-S:T10',
+            gender: 'MALE',
+          },
+          {
+            collectionName: "Women's Doubles",
+            matchUpType: 'DOUBLES',
+            matchUpCount: 1,
+            matchUpFormat: 'SET1A-S:T10',
+            gender: 'FEMALE',
+          },
+          {
+            collectionName: 'Mixed Doubles',
+            matchUpType: 'DOUBLES',
+            matchUpCount: 1,
+            matchUpFormat: 'SET1A-S:T10',
+            gender: 'MIXED',
+          },
+        ],
+      },
+    },
+  ],
+  completeAllMatchUps: true,
+});
+```
+
+`teamGenders` acts as a **floor** — it only increases gender counts, never decreases them. If `processTieFormat` already computes a higher value for a gender, that value is preserved. The `teamSize` is also adjusted upward if the overridden gender totals exceed it.
+
 ## Tips and Best Practices
 
 1. **Start with drawProfiles** for simple scenarios, use **eventProfiles** for complex multi-draw events

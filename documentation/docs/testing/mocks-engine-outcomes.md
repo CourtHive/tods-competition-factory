@@ -181,6 +181,33 @@ const { outcome } = mocksEngine.generateOutcome({
 });
 ```
 
+### Aggregate Timed Sets
+
+For formats where the winner is determined by total points across all sets (not by winning individual sets), use the aggregate modifier `A` in the format code:
+
+```js
+// 2 timed sets, aggregate scoring — winner has most total points
+const { outcome } = mocksEngine.generateOutcome({
+  matchUpFormat: 'SET2XA-S:T10', // 2 sets × 10 minutes, aggregate
+  matchUpStatusProfile: {},
+});
+
+// All sets are always played (no early exit)
+expect(outcome.score.sets.length).toBe(2);
+
+// Winner determined by total points, not sets won
+const side1Total = outcome.score.sets.reduce((s, set) => s + set.side1Score, 0);
+const side2Total = outcome.score.sets.reduce((s, set) => s + set.side2Score, 0);
+if (outcome.winningSide === 1) expect(side1Total).toBeGreaterThan(side2Total);
+```
+
+Common aggregate timed formats:
+
+- `SET2XA-S:T10` - 2 × 10-minute sets, aggregate scoring (e.g. INTENNSE singles)
+- `SET1A-S:T10` - 1 × 10-minute set, aggregate scoring (e.g. INTENNSE doubles)
+
+The `X` modifier means "exactly" — all sets are played regardless of the running score. The `A` modifier triggers aggregate scoring where the winner is the side with the highest total points across all sets.
+
 ## generateOutcomeFromScoreString {#generateOutcomeFromScoreString}
 
 Create outcomes from score strings:
