@@ -6,7 +6,7 @@ import { findStructure, getDrawStructures } from '@Acquire/findStructure';
 import { constantToString } from '@Tools/strings';
 import { expect, it } from 'vitest';
 
-import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { COMPASS, FEED_IN_CHAMPIONSHIP, MAIN, PLAY_OFF, CONSOLATION } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '@Constants/resultConstants';
 
@@ -41,7 +41,7 @@ it('can find structures by stage and stageSequence', () => {
   const { structures: stage2Structures } = getDrawStructures({
     stageSequence: 2,
     drawDefinition,
-    stage: MAIN,
+    stage: PLAY_OFF,
   });
   expect(stage2Structures?.length).toEqual(3);
   expect(stage2Structures?.map((structure) => structure.structureName)).toMatchObject(['West', 'North', 'Northeast']);
@@ -49,7 +49,7 @@ it('can find structures by stage and stageSequence', () => {
   const { structures: stage3Structures } = getDrawStructures({
     stageSequence: 3,
     drawDefinition,
-    stage: MAIN,
+    stage: PLAY_OFF,
   });
   expect(stage3Structures?.length).toEqual(3);
   expect(stage3Structures?.map((structure) => structure.structureName)).toMatchObject([
@@ -61,7 +61,7 @@ it('can find structures by stage and stageSequence', () => {
   const { structures: stage4Structures } = getDrawStructures({
     stageSequence: 4,
     drawDefinition,
-    stage: MAIN,
+    stage: PLAY_OFF,
   });
   expect(stage4Structures?.map((structure) => structure.structureName)).toMatchObject(['Southeast']);
 

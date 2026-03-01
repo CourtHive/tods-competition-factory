@@ -324,7 +324,7 @@ it('can generate payload for publishing a compass draw', () => {
   expect(eventData.drawsData[0].structures[0].roundMatchUps[1][0].drawId).toEqual(drawDefinition.drawId);
 
   // round naming policy test
-  expect(eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName).toEqual('W-Quarterfinals');
+  expect(eventData.drawsData[0].structures[1].roundMatchUps[1][0].roundName).toEqual('P-W-Quarterfinals');
 });
 
 it('can generate payload for publishing a FIRST_MATCH_LOSER_CONSOLATION draw', () => {
