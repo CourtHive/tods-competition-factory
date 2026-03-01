@@ -196,7 +196,7 @@ export function extractDate(dateString): string {
 
 export function dateStringDaysChange(dateString, daysChange): string | undefined {
   const date = new Date(dateString);
-  date.setDate(date.getDate() + daysChange);
+  date.setUTCDate(date.getUTCDate() + daysChange);
   return extractDate(date.toISOString());
 }
 
