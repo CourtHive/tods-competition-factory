@@ -49,7 +49,7 @@ export function generateOutcome(params) {
   const {
     matchUpStatusProfile = defaultStatusProfile, // { matchUpStatusProfile: {} } will always return only { matchUpStatus: COMPLETED }
     matchUpFormat = FORMAT_STANDARD,
-    pointsPerMinute = 1,
+    pointsPerMinute = 2.5,
     sideWeight = 4,
   } = params;
 
@@ -138,11 +138,42 @@ export function generateOutcome(params) {
     }
 
     const analysis = analyzeMatchUp({ matchUp: { score: { sets }, matchUpFormat } });
-    if (analysis.calculatedWinningSide) break;
+    // For aggregate formats (e.g. SET2XA-S:T10), always play all sets — winner is by total points
+    if (analysis.calculatedWinningSide && !parsedFormat?.aggregate) break;
   }
 
-  const analysis = analyzeMatchUp({ matchUp: { score: { sets }, matchUpFormat, winningSide } });
-  const matchUpWinningSide = weightedWinningSide ? winningSide || weightedWinningSide : analysis.calculatedWinningSide;
+  let matchUpWinningSide;
+  if (weightedWinningSide) {
+    matchUpWinningSide = winningSide || weightedWinningSide;
+  } else if (parsedFormat?.aggregate && sets.length > 0) {
+    // Aggregate scoring: winner determined by total points across all sets
+    let side1Total = sets.reduce((sum, s) => sum + (s.side1Score ?? 0), 0);
+    let side2Total = sets.reduce((sum, s) => sum + (s.side2Score ?? 0), 0);
+    // Resolve ties or enforce winningSide override
+    const adjustSet = randomInt(0, sets.length - 1);
+    if (winningSide) {
+      // Ensure the forced winningSide has more total points
+      if (
+        (winningSide === 1 && side1Total <= side2Total) ||
+        (winningSide === 2 && side2Total <= side1Total)
+      ) {
+        const diff = Math.abs(side1Total - side2Total) + randomInt(1, 3);
+        if (winningSide === 1) sets[adjustSet].side1Score += diff;
+        else sets[adjustSet].side2Score += diff;
+      }
+      matchUpWinningSide = winningSide;
+    } else if (side1Total === side2Total) {
+      const side = randomInt(1, 2);
+      if (side === 1) sets[adjustSet].side1Score += 1;
+      else sets[adjustSet].side2Score += 1;
+      matchUpWinningSide = side;
+    } else {
+      matchUpWinningSide = side1Total > side2Total ? 1 : 2;
+    }
+  } else {
+    const analysis = analyzeMatchUp({ matchUp: { score: { sets }, matchUpFormat, winningSide } });
+    matchUpWinningSide = analysis.calculatedWinningSide;
+  }
 
   // add the side perspective stringScores
   const { score } = matchUpScore({

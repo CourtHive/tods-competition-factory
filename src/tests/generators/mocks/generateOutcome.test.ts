@@ -186,6 +186,69 @@ test.each(generateRange(0, iterations))('supports specifying winningSide', () =>
   });
 });
 
+test.each(generateRange(0, iterations))('supports aggregate timed formats', () => {
+  // SET2XA-S:T10: 2 sets exactly, aggregate scoring, 10-minute timed
+  generateRange(0, 20).forEach(() => {
+    const { outcome } = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET2XA-S:T10',
+      matchUpStatusProfile: {},
+    });
+    expect(outcome.winningSide).toBeDefined();
+    expect(outcome.score.sets.length).toBe(2); // exactly 2 sets always played
+
+    for (const set of outcome.score.sets) {
+      expect(set.side1Score).toBeGreaterThanOrEqual(0);
+      expect(set.side2Score).toBeGreaterThanOrEqual(0);
+    }
+
+    // Aggregate winner should match winningSide
+    const side1Total = outcome.score.sets.reduce((s, set) => s + set.side1Score, 0);
+    const side2Total = outcome.score.sets.reduce((s, set) => s + set.side2Score, 0);
+    if (outcome.winningSide === 1) {
+      expect(side1Total).toBeGreaterThan(side2Total);
+    } else {
+      expect(side2Total).toBeGreaterThan(side1Total);
+    }
+  });
+
+  // SET1A-S:T10: 1 set, aggregate scoring, 10-minute timed
+  generateRange(0, 20).forEach(() => {
+    const { outcome } = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET1A-S:T10',
+      matchUpStatusProfile: {},
+    });
+    expect(outcome.winningSide).toBeDefined();
+    expect(outcome.score.sets.length).toBe(1);
+    expect(outcome.score.sets[0].side1Score).toBeGreaterThanOrEqual(0);
+    expect(outcome.score.sets[0].side2Score).toBeGreaterThanOrEqual(0);
+  });
+
+  // winningSide override works with aggregate formats
+  generateRange(0, 10).forEach(() => {
+    const { outcome } = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET2XA-S:T10',
+      matchUpStatusProfile: {},
+      winningSide: 1,
+    });
+    expect(outcome.winningSide).toBe(1);
+    const s1 = outcome.score.sets.reduce((s, set) => s + set.side1Score, 0);
+    const s2 = outcome.score.sets.reduce((s, set) => s + set.side2Score, 0);
+    expect(s1).toBeGreaterThan(s2);
+  });
+
+  generateRange(0, 10).forEach(() => {
+    const { outcome } = mocksEngine.generateOutcome({
+      matchUpFormat: 'SET2XA-S:T10',
+      matchUpStatusProfile: {},
+      winningSide: 2,
+    });
+    expect(outcome.winningSide).toBe(2);
+    const s1 = outcome.score.sets.reduce((s, set) => s + set.side1Score, 0);
+    const s2 = outcome.score.sets.reduce((s, set) => s + set.side2Score, 0);
+    expect(s2).toBeGreaterThan(s1);
+  });
+});
+
 test.each(generateRange(0, iterations))('other matchUpFormats', () => {
   let result = mocksEngine.generateOutcome({
     matchUpFormat: 'SET3-S:4/TB7',
