@@ -304,7 +304,7 @@ it('can generate structureReports for a COMPASS draw', () => {
   expect(structureReports.map((r) => r.drawType)).toEqual(['COMPASS']);
 });
 
-it('getStructureReports for a draw with PLAYOFF returns 2 structures when firstStageSequenceOnly: false', () => {
+it('getStructureReports for a draw with PLAY_OFF returns 2 structures when firstStageSequenceOnly: false', () => {
   const drawId = 'M1';
   const drawProfiles = [
     {

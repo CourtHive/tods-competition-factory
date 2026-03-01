@@ -208,7 +208,7 @@ test.each([tournamentEngineSync, tournamentEngineAsync])(
 
     const playoffMatchUps = matchUps.filter(({ stage, roundNumber }) => stage !== MAIN && roundNumber === 1);
     // DOMINANT_DUO has 3 tieMatchUps, plus 1 TEAM matchUp = 4 per
-    // There are two MAIN matchUps which have been modified, feeding into one PLAYOFF matchUp
+    // There are two MAIN matchUps which have been modified, feeding into one PLAY_OFF matchUp
     expect(playoffMatchUps.length).toEqual((matchUpModifyNotices.length / 2) * 4);
 
     const sanityCheckMatchUpIds = new Set(withLoserMatchUpId.map(({ matchUpId }) => matchUpId));

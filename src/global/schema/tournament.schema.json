@@ -367,7 +367,7 @@
         "MODIFIED_FEED_IN_CHAMPIONSHIP",
         "OLYMPIC",
         "OTHER",
-        "PLAYOFF",
+        "PLAY_OFF",
         "ROUND_ROBIN",
         "ROUND_ROBIN_WITH_PLAYOFF",
         "FIRST_ROUND_LOSER_CONSOLATION",
@@ -2528,7 +2528,23 @@
     },
     "ParticipantRoleEnum": {
       "type": "string",
-      "enum": ["ADMINISTRATION", "CAPTAIN", "COACH", "COMPETITOR", "DIRECTOR", "HOSPITALITY", "MEDIA", "MEDICAL", "OFFICIAL", "OTHER", "SECURITY", "STRINGER", "SUPERVISOR", "TRANSPORT", "VOLUNTEER"]
+      "enum": [
+        "ADMINISTRATION",
+        "CAPTAIN",
+        "COACH",
+        "COMPETITOR",
+        "DIRECTOR",
+        "HOSPITALITY",
+        "MEDIA",
+        "MEDICAL",
+        "OFFICIAL",
+        "OTHER",
+        "SECURITY",
+        "STRINGER",
+        "SUPERVISOR",
+        "TRANSPORT",
+        "VOLUNTEER"
+      ]
     },
     "ParticipantStatusEnum": {
       "type": "string",

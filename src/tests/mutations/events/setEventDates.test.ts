@@ -1,8 +1,9 @@
+import tournamentEngineSync from '@Engines/syncEngine';
 import { dateStringDaysChange } from '@Tools/dateTime';
 import mocksEngine from '@Assemblies/engines/mock';
 import { expect, test } from 'vitest';
 
-import tournamentEngineSync from '@Engines/syncEngine';
+// constants
 import { INVALID_DATE, INVALID_VALUES, MISSING_EVENT } from '@Constants/errorConditionConstants';
 import { MON } from '@Constants/weekdayConstants';
 
