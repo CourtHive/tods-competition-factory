@@ -9,7 +9,7 @@ import { mocksEngine } from '../../../../..';
 import { expect, it } from 'vitest';
 
 import { COMPLETED } from '@Constants/matchUpStatusConstants';
-import { COMPASS, MAIN, PLAY_OFF, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
+import { COMPASS, MAIN, PLAYOFF, ROUND_ROBIN_WITH_PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
   const completionGoal = 48;
@@ -30,7 +30,7 @@ it('is possible to have COMPASS playoff for Round Robin with playoffs', () => {
             {
               playoffStructureNameBase: 'Silver Flight',
               finishingPositions: [3, 4],
-              drawType: PLAY_OFF,
+              drawType: PLAYOFF,
             },
           ],
         },
