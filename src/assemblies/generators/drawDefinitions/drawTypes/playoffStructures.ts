@@ -26,6 +26,7 @@ type GeneratePlayoffStructuresArgs = {
   sequenceLimit?: number;
   stageSequence?: number;
   structureName?: string;
+  childStage?: string; // stage to use for child structures (e.g. PLAY_OFF for COMPASS/OLYMPIC secondaries)
   matchUpType?: string;
   roundOffset?: number;
   structureId?: string;
@@ -58,8 +59,9 @@ export function generatePlayoffStructures(params: GeneratePlayoffStructuresArgs)
     roundOffsetLimit,
     roundOffset = 0,
     drawDefinition,
-    staggeredEntry, // not propagated to child structurs
+    staggeredEntry, // not propagated to child structures
     sequenceLimit,
+    childStage,
     stage = MAIN,
     drawSize,
     idPrefix,
@@ -154,6 +156,7 @@ export function generatePlayoffStructures(params: GeneratePlayoffStructuresArgs)
       exitProfile: `${exitProfile}-${roundNumber}`,
       roundOffset: roundOffset + roundNumber,
       stageSequence: stageSequence + 1,
+      stage: childStage ?? stage,
       drawSize: playoffDrawPositions,
       addNameBaseToAttributeName,
       playoffStructureNameBase,
@@ -164,10 +167,10 @@ export function generatePlayoffStructures(params: GeneratePlayoffStructuresArgs)
       roundOffsetLimit,
       drawDefinition,
       sequenceLimit,
+      childStage,
       matchUpType,
       idPrefix,
       uuids,
-      stage,
     });
 
     if (structure.structureId && targetStructureId) {

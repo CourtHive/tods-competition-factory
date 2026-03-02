@@ -5,7 +5,7 @@ import { it, expect } from 'vitest';
 // Constants
 import { CANNOT_CHANGE_WINNING_SIDE, INCOMPATIBLE_MATCHUP_STATUS, PROPAGATED_EXITS_DOWNSTREAM } from '@Constants/errorConditionConstants';
 import { BYE, COMPLETED, DOUBLE_WALKOVER, TO_BE_PLAYED, WALKOVER } from '@Constants/matchUpStatusConstants';
-import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION } from '@Constants/drawDefinitionConstants';
+import { COMPASS, FIRST_MATCH_LOSER_CONSOLATION, PLAY_OFF } from '@Constants/drawDefinitionConstants';
 
 it('will not allow winningSide change when active downstream', () => {
   mocksEngine.generateTournamentRecord({
@@ -30,6 +30,7 @@ it('will not allow winningSide change when active downstream', () => {
           },
           {
             matchUpStatus: WALKOVER,
+            stage: PLAY_OFF,
             stageSequence: 2,
             roundPosition: 1,
             roundNumber: 1,

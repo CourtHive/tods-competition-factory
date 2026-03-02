@@ -6,7 +6,7 @@ import { numericSort } from '@Tools/sorting';
 import { expect, it } from 'vitest';
 
 // Constants and types
-import { TOP_DOWN, LOSER, COMPASS, PLAY_OFF, MAIN } from '@Constants/drawDefinitionConstants';
+import { TOP_DOWN, LOSER, COMPASS, PLAYOFF, MAIN } from '@Constants/drawDefinitionConstants';
 import { DrawDefinition } from '@Types/tournamentTypes';
 import { ERROR } from '@Constants/resultConstants';
 
@@ -329,7 +329,7 @@ it('generates compass draws with correct finishing drawPositions', () => {
 
 it('can generate draw which plays off all drawPositions', () => {
   const { result, drawDefinition } = playoffDraw({
-    drawType: PLAY_OFF,
+    drawType: PLAYOFF,
     drawSize: 64,
   });
   expect(result).not.toHaveProperty(ERROR);
@@ -384,7 +384,7 @@ it('can generate elimination which specifies drawPositions to playoff', () => {
   let drawDefinition =
     playoffDraw({
       finishingPositionLimit: 4,
-      drawType: PLAY_OFF,
+      drawType: PLAYOFF,
       drawSize: 16,
     }).drawDefinition ?? {};
   expect(drawDefinition.links?.length).toEqual(1);
@@ -395,7 +395,7 @@ it('can generate elimination which specifies drawPositions to playoff', () => {
   drawDefinition =
     playoffDraw({
       finishingPositionLimit: 8,
-      drawType: PLAY_OFF,
+      drawType: PLAYOFF,
       drawSize: 16,
     }).drawDefinition ?? {};
   expect(drawDefinition.links?.length).toEqual(3);
@@ -408,7 +408,7 @@ it('can generate elimination which specifies drawPositions to playoff', () => {
   drawDefinition =
     playoffDraw({
       finishingPositionLimit: 8,
-      drawType: PLAY_OFF,
+      drawType: PLAYOFF,
       drawSize: 32,
     }).drawDefinition ?? {};
   expect(drawDefinition.links?.length).toEqual(3);

@@ -33,6 +33,7 @@ import {
   OLYMPIC,
   OLYMPIC_ATTRIBUTES,
   PLAY_OFF,
+  PLAYOFF,
   POSITION,
   ROUND_ROBIN,
   SINGLE_ELIMINATION,
@@ -197,7 +198,7 @@ export function processPlayoffGroups({
         structureId: playoffStructure.structureId,
         finishingPositions,
       });
-    } else if ([COMPASS, OLYMPIC, PLAY_OFF].includes(playoffDrawType)) {
+    } else if ([COMPASS, OLYMPIC, PLAYOFF].includes(playoffDrawType)) {
       const params = {
         playoffAttributes: playoffGroup.playoffAttributes ?? playoffAttributes,
         playoffStructureNameBase: playoffGroup.playoffStructureNameBase,
