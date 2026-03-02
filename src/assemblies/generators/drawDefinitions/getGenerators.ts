@@ -18,8 +18,8 @@ import { ErrorType } from '@Constants/errorConditionConstants';
 import { SUCCESS } from '@Constants/resultConstants';
 // prettier-ignore
 import {
-  MAIN, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS,
-  PLAY_OFF, OLYMPIC, FEED_IN, ROUND_ROBIN,
+  MAIN, PLAY_OFF, FICQF, FICSF, MFIC, AD_HOC, CURTIS, FICR16, COMPASS, CUSTOM,
+  PLAYOFF, OLYMPIC, FEED_IN, ROUND_ROBIN,
   COMPASS_ATTRIBUTES, OLYMPIC_ATTRIBUTES,
   SINGLE_ELIMINATION, DOUBLE_ELIMINATION,
   FIRST_MATCH_LOSER_CONSOLATION,
@@ -91,21 +91,24 @@ export function getGenerators(params): { generators?: any; error?: ErrorType } {
       return { structures: [structure], links: [], ...SUCCESS };
     },
     [SINGLE_ELIMINATION]: () => singleElimination(),
+    [CUSTOM]: () => singleElimination(),
     [DOUBLE_ELIMINATION]: () => generateDoubleElimination(params),
     [COMPASS]: () =>
       generatePlayoffStructures({
         ...params,
+        childStage: PLAY_OFF,
         roundOffsetLimit: 3,
         playoffAttributes: playoffAttributes ?? COMPASS_ATTRIBUTES,
       }),
     [OLYMPIC]: () =>
       generatePlayoffStructures({
         ...params,
+        childStage: PLAY_OFF,
         roundOffsetLimit: 2,
         playoffAttributes: playoffAttributes ?? OLYMPIC_ATTRIBUTES,
       }),
-    [PLAY_OFF]: () => {
-      return generatePlayoffStructures(params);
+    [PLAYOFF]: () => {
+      return generatePlayoffStructures({ ...params, childStage: PLAY_OFF });
     },
 
     [FEED_IN]: () => {

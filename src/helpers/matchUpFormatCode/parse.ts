@@ -31,6 +31,7 @@ type SetFormat = {
   based?: string;
   NoAD?: boolean;
   setTo?: number;
+  outs?: number;
 };
 
 type SetFormatResult = SetFormat | undefined | false;
@@ -56,6 +57,7 @@ export type ParsedFormat = {
   setFormat?: any;
   bestOf?: number;
   gameFormat?: GameFormat; // for -G: section
+  matchUpConstraint?: { timed?: boolean; minutes?: number }; // for -M: section
 };
 
 export function parse(matchUpFormatCode: string): ParsedFormat | undefined {
@@ -163,9 +165,11 @@ function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
   let setFormat: SetFormatResult;
   let finalSetFormat: SetFormatResult;
   let gameFormat: GameFormat | undefined;
+  let matchUpConstraint: { timed: boolean; minutes: number } | undefined;
   let sCount = 0;
   let fCount = 0;
   let gCount = 0;
+  let mCount = 0;
 
   for (let i = 1; i < parts.length; i++) {
     const colonIdx = parts[i].indexOf(':');
@@ -189,6 +193,11 @@ function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
       if (gCount > 1) return undefined; // duplicate -G: section
       gameFormat = parseGameFormat(value);
       if (!gameFormat) return undefined; // invalid game format value
+    } else if (key === 'M') {
+      mCount++;
+      if (mCount > 1) return undefined; // duplicate -M: section
+      matchUpConstraint = parseMatchUpConstraint(value);
+      if (!matchUpConstraint) return undefined; // invalid match constraint value
     }
   }
 
@@ -224,6 +233,7 @@ function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
 
   if (finalSetFormat) result.finalSetFormat = finalSetFormat;
   if (gameFormat) result.gameFormat = gameFormat;
+  if (matchUpConstraint) result.matchUpConstraint = matchUpConstraint;
 
   return result;
 }
@@ -231,6 +241,10 @@ function parseMatchFormat(formatstring: string): ParsedFormat | undefined {
 function parseSetFormatString(formatstring: string, setFormatString: string): SetFormatResult {
   if (setFormatString.startsWith('TB')) {
     return parseTiebreakSetFormat(setFormatString);
+  }
+
+  if (setFormatString.startsWith('O')) {
+    return parseOutsBasedSet(setFormatString);
   }
 
   if (setFormatString.startsWith('T')) {
@@ -244,6 +258,12 @@ function parseTiebreakSetFormat(setFormatString: string): SetFormatResult {
   const tiebreakSet = parseTiebreakFormat(setFormatString);
   if (tiebreakSet === false) return false;
   return typeof tiebreakSet === 'object' ? { tiebreakSet } : undefined;
+}
+
+function parseOutsBasedSet(setFormatString: string): SetFormatResult {
+  const match = /^O([1-9]\d*)$/.exec(setFormatString);
+  if (!match) return undefined;
+  return { outs: Number(match[1]) };
 }
 
 function parseStandardSetFormat(formatstring: string, setFormatString: string): SetFormat | false {
@@ -373,6 +393,14 @@ function parseTimedSet(formatstring: string): SetFormat | undefined {
   if (legacyModifier) setFormat.based = legacyModifier;
 
   return setFormat;
+}
+
+function parseMatchUpConstraint(value: string): { timed: boolean; minutes: number } | undefined {
+  const match = /^T(\d+)$/.exec(value);
+  if (!match) return undefined;
+  const minutes = getNumber(match[1]);
+  if (!minutes) return undefined;
+  return { timed: true, minutes };
 }
 
 function isNoAD(formatstring) {

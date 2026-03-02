@@ -90,6 +90,7 @@ export interface Event {
 export const DrawTypeEnum = {
   AD_HOC: 'AD_HOC',
   COMPASS: 'COMPASS',
+  CUSTOM: 'CUSTOM',
   CURTIS_cONSOLATION: 'CURTIS_CONSOLATION',
   DOUBLE_eLIMINATION: 'DOUBLE_ELIMINATION',
   FEED_IN: 'FEED_IN',
@@ -103,7 +104,7 @@ export const DrawTypeEnum = {
   LUCKY_DRAW: 'LUCKY_DRAW',
   OLYMPIC: 'OLYMPIC',
   OTHER: 'OTHER',
-  PLAY_OFF: 'PLAY_OFF',
+  PLAYOFF: 'PLAYOFF',
   ROUND_ROBIN: 'ROUND_ROBIN',
   ROUND_ROBIN_WITH_PLAYOFF: 'ROUND_ROBIN_WITH_PLAYOFF',
   SINGLE_ELIMINATION: 'SINGLE_ELIMINATION',
@@ -209,6 +210,7 @@ export interface Entry {
   scaleValue?: number;
 }
 
+// NOTE: PLAY_OFF (underscore) is a stage type. PLAYOFF (no underscore) is a draw type (see DrawTypeEnum).
 export enum StageTypeEnum {
   CONSOLATION = 'CONSOLATION',
   MAIN = 'MAIN',

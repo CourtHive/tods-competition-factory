@@ -58,7 +58,7 @@ export const LOSER: any = 'LOSER'; // partticipant advances based on losing a ma
 export const FIRST_MATCHUP = 'FIRST_MATCHUP'; // condition for valididty of link
 
 // draw types
-// PLAY_OFF is also a stage type
+// NOTE: PLAY_OFF (underscore) is a STAGE type (see validStages). PLAYOFF (no underscore) is a DRAW TYPE.
 export const AD_HOC = 'AD_HOC';
 export const FLEX_ROUNDS = 'AD_HOC';
 export const FEED_IN = 'FEED_IN';
@@ -84,6 +84,8 @@ export const FEED_IN_CHAMPIONSHIP_TO_R16 = 'FEED_IN_CHAMPIONSHIP_TO_R16';
 export const MFIC = 'MODIFIED_FEED_IN_CHAMPIONSHIP';
 export const MODIFIED_FEED_IN_CHAMPIONSHIP = 'MODIFIED_FEED_IN_CHAMPIONSHIP';
 export const FEED_IN_CHAMPIONSHIP = 'FEED_IN_CHAMPIONSHIP';
+export const PLAYOFF = 'PLAYOFF';
+export const CUSTOM = 'CUSTOM';
 
 export const DOUBLE_ROUND_ROBIN = 'DOUBLE_ROUND_ROBIN';
 export const ROUND_ROBIN = 'ROUND_ROBIN';
@@ -128,7 +130,7 @@ export const MULTI_STRUCTURE_DRAWS = [
   LUCKY_DRAW,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   OLYMPIC,
-  PLAY_OFF,
+  PLAYOFF,
   ROUND_ROBIN_WITH_PLAYOFF,
 ];
 
@@ -147,10 +149,11 @@ export const generatedDrawTypes = [
   LUCKY_DRAW,
   MODIFIED_FEED_IN_CHAMPIONSHIP,
   OLYMPIC,
-  PLAY_OFF,
+  PLAYOFF,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
   SINGLE_ELIMINATION,
+  CUSTOM,
 ];
 
 export const drawDefinitionConstants = {
@@ -170,6 +173,7 @@ export const drawDefinitionConstants = {
   FLEX_ROUNDS,
   COMPASS,
   PLAY_OFF,
+  PLAYOFF,
   OLYMPIC,
   KNOCKOUT,
   SINGLE_ELIMINATION,
@@ -190,6 +194,7 @@ export const drawDefinitionConstants = {
   FEED_IN_CHAMPIONSHIP_TO_SF,
   FEED_IN_CHAMPIONSHIP,
   LUCKY_DRAW,
+  CUSTOM,
 
   ROUND_ROBIN_WITH_PLAYOFF,
   ROUND_ROBIN,

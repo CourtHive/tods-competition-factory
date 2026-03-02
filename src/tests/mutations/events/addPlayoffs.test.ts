@@ -7,7 +7,7 @@ import { globalState } from '../../..';
 import { expect, it } from 'vitest';
 
 import { INVALID_VALUES } from '@Constants/errorConditionConstants';
-import { FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAY_OFF } from '@Constants/drawDefinitionConstants';
+import { FIRST_MATCH_LOSER_CONSOLATION, MAIN, PLAYOFF } from '@Constants/drawDefinitionConstants';
 
 it('errors if attempting generation of existing playoff structure', () => {
   const {
@@ -121,7 +121,7 @@ it.each([
 });
 
 it.each([32, 64])('can delete playoffStructures beyond stageSequence 2', (drawSize: number) => {
-  const drawProfiles = [{ drawSize, drawType: PLAY_OFF }];
+  const drawProfiles = [{ drawSize, drawType: PLAYOFF }];
   const {
     tournamentRecord,
     drawIds: [drawId],

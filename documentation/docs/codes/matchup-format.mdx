@@ -23,7 +23,7 @@ Configure matchUp formats interactively and generate CODES-compliant format code
 A matchUpFormat code has the structure:
 
 ```
-{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}]
+{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}][-M:{matchConstraint}]
 ```
 
 | Segment   | Description                              | Examples                                                      |
@@ -32,9 +32,10 @@ A matchUpFormat code has the structure:
 | `{count}` | Number of segments                       | `3`, `5`, `7`, `12`                                           |
 | `X`       | Exactly this many segments (not best-of) | `SET7X` = exactly 7 sets                                      |
 | `A`       | Aggregate scoring across segments        | `HAL2A` = 2 halves, aggregate                                 |
-| `-S:`     | Segment (set) format specification       | `-S:6/TB7`, `-S:T10P`, `-S:TB11`                              |
+| `-S:`     | Segment (set) format specification       | `-S:6/TB7`, `-S:T10P`, `-S:TB11`, `-S:O3`                    |
 | `-G:`     | Game-level format within segments        | `-G:3C`, `-G:TN3D`                                            |
 | `-F:`     | Final segment format (when different)    | `-F:TB10`, `-F:6/TB7@12`                                      |
+| `-M:`     | Match-level constraint                   | `-M:T50` (50-minute match time cap)                           |
 
 ### Simplified Form
 
@@ -58,7 +59,7 @@ Examples: `T20` (20-minute timed), `T10P` (10-minute points-based).
 | `FRM` | Table tennis (best-of-7+), badminton                                                         | `FRM7-S:TB11`  |
 | `MAP` | Esports (CS2, Valorant)                                                                      | `MAP3-S:TB13`  |
 | `MAT` | Multi-match formats                                                                          | reserved       |
-| `INN` | Innings-based sports                                                                         | reserved       |
+| `INN` | Innings-based sports (baseball, wiffle ball)                                                  | `INN4XA-S:O3-M:T50` |
 
 :::tip Backward Compatibility
 When the root is `SET` (the default), it is omitted from the parsed object. Non-`SET` roots are included as `matchRoot` in the parsed result. This ensures all existing tennis/pickleball/padel format code consumers continue to work unchanged.
@@ -80,6 +81,7 @@ The `-S:` section describes how each segment is scored:
 | `T{minutes}`              | Timed set (games-based)           | `-S:T20`                          |
 | `T{minutes}P`             | Timed set (points-based)          | `-S:T10P`                         |
 | `T{minutes}G`             | Timed set (games-based, explicit) | `-S:T10G` (same as `-S:T10`)      |
+| `O{outs}`                 | Outs-based segment (baseball/wiffle ball) | `-S:O3` (3 outs per team per inning) |
 
 ### Game Format Specification (`-G:`)
 
@@ -101,6 +103,16 @@ The `{n}D` suffix caps the number of deuce cycles before a decisive point:
 | `1D`   | Golden point — decisive at 1st deuce (equivalent to NOAD)           |
 | `3D`   | Star Point (Padel 2026) — up to 2 advantages, decisive at 3rd deuce |
 | (none) | Unlimited advantages (traditional)                                  |
+
+### Match Constraint Specification (`-M:`)
+
+The `-M:` section describes match-level constraints that apply across all segments:
+
+| Pattern      | Description                        | Example                                     |
+| ------------ | ---------------------------------- | -------------------------------------------- |
+| `T{minutes}` | Match time cap (total game clock)  | `-M:T50` (50-minute match time cap)          |
+
+Unlike segment-level timed formats (`-S:T45`) where each segment is independently timed, a match constraint applies a single clock across the entire match. For example, `INN4XA-S:O3-M:T50` means the game ends when either all 4 innings are complete or 50 minutes elapse, whichever comes first.
 
 ### Match-Level Modifiers
 
@@ -124,14 +136,16 @@ const valid = matchUpFormatCode.isValidMatchUpFormat({ matchUpFormat });
 // tiebreakFormat and tiebreakSet are mutually exclusive
 const {
   bestOf,
-  matchRoot, // only present for non-SET roots (e.g., 'HAL', 'QTR')
+  matchRoot, // only present for non-SET roots (e.g., 'HAL', 'QTR', 'INN')
   aggregate, // true when match-level A modifier is present
   gameFormat, // { type: 'TRADITIONAL', deuceAfter: 3 } or { type: 'CONSECUTIVE', count: 3 }
+  matchUpConstraint, // { timed: true, minutes: 50 } for -M:T50
   setFormat: {
     setTo,
     tiebreakAt,
     tiebreakFormat: { tiebreakTo },
     tiebreakSet: { tiebreakTo },
+    outs, // number of outs per team per inning (for -S:O3)
   },
   finalSetFormat: {
     setTo,
@@ -336,6 +350,15 @@ engine.setMatchUpStatus({
 | Boxing undercard    | `RND4A-S:T3`  | 4 rounds of 3 min  |
 | MMA standard        | `RND3A-S:T5`  | 3 rounds of 5 min  |
 | MMA championship    | `RND5A-S:T5`  | 5 rounds of 5 min  |
+
+#### Wiffle Ball / Baseball
+
+| Format                   | Code                | Notes                                          |
+| ------------------------ | ------------------- | ---------------------------------------------- |
+| BLW standard             | `INN4XA-S:O3-M:T50` | 4 innings, 3 outs, aggregate, 50-min match cap |
+| BLW (no time cap)        | `INN4XA-S:O3`        | 4 innings, 3 outs, aggregate                   |
+| World Wiffle Ball        | `INN6XA-S:O3`        | 6 innings, 3 outs, aggregate                   |
+| Timed innings (approx.)  | `INN4XA-S:T12`       | Timed approximation (~12 min/inning)           |
 
 #### Other Sports
 

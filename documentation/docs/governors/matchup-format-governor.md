@@ -21,6 +21,7 @@ The **matchUpFormatGovernor** provides utilities for parsing, validating, and ge
 - `HAL2A-S:T45` - Soccer: 2 halves of 45 min, aggregate
 - `SET5-S:5-G:3C` - TYPTI: 5 sets to 5, 3 consecutive points per game
 - `SET7XA-S:T10P` - INTENNSE: exactly 7 timed sets, aggregate, points-based
+- `INN4XA-S:O3-M:T50` - BLW Wiffle Ball: 4 innings, 3 outs, aggregate, 50-min match cap
 
 ---
 
@@ -71,6 +72,7 @@ matchUpFormatCode: string; // CODES format code (e.g., "SET3-S:6/TB7")
     timed?: boolean;         // Is this a timed set?
     minutes?: number;        // Minutes for timed set
     based?: string;          // Scoring basis: 'G' (games), 'P' (points)
+    outs?: number;           // Outs per team per inning (e.g., 3 for baseball/wiffle ball)
   };
   finalSetFormat?: {         // Same structure as setFormat, for final set
     // ... (all setFormat properties)
@@ -82,6 +84,10 @@ matchUpFormatCode: string; // CODES format code (e.g., "SET3-S:6/TB7")
     type: 'CONSECUTIVE';     // Consecutive points to win a game
     count: number;           // Number of consecutive points required
     deuceAfter?: number;     // Optional deuce cap
+  };
+  matchUpConstraint?: {      // Match-level constraint (-M: section)
+    timed: boolean;          // Whether match has a time cap
+    minutes: number;         // Match time cap in minutes
   };
   simplified?: boolean;      // True for single-set formats like "T20"
 } | undefined                // undefined if parsing fails
@@ -172,6 +178,24 @@ const parsed = matchUpFormatGovernor.parse('SET3-S:6/TB7-G:TN');
 //   gameFormat: { type: 'TRADITIONAL' }
 // }
 
+// Parse outs-based format (wiffle ball)
+const parsed = matchUpFormatGovernor.parse('INN4XA-S:O3-M:T50');
+// {
+//   matchRoot: 'INN',
+//   exactly: 4,
+//   aggregate: true,
+//   setFormat: { outs: 3 },
+//   matchUpConstraint: { timed: true, minutes: 50 }
+// }
+
+// Parse match constraint with tennis format
+const parsed = matchUpFormatGovernor.parse('SET3-S:6/TB7-M:T120');
+// {
+//   bestOf: 3,
+//   setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+//   matchUpConstraint: { timed: true, minutes: 120 }
+// }
+
 // Invalid format returns undefined
 const parsed = matchUpFormatGovernor.parse('INVALID');
 // undefined
@@ -185,9 +209,11 @@ const parsed = matchUpFormatGovernor.parse('INVALID');
 - Timed sets can be games-based (G) or points-based (P); aggregate scoring is signaled by the match-level `A` modifier
 - `matchRoot` is only included when the root is not `SET` (backward compatibility)
 - `aggregate` is only included when `true`
-- Sections (`-S:`, `-F:`, `-G:`) are dispatched by key, not by position, so order doesn't matter
+- Sections (`-S:`, `-F:`, `-G:`, `-M:`) are dispatched by key, not by position, so order doesn't matter
 - For `SET` root, `bestOf` must be < 6 (for non-timed formats); non-`SET` roots have no limit
-- Format grammar: `{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}]`
+- Format grammar: `{ROOT}{count}[X][A]-S:{setSpec}[-G:{gameSpec}][-F:{setSpec}][-M:{matchConstraint}]`
+- Outs-based set format (`-S:O3`) is for innings-based sports (baseball, wiffle ball)
+- Match constraint (`-M:T50`) sets a match-level time cap that applies across all segments
 - Timed format: `T{minutes}[G|P][/TB{points}]`
 - See [matchUpFormat Codes](/docs/codes/matchup-format) for complete format specification and cross-sport examples
 
@@ -213,14 +239,18 @@ Converts a parsed matchUp format object back into a compact format code string.
 matchUpFormatObject: {       // Parsed format object
   bestOf?: number;
   exactly?: number;
-  matchRoot?: string;        // Non-SET root type (e.g., 'HAL', 'QTR')
+  matchRoot?: string;        // Non-SET root type (e.g., 'HAL', 'QTR', 'INN')
   aggregate?: boolean;       // Include A suffix in head
-  setFormat?: object;
+  setFormat?: object;        // Includes outs for -S:O{n}
   finalSetFormat?: object;
   gameFormat?: {             // Emit -G: section
     type: 'TRADITIONAL' | 'CONSECUTIVE';
     count?: number;          // Required when type is 'CONSECUTIVE'
     deuceAfter?: number;     // Optional deuce cap (e.g., 3 for Star Point)
+  };
+  matchUpConstraint?: {      // Emit -M: section
+    timed: boolean;          // Whether match has a time cap
+    minutes: number;         // Match time cap in minutes
   };
   simplified?: boolean;
 };
@@ -319,6 +349,24 @@ const formatString = matchUpFormatGovernor.stringify({
   setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
 });
 // "SET1-S:6/TB7" (default behavior)
+
+// Stringify outs-based format (wiffle ball)
+const formatString = matchUpFormatGovernor.stringify({
+  matchRoot: 'INN',
+  exactly: 4,
+  aggregate: true,
+  setFormat: { outs: 3 },
+  matchUpConstraint: { timed: true, minutes: 50 },
+});
+// "INN4XA-S:O3-M:T50"
+
+// Stringify with match constraint on tennis format
+const formatString = matchUpFormatGovernor.stringify({
+  bestOf: 3,
+  setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+  matchUpConstraint: { timed: true, minutes: 120 },
+});
+// "SET3-S:6/TB7-M:T120"
 ```
 
 **Notes:**
@@ -333,6 +381,8 @@ const formatString = matchUpFormatGovernor.stringify({
 - `matchRoot` defaults to `SET` when not specified
 - `aggregate: true` adds the `A` suffix after the count (e.g., `HAL2A`)
 - `gameFormat` emits the `-G:` section (e.g., `-G:3C`, `-G:TN3D`)
+- `matchUpConstraint` emits the `-M:` section (e.g., `-M:T50`)
+- `setFormat.outs` emits outs-based segment format (e.g., `-S:O3`)
 - Head modifier ordering is canonical: count → X → A (e.g., `SET7XA`)
 - See [matchUpFormat Codes](/docs/codes/matchup-format) for the complete format grammar
 
@@ -415,6 +465,15 @@ matchUpFormatGovernor.isValidMatchUpFormat({
 matchUpFormatGovernor.isValidMatchUpFormat({
   matchUpFormat: 'SET3-S:6/TB7-G:TN3D',
 }); // true (Padel Star Point)
+
+// Valid outs-based and match constraint formats
+matchUpFormatGovernor.isValidMatchUpFormat({
+  matchUpFormat: 'INN4XA-S:O3-M:T50',
+}); // true (BLW Wiffle Ball)
+
+matchUpFormatGovernor.isValidMatchUpFormat({
+  matchUpFormat: 'SET3-S:6/TB7-M:T120',
+}); // true (tennis with match time cap)
 
 // Valid pickleball formats
 matchUpFormatGovernor.isValidMatchUpFormat({

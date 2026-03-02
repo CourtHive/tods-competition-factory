@@ -13,7 +13,7 @@ import { getDrawStructures } from '@Acquire/findStructure';
 import { generateRange } from '@Tools/arrays';
 import { expect, it } from 'vitest';
 
-import { MAIN, COMPASS } from '@Constants/drawDefinitionConstants';
+import { MAIN, PLAY_OFF, COMPASS } from '@Constants/drawDefinitionConstants';
 import SEEDING_POLICY from '@Fixtures/policies/POLICY_SEEDING_ITF';
 import { BYE } from '@Constants/matchUpStatusConstants';
 
@@ -93,8 +93,8 @@ it('can generate COMPASS and fill all drawPositions', () => {
   });
 });
 
-function testByeRemoval({ drawDefinition, stage, expectedByeRemoval }) {
-  const { structures } = getDrawStructures({ drawDefinition, stage });
+function testByeRemoval({ drawDefinition, stages, expectedByeRemoval }) {
+  const { structures } = getDrawStructures({ drawDefinition, stages });
 
   const directionEast = findStructureByName(structures, 'East');
   const { structureId } = directionEast;
@@ -116,8 +116,8 @@ function testByeRemoval({ drawDefinition, stage, expectedByeRemoval }) {
   }
 }
 
-function checkCompassByes({ drawDefinition, stage, expectedCompassByes }) {
-  const { structures } = getDrawStructures({ drawDefinition, stage });
+function checkCompassByes({ drawDefinition, stages, expectedCompassByes }) {
+  const { structures } = getDrawStructures({ drawDefinition, stages });
 
   Object.keys(expectedCompassByes).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
@@ -131,8 +131,8 @@ function checkCompassByes({ drawDefinition, stage, expectedCompassByes }) {
 function pendingWithOneParticipant(matchUp) {
   return matchUp.roundNumber === 2 && matchUp.drawPositions.filter(Boolean).length === 1;
 }
-function checkByeAdvancedDrawPositions({ expectedByeDrawPositions, drawDefinition, advanced, stage }) {
-  const { structures } = getDrawStructures({ drawDefinition, stage });
+function checkByeAdvancedDrawPositions({ expectedByeDrawPositions, drawDefinition, advanced, stages }) {
+  const { structures } = getDrawStructures({ drawDefinition, stages });
 
   Object.keys(expectedByeDrawPositions).forEach((direction) => {
     const structure = findStructureByName(structures, direction);
@@ -188,6 +188,7 @@ function generateCompass({
   drawSize,
 }) {
   const stage = MAIN;
+  const stages = [MAIN, PLAY_OFF];
   const drawType = COMPASS;
 
   const drawDefinition = newDrawDefinition();
@@ -220,20 +221,29 @@ function generateCompass({
 
   automatedPositioning({ drawDefinition, structureId });
 
-  checkCompassByes({ drawDefinition, stage, expectedCompassByes });
+  // Verify East (root) is MAIN and all secondaries are PLAY_OFF
+  expect(structure.stage).toEqual(MAIN);
+  const { structures: allStructures } = getDrawStructures({ drawDefinition, stages });
+  const secondaries = allStructures.filter((s) => s.structureName !== 'East');
+  secondaries.forEach((s) => {
+    expect(s.stage).toEqual(PLAY_OFF);
+    expect(s.stageSequence).toBeGreaterThan(1);
+  });
+
+  checkCompassByes({ drawDefinition, stages, expectedCompassByes });
   checkByeAdvancedDrawPositions({
     expectedByeDrawPositions,
     advanced: true,
     drawDefinition,
-    stage,
+    stages,
   });
 
-  testByeRemoval({ drawDefinition, stage, expectedByeRemoval });
+  testByeRemoval({ drawDefinition, stages, expectedByeRemoval });
   checkByeAdvancedDrawPositions({
     expectedByeDrawPositions,
     advanced: false,
     drawDefinition,
-    stage,
+    stages,
   });
 }
 

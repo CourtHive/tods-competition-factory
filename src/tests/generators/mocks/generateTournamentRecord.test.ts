@@ -13,7 +13,7 @@ import {
   COMPASS,
   FEED_IN_CHAMPIONSHIP,
   FIRST_MATCH_LOSER_CONSOLATION,
-  PLAY_OFF,
+  PLAYOFF,
   ROUND_ROBIN,
   ROUND_ROBIN_WITH_PLAYOFF,
 } from '@Constants/drawDefinitionConstants';
@@ -82,7 +82,7 @@ test('drawProfiles support generate: false', () => {
   });
 });
 
-test.each([PLAY_OFF, COMPASS, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF])(
+test.each([PLAYOFF, COMPASS, FEED_IN_CHAMPIONSHIP, ROUND_ROBIN, ROUND_ROBIN_WITH_PLAYOFF])(
   'drawProfiles can specify idPrefix for matchUpIds',
   (drawType) => {
     const idPrefix = 'Foo';

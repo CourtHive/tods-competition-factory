@@ -27,7 +27,7 @@ it('can extract and collate event and tournament structures', () => {
     {
       eventId: 'event2',
       drawProfiles: [{ drawSize: 16 }, { drawType: COMPASS, drawSize: 32 }],
-      expectation: { structuresCount: 9, stageStructures: [MAIN] },
+      expectation: { structuresCount: 9, stageStructures: [MAIN, PLAY_OFF] },
     },
     {
       eventId: 'event3',
