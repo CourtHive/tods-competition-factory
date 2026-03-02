@@ -71,10 +71,14 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
 
   const gameCode = matchUpFormatObject.gameFormat ? `G:${stringifyGameFormat(matchUpFormatObject.gameFormat)}` : '';
 
+  const matchUpConstraintCode = matchUpFormatObject.matchUpConstraint?.timed
+    ? `M:T${matchUpFormatObject.matchUpConstraint.minutes}`
+    : '';
+
   const valid = setLimitCode && setCountValue;
 
   if (valid) {
-    return [setLimitCode, setCode, gameCode, finalSetCode].filter(Boolean).join('-');
+    return [setLimitCode, setCode, gameCode, finalSetCode, matchUpConstraintCode].filter(Boolean).join('-');
   }
   return undefined;
 }
@@ -82,6 +86,7 @@ function getSetFormat(matchUpFormatObject, preserveRedundant?: boolean) {
 function stringifySet(setObject, preserveRedundant) {
   if (typeof setObject === 'object' && Object.keys(setObject).length) {
     if (setObject.timed) return timedSetFormat(setObject);
+    if (setObject.outs) return `O${setObject.outs}`;
     if (setObject.tiebreakSet) return tiebreakFormat(setObject.tiebreakSet);
     const setToValue = getNumber(setObject.setTo);
     if (setToValue) {

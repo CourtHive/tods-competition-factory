@@ -12,8 +12,13 @@ export type MatchRoot = (typeof MATCH_ROOTS)[number];
 export const CONSECUTIVE = 'CONSECUTIVE';
 export const TRADITIONAL = 'TRADITIONAL';
 
+// Section types
+export const GAME = 'game';
+export const MATCHUP = 'matchUp';
+
 export const sectionTypes = {
   S: NORMAL,
   F: FINAL,
-  G: 'game',
+  G: GAME,
+  M: MATCHUP,
 };

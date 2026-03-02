@@ -484,16 +484,26 @@ export interface FormatStructure {
   setFormat?: SetFormatStructure;
   finalSetFormat?: SetFormatStructure;
   gameFormat?: GameFormatStructure;
+  matchUpConstraint?: MatchUpConstraintStructure;
   simplified?: boolean; // True for standalone timed (T20, T10P)
+}
+
+/**
+ * Match-level constraint structure (e.g., game time cap)
+ */
+export interface MatchUpConstraintStructure {
+  timed?: boolean;
+  minutes?: number;
 }
 
 /**
  * Set format structure
  *
- * Three mutually exclusive set types:
+ * Four mutually exclusive set types:
  * 1. Standard set: has setTo (e.g., S:6/TB7)
  * 2. Tiebreak-only set: has tiebreakSet (e.g., S:TB11)
  * 3. Timed set: has timed+minutes (e.g., S:T10P)
+ * 4. Outs-based set: has outs (e.g., S:O3 — baseball/wiffle ball innings)
  */
 export interface SetFormatStructure {
   // Standard set
@@ -510,6 +520,8 @@ export interface SetFormatStructure {
   minutes?: number;
   based?: string; // 'P' (points) | 'G' (games, default)
   modifier?: string;
+  // Outs-based set (baseball/wiffle ball innings)
+  outs?: number;
   // Game format within set
   gameFormat?: GameFormatStructure;
 }

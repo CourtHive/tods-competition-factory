@@ -677,6 +677,67 @@ describe('Esports formats (MAP root)', () => {
 });
 
 // ─────────────────────────────────────────────────────────────
+// WIFFLE BALL / BASEBALL (INN ROOT, OUTS-BASED)
+// ─────────────────────────────────────────────────────────────
+
+describe('Wiffle Ball / INN root formats', () => {
+  it('BLW standard: 4 innings, 3 outs, aggregate (no time cap)', () => {
+    expectRoundTrip('INN4XA-S:O3', {
+      matchRoot: 'INN',
+      exactly: 4,
+      aggregate: true,
+      setFormat: { outs: 3 },
+    });
+  });
+
+  it('BLW full format: 4 innings, 3 outs, aggregate, 50-min match cap', () => {
+    expectRoundTrip('INN4XA-S:O3-M:T50', {
+      matchRoot: 'INN',
+      exactly: 4,
+      aggregate: true,
+      setFormat: { outs: 3 },
+      matchUpConstraint: { timed: true, minutes: 50 },
+    });
+  });
+
+  it('World Wiffle Ball: 6 innings, 3 outs, aggregate', () => {
+    expectRoundTrip('INN6XA-S:O3', {
+      matchRoot: 'INN',
+      exactly: 6,
+      aggregate: true,
+      setFormat: { outs: 3 },
+    });
+  });
+
+  it('timed innings approximation (backward compat)', () => {
+    expectRoundTrip('INN4XA-S:T12', {
+      matchRoot: 'INN',
+      exactly: 4,
+      aggregate: true,
+      setFormat: { timed: true, minutes: 12 },
+    });
+  });
+
+  it('match constraint with tennis format (proves -M: is root-agnostic)', () => {
+    expectRoundTrip('SET3-S:6/TB7-M:T120', {
+      bestOf: 3,
+      setFormat: { setTo: 6, tiebreakAt: 6, tiebreakFormat: { tiebreakTo: 7 } },
+      matchUpConstraint: { timed: true, minutes: 120 },
+    });
+  });
+
+  it('rejects invalid outs-based formats', () => {
+    expect(matchUpFormatCode.parse('INN4XA-S:O0')).toBeUndefined(); // O0 invalid (must start with 1-9)
+    expect(matchUpFormatCode.parse('INN4XA-S:Oabc')).toBeUndefined(); // non-numeric
+  });
+
+  it('rejects invalid match constraint formats', () => {
+    expect(matchUpFormatCode.parse('SET3-S:6/TB7-M:X50')).toBeUndefined(); // must start with T
+    expect(matchUpFormatCode.parse('SET3-S:6/TB7-M:T0')).toBeUndefined(); // T0 invalid (getNumber returns 0 → falsy)
+  });
+});
+
+// ─────────────────────────────────────────────────────────────
 // EDGE CASES AND VALIDATION
 // ─────────────────────────────────────────────────────────────
 
@@ -814,6 +875,12 @@ describe('Cross-sport comprehensive round-trip', () => {
     // Esports
     'MAP3-S:TB13',
     'MAP5-S:TB13',
+    // Wiffle Ball
+    'INN4XA-S:O3',
+    'INN4XA-S:O3-M:T50',
+    'INN6XA-S:O3',
+    // Match constraint with tennis format
+    'SET3-S:6/TB7-M:T120',
   ];
 
   it('all cross-sport formats round-trip and validate', () => {
